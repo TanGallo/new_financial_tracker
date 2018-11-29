@@ -1,6 +1,5 @@
 package ca.gotchasomething.mynance;
 
-import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -10,9 +9,8 @@ import java.text.NumberFormat;
 
 import androidx.annotation.Nullable;
 import ca.gotchasomething.mynance.data.MoneyInDbManager;
-import ca.gotchasomething.mynance.tabFragments.DailyMoneyInOut;
 
-public class HeaderDailyMoney extends LayoutDailyMoney {
+public class HeaderDailyMoneyOut extends LayoutDailyMoney {
 
     Cursor headerMoneyInCursor, headerMoneyOutCursor;
     DbHelper headerMoneyInHelper, headerMoneyOutHelper;

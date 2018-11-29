@@ -20,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.sql.Timestamp;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -27,6 +28,8 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import ca.gotchasomething.mynance.DbHelper;
 import ca.gotchasomething.mynance.HeaderDailyMoney;
+import ca.gotchasomething.mynance.HeaderDailyMoney;
+import ca.gotchasomething.mynance.HeaderDailyMoneyIn;
 import ca.gotchasomething.mynance.LayoutDailyMoney;
 import ca.gotchasomething.mynance.R;
 import ca.gotchasomething.mynance.data.MoneyInDb;
@@ -38,27 +41,30 @@ import ca.gotchasomething.mynance.spinners.MoneyOutSpinnerAdapter;
 
 public class DailyMoneyInOut extends Fragment {
 
-    View v;
-    EditText moneyInAmountText, moneyOutAmountText, ccTransAmountText;
-    Spinner moneyInCatSpinner, moneyOutCatSpinner, ccTransCatSpinner;
-    DbHelper moneyInDbHelper, moneyOutDbHelper, moneyOutDbHelper2;
-    SQLiteDatabase moneyInDbDb, moneyOutDbDb, moneyOutDbDb2;
-    Cursor moneyInCursor, moneyOutCursor, moneyOutCursor2;
-    MoneyInSpinnerAdapter moneyInAdapter;
-    MoneyOutSpinnerAdapter moneyOutAdapter, moneyOutAdapter2;
     Button moneyInButton, moneyOutButton, ccTransButton;
-    MoneyInDb moneyInDb;
-    MoneyOutDb moneyOutDb, moneyOutDb2;
-    String incomeName, moneyInCatS, moneyInCat, moneyInCreatedOn, moneyOutCatS, moneyOutCatS2, moneyOutCat, moneyOutPriority, moneyOutPriorityS, moneyOutPriorityS2, moneyOutCreatedOn,
-            moneyOutCC, ccTransCatS, ccTransPriorityS, moneyOutCatD, moneyOutPriorityD;
-    Double moneyInAmount, moneyOutAmount;
-    MoneyInDbManager moneyInDbManager;
-    MoneyOutDbManager moneyOutDbManager;
+    Cursor moneyInCursor, moneyInCursor4, moneyOutCursor, moneyOutCursor2, headerMoneyInCursor;
     Date moneyInDate, moneyOutDate;
-    Timestamp moneyInTimestamp, moneyOutTimestamp;
-    SimpleDateFormat moneyInSDF, moneyOutSDF;
-    Intent backToDaily, backToDaily2, backToDaily3;
+    DbHelper moneyInDbHelper, moneyInDbHelper4, moneyOutDbHelper, moneyOutDbHelper2, headerMoneyInHelper;
+    Double moneyInAmount, moneyInAmount3, moneyOutAmount, newAccountBalance2, currentAccountBalance2, thisMoneyInAmount;
+    EditText moneyInAmountText, moneyOutAmountText, ccTransAmountText;
     int position;
+    Intent backToDaily, backToDaily2, backToDaily3;
+    long thisId;
+    MoneyInDb moneyInDb;
+    MoneyInDbManager moneyInDbManager;
+    MoneyInSpinnerAdapter moneyInAdapter;
+    MoneyOutDb moneyOutDb, moneyOutDb2;
+    MoneyOutDbManager moneyOutDbManager;
+    MoneyOutSpinnerAdapter moneyOutAdapter, moneyOutAdapter2;
+    NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
+    SimpleDateFormat moneyInSDF, moneyOutSDF;
+    Spinner moneyInCatSpinner, moneyOutCatSpinner, ccTransCatSpinner;
+    SQLiteDatabase moneyInDbDb, moneyInDbDb4, moneyOutDbDb, moneyOutDbDb2, headerMoneyInDb;
+    String incomeName, moneyInCatS, moneyInCat, moneyInCreatedOn, moneyOutCatS, moneyOutCatS2, moneyOutCat, moneyOutPriority, moneyOutPriorityS, moneyOutPriorityS2, moneyOutCreatedOn,
+            moneyOutCC, ccTransCatS, ccTransPriorityS, moneyOutCatD, moneyOutPriorityD, newAccountBalanceS2;
+    TextView totalAccountText, availableAccountText;
+    Timestamp moneyInTimestamp, moneyOutTimestamp;
+    View v;
 
     public DailyMoneyInOut() {
         // Required empty public constructor
@@ -76,6 +82,9 @@ public class DailyMoneyInOut extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        totalAccountText = v.findViewById(R.id.totalAccountText);
+        availableAccountText = v.findViewById(R.id.availableAccountText);
 
         moneyInAmountText = v.findViewById(R.id.moneyInAmount);
         moneyInButton = v.findViewById(R.id.moneyInButton);
@@ -187,7 +196,30 @@ public class DailyMoneyInOut extends Fragment {
             Toast.makeText(getActivity(), "Saved", Toast.LENGTH_LONG).show();
             moneyInAmountText.setText("");
 
-            backToDaily = new Intent(getContext(), HeaderDailyMoney.class);
+            headerMoneyInHelper = new DbHelper(getContext());
+            headerMoneyInDb = headerMoneyInHelper.getReadableDatabase();
+            //headerMoneyInCursor = headerMoneyInDb.rawQuery("SELECT max(id) FROM " + DbHelper.MONEY_IN_TABLE_NAME, null);
+            //headerMoneyInCursor = headerMoneyInDb.rawQuery("SELECT " + DbHelper.MONEYINAMOUNT + " FROM " + DbHelper.MONEY_IN_TABLE_NAME +
+                    //" WHERE " + DbHelper.ID + " = max(id)", null);
+            //headerMoneyInCursor = headerMoneyInDb.rawQuery("SELECT " + DbHelper.MONEYINAMOUNT + " FROM " + DbHelper.MONEY_IN_TABLE_NAME +
+                    //" WHERE " + DbHelper.ID + " = (SELECT max(id) FROM " + DbHelper.MONEY_IN_TABLE_NAME + ")", null);
+            headerMoneyInCursor = headerMoneyInDb.rawQuery("SELECT " + DbHelper.MONEYINAMOUNT + " FROM " + DbHelper.MONEY_IN_TABLE_NAME, null);
+            headerMoneyInCursor.moveToFirst();
+            //thisId = headerMoneyInCursor.getLong(0);
+            thisMoneyInAmount = headerMoneyInCursor.getDouble(0);
+            headerMoneyInCursor.close();
+
+            //totalAccountText.setText(String.valueOf(thisMoneyInAmount));
+
+            //HeaderDailyMoney headerDailyMoney = new HeaderDailyMoney();
+            //headerDailyMoney.retrieveMoneyIn();
+
+            /*currentAccountBalance2 = Double.valueOf(totalAccountText.getText().toString());
+            newAccountBalance2 = currentAccountBalance2 + retrieveMoneyInAmount();
+            newAccountBalanceS2 = currencyFormat.format(newAccountBalance2);
+            totalAccountText.setText(newAccountBalanceS2);*/
+
+            backToDaily = new Intent(getContext(), HeaderDailyMoneyIn.class);
             backToDaily.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
             startActivity(backToDaily);
 
@@ -216,9 +248,9 @@ public class DailyMoneyInOut extends Fragment {
             Toast.makeText(getActivity(), "Saved", Toast.LENGTH_LONG).show();
             moneyOutAmountText.setText("");
 
-            backToDaily2 = new Intent(getContext(), HeaderDailyMoney.class);
+            /*backToDaily2 = new Intent(getContext(), HeaderDailyMoney.class);
             backToDaily2.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-            startActivity(backToDaily2);
+            startActivity(backToDaily2);*/
 
             moneyOutCatSpinner.setSelection(0, false);
 

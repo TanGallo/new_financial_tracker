@@ -1,6 +1,5 @@
 package ca.gotchasomething.mynance;
 
-import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -10,9 +9,8 @@ import java.text.NumberFormat;
 
 import androidx.annotation.Nullable;
 import ca.gotchasomething.mynance.data.MoneyInDbManager;
-import ca.gotchasomething.mynance.tabFragments.DailyMoneyInOut;
 
-public class HeaderDailyMoney extends LayoutDailyMoney {
+public class HeaderDailyMoneyIn extends LayoutDailyMoney {
 
     Cursor headerMoneyInCursor, headerMoneyOutCursor;
     DbHelper headerMoneyInHelper, headerMoneyOutHelper;
@@ -43,7 +41,7 @@ public class HeaderDailyMoney extends LayoutDailyMoney {
         availableNumber = availableAccountText.getText().toString();
         startIndex2 = availableNumber.indexOf("$") + 1;
         endIndex2 = availableNumber.length();
-        availableNumberResult = availableNumber.substring(startIndex, endIndex);
+        availableNumberResult = availableNumber.substring(startIndex2, endIndex2);
         currentAvailableBalance = Double.parseDouble(availableNumberResult);
 
         updateMoneyIn();
@@ -51,8 +49,10 @@ public class HeaderDailyMoney extends LayoutDailyMoney {
     }
 
     public void updateMoneyIn() {
-        //totalAccountText = findViewById(R.id.totalAccountText);
-        totalAccountText.setText(String.valueOf(thisMoneyInAmount));
+
+        newAccountBalance = currentAccountBalance + thisMoneyInAmount;
+        newAccountBalanceS = currencyFormat.format(newAccountBalance);
+        totalAccountText.setText(newAccountBalanceS);
     }
 
     /*public void retrieveMoneyIn() {

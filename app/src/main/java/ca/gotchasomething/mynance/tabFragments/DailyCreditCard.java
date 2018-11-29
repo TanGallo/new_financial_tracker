@@ -36,7 +36,7 @@ import java.util.List;
 
 import androidx.fragment.app.FragmentActivity;
 import ca.gotchasomething.mynance.DbHelper;
-import ca.gotchasomething.mynance.HeaderDailyMoney;
+//import ca.gotchasomething.mynance.HeaderDailyMoney;
 import ca.gotchasomething.mynance.LayoutDebt;
 import ca.gotchasomething.mynance.R;
 import ca.gotchasomething.mynance.data.DebtDb;
