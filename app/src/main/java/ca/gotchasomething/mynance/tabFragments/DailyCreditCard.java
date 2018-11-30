@@ -14,6 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -48,28 +49,29 @@ import ca.gotchasomething.mynance.spinners.MoneyOutSpinnerAdapter;
 
 public class DailyCreditCard extends Fragment {
 
-    View v, editCCLine;
-    ListView ccListView;
-    LinearLayout editCCLayout;
-    MoneyOutDbManager moneyOutDbManager;
-    MoneyOutDb moneyOutDb;
-    DbHelper moneyOutHelper;
-    SQLiteDatabase moneyOutDbDb;
-    Cursor moneyOutCursor, moneyOutCursor2;
-    CCAdapter ccAdapter;
-    String ccAmountS, ccAmount2, thisCat, moneyOutCatS, moneyOutPriorityS;
-    Double ccAmountD, thisAmount, moneyOutAmountS;
-    NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
-    Intent refreshHeader, editCC, backToDailyCreditCard, backToDailyCreditCard2;
-    TextView checkBelowLabel, totalCCPaymentDueLabel, totalCCPaymentDueAmount, ccPaidLabel, thisCatText;
-    EditText ccCatEntry, ccAmountEntry;
-    Spinner ccCatSpinner;
-    CheckBox ccPaidCheckbox;
-    long moneyOutId, thisId, thisId2;
-    int thisIdL;
+    boolean isSpinnerTouched;
     Button cancelCCButton, updateCCButton;
+    CCAdapter ccAdapter, ccAdapter2;
+    CheckBox ccPaidCheckbox;
+    Cursor moneyOutCursor, moneyOutCursor2;
+    DbHelper moneyOutHelper, moneyOutHelper2;
+    Double ccAmountD, thisAmount, moneyOutAmountS;
+    EditText ccCatEntry, ccAmountEntry;
     ImageButton thisCatButton;
-    MoneyOutSpinnerAdapter moneyOutAdapter;
+    int thisIdL;
+    Intent refreshHeader, editCC, backToDailyCreditCard, backToDailyCreditCard2;
+    LinearLayout editCCLayout;
+    ListView ccListView;
+    long moneyOutId, thisId, thisId2;
+    MoneyOutDb moneyOutDb;
+    MoneyOutDbManager moneyOutDbManager;
+    MoneyOutSpinnerAdapter moneyOutAdapter, moneyOutAdapter2;
+    NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
+    Spinner ccCatSpinner, ccCatSpinner2;
+    SQLiteDatabase moneyOutDbDb, moneyOutDbDb2;
+    String ccAmountS, ccAmount2, thisCat, moneyOutCatS, moneyOutPriorityS, selectedItemCategory;
+    TextView checkBelowLabel, totalCCPaymentDueLabel, totalCCPaymentDueAmount, ccPaidLabel, thisCatText;
+    View v, editCCLine;
 
     public DailyCreditCard() {
         // Required empty public constructor
@@ -91,12 +93,8 @@ public class DailyCreditCard extends Fragment {
         editCCLayout.setVisibility(View.GONE);
         editCCLine = v.findViewById(R.id.editCCLine);
         editCCLine.setVisibility(View.GONE);
-        ccCatSpinner = v.findViewById(R.id.ccCatSpinner);
-        ccCatSpinner.setVisibility(View.GONE);
         thisCatText = v.findViewById(R.id.thisCatText);
         thisCatText.setVisibility(View.GONE);
-        thisCatButton = v.findViewById(R.id.thisCatButton);
-        thisCatButton.setVisibility(View.GONE);
         ccAmountEntry = v.findViewById(R.id.ccAmountEntry);
         ccAmountEntry.setVisibility(View.GONE);
         cancelCCButton = v.findViewById(R.id.cancelCCButton);
@@ -205,74 +203,39 @@ public class DailyCreditCard extends Fragment {
                     editCCLayout.setVisibility(View.VISIBLE);
                     editCCLine.setVisibility(View.VISIBLE);
                     thisCatText.setVisibility(View.VISIBLE);
-                    thisCatButton.setVisibility(View.VISIBLE);
                     ccAmountEntry.setVisibility(View.VISIBLE);
                     cancelCCButton.setVisibility(View.VISIBLE);
                     updateCCButton.setVisibility(View.VISIBLE);
-                    ccCatSpinner.setVisibility(View.GONE);
 
-                    thisCatText.setText(ccTrans.get(position).getMoneyOutCat());
                     ccAmountEntry.setText(String.valueOf(ccTrans.get(position).getMoneyOutAmount()));
+                    thisCatText.setText(String.valueOf(ccTrans.get(position).getMoneyOutCat()));
 
-                    thisCatButton.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            thisCatText.setVisibility(View.GONE);
-                            thisCatButton.setVisibility(View.GONE);
-                            ccCatSpinner.setVisibility(View.VISIBLE);
+                }
+            });
 
-                            moneyOutHelper = new DbHelper(getContext());
-                            moneyOutDbDb = moneyOutHelper.getReadableDatabase();
-                            moneyOutCursor = moneyOutDbDb.rawQuery("SELECT * FROM " +
-                                    DbHelper.EXPENSES_TABLE_NAME +
-                                    " ORDER BY " +
-                                    DbHelper.EXPENSENAME +
-                                    " ASC", null);
-                            moneyOutAdapter = new MoneyOutSpinnerAdapter(getContext(), moneyOutCursor);
-                            ccCatSpinner.setAdapter(moneyOutAdapter);
+            cancelCCButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
-                            ccCatSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                                @Override
-                                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                                    moneyOutCatS = moneyOutCursor.getString(moneyOutCursor.getColumnIndexOrThrow(DbHelper.EXPENSENAME));
-                                    moneyOutPriorityS = moneyOutCursor.getString(moneyOutCursor.getColumnIndexOrThrow(DbHelper.EXPENSEPRIORITY));
-                                }
+                    checkBelowLabel.setVisibility(View.VISIBLE);
+                    editCCLayout.setVisibility(View.GONE);
+                    editCCLine.setVisibility(View.GONE);
+                }
+            });
 
-                                @Override
-                                public void onNothingSelected(AdapterView<?> parent) {
+            updateCCButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
-                                }
-                            });
-                        }
-                    });
+                    moneyOutDb.setMoneyOutAmount(Double.valueOf(ccAmountEntry.getText().toString()));
 
-                    cancelCCButton.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
+                    moneyOutDbManager.updateMoneyOut(moneyOutDb);
+                    ccAdapter.updateCCTrans(moneyOutDbManager.getCCTrans());
+                    notifyDataSetChanged();
 
-                            checkBelowLabel.setVisibility(View.VISIBLE);
-                            editCCLayout.setVisibility(View.GONE);
-                            editCCLine.setVisibility(View.GONE);
-                        }
-                    });
-
-                    updateCCButton.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-
-                            moneyOutDb.setMoneyOutCat(moneyOutCatS);
-                            moneyOutDb.setMoneyOutAmount(Double.valueOf(ccAmountEntry.getText().toString()));
-                            moneyOutDb.setMoneyOutPriority(moneyOutPriorityS);
-
-                            moneyOutDbManager.updateMoneyOut(moneyOutDb);
-                            ccAdapter.updateCCTrans(moneyOutDbManager.getCCTrans());
-                            notifyDataSetChanged();
-
-                            checkBelowLabel.setVisibility(View.VISIBLE);
-                            editCCLayout.setVisibility(View.GONE);
-                            editCCLine.setVisibility(View.GONE);
-                        }
-                    });
+                    checkBelowLabel.setVisibility(View.VISIBLE);
+                    editCCLayout.setVisibility(View.GONE);
+                    editCCLine.setVisibility(View.GONE);
                 }
             });
 
@@ -284,7 +247,7 @@ public class DailyCreditCard extends Fragment {
                     moneyOutDb = (MoneyOutDb) holder.ccDeleted.getTag();
                     moneyOutDbManager.deleteMoneyOut(moneyOutDb);
 
-                    ccAdapter.updateCCTrans(moneyOutDbManager.getMoneyOuts());
+                    ccAdapter.updateCCTrans(moneyOutDbManager.getCCTrans());
                     notifyDataSetChanged();
                 }
             });
