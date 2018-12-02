@@ -60,15 +60,6 @@
                         android:text="$1.00"
                         android:textSize="22sp" />
 
-                    <com.google.android.material.floatingactionbutton.FloatingActionButton
-                        android:id="@+id/budgetIncomePlusButton"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_gravity="end"
-                        android:layout_margin="10dp"
-                        android:foreground="@drawable/ic_add_white_24dp"
-                        android:scaleType="fitCenter" />
-
                 </LinearLayout>
 
                 <LinearLayout
@@ -97,15 +88,6 @@
                         android:layout_marginBottom="10dp"
                         android:text="$1.00"
                         android:textSize="22sp" />
-
-                    <com.google.android.material.floatingactionbutton.FloatingActionButton
-                        android:id="@+id/budgetExpensePlusButton"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_gravity="end"
-                        android:layout_margin="10dp"
-                        android:foreground="@drawable/ic_add_white_24dp"
-                        android:scaleType="fitCenter" />
 
                 </LinearLayout>
 
@@ -182,6 +164,10 @@
                             android:layout_weight="1"
                             android:orientation="vertical">
 
+                            <RelativeLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content">
+
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -189,6 +175,17 @@
                                 android:layout_margin="10dp"
                                 android:text="Income:"
                                 android:textSize="18sp" />
+
+                            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                                android:id="@+id/budgetIncomePlusButton"
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:layout_margin="10dp"
+                                android:layout_alignParentEnd="true"
+                                android:foreground="@drawable/ic_add_white_24dp"
+                                android:scaleType="fitCenter" />
+
+                            </RelativeLayout>
 
                             <ListView
                                 android:id="@+id/budgetIncomeDetails"
@@ -206,6 +203,10 @@
                             android:layout_weight="1"
                             android:orientation="vertical">
 
+                            <RelativeLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content">
+
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -213,6 +214,17 @@
                                 android:layout_margin="10dp"
                                 android:text="Expenses:"
                                 android:textSize="18sp" />
+
+                            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                                android:id="@+id/budgetExpensePlusButton"
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:layout_margin="10dp"
+                                android:layout_alignParentEnd="true"
+                                android:foreground="@drawable/ic_add_white_24dp"
+                                android:scaleType="fitCenter" />
+
+                            </RelativeLayout>
 
                             <ListView
                                 android:id="@+id/budgetExpensesDetails"

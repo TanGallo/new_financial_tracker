@@ -7,6 +7,8 @@ public class MoneyOutDb {
     private Double moneyOutAmount;
     private String moneyOutCreatedOn;
     private String moneyOutCC;
+    private int moneyOutToPay;
+    private int moneyOutPaid;
     private long id;
 
     public MoneyOutDb(
@@ -15,12 +17,16 @@ public class MoneyOutDb {
             Double moneyOutAmount,
             String moneyOutCreatedOn,
             String moneyOutCC,
+            int moneyOutToPay,
+            int moneyOutPaid,
             long id) {
         this.moneyOutCat = moneyOutCat;
         this.moneyOutPriority = moneyOutPriority;
         this.moneyOutAmount = moneyOutAmount;
         this.moneyOutCreatedOn = moneyOutCreatedOn;
         this.moneyOutCC = moneyOutCC;
+        this.moneyOutToPay = moneyOutToPay;
+        this.moneyOutPaid = moneyOutPaid;
         this.id = id;
     }
 
@@ -38,6 +44,12 @@ public class MoneyOutDb {
 
     public String getMoneyOutCC() { return moneyOutCC; }
     public void setMoneyOutCC(String moneyOutCC) { this.moneyOutCC = moneyOutCC; }
+
+    public int getMoneyOutToPay() { return moneyOutToPay; }
+    public void setMoneyOutToPay(int moneyOutToPay) { this.moneyOutToPay = moneyOutToPay; }
+
+    public int getMoneyOutPaid() { return moneyOutPaid; }
+    public void setMoneyOutPaid(int moneyOutPaid) { this.moneyOutPaid = moneyOutPaid; }
 
     public long getId() { return id; }
     public void setId(long id) { this.id = id; }

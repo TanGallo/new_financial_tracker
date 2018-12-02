@@ -42,26 +42,24 @@ import ca.gotchasomething.mynance.spinners.MoneyOutSpinnerAdapter;
 public class DailyMoneyInOut extends Fragment {
 
     Button moneyInButton, moneyOutButton, ccTransButton;
-    Cursor moneyInCursor, moneyInCursor4, moneyOutCursor, moneyOutCursor2, headerMoneyInCursor;
+    Cursor moneyInCursor, moneyOutCursor, moneyOutCursor2;
     Date moneyInDate, moneyOutDate;
-    DbHelper moneyInDbHelper, moneyInDbHelper4, moneyOutDbHelper, moneyOutDbHelper2, headerMoneyInHelper;
-    Double moneyInAmount, moneyInAmount3, moneyOutAmount, newAccountBalance2, currentAccountBalance2, thisMoneyInAmount;
+    DbHelper moneyInDbHelper, moneyOutDbHelper, moneyOutDbHelper2;
+    Double moneyInAmount, moneyOutAmount;
     EditText moneyInAmountText, moneyOutAmountText, ccTransAmountText;
-    int position;
-    Intent backToDaily, backToDaily2, backToDaily3;
-    long thisId;
+    int moneyOutToPay, moneyOutPaid;
+    Intent backToDaily, backToDaily2;
     MoneyInDb moneyInDb;
     MoneyInDbManager moneyInDbManager;
     MoneyInSpinnerAdapter moneyInAdapter;
     MoneyOutDb moneyOutDb, moneyOutDb2;
     MoneyOutDbManager moneyOutDbManager;
     MoneyOutSpinnerAdapter moneyOutAdapter, moneyOutAdapter2;
-    NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
     SimpleDateFormat moneyInSDF, moneyOutSDF;
     Spinner moneyInCatSpinner, moneyOutCatSpinner, ccTransCatSpinner;
-    SQLiteDatabase moneyInDbDb, moneyInDbDb4, moneyOutDbDb, moneyOutDbDb2, headerMoneyInDb;
-    String incomeName, moneyInCatS, moneyInCat, moneyInCreatedOn, moneyOutCatS, moneyOutCatS2, moneyOutCat, moneyOutPriority, moneyOutPriorityS, moneyOutPriorityS2, moneyOutCreatedOn,
-            moneyOutCC, ccTransCatS, ccTransPriorityS, moneyOutCatD, moneyOutPriorityD, newAccountBalanceS2;
+    SQLiteDatabase moneyInDbDb, moneyOutDbDb, moneyOutDbDb2;
+    String moneyInCatS, moneyInCat, moneyInCreatedOn, moneyOutCatS, moneyOutCat, moneyOutPriority, moneyOutPriorityS, moneyOutCreatedOn,
+            moneyOutCC, ccTransCatS, ccTransPriorityS;
     TextView totalAccountText, availableAccountText;
     Timestamp moneyInTimestamp, moneyOutTimestamp;
     View v;
@@ -195,37 +193,11 @@ public class DailyMoneyInOut extends Fragment {
             moneyInDbManager.addMoneyIn(moneyInDb);
             Toast.makeText(getActivity(), "Saved", Toast.LENGTH_LONG).show();
             moneyInAmountText.setText("");
-
-            headerMoneyInHelper = new DbHelper(getContext());
-            headerMoneyInDb = headerMoneyInHelper.getReadableDatabase();
-            //headerMoneyInCursor = headerMoneyInDb.rawQuery("SELECT max(id) FROM " + DbHelper.MONEY_IN_TABLE_NAME, null);
-            //headerMoneyInCursor = headerMoneyInDb.rawQuery("SELECT " + DbHelper.MONEYINAMOUNT + " FROM " + DbHelper.MONEY_IN_TABLE_NAME +
-                    //" WHERE " + DbHelper.ID + " = max(id)", null);
-            //headerMoneyInCursor = headerMoneyInDb.rawQuery("SELECT " + DbHelper.MONEYINAMOUNT + " FROM " + DbHelper.MONEY_IN_TABLE_NAME +
-                    //" WHERE " + DbHelper.ID + " = (SELECT max(id) FROM " + DbHelper.MONEY_IN_TABLE_NAME + ")", null);
-            headerMoneyInCursor = headerMoneyInDb.rawQuery("SELECT " + DbHelper.MONEYINAMOUNT + " FROM " + DbHelper.MONEY_IN_TABLE_NAME, null);
-            headerMoneyInCursor.moveToFirst();
-            //thisId = headerMoneyInCursor.getLong(0);
-            thisMoneyInAmount = headerMoneyInCursor.getDouble(0);
-            headerMoneyInCursor.close();
-
-            //totalAccountText.setText(String.valueOf(thisMoneyInAmount));
-
-            //HeaderDailyMoney headerDailyMoney = new HeaderDailyMoney();
-            //headerDailyMoney.retrieveMoneyIn();
-
-            /*currentAccountBalance2 = Double.valueOf(totalAccountText.getText().toString());
-            newAccountBalance2 = currentAccountBalance2 + retrieveMoneyInAmount();
-            newAccountBalanceS2 = currencyFormat.format(newAccountBalance2);
-            totalAccountText.setText(newAccountBalanceS2);*/
-
-            backToDaily = new Intent(getContext(), HeaderDailyMoneyIn.class);
-            backToDaily.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-            startActivity(backToDaily);
-
             moneyInCatSpinner.setSelection(0, false);
 
-
+            backToDaily = new Intent(getContext(), LayoutDailyMoney.class);
+            backToDaily.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+            startActivity(backToDaily);
         }
     };
 
@@ -241,19 +213,20 @@ public class DailyMoneyInOut extends Fragment {
             moneyOutSDF = new SimpleDateFormat("dd-MMM-yyyy");
             moneyOutCreatedOn = moneyOutSDF.format(moneyOutTimestamp);
             moneyOutCC = "N";
+            moneyOutToPay = 0;
+            moneyOutPaid = 0;
 
-            moneyOutDb = new MoneyOutDb(moneyOutCat, moneyOutPriority, moneyOutAmount, moneyOutCreatedOn, moneyOutCC, 0);
+            moneyOutDb = new MoneyOutDb(moneyOutCat, moneyOutPriority, moneyOutAmount, moneyOutCreatedOn,
+                    moneyOutCC, moneyOutToPay, moneyOutPaid, 0);
 
             moneyOutDbManager.addMoneyOut(moneyOutDb);
             Toast.makeText(getActivity(), "Saved", Toast.LENGTH_LONG).show();
             moneyOutAmountText.setText("");
-
-            /*backToDaily2 = new Intent(getContext(), HeaderDailyMoney.class);
-            backToDaily2.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-            startActivity(backToDaily2);*/
-
             moneyOutCatSpinner.setSelection(0, false);
 
+            backToDaily2 = new Intent(getContext(), LayoutDailyMoney.class);
+            backToDaily2.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+            startActivity(backToDaily2);
         }
     };
 
@@ -269,15 +242,16 @@ public class DailyMoneyInOut extends Fragment {
             moneyOutSDF = new SimpleDateFormat("dd-MMM-yyyy");
             moneyOutCreatedOn = moneyOutSDF.format(moneyOutTimestamp);
             moneyOutCC = "Y";
+            moneyOutToPay = 0;
+            moneyOutPaid = 0;
 
-            moneyOutDb2 = new MoneyOutDb(moneyOutCat, moneyOutPriority, moneyOutAmount, moneyOutCreatedOn, moneyOutCC, 0);
+            moneyOutDb2 = new MoneyOutDb(moneyOutCat, moneyOutPriority, moneyOutAmount, moneyOutCreatedOn,
+                    moneyOutCC, moneyOutToPay, moneyOutPaid, 0);
 
             moneyOutDbManager.addMoneyOut(moneyOutDb2);
             Toast.makeText(getActivity(), "Saved", Toast.LENGTH_LONG).show();
             ccTransAmountText.setText("");
-
             ccTransCatSpinner.setSelection(0, false);
-
         }
     };
 }

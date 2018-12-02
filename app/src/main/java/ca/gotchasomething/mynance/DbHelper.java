@@ -59,6 +59,8 @@ public class DbHelper extends SQLiteOpenHelper {
     public static final String MONEYOUTAMOUNT = "moneyOutAmount";
     public static final String MONEYOUTCREATEDON = "moneyOutCreatedOn";
     public static final String MONEYOUTCC = "moneyOutCC";
+    public static final String MONEYOUTTOPAY = "moneyOutToPay";
+    public static final String MONEYOUTPAID = "moneyOutPaid";
 
     public static final String SET_UP_TABLE_NAME = "setUp";
     public static final String DEBTSDONE = "debtsDone";
@@ -134,7 +136,9 @@ public class DbHelper extends SQLiteOpenHelper {
             " moneyOutPriority TEXT," +
             " moneyOutAmount REAL," +
             " moneyOutCreatedOn TEXT," +
-            " moneyOutCC TEXT)";
+            " moneyOutCC TEXT," +
+            " moneyOutToPay INTEGER," +
+            " moneyOutPaid INTEGER)";
 
     private static final String createSetUpQuery = "CREATE TABLE " + SET_UP_TABLE_NAME +
             " (_id INTEGER PRIMARY KEY," +

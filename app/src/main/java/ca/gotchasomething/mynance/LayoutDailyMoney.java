@@ -28,22 +28,15 @@ import ca.gotchasomething.mynance.tabFragments.DailyWeeklyLimits;
 
 public class LayoutDailyMoney extends MainNavigation {
 
-    boolean initialized = false;
     Button moneyInButton, moneyOutButton;
-    Cursor setUpCursor2, moneyInCursor, moneyOutCursor, moneyOutCursor2, expenseCursor, incomeCursor, moneyInCursor2, moneyInCursor3, moneyOutCursor3,
-            moneyOutCursor4, moneyOutCursor5, moneyOutCursor6;
-    DbHelper setUpHelper2, moneyInHelper, moneyOutHelper, moneyOutHelper2, expenseHelper, incomeHelper, moneyInDbHelper2, moneyInDbHelper3,
-            moneyOutDbHelper3, moneyOutDbHelper4, moneyOutDbHelper5, moneyOutDbHelper6;
-    Double startingBalance, startingBalanceB, startingBalanceResult, newAccountBalance, income, incomeB, spent, spentB, spentOnB, incomeTotal,
-            totalAExpenses, totalIncome, percentB, spentFromAccountTotal, newAvailableBalance, currentAccountBalance, currentAvailableBalance,
-            availableStartingBalance, moneyInAmount2, moneyOutAmount2, moneyInBAmount, moneyOutAmountB, thisMoneyInAmount;
+    Cursor moneyInCursor, moneyOutCursor, moneyOutCursor2, expenseCursor, incomeCursor;
+    DbHelper moneyInHelper, moneyOutHelper, moneyOutHelper2, expenseHelper, incomeHelper;
+    Double newAccountBalance, totalSpentOnB, moneyInTotal, totalBudgetAExpenses, totalBudgetIncome, percentB,
+            moneyOutTotal, newAvailableBalance;
     FrameLayout container;
-    int startIndex, endIndex, startIndex2, endIndex2;
-    long thisId, thisId2, thisId3;
     NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
-    SQLiteDatabase setUpDbDb2, moneyInDbDb, moneyOutDbDb, moneyOutDbDb2, expenseDbDb, incomeDbDb, moneyInDbDb2, moneyInDbDb3, moneyOutDbDb3, moneyOutDbDb4,
-            moneyOutDbDb5, moneyOutDbDb6;
-    String accountNumber, accountNumberResult, availableNumber, availableNumberResult, availableBalance2, accountBalance2, startingBalanceS, availableBalanceS, newAccountBalanceS, newAvailableBalanceS;
+    SQLiteDatabase moneyInDbDb, moneyOutDbDb, moneyOutDbDb2, expenseDbDb, incomeDbDb;
+    String availableBalance2, accountBalance2;
     TabLayout tl;
     TextView totalAccountText, availableAccountText;
 
@@ -67,35 +60,7 @@ public class LayoutDailyMoney extends MainNavigation {
         totalAccountText = findViewById(R.id.totalAccountText);
         availableAccountText = findViewById(R.id.availableAccountText);
 
-        //totalAccountText.setText(String.valueOf(retrieveStartingBalance()));
-        //Double availableStartingBalance = retrieveStartingBalance() * retrieveStartingBalance();
-        //availableAccountText.setText(String.valueOf(availableStartingBalance));
-
-        //currentAccountBalance = Double.valueOf(totalAccountText.getText().toString());
-        //currentAvailableBalance = Double.valueOf(availableAccountText.getText().toString());
-
-        if(!initialized) {
-            firstTime();
-            //totalAccountText.setText(String.valueOf(retrieveStartingBalance()));
-            //availableStartingBalance = retrieveStartingBalance() * retrieveBPercentage();
-            //availableAccountText.setText(String.valueOf(availableStartingBalance));
-        } else {
-            accountNumber = totalAccountText.getText().toString();
-            startIndex = accountNumber.indexOf("$") + 1;
-            endIndex = accountNumber.length();
-            accountNumberResult = accountNumber.substring(startIndex, endIndex);
-            currentAccountBalance = Double.parseDouble(accountNumberResult);
-
-            availableNumber = availableAccountText.getText().toString();
-            startIndex2 = availableNumber.indexOf("$") + 1;
-            endIndex2 = availableNumber.length();
-            availableNumberResult = availableNumber.substring(startIndex, endIndex);
-            currentAvailableBalance = Double.parseDouble(availableNumberResult);
-            //currentAccountBalance = Double.valueOf(totalAccountText.getText().toString());
-            //currentAvailableBalance = Double.valueOf(availableAccountText.getText().toString());
-        }
-            //dailyHeaderText();
-        //}
+        dailyHeaderText();
 
         tl = findViewById(R.id.daily_tab_layout);
         container = findViewById(R.id.daily_fragment_container);
@@ -110,234 +75,79 @@ public class LayoutDailyMoney extends MainNavigation {
 
     }
 
-    /*public void updateMoneyIn() {
-        totalAccountText = findViewById(R.id.totalAccountText);
-        totalAccountText.setText(String.valueOf(thisMoneyInAmount));
-    }*/
-
-    public Double retrieveStartingBalance() {
-        setUpHelper2 = new DbHelper(this);
-        setUpDbDb2 = setUpHelper2.getReadableDatabase();
-        setUpCursor2 = setUpDbDb2.rawQuery("SELECT max(balanceAmount)" + " FROM " + DbHelper.SET_UP_TABLE_NAME, null);
-        setUpCursor2.moveToFirst();
-        startingBalanceResult = setUpCursor2.getDouble(0);
-        setUpCursor2.close();
-
-        return startingBalanceResult;
-    }
-
     public Double retrieveBPercentage() {
         expenseHelper = new DbHelper(this);
         expenseDbDb = expenseHelper.getReadableDatabase();
         expenseCursor = expenseDbDb.rawQuery("SELECT sum(expenseAAnnualAmount)" + " FROM " + DbHelper.EXPENSES_TABLE_NAME, null);
-        expenseCursor.moveToFirst();
-        totalAExpenses = expenseCursor.getDouble(0);
+        try {
+            expenseCursor.moveToFirst();
+        } catch(Exception e) {
+            totalBudgetAExpenses = 0.0;
+        }
+        totalBudgetAExpenses = expenseCursor.getDouble(0);
         expenseCursor.close();
 
         incomeHelper = new DbHelper(this);
         incomeDbDb = incomeHelper.getReadableDatabase();
         incomeCursor = incomeDbDb.rawQuery("SELECT sum(incomeAnnualAmount)" + " FROM " + DbHelper.INCOME_TABLE_NAME, null);
         incomeCursor.moveToFirst();
-        totalIncome = incomeCursor.getDouble(0);
+        totalBudgetIncome = incomeCursor.getDouble(0);
         incomeCursor.close();
 
-        percentB = 1 - (totalAExpenses / totalIncome);
+        percentB = 1 - (totalBudgetAExpenses / totalBudgetIncome);
 
         return percentB;
 
     }
 
-    public boolean firstTime() {
-
-        //retrieveStartingBalance();
-        //retrieveBPercentage();
-
-        startingBalanceS = currencyFormat.format(retrieveStartingBalance());
-        totalAccountText.setText(startingBalanceS);
-        availableStartingBalance = retrieveStartingBalance() * retrieveBPercentage();
-        availableBalanceS = currencyFormat.format(availableStartingBalance);
-        availableAccountText.setText(availableBalanceS);
-
-        initialized = true;
-
-        currentAccountBalance = startingBalanceResult;
-        currentAvailableBalance = startingBalanceResult * percentB;
-
-        return initialized;
-
-    }
-
-    /*public Double retrieveMoneyInAmount() {
-        //moneyInDbHelper2 = new DbHelper(getApplicationContext());
-        //moneyInDbDb2 = moneyInDbHelper2.getReadableDatabase();
-        //moneyInCursor2 = moneyInDbDb2.rawQuery("SELECT max(id) FROM " + DbHelper.MONEY_IN_TABLE_NAME, null);
-        //moneyInCursor2.moveToFirst();
-        //thisId = moneyInCursor2.getLong(0);
-        //moneyInCursor2.close();
-
-        moneyInDbHelper3 = new DbHelper(getApplicationContext());
-        moneyInDbDb3 = moneyInDbHelper3.getReadableDatabase();
-        moneyInCursor3 = moneyInDbDb3.rawQuery("SELECT " + DbHelper.MONEYINAMOUNT + " FROM " + DbHelper.MONEY_IN_TABLE_NAME + " WHERE " +
-                DbHelper.ID + " = (SELECT max(id) FROM " + DbHelper.MONEY_IN_TABLE_NAME + ")", null);
-        //moneyInCursor3 = moneyInDbDb3.rawQuery("SELECT " + DbHelper.MONEYINAMOUNT + " FROM " + DbHelper.MONEY_IN_TABLE_NAME + " WHERE "
-                //+ String.valueOf(DbHelper.ID) + " = '" + String.valueOf(thisId) + "'", null);
-        try {
-            moneyInCursor3.moveToFirst();
-        } catch(NullPointerException e3) {
-            moneyInAmount2 = 0.0;
-        }
-        moneyInAmount2 = moneyInCursor3.getDouble(0);
-        moneyInCursor3.close();
-
-        return moneyInAmount2;
-
-    }*/
-
-    /*public void retrieveMoneyInAmount() {
-        moneyInDbHelper2 = new DbHelper(getApplicationContext());
-        moneyInDbDb2 = moneyInDbHelper2.getReadableDatabase();
-        moneyInCursor2 = moneyInDbDb2.rawQuery("SELECT max(id) FROM " + DbHelper.MONEY_IN_TABLE_NAME, null);
-        moneyInCursor2.moveToFirst();
-        thisId = moneyInCursor2.getLong(0);
-        moneyInCursor2.close();
-
-        moneyInDbHelper3 = new DbHelper(getBaseContext());
-        moneyInDbDb3 = moneyInDbHelper3.getReadableDatabase();
-        moneyInCursor3 = moneyInDbDb3.rawQuery("SELECT " + DbHelper.MONEYINAMOUNT + " FROM " + DbHelper.MONEY_IN_TABLE_NAME + " WHERE " +
-                DbHelper.ID + " = (SELECT max(id) FROM " + DbHelper.MONEY_IN_TABLE_NAME + ")", null);
-        moneyInCursor3 = moneyInDbDb3.rawQuery("SELECT " + DbHelper.MONEYINAMOUNT + " FROM " + DbHelper.MONEY_IN_TABLE_NAME + " WHERE "
-                + String.valueOf(DbHelper.ID) + " = '" + String.valueOf(thisId) + "'", null);
-        try {
-            moneyInCursor3.moveToFirst();
-        } catch(NullPointerException e3) {
-            moneyInAmount2 = 0.0;
-        }
-        moneyInAmount2 = moneyInCursor3.getDouble(0);
-        moneyInCursor3.close();
-
-        newAccountBalance = currentAccountBalance + moneyInAmount2;
-        newAccountBalanceS = currencyFormat.format(newAccountBalance);
-        totalAccountText.setText(newAccountBalanceS);
-
-    }*/
-
-    /*public Double retrieveMoneyOutAmount() {
-        moneyOutDbHelper3 = new DbHelper(getApplicationContext());
-        moneyOutDbDb3 = moneyOutDbHelper3.getReadableDatabase();
-        moneyOutCursor3 = moneyOutDbDb3.rawQuery("SELECT max(id) FROM " + DbHelper.MONEY_OUT_TABLE_NAME, null);
-        moneyOutCursor3.moveToFirst();
-        thisId2 = moneyOutCursor3.getLong(0);
-        moneyOutCursor3.close();
-
-        moneyOutDbHelper4 = new DbHelper(getApplicationContext());
-        moneyOutDbDb4 = moneyOutDbHelper4.getReadableDatabase();
-        moneyOutCursor4 = moneyOutDbDb4.rawQuery("SELECT " + DbHelper.MONEYOUTAMOUNT + " FROM " + DbHelper.MONEY_OUT_TABLE_NAME + " WHERE "
-                + DbHelper.ID + " = '" + String.valueOf(thisId2) + "'" + " AND " + DbHelper.MONEYOUTCC + " = 'N'", null);
-        try {
-            moneyOutCursor4.moveToFirst();
-        } catch(NullPointerException e) {
-            moneyOutAmount2 = 0.0;
-        }
-        moneyOutAmount2 = moneyOutCursor4.getDouble(0);
-        moneyOutCursor4.close();
-
-        return moneyOutAmount2;
-
-    }*/
-
-    /*public Double moneyInB() {
-        moneyInBAmount = retrieveMoneyInAmount() * retrieveBPercentage();
-
-        return moneyInBAmount;
-    }*/
-
-    /*public Double retrieveMoneyOutBAmount() {
-        moneyOutDbHelper5 = new DbHelper(getApplicationContext());
-        moneyOutDbDb5 = moneyOutDbHelper5.getReadableDatabase();
-        moneyOutCursor5 = moneyOutDbDb5.rawQuery("SELECT max(id) FROM " + DbHelper.MONEY_OUT_TABLE_NAME, null);
-        moneyOutCursor5.moveToFirst();
-        thisId3 = moneyOutCursor5.getLong(0);
-        moneyOutCursor5.close();
-
-        moneyOutDbHelper6 = new DbHelper(getApplicationContext());
-        moneyOutDbDb6 = moneyOutDbHelper6.getReadableDatabase();
-        moneyOutCursor6 = moneyOutDbDb6.rawQuery("SELECT " + DbHelper.MONEYOUTAMOUNT + " FROM " + DbHelper.MONEY_OUT_TABLE_NAME + " WHERE "
-                + DbHelper.ID + " = '" + String.valueOf(thisId3) + "'" + " AND " + DbHelper.MONEYOUTPRIORITY + " = 'B' " +
-                " AND " + DbHelper.MONEYOUTCC + " = 'N'", null);
-        try {
-            moneyOutCursor6.moveToFirst();
-        } catch(NullPointerException e2) {
-            moneyOutAmountB = 0.0;
-        }
-        moneyOutAmountB = moneyOutCursor6.getDouble(0);
-        moneyOutCursor6.close();
-
-        return moneyOutAmountB;
-
-    }*/
-
-    /*public void dailyHeaderText() {
-
-        //currentAccountBalance = Double.valueOf(totalAccountText.getText().toString());
-        //currentAvailableBalance = Double.valueOf(availableAccountText.getText().toString());
-
-        newAccountBalance = currentAccountBalance + retrieveMoneyInAmount() - retrieveMoneyOutAmount();
-        //newAccountBalance = moneyInAmount2;
-        newAccountBalanceS = currencyFormat.format(newAccountBalance);
-        totalAccountText.setText(newAccountBalanceS);
-
-        newAvailableBalance = currentAvailableBalance + moneyInB() - retrieveMoneyOutBAmount();
-        newAvailableBalanceS = currencyFormat.format(newAvailableBalance);
-        availableAccountText.setText(newAvailableBalanceS);
-
-    }*/
-
-    /*public Double retrieveIncomeTotal() {
+    public Double retrieveMoneyInTotal() {
         moneyInHelper = new DbHelper(this);
         moneyInDbDb = moneyInHelper.getReadableDatabase();
         moneyInCursor = moneyInDbDb.rawQuery("SELECT sum(moneyInAmount)" + " FROM " + DbHelper.MONEY_IN_TABLE_NAME, null);
         moneyInCursor.moveToFirst();
-        incomeTotal = moneyInCursor.getDouble(0);
+        moneyInTotal = moneyInCursor.getDouble(0);
         moneyInCursor.close();
 
-        return incomeTotal;
+        return moneyInTotal;
     }
 
-    public Double retrieveSpentFromAccountTotal() {
+    public Double retrieveMoneyOutTotal() {
         moneyOutHelper = new DbHelper(this);
         moneyOutDbDb = moneyOutHelper.getReadableDatabase();
-        moneyOutCursor = moneyOutDbDb.rawQuery("SELECT sum(moneyOutAmount)" + " FROM " + DbHelper.MONEY_OUT_TABLE_NAME + " WHERE " + DbHelper.MONEYOUTCC
-                 + " = 'N'", null);
-        moneyOutCursor.moveToFirst();
-        spentFromAccountTotal = moneyOutCursor.getDouble(0);
+        moneyOutCursor = moneyOutDbDb.rawQuery("SELECT sum(moneyOutAmount)" + " FROM " + DbHelper.MONEY_OUT_TABLE_NAME +
+                " WHERE " + DbHelper.MONEYOUTCC + " = 'N'", null);
+        try {
+            moneyOutCursor.moveToFirst();
+        } catch(Exception e2) {
+            moneyOutTotal = 0.0;
+        }
+        moneyOutTotal = moneyOutCursor.getDouble(0);
         moneyOutCursor.close();
 
-        return spentFromAccountTotal;
+        return moneyOutTotal;
     }
 
-    public Double retrieveBSpent() {
+    public Double retrieveMoneyOutBTotal() {
         moneyOutHelper2 = new DbHelper(this);
         moneyOutDbDb2 = moneyOutHelper2.getReadableDatabase();
         moneyOutCursor2 = moneyOutDbDb2.rawQuery("SELECT sum(moneyOutAmount)" + " FROM " + DbHelper.MONEY_OUT_TABLE_NAME + " WHERE " +
                 DbHelper.MONEYOUTCC + " = 'N' AND " + DbHelper.MONEYOUTPRIORITY + " = 'B'", null);
-        moneyOutCursor2.moveToFirst();
-        spentOnB = moneyOutCursor2.getDouble(0);
+        try {
+            moneyOutCursor2.moveToFirst();
+        } catch(Exception e3) {
+            totalSpentOnB = 0.0;
+        }
+        totalSpentOnB = moneyOutCursor2.getDouble(0);
         moneyOutCursor2.close();
 
-        return spentOnB;
+        return totalSpentOnB;
     }
 
     public void dailyHeaderText() {
 
-        startingBalance = retrieveStartingBalance(); //initial balance in account at set up
-        income = retrieveIncomeTotal(); //total ever into bank account
-        spent = retrieveSpentFromAccountTotal(); //total spent from bank account, not on credit card
-        newAccountBalance = startingBalance + income - spent;
+        newAccountBalance = retrieveMoneyInTotal() - retrieveMoneyOutTotal(); //total ever into acc't - total ever spent from acc't
 
-        startingBalanceB = retrieveBPercentage() * startingBalance; //percentage of initial balance in account allocated to B
-        incomeB = retrieveBPercentage() * income; //percentage of total income ever into bank account allocated to B
-        spentB = retrieveBSpent(); //total spent from bank account, not on credit card, in categories marked as B
-        newAvailableBalance = startingBalanceB + incomeB - spentB;
+        newAvailableBalance = (retrieveMoneyInTotal() * retrieveBPercentage()) - retrieveMoneyOutBTotal(); //total ever into acc't attributed to B - total ever spent from acc't on B
         if(newAvailableBalance.isNaN() || newAvailableBalance < 0 || newAccountBalance == 0) {
             newAvailableBalance = 0.0;
         }
@@ -348,7 +158,7 @@ public class LayoutDailyMoney extends MainNavigation {
         totalAccountText.setText(accountBalance2);
         availableAccountText.setText(availableBalance2);
 
-    }*/
+    }
 
     TabLayout.OnTabSelectedListener onTabSelectedListener = (new TabLayout.OnTabSelectedListener() {
         @Override

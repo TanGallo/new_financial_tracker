@@ -28,6 +28,7 @@ import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.sql.Timestamp;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -44,6 +45,8 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import ca.gotchasomething.mynance.data.DebtDb;
 import ca.gotchasomething.mynance.data.DebtDbManager;
 import ca.gotchasomething.mynance.data.ExpenseBudgetDbManager;
+import ca.gotchasomething.mynance.data.MoneyInDb;
+import ca.gotchasomething.mynance.data.MoneyInDbManager;
 import ca.gotchasomething.mynance.data.SetUpDb;
 import ca.gotchasomething.mynance.data.SetUpDbManager;
 
@@ -52,18 +55,23 @@ public class LayoutSetUp extends MainNavigation {
     Button setUpDebtsButton, setUpSavingsButton, setUpBudgetButton;
     CheckBox setUpDebtsCheckbox, setUpSavingsCheckbox, setUpBudgetCheckbox, setUpAccountCheckbox, setUpTourCheckbox;
     Cursor setUpCursor, setUpCursor2, setUpCursor3, setUpCursor4, setUpCursor5, setUpCursor6;
+    Date moneyInDate;
     DbHelper setUpHelper, setUpHelper2, setUpHelper3, setUpHelper4, setUpHelper5, setUpHelper6;
-    Double startingBalanceResult = 0.0, balanceAmount = 0.0;
+    Double startingBalanceResult = 0.0, balanceAmount = 0.0, moneyInAmount;
     EditText setUpAccountAmount;
     int debtsDoneCheck, savingsDoneCheck, budgetDoneCheck, balanceDoneCheck = 0, tourDoneCheck = 0, debtsDone, savingsDone, budgetDone, balanceDone, tourDone;
     Intent setUpDebts, setUpSavings, setUpBudget, toMainActivity;
+    MoneyInDb moneyInDb;
+    MoneyInDbManager moneyInDbManager;
     NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
     SetUpDb setUpDb;
     SetUpDbManager setUpDbManager;
+    SimpleDateFormat moneyInSDF;
     SQLiteDatabase setUpDbDb, setUpDbDb2, setUpDbDb3, setUpDbDb4, setUpDbDb5, setUpDbDb6;
-    String startingBalanceS, startingBalance2;
+    String startingBalanceS, startingBalance2, moneyInCat, moneyInCreatedOn;
     TextView setUpDebtsLabel, setUpSavingsLabel, setUpBudgetLabel, setUpAccountAmountLabel, setUpAccountAmountLabel2, setUpAccountAmountLabel3,
             setUpAccountAmountResult, almostDone, setUpTourLabel, setUpTourLabel2, setUpTourLabel3, setUpTourLabel4, setUpGotItLabel;
+    Timestamp moneyInTimestamp;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -81,6 +89,7 @@ public class LayoutSetUp extends MainNavigation {
         toggle.syncState();
 
         setUpDbManager = new SetUpDbManager(this);
+        moneyInDbManager = new MoneyInDbManager(this);
 
         setUpDebtsButton = findViewById(R.id.setUpDebtsButton);
         setUpDebtsLabel = findViewById(R.id.setUpDebtsLabel);
@@ -257,6 +266,17 @@ public class LayoutSetUp extends MainNavigation {
 
             setUpDb = new SetUpDb(debtsDone, savingsDone, budgetDone, balanceDone, balanceAmount, tourDone, 0);
             setUpDbManager.addSetUp(setUpDb);
+
+            moneyInCat = "starting balance";
+            moneyInAmount = balanceAmount;
+            moneyInDate = new Date();
+            moneyInTimestamp = new Timestamp(moneyInDate.getTime());
+            moneyInSDF = new SimpleDateFormat("dd-MMM-yyyy");
+            moneyInCreatedOn = moneyInSDF.format(moneyInTimestamp);
+
+            moneyInDb = new MoneyInDb(moneyInCat, moneyInAmount, moneyInCreatedOn, 0);
+
+            moneyInDbManager.addMoneyIn(moneyInDb);
 
             setUpAccountAmountLabel.setVisibility(View.GONE);
             setUpAccountAmountLabel2.setVisibility(View.GONE);

@@ -39,6 +39,8 @@ public class MoneyOutDbManager {
                         cursorMoneyOut.getDouble(cursorMoneyOut.getColumnIndex(DbHelper.MONEYOUTAMOUNT)),
                         cursorMoneyOut.getString(cursorMoneyOut.getColumnIndex(DbHelper.MONEYOUTCREATEDON)),
                         cursorMoneyOut.getString(cursorMoneyOut.getColumnIndex(DbHelper.MONEYOUTCC)),
+                        cursorMoneyOut.getInt(cursorMoneyOut.getColumnIndex(DbHelper.MONEYOUTTOPAY)),
+                        cursorMoneyOut.getInt(cursorMoneyOut.getColumnIndex(DbHelper.MONEYOUTPAID)),
                         cursorMoneyOut.getLong(cursorMoneyOut.getColumnIndex(DbHelper.ID))
                 );
 
@@ -58,6 +60,8 @@ public class MoneyOutDbManager {
         newMoneyOut.put(DbHelper.MONEYOUTAMOUNT, moneyOut.getMoneyOutAmount());
         newMoneyOut.put(DbHelper.MONEYOUTCREATEDON, moneyOut.getMoneyOutCreatedOn());
         newMoneyOut.put(DbHelper.MONEYOUTCC, moneyOut.getMoneyOutCC());
+        newMoneyOut.put(DbHelper.MONEYOUTTOPAY, moneyOut.getMoneyOutToPay());
+        newMoneyOut.put(DbHelper.MONEYOUTPAID, moneyOut.getMoneyOutPaid());
 
         dbMoneyOut2 = dbHelperMoneyOut.getWritableDatabase();
         dbMoneyOut2.insert(DbHelper.MONEY_OUT_TABLE_NAME, null, newMoneyOut);
@@ -71,6 +75,8 @@ public class MoneyOutDbManager {
         updateMoneyOut.put(DbHelper.MONEYOUTAMOUNT, moneyOut.getMoneyOutAmount());
         updateMoneyOut.put(DbHelper.MONEYOUTCREATEDON, moneyOut.getMoneyOutCreatedOn());
         updateMoneyOut.put(DbHelper.MONEYOUTCC, moneyOut.getMoneyOutCC());
+        updateMoneyOut.put(DbHelper.MONEYOUTTOPAY, moneyOut.getMoneyOutToPay());
+        updateMoneyOut.put(DbHelper.MONEYOUTPAID, moneyOut.getMoneyOutPaid());
 
         dbMoneyOut3 = dbHelperMoneyOut.getWritableDatabase();
 
@@ -112,6 +118,8 @@ public class MoneyOutDbManager {
                         cursorMoneyOut2.getDouble(cursorMoneyOut2.getColumnIndex(DbHelper.MONEYOUTAMOUNT)),
                         cursorMoneyOut2.getString(cursorMoneyOut2.getColumnIndex(DbHelper.MONEYOUTCREATEDON)),
                         cursorMoneyOut2.getString(cursorMoneyOut2.getColumnIndex(DbHelper.MONEYOUTCC)),
+                        cursorMoneyOut2.getInt(cursorMoneyOut2.getColumnIndex(DbHelper.MONEYOUTTOPAY)),
+                        cursorMoneyOut2.getInt(cursorMoneyOut2.getColumnIndex(DbHelper.MONEYOUTPAID)),
                         cursorMoneyOut2.getLong(cursorMoneyOut2.getColumnIndex(DbHelper.ID))
                 );
 
