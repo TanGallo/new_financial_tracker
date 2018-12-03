@@ -40,8 +40,6 @@
         <activity android:name="ca.gotchasomething.mynance.LayoutSetUp"/>
         <activity android:name="ca.gotchasomething.mynance.LayoutOnboardingL"/>
         <activity android:name="ca.gotchasomething.mynance.LayoutOnboardingP"/>
-        <activity android:name="ca.gotchasomething.mynance.HeaderDailyMoneyIn"/>
-        <activity android:name="ca.gotchasomething.mynance.HeaderDailyMoneyOut"/>
     </application>
 
 </manifest>

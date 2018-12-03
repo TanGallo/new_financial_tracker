@@ -1,5 +1,6 @@
 package ca.gotchasomething.mynance.tabFragments;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.Context;
@@ -37,8 +38,10 @@ import java.text.NumberFormat;
 import java.util.List;
 
 import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import ca.gotchasomething.mynance.DbHelper;
-//import ca.gotchasomething.mynance.HeaderDailyMoney;
+import ca.gotchasomething.mynance.LayoutDailyMoney;
 import ca.gotchasomething.mynance.LayoutDebt;
 import ca.gotchasomething.mynance.R;
 import ca.gotchasomething.mynance.data.DebtDb;
@@ -55,17 +58,22 @@ public class DailyCreditCard extends Fragment {
     Button cancelCCButton, updateCCButton;
     CCAdapter ccAdapter;
     CheckBox ccPaidCheckbox;
-    Cursor moneyOutCursor, moneyOutCursor4, currentCursor,
-            currentCursor2;
-    DbHelper moneyOutHelper, moneyOutHelper3, moneyOutHelper4, currentHelper, currentHelper2;
-    Double ccAmountD, totalCCPaymentDue, currentAccountBalance, currentAvailableBalance, totalCCPaymentBDue;
+    ContentValues moneyOutValue, moneyOutValue2;
+    Cursor moneyOutCursor, moneyOutCursor2, moneyOutCursor4, currentCursor, currentCursor2;
+    DbHelper moneyOutHelper, moneyOutHelper2, moneyOutHelper3, moneyOutHelper4, currentHelper, currentHelper2, currentHelper3, currentHelper4;
+    Double ccAmountD, totalCCPaymentDue, currentAccountBalance, currentAvailableBalance, totalCCPaymentBDue, newCurrentAvailableBalance,
+            newCurrentAccountBalance;
     EditText ccAmountEntry;
+    FragmentManager fm;
+    FragmentTransaction transaction;
+    Intent refreshView;
+    LayoutDailyMoney layoutDailyMoney;
     LinearLayout editCCLayout;
     ListView ccListView;
     MoneyOutDb moneyOutDb;
     MoneyOutDbManager moneyOutDbManager;
     NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
-    SQLiteDatabase moneyOutDbDb, moneyOutDbDb3, moneyOutDbDb4, currentDbDb, currentDbDb2;
+    SQLiteDatabase moneyOutDbDb, moneyOutDbDb2, moneyOutDbDb3, moneyOutDbDb4, currentDbDb, currentDbDb2, currentDbDb3, currentDbDb4;
     String ccAmountS, ccAmount2, totalCCPaymentDueS;
     TextView checkBelowLabel, totalCCPaymentDueLabel, totalCCPaymentDueAmount, ccPaidLabel, thisCatText, ccOopsText;
     View v, editCCLine;
@@ -116,9 +124,57 @@ public class DailyCreditCard extends Fragment {
         ccAdapter = new CCAdapter(getContext(), moneyOutDbManager.getCCTrans());
         ccListView.setAdapter(ccAdapter);
 
+        ccPaidCheckbox.setOnCheckedChangeListener(onCheckCCPaid);
+
         resetToPay();
         updateCCPaymentDue();
     }
+
+    public void updateCurrentAvailableBalance() {
+        newCurrentAvailableBalance = retrieveCurrentAvailableBalance() - retrieveToPayBTotal();
+
+        moneyOutValue = new ContentValues();
+        moneyOutValue.put(DbHelper.CURRENTAVAILABLEBALANCE, newCurrentAvailableBalance);
+        currentHelper3 = new DbHelper(getContext());
+        currentDbDb3 = currentHelper3.getWritableDatabase();
+        currentDbDb3.update(DbHelper.CURRENT_TABLE_NAME, moneyOutValue, DbHelper.ID + "= '1'", null);
+    }
+
+    public void updateCurrentAccountBalance() {
+        newCurrentAccountBalance = retrieveCurrentAccountBalance() - retrieveToPayTotal();
+
+        moneyOutValue2 = new ContentValues();
+        moneyOutValue2.put(DbHelper.CURRENTACCOUNTBALANCE, newCurrentAccountBalance);
+        currentHelper4 = new DbHelper(getContext());
+        currentDbDb4 = currentHelper4.getWritableDatabase();
+        currentDbDb4.update(DbHelper.CURRENT_TABLE_NAME, moneyOutValue2, DbHelper.ID + "= '1'", null);
+    }
+
+    public void updatePaid() {
+
+        moneyOutHelper2 = new DbHelper(getContext());
+        moneyOutDbDb2 = moneyOutHelper2.getWritableDatabase();
+        ContentValues updateMoneyOutPaid = new ContentValues();
+        updateMoneyOutPaid.put(DbHelper.MONEYOUTPAID, 1);
+        moneyOutDbDb2.update(DbHelper.MONEY_OUT_TABLE_NAME, updateMoneyOutPaid, DbHelper.MONEYOUTTOPAY + "= '1' AND " + DbHelper.MONEYOUTPAID
+                + " = '0'", null);
+    }
+
+    CompoundButton.OnCheckedChangeListener onCheckCCPaid = new CompoundButton.OnCheckedChangeListener() {
+        @Override
+        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+            updateCurrentAccountBalance();
+            updateCurrentAvailableBalance();
+            updatePaid();
+            //DISABLE CHECKBOXES AND/OR CHANGE THE LOOK OF THE TEXT OF ITEMS WHICH HAVE BEEN PAID
+
+            resetToPay();
+
+            refreshView = new Intent(getContext(), LayoutDailyMoney.class);
+            startActivity(refreshView);
+        }
+    };
 
     public Double retrieveCurrentAccountBalance() {
         currentHelper = new DbHelper(getContext());
@@ -179,7 +235,8 @@ public class DailyCreditCard extends Fragment {
         moneyOutDbDb3 = moneyOutHelper3.getWritableDatabase();
         ContentValues updateMoneyOutToPay = new ContentValues();
         updateMoneyOutToPay.put(DbHelper.MONEYOUTTOPAY, 0);
-        moneyOutDbDb3.update(DbHelper.MONEY_OUT_TABLE_NAME, updateMoneyOutToPay, DbHelper.MONEYOUTTOPAY + "= '1'", null);
+        moneyOutDbDb3.update(DbHelper.MONEY_OUT_TABLE_NAME, updateMoneyOutToPay, DbHelper.MONEYOUTTOPAY + "= '1' AND " + DbHelper.MONEYOUTPAID
+                + " = '0'", null);
 
         checkBelowLabel.setVisibility(View.VISIBLE);
         totalCCPaymentDueLabel.setVisibility(View.GONE);
@@ -193,7 +250,7 @@ public class DailyCreditCard extends Fragment {
         moneyOutHelper = new DbHelper(getContext());
         moneyOutDbDb = moneyOutHelper.getReadableDatabase();
         moneyOutCursor = moneyOutDbDb.rawQuery("SELECT sum(moneyOutAmount) FROM " + DbHelper.MONEY_OUT_TABLE_NAME
-                + " WHERE " + DbHelper.MONEYOUTTOPAY + " = '1'", null);
+                + " WHERE " + DbHelper.MONEYOUTTOPAY + " = '1' AND " + DbHelper.MONEYOUTPAID + " = '0'", null);
         try {
             moneyOutCursor.moveToFirst();
         } catch (Exception e) {
@@ -209,7 +266,7 @@ public class DailyCreditCard extends Fragment {
         moneyOutHelper4 = new DbHelper(getContext());
         moneyOutDbDb4 = moneyOutHelper4.getReadableDatabase();
         moneyOutCursor4 = moneyOutDbDb4.rawQuery("SELECT sum(moneyOutAmount) FROM " + DbHelper.MONEY_OUT_TABLE_NAME
-                + " WHERE " + DbHelper.MONEYOUTTOPAY + " = '1' AND " + DbHelper.MONEYOUTPRIORITY + " = 'B'", null);
+                + " WHERE " + DbHelper.MONEYOUTTOPAY + " = '1' AND " + DbHelper.MONEYOUTPAID + " = '0' AND " + DbHelper.MONEYOUTPRIORITY + " = 'B'", null);
         try {
             moneyOutCursor4.moveToFirst();
         } catch (Exception e) {
@@ -318,9 +375,11 @@ public class DailyCreditCard extends Fragment {
                     if (isChecked) {
                         moneyOutDb.setMoneyOutToPay(1);
                         moneyOutDbManager.updateMoneyOut(moneyOutDb);
+                        //updateCCPaymentDue();
                     } else {
                         moneyOutDb.setMoneyOutToPay(0);
                         moneyOutDbManager.updateMoneyOut(moneyOutDb);
+                        //updateCCPaymentDue();
                     }
 
                     updateCCPaymentDue();

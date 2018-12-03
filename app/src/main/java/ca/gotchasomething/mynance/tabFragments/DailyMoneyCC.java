@@ -5,11 +5,6 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +19,9 @@ import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import ca.gotchasomething.mynance.DbHelper;
 import ca.gotchasomething.mynance.LayoutDailyMoney;
 import ca.gotchasomething.mynance.R;
@@ -34,7 +32,7 @@ import ca.gotchasomething.mynance.data.MoneyOutDbManager;
 import ca.gotchasomething.mynance.spinners.MoneyInSpinnerAdapter;
 import ca.gotchasomething.mynance.spinners.MoneyOutSpinnerAdapter;
 
-public class DailyMoneyInOut extends Fragment {
+public class DailyMoneyCC extends Fragment {
 
     boolean possible = true;
     Button moneyInButton, moneyOutButton, ccTransButton;
@@ -64,7 +62,7 @@ public class DailyMoneyInOut extends Fragment {
     Timestamp moneyInTimestamp, moneyOutTimestamp;
     View v;
 
-    public DailyMoneyInOut() {
+    public DailyMoneyCC() {
         // Required empty public constructor
     }
 
