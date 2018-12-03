@@ -51,30 +51,22 @@ import ca.gotchasomething.mynance.spinners.MoneyOutSpinnerAdapter;
 
 public class DailyCreditCard extends Fragment {
 
-    boolean isSpinnerTouched;
+    boolean possible = true;
     Button cancelCCButton, updateCCButton;
-    CCAdapter ccAdapter, ccAdapter2;
+    CCAdapter ccAdapter;
     CheckBox ccPaidCheckbox;
-    Cursor moneyOutCursor, moneyOutCursor2, moneyOutCursor4, moneyOutCursor5, moneyOutCursor6, incomeCursor, expenseCursor, moneyInCursor;
-    DbHelper moneyOutHelper, moneyOutHelper2, moneyOutHelper3, moneyOutHelper4, moneyOutHelper5, moneyOutHelper6, incomeHelper, expenseHelper, moneyInHelper;
-    Double ccAmountD, thisAmount, moneyOutAmountS, totalCCPaymentDue, ccPaymentAmount, newCCPaymentAmount, accountBalance, totalBudgetAExpenses,
-            totalBudgetIncome, percentB, moneyInTotal, moneyOutTotal, toPayToB, totalSpentOnB;
-    EditText ccCatEntry, ccAmountEntry;
-    ExpenseBudgetDbManager expenseBudgetDbManager;
-    ImageButton thisCatButton;
-    IncomeBudgetDbManager incomeBudgetDbManager;
-    int thisIdL, toPayToday, maxMoneyOutToPay;
-    Intent refreshHeader, editCC, backToDailyCreditCard, backToDailyCreditCard2;
+    Cursor moneyOutCursor, moneyOutCursor4, currentCursor,
+            currentCursor2;
+    DbHelper moneyOutHelper, moneyOutHelper3, moneyOutHelper4, currentHelper, currentHelper2;
+    Double ccAmountD, totalCCPaymentDue, currentAccountBalance, currentAvailableBalance, totalCCPaymentBDue;
+    EditText ccAmountEntry;
     LinearLayout editCCLayout;
     ListView ccListView;
-    long moneyOutId, thisId, thisId2;
     MoneyOutDb moneyOutDb;
     MoneyOutDbManager moneyOutDbManager;
-    MoneyOutSpinnerAdapter moneyOutAdapter, moneyOutAdapter2;
     NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
-    Spinner ccCatSpinner, ccCatSpinner2;
-    SQLiteDatabase moneyOutDbDb, moneyOutDbDb2, moneyOutDbDb3, moneyOutDbDb4, moneyOutDbDb5, moneyOutDbDb6, incomeDbDb, expenseDbDb, moneyInDbDb;
-    String ccAmountS, ccAmount2, thisCat, moneyOutCatS, moneyOutPriorityS, selectedItemCategory, totalCCPaymentDueS, exec;
+    SQLiteDatabase moneyOutDbDb, moneyOutDbDb3, moneyOutDbDb4, currentDbDb, currentDbDb2;
+    String ccAmountS, ccAmount2, totalCCPaymentDueS;
     TextView checkBelowLabel, totalCCPaymentDueLabel, totalCCPaymentDueAmount, ccPaidLabel, thisCatText, ccOopsText;
     View v, editCCLine;
 
@@ -124,108 +116,62 @@ public class DailyCreditCard extends Fragment {
         ccAdapter = new CCAdapter(getContext(), moneyOutDbManager.getCCTrans());
         ccListView.setAdapter(ccAdapter);
 
-        //incomeBudgetDbManager = new IncomeBudgetDbManager(getContext());
-        //expenseBudgetDbManager = new ExpenseBudgetDbManager(getContext());
-
         resetToPay();
         updateCCPaymentDue();
     }
 
+    public Double retrieveCurrentAccountBalance() {
+        currentHelper = new DbHelper(getContext());
+        currentDbDb = currentHelper.getReadableDatabase();
+        currentCursor = currentDbDb.rawQuery("SELECT " + DbHelper.CURRENTACCOUNTBALANCE + " FROM " + DbHelper.CURRENT_TABLE_NAME + " WHERE "
+                + DbHelper.ID + " = '1'", null);
+        currentCursor.moveToFirst();
+        currentAccountBalance = currentCursor.getDouble(0);
+        currentCursor.close();
+
+        if (currentAccountBalance.isNaN()) {
+            currentAccountBalance = 0.0;
+        }
+
+        return currentAccountBalance;
+    }
+
+    public Double retrieveCurrentAvailableBalance() {
+        currentHelper2 = new DbHelper(getContext());
+        currentDbDb2 = currentHelper2.getReadableDatabase();
+        currentCursor2 = currentDbDb2.rawQuery("SELECT " + DbHelper.CURRENTAVAILABLEBALANCE + " FROM " + DbHelper.CURRENT_TABLE_NAME + " WHERE "
+                + DbHelper.ID + " = '1'", null);
+        currentCursor2.moveToFirst();
+        currentAvailableBalance = currentCursor2.getDouble(0);
+        currentCursor2.close();
+
+        if (currentAvailableBalance.isNaN()) {
+            currentAvailableBalance = 0.0;
+        }
+
+        return currentAvailableBalance;
+    }
+
     public void checkIfPaymentPossible() {
 
-        if (retrieveToPayTotal() > (retrieveMoneyInTotal() - retrieveMoneyOutTotal()) ||
-                retrieveToPayBTotal() > ((retrieveMoneyInTotal() * retrieveBPercentage()) - retrieveMoneyOutBTotal())) {
+        retrieveToPayBTotal();
+        retrieveCurrentAvailableBalance();
+        retrieveToPayTotal();
+        retrieveCurrentAccountBalance();
+
+        if (totalCCPaymentBDue > currentAvailableBalance) {
+            possible = false;
+            ccPaidLabel.setVisibility(View.GONE);
+            ccPaidCheckbox.setVisibility(View.GONE);
+            ccOopsText.setVisibility(View.VISIBLE);
+        } else if (totalCCPaymentDue > currentAccountBalance) {
+            possible = false;
             ccPaidLabel.setVisibility(View.GONE);
             ccPaidCheckbox.setVisibility(View.GONE);
             ccOopsText.setVisibility(View.VISIBLE);
         } else {
-            ccPaidLabel.setVisibility(View.VISIBLE);
-            ccPaidCheckbox.setVisibility(View.VISIBLE);
             ccOopsText.setVisibility(View.GONE);
         }
-    }
-
-    public Double retrieveToPayBTotal() {
-        moneyOutHelper5 = new DbHelper(getContext());
-        moneyOutDbDb5 = moneyOutHelper5.getReadableDatabase();
-        moneyOutCursor5 = moneyOutDbDb5.rawQuery("SELECT sum(moneyOutAmount) FROM " + DbHelper.MONEY_OUT_TABLE_NAME
-                + " WHERE " + DbHelper.MONEYOUTTOPAY + " = '1' AND " + DbHelper.MONEYOUTPRIORITY + " = 'B'", null);
-        try {
-            moneyOutCursor5.moveToFirst();
-        } catch (Exception e) {
-            toPayToB = 0.0;
-        }
-        toPayToB = moneyOutCursor5.getDouble(0);
-        moneyOutCursor5.close();
-        return toPayToB;
-    }
-
-    public Double retrieveBPercentage() {
-        expenseHelper = new DbHelper(getContext());
-        expenseDbDb = expenseHelper.getReadableDatabase();
-        expenseCursor = expenseDbDb.rawQuery("SELECT sum(expenseAAnnualAmount)" + " FROM " + DbHelper.EXPENSES_TABLE_NAME, null);
-        try {
-            expenseCursor.moveToFirst();
-        } catch (Exception e) {
-            totalBudgetAExpenses = 0.0;
-        }
-        totalBudgetAExpenses = expenseCursor.getDouble(0);
-        expenseCursor.close();
-
-        incomeHelper = new DbHelper(getContext());
-        incomeDbDb = incomeHelper.getReadableDatabase();
-        incomeCursor = incomeDbDb.rawQuery("SELECT sum(incomeAnnualAmount)" + " FROM " + DbHelper.INCOME_TABLE_NAME, null);
-        incomeCursor.moveToFirst();
-        totalBudgetIncome = incomeCursor.getDouble(0);
-        incomeCursor.close();
-
-        percentB = 1 - (totalBudgetAExpenses / totalBudgetIncome);
-
-        return percentB;
-
-    }
-
-    public Double retrieveMoneyInTotal() {
-        moneyInHelper = new DbHelper(getContext());
-        moneyInDbDb = moneyInHelper.getReadableDatabase();
-        moneyInCursor = moneyInDbDb.rawQuery("SELECT sum(moneyInAmount)" + " FROM " + DbHelper.MONEY_IN_TABLE_NAME, null);
-        moneyInCursor.moveToFirst();
-        moneyInTotal = moneyInCursor.getDouble(0);
-        moneyInCursor.close();
-
-        return moneyInTotal;
-    }
-
-    public Double retrieveMoneyOutTotal() {
-        moneyOutHelper4 = new DbHelper(getContext());
-        moneyOutDbDb4 = moneyOutHelper4.getReadableDatabase();
-        moneyOutCursor4 = moneyOutDbDb4.rawQuery("SELECT sum(moneyOutAmount)" + " FROM " + DbHelper.MONEY_OUT_TABLE_NAME +
-                " WHERE " + DbHelper.MONEYOUTCC + " = 'N'", null);
-        try {
-            moneyOutCursor4.moveToFirst();
-        } catch (Exception e2) {
-            moneyOutTotal = 0.0;
-        }
-        moneyOutTotal = moneyOutCursor4.getDouble(0);
-        moneyOutCursor4.close();
-
-        return moneyOutTotal;
-    }
-
-    public Double retrieveMoneyOutBTotal() {
-        moneyOutHelper6 = new DbHelper(getContext());
-        moneyOutDbDb6 = moneyOutHelper6.getReadableDatabase();
-        moneyOutCursor6 = moneyOutDbDb6.rawQuery("SELECT sum(moneyOutAmount)" + " FROM " + DbHelper.MONEY_OUT_TABLE_NAME + " WHERE " +
-                DbHelper.MONEYOUTCC + " = 'N' AND " + DbHelper.MONEYOUTPRIORITY + " = 'B'", null);
-        try {
-            moneyOutCursor6.moveToFirst();
-        } catch (Exception e3) {
-            totalSpentOnB = 0.0;
-        }
-        totalSpentOnB = moneyOutCursor6.getDouble(0);
-        moneyOutCursor6.close();
-
-        return totalSpentOnB;
     }
 
     public void resetToPay() {
@@ -233,7 +179,14 @@ public class DailyCreditCard extends Fragment {
         moneyOutDbDb3 = moneyOutHelper3.getWritableDatabase();
         ContentValues updateMoneyOutToPay = new ContentValues();
         updateMoneyOutToPay.put(DbHelper.MONEYOUTTOPAY, 0);
-        moneyOutDbDb3.update(DbHelper.MONEY_OUT_TABLE_NAME, updateMoneyOutToPay, DbHelper.MONEYOUTTOPAY + "='1'", null);
+        moneyOutDbDb3.update(DbHelper.MONEY_OUT_TABLE_NAME, updateMoneyOutToPay, DbHelper.MONEYOUTTOPAY + "= '1'", null);
+
+        checkBelowLabel.setVisibility(View.VISIBLE);
+        totalCCPaymentDueLabel.setVisibility(View.GONE);
+        totalCCPaymentDueAmount.setVisibility(View.GONE);
+        ccPaidLabel.setVisibility(View.GONE);
+        ccPaidCheckbox.setVisibility(View.GONE);
+        ccOopsText.setVisibility(View.GONE);
     }
 
     public Double retrieveToPayTotal() {
@@ -252,33 +205,38 @@ public class DailyCreditCard extends Fragment {
         return totalCCPaymentDue;
     }
 
+    public Double retrieveToPayBTotal() {
+        moneyOutHelper4 = new DbHelper(getContext());
+        moneyOutDbDb4 = moneyOutHelper4.getReadableDatabase();
+        moneyOutCursor4 = moneyOutDbDb4.rawQuery("SELECT sum(moneyOutAmount) FROM " + DbHelper.MONEY_OUT_TABLE_NAME
+                + " WHERE " + DbHelper.MONEYOUTTOPAY + " = '1' AND " + DbHelper.MONEYOUTPRIORITY + " = 'B'", null);
+        try {
+            moneyOutCursor4.moveToFirst();
+        } catch (Exception e) {
+            totalCCPaymentBDue = 0.0;
+        }
+        totalCCPaymentBDue = moneyOutCursor4.getDouble(0);
+        moneyOutCursor4.close();
+
+        return totalCCPaymentBDue;
+    }
+
     public void updateCCPaymentDue() {
 
-        retrieveToPayTotal();
-
-        totalCCPaymentDueS = currencyFormat.format(totalCCPaymentDue);
-        totalCCPaymentDueAmount.setText(totalCCPaymentDueS);
-
-        moneyOutHelper2 = new DbHelper(getContext());
-        moneyOutDbDb2 = moneyOutHelper2.getReadableDatabase();
-        moneyOutCursor2 = moneyOutDbDb2.rawQuery("SELECT max(moneyOutToPay) FROM " + DbHelper.MONEY_OUT_TABLE_NAME, null);
-        moneyOutCursor2.moveToFirst();
-        maxMoneyOutToPay = moneyOutCursor2.getInt(0);
-        moneyOutCursor2.close();
-
-        if (totalCCPaymentDue == 0.0 && maxMoneyOutToPay == 0) {
-            checkBelowLabel.setVisibility(View.VISIBLE);
-            totalCCPaymentDueLabel.setVisibility(View.GONE);
-            totalCCPaymentDueAmount.setVisibility(View.GONE);
-            ccPaidLabel.setVisibility(View.GONE);
-            ccPaidCheckbox.setVisibility(View.GONE);
+        if (retrieveToPayTotal().equals(0.0)) {
+            resetToPay();
         } else {
             checkBelowLabel.setVisibility(View.GONE);
             totalCCPaymentDueLabel.setVisibility(View.VISIBLE);
             totalCCPaymentDueAmount.setVisibility(View.VISIBLE);
             ccPaidLabel.setVisibility(View.VISIBLE);
             ccPaidCheckbox.setVisibility(View.VISIBLE);
+
+            totalCCPaymentDueS = currencyFormat.format(totalCCPaymentDue);
+            totalCCPaymentDueAmount.setText(totalCCPaymentDueS);
         }
+
+        checkIfPaymentPossible();
     }
 
     public class CCAdapter extends ArrayAdapter<MoneyOutDb> {
@@ -359,15 +317,13 @@ public class DailyCreditCard extends Fragment {
 
                     if (isChecked) {
                         moneyOutDb.setMoneyOutToPay(1);
+                        moneyOutDbManager.updateMoneyOut(moneyOutDb);
                     } else {
                         moneyOutDb.setMoneyOutToPay(0);
+                        moneyOutDbManager.updateMoneyOut(moneyOutDb);
                     }
 
-                    moneyOutDbManager.updateMoneyOut(moneyOutDb);
-
                     updateCCPaymentDue();
-                    checkIfPaymentPossible();
-
                 }
             });
 

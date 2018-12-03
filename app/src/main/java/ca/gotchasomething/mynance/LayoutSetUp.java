@@ -42,6 +42,8 @@ import java.util.NoSuchElementException;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import ca.gotchasomething.mynance.data.CurrentDb;
+import ca.gotchasomething.mynance.data.CurrentDbManager;
 import ca.gotchasomething.mynance.data.DebtDb;
 import ca.gotchasomething.mynance.data.DebtDbManager;
 import ca.gotchasomething.mynance.data.ExpenseBudgetDbManager;
@@ -54,10 +56,13 @@ public class LayoutSetUp extends MainNavigation {
 
     Button setUpDebtsButton, setUpSavingsButton, setUpBudgetButton;
     CheckBox setUpDebtsCheckbox, setUpSavingsCheckbox, setUpBudgetCheckbox, setUpAccountCheckbox, setUpTourCheckbox;
-    Cursor setUpCursor, setUpCursor2, setUpCursor3, setUpCursor4, setUpCursor5, setUpCursor6;
+    CurrentDb currentDb;
+    CurrentDbManager currentDbManager;
+    Cursor setUpCursor, setUpCursor2, setUpCursor3, setUpCursor4, setUpCursor5, setUpCursor6, expenseCursor, incomeCursor;
     Date moneyInDate;
-    DbHelper setUpHelper, setUpHelper2, setUpHelper3, setUpHelper4, setUpHelper5, setUpHelper6;
-    Double startingBalanceResult = 0.0, balanceAmount = 0.0, moneyInAmount;
+    DbHelper setUpHelper, setUpHelper2, setUpHelper3, setUpHelper4, setUpHelper5, setUpHelper6, expenseHelper, incomeHelper;
+    Double startingBalanceResult = 0.0, balanceAmount = 0.0, moneyInAmount = 0.0, currentAccountBalance = 0.0, currentAvailableBalance = 0.0,
+            totalBudgetAExpenses = 0.0, totalBudgetIncome = 0.0, percentB = 0.0;
     EditText setUpAccountAmount;
     int debtsDoneCheck, savingsDoneCheck, budgetDoneCheck, balanceDoneCheck = 0, tourDoneCheck = 0, debtsDone, savingsDone, budgetDone, balanceDone, tourDone;
     Intent setUpDebts, setUpSavings, setUpBudget, toMainActivity;
@@ -67,7 +72,7 @@ public class LayoutSetUp extends MainNavigation {
     SetUpDb setUpDb;
     SetUpDbManager setUpDbManager;
     SimpleDateFormat moneyInSDF;
-    SQLiteDatabase setUpDbDb, setUpDbDb2, setUpDbDb3, setUpDbDb4, setUpDbDb5, setUpDbDb6;
+    SQLiteDatabase setUpDbDb, setUpDbDb2, setUpDbDb3, setUpDbDb4, setUpDbDb5, setUpDbDb6, expenseDbDb, incomeDbDb;
     String startingBalanceS, startingBalance2, moneyInCat, moneyInCreatedOn;
     TextView setUpDebtsLabel, setUpSavingsLabel, setUpBudgetLabel, setUpAccountAmountLabel, setUpAccountAmountLabel2, setUpAccountAmountLabel3,
             setUpAccountAmountResult, almostDone, setUpTourLabel, setUpTourLabel2, setUpTourLabel3, setUpTourLabel4, setUpGotItLabel;
@@ -90,6 +95,7 @@ public class LayoutSetUp extends MainNavigation {
 
         setUpDbManager = new SetUpDbManager(this);
         moneyInDbManager = new MoneyInDbManager(this);
+        currentDbManager = new CurrentDbManager(this);
 
         setUpDebtsButton = findViewById(R.id.setUpDebtsButton);
         setUpDebtsLabel = findViewById(R.id.setUpDebtsLabel);
@@ -248,6 +254,31 @@ public class LayoutSetUp extends MainNavigation {
         return balanceDoneCheck;
     }
 
+    public Double retrieveBPercentage() {
+        expenseHelper = new DbHelper(this);
+        expenseDbDb = expenseHelper.getReadableDatabase();
+        expenseCursor = expenseDbDb.rawQuery("SELECT sum(expenseAAnnualAmount)" + " FROM " + DbHelper.EXPENSES_TABLE_NAME, null);
+        try {
+            expenseCursor.moveToFirst();
+        } catch(Exception e) {
+            totalBudgetAExpenses = 0.0;
+        }
+        totalBudgetAExpenses = expenseCursor.getDouble(0);
+        expenseCursor.close();
+
+        incomeHelper = new DbHelper(this);
+        incomeDbDb = incomeHelper.getReadableDatabase();
+        incomeCursor = incomeDbDb.rawQuery("SELECT sum(incomeAnnualAmount)" + " FROM " + DbHelper.INCOME_TABLE_NAME, null);
+        incomeCursor.moveToFirst();
+        totalBudgetIncome = incomeCursor.getDouble(0);
+        incomeCursor.close();
+
+        percentB = 1 - (totalBudgetAExpenses / totalBudgetIncome);
+
+        return percentB;
+
+    }
+
     CheckBox.OnCheckedChangeListener onCheckBalanceDone = new CompoundButton.OnCheckedChangeListener() {
         @Override
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -266,6 +297,13 @@ public class LayoutSetUp extends MainNavigation {
 
             setUpDb = new SetUpDb(debtsDone, savingsDone, budgetDone, balanceDone, balanceAmount, tourDone, 0);
             setUpDbManager.addSetUp(setUpDb);
+
+            currentAccountBalance = balanceAmount;
+            currentAvailableBalance = balanceAmount * retrieveBPercentage();
+
+            currentDb = new CurrentDb(currentAccountBalance, currentAvailableBalance, 0);
+
+            currentDbManager.addCurrent(currentDb);
 
             moneyInCat = "starting balance";
             moneyInAmount = balanceAmount;

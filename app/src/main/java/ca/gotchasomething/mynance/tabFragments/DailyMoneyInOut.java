@@ -1,5 +1,6 @@
 package ca.gotchasomething.mynance.tabFragments;
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -41,11 +42,15 @@ import ca.gotchasomething.mynance.spinners.MoneyOutSpinnerAdapter;
 
 public class DailyMoneyInOut extends Fragment {
 
+    boolean possible = true;
     Button moneyInButton, moneyOutButton, ccTransButton;
-    Cursor moneyInCursor, moneyOutCursor, moneyOutCursor2;
+    ContentValues moneyInValue, moneyOutValue, moneyInValue2, moneyOutValue2;
+    Cursor moneyInCursor, moneyOutCursor, moneyOutCursor2, currentCursor, currentCursor2, expenseCursor, incomeCursor;
     Date moneyInDate, moneyOutDate;
-    DbHelper moneyInDbHelper, moneyOutDbHelper, moneyOutDbHelper2;
-    Double moneyInAmount, moneyOutAmount;
+    DbHelper moneyInDbHelper, moneyOutDbHelper, moneyOutDbHelper2, currentHelper, currentHelper2, currentHelper3, currentHelper4, currentHelper5,
+            currentHelper6, expenseHelper, incomeHelper;
+    Double moneyInAmount, moneyOutAmount, newCurrentAccountBalance, currentAccountBalance, newCurrentAccountBalance2, newCurrentAccountBalance3,
+            totalBudgetAExpenses, totalBudgetIncome, percentB, currentAvailableBalance, newCurrentAvailableBalance2, newCurrentAvailableBalance3;
     EditText moneyInAmountText, moneyOutAmountText, ccTransAmountText;
     int moneyOutToPay, moneyOutPaid;
     Intent backToDaily, backToDaily2;
@@ -57,7 +62,8 @@ public class DailyMoneyInOut extends Fragment {
     MoneyOutSpinnerAdapter moneyOutAdapter, moneyOutAdapter2;
     SimpleDateFormat moneyInSDF, moneyOutSDF;
     Spinner moneyInCatSpinner, moneyOutCatSpinner, ccTransCatSpinner;
-    SQLiteDatabase moneyInDbDb, moneyOutDbDb, moneyOutDbDb2;
+    SQLiteDatabase moneyInDbDb, moneyOutDbDb, moneyOutDbDb2, currentDbDb, currentDbDb2, currentDbDb3, currentDbDb4, currentDbDb5, currentDbDb6,
+            expenseDbDb, incomeDbDb;
     String moneyInCatS, moneyInCat, moneyInCreatedOn, moneyOutCatS, moneyOutCat, moneyOutPriority, moneyOutPriorityS, moneyOutCreatedOn,
             moneyOutCC, ccTransCatS, ccTransPriorityS;
     TextView totalAccountText, availableAccountText;
@@ -137,6 +143,115 @@ public class DailyMoneyInOut extends Fragment {
 
     }
 
+    public Double retrieveBPercentage() {
+        expenseHelper = new DbHelper(getContext());
+        expenseDbDb = expenseHelper.getReadableDatabase();
+        expenseCursor = expenseDbDb.rawQuery("SELECT sum(expenseAAnnualAmount)" + " FROM " + DbHelper.EXPENSES_TABLE_NAME, null);
+        try {
+            expenseCursor.moveToFirst();
+        } catch (Exception e) {
+            totalBudgetAExpenses = 0.0;
+        }
+        totalBudgetAExpenses = expenseCursor.getDouble(0);
+        expenseCursor.close();
+
+        incomeHelper = new DbHelper(getContext());
+        incomeDbDb = incomeHelper.getReadableDatabase();
+        incomeCursor = incomeDbDb.rawQuery("SELECT sum(incomeAnnualAmount)" + " FROM " + DbHelper.INCOME_TABLE_NAME, null);
+        incomeCursor.moveToFirst();
+        totalBudgetIncome = incomeCursor.getDouble(0);
+        incomeCursor.close();
+
+        percentB = 1 - (totalBudgetAExpenses / totalBudgetIncome);
+
+        return percentB;
+
+    }
+
+    public Double retrieveCurrentAccountBalance() {
+        currentHelper = new DbHelper(getContext());
+        currentDbDb = currentHelper.getReadableDatabase();
+        currentCursor = currentDbDb.rawQuery("SELECT " + DbHelper.CURRENTACCOUNTBALANCE + " FROM " + DbHelper.CURRENT_TABLE_NAME + " WHERE "
+                + DbHelper.ID + " = '1'", null);
+        currentCursor.moveToFirst();
+        currentAccountBalance = currentCursor.getDouble(0);
+        currentCursor.close();
+
+        if (currentAccountBalance.isNaN()) {
+            currentAccountBalance = 0.0;
+        }
+
+        return currentAccountBalance;
+    }
+
+    public Double retrieveCurrentAvailableBalance() {
+        currentHelper2 = new DbHelper(getContext());
+        currentDbDb2 = currentHelper2.getReadableDatabase();
+        currentCursor2 = currentDbDb2.rawQuery("SELECT " + DbHelper.CURRENTAVAILABLEBALANCE + " FROM " + DbHelper.CURRENT_TABLE_NAME + " WHERE "
+                + DbHelper.ID + " = '1'", null);
+        currentCursor2.moveToFirst();
+        currentAvailableBalance = currentCursor2.getDouble(0);
+        currentCursor2.close();
+
+        if (currentAvailableBalance.isNaN()) {
+            currentAvailableBalance = 0.0;
+        }
+
+        return currentAvailableBalance;
+    }
+
+    public void updateCurrentAvailableBalanceMoneyIn() {
+        newCurrentAvailableBalance2 = retrieveCurrentAvailableBalance() + (moneyInAmount * retrieveBPercentage());
+
+        moneyInValue2 = new ContentValues();
+        moneyInValue2.put(DbHelper.CURRENTAVAILABLEBALANCE, newCurrentAvailableBalance2);
+        currentHelper4 = new DbHelper(getContext());
+        currentDbDb4 = currentHelper4.getWritableDatabase();
+        currentDbDb4.update(DbHelper.CURRENT_TABLE_NAME, moneyInValue2, DbHelper.ID + "= '1'", null);
+    }
+
+    public void updateCurrentAvailableBalanceMoneyOut() {
+        newCurrentAvailableBalance3 = retrieveCurrentAvailableBalance() - moneyOutAmount;
+
+        if (newCurrentAvailableBalance3 < 0) {
+            Toast.makeText(getContext(), "You cannot make this purchase. See the Help section if you'd like suggestions.", Toast.LENGTH_LONG).show();
+            possible = false;
+        } else {
+
+            moneyOutValue2 = new ContentValues();
+            moneyOutValue2.put(DbHelper.CURRENTAVAILABLEBALANCE, newCurrentAvailableBalance3);
+            currentHelper5 = new DbHelper(getContext());
+            currentDbDb5 = currentHelper5.getWritableDatabase();
+            currentDbDb5.update(DbHelper.CURRENT_TABLE_NAME, moneyOutValue2, DbHelper.ID + "= '1'", null);
+        }
+    }
+
+    public void updateCurrentAccountBalanceMoneyOut() {
+        newCurrentAccountBalance3 = retrieveCurrentAccountBalance() - moneyOutAmount;
+
+        if (newCurrentAccountBalance3 < 0) {
+            Toast.makeText(getContext(), "You cannot make this purchase. See the Help section if you'd like suggestions.", Toast.LENGTH_LONG).show();
+            possible = false;
+        } else {
+
+            moneyOutValue = new ContentValues();
+            moneyOutValue.put(DbHelper.CURRENTACCOUNTBALANCE, newCurrentAccountBalance3);
+            currentHelper3 = new DbHelper(getContext());
+            currentDbDb3 = currentHelper3.getWritableDatabase();
+            currentDbDb3.update(DbHelper.CURRENT_TABLE_NAME, moneyOutValue, DbHelper.ID + "= '1'", null);
+        }
+    }
+
+    public void updateCurrentAccountBalanceMoneyIn() {
+        newCurrentAccountBalance = retrieveCurrentAccountBalance() + moneyInAmount;
+
+        moneyInValue = new ContentValues();
+        moneyInValue.put(DbHelper.CURRENTACCOUNTBALANCE, newCurrentAccountBalance);
+        currentHelper6 = new DbHelper(getContext());
+        currentDbDb6 = currentHelper6.getWritableDatabase();
+        currentDbDb6.update(DbHelper.CURRENT_TABLE_NAME, moneyInValue, DbHelper.ID + "= '1'", null);
+    }
+
     AdapterView.OnItemSelectedListener moneyInSpinnerSelection = new AdapterView.OnItemSelectedListener() {
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -195,6 +310,9 @@ public class DailyMoneyInOut extends Fragment {
             moneyInAmountText.setText("");
             moneyInCatSpinner.setSelection(0, false);
 
+            updateCurrentAccountBalanceMoneyIn();
+            updateCurrentAvailableBalanceMoneyIn();
+
             backToDaily = new Intent(getContext(), LayoutDailyMoney.class);
             backToDaily.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
             startActivity(backToDaily);
@@ -223,6 +341,18 @@ public class DailyMoneyInOut extends Fragment {
             Toast.makeText(getActivity(), "Saved", Toast.LENGTH_LONG).show();
             moneyOutAmountText.setText("");
             moneyOutCatSpinner.setSelection(0, false);
+
+            if (moneyOutPriority.equals("B")) {
+                updateCurrentAvailableBalanceMoneyOut();
+
+                if (possible) {
+                    updateCurrentAccountBalanceMoneyOut();
+                }
+            }
+
+            if (moneyOutPriority.equals("A")) {
+                updateCurrentAccountBalanceMoneyOut();
+            }
 
             backToDaily2 = new Intent(getContext(), LayoutDailyMoney.class);
             backToDaily2.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);

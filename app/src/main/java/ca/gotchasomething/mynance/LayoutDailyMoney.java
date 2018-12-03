@@ -29,13 +29,13 @@ import ca.gotchasomething.mynance.tabFragments.DailyWeeklyLimits;
 public class LayoutDailyMoney extends MainNavigation {
 
     Button moneyInButton, moneyOutButton;
-    Cursor moneyInCursor, moneyOutCursor, moneyOutCursor2, expenseCursor, incomeCursor;
-    DbHelper moneyInHelper, moneyOutHelper, moneyOutHelper2, expenseHelper, incomeHelper;
+    Cursor moneyInCursor, moneyOutCursor, moneyOutCursor2, expenseCursor, incomeCursor, currentCursor;
+    DbHelper moneyInHelper, moneyOutHelper, moneyOutHelper2, expenseHelper, incomeHelper, currentHelper;
     Double newAccountBalance, totalSpentOnB, moneyInTotal, totalBudgetAExpenses, totalBudgetIncome, percentB,
-            moneyOutTotal, newAvailableBalance;
+            moneyOutTotal, newAvailableBalance, totalSpentOnA, percentA, currentAccountBalance, currentAvailableBalance;
     FrameLayout container;
     NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
-    SQLiteDatabase moneyInDbDb, moneyOutDbDb, moneyOutDbDb2, expenseDbDb, incomeDbDb;
+    SQLiteDatabase moneyInDbDb, moneyOutDbDb, moneyOutDbDb2, expenseDbDb, incomeDbDb, currentDbDb;
     String availableBalance2, accountBalance2;
     TabLayout tl;
     TextView totalAccountText, availableAccountText;
@@ -75,7 +75,39 @@ public class LayoutDailyMoney extends MainNavigation {
 
     }
 
-    public Double retrieveBPercentage() {
+    public Double retrieveCurrentAccountBalance() {
+
+        currentHelper = new DbHelper(this);
+        currentDbDb = currentHelper.getReadableDatabase();
+        currentCursor = currentDbDb.rawQuery("SELECT " + DbHelper.CURRENTACCOUNTBALANCE + " FROM " + DbHelper.CURRENT_TABLE_NAME, null);
+        currentCursor.moveToFirst();
+        currentAccountBalance = currentCursor.getDouble(0);
+        currentCursor.close();
+
+        if(currentAccountBalance.isNaN()) {
+            currentAccountBalance = 0.0;
+        }
+
+        return currentAccountBalance;
+    }
+
+    public Double retrieveCurrentAvailableBalance() {
+
+        currentHelper = new DbHelper(this);
+        currentDbDb = currentHelper.getReadableDatabase();
+        currentCursor = currentDbDb.rawQuery("SELECT " + DbHelper.CURRENTAVAILABLEBALANCE + " FROM " + DbHelper.CURRENT_TABLE_NAME, null);
+        currentCursor.moveToFirst();
+        currentAvailableBalance = currentCursor.getDouble(0);
+        currentCursor.close();
+
+        if(currentAvailableBalance.isNaN()) {
+            currentAvailableBalance = 0.0;
+        }
+
+        return currentAvailableBalance;
+    }
+
+    /*public Double retrieveBPercentage() {
         expenseHelper = new DbHelper(this);
         expenseDbDb = expenseHelper.getReadableDatabase();
         expenseCursor = expenseDbDb.rawQuery("SELECT sum(expenseAAnnualAmount)" + " FROM " + DbHelper.EXPENSES_TABLE_NAME, null);
@@ -98,9 +130,9 @@ public class LayoutDailyMoney extends MainNavigation {
 
         return percentB;
 
-    }
+    }*/
 
-    public Double retrieveMoneyInTotal() {
+    /*public Double retrieveMoneyInTotal() {
         moneyInHelper = new DbHelper(this);
         moneyInDbDb = moneyInHelper.getReadableDatabase();
         moneyInCursor = moneyInDbDb.rawQuery("SELECT sum(moneyInAmount)" + " FROM " + DbHelper.MONEY_IN_TABLE_NAME, null);
@@ -109,9 +141,9 @@ public class LayoutDailyMoney extends MainNavigation {
         moneyInCursor.close();
 
         return moneyInTotal;
-    }
+    }*/
 
-    public Double retrieveMoneyOutTotal() {
+    /*public Double retrieveMoneyOutTotal() {
         moneyOutHelper = new DbHelper(this);
         moneyOutDbDb = moneyOutHelper.getReadableDatabase();
         moneyOutCursor = moneyOutDbDb.rawQuery("SELECT sum(moneyOutAmount)" + " FROM " + DbHelper.MONEY_OUT_TABLE_NAME +
@@ -125,9 +157,9 @@ public class LayoutDailyMoney extends MainNavigation {
         moneyOutCursor.close();
 
         return moneyOutTotal;
-    }
+    }*/
 
-    public Double retrieveMoneyOutBTotal() {
+    /*public Double retrieveMoneyOutBTotal() {
         moneyOutHelper2 = new DbHelper(this);
         moneyOutDbDb2 = moneyOutHelper2.getReadableDatabase();
         moneyOutCursor2 = moneyOutDbDb2.rawQuery("SELECT sum(moneyOutAmount)" + " FROM " + DbHelper.MONEY_OUT_TABLE_NAME + " WHERE " +
@@ -141,14 +173,14 @@ public class LayoutDailyMoney extends MainNavigation {
         moneyOutCursor2.close();
 
         return totalSpentOnB;
-    }
+    }*/
 
     public void dailyHeaderText() {
 
-        newAccountBalance = retrieveMoneyInTotal() - retrieveMoneyOutTotal(); //total ever into acc't - total ever spent from acc't
+        newAccountBalance = retrieveCurrentAccountBalance();
+        newAvailableBalance = retrieveCurrentAvailableBalance();
 
-        newAvailableBalance = (retrieveMoneyInTotal() * retrieveBPercentage()) - retrieveMoneyOutBTotal(); //total ever into acc't attributed to B - total ever spent from acc't on B
-        if(newAvailableBalance.isNaN() || newAvailableBalance < 0 || newAccountBalance == 0) {
+        if(newAccountBalance < newAvailableBalance || newAccountBalance == 0.0) {
             newAvailableBalance = 0.0;
         }
 
@@ -157,6 +189,18 @@ public class LayoutDailyMoney extends MainNavigation {
 
         totalAccountText.setText(accountBalance2);
         availableAccountText.setText(availableBalance2);
+
+        /*(retrieveMoneyInTotal() * retrieveBPercentage()) - retrieveMoneyOutBTotal(); //total ever into acc't attributed to B - total ever spent from acc't on B
+        if(newAvailableBalance.isNaN() || newAvailableBalance < 0 || newAccountBalance == 0) {
+            newAvailableBalance = 0.0;
+        }
+
+        totalSpentOnA = retrieveMoneyOutTotal() - retrieveMoneyOutBTotal();
+        percentA = 1 - retrieveBPercentage();
+
+        if(totalSpentOnA > (retrieveMoneyInTotal() * percentA)) {
+            newAvailableBalance = (retrieveMoneyInTotal() - retrieveMoneyOutTotal()) - totalSpentOnA; //what it should be minus what was needed to pad A
+        }*/
 
     }
 
