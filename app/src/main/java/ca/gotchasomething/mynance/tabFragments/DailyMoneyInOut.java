@@ -342,9 +342,7 @@ public class DailyMoneyInOut extends Fragment {
                 if (possible) {
                     updateCurrentAccountBalanceMoneyOut();
                 }
-            }
-
-            if (moneyOutPriority.equals("A")) {
+            } else if (moneyOutPriority.equals("A")) {
                 updateCurrentAccountBalanceMoneyOut();
             }
 

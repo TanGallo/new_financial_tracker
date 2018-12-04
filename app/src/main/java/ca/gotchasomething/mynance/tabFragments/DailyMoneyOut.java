@@ -21,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.sql.Timestamp;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -48,19 +49,20 @@ public class DailyMoneyOut extends Fragment {
     Date moneyOutDate;
     DbHelper moneyOutDbHelper, currentHelper, currentHelper2, currentHelper3, currentHelper5, expenseHelper, incomeHelper;
     Double moneyOutAmount, currentAccountBalance, newCurrentAccountBalance3, totalBudgetAExpenses, totalBudgetIncome, percentB,
-            currentAvailableBalance, newCurrentAvailableBalance3;
+            currentAvailableBalance, newCurrentAvailableBalance3, moneyOutD, oldMoneyOutAmount, newMoneyOutAmount;
     EditText moneyOutAmountText, moneyOutAmountEditText;
     int moneyOutToPay, moneyOutPaid;
-    Intent backToDaily2;
+    Intent backToDaily, backToDaily2, backToDaily3;
     ListView moneyOutList;
     MoneyOutAdapter moneyOutAdapter;
     MoneyOutDb moneyOutDb;
     MoneyOutDbManager moneyOutDbManager;
     MoneyOutSpinnerAdapter moneyOutSpinnerAdapter;
+    NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
     SimpleDateFormat moneyOutSDF;
     Spinner moneyOutCatSpinner;
     SQLiteDatabase moneyOutDbDb, currentDbDb, currentDbDb2, currentDbDb3, currentDbDb5, expenseDbDb, incomeDbDb;
-    String moneyOutCatS, moneyOutCat, moneyOutPriority, moneyOutPriorityS, moneyOutCreatedOn, moneyOutCC;
+    String moneyOutCatS, moneyOutCat, moneyOutPriority, moneyOutPriorityS, moneyOutCreatedOn, moneyOutCC, moneyOutS, moneyOut2;
     TextView moneyOutCatText;
     Timestamp moneyOutTimestamp;
     View v, moneyOutLine;
@@ -99,7 +101,7 @@ public class DailyMoneyOut extends Fragment {
         moneyOutButton.setOnClickListener(onClickMoneyOutButton);
 
         moneyOutDbManager = new MoneyOutDbManager(getContext());
-        moneyOutAdapter = new MoneyOutAdapter(getContext(), moneyOutDbManager.getMoneyOuts());
+        moneyOutAdapter = new MoneyOutAdapter(getContext(), moneyOutDbManager.getCashTrans());
         moneyOutList.setAdapter(moneyOutAdapter);
 
         moneyOutCatSpinner = v.findViewById(R.id.moneyOutCatSpinner);
@@ -243,15 +245,16 @@ public class DailyMoneyOut extends Fragment {
             moneyOutAmountText.setText("");
             moneyOutCatSpinner.setSelection(0, false);
 
+            moneyOutAdapter.updateCashTrans(moneyOutDbManager.getCashTrans());
+            moneyOutAdapter.notifyDataSetChanged();
+
             if (moneyOutPriority.equals("B")) {
                 updateCurrentAvailableBalanceMoneyOut();
 
                 if (possible) {
                     updateCurrentAccountBalanceMoneyOut();
                 }
-            }
-
-            if (moneyOutPriority.equals("A")) {
+            } else if (moneyOutPriority.equals("A")) {
                 updateCurrentAccountBalanceMoneyOut();
             }
 
@@ -260,30 +263,30 @@ public class DailyMoneyOut extends Fragment {
             startActivity(backToDaily2);
         }
     };
-//START HERE COMPARING DAILYMONEYIN TO DAILYMONEYOUT
+
     public class MoneyOutAdapter extends ArrayAdapter<MoneyOutDb> {
 
         private Context context;
-        private List<MoneyOutDb> moneyOut;
+        private List<MoneyOutDb> cashTrans;
 
         private MoneyOutAdapter(
                 Context context,
-                List<MoneyOutDb> moneyOut) {
+                List<MoneyOutDb> cashTrans) {
 
-            super(context, -1, moneyOut);
+            super(context, -1, cashTrans);
 
             this.context = context;
-            this.moneyOut = moneyOut;
+            this.cashTrans = cashTrans;
         }
 
-        public void updateMoneyOut(List<MoneyOutDb> moneyOut) {
-            this.moneyOut = moneyOut;
+        public void updateCashTrans(List<MoneyOutDb> cashTrans) {
+            this.cashTrans = cashTrans;
             notifyDataSetChanged();
         }
 
         @Override
         public int getCount() {
-            return moneyOut.size();
+            return cashTrans.size();
         }
 
         @NonNull
@@ -295,15 +298,15 @@ public class DailyMoneyOut extends Fragment {
 
             if (convertView == null) {
                 convertView = LayoutInflater.from(context).inflate(
-                        R.layout.fragment_list_entries_spending,
+                        R.layout.fragment_list_daily_money_in_out,
                         parent, false);
 
                 holder = new MoneyOutViewHolder();
-                holder.spendingEntriesDate = convertView.findViewById(R.id.spendingEntriesDate);
-                holder.spendingEntriesCat = convertView.findViewById(R.id.spendingEntriesCat);
-                holder.spendingEntriesAmount = convertView.findViewById(R.id.spendingEntriesAmount);
-                holder.spendingEntriesEdit = convertView.findViewById(R.id.editSpendingEntriesButton);
-                holder.spendingEntriesDelete = convertView.findViewById(R.id.deleteSpendingEntriesButton);
+                holder.moneyOutEdit = convertView.findViewById(R.id.editMoneyInOutButton);
+                holder.moneyOutDelete = convertView.findViewById(R.id.deleteMoneyInOutButton);
+                holder.moneyOutAmount = convertView.findViewById(R.id.moneyInOutAmount);
+                holder.moneyOutCat = convertView.findViewById(R.id.moneyInOutCat);
+                holder.moneyOutDate = convertView.findViewById(R.id.moneyInOutDate);
                 convertView.setTag(holder);
 
             } else {
@@ -311,101 +314,114 @@ public class DailyMoneyOut extends Fragment {
             }
 
             //retrieve moneyOutCreatedOn
-            holder.spendingEntriesDate.setText(moneyOut.get(position).getMoneyOutCreatedOn());
+            holder.moneyOutDate.setText(cashTrans.get(position).getMoneyOutCreatedOn());
 
             //retrieve moneyOutCat
-            holder.spendingEntriesCat.setText(moneyOut.get(position).getMoneyOutCat());
+            holder.moneyOutCat.setText(cashTrans.get(position).getMoneyOutCat());
 
             //moneyOutAmount and format as currency
             try {
-                moneyOutS = (String.valueOf(moneyOut.get(position).getMoneyOutAmount()));
+                moneyOutS = (String.valueOf(cashTrans.get(position).getMoneyOutAmount()));
                 if (moneyOutS != null && !moneyOutS.equals("")) {
                     moneyOutD = Double.valueOf(moneyOutS);
                 } else {
                     moneyOutD = 0.0;
                 }
                 moneyOut2 = currencyFormat.format(moneyOutD);
-                holder.spendingEntriesAmount.setText(moneyOut2);
+                holder.moneyOutAmount.setText(moneyOut2);
             } catch (NumberFormatException e) {
-                holder.spendingEntriesAmount.setText(moneyOut2);
+                holder.moneyOutAmount.setText(moneyOut2);
             }
 
-            holder.spendingEntriesDelete.setTag(moneyOut.get(position));
-            holder.spendingEntriesEdit.setTag(moneyOut.get(position));
+            holder.moneyOutDelete.setTag(cashTrans.get(position));
+            holder.moneyOutEdit.setTag(cashTrans.get(position));
 
             //click on pencil icon
-            holder.spendingEntriesEdit.setOnClickListener(new View.OnClickListener() {
+            holder.moneyOutEdit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
+                    moneyOutDb = (MoneyOutDb) holder.moneyOutEdit.getTag();
+
                     getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
-                    spendingEntriesEditHeader.setVisibility(View.VISIBLE);
-                    spendingEntriesListView.setVisibility(View.GONE);
+                    moneyOutDbManager = new MoneyOutDbManager(getContext());
 
-                    moneyOutDbManager = new MoneyOutDbManager(getApplicationContext());
+                    moneyOutCatText.setVisibility(View.VISIBLE);
+                    moneyOutAmountEditText.setVisibility(View.VISIBLE);
+                    cancelMoneyOutEntryButton.setVisibility(View.VISIBLE);
+                    updateMoneyOutEntryButton.setVisibility(View.VISIBLE);
+                    moneyOutLine.setVisibility(View.VISIBLE);
 
-                    spendingCatText = findViewById(R.id.spendingCatText);
-                    spendingAmountEditText = findViewById(R.id.spendingAmountEditText);
-                    cancelSpendingEntryButton = findViewById(R.id.cancelSpendingEntryButton);
-                    updateSpendingEntryButton = findViewById(R.id.updateSpendingEntryButton);
+                    moneyOutCatText.setText(moneyOutDb.getMoneyOutCat());
+                    moneyOutAmountEditText.setText(String.valueOf(moneyOutDb.getMoneyOutAmount()));
+                    oldMoneyOutAmount = Double.valueOf(moneyOutAmountEditText.getText().toString());
 
-                    moneyOutDb = (MoneyOutDb) holder.spendingEntriesEdit.getTag();
-
-                    spendingCatText.setText(moneyOutDb.getMoneyOutCat());
-                    spendingAmountEditText.setText(String.valueOf(moneyOutDb.getMoneyOutAmount()));
-
-                    updateSpendingEntryButton.setOnClickListener(new View.OnClickListener() {
+                    updateMoneyOutEntryButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
 
-                            moneyOutDb.setMoneyOutAmount(Double.valueOf(spendingAmountEditText.getText().toString()));
+                            moneyOutDb.setMoneyOutAmount(Double.valueOf(moneyOutAmountEditText.getText().toString()));
+                            newMoneyOutAmount = Double.valueOf(moneyOutAmountEditText.getText().toString());
+                            moneyOutAmount = newMoneyOutAmount - oldMoneyOutAmount;
 
                             moneyOutDbManager.updateMoneyOut(moneyOutDb);
-                            moneyOutAdapter.updateMoneyOut(moneyOutDbManager.getMoneyOuts());
+                            moneyOutAdapter.updateCashTrans(moneyOutDbManager.getCashTrans());
                             notifyDataSetChanged();
 
-                            Toast.makeText(getBaseContext(), "Your changes have been saved",
+                            Toast.makeText(getContext(), "Your changes have been saved",
                                     Toast.LENGTH_LONG).show();
 
-                            spendingCatText.setVisibility(View.GONE);
-                            spendingAmountEditText.setVisibility(View.GONE);
-                            cancelSpendingEntryButton.setVisibility(View.GONE);
-                            updateSpendingEntryButton.setVisibility(View.GONE);
-                            spendingEntriesListView.setVisibility(View.VISIBLE);
+                            moneyOutCatText.setVisibility(View.GONE);
+                            moneyOutAmountEditText.setVisibility(View.GONE);
+                            cancelMoneyOutEntryButton.setVisibility(View.GONE);
+                            updateMoneyOutEntryButton.setVisibility(View.GONE);
+                            moneyOutLine.setVisibility(View.GONE);
 
-                            backToSpendingEntries2 = new Intent(getContext(), LayoutEntriesSpending.class);
-                            backToSpendingEntries2.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-                            startActivity(backToSpendingEntries2);
+                            updateCurrentAccountBalanceMoneyOut();
+                            updateCurrentAvailableBalanceMoneyOut();
+
+                            backToDaily2 = new Intent(getContext(), LayoutDailyMoney.class);
+                            backToDaily2.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+                            startActivity(backToDaily2);
                         }
                     });
 
-                    cancelSpendingEntryButton.setOnClickListener(new View.OnClickListener() {
+                    cancelMoneyOutEntryButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            spendingCatText.setVisibility(View.GONE);
-                            spendingAmountEditText.setVisibility(View.GONE);
-                            cancelSpendingEntryButton.setVisibility(View.GONE);
-                            updateSpendingEntryButton.setVisibility(View.GONE);
-                            spendingEntriesListView.setVisibility(View.VISIBLE);
+                            moneyOutCatText.setVisibility(View.GONE);
+                            moneyOutAmountEditText.setVisibility(View.GONE);
+                            cancelMoneyOutEntryButton.setVisibility(View.GONE);
+                            updateMoneyOutEntryButton.setVisibility(View.GONE);
+                            moneyOutLine.setVisibility(View.GONE);
 
-                            backToSpendingEntries = new Intent(getContext(), LayoutEntriesSpending.class);
-                            backToSpendingEntries.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-                            startActivity(backToSpendingEntries);
+                            backToDaily3 = new Intent(getContext(), LayoutDailyMoney.class);
+                            backToDaily3.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+                            startActivity(backToDaily3);
                         }
                     });
                 }
             });
 
             //click on trash can icon
-            holder.spendingEntriesDelete.setOnClickListener(new View.OnClickListener() {
+            holder.moneyOutDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
-                    moneyOutDb = (MoneyOutDb) holder.spendingEntriesDelete.getTag();
+                    moneyOutAmount = -(Double.valueOf(cashTrans.get(position).getMoneyOutAmount()));
+
+                    moneyOutDb = (MoneyOutDb) holder.moneyOutDelete.getTag();
                     moneyOutDbManager.deleteMoneyOut(moneyOutDb);
-                    moneyOutAdapter.updateMoneyOut(moneyOutDbManager.getMoneyOuts());
+                    moneyOutAdapter.updateCashTrans(moneyOutDbManager.getCashTrans());
                     notifyDataSetChanged();
+
+                    updateCurrentAvailableBalanceMoneyOut();
+                    updateCurrentAccountBalanceMoneyOut();
+
+                    backToDaily = new Intent(getContext(), LayoutDailyMoney.class);
+                    backToDaily.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+                    startActivity(backToDaily);
                 }
             });
 
@@ -414,11 +430,11 @@ public class DailyMoneyOut extends Fragment {
     }
 
     private static class MoneyOutViewHolder {
-        public TextView spendingEntriesDate;
-        public TextView spendingEntriesCat;
-        public TextView spendingEntriesAmount;
-        ImageButton spendingEntriesEdit;
-        ImageButton spendingEntriesDelete;
+        public TextView moneyOutDate;
+        public TextView moneyOutCat;
+        public TextView moneyOutAmount;
+        ImageButton moneyOutEdit;
+        ImageButton moneyOutDelete;
     }
 
 //try this to start fragment as intent

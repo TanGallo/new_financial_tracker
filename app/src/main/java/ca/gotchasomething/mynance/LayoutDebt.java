@@ -172,6 +172,7 @@ public class LayoutDebt extends MainNavigation {
             totalDebtOwing.setText(totalDebt2);
         }
 
+        totalDebtPaidByDate.setVisibility(View.VISIBLE);
         totalDebtPaidByDate.setText(latestDate());
     }
 
@@ -199,9 +200,18 @@ public class LayoutDebt extends MainNavigation {
             } while (debtCursor2.moveToNext());
         }
 
-        List<Date> dates2 = new ArrayList<>(dates.size());
+        List<String> dates3 = new ArrayList<>(dates.size());
 
         for (String s : dates) {
+            int startIndex = s.indexOf("by") + 2;
+            int endIndex = s.length();
+            String dateResult = s.substring(startIndex, endIndex);
+            dates3.add(dateResult);
+        }
+
+        List<Date> dates2 = new ArrayList<>(dates3.size());
+
+        for (String s : dates3) {
             try {
                 dateObj = new SimpleDateFormat("dd-MMM-yyyy").parse(s);
                 dates2.add(dateObj);

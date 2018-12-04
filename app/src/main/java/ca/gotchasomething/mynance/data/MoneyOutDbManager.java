@@ -10,12 +10,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ca.gotchasomething.mynance.DbHelper;
+import ca.gotchasomething.mynance.tabFragments.DailyMoneyIn;
 
 public class MoneyOutDbManager {
 
     private DbHelper dbHelperMoneyOut;
-    SQLiteDatabase dbMoneyOut, dbMoneyOut2, dbMoneyOut3, dbMoneyOut4, dbMoneyOut5;
-    Cursor cursorMoneyOut, cursorMoneyOut2;
+    SQLiteDatabase dbMoneyOut, dbMoneyOut2, dbMoneyOut3, dbMoneyOut4, dbMoneyOut5, dbMoneyOut6, dbMoneyOut7;
+    Cursor cursorMoneyOut, cursorMoneyOut2, cursorMoneyOut3, cursorMoneyOut4;
 
     public MoneyOutDbManager(Context context) {
         dbHelperMoneyOut = DbHelper.getInstance(context);
@@ -44,7 +45,7 @@ public class MoneyOutDbManager {
                         cursorMoneyOut.getLong(cursorMoneyOut.getColumnIndex(DbHelper.ID))
                 );
 
-                moneyOuts.add(moneyOut); //adds new items to end of list
+                moneyOuts.add(0, moneyOut); //adds new items to beginning of list
                 cursorMoneyOut.moveToNext();
             }
         }
@@ -100,6 +101,37 @@ public class MoneyOutDbManager {
                 args);
     }
 
+    public List<MoneyOutDb> getCashTrans() {
+
+        dbMoneyOut7 = dbHelperMoneyOut.getReadableDatabase();
+
+        cursorMoneyOut4 = dbMoneyOut7.rawQuery(
+                "SELECT * FROM " + DbHelper.MONEY_OUT_TABLE_NAME + " WHERE " + DbHelper.MONEYOUTCC + " = 'N'", null);
+
+        List<MoneyOutDb> cashTrans = new ArrayList<>();
+
+        if (cursorMoneyOut4.moveToFirst()) {
+            while (!cursorMoneyOut4.isAfterLast()) {
+
+                MoneyOutDb cashTransList = new MoneyOutDb(
+                        cursorMoneyOut4.getString(cursorMoneyOut4.getColumnIndex(DbHelper.MONEYOUTCAT)),
+                        cursorMoneyOut4.getString(cursorMoneyOut4.getColumnIndex(DbHelper.MONEYOUTPRIORITY)),
+                        cursorMoneyOut4.getDouble(cursorMoneyOut4.getColumnIndex(DbHelper.MONEYOUTAMOUNT)),
+                        cursorMoneyOut4.getString(cursorMoneyOut4.getColumnIndex(DbHelper.MONEYOUTCREATEDON)),
+                        cursorMoneyOut4.getString(cursorMoneyOut4.getColumnIndex(DbHelper.MONEYOUTCC)),
+                        cursorMoneyOut4.getInt(cursorMoneyOut4.getColumnIndex(DbHelper.MONEYOUTTOPAY)),
+                        cursorMoneyOut4.getInt(cursorMoneyOut4.getColumnIndex(DbHelper.MONEYOUTPAID)),
+                        cursorMoneyOut4.getLong(cursorMoneyOut4.getColumnIndex(DbHelper.ID))
+                );
+
+                cashTrans.add(0, cashTransList); //adds new items to beginning of list
+                cursorMoneyOut4.moveToNext();
+            }
+        }
+        cursorMoneyOut4.close();
+        return cashTrans;
+    }
+
     public List<MoneyOutDb> getCCTrans() {
 
         dbMoneyOut5 = dbHelperMoneyOut.getReadableDatabase();
@@ -123,11 +155,43 @@ public class MoneyOutDbManager {
                         cursorMoneyOut2.getLong(cursorMoneyOut2.getColumnIndex(DbHelper.ID))
                 );
 
-                ccTrans.add(ccTransList); //adds new items to end of list
+                ccTrans.add(0, ccTransList); //adds new items to beginning of list
                 cursorMoneyOut2.moveToNext();
             }
         }
         cursorMoneyOut2.close();
         return ccTrans;
+    }
+
+    public List<MoneyOutDb> getCCTransToPay() {
+
+        dbMoneyOut6 = dbHelperMoneyOut.getReadableDatabase();
+
+        cursorMoneyOut3 = dbMoneyOut6.rawQuery(
+                "SELECT * FROM " + DbHelper.MONEY_OUT_TABLE_NAME + " WHERE " + DbHelper.MONEYOUTCC + " = 'Y' AND "
+                + DbHelper.MONEYOUTPAID + " = '0'", null);
+
+        List<MoneyOutDb> ccTransToPay = new ArrayList<>();
+
+        if (cursorMoneyOut3.moveToFirst()) {
+            while (!cursorMoneyOut3.isAfterLast()) {
+
+                MoneyOutDb ccTransToPayList = new MoneyOutDb(
+                        cursorMoneyOut3.getString(cursorMoneyOut3.getColumnIndex(DbHelper.MONEYOUTCAT)),
+                        cursorMoneyOut3.getString(cursorMoneyOut3.getColumnIndex(DbHelper.MONEYOUTPRIORITY)),
+                        cursorMoneyOut3.getDouble(cursorMoneyOut3.getColumnIndex(DbHelper.MONEYOUTAMOUNT)),
+                        cursorMoneyOut3.getString(cursorMoneyOut3.getColumnIndex(DbHelper.MONEYOUTCREATEDON)),
+                        cursorMoneyOut3.getString(cursorMoneyOut3.getColumnIndex(DbHelper.MONEYOUTCC)),
+                        cursorMoneyOut3.getInt(cursorMoneyOut3.getColumnIndex(DbHelper.MONEYOUTTOPAY)),
+                        cursorMoneyOut3.getInt(cursorMoneyOut3.getColumnIndex(DbHelper.MONEYOUTPAID)),
+                        cursorMoneyOut3.getLong(cursorMoneyOut3.getColumnIndex(DbHelper.ID))
+                );
+
+                ccTransToPay.add(ccTransToPayList); //adds new items to end of list
+                cursorMoneyOut3.moveToNext();
+            }
+        }
+        cursorMoneyOut3.close();
+        return ccTransToPay;
     }
 }

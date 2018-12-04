@@ -14,9 +14,11 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 import java.text.NumberFormat;
 import androidx.fragment.app.FragmentTransaction;
+import ca.gotchasomething.mynance.tabFragments.DailyMoneyCC;
 import ca.gotchasomething.mynance.tabFragments.DailyMoneyIn;
 import ca.gotchasomething.mynance.tabFragments.DailyMoneyInOut;
 import ca.gotchasomething.mynance.tabFragments.DailyCreditCard;
+import ca.gotchasomething.mynance.tabFragments.DailyMoneyOut;
 import ca.gotchasomething.mynance.tabFragments.DailyWeeklyLimits;
 
 public class LayoutDailyMoney extends MainNavigation {
@@ -64,10 +66,6 @@ public class LayoutDailyMoney extends MainNavigation {
         tl.addTab(tl.newTab().setText("Credit card"));
         tl.addTab(tl.newTab().setText("Pay cc"));
         tl.addTab(tl.newTab().setText("Weekly Limits"));
-
-        /*tl.addTab(tl.newTab().setText("Daily Journal"));
-        tl.addTab(tl.newTab().setText("Credit Card"));
-        tl.addTab(tl.newTab().setText("Weekly Limits"));*/
 
         replaceFragment(new DailyMoneyIn());
 
@@ -128,10 +126,14 @@ public class LayoutDailyMoney extends MainNavigation {
         public void onTabSelected(TabLayout.Tab tab) {
 
             if (tab.getPosition() == 0) {
-                replaceFragment(new DailyMoneyInOut());
+                replaceFragment(new DailyMoneyIn());
             } else if (tab.getPosition() == 1) {
-                replaceFragment(new DailyCreditCard());
+                replaceFragment(new DailyMoneyOut());
             } else if (tab.getPosition() == 2) {
+                replaceFragment(new DailyMoneyCC());
+            } else if (tab.getPosition() == 3) {
+                replaceFragment(new DailyCreditCard());
+            } else if (tab.getPosition() == 4) {
                 replaceFragment(new DailyWeeklyLimits());
             }
         }

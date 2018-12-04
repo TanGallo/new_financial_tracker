@@ -13,6 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.text.NumberFormat;
 import java.util.List;
 
 import ca.gotchasomething.mynance.R;
@@ -21,9 +22,13 @@ import ca.gotchasomething.mynance.data.ExpenseBudgetDbManager;
 
 public class DailyWeeklyLimits extends Fragment {
 
-    View v;
-    ListView weeklyLimitListView;
+    Double annualLimit, weeklyLimitD;
     ExpenseBudgetDbManager expenseBudgetDbManager;
+    ListView weeklyLimitListView;
+    NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
+    String weeklyLimitS, limitIdS;
+    TextView spendingCategory, limitAmount, limitLabel, balanceAmount, balanceLabel;
+    View v;
     WeeklyLimitsAdapter weeklyLimitsAdapter;
 
     public DailyWeeklyLimits() {
@@ -91,7 +96,8 @@ public class DailyWeeklyLimits extends Fragment {
                 holder = new ViewHolderWeeklyLimits();
                 //put visual elements here and list them in ViewHolder class below
                 holder.spendingCategory = convertView.findViewById(R.id.spendingCategory);
-                holder.balanceRemaining = convertView.findViewById(R.id.balanceRemaining);
+                holder.limitAmount = convertView.findViewById(R.id.limitAmount);
+                holder.balanceAmount = convertView.findViewById(R.id.balanceAmount);
                 convertView.setTag(holder);
 
             } else {
@@ -101,7 +107,14 @@ public class DailyWeeklyLimits extends Fragment {
             //retrieve spendingCategory
             holder.spendingCategory.setText(weeklyLimits.get(position).getExpenseName());
 
-            //get balance remaining data
+            //retrieve limitAmount
+            annualLimit = Double.valueOf(weeklyLimits.get(position).getExpenseBAnnualAmount());
+            weeklyLimitD = annualLimit / 52;
+            weeklyLimitS = currencyFormat.format(weeklyLimitD);
+            holder.limitAmount.setText(weeklyLimitS);
+
+            //retrieve balanceAmount
+            limitIdS = String.valueOf(weeklyLimits.get(position).getId());
 
 
 
@@ -111,6 +124,7 @@ public class DailyWeeklyLimits extends Fragment {
 
     private static class ViewHolderWeeklyLimits {
         private TextView spendingCategory;
-        private TextView balanceRemaining;
+        private TextView limitAmount;
+        private TextView balanceAmount;
     }
 }

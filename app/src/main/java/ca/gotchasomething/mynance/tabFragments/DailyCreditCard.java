@@ -1,82 +1,54 @@
 package ca.gotchasomething.mynance.tabFragments;
 
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.CursorIndexOutOfBoundsException;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.RadioGroup;
-import android.widget.RelativeLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import java.text.NumberFormat;
 import java.util.List;
 
-import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import ca.gotchasomething.mynance.DbHelper;
 import ca.gotchasomething.mynance.LayoutDailyMoney;
-import ca.gotchasomething.mynance.LayoutDebt;
 import ca.gotchasomething.mynance.R;
-import ca.gotchasomething.mynance.data.DebtDb;
-import ca.gotchasomething.mynance.data.DebtDbManager;
-import ca.gotchasomething.mynance.data.ExpenseBudgetDbManager;
-import ca.gotchasomething.mynance.data.IncomeBudgetDbManager;
 import ca.gotchasomething.mynance.data.MoneyOutDb;
 import ca.gotchasomething.mynance.data.MoneyOutDbManager;
-import ca.gotchasomething.mynance.spinners.MoneyOutSpinnerAdapter;
 
 public class DailyCreditCard extends Fragment {
 
     boolean possible = true;
-    Button cancelCCButton, updateCCButton;
     CCAdapter ccAdapter;
     CheckBox ccPaidCheckbox;
     ContentValues moneyOutValue, moneyOutValue2;
-    Cursor moneyOutCursor, moneyOutCursor2, moneyOutCursor4, currentCursor, currentCursor2;
+    Cursor moneyOutCursor, moneyOutCursor4, currentCursor, currentCursor2;
     DbHelper moneyOutHelper, moneyOutHelper2, moneyOutHelper3, moneyOutHelper4, currentHelper, currentHelper2, currentHelper3, currentHelper4;
-    Double ccAmountD, totalCCPaymentDue, currentAccountBalance, currentAvailableBalance, totalCCPaymentBDue, newCurrentAvailableBalance,
-            newCurrentAccountBalance;
-    EditText ccAmountEntry;
-    FragmentManager fm;
-    FragmentTransaction transaction;
+    Double ccAmountD, totalCCPaymentDue, currentAccountBalance, currentAvailableBalance, totalCCPaymentBDue, newCurrentAvailableBalance, newCurrentAccountBalance;
     Intent refreshView;
-    LayoutDailyMoney layoutDailyMoney;
-    LinearLayout editCCLayout;
     ListView ccListView;
     MoneyOutDb moneyOutDb;
     MoneyOutDbManager moneyOutDbManager;
     NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
     SQLiteDatabase moneyOutDbDb, moneyOutDbDb2, moneyOutDbDb3, moneyOutDbDb4, currentDbDb, currentDbDb2, currentDbDb3, currentDbDb4;
     String ccAmountS, ccAmount2, totalCCPaymentDueS;
-    TextView checkBelowLabel, totalCCPaymentDueLabel, totalCCPaymentDueAmount, ccPaidLabel, thisCatText, ccOopsText;
-    View v, editCCLine;
+    TextView checkBelowLabel, totalCCPaymentDueLabel, totalCCPaymentDueAmount, ccPaidLabel, ccOopsText;
+    View v;
 
     public DailyCreditCard() {
         // Required empty public constructor
@@ -94,18 +66,6 @@ public class DailyCreditCard extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        editCCLayout = v.findViewById(R.id.editCCLayout);
-        editCCLayout.setVisibility(View.GONE);
-        editCCLine = v.findViewById(R.id.editCCLine);
-        editCCLine.setVisibility(View.GONE);
-        thisCatText = v.findViewById(R.id.thisCatText);
-        thisCatText.setVisibility(View.GONE);
-        ccAmountEntry = v.findViewById(R.id.ccAmountEntry);
-        ccAmountEntry.setVisibility(View.GONE);
-        cancelCCButton = v.findViewById(R.id.cancelCCButton);
-        cancelCCButton.setVisibility(View.GONE);
-        updateCCButton = v.findViewById(R.id.updateCCButton);
-        updateCCButton.setVisibility(View.GONE);
         checkBelowLabel = v.findViewById(R.id.checkBelowLabel);
         totalCCPaymentDueLabel = v.findViewById(R.id.totalCCPaymentDueLabel);
         totalCCPaymentDueLabel.setVisibility(View.GONE);
@@ -121,7 +81,7 @@ public class DailyCreditCard extends Fragment {
         ccListView = v.findViewById(R.id.ccListView);
 
         moneyOutDbManager = new MoneyOutDbManager(getContext());
-        ccAdapter = new CCAdapter(getContext(), moneyOutDbManager.getCCTrans());
+        ccAdapter = new CCAdapter(getContext(), moneyOutDbManager.getCCTransToPay());
         ccListView.setAdapter(ccAdapter);
 
         ccPaidCheckbox.setOnCheckedChangeListener(onCheckCCPaid);
@@ -167,7 +127,6 @@ public class DailyCreditCard extends Fragment {
             updateCurrentAccountBalance();
             updateCurrentAvailableBalance();
             updatePaid();
-            //DISABLE CHECKBOXES AND/OR CHANGE THE LOOK OF THE TEXT OF ITEMS WHICH HAVE BEEN PAID
 
             resetToPay();
 
@@ -299,26 +258,26 @@ public class DailyCreditCard extends Fragment {
     public class CCAdapter extends ArrayAdapter<MoneyOutDb> {
 
         private Context context;
-        private List<MoneyOutDb> ccTrans;
+        private List<MoneyOutDb> ccTransToPay;
 
         private CCAdapter(
                 Context context,
-                List<MoneyOutDb> ccTrans) {
+                List<MoneyOutDb> ccTransToPay) {
 
-            super(context, -1, ccTrans);
+            super(context, -1, ccTransToPay);
 
             this.context = context;
-            this.ccTrans = ccTrans;
+            this.ccTransToPay = ccTransToPay;
         }
 
-        public void updateCCTrans(List<MoneyOutDb> ccTrans) {
-            this.ccTrans = ccTrans;
+        public void updateCCTransToPay(List<MoneyOutDb> ccTransToPay) {
+            this.ccTransToPay = ccTransToPay;
             notifyDataSetChanged();
         }
 
         @Override
         public int getCount() {
-            return ccTrans.size();
+            return ccTransToPay.size();
         }
 
         @NonNull
@@ -337,24 +296,20 @@ public class DailyCreditCard extends Fragment {
                 holder.ccCat = convertView.findViewById(R.id.ccCat);
                 holder.ccAmount = convertView.findViewById(R.id.ccAmount);
                 holder.ccCheck = convertView.findViewById(R.id.ccCheck);
-                holder.ccDeleted = convertView.findViewById(R.id.deleteCCButton);
-                holder.ccEdit = convertView.findViewById(R.id.editCCButton);
                 convertView.setTag(holder);
 
             } else {
                 holder = (CCViewHolder) convertView.getTag();
             }
 
-            holder.ccDeleted.setTag(ccTrans.get(position));
-            holder.ccEdit.setTag(ccTrans.get(position));
-            holder.ccCheck.setTag(ccTrans.get(position));
+            holder.ccCheck.setTag(ccTransToPay.get(position));
 
             //retrieve ccCat
-            holder.ccCat.setText(ccTrans.get(position).getMoneyOutCat());
+            holder.ccCat.setText(ccTransToPay.get(position).getMoneyOutCat());
 
             //retrieve ccAmount and format as currency
             try {
-                ccAmountS = (String.valueOf(ccTrans.get(position).getMoneyOutAmount()));
+                ccAmountS = (String.valueOf(ccTransToPay.get(position).getMoneyOutAmount()));
                 if (ccAmountS != null && !ccAmountS.equals("")) {
                     ccAmountD = Double.valueOf(ccAmountS);
                 } else {
@@ -375,77 +330,12 @@ public class DailyCreditCard extends Fragment {
                     if (isChecked) {
                         moneyOutDb.setMoneyOutToPay(1);
                         moneyOutDbManager.updateMoneyOut(moneyOutDb);
-                        //updateCCPaymentDue();
                     } else {
                         moneyOutDb.setMoneyOutToPay(0);
                         moneyOutDbManager.updateMoneyOut(moneyOutDb);
-                        //updateCCPaymentDue();
                     }
 
                     updateCCPaymentDue();
-                }
-            });
-
-            //click on pencil icon
-            holder.ccEdit.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                    moneyOutDb = (MoneyOutDb) holder.ccEdit.getTag();
-
-                    checkBelowLabel.setVisibility(View.GONE);
-                    totalCCPaymentDueAmount.setVisibility(View.GONE);
-                    ccPaidLabel.setVisibility(View.GONE);
-                    ccPaidCheckbox.setVisibility(View.GONE);
-                    editCCLayout.setVisibility(View.VISIBLE);
-                    editCCLine.setVisibility(View.VISIBLE);
-                    thisCatText.setVisibility(View.VISIBLE);
-                    ccAmountEntry.setVisibility(View.VISIBLE);
-                    cancelCCButton.setVisibility(View.VISIBLE);
-                    updateCCButton.setVisibility(View.VISIBLE);
-
-                    ccAmountEntry.setText(String.valueOf(ccTrans.get(position).getMoneyOutAmount()));
-                    thisCatText.setText(String.valueOf(ccTrans.get(position).getMoneyOutCat()));
-
-                }
-            });
-
-            cancelCCButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                    checkBelowLabel.setVisibility(View.VISIBLE);
-                    editCCLayout.setVisibility(View.GONE);
-                    editCCLine.setVisibility(View.GONE);
-                }
-            });
-
-            updateCCButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                    moneyOutDb.setMoneyOutAmount(Double.valueOf(ccAmountEntry.getText().toString()));
-
-                    moneyOutDbManager.updateMoneyOut(moneyOutDb);
-                    ccAdapter.updateCCTrans(moneyOutDbManager.getCCTrans());
-                    notifyDataSetChanged();
-
-                    checkBelowLabel.setVisibility(View.VISIBLE);
-                    editCCLayout.setVisibility(View.GONE);
-                    editCCLine.setVisibility(View.GONE);
-                }
-            });
-
-            //click on trash can icon
-            holder.ccDeleted.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                    moneyOutDb = (MoneyOutDb) holder.ccDeleted.getTag();
-                    moneyOutDbManager.deleteMoneyOut(moneyOutDb);
-
-                    ccAdapter.updateCCTrans(moneyOutDbManager.getCCTrans());
-                    notifyDataSetChanged();
                 }
             });
 
@@ -457,7 +347,5 @@ public class DailyCreditCard extends Fragment {
         public TextView ccCat;
         public TextView ccAmount;
         public CheckBox ccCheck;
-        ImageButton ccDeleted;
-        ImageButton ccEdit;
     }
 }

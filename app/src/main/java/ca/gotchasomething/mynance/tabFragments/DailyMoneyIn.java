@@ -225,6 +225,9 @@ public class DailyMoneyIn extends Fragment {
             moneyInAmountText.setText("");
             moneyInCatSpinner.setSelection(0, false);
 
+            moneyInAdapter.updateMoneyIn(moneyInDbManager.getMoneyIns());
+            moneyInAdapter.notifyDataSetChanged();
+
             updateCurrentAccountBalanceMoneyIn();
             updateCurrentAvailableBalanceMoneyIn();
 
