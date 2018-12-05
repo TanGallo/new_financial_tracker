@@ -14,6 +14,7 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 import java.text.NumberFormat;
 import androidx.fragment.app.FragmentTransaction;
+import ca.gotchasomething.mynance.data.CurrentDbManager;
 import ca.gotchasomething.mynance.tabFragments.DailyMoneyCC;
 import ca.gotchasomething.mynance.tabFragments.DailyMoneyIn;
 import ca.gotchasomething.mynance.tabFragments.DailyMoneyInOut;
@@ -24,6 +25,7 @@ import ca.gotchasomething.mynance.tabFragments.DailyWeeklyLimits;
 public class LayoutDailyMoney extends MainNavigation {
 
     Button moneyInButton, moneyOutButton;
+    CurrentDbManager currentDbManager;
     Cursor currentCursor;
     DbHelper currentHelper;
     Double newAccountBalance, newAvailableBalance, currentAccountBalance, currentAvailableBalance;
@@ -51,6 +53,8 @@ public class LayoutDailyMoney extends MainNavigation {
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
+        currentDbManager = new CurrentDbManager(this);
+
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
         totalAccountText = findViewById(R.id.totalAccountText);
@@ -73,7 +77,7 @@ public class LayoutDailyMoney extends MainNavigation {
 
     }
 
-    public Double retrieveCurrentAccountBalance() {
+    /*public Double retrieveCurrentAccountBalance() {
 
         currentHelper = new DbHelper(this);
         currentDbDb = currentHelper.getReadableDatabase();
@@ -87,9 +91,9 @@ public class LayoutDailyMoney extends MainNavigation {
         }
 
         return currentAccountBalance;
-    }
+    }*/
 
-    public Double retrieveCurrentAvailableBalance() {
+    /*public Double retrieveCurrentAvailableBalance() {
 
         currentHelper = new DbHelper(this);
         currentDbDb = currentHelper.getReadableDatabase();
@@ -103,12 +107,14 @@ public class LayoutDailyMoney extends MainNavigation {
         }
 
         return currentAvailableBalance;
-    }
+    }*/
 
     public void dailyHeaderText() {
 
-        newAccountBalance = retrieveCurrentAccountBalance();
-        newAvailableBalance = retrieveCurrentAvailableBalance();
+        newAccountBalance = currentDbManager.retrieveCurrentAccountBalance();
+        newAvailableBalance = currentDbManager.retrieveCurrentAvailableBalance();
+        //newAccountBalance = retrieveCurrentAccountBalance();
+        //newAvailableBalance = retrieveCurrentAvailableBalance();
 
         if(newAccountBalance < newAvailableBalance || newAccountBalance == 0.0) {
             newAvailableBalance = 0.0;

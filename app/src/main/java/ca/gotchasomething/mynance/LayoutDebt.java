@@ -516,7 +516,11 @@ public class LayoutDebt extends MainNavigation {
                             }
                             values.put(DbHelper.EXPENSEFREQUENCY, Double.valueOf(debtFrequencyS));
 
-                            expenseAnnualAmount = Double.valueOf(debtPaymentsEntry.getText().toString()) * Double.valueOf(debtFrequencyS);
+                            try {
+                                expenseAnnualAmount = Double.valueOf(debtPaymentsEntry.getText().toString()) * Double.valueOf(debtFrequencyS);
+                            } catch(NumberFormatException e7) {
+                                expenseAnnualAmount = general.extractingDollars(debtPaymentsEntry) * Double.valueOf(debtFrequencyS);
+                            }
 
                             values.put(DbHelper.EXPENSEANNUALAMOUNT, expenseAnnualAmount);
                             values.put(DbHelper.EXPENSEAANNUALAMOUNT, expenseAnnualAmount);
@@ -524,9 +528,20 @@ public class LayoutDebt extends MainNavigation {
                             expenseDb.update(DbHelper.EXPENSES_TABLE_NAME, values, DbHelper.ID + "=?", args);
 
                             debtDb.setDebtName(debtNameEntry.getText().toString());
-                            debtDb.setDebtAmount(Double.valueOf(debtAmountEntry.getText().toString()));
+
+                            try {
+                                debtDb.setDebtAmount(Double.valueOf(debtAmountEntry.getText().toString()));
+                            } catch(NumberFormatException e4) {
+                                debtDb.setDebtAmount(general.extractingDollars(debtAmountEntry));
+                            }
+
                             debtDb.setDebtRate(Double.valueOf(debtPercentEntry.getText().toString()));
-                            debtDb.setDebtPayments(Double.valueOf(debtPaymentsEntry.getText().toString()));
+
+                            try {
+                                debtDb.setDebtPayments(Double.valueOf(debtPaymentsEntry.getText().toString()));
+                            } catch(NumberFormatException e6) {
+                                debtDb.setDebtPayments(general.extractingDollars(debtPaymentsEntry));
+                            }
                             debtDb.setDebtFrequency(Double.valueOf(debtFrequencyS));
 
                             debtDbManager.updateDebt(debtDb);

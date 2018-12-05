@@ -1,5 +1,6 @@
 package ca.gotchasomething.mynance;
 
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.widget.TextView;
 

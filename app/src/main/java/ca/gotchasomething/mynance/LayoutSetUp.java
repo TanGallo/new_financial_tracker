@@ -1,52 +1,25 @@
 package ca.gotchasomething.mynance;
 
-import android.content.ContentValues;
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.CursorIndexOutOfBoundsException;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.sql.Timestamp;
 import java.text.NumberFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
 import java.util.Date;
-import java.util.List;
-import java.util.NoSuchElementException;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import ca.gotchasomething.mynance.data.CurrentDb;
 import ca.gotchasomething.mynance.data.CurrentDbManager;
-import ca.gotchasomething.mynance.data.DebtDb;
-import ca.gotchasomething.mynance.data.DebtDbManager;
-import ca.gotchasomething.mynance.data.ExpenseBudgetDbManager;
 import ca.gotchasomething.mynance.data.MoneyInDb;
 import ca.gotchasomething.mynance.data.MoneyInDbManager;
 import ca.gotchasomething.mynance.data.SetUpDb;
@@ -58,11 +31,8 @@ public class LayoutSetUp extends MainNavigation {
     CheckBox setUpDebtsCheckbox, setUpSavingsCheckbox, setUpBudgetCheckbox, setUpAccountCheckbox, setUpTourCheckbox;
     CurrentDb currentDb;
     CurrentDbManager currentDbManager;
-    Cursor setUpCursor, setUpCursor2, setUpCursor3, setUpCursor4, setUpCursor5, setUpCursor6, expenseCursor, incomeCursor;
     Date moneyInDate;
-    DbHelper setUpHelper, setUpHelper2, setUpHelper3, setUpHelper4, setUpHelper5, setUpHelper6, expenseHelper, incomeHelper;
-    Double startingBalanceResult = 0.0, balanceAmount = 0.0, moneyInAmount = 0.0, currentAccountBalance = 0.0, currentAvailableBalance = 0.0,
-            totalBudgetAExpenses = 0.0, totalBudgetIncome = 0.0, percentB = 0.0;
+    Double startingBalanceResult = 0.0, balanceAmount = 0.0, moneyInAmount = 0.0, currentAccountBalance = 0.0, currentAvailableBalance = 0.0;
     EditText setUpAccountAmount;
     int debtsDoneCheck, savingsDoneCheck, budgetDoneCheck, balanceDoneCheck = 0, tourDoneCheck = 0, debtsDone, savingsDone, budgetDone, balanceDone, tourDone;
     Intent setUpDebts, setUpSavings, setUpBudget, toMainActivity;
@@ -72,7 +42,6 @@ public class LayoutSetUp extends MainNavigation {
     SetUpDb setUpDb;
     SetUpDbManager setUpDbManager;
     SimpleDateFormat moneyInSDF;
-    SQLiteDatabase setUpDbDb, setUpDbDb2, setUpDbDb3, setUpDbDb4, setUpDbDb5, setUpDbDb6, expenseDbDb, incomeDbDb;
     String startingBalanceS, startingBalance2, moneyInCat, moneyInCreatedOn;
     TextView setUpDebtsLabel, setUpSavingsLabel, setUpBudgetLabel, setUpAccountAmountLabel, setUpAccountAmountLabel2, setUpAccountAmountLabel3,
             setUpAccountAmountResult, almostDone, setUpTourLabel, setUpTourLabel2, setUpTourLabel3, setUpTourLabel4, setUpGotItLabel;
@@ -144,8 +113,8 @@ public class LayoutSetUp extends MainNavigation {
         setUpAccountCheckbox.setOnCheckedChangeListener(onCheckBalanceDone);
         setUpTourCheckbox.setOnCheckedChangeListener(onCheckTourCheckbox);
 
-        debtSetUpCheck();
-        if(debtsDoneCheck > 0) {
+        setUpDbManager.debtSetUpCheck();
+        if(setUpDbManager.debtSetUpCheck() > 0) {
             setUpDebtsLabel.setVisibility(View.VISIBLE);
             setUpDebtsButton.setVisibility(View.GONE);
             setUpDebtsCheckbox.setChecked(true);
@@ -153,8 +122,8 @@ public class LayoutSetUp extends MainNavigation {
             setUpSavingsLabel.setVisibility(View.GONE);
         }
 
-        savingsSetUpCheck();
-        if(savingsDoneCheck > 0) {
+        setUpDbManager.savingsSetUpCheck();
+        if(setUpDbManager.savingsSetUpCheck() > 0) {
             setUpSavingsLabel.setVisibility(View.VISIBLE);
             setUpSavingsButton.setVisibility(View.GONE);
             setUpSavingsCheckbox.setChecked(true);
@@ -162,8 +131,8 @@ public class LayoutSetUp extends MainNavigation {
             setUpBudgetLabel.setVisibility(View.GONE);
         }
 
-        budgetSetUpCheck();
-        if(budgetDoneCheck > 0) {
+        setUpDbManager.budgetSetUpCheck();
+        if(setUpDbManager.budgetSetUpCheck() > 0) {
             setUpBudgetLabel.setVisibility(View.VISIBLE);
             setUpBudgetButton.setVisibility(View.GONE);
             setUpBudgetCheckbox.setChecked(true);
@@ -173,14 +142,14 @@ public class LayoutSetUp extends MainNavigation {
             setUpAccountAmount.setVisibility(View.VISIBLE);
         }
 
-        balanceSetUpCheck();
-        if(balanceDoneCheck > 0) {
+        setUpDbManager.balanceSetUpCheck();
+        if(setUpDbManager.balanceSetUpCheck() > 0) {
             setUpAccountAmountLabel.setVisibility(View.GONE);
             setUpAccountAmountLabel2.setVisibility(View.GONE);
             setUpAccountAmountLabel3.setVisibility(View.VISIBLE);
             setUpAccountAmount.setVisibility(View.GONE);
             setUpAccountAmountResult.setVisibility(View.VISIBLE);
-            retrieveStartingBalance();
+            setUpDbManager.retrieveStartingBalance();
             startingBalance2 = currencyFormat.format(startingBalanceResult);
             setUpAccountAmountResult.setText(startingBalance2);
             setUpAccountCheckbox.setChecked(true);
@@ -193,8 +162,8 @@ public class LayoutSetUp extends MainNavigation {
             setUpTourCheckbox.setVisibility(View.VISIBLE);
         }
 
-        tourSetUpCheck();
-        if(tourDoneCheck > 0) {
+        setUpDbManager.tourSetUpCheck();
+        if(setUpDbManager.tourSetUpCheck() > 0) {
             toMainActivity = new Intent(LayoutSetUp.this, MainActivity.class);
             toMainActivity.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
             startActivity(toMainActivity);
@@ -202,7 +171,7 @@ public class LayoutSetUp extends MainNavigation {
 
     }
 
-    public int tourSetUpCheck() {
+    /*public int tourSetUpCheck() {
         setUpHelper6 = new DbHelper(this);
         setUpDbDb6 = setUpHelper6.getReadableDatabase();
         setUpCursor6 = setUpDbDb6.rawQuery("SELECT max(tourDone)" + " FROM " + DbHelper.SET_UP_TABLE_NAME, null);
@@ -211,7 +180,7 @@ public class LayoutSetUp extends MainNavigation {
         setUpCursor6.close();
 
         return tourDoneCheck;
-    }
+    }*/
 
     CheckBox.OnCheckedChangeListener onCheckTourCheckbox = new CompoundButton.OnCheckedChangeListener() {
         @Override
@@ -232,7 +201,7 @@ public class LayoutSetUp extends MainNavigation {
         }
     };
 
-    public Double retrieveStartingBalance() {
+    /*public Double retrieveStartingBalance() {
         setUpHelper5 = new DbHelper(this);
         setUpDbDb5 = setUpHelper5.getReadableDatabase();
         setUpCursor5 = setUpDbDb5.rawQuery("SELECT max(balanceAmount)" + " FROM " + DbHelper.SET_UP_TABLE_NAME, null);
@@ -241,9 +210,9 @@ public class LayoutSetUp extends MainNavigation {
         setUpCursor5.close();
 
         return startingBalanceResult;
-    }
+    }*/
 
-    public int balanceSetUpCheck() {
+    /*public int balanceSetUpCheck() {
         setUpHelper4 = new DbHelper(this);
         setUpDbDb4 = setUpHelper4.getReadableDatabase();
         setUpCursor4 = setUpDbDb4.rawQuery("SELECT max(balanceDone)" + " FROM " + DbHelper.SET_UP_TABLE_NAME, null);
@@ -252,9 +221,9 @@ public class LayoutSetUp extends MainNavigation {
         setUpCursor4.close();
 
         return balanceDoneCheck;
-    }
+    }*/
 
-    public Double retrieveBPercentage() {
+    /*public Double retrieveBPercentage() {
         expenseHelper = new DbHelper(this);
         expenseDbDb = expenseHelper.getReadableDatabase();
         expenseCursor = expenseDbDb.rawQuery("SELECT sum(expenseAAnnualAmount)" + " FROM " + DbHelper.EXPENSES_TABLE_NAME, null);
@@ -277,7 +246,7 @@ public class LayoutSetUp extends MainNavigation {
 
         return percentB;
 
-    }
+    }*/
 
     CheckBox.OnCheckedChangeListener onCheckBalanceDone = new CompoundButton.OnCheckedChangeListener() {
         @Override
@@ -299,7 +268,7 @@ public class LayoutSetUp extends MainNavigation {
             setUpDbManager.addSetUp(setUpDb);
 
             currentAccountBalance = balanceAmount;
-            currentAvailableBalance = balanceAmount * retrieveBPercentage();
+            currentAvailableBalance = balanceAmount * currentDbManager.getBPercentage();
 
             currentDb = new CurrentDb(currentAccountBalance, currentAvailableBalance, 0);
 
@@ -321,7 +290,7 @@ public class LayoutSetUp extends MainNavigation {
             setUpAccountAmountLabel3.setVisibility(View.VISIBLE);
             setUpAccountAmount.setVisibility(View.GONE);
             setUpAccountAmountResult.setVisibility(View.VISIBLE);
-            retrieveStartingBalance();
+            setUpDbManager.retrieveStartingBalance();
             startingBalance2 = currencyFormat.format(startingBalanceResult);
             setUpAccountAmountResult.setText(startingBalance2);
             setUpAccountCheckbox.setChecked(true);
@@ -335,7 +304,7 @@ public class LayoutSetUp extends MainNavigation {
         }
     };
 
-    public int budgetSetUpCheck() {
+    /*public int budgetSetUpCheck() {
         setUpHelper3 = new DbHelper(this);
         setUpDbDb3 = setUpHelper3.getReadableDatabase();
         setUpCursor3 = setUpDbDb3.rawQuery("SELECT max(budgetDone)" + " FROM " + DbHelper.SET_UP_TABLE_NAME, null);
@@ -344,7 +313,7 @@ public class LayoutSetUp extends MainNavigation {
         setUpCursor3.close();
 
         return budgetDoneCheck;
-    }
+    }*/
 
     View.OnClickListener onClickSetUpBudgetButton = new View.OnClickListener() {
         @Override
@@ -355,7 +324,7 @@ public class LayoutSetUp extends MainNavigation {
         }
     };
 
-    public int savingsSetUpCheck() {
+    /*public int savingsSetUpCheck() {
         setUpHelper2 = new DbHelper(this);
         setUpDbDb2 = setUpHelper2.getReadableDatabase();
         setUpCursor2 = setUpDbDb2.rawQuery("SELECT max(savingsDone)" + " FROM " + DbHelper.SET_UP_TABLE_NAME, null);
@@ -364,7 +333,7 @@ public class LayoutSetUp extends MainNavigation {
         setUpCursor2.close();
 
         return savingsDoneCheck;
-    }
+    }*/
 
     View.OnClickListener onClickSetUpSavingsButton = new View.OnClickListener() {
         @Override
@@ -375,7 +344,7 @@ public class LayoutSetUp extends MainNavigation {
         }
     };
 
-    public int debtSetUpCheck() {
+    /*public int debtSetUpCheck() {
         setUpHelper = new DbHelper(this);
         setUpDbDb = setUpHelper.getReadableDatabase();
         setUpCursor = setUpDbDb.rawQuery("SELECT max(debtsDone)" + " FROM " + DbHelper.SET_UP_TABLE_NAME, null);
@@ -384,7 +353,7 @@ public class LayoutSetUp extends MainNavigation {
         setUpCursor.close();
 
         return debtsDoneCheck;
-    }
+    }*/
 
     View.OnClickListener onClickSetUpDebtsButton = new View.OnClickListener() {
         @Override
