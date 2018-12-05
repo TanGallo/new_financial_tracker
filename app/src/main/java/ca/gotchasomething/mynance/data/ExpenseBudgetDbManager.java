@@ -14,8 +14,9 @@ import ca.gotchasomething.mynance.DbHelper;
 public class ExpenseBudgetDbManager {
 
     private DbHelper dbHelperExpense;
-    SQLiteDatabase dbExpense, dbExpense2, dbExpense3, dbExpense4, dbExpense5;
-    Cursor cursorExpense, cursorExpense2;
+    public Double totalExpenses;
+    SQLiteDatabase dbExpense, dbExpense2, dbExpense3, dbExpense4, dbExpense5, dbExpense6;
+    Cursor cursorExpense, cursorExpense2, cursorExpense6;
 
     public ExpenseBudgetDbManager(Context context) {
         dbHelperExpense = DbHelper.getInstance(context);
@@ -137,5 +138,15 @@ public class ExpenseBudgetDbManager {
         }
         cursorExpense2.close();
         return weeklyLimits;
+    }
+
+    public Double sumTotalExpenses() {
+        dbExpense6 = dbHelperExpense.getReadableDatabase();
+        cursorExpense6 = dbExpense6.rawQuery("SELECT sum(expenseAnnualAmount)" + " FROM " + DbHelper.EXPENSES_TABLE_NAME, null);
+        cursorExpense6.moveToFirst();
+        totalExpenses = cursorExpense6.getDouble(0);
+        cursorExpense6.close();
+
+        return totalExpenses;
     }
 }

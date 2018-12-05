@@ -16,13 +16,18 @@ import ca.gotchasomething.mynance.DbHelper;
 
 public class DebtDbManager {
 
-    private DbHelper dbHelperDebt;
-    SQLiteDatabase dbDebt, dbDebt2, dbDebt3, dbDebt4;
-    Cursor cursorDebt;
-    Double numberOfYearsToPayDebt = 0.0;
-    Integer numberOfDaysToPayDebt = 0;
+    public boolean foundNoDebtId;
     Calendar cal;
     Date debtEndD;
+    private DbHelper dbHelperDebt;
+    public Double totalDebt;
+    ExpenseBudgetDb expenseBudgetDb;
+    SQLiteDatabase dbDebt, dbDebt2, dbDebt3, dbDebt4, dbDebt5, dbDebt6;
+    Cursor cursorDebt, cursorDebt5, cursorDebt6;
+    Double numberOfYearsToPayDebt = 0.0;
+    Integer numberOfDaysToPayDebt = 0;
+    public long id;
+
     SimpleDateFormat debtEndS;
     String debtEnd = null;
 
@@ -133,5 +138,15 @@ public class DebtDbManager {
                 DbHelper.DEBTS_TABLE_NAME,
                 DbHelper.ID + "=?",
                 args);
+    }
+
+    public Double sumTotalDebt() {
+        dbDebt5 = dbHelperDebt.getReadableDatabase();
+        cursorDebt5 = dbDebt5.rawQuery("SELECT sum(debtAmount)" + " FROM " + DbHelper.DEBTS_TABLE_NAME, null);
+        cursorDebt5.moveToFirst();
+        totalDebt = cursorDebt5.getDouble(0);
+        cursorDebt5.close();
+
+        return totalDebt;
     }
 }

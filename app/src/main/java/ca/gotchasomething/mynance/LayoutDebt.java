@@ -96,6 +96,7 @@ public class LayoutDebt extends MainNavigation {
         toggle.syncState();
 
         general = new General();
+        setUpDbManager = new SetUpDbManager(this);
 
         totalDebtOwing = findViewById(R.id.totalDebtOwing);
         totalDebtPaidByDate = findViewById(R.id.totalDebtPaidByDate);
@@ -107,8 +108,8 @@ public class LayoutDebt extends MainNavigation {
         doneDebtsSetUpButton = findViewById(R.id.doneDebtsSetUpButton);
         doneDebtsSetUpButton.setOnClickListener(onClickDoneDebtsSetUpButton);
 
-        debtSetUpCheck();
-        if(debtsDoneCheck >0) {
+        setUpDbManager.debtSetUpCheck();
+        if(setUpDbManager.debtSetUpCheck() >0) {
             doneDebtsSetUpButton.setVisibility(View.GONE);
         }
 
@@ -116,20 +117,7 @@ public class LayoutDebt extends MainNavigation {
         debtAdapter = new DebtDbAdapter(this, debtDbManager.getDebts());
         debtListView.setAdapter(debtAdapter);
 
-        setUpDbManager = new SetUpDbManager(this);
-
         debtHeaderText();
-    }
-
-    public int debtSetUpCheck() {
-        setUpHelper = new DbHelper(this);
-        setUpDbDb = setUpHelper.getReadableDatabase();
-        setUpCursor = setUpDbDb.rawQuery("SELECT max(debtsDone)" + " FROM " + DbHelper.SET_UP_TABLE_NAME, null);
-        setUpCursor.moveToFirst();
-        debtsDoneCheck = setUpCursor.getInt(0);
-        setUpCursor.close();
-
-        return debtsDoneCheck;
     }
 
     View.OnClickListener onClickDoneDebtsSetUpButton = new View.OnClickListener() {
@@ -160,8 +148,10 @@ public class LayoutDebt extends MainNavigation {
 
     public void debtHeaderText() {
 
+        totalDebt = debtDbManager.sumTotalDebt();
+
         try {
-            totalDebtS = String.valueOf(sumTotalDebt());
+            totalDebtS = String.valueOf(totalDebt);
             if (totalDebtS != null && !totalDebtS.equals("")) {
                 totalDebtD = Double.valueOf(totalDebtS);
             } else {
@@ -177,17 +167,6 @@ public class LayoutDebt extends MainNavigation {
 
         totalDebtPaidByDate.setVisibility(View.VISIBLE);
         totalDebtPaidByDate.setText(latestDate());
-    }
-
-    public Double sumTotalDebt() {
-        debtDbHelper = new DbHelper(this);
-        debtDbDb = debtDbHelper.getReadableDatabase();
-        debtCursor = debtDbDb.rawQuery("SELECT sum(debtAmount)" + " FROM " + DbHelper.DEBTS_TABLE_NAME, null);
-        debtCursor.moveToFirst();
-        totalDebt = debtCursor.getDouble(0);
-        debtCursor.close();
-
-        return totalDebt;
     }
 
     public String latestDate() {

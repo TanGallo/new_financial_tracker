@@ -90,6 +90,7 @@ public class LayoutSavings extends MainNavigation {
         toggle.syncState();
 
         general = new General();
+        setUpDbManager = new SetUpDbManager(this);
 
         totalSavedText = findViewById(R.id.totalSavedText);
 
@@ -100,28 +101,16 @@ public class LayoutSavings extends MainNavigation {
         doneSavingsSetUpButton = findViewById(R.id.doneSavingsSetUpButton);
         doneSavingsSetUpButton.setOnClickListener(onClickDoneSavingsSetUpButton);
 
-        savingsSetUpCheck();
-        if (savingsDoneCheck > 0) {
+        setUpDbManager.savingsSetUpCheck();
+        if (setUpDbManager.savingsSetUpCheck() > 0) {
             doneSavingsSetUpButton.setVisibility(View.GONE);
         }
 
-        setUpDbManager = new SetUpDbManager(this);
         savingsDbManager = new SavingsDbManager(this);
         savingsAdapter = new SavingsDbAdapter(this, savingsDbManager.getSavings());
         savingsListView.setAdapter(savingsAdapter);
 
         savingsHeaderText();
-    }
-
-    public int savingsSetUpCheck() {
-        setUpHelper = new DbHelper(this);
-        setUpDbDb = setUpHelper.getReadableDatabase();
-        setUpCursor = setUpDbDb.rawQuery("SELECT max(savingsDone)" + " FROM " + DbHelper.SET_UP_TABLE_NAME, null);
-        setUpCursor.moveToFirst();
-        savingsDoneCheck = setUpCursor.getInt(0);
-        setUpCursor.close();
-
-        return savingsDoneCheck;
     }
 
     View.OnClickListener onClickDoneSavingsSetUpButton = new View.OnClickListener() {
@@ -147,8 +136,10 @@ public class LayoutSavings extends MainNavigation {
 
     public void savingsHeaderText() {
 
+        totalSavings = savingsDbManager.sumTotalSavings();
+
         try {
-            totalSavingsS = String.valueOf(sumTotalSavings());
+            totalSavingsS = String.valueOf(totalSavings);
             if (totalSavingsS != null && !totalSavingsS.equals("")) {
                 totalSavingsD = Double.valueOf(totalSavingsS);
             } else {
@@ -161,17 +152,6 @@ public class LayoutSavings extends MainNavigation {
         } catch (NumberFormatException e) {
             totalSavedText.setText(totalSavings2);
         }
-    }
-
-    public Double sumTotalSavings() {
-        savingsDbHelper = new DbHelper(this);
-        savingsDbDb = savingsDbHelper.getReadableDatabase();
-        savingsCursor = savingsDbDb.rawQuery("SELECT sum(savingsAmount)" + " FROM " + DbHelper.SAVINGS_TABLE_NAME, null);
-        savingsCursor.moveToFirst();
-        totalSavings = savingsCursor.getDouble(0);
-        savingsCursor.close();
-
-        return totalSavings;
     }
 
     public long findExpenseId() {

@@ -28,8 +28,10 @@ import androidx.fragment.app.FragmentTransaction;
 import ca.gotchasomething.mynance.DbHelper;
 import ca.gotchasomething.mynance.LayoutDailyMoney;
 import ca.gotchasomething.mynance.R;
+import ca.gotchasomething.mynance.data.CurrentDbManager;
 import ca.gotchasomething.mynance.data.MoneyOutDb;
 import ca.gotchasomething.mynance.data.MoneyOutDbManager;
+import ca.gotchasomething.mynance.data.SetUpDbManager;
 
 public class DailyCreditCard extends Fragment {
 
@@ -37,9 +39,11 @@ public class DailyCreditCard extends Fragment {
     CCAdapter ccAdapter;
     CheckBox ccPaidCheckbox;
     ContentValues moneyOutValue, moneyOutValue2;
+    CurrentDbManager currentDbManager;
     Cursor moneyOutCursor, moneyOutCursor4, currentCursor, currentCursor2;
     DbHelper moneyOutHelper, moneyOutHelper2, moneyOutHelper3, moneyOutHelper4, currentHelper, currentHelper2, currentHelper3, currentHelper4;
-    Double ccAmountD, totalCCPaymentDue, currentAccountBalance, currentAvailableBalance, totalCCPaymentBDue, newCurrentAvailableBalance, newCurrentAccountBalance;
+    Double ccAmountD, totalCCPaymentDue, currentAccountBalance, currentAvailableBalance, totalCCPaymentBDue, newCurrentAvailableBalance,
+            newCurrentAccountBalance, currentAccountBalance2;
     Intent refreshView;
     ListView ccListView;
     MoneyOutDb moneyOutDb;
@@ -66,6 +70,8 @@ public class DailyCreditCard extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        currentDbManager = new CurrentDbManager(getContext());
+
         checkBelowLabel = v.findViewById(R.id.checkBelowLabel);
         totalCCPaymentDueLabel = v.findViewById(R.id.totalCCPaymentDueLabel);
         totalCCPaymentDueLabel.setVisibility(View.GONE);
@@ -91,7 +97,8 @@ public class DailyCreditCard extends Fragment {
     }
 
     public void updateCurrentAvailableBalance() {
-        newCurrentAvailableBalance = retrieveCurrentAvailableBalance() - retrieveToPayBTotal();
+        currentAvailableBalance = currentDbManager.retrieveCurrentAvailableBalance();
+        newCurrentAvailableBalance = currentAvailableBalance - retrieveToPayBTotal();
 
         moneyOutValue = new ContentValues();
         moneyOutValue.put(DbHelper.CURRENTAVAILABLEBALANCE, newCurrentAvailableBalance);
@@ -101,7 +108,8 @@ public class DailyCreditCard extends Fragment {
     }
 
     public void updateCurrentAccountBalance() {
-        newCurrentAccountBalance = retrieveCurrentAccountBalance() - retrieveToPayTotal();
+        currentAccountBalance = currentDbManager.retrieveCurrentAccountBalance();
+        newCurrentAccountBalance = currentAccountBalance - retrieveToPayTotal();
 
         moneyOutValue2 = new ContentValues();
         moneyOutValue2.put(DbHelper.CURRENTACCOUNTBALANCE, newCurrentAccountBalance);
@@ -135,7 +143,7 @@ public class DailyCreditCard extends Fragment {
         }
     };
 
-    public Double retrieveCurrentAccountBalance() {
+    /*public Double retrieveCurrentAccountBalance() {
         currentHelper = new DbHelper(getContext());
         currentDbDb = currentHelper.getReadableDatabase();
         currentCursor = currentDbDb.rawQuery("SELECT " + DbHelper.CURRENTACCOUNTBALANCE + " FROM " + DbHelper.CURRENT_TABLE_NAME + " WHERE "
@@ -165,21 +173,21 @@ public class DailyCreditCard extends Fragment {
         }
 
         return currentAvailableBalance;
-    }
+    }*/
 
     public void checkIfPaymentPossible() {
 
         retrieveToPayBTotal();
         retrieveCurrentAvailableBalance();
         retrieveToPayTotal();
-        retrieveCurrentAccountBalance();
+        currentAccountBalance2 = currentDbManager.retrieveCurrentAccountBalance();
 
-        if (totalCCPaymentBDue > currentAvailableBalance) {
+        if (totalCCPaymentBDue > currentAccountBalance2) {
             possible = false;
             ccPaidLabel.setVisibility(View.GONE);
             ccPaidCheckbox.setVisibility(View.GONE);
             ccOopsText.setVisibility(View.VISIBLE);
-        } else if (totalCCPaymentDue > currentAccountBalance) {
+        } else if (totalCCPaymentDue > currentAccountBalance2) {
             possible = false;
             ccPaidLabel.setVisibility(View.GONE);
             ccPaidCheckbox.setVisibility(View.GONE);

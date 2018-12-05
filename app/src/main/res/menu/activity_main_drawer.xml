@@ -22,20 +22,6 @@
         android:id="@+id/menu_help"
         android:icon="@drawable/ic_help_outline_black_24dp"
         android:title="Help" />
-    <item
-        android:id="@+id/menu_edit_entries"
-        android:icon="@drawable/ic_trending_up_black_24dp"
-        android:title="Edit Entries:">
-        <menu>
-            <item
-                android:id="@+id/menu_spending_entries"
-                android:title="Spending Entries" />
-            <item
-                android:id="@+id/menu_income_entries"
-                android:title="Income Entries" />
-
-        </menu>
-    </item>
 
 
 </menu>

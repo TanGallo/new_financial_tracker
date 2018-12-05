@@ -60,7 +60,7 @@ public class LayoutBudget extends MainNavigation {
     DebtDbManager debtDbManager;
     Double totalIncome = 0.0, totalIncomeD = 0.0, incomeAnnualAmountD = 0.0, totalExpenses = 0.0, totalExpensesD = 0.0, expenseAnnualAmountD = 0.0,
             incomeAvailableD = 0.0, incomeAvailableN, numberOfYearsToPayDebt = 0.0, numberOfYearsToSavingsGoal = 0.0, balanceAmount = 0.0,
-            budgetIncomeAmountD, budgetExpenseAmountD;
+            budgetIncomeAmountD, budgetExpenseAmountD, totalIncomeR, totalExpensesR;
     EditText budgetIncomeCategoryText, budgetIncomeAmountText, budgetIncomeCategory, budgetIncomeAmount, budgetExpenseCategoryText,
             budgetExpenseAmountText, budgetExpenseCategory, budgetExpenseAmount;
     ExpenseBudgetDb expenseBudgetDb;
@@ -75,7 +75,7 @@ public class LayoutBudget extends MainNavigation {
     int numberOfDaysToPayDebt = 0, numberOfDaysToSavingsGoal = 0, budgetDoneCheck = 0, debtsDone, savingsDone, budgetDone, balanceDone, tourDone;
     Intent backToSetUp, incomePlusButton, expensePlusButton, backToBudget, backToBudget2, backToBudget3, backToBudget4;
     ListView budgetIncomeDetails, budgetExpensesDetails;
-    long id;
+    long id, debtId;
     NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
     RadioButton budgetIncomeWeeklyRadioButton, budgetIncomeBiWeeklyRadioButton, budgetIncomeBiMonthlyRadioButton,
             budgetIncomeMonthlyRadioButton, budgetIncomeBiAnnuallyRadioButton, budgetIncomeAnnuallyRadioButton, budgetExpenseWeeklyRadioButton,
@@ -109,6 +109,8 @@ public class LayoutBudget extends MainNavigation {
         toggle.syncState();
 
         general = new General();
+        setUpDbManager = new SetUpDbManager(this);
+        incomeDbManager = new IncomeBudgetDbManager(this);
 
         budgetIncomeTotalText = findViewById(R.id.budgetIncomeTotalText);
         budgetExpensesTotalText = findViewById(R.id.budgetExpensesTotalText);
@@ -129,13 +131,11 @@ public class LayoutBudget extends MainNavigation {
         doneBudgetSetUpButton = findViewById(R.id.doneBudgetSetUpButton);
         doneBudgetSetUpButton.setOnClickListener(onClickDoneBudgetSetUpButton);
 
-        budgetSetUpCheck();
-        if(budgetDoneCheck > 0) {
+        setUpDbManager.budgetSetUpCheck();
+        if (setUpDbManager.budgetSetUpCheck() > 0) {
             doneBudgetSetUpButton.setVisibility(View.GONE);
         }
 
-        setUpDbManager = new SetUpDbManager(this);
-        incomeDbManager = new IncomeBudgetDbManager(this);
         incomeAdapter = new IncomeDbAdapter(this, incomeDbManager.getIncomes());
         budgetIncomeDetails.setAdapter(incomeAdapter);
 
@@ -149,21 +149,10 @@ public class LayoutBudget extends MainNavigation {
 
     }
 
-    public int budgetSetUpCheck() {
-        setUpHelper = new DbHelper(this);
-        setUpDbDb = setUpHelper.getReadableDatabase();
-        setUpCursor = setUpDbDb.rawQuery("SELECT max(budgetDone)" + " FROM " + DbHelper.SET_UP_TABLE_NAME, null);
-        setUpCursor.moveToFirst();
-        budgetDoneCheck = setUpCursor.getInt(0);
-        setUpCursor.close();
-
-        return budgetDoneCheck;
-    }
-
     View.OnClickListener onClickDoneBudgetSetUpButton = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-           budgetDone = 1;
+            budgetDone = 1;
 
             setUpDb = new SetUpDb(debtsDone, savingsDone, budgetDone, balanceDone, balanceAmount, tourDone, 0);
             setUpDbManager.addSetUp(setUpDb);
@@ -183,11 +172,11 @@ public class LayoutBudget extends MainNavigation {
 
     public void budgetHeaderText() {
 
-        sumTotalIncome();
-        sumTotalExpenses();
+        totalIncomeR = incomeDbManager.sumTotalIncome();
+        totalExpensesR = expenseDbManager.sumTotalExpenses();
 
         try {
-            totalIncomeS = String.valueOf(sumTotalIncome());
+            totalIncomeS = String.valueOf(totalIncomeR);
             if (totalIncomeS != null && !totalIncomeS.equals("")) {
                 totalIncomeD = Double.valueOf(totalIncomeS);
             } else {
@@ -202,7 +191,7 @@ public class LayoutBudget extends MainNavigation {
         }
 
         try {
-            totalExpensesS = String.valueOf(sumTotalExpenses());
+            totalExpensesS = String.valueOf(totalExpensesR);
             if (totalExpensesS != null && !totalExpensesS.equals("")) {
                 totalExpensesD = Double.valueOf(totalExpensesS);
             } else {
@@ -218,7 +207,7 @@ public class LayoutBudget extends MainNavigation {
 
         if (totalExpensesD > totalIncomeD) {
 
-            incomeAvailableN = (sumTotalExpenses() - sumTotalIncome());
+            incomeAvailableN = (totalExpensesR - totalIncomeR);
             incomeAvailableN2 = currencyFormat.format(incomeAvailableN);
 
             budgetOopsText.setVisibility(View.VISIBLE);
@@ -235,7 +224,7 @@ public class LayoutBudget extends MainNavigation {
             incomeAvailable.setVisibility(View.VISIBLE);
         }
 
-        incomeAvailableD = (sumTotalIncome() - sumTotalExpenses());
+        incomeAvailableD = (totalIncomeR - totalExpensesR);
         incomeAvailable2 = currencyFormat.format(incomeAvailableD);
         incomeAvailable.setText(incomeAvailable2);
 
@@ -262,28 +251,6 @@ public class LayoutBudget extends MainNavigation {
 
         }
     };
-
-    public Double sumTotalExpenses() {
-        expenseDbHelper = new DbHelper(this);
-        expenseDb = expenseDbHelper.getReadableDatabase();
-        expenseCursor = expenseDb.rawQuery("SELECT sum(expenseAnnualAmount)" + " FROM " + DbHelper.EXPENSES_TABLE_NAME, null);
-        expenseCursor.moveToFirst();
-        totalExpenses = expenseCursor.getDouble(0);
-        expenseCursor.close();
-
-        return totalExpenses;
-    }
-
-    public Double sumTotalIncome() {
-        incomeDbHelper = new DbHelper(this);
-        incomeDb = incomeDbHelper.getReadableDatabase();
-        incomeCursor = incomeDb.rawQuery("SELECT sum(incomeAnnualAmount)" + " FROM " + DbHelper.INCOME_TABLE_NAME, null);
-        incomeCursor.moveToFirst();
-        totalIncome = incomeCursor.getDouble(0);
-        incomeCursor.close();
-
-        return totalIncome;
-    }
 
     public long findDebtId() {
         debtDbHelper = new DbHelper(this);
@@ -341,7 +308,7 @@ public class LayoutBudget extends MainNavigation {
                 Math.log(1 + ((debtRate2 / 100) / debtFrequency2))));
         numberOfDaysToPayDebt = (int) Math.round(numberOfYearsToPayDebt * 365);
 
-        if(debtAmount2 == 0) {
+        if (debtAmount2 == 0) {
             debtEnd = getString(R.string.debt_paid);
 
         } else if (numberOfDaysToPayDebt > Integer.MAX_VALUE || numberOfDaysToPayDebt <= 0) {
@@ -600,7 +567,7 @@ public class LayoutBudget extends MainNavigation {
 
                             try {
                                 incomeBudgetDb.setIncomeAmount(Double.valueOf(budgetIncomeAmount.getText().toString()));
-                            } catch(NumberFormatException e) {
+                            } catch (NumberFormatException e) {
                                 incomeBudgetDb.setIncomeAmount(general.extractingDollars(budgetIncomeAmount));
                             }
 
@@ -907,7 +874,7 @@ public class LayoutBudget extends MainNavigation {
 
                             try {
                                 expenseBudgetDb.setExpenseAmount(Double.valueOf(budgetExpenseAmount.getText().toString()));
-                            } catch(NumberFormatException e) {
+                            } catch (NumberFormatException e) {
                                 expenseBudgetDb.setExpenseAmount(general.extractingDollars(budgetExpenseAmount));
                             }
 
@@ -924,51 +891,51 @@ public class LayoutBudget extends MainNavigation {
                                 expenseBudgetDb.setExpenseAAnnualAmount(0.0);
                             }
 
-                                expenseDbManager.updateExpense(expenseBudgetDb);
+                            expenseDbManager.updateExpense(expenseBudgetDb);
 
+                            try {
+                                String[] args = new String[]{String.valueOf(findDebtId())};
+                                ContentValues debtValues = new ContentValues();
+
+                                debtValues.put(DbHelper.DEBTNAME, budgetExpenseCategory.getText().toString());
                                 try {
-                                    String[] args = new String[]{String.valueOf(findDebtId())};
-                                    ContentValues debtValues = new ContentValues();
-
-                                    debtValues.put(DbHelper.DEBTNAME, budgetExpenseCategory.getText().toString());
-                                    try {
-                                        debtValues.put(DbHelper.DEBTPAYMENTS, Double.valueOf(budgetExpenseAmount.getText().toString()));
-                                    } catch(NumberFormatException e2) {
-                                        debtValues.put(DbHelper.DEBTPAYMENTS, general.extractingDollars(budgetExpenseAmount));
-                                    }
-                                    debtValues.put(DbHelper.DEBTFREQUENCY, Double.valueOf(expenseFrequencyS));
-
-                                    debtDb.update(DbHelper.DEBTS_TABLE_NAME, debtValues, DbHelper.ID + "=?", args);
-
-                                    ContentValues debtValues2 = new ContentValues();
-                                    debtValues2.put(DbHelper.DEBTEND, updateDebtEndDate());
-                                    debtDb.update(DbHelper.DEBTS_TABLE_NAME, debtValues2, DbHelper.ID + "=?", args);
-
-                                } catch (CursorIndexOutOfBoundsException e3) {
-                                    e3.printStackTrace();
+                                    debtValues.put(DbHelper.DEBTPAYMENTS, Double.valueOf(budgetExpenseAmount.getText().toString()));
+                                } catch (NumberFormatException e2) {
+                                    debtValues.put(DbHelper.DEBTPAYMENTS, general.extractingDollars(budgetExpenseAmount));
                                 }
+                                debtValues.put(DbHelper.DEBTFREQUENCY, Double.valueOf(expenseFrequencyS));
 
+                                debtDb.update(DbHelper.DEBTS_TABLE_NAME, debtValues, DbHelper.ID + "=?", args);
+
+                                ContentValues debtValues2 = new ContentValues();
+                                debtValues2.put(DbHelper.DEBTEND, updateDebtEndDate());
+                                debtDb.update(DbHelper.DEBTS_TABLE_NAME, debtValues2, DbHelper.ID + "=?", args);
+
+                            } catch (CursorIndexOutOfBoundsException e3) {
+                                e3.printStackTrace();
+                            }
+
+                            try {
+                                String[] args2 = new String[]{String.valueOf(findSavingsId())};
+                                ContentValues savingsValues = new ContentValues();
+
+                                savingsValues.put(DbHelper.SAVINGSNAME, budgetExpenseCategory.getText().toString());
                                 try {
-                                    String[] args2 = new String[]{String.valueOf(findSavingsId())};
-                                    ContentValues savingsValues = new ContentValues();
-
-                                    savingsValues.put(DbHelper.SAVINGSNAME, budgetExpenseCategory.getText().toString());
-                                    try {
-                                        savingsValues.put(DbHelper.SAVINGSPAYMENTS, Double.valueOf(budgetExpenseAmount.getText().toString()));
-                                    } catch(NumberFormatException e4) {
-                                        savingsValues.put(DbHelper.SAVINGSPAYMENTS, general.extractingDollars(budgetExpenseAmount));
-                                    }
-                                    savingsValues.put(DbHelper.SAVINGSFREQUENCY, Double.valueOf(expenseFrequencyS));
-
-                                    savingsDb.update(DbHelper.SAVINGS_TABLE_NAME, savingsValues, DbHelper.ID + "=?", args2);
-
-                                    ContentValues savingsValues2 = new ContentValues();
-                                    savingsValues2.put(DbHelper.SAVINGSDATE, updateSavingsDate());
-                                    savingsDb.update(DbHelper.SAVINGS_TABLE_NAME, savingsValues2, DbHelper.ID + "=?", args2);
-
-                                } catch (CursorIndexOutOfBoundsException e5) {
-                                    e5.printStackTrace();
+                                    savingsValues.put(DbHelper.SAVINGSPAYMENTS, Double.valueOf(budgetExpenseAmount.getText().toString()));
+                                } catch (NumberFormatException e4) {
+                                    savingsValues.put(DbHelper.SAVINGSPAYMENTS, general.extractingDollars(budgetExpenseAmount));
                                 }
+                                savingsValues.put(DbHelper.SAVINGSFREQUENCY, Double.valueOf(expenseFrequencyS));
+
+                                savingsDb.update(DbHelper.SAVINGS_TABLE_NAME, savingsValues, DbHelper.ID + "=?", args2);
+
+                                ContentValues savingsValues2 = new ContentValues();
+                                savingsValues2.put(DbHelper.SAVINGSDATE, updateSavingsDate());
+                                savingsDb.update(DbHelper.SAVINGS_TABLE_NAME, savingsValues2, DbHelper.ID + "=?", args2);
+
+                            } catch (CursorIndexOutOfBoundsException e5) {
+                                e5.printStackTrace();
+                            }
 
                             expenseAdapter.updateExpenses(expenseDbManager.getExpense());
                             expenseAdapter.notifyDataSetChanged();

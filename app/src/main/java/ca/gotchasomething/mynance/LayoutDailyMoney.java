@@ -17,7 +17,6 @@ import androidx.fragment.app.FragmentTransaction;
 import ca.gotchasomething.mynance.data.CurrentDbManager;
 import ca.gotchasomething.mynance.tabFragments.DailyMoneyCC;
 import ca.gotchasomething.mynance.tabFragments.DailyMoneyIn;
-import ca.gotchasomething.mynance.tabFragments.DailyMoneyInOut;
 import ca.gotchasomething.mynance.tabFragments.DailyCreditCard;
 import ca.gotchasomething.mynance.tabFragments.DailyMoneyOut;
 import ca.gotchasomething.mynance.tabFragments.DailyWeeklyLimits;
@@ -26,14 +25,11 @@ public class LayoutDailyMoney extends MainNavigation {
 
     Button moneyInButton, moneyOutButton;
     CurrentDbManager currentDbManager;
-    Cursor currentCursor;
-    DbHelper currentHelper;
-    Double newAccountBalance, newAvailableBalance, currentAccountBalance, currentAvailableBalance;
+    Double newAccountBalance, newAvailableBalance;
     FragmentManager fm;
     FragmentTransaction transaction;
     FrameLayout container;
     NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
-    SQLiteDatabase currentDbDb;
     String availableBalance2, accountBalance2;
     TabLayout tl;
     TextView totalAccountText, availableAccountText;
@@ -77,44 +73,10 @@ public class LayoutDailyMoney extends MainNavigation {
 
     }
 
-    /*public Double retrieveCurrentAccountBalance() {
-
-        currentHelper = new DbHelper(this);
-        currentDbDb = currentHelper.getReadableDatabase();
-        currentCursor = currentDbDb.rawQuery("SELECT " + DbHelper.CURRENTACCOUNTBALANCE + " FROM " + DbHelper.CURRENT_TABLE_NAME, null);
-        currentCursor.moveToFirst();
-        currentAccountBalance = currentCursor.getDouble(0);
-        currentCursor.close();
-
-        if(currentAccountBalance.isNaN()) {
-            currentAccountBalance = 0.0;
-        }
-
-        return currentAccountBalance;
-    }*/
-
-    /*public Double retrieveCurrentAvailableBalance() {
-
-        currentHelper = new DbHelper(this);
-        currentDbDb = currentHelper.getReadableDatabase();
-        currentCursor = currentDbDb.rawQuery("SELECT " + DbHelper.CURRENTAVAILABLEBALANCE + " FROM " + DbHelper.CURRENT_TABLE_NAME, null);
-        currentCursor.moveToFirst();
-        currentAvailableBalance = currentCursor.getDouble(0);
-        currentCursor.close();
-
-        if(currentAvailableBalance.isNaN()) {
-            currentAvailableBalance = 0.0;
-        }
-
-        return currentAvailableBalance;
-    }*/
-
     public void dailyHeaderText() {
 
         newAccountBalance = currentDbManager.retrieveCurrentAccountBalance();
         newAvailableBalance = currentDbManager.retrieveCurrentAvailableBalance();
-        //newAccountBalance = retrieveCurrentAccountBalance();
-        //newAvailableBalance = retrieveCurrentAvailableBalance();
 
         if(newAccountBalance < newAvailableBalance || newAccountBalance == 0.0) {
             newAvailableBalance = 0.0;

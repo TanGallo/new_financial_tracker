@@ -17,9 +17,9 @@ import ca.gotchasomething.mynance.DbHelper;
 public class SavingsDbManager {
 
     private DbHelper dbHelperSavings;
-    SQLiteDatabase dbSavings, dbSavings2, dbSavings3, dbSavings4;
-    Cursor cursorSavings;
-    Double numberOfYearsToSavingsGoal = 0.0;
+    SQLiteDatabase dbSavings, dbSavings2, dbSavings3, dbSavings4, dbSavings5;
+    Cursor cursorSavings, cursorSavings5;
+    public Double numberOfYearsToSavingsGoal = 0.0, totalSavings;
     Integer numberOfDaysToSavingsGoal = 0;
     Calendar savingsCal;
     Date savingsDateD;
@@ -137,5 +137,15 @@ public class SavingsDbManager {
                 DbHelper.SAVINGS_TABLE_NAME,
                 DbHelper.ID + "=?",
                 args);
+    }
+
+    public Double sumTotalSavings() {
+        dbSavings5 = dbHelperSavings.getReadableDatabase();
+        cursorSavings5 = dbSavings5.rawQuery("SELECT sum(savingsAmount)" + " FROM " + DbHelper.SAVINGS_TABLE_NAME, null);
+        cursorSavings5.moveToFirst();
+        totalSavings = cursorSavings5.getDouble(0);
+        cursorSavings5.close();
+
+        return totalSavings;
     }
 }

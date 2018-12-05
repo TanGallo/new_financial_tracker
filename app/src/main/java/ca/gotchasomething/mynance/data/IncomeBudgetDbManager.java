@@ -13,8 +13,9 @@ import ca.gotchasomething.mynance.DbHelper;
 public class IncomeBudgetDbManager {
 
     private DbHelper dbHelperIncome;
-    SQLiteDatabase dbIncome, dbIncome2, dbIncome3, dbIncome4;
-    Cursor cursorIncome;
+    public Double totalIncome;
+    SQLiteDatabase dbIncome, dbIncome2, dbIncome3, dbIncome4, dbIncome5;
+    Cursor cursorIncome, cursorIncome5;
 
     public IncomeBudgetDbManager(Context context) {
         dbHelperIncome = DbHelper.getInstance(context);
@@ -89,5 +90,15 @@ public class IncomeBudgetDbManager {
                 DbHelper.INCOME_TABLE_NAME,
                 DbHelper.ID + "=?",
                 args);
+    }
+
+    public Double sumTotalIncome() {
+        dbIncome5 = dbHelperIncome.getReadableDatabase();
+        cursorIncome5 = dbIncome5.rawQuery("SELECT sum(incomeAnnualAmount)" + " FROM " + DbHelper.INCOME_TABLE_NAME, null);
+        cursorIncome5.moveToFirst();
+        totalIncome = cursorIncome5.getDouble(0);
+        cursorIncome5.close();
+
+        return totalIncome;
     }
 }

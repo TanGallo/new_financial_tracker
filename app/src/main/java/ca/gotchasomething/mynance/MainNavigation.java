@@ -130,16 +130,6 @@ public class MainNavigation extends AppCompatActivity implements NavigationView.
                 i6.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
                 startActivity(i6);
                 break;
-            case R.id.menu_spending_entries:
-                i3 = new Intent(MainNavigation.this, LayoutBudget.class);
-                i3.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-                startActivity(i3);
-                break;
-            case R.id.menu_income_entries:
-                i7 = new Intent(MainNavigation.this, LayoutEntriesIncome.class);
-                i7.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-                startActivity(i7);
-                break;
         }
         drawer.closeDrawer(GravityCompat.START);
         return true;
