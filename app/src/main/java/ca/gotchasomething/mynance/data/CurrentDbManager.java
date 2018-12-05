@@ -101,7 +101,7 @@ public class CurrentDbManager {
         return currentAccountBalance;
     }
 
-    public Double getBPercentage() {
+    public Double retrieveBPercentage() {
 
         dbExpense = dbHelperCurrent.getReadableDatabase();
         cursorExpense = dbExpense.rawQuery("SELECT sum(expenseAAnnualAmount)" + " FROM " + DbHelper.EXPENSES_TABLE_NAME, null);

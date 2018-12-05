@@ -108,15 +108,13 @@ public class DailyWeeklyLimits extends Fragment {
             holder.spendingCategory.setText(weeklyLimits.get(position).getExpenseName());
 
             //retrieve limitAmount
-            annualLimit = Double.valueOf(weeklyLimits.get(position).getExpenseBAnnualAmount());
+            annualLimit = weeklyLimits.get(position).getExpenseBAnnualAmount();
             weeklyLimitD = annualLimit / 52;
             weeklyLimitS = currencyFormat.format(weeklyLimitD);
             holder.limitAmount.setText(weeklyLimitS);
 
             //retrieve balanceAmount
             limitIdS = String.valueOf(weeklyLimits.get(position).getId());
-
-
 
             return convertView;
         }

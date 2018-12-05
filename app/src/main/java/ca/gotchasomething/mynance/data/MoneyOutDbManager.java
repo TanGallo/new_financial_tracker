@@ -15,8 +15,9 @@ import ca.gotchasomething.mynance.tabFragments.DailyMoneyIn;
 public class MoneyOutDbManager {
 
     private DbHelper dbHelperMoneyOut;
-    SQLiteDatabase dbMoneyOut, dbMoneyOut2, dbMoneyOut3, dbMoneyOut4, dbMoneyOut5, dbMoneyOut6, dbMoneyOut7;
-    Cursor cursorMoneyOut, cursorMoneyOut2, cursorMoneyOut3, cursorMoneyOut4;
+    public Double totalCCPaymentDue, totalCCPaymentBDue;
+    SQLiteDatabase dbMoneyOut, dbMoneyOut2, dbMoneyOut3, dbMoneyOut4, dbMoneyOut5, dbMoneyOut6, dbMoneyOut7, dbMoneyOut8, dbMoneyOut9, dbMoneyOut10;
+    Cursor cursorMoneyOut, cursorMoneyOut2, cursorMoneyOut3, cursorMoneyOut4, cursorMoneyOut8, cursorMoneyOut9;
 
     public MoneyOutDbManager(Context context) {
         dbHelperMoneyOut = DbHelper.getInstance(context);
@@ -193,5 +194,44 @@ public class MoneyOutDbManager {
         }
         cursorMoneyOut3.close();
         return ccTransToPay;
+    }
+
+    public Double retrieveToPayTotal() {
+        dbMoneyOut8 = dbHelperMoneyOut.getReadableDatabase();
+        cursorMoneyOut8 = dbMoneyOut8.rawQuery("SELECT sum(moneyOutAmount) FROM " + DbHelper.MONEY_OUT_TABLE_NAME
+                + " WHERE " + DbHelper.MONEYOUTTOPAY + " = '1' AND " + DbHelper.MONEYOUTPAID + " = '0'", null);
+        try {
+            cursorMoneyOut8.moveToFirst();
+        } catch (Exception e) {
+            totalCCPaymentDue = 0.0;
+        }
+        totalCCPaymentDue = cursorMoneyOut8.getDouble(0);
+        cursorMoneyOut8.close();
+
+        return totalCCPaymentDue;
+    }
+
+    public Double retrieveToPayBTotal() {
+        dbMoneyOut9 = dbHelperMoneyOut.getReadableDatabase();
+        cursorMoneyOut9 = dbMoneyOut9.rawQuery("SELECT sum(moneyOutAmount) FROM " + DbHelper.MONEY_OUT_TABLE_NAME
+                + " WHERE " + DbHelper.MONEYOUTTOPAY + " = '1' AND " + DbHelper.MONEYOUTPAID + " = '0' AND " + DbHelper.MONEYOUTPRIORITY + " = 'B'", null);
+        try {
+            cursorMoneyOut9.moveToFirst();
+        } catch (Exception e) {
+            totalCCPaymentBDue = 0.0;
+        }
+        totalCCPaymentBDue = cursorMoneyOut9.getDouble(0);
+        cursorMoneyOut9.close();
+
+        return totalCCPaymentBDue;
+    }
+
+    public void updatePaid() {
+
+        dbMoneyOut10 = dbHelperMoneyOut.getWritableDatabase();
+        ContentValues updateMoneyOutPaid = new ContentValues();
+        updateMoneyOutPaid.put(DbHelper.MONEYOUTPAID, 1);
+        dbMoneyOut10.update(DbHelper.MONEY_OUT_TABLE_NAME, updateMoneyOutPaid, DbHelper.MONEYOUTTOPAY + "= '1' AND " + DbHelper.MONEYOUTPAID
+                + " = '0'", null);
     }
 }

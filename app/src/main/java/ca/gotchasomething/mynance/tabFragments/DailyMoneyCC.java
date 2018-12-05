@@ -32,6 +32,7 @@ import androidx.fragment.app.Fragment;
 import ca.gotchasomething.mynance.DbHelper;
 import ca.gotchasomething.mynance.General;
 import ca.gotchasomething.mynance.R;
+import ca.gotchasomething.mynance.data.CurrentDbManager;
 import ca.gotchasomething.mynance.data.MoneyOutDb;
 import ca.gotchasomething.mynance.data.MoneyOutDbManager;
 import ca.gotchasomething.mynance.spinners.MoneyOutSpinnerAdapter;
@@ -41,16 +42,14 @@ public class DailyMoneyCC extends Fragment {
     boolean possible = true;
     Button ccTransButton, cancelCCTransEntryButton, updateCCTransEntryButton;
     CCTransAdapter ccTransAdapter;
-    ContentValues moneyOutValue, moneyOutValue2;
-    Cursor moneyOutCursor2, currentCursor, currentCursor2, expenseCursor, incomeCursor;
+    CurrentDbManager currentDbManager;
+    Cursor moneyOutCursor2;
     Date moneyOutDate;
-    DbHelper moneyOutDbHelper2, currentHelper, currentHelper2, currentHelper3, currentHelper5, expenseHelper, incomeHelper;
-    Double moneyOutAmount, currentAccountBalance, newCurrentAccountBalance3, totalBudgetAExpenses, totalBudgetIncome, percentB,
-            currentAvailableBalance, newCurrentAvailableBalance3, ccTransAmountD, oldMoneyOutAmount, newMoneyOutAmount, ccTransAmountD2;
+    DbHelper moneyOutDbHelper2;
+    Double moneyOutAmount, ccTransAmountD, oldMoneyOutAmount, newMoneyOutAmount, ccTransAmountD2;
     EditText ccTransAmountText, ccTransAmountEditText;
     General general;
     int moneyOutToPay, moneyOutPaid;
-    Intent backToDaily, backToDaily2;
     ListView ccTransList;
     MoneyOutDb moneyOutDb;
     MoneyOutDbManager moneyOutDbManager;
@@ -58,7 +57,7 @@ public class DailyMoneyCC extends Fragment {
     NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
     SimpleDateFormat moneyOutSDF;
     Spinner ccTransCatSpinner;
-    SQLiteDatabase moneyOutDbDb2, currentDbDb, currentDbDb2, currentDbDb3, currentDbDb5, expenseDbDb, incomeDbDb;
+    SQLiteDatabase moneyOutDbDb2;
     String moneyOutCat, moneyOutPriority, moneyOutCreatedOn, moneyOutCC, ccTransCatS, ccTransPriorityS, ccTransAmountS, ccTransAmount2, ccTransAmountS2;
     TextView ccTransCatText;
     Timestamp moneyOutTimestamp;
@@ -82,6 +81,7 @@ public class DailyMoneyCC extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         general = new General();
+        currentDbManager = new CurrentDbManager(getContext());
 
         ccTransAmountText = v.findViewById(R.id.ccTransAmount);
         ccTransButton = v.findViewById(R.id.ccTransButton);
@@ -116,95 +116,6 @@ public class DailyMoneyCC extends Fragment {
 
         ccTransCatSpinner.setOnItemSelectedListener(ccTransSpinnerSelection);
 
-    }
-
-    public Double retrieveBPercentage() {
-        expenseHelper = new DbHelper(getContext());
-        expenseDbDb = expenseHelper.getReadableDatabase();
-        expenseCursor = expenseDbDb.rawQuery("SELECT sum(expenseAAnnualAmount)" + " FROM " + DbHelper.EXPENSES_TABLE_NAME, null);
-        try {
-            expenseCursor.moveToFirst();
-        } catch (Exception e) {
-            totalBudgetAExpenses = 0.0;
-        }
-        totalBudgetAExpenses = expenseCursor.getDouble(0);
-        expenseCursor.close();
-
-        incomeHelper = new DbHelper(getContext());
-        incomeDbDb = incomeHelper.getReadableDatabase();
-        incomeCursor = incomeDbDb.rawQuery("SELECT sum(incomeAnnualAmount)" + " FROM " + DbHelper.INCOME_TABLE_NAME, null);
-        incomeCursor.moveToFirst();
-        totalBudgetIncome = incomeCursor.getDouble(0);
-        incomeCursor.close();
-
-        percentB = 1 - (totalBudgetAExpenses / totalBudgetIncome);
-
-        return percentB;
-
-    }
-
-    public Double retrieveCurrentAccountBalance() {
-        currentHelper = new DbHelper(getContext());
-        currentDbDb = currentHelper.getReadableDatabase();
-        currentCursor = currentDbDb.rawQuery("SELECT " + DbHelper.CURRENTACCOUNTBALANCE + " FROM " + DbHelper.CURRENT_TABLE_NAME + " WHERE "
-                + DbHelper.ID + " = '1'", null);
-        currentCursor.moveToFirst();
-        currentAccountBalance = currentCursor.getDouble(0);
-        currentCursor.close();
-
-        if (currentAccountBalance.isNaN()) {
-            currentAccountBalance = 0.0;
-        }
-
-        return currentAccountBalance;
-    }
-
-    public Double retrieveCurrentAvailableBalance() {
-        currentHelper2 = new DbHelper(getContext());
-        currentDbDb2 = currentHelper2.getReadableDatabase();
-        currentCursor2 = currentDbDb2.rawQuery("SELECT " + DbHelper.CURRENTAVAILABLEBALANCE + " FROM " + DbHelper.CURRENT_TABLE_NAME + " WHERE "
-                + DbHelper.ID + " = '1'", null);
-        currentCursor2.moveToFirst();
-        currentAvailableBalance = currentCursor2.getDouble(0);
-        currentCursor2.close();
-
-        if (currentAvailableBalance.isNaN()) {
-            currentAvailableBalance = 0.0;
-        }
-
-        return currentAvailableBalance;
-    }
-
-    public void updateCurrentAvailableBalanceMoneyOut() {
-        newCurrentAvailableBalance3 = retrieveCurrentAvailableBalance() - moneyOutAmount;
-
-        if (newCurrentAvailableBalance3 < 0) {
-            Toast.makeText(getContext(), "You cannot make this purchase. See the Help section if you'd like suggestions.", Toast.LENGTH_LONG).show();
-            possible = false;
-        } else {
-
-            moneyOutValue2 = new ContentValues();
-            moneyOutValue2.put(DbHelper.CURRENTAVAILABLEBALANCE, newCurrentAvailableBalance3);
-            currentHelper5 = new DbHelper(getContext());
-            currentDbDb5 = currentHelper5.getWritableDatabase();
-            currentDbDb5.update(DbHelper.CURRENT_TABLE_NAME, moneyOutValue2, DbHelper.ID + "= '1'", null);
-        }
-    }
-
-    public void updateCurrentAccountBalanceMoneyOut() {
-        newCurrentAccountBalance3 = retrieveCurrentAccountBalance() - moneyOutAmount;
-
-        if (newCurrentAccountBalance3 < 0) {
-            Toast.makeText(getContext(), "You cannot make this purchase. See the Help section if you'd like suggestions.", Toast.LENGTH_LONG).show();
-            possible = false;
-        } else {
-
-            moneyOutValue = new ContentValues();
-            moneyOutValue.put(DbHelper.CURRENTACCOUNTBALANCE, newCurrentAccountBalance3);
-            currentHelper3 = new DbHelper(getContext());
-            currentDbDb3 = currentHelper3.getWritableDatabase();
-            currentDbDb3.update(DbHelper.CURRENT_TABLE_NAME, moneyOutValue, DbHelper.ID + "= '1'", null);
-        }
     }
 
     AdapterView.OnItemSelectedListener ccTransSpinnerSelection = new AdapterView.OnItemSelectedListener() {

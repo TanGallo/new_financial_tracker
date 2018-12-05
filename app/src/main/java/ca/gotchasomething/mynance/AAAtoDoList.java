@@ -1,6 +1,14 @@
 /*
 
 
+try this to start fragment as intent
+    Fragment mFragment = null;
+    mFragment = new MainFragment();
+    FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.frame_container, fragment).commit();
+
+FIGURE OUT HOW TO REFRESH TAB VIEWS W/O RETURNING TO 1ST TAB
 FORMAT PERCENT FIELDS WHEN EDITING & MAKE METHOD FOR EXTRACTING THE NUMBERS FROM IT
 FINISH WEEKLY LIMITS TAB
 DAILY MONEY HEADER TEXT

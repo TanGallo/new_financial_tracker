@@ -33,6 +33,7 @@ import ca.gotchasomething.mynance.DbHelper;
 import ca.gotchasomething.mynance.General;
 import ca.gotchasomething.mynance.LayoutDailyMoney;
 import ca.gotchasomething.mynance.R;
+import ca.gotchasomething.mynance.data.CurrentDbManager;
 import ca.gotchasomething.mynance.data.MoneyInDb;
 import ca.gotchasomething.mynance.data.MoneyInDbManager;
 import ca.gotchasomething.mynance.spinners.MoneyInSpinnerAdapter;
@@ -41,11 +42,12 @@ public class DailyMoneyIn extends Fragment {
 
     Button moneyInButton, cancelMoneyInEntryButton, updateMoneyInEntryButton;
     ContentValues moneyInValue, moneyInValue2;
-    Cursor moneyInCursor, currentCursor, currentCursor2, expenseCursor, incomeCursor;
+    CurrentDbManager currentDbManager;
+    Cursor moneyInCursor;
     Date moneyInDate;
-    DbHelper moneyInDbHelper, currentHelper, currentHelper2, currentHelper4, currentHelper6, expenseHelper, incomeHelper;
-    Double moneyInAmount, moneyInD, newCurrentAccountBalance, currentAccountBalance, totalBudgetAExpenses, totalBudgetIncome, percentB,
-            currentAvailableBalance, newCurrentAvailableBalance2, newMoneyInAmount, oldMoneyInAmount, moneyInAmountD;
+    DbHelper moneyInDbHelper, currentHelper4, currentHelper6;
+    Double moneyInAmount, moneyInD, newCurrentAccountBalance, currentAccountBalance, percentB, currentAvailableBalance, newCurrentAvailableBalance2,
+            newMoneyInAmount, oldMoneyInAmount, moneyInAmountD;
     EditText moneyInAmountText, moneyInAmountEditText;
     General general;
     Intent backToDaily, backToDaily2, backToDaily3, backToDaily4;
@@ -57,7 +59,7 @@ public class DailyMoneyIn extends Fragment {
     NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
     SimpleDateFormat moneyInSDF;
     Spinner moneyInCatSpinner;
-    SQLiteDatabase moneyInDbDb, currentDbDb, currentDbDb2, currentDbDb4, currentDbDb6, expenseDbDb, incomeDbDb;
+    SQLiteDatabase moneyInDbDb, currentDbDb4, currentDbDb6;
     String moneyInCatS, moneyInCat, moneyInCreatedOn, moneyInS, moneyIn2, moneyInAmountS;
     TextView moneyInCatText;
     Timestamp moneyInTimestamp;
@@ -81,6 +83,7 @@ public class DailyMoneyIn extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         general = new General();
+        currentDbManager = new CurrentDbManager(getContext());
 
         moneyInAmountText = v.findViewById(R.id.moneyInAmount);
         moneyInButton = v.findViewById(R.id.moneyInButton);
@@ -117,65 +120,10 @@ public class DailyMoneyIn extends Fragment {
 
     }
 
-    public Double retrieveBPercentage() {
-        expenseHelper = new DbHelper(getContext());
-        expenseDbDb = expenseHelper.getReadableDatabase();
-        expenseCursor = expenseDbDb.rawQuery("SELECT sum(expenseAAnnualAmount)" + " FROM " + DbHelper.EXPENSES_TABLE_NAME, null);
-        try {
-            expenseCursor.moveToFirst();
-        } catch (Exception e) {
-            totalBudgetAExpenses = 0.0;
-        }
-        totalBudgetAExpenses = expenseCursor.getDouble(0);
-        expenseCursor.close();
-
-        incomeHelper = new DbHelper(getContext());
-        incomeDbDb = incomeHelper.getReadableDatabase();
-        incomeCursor = incomeDbDb.rawQuery("SELECT sum(incomeAnnualAmount)" + " FROM " + DbHelper.INCOME_TABLE_NAME, null);
-        incomeCursor.moveToFirst();
-        totalBudgetIncome = incomeCursor.getDouble(0);
-        incomeCursor.close();
-
-        percentB = 1 - (totalBudgetAExpenses / totalBudgetIncome);
-
-        return percentB;
-
-    }
-
-    public Double retrieveCurrentAccountBalance() {
-        currentHelper = new DbHelper(getContext());
-        currentDbDb = currentHelper.getReadableDatabase();
-        currentCursor = currentDbDb.rawQuery("SELECT " + DbHelper.CURRENTACCOUNTBALANCE + " FROM " + DbHelper.CURRENT_TABLE_NAME + " WHERE "
-                + DbHelper.ID + " = '1'", null);
-        currentCursor.moveToFirst();
-        currentAccountBalance = currentCursor.getDouble(0);
-        currentCursor.close();
-
-        if (currentAccountBalance.isNaN()) {
-            currentAccountBalance = 0.0;
-        }
-
-        return currentAccountBalance;
-    }
-
-    public Double retrieveCurrentAvailableBalance() {
-        currentHelper2 = new DbHelper(getContext());
-        currentDbDb2 = currentHelper2.getReadableDatabase();
-        currentCursor2 = currentDbDb2.rawQuery("SELECT " + DbHelper.CURRENTAVAILABLEBALANCE + " FROM " + DbHelper.CURRENT_TABLE_NAME + " WHERE "
-                + DbHelper.ID + " = '1'", null);
-        currentCursor2.moveToFirst();
-        currentAvailableBalance = currentCursor2.getDouble(0);
-        currentCursor2.close();
-
-        if (currentAvailableBalance.isNaN()) {
-            currentAvailableBalance = 0.0;
-        }
-
-        return currentAvailableBalance;
-    }
-
     public void updateCurrentAvailableBalanceMoneyIn() {
-        newCurrentAvailableBalance2 = retrieveCurrentAvailableBalance() + (moneyInAmount * retrieveBPercentage());
+        percentB = currentDbManager.retrieveBPercentage();
+        currentAvailableBalance = currentDbManager.retrieveCurrentAvailableBalance();
+        newCurrentAvailableBalance2 = currentAvailableBalance + (moneyInAmount * percentB);
 
         moneyInValue2 = new ContentValues();
         moneyInValue2.put(DbHelper.CURRENTAVAILABLEBALANCE, newCurrentAvailableBalance2);
@@ -185,7 +133,8 @@ public class DailyMoneyIn extends Fragment {
     }
 
     public void updateCurrentAccountBalanceMoneyIn() {
-        newCurrentAccountBalance = retrieveCurrentAccountBalance() + moneyInAmount;
+        currentAccountBalance = currentDbManager.retrieveCurrentAccountBalance();
+        newCurrentAccountBalance = currentAccountBalance + moneyInAmount;
 
         moneyInValue = new ContentValues();
         moneyInValue.put(DbHelper.CURRENTACCOUNTBALANCE, newCurrentAccountBalance);

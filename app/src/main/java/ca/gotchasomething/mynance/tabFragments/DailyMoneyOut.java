@@ -33,6 +33,7 @@ import ca.gotchasomething.mynance.DbHelper;
 import ca.gotchasomething.mynance.General;
 import ca.gotchasomething.mynance.LayoutDailyMoney;
 import ca.gotchasomething.mynance.R;
+import ca.gotchasomething.mynance.data.CurrentDbManager;
 import ca.gotchasomething.mynance.data.MoneyOutDb;
 import ca.gotchasomething.mynance.data.MoneyOutDbManager;
 import ca.gotchasomething.mynance.spinners.MoneyOutSpinnerAdapter;
@@ -42,11 +43,12 @@ public class DailyMoneyOut extends Fragment {
     boolean possible = true;
     Button moneyOutButton, cancelMoneyOutEntryButton, updateMoneyOutEntryButton;
     ContentValues moneyOutValue, moneyOutValue2;
-    Cursor moneyOutCursor, currentCursor, currentCursor2, expenseCursor, incomeCursor;
+    CurrentDbManager currentDbManager;
+    Cursor moneyOutCursor;
     Date moneyOutDate;
-    DbHelper moneyOutDbHelper, currentHelper, currentHelper2, currentHelper3, currentHelper5, expenseHelper, incomeHelper;
-    Double moneyOutAmount, currentAccountBalance, newCurrentAccountBalance3, totalBudgetAExpenses, totalBudgetIncome, percentB,
-            currentAvailableBalance, newCurrentAvailableBalance3, moneyOutD, oldMoneyOutAmount, newMoneyOutAmount, moneyOutAmountD;
+    DbHelper moneyOutDbHelper, currentHelper3, currentHelper5;
+    Double moneyOutAmount, currentAccountBalance, newCurrentAccountBalance3, currentAvailableBalance, newCurrentAvailableBalance3, moneyOutD,
+            oldMoneyOutAmount, newMoneyOutAmount, moneyOutAmountD;
     EditText moneyOutAmountText, moneyOutAmountEditText;
     General general;
     int moneyOutToPay, moneyOutPaid;
@@ -59,7 +61,7 @@ public class DailyMoneyOut extends Fragment {
     NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
     SimpleDateFormat moneyOutSDF;
     Spinner moneyOutCatSpinner;
-    SQLiteDatabase moneyOutDbDb, currentDbDb, currentDbDb2, currentDbDb3, currentDbDb5, expenseDbDb, incomeDbDb;
+    SQLiteDatabase moneyOutDbDb, currentDbDb3, currentDbDb5;
     String moneyOutCatS, moneyOutCat, moneyOutPriority, moneyOutPriorityS, moneyOutCreatedOn, moneyOutCC, moneyOutS, moneyOut2, moneyOutAmountS;
     TextView moneyOutCatText;
     Timestamp moneyOutTimestamp;
@@ -83,6 +85,7 @@ public class DailyMoneyOut extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         general = new General();
+        currentDbManager = new CurrentDbManager(getContext());
 
         moneyOutAmountText = v.findViewById(R.id.moneyOutAmount);
         moneyOutButton = v.findViewById(R.id.moneyOutButton);
@@ -119,65 +122,9 @@ public class DailyMoneyOut extends Fragment {
 
     }
 
-    public Double retrieveBPercentage() {
-        expenseHelper = new DbHelper(getContext());
-        expenseDbDb = expenseHelper.getReadableDatabase();
-        expenseCursor = expenseDbDb.rawQuery("SELECT sum(expenseAAnnualAmount)" + " FROM " + DbHelper.EXPENSES_TABLE_NAME, null);
-        try {
-            expenseCursor.moveToFirst();
-        } catch (Exception e) {
-            totalBudgetAExpenses = 0.0;
-        }
-        totalBudgetAExpenses = expenseCursor.getDouble(0);
-        expenseCursor.close();
-
-        incomeHelper = new DbHelper(getContext());
-        incomeDbDb = incomeHelper.getReadableDatabase();
-        incomeCursor = incomeDbDb.rawQuery("SELECT sum(incomeAnnualAmount)" + " FROM " + DbHelper.INCOME_TABLE_NAME, null);
-        incomeCursor.moveToFirst();
-        totalBudgetIncome = incomeCursor.getDouble(0);
-        incomeCursor.close();
-
-        percentB = 1 - (totalBudgetAExpenses / totalBudgetIncome);
-
-        return percentB;
-
-    }
-
-    public Double retrieveCurrentAccountBalance() {
-        currentHelper = new DbHelper(getContext());
-        currentDbDb = currentHelper.getReadableDatabase();
-        currentCursor = currentDbDb.rawQuery("SELECT " + DbHelper.CURRENTACCOUNTBALANCE + " FROM " + DbHelper.CURRENT_TABLE_NAME + " WHERE "
-                + DbHelper.ID + " = '1'", null);
-        currentCursor.moveToFirst();
-        currentAccountBalance = currentCursor.getDouble(0);
-        currentCursor.close();
-
-        if (currentAccountBalance.isNaN()) {
-            currentAccountBalance = 0.0;
-        }
-
-        return currentAccountBalance;
-    }
-
-    public Double retrieveCurrentAvailableBalance() {
-        currentHelper2 = new DbHelper(getContext());
-        currentDbDb2 = currentHelper2.getReadableDatabase();
-        currentCursor2 = currentDbDb2.rawQuery("SELECT " + DbHelper.CURRENTAVAILABLEBALANCE + " FROM " + DbHelper.CURRENT_TABLE_NAME + " WHERE "
-                + DbHelper.ID + " = '1'", null);
-        currentCursor2.moveToFirst();
-        currentAvailableBalance = currentCursor2.getDouble(0);
-        currentCursor2.close();
-
-        if (currentAvailableBalance.isNaN()) {
-            currentAvailableBalance = 0.0;
-        }
-
-        return currentAvailableBalance;
-    }
-
     public void updateCurrentAvailableBalanceMoneyOut() {
-        newCurrentAvailableBalance3 = retrieveCurrentAvailableBalance() - moneyOutAmount;
+        currentAvailableBalance = currentDbManager.retrieveCurrentAvailableBalance();
+        newCurrentAvailableBalance3 = currentAvailableBalance - moneyOutAmount;
 
         if (newCurrentAvailableBalance3 < 0) {
             Toast.makeText(getContext(), "You cannot make this purchase. See the Help section if you'd like suggestions.", Toast.LENGTH_LONG).show();
@@ -193,7 +140,8 @@ public class DailyMoneyOut extends Fragment {
     }
 
     public void updateCurrentAccountBalanceMoneyOut() {
-        newCurrentAccountBalance3 = retrieveCurrentAccountBalance() - moneyOutAmount;
+        currentAccountBalance = currentDbManager.retrieveCurrentAccountBalance();
+        newCurrentAccountBalance3 = currentAccountBalance - moneyOutAmount;
 
         if (newCurrentAccountBalance3 < 0) {
             Toast.makeText(getContext(), "You cannot make this purchase. See the Help section if you'd like suggestions.", Toast.LENGTH_LONG).show();
@@ -450,11 +398,4 @@ public class DailyMoneyOut extends Fragment {
         ImageButton moneyOutEdit;
         ImageButton moneyOutDelete;
     }
-
-//try this to start fragment as intent
-    /*Fragment mFragment = null;
-    mFragment = new MainFragment();
-    FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction()
-                .replace(R.id.frame_container, fragment).commit();*/
 }
