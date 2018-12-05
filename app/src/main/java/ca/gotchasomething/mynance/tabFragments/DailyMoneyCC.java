@@ -13,8 +13,6 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
@@ -32,13 +30,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import ca.gotchasomething.mynance.DbHelper;
-import ca.gotchasomething.mynance.LayoutDailyMoney;
+import ca.gotchasomething.mynance.General;
 import ca.gotchasomething.mynance.R;
-import ca.gotchasomething.mynance.data.MoneyInDb;
-import ca.gotchasomething.mynance.data.MoneyInDbManager;
 import ca.gotchasomething.mynance.data.MoneyOutDb;
 import ca.gotchasomething.mynance.data.MoneyOutDbManager;
-import ca.gotchasomething.mynance.spinners.MoneyInSpinnerAdapter;
 import ca.gotchasomething.mynance.spinners.MoneyOutSpinnerAdapter;
 
 public class DailyMoneyCC extends Fragment {
@@ -51,8 +46,9 @@ public class DailyMoneyCC extends Fragment {
     Date moneyOutDate;
     DbHelper moneyOutDbHelper2, currentHelper, currentHelper2, currentHelper3, currentHelper5, expenseHelper, incomeHelper;
     Double moneyOutAmount, currentAccountBalance, newCurrentAccountBalance3, totalBudgetAExpenses, totalBudgetIncome, percentB,
-            currentAvailableBalance, newCurrentAvailableBalance3, ccTransAmountD, oldMoneyOutAmount, newMoneyOutAmount;
+            currentAvailableBalance, newCurrentAvailableBalance3, ccTransAmountD, oldMoneyOutAmount, newMoneyOutAmount, ccTransAmountD2;
     EditText ccTransAmountText, ccTransAmountEditText;
+    General general;
     int moneyOutToPay, moneyOutPaid;
     Intent backToDaily, backToDaily2;
     ListView ccTransList;
@@ -63,7 +59,7 @@ public class DailyMoneyCC extends Fragment {
     SimpleDateFormat moneyOutSDF;
     Spinner ccTransCatSpinner;
     SQLiteDatabase moneyOutDbDb2, currentDbDb, currentDbDb2, currentDbDb3, currentDbDb5, expenseDbDb, incomeDbDb;
-    String moneyOutCat, moneyOutPriority, moneyOutCreatedOn, moneyOutCC, ccTransCatS, ccTransPriorityS, ccTransAmountS, ccTransAmount2;
+    String moneyOutCat, moneyOutPriority, moneyOutCreatedOn, moneyOutCC, ccTransCatS, ccTransPriorityS, ccTransAmountS, ccTransAmount2, ccTransAmountS2;
     TextView ccTransCatText;
     Timestamp moneyOutTimestamp;
     View v, ccTransLine;
@@ -84,6 +80,8 @@ public class DailyMoneyCC extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        general = new General();
 
         ccTransAmountText = v.findViewById(R.id.ccTransAmount);
         ccTransButton = v.findViewById(R.id.ccTransButton);
@@ -341,8 +339,12 @@ public class DailyMoneyCC extends Fragment {
                     ccTransLine.setVisibility(View.VISIBLE);
 
                     ccTransCatText.setText(moneyOutDb.getMoneyOutCat());
-                    ccTransAmountEditText.setText(String.valueOf(moneyOutDb.getMoneyOutAmount()));
-                    oldMoneyOutAmount = Double.valueOf(ccTransAmountEditText.getText().toString());
+
+                    ccTransAmountD2 = moneyOutDb.getMoneyOutAmount();
+                    ccTransAmountS2 = currencyFormat.format(ccTransAmountD2);
+                    ccTransAmountEditText.setText(ccTransAmountS2);
+
+                    oldMoneyOutAmount = general.extractingDollars(ccTransAmountEditText);
                 }
             });
 
@@ -350,8 +352,14 @@ public class DailyMoneyCC extends Fragment {
                 @Override
                 public void onClick(View v) {
 
-                    moneyOutDb.setMoneyOutAmount(Double.valueOf(ccTransAmountEditText.getText().toString()));
-                    newMoneyOutAmount = Double.valueOf(ccTransAmountEditText.getText().toString());
+                    try {
+                        moneyOutDb.setMoneyOutAmount(Double.valueOf(ccTransAmountEditText.getText().toString()));
+                        newMoneyOutAmount = Double.valueOf(ccTransAmountEditText.getText().toString());
+                    } catch(NumberFormatException e) {
+                        moneyOutDb.setMoneyOutAmount(general.extractingDollars(ccTransAmountEditText));
+                        newMoneyOutAmount = general.extractingDollars(ccTransAmountEditText);
+                    }
+
                     moneyOutAmount = newMoneyOutAmount - oldMoneyOutAmount;
 
                     moneyOutDbManager.updateMoneyOut(moneyOutDb);

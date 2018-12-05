@@ -15,7 +15,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -31,15 +30,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import ca.gotchasomething.mynance.DbHelper;
+import ca.gotchasomething.mynance.General;
 import ca.gotchasomething.mynance.LayoutDailyMoney;
-import ca.gotchasomething.mynance.LayoutEntriesIncome;
 import ca.gotchasomething.mynance.R;
 import ca.gotchasomething.mynance.data.MoneyInDb;
 import ca.gotchasomething.mynance.data.MoneyInDbManager;
-import ca.gotchasomething.mynance.data.MoneyOutDb;
-import ca.gotchasomething.mynance.data.MoneyOutDbManager;
 import ca.gotchasomething.mynance.spinners.MoneyInSpinnerAdapter;
-import ca.gotchasomething.mynance.spinners.MoneyOutSpinnerAdapter;
 
 public class DailyMoneyIn extends Fragment {
 
@@ -49,8 +45,9 @@ public class DailyMoneyIn extends Fragment {
     Date moneyInDate;
     DbHelper moneyInDbHelper, currentHelper, currentHelper2, currentHelper4, currentHelper6, expenseHelper, incomeHelper;
     Double moneyInAmount, moneyInD, newCurrentAccountBalance, currentAccountBalance, totalBudgetAExpenses, totalBudgetIncome, percentB,
-            currentAvailableBalance, newCurrentAvailableBalance2, newMoneyInAmount, oldMoneyInAmount;
+            currentAvailableBalance, newCurrentAvailableBalance2, newMoneyInAmount, oldMoneyInAmount, moneyInAmountD;
     EditText moneyInAmountText, moneyInAmountEditText;
+    General general;
     Intent backToDaily, backToDaily2, backToDaily3, backToDaily4;
     ListView moneyInList;
     MoneyInAdapter moneyInAdapter;
@@ -61,7 +58,7 @@ public class DailyMoneyIn extends Fragment {
     SimpleDateFormat moneyInSDF;
     Spinner moneyInCatSpinner;
     SQLiteDatabase moneyInDbDb, currentDbDb, currentDbDb2, currentDbDb4, currentDbDb6, expenseDbDb, incomeDbDb;
-    String moneyInCatS, moneyInCat, moneyInCreatedOn, moneyInS, moneyIn2;
+    String moneyInCatS, moneyInCat, moneyInCreatedOn, moneyInS, moneyIn2, moneyInAmountS;
     TextView moneyInCatText;
     Timestamp moneyInTimestamp;
     View v, moneyInLine;
@@ -82,6 +79,8 @@ public class DailyMoneyIn extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        general = new General();
 
         moneyInAmountText = v.findViewById(R.id.moneyInAmount);
         moneyInButton = v.findViewById(R.id.moneyInButton);
@@ -327,15 +326,25 @@ public class DailyMoneyIn extends Fragment {
                     moneyInLine.setVisibility(View.VISIBLE);
 
                     moneyInCatText.setText(moneyInDb.getMoneyInCat());
-                    moneyInAmountEditText.setText(String.valueOf(moneyInDb.getMoneyInAmount()));
-                    oldMoneyInAmount = Double.valueOf(moneyInAmountEditText.getText().toString());
+
+                    moneyInAmountD = moneyInDb.getMoneyInAmount();
+                    moneyInAmountS = currencyFormat.format(moneyInAmountD);
+                    moneyInAmountEditText.setText(moneyInAmountS);
+
+                    oldMoneyInAmount = general.extractingDollars(moneyInAmountEditText);
 
                     updateMoneyInEntryButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
 
-                            moneyInDb.setMoneyInAmount(Double.valueOf(moneyInAmountEditText.getText().toString()));
-                            newMoneyInAmount = Double.valueOf(moneyInAmountEditText.getText().toString());
+                            try {
+                                moneyInDb.setMoneyInAmount(Double.valueOf(moneyInAmountEditText.getText().toString()));
+                                newMoneyInAmount = Double.valueOf(moneyInAmountEditText.getText().toString());
+                            } catch(NumberFormatException e) {
+                                moneyInDb.setMoneyInAmount(general.extractingDollars(moneyInAmountEditText));
+                                newMoneyInAmount = general.extractingDollars(moneyInAmountEditText);
+                            }
+
                             moneyInAmount = newMoneyInAmount - oldMoneyInAmount;
 
                             moneyInDbManager.updateMoneyIn(moneyInDb);

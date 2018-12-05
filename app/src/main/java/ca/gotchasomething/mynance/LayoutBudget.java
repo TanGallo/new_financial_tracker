@@ -59,12 +59,14 @@ public class LayoutBudget extends MainNavigation {
     DebtDb debt;
     DebtDbManager debtDbManager;
     Double totalIncome = 0.0, totalIncomeD = 0.0, incomeAnnualAmountD = 0.0, totalExpenses = 0.0, totalExpensesD = 0.0, expenseAnnualAmountD = 0.0,
-            incomeAvailableD = 0.0, incomeAvailableN, numberOfYearsToPayDebt = 0.0, numberOfYearsToSavingsGoal = 0.0, balanceAmount = 0.0;
+            incomeAvailableD = 0.0, incomeAvailableN, numberOfYearsToPayDebt = 0.0, numberOfYearsToSavingsGoal = 0.0, balanceAmount = 0.0,
+            budgetIncomeAmountD, budgetExpenseAmountD;
     EditText budgetIncomeCategoryText, budgetIncomeAmountText, budgetIncomeCategory, budgetIncomeAmount, budgetExpenseCategoryText,
             budgetExpenseAmountText, budgetExpenseCategory, budgetExpenseAmount;
     ExpenseBudgetDb expenseBudgetDb;
     ExpenseBudgetDbManager expenseDbManager;
     ExpenseDbAdapter expenseAdapter;
+    General general;
     FloatingActionButton budgetIncomePlusButton, budgetExpensePlusButton;
     ImageButton editIncomeButton, deleteIncomeButton, editExpenseButton, deleteExpenseButton;
     IncomeBudgetDb incomeBudgetDb;
@@ -87,7 +89,8 @@ public class LayoutBudget extends MainNavigation {
     SQLiteDatabase setUpDbDb, incomeDb, expenseDb, debtDb, debtDb2, debtDb3, savingsDb, savingsDb2, savingsDb3;
     String incomeFrequencyS = null, incomeAnnualAmountS = null, incomeAnnualAmount2 = null, expenseFrequencyS = null, expenseWeeklyS = null,
             expensePriorityS = null, expenseAnnualAmount2 = null, totalIncomeS = null, totalIncome2 = null, expenseAnnualAmountS = null,
-            totalExpensesS = null, totalExpenses2 = null, incomeAvailable2 = null, incomeAvailableN2 = null, debtEnd = null, savingsDate = null;
+            totalExpensesS = null, totalExpenses2 = null, incomeAvailable2 = null, incomeAvailableN2 = null, debtEnd = null, savingsDate = null,
+            budgetIncomeAmountS, budgetExpenseAmountS;
     TextView budgetIncomeTotalText, budgetExpensesTotalText, budgetOopsText, budgetOopsAmountText, headerLabel2, incomeAvailable, weeklyGuidanceLabel;
 
     @Override
@@ -104,6 +107,8 @@ public class LayoutBudget extends MainNavigation {
         toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
+
+        general = new General();
 
         budgetIncomeTotalText = findViewById(R.id.budgetIncomeTotalText);
         budgetExpensesTotalText = findViewById(R.id.budgetExpensesTotalText);
@@ -525,7 +530,10 @@ public class LayoutBudget extends MainNavigation {
                     incomeBudgetDb = (IncomeBudgetDb) incomeHolder.incomeEdit.getTag();
 
                     budgetIncomeCategory.setText(incomeBudgetDb.getIncomeName());
-                    budgetIncomeAmount.setText(String.valueOf(incomeBudgetDb.getIncomeAmount()));
+
+                    budgetIncomeAmountD = incomeBudgetDb.getIncomeAmount();
+                    budgetIncomeAmountS = currencyFormat.format(budgetIncomeAmountD);
+                    budgetIncomeAmount.setText(budgetIncomeAmountS);
 
                     if (incomeBudgetDb.getIncomeFrequency() == 52) {
                         budgetIncomeWeeklyRadioButton.setChecked(true);
@@ -589,7 +597,13 @@ public class LayoutBudget extends MainNavigation {
                         public void onClick(View v) {
 
                             incomeBudgetDb.setIncomeName(budgetIncomeCategory.getText().toString());
-                            incomeBudgetDb.setIncomeAmount(Double.valueOf(budgetIncomeAmount.getText().toString()));
+
+                            try {
+                                incomeBudgetDb.setIncomeAmount(Double.valueOf(budgetIncomeAmount.getText().toString()));
+                            } catch(NumberFormatException e) {
+                                incomeBudgetDb.setIncomeAmount(general.extractingDollars(budgetIncomeAmount));
+                            }
+
                             incomeBudgetDb.setIncomeFrequency(Double.valueOf(incomeFrequencyS));
                             incomeBudgetDb.setIncomeAnnualAmount(incomeBudgetDb.getIncomeAmount() * incomeBudgetDb.getIncomeFrequency());
 
@@ -759,7 +773,9 @@ public class LayoutBudget extends MainNavigation {
                         budgetExpenseAnnuallyRadioButton.setVisibility(View.VISIBLE);
                     }
 
-                    budgetExpenseAmount.setText(String.valueOf(expenseBudgetDb.getExpenseAmount()));
+                    budgetExpenseAmountD = expenseBudgetDb.getExpenseAmount();
+                    budgetExpenseAmountS = currencyFormat.format(budgetExpenseAmountD);
+                    budgetExpenseAmount.setText(budgetExpenseAmountS);
 
                     //set radio buttons from data
                     if (expenseBudgetDb.getExpenseFrequency() == 52) {
@@ -888,7 +904,13 @@ public class LayoutBudget extends MainNavigation {
                         public void onClick(View v) {
 
                             expenseBudgetDb.setExpenseName(budgetExpenseCategory.getText().toString());
-                            expenseBudgetDb.setExpenseAmount(Double.valueOf(budgetExpenseAmount.getText().toString()));
+
+                            try {
+                                expenseBudgetDb.setExpenseAmount(Double.valueOf(budgetExpenseAmount.getText().toString()));
+                            } catch(NumberFormatException e) {
+                                expenseBudgetDb.setExpenseAmount(general.extractingDollars(budgetExpenseAmount));
+                            }
+
                             expenseBudgetDb.setExpenseFrequency(Double.valueOf(expenseFrequencyS));
                             expenseBudgetDb.setExpensePriority(String.valueOf(expensePriorityS));
                             expenseBudgetDb.setExpenseWeekly(String.valueOf(expenseWeeklyS));
@@ -909,16 +931,21 @@ public class LayoutBudget extends MainNavigation {
                                     ContentValues debtValues = new ContentValues();
 
                                     debtValues.put(DbHelper.DEBTNAME, budgetExpenseCategory.getText().toString());
-                                    debtValues.put(DbHelper.DEBTPAYMENTS, Double.valueOf(budgetExpenseAmount.getText().toString()));
+                                    try {
+                                        debtValues.put(DbHelper.DEBTPAYMENTS, Double.valueOf(budgetExpenseAmount.getText().toString()));
+                                    } catch(NumberFormatException e2) {
+                                        debtValues.put(DbHelper.DEBTPAYMENTS, general.extractingDollars(budgetExpenseAmount));
+                                    }
                                     debtValues.put(DbHelper.DEBTFREQUENCY, Double.valueOf(expenseFrequencyS));
 
                                     debtDb.update(DbHelper.DEBTS_TABLE_NAME, debtValues, DbHelper.ID + "=?", args);
+
                                     ContentValues debtValues2 = new ContentValues();
                                     debtValues2.put(DbHelper.DEBTEND, updateDebtEndDate());
                                     debtDb.update(DbHelper.DEBTS_TABLE_NAME, debtValues2, DbHelper.ID + "=?", args);
 
-                                } catch (CursorIndexOutOfBoundsException e2) {
-                                    e2.printStackTrace();
+                                } catch (CursorIndexOutOfBoundsException e3) {
+                                    e3.printStackTrace();
                                 }
 
                                 try {
@@ -926,19 +953,21 @@ public class LayoutBudget extends MainNavigation {
                                     ContentValues savingsValues = new ContentValues();
 
                                     savingsValues.put(DbHelper.SAVINGSNAME, budgetExpenseCategory.getText().toString());
-                                    savingsValues.put(DbHelper.SAVINGSPAYMENTS, Double.valueOf(budgetExpenseAmount.getText().toString()));
+                                    try {
+                                        savingsValues.put(DbHelper.SAVINGSPAYMENTS, Double.valueOf(budgetExpenseAmount.getText().toString()));
+                                    } catch(NumberFormatException e4) {
+                                        savingsValues.put(DbHelper.SAVINGSPAYMENTS, general.extractingDollars(budgetExpenseAmount));
+                                    }
                                     savingsValues.put(DbHelper.SAVINGSFREQUENCY, Double.valueOf(expenseFrequencyS));
-                                    savingsValues.put(DbHelper.SAVINGSNAME, budgetExpenseCategory.getText().toString());
-                                    savingsValues.put(DbHelper.SAVINGSNAME, budgetExpenseCategory.getText().toString());
-                                    savingsValues.put(DbHelper.SAVINGSNAME, budgetExpenseCategory.getText().toString());
 
                                     savingsDb.update(DbHelper.SAVINGS_TABLE_NAME, savingsValues, DbHelper.ID + "=?", args2);
+
                                     ContentValues savingsValues2 = new ContentValues();
                                     savingsValues2.put(DbHelper.SAVINGSDATE, updateSavingsDate());
                                     savingsDb.update(DbHelper.SAVINGS_TABLE_NAME, savingsValues2, DbHelper.ID + "=?", args2);
 
-                                } catch (CursorIndexOutOfBoundsException e3) {
-                                    e3.printStackTrace();
+                                } catch (CursorIndexOutOfBoundsException e5) {
+                                    e5.printStackTrace();
                                 }
 
                             expenseAdapter.updateExpenses(expenseDbManager.getExpense());

@@ -59,10 +59,11 @@ public class LayoutDebt extends MainNavigation {
     DebtDbAdapter debtAdapter;
     DebtDbManager debtDbManager;
     Double totalDebt = 0.0, totalDebtD = 0.0, debtAmountD = 0.0, a = 0.0, numberOfYearsToPayDebt = 0.0, balanceAmount, amount = 0.0, rate = 0.0,
-            payments = 0.0, frequency = 0.0, expenseAnnualAmount = 0.0;
+            payments = 0.0, frequency = 0.0, expenseAnnualAmount = 0.0, debtAmountD2, debtPaymentsD;
     EditText debtNameEntry, debtAmountEntry, debtPercentEntry, debtPaymentsEntry;
     ExpenseBudgetDbManager expenseBudgetDbManager;
     FloatingActionButton addDebtButton;
+    General general;
     int debtsDoneCheck, debtsDone, savingsDone, budgetDone, balanceDone, tourDone;
     Integer numberOfDaysToPayDebt = 0;
     Intent addNewDebt, backToDebtScreen, backToDebtScreen2, backToSetUp;
@@ -75,8 +76,8 @@ public class LayoutDebt extends MainNavigation {
     SetUpDb setUpDb;
     SetUpDbManager setUpDbManager;
     SimpleDateFormat latestDateS, debtEndS;
-    String totalDebt2 = null, latestDate = null, totalDebtS = null, debtAmountS = null, debtAmount2 = null, debtFrequencyS = null, debtEnd = null;
-
+    String totalDebt2 = null, latestDate = null, totalDebtS = null, debtAmountS = null, debtAmount2 = null, debtFrequencyS = null, debtEnd = null,
+            debtAmountS2, debtPaymentsS;
     TextView totalDebtOwing, totalDebtPaidByDate, debtListName, debtListAmount, debtListFreeDate, debtDateResult;
 
     @Override
@@ -93,6 +94,8 @@ public class LayoutDebt extends MainNavigation {
         toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
+
+        general = new General();
 
         totalDebtOwing = findViewById(R.id.totalDebtOwing);
         totalDebtPaidByDate = findViewById(R.id.totalDebtPaidByDate);
@@ -253,7 +256,11 @@ public class LayoutDebt extends MainNavigation {
         if(debtAmountEntry.getText().toString().equals("")) {
             amount = 0.0;
         } else {
-            amount = Double.valueOf(debtAmountEntry.getText().toString());
+            try {
+                amount = Double.valueOf(debtAmountEntry.getText().toString());
+            } catch(NumberFormatException e) {
+                amount = general.extractingDollars(debtAmountEntry);
+            }
         }
 
         if(debtPercentEntry.getText().toString().equals("")) {
@@ -265,7 +272,11 @@ public class LayoutDebt extends MainNavigation {
         if(debtPaymentsEntry.getText().toString().equals("")) {
             payments = 0.0;
         } else {
-            payments = Double.valueOf(debtPaymentsEntry.getText().toString());
+            try {
+                payments = Double.valueOf(debtPaymentsEntry.getText().toString());
+            } catch(NumberFormatException e2) {
+                payments = general.extractingDollars(debtPaymentsEntry);
+            }
         }
 
         frequency = Double.valueOf(debtFrequencyS);
@@ -439,13 +450,19 @@ public class LayoutDebt extends MainNavigation {
 
                     debtNameEntry.setText(debtDb.getDebtName());
 
-                    debtAmountEntry.setText(String.valueOf(debtDb.getDebtAmount()));
+                    debtAmountD2 = debtDb.getDebtAmount();
+                    debtAmountS2 = currencyFormat.format(debtAmountD2);
+                    debtAmountEntry.setText(debtAmountS2);
+
                     debtAmountEntry.addTextChangedListener(onChangeDebtAmount);
 
                     debtPercentEntry.setText(String.valueOf(debtDb.getDebtRate()));
                     debtPercentEntry.addTextChangedListener(onChangeDebtPercent);
 
-                    debtPaymentsEntry.setText(String.valueOf(debtDb.getDebtPayments()));
+                    debtPaymentsD = debtDb.getDebtPayments();
+                    debtPaymentsS = currencyFormat.format(debtPaymentsD);
+                    debtPaymentsEntry.setText(debtPaymentsS);
+
                     debtPaymentsEntry.addTextChangedListener(onChangeDebtPayments);
 
                     //set radio button selections from data
@@ -491,7 +508,12 @@ public class LayoutDebt extends MainNavigation {
                             ContentValues values = new ContentValues();
 
                             values.put(DbHelper.EXPENSENAME, debtNameEntry.getText().toString());
-                            values.put(DbHelper.EXPENSEAMOUNT, Double.valueOf(debtPaymentsEntry.getText().toString()));
+
+                            try {
+                                values.put(DbHelper.EXPENSEAMOUNT, Double.valueOf(debtPaymentsEntry.getText().toString()));
+                            } catch(NumberFormatException e3) {
+                                values.put(DbHelper.EXPENSEAMOUNT, general.extractingDollars(debtPaymentsEntry));
+                            }
                             values.put(DbHelper.EXPENSEFREQUENCY, Double.valueOf(debtFrequencyS));
 
                             expenseAnnualAmount = Double.valueOf(debtPaymentsEntry.getText().toString()) * Double.valueOf(debtFrequencyS);

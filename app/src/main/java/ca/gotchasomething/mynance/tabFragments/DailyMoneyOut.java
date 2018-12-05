@@ -30,14 +30,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import ca.gotchasomething.mynance.DbHelper;
+import ca.gotchasomething.mynance.General;
 import ca.gotchasomething.mynance.LayoutDailyMoney;
-import ca.gotchasomething.mynance.LayoutEntriesSpending;
 import ca.gotchasomething.mynance.R;
-import ca.gotchasomething.mynance.data.MoneyInDb;
-import ca.gotchasomething.mynance.data.MoneyInDbManager;
 import ca.gotchasomething.mynance.data.MoneyOutDb;
 import ca.gotchasomething.mynance.data.MoneyOutDbManager;
-import ca.gotchasomething.mynance.spinners.MoneyInSpinnerAdapter;
 import ca.gotchasomething.mynance.spinners.MoneyOutSpinnerAdapter;
 
 public class DailyMoneyOut extends Fragment {
@@ -49,8 +46,9 @@ public class DailyMoneyOut extends Fragment {
     Date moneyOutDate;
     DbHelper moneyOutDbHelper, currentHelper, currentHelper2, currentHelper3, currentHelper5, expenseHelper, incomeHelper;
     Double moneyOutAmount, currentAccountBalance, newCurrentAccountBalance3, totalBudgetAExpenses, totalBudgetIncome, percentB,
-            currentAvailableBalance, newCurrentAvailableBalance3, moneyOutD, oldMoneyOutAmount, newMoneyOutAmount;
+            currentAvailableBalance, newCurrentAvailableBalance3, moneyOutD, oldMoneyOutAmount, newMoneyOutAmount, moneyOutAmountD;
     EditText moneyOutAmountText, moneyOutAmountEditText;
+    General general;
     int moneyOutToPay, moneyOutPaid;
     Intent backToDaily, backToDaily2, backToDaily3;
     ListView moneyOutList;
@@ -62,7 +60,7 @@ public class DailyMoneyOut extends Fragment {
     SimpleDateFormat moneyOutSDF;
     Spinner moneyOutCatSpinner;
     SQLiteDatabase moneyOutDbDb, currentDbDb, currentDbDb2, currentDbDb3, currentDbDb5, expenseDbDb, incomeDbDb;
-    String moneyOutCatS, moneyOutCat, moneyOutPriority, moneyOutPriorityS, moneyOutCreatedOn, moneyOutCC, moneyOutS, moneyOut2;
+    String moneyOutCatS, moneyOutCat, moneyOutPriority, moneyOutPriorityS, moneyOutCreatedOn, moneyOutCC, moneyOutS, moneyOut2, moneyOutAmountS;
     TextView moneyOutCatText;
     Timestamp moneyOutTimestamp;
     View v, moneyOutLine;
@@ -83,6 +81,8 @@ public class DailyMoneyOut extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        general = new General();
 
         moneyOutAmountText = v.findViewById(R.id.moneyOutAmount);
         moneyOutButton = v.findViewById(R.id.moneyOutButton);
@@ -354,15 +354,25 @@ public class DailyMoneyOut extends Fragment {
                     moneyOutLine.setVisibility(View.VISIBLE);
 
                     moneyOutCatText.setText(moneyOutDb.getMoneyOutCat());
-                    moneyOutAmountEditText.setText(String.valueOf(moneyOutDb.getMoneyOutAmount()));
-                    oldMoneyOutAmount = Double.valueOf(moneyOutAmountEditText.getText().toString());
+
+                    moneyOutAmountD = moneyOutDb.getMoneyOutAmount();
+                    moneyOutAmountS = currencyFormat.format(moneyOutAmountD);
+                    moneyOutAmountEditText.setText(moneyOutAmountS);
+
+                    oldMoneyOutAmount = general.extractingDollars(moneyOutAmountEditText);
 
                     updateMoneyOutEntryButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
 
-                            moneyOutDb.setMoneyOutAmount(Double.valueOf(moneyOutAmountEditText.getText().toString()));
-                            newMoneyOutAmount = Double.valueOf(moneyOutAmountEditText.getText().toString());
+                            try {
+                                moneyOutDb.setMoneyOutAmount(Double.valueOf(moneyOutAmountEditText.getText().toString()));
+                                newMoneyOutAmount = Double.valueOf(moneyOutAmountEditText.getText().toString());
+                            } catch (NumberFormatException e) {
+                                moneyOutDb.setMoneyOutAmount(general.extractingDollars(moneyOutAmountEditText));
+                                newMoneyOutAmount = general.extractingDollars(moneyOutAmountEditText);
+                            }
+
                             moneyOutAmount = newMoneyOutAmount - oldMoneyOutAmount;
 
                             moneyOutDbManager.updateMoneyOut(moneyOutDb);
@@ -387,7 +397,9 @@ public class DailyMoneyOut extends Fragment {
                         }
                     });
 
-                    cancelMoneyOutEntryButton.setOnClickListener(new View.OnClickListener() {
+                    cancelMoneyOutEntryButton.setOnClickListener(new View.OnClickListener()
+
+                    {
                         @Override
                         public void onClick(View v) {
                             moneyOutCatText.setVisibility(View.GONE);
@@ -405,7 +417,9 @@ public class DailyMoneyOut extends Fragment {
             });
 
             //click on trash can icon
-            holder.moneyOutDelete.setOnClickListener(new View.OnClickListener() {
+            holder.moneyOutDelete.setOnClickListener(new View.OnClickListener()
+
+            {
                 @Override
                 public void onClick(View v) {
 
