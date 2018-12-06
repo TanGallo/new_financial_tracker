@@ -50,7 +50,7 @@ public class LayoutSavings extends MainNavigation {
     DbHelper setUpHelper, expenseDbHelper, savingsDbHelper;
     Double amount = 0.0, expenseAnnualAmount = 0.0, totalSavings = 0.0, totalSavingsD = 0.0, savingsGoalD = 0.0, savingsCurrentD = 0.0, rate = 0.0,
             a = 0.0, payments = 0.0, frequency = 0.0, numberOfYearsToSavingsGoal = 0.0, balanceAmount = 0.0, goalAmount, savingsAmount, savingsAmountD,
-            savingsPaymentsD, savingsGoalD2;
+            savingsPaymentsD, savingsGoalD2, savingsPercentD, savingsPercentD2;
     EditText savingsNameEntry, savingsAmountEntry, savingsPercentEntry, savingsPaymentsEntry, savingsGoalAmountEntry;
     ExpenseBudgetDbManager expenseBudgetDbManager;
     FloatingActionButton addSavingsButton;
@@ -61,6 +61,7 @@ public class LayoutSavings extends MainNavigation {
     ListView savingsListView;
     long id, idResult;
     NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
+    NumberFormat percentFormat = NumberFormat.getPercentInstance();
     RadioButton savingsWeeklyRadioButton, savingsBiWeeklyRadioButton, savingsMonthlyRadioButton, savingsAnnuallyRadioButton;
     RadioGroup savingsFrequencyRadioGroup;
     SavingsDbAdapter savingsAdapter;
@@ -71,7 +72,7 @@ public class LayoutSavings extends MainNavigation {
     SimpleDateFormat savingsDateS;
     SQLiteDatabase expenseDb, savingsDbDb, setUpDbDb;
     String totalSavings2 = null, totalSavingsS = null, savingsGoalS = null, savingsGoal2 = null, savingsCurrentS = null, savingsCurrent2 = null,
-            savingsDate = null, savingsFrequencyS = null, savingsAmountS, savingsPaymentsS, savingsGoalS2;
+            savingsDate = null, savingsFrequencyS = null, savingsAmountS, savingsPaymentsS, savingsGoalS2, savingsPercentS;
     TextView totalSavedText, savingsListName, savingsListGoalAmount, savingsListDate, savingsListCurrentAmount, savingsDateResult;
 
     @Override
@@ -173,13 +174,13 @@ public class LayoutSavings extends MainNavigation {
         } else {
             try {
                 goalAmount = Double.valueOf(savingsGoalAmountEntry.getText().toString());
-            } catch (NumberFormatException e) {
+            } catch (NumberFormatException e2) {
                 goalAmount = general.extractingDollars(savingsGoalAmountEntry);
             }
 
             try {
                 savingsAmount = Double.valueOf(savingsAmountEntry.getText().toString());
-            } catch (NumberFormatException e2) {
+            } catch (NumberFormatException e3) {
                 savingsAmount = general.extractingDollars(savingsAmountEntry);
             }
         }
@@ -189,7 +190,11 @@ public class LayoutSavings extends MainNavigation {
         if (savingsPercentEntry.getText().toString().equals("")) {
             rate = 0.0;
         } else {
-            rate = Double.valueOf(savingsPercentEntry.getText().toString());
+            try {
+                rate = Double.valueOf(savingsPercentEntry.getText().toString());
+            } catch (NumberFormatException e4) {
+                rate = general.extractingPercents(savingsPercentEntry);
+            }
         }
 
         if (savingsPaymentsEntry.getText().toString().equals("")) {
@@ -197,7 +202,7 @@ public class LayoutSavings extends MainNavigation {
         } else {
             try {
                 payments = Double.valueOf(savingsPaymentsEntry.getText().toString());
-            } catch(NumberFormatException e3) {
+            } catch(NumberFormatException e5) {
                 payments = general.extractingDollars(savingsPaymentsEntry);
             }
         }
@@ -350,7 +355,7 @@ public class LayoutSavings extends MainNavigation {
                 }
                 savingsGoal2 = currencyFormat.format(savingsGoalD);
                 holder.savingsListGoalAmount.setText(savingsGoal2);
-            } catch (NumberFormatException e) {
+            } catch (NumberFormatException e6) {
                 holder.savingsListGoalAmount.setText(savingsGoal2);
             }
 
@@ -367,7 +372,7 @@ public class LayoutSavings extends MainNavigation {
                 }
                 savingsCurrent2 = currencyFormat.format(savingsCurrentD);
                 holder.savingsListCurrentAmount.setText(savingsCurrent2);
-            } catch (NumberFormatException e) {
+            } catch (NumberFormatException e7) {
                 holder.savingsListCurrentAmount.setText(savingsCurrent2);
             }
 
@@ -412,7 +417,11 @@ public class LayoutSavings extends MainNavigation {
                     savingsAmountEntry.setText(savingsAmountS);
                     savingsAmountEntry.addTextChangedListener(onChangeSavingsAmount);
 
-                    savingsPercentEntry.setText(String.valueOf(savingsDb.getSavingsRate()));
+                    savingsPercentD = savingsDb.getSavingsRate();
+                    savingsPercentD2 = savingsPercentD / 100;
+                    percentFormat.setMinimumFractionDigits(2);
+                    savingsPercentS = percentFormat.format(savingsPercentD2);
+                    savingsPercentEntry.setText(savingsPercentS);
                     savingsPercentEntry.addTextChangedListener(onChangeSavingsPercent);
 
                     savingsPaymentsD = savingsDb.getSavingsPayments();
@@ -477,14 +486,14 @@ public class LayoutSavings extends MainNavigation {
                             values.put(DbHelper.EXPENSENAME, savingsNameEntry.getText().toString());
                             try{
                                 values.put(DbHelper.EXPENSEAMOUNT, Double.valueOf(savingsPaymentsEntry.getText().toString()));
-                            } catch (NumberFormatException e5) {
+                            } catch (NumberFormatException e8) {
                                 values.put(DbHelper.EXPENSEAMOUNT, general.extractingDollars(savingsPaymentsEntry));
                             }
                             values.put(DbHelper.EXPENSEFREQUENCY, Double.valueOf(savingsFrequencyS));
 
                             try {
                                 expenseAnnualAmount = Double.valueOf(savingsPaymentsEntry.getText().toString()) * Double.valueOf(savingsFrequencyS);
-                            } catch (NumberFormatException e6) {
+                            } catch (NumberFormatException e9) {
                                 expenseAnnualAmount = general.extractingDollars(savingsPaymentsEntry) * Double.valueOf(savingsFrequencyS);
                             }
 
@@ -496,19 +505,25 @@ public class LayoutSavings extends MainNavigation {
                             savingsDb.setSavingsName(savingsNameEntry.getText().toString());
                             try {
                                 savingsDb.setSavingsAmount(Double.valueOf(savingsAmountEntry.getText().toString()));
-                            } catch (NumberFormatException e7) {
+                            } catch (NumberFormatException e10) {
                                 savingsDb.setSavingsAmount(general.extractingDollars(savingsAmountEntry));
                             }
-                            savingsDb.setSavingsRate(Double.valueOf(savingsPercentEntry.getText().toString()));
+
+                            try {
+                                savingsDb.setSavingsRate(Double.valueOf(savingsPercentEntry.getText().toString()));
+                            } catch (NumberFormatException e13) {
+                                savingsDb.setSavingsRate(general.extractingPercents(savingsPercentEntry));
+                            }
+
                             try {
                                 savingsDb.setSavingsPayments(Double.valueOf(savingsPaymentsEntry.getText().toString()));
-                            } catch (NumberFormatException e8) {
+                            } catch (NumberFormatException e11) {
                                 savingsDb.setSavingsPayments(general.extractingDollars(savingsPaymentsEntry));
                             }
                             savingsDb.setSavingsFrequency(Double.valueOf(savingsFrequencyS));
                             try {
                                 savingsDb.setSavingsGoal(Double.valueOf(savingsGoalAmountEntry.getText().toString()));
-                            } catch (NumberFormatException e9) {
+                            } catch (NumberFormatException e12) {
                                 savingsDb.setSavingsGoal(general.extractingDollars(savingsGoalAmountEntry));
                             }
 

@@ -208,7 +208,7 @@ public class LayoutSetUp extends MainNavigation {
             setUpDbManager.addSetUp(setUpDb);
 
             currentAccountBalance = balanceAmount;
-            currentAvailableBalance = balanceAmount * currentDbManager.getBPercentage();
+            currentAvailableBalance = balanceAmount * currentDbManager.retrieveBPercentage();
 
             currentDb = new CurrentDb(currentAccountBalance, currentAvailableBalance, 0);
 
