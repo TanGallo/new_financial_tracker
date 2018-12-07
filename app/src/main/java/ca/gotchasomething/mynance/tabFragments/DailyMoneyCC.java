@@ -29,6 +29,8 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import ca.gotchasomething.mynance.DbHelper;
 import ca.gotchasomething.mynance.General;
 import ca.gotchasomething.mynance.R;
@@ -51,6 +53,7 @@ public class DailyMoneyCC extends Fragment {
     General general;
     int moneyOutToPay, moneyOutPaid;
     ListView ccTransList;
+    long moneyOutRefKeyMO, expRefKeyMO;
     MoneyOutDb moneyOutDb;
     MoneyOutDbManager moneyOutDbManager;
     MoneyOutSpinnerAdapter ccTransSpinnerAdapter;
@@ -58,7 +61,8 @@ public class DailyMoneyCC extends Fragment {
     SimpleDateFormat moneyOutSDF;
     Spinner ccTransCatSpinner;
     SQLiteDatabase moneyOutDbDb2;
-    String moneyOutCat, moneyOutPriority, moneyOutCreatedOn, moneyOutCC, ccTransCatS, ccTransPriorityS, ccTransAmountS, ccTransAmount2, ccTransAmountS2;
+    String moneyOutCat, moneyOutPriority, moneyOutWeekly, moneyOutCreatedOn, moneyOutCC, ccTransCatS, ccTransPriorityS, moneyOutWeeklyS, ccTransAmountS,
+            ccTransAmount2, ccTransAmountS2;
     TextView ccTransCatText;
     Timestamp moneyOutTimestamp;
     View v, ccTransLine;
@@ -123,6 +127,8 @@ public class DailyMoneyCC extends Fragment {
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
             ccTransCatS = moneyOutCursor2.getString(moneyOutCursor2.getColumnIndexOrThrow(DbHelper.EXPENSENAME));
             ccTransPriorityS = moneyOutCursor2.getString(moneyOutCursor2.getColumnIndexOrThrow(DbHelper.EXPENSEPRIORITY));
+            moneyOutWeeklyS = moneyOutCursor2.getString(moneyOutCursor2.getColumnIndexOrThrow(DbHelper.EXPENSEWEEKLY));
+            moneyOutRefKeyMO = moneyOutCursor2.getLong(moneyOutCursor2.getColumnIndexOrThrow(DbHelper.ID));
 
         }
 
@@ -138,6 +144,7 @@ public class DailyMoneyCC extends Fragment {
 
             moneyOutCat = ccTransCatS;
             moneyOutPriority = ccTransPriorityS;
+            moneyOutWeekly = moneyOutWeeklyS;
             moneyOutAmount = Double.valueOf(ccTransAmountText.getText().toString());
             moneyOutDate = new Date();
             moneyOutTimestamp = new Timestamp(moneyOutDate.getTime());
@@ -146,9 +153,10 @@ public class DailyMoneyCC extends Fragment {
             moneyOutCC = "Y";
             moneyOutToPay = 0;
             moneyOutPaid = 0;
+            expRefKeyMO = moneyOutRefKeyMO;
 
-            moneyOutDb = new MoneyOutDb(moneyOutCat, moneyOutPriority, moneyOutAmount, moneyOutCreatedOn,
-                    moneyOutCC, moneyOutToPay, moneyOutPaid, 0);
+            moneyOutDb = new MoneyOutDb(moneyOutCat, moneyOutPriority, moneyOutWeekly, moneyOutAmount, moneyOutCreatedOn,
+                    moneyOutCC, moneyOutToPay, moneyOutPaid, expRefKeyMO,  0);
 
             moneyOutDbManager.addMoneyOut(moneyOutDb);
             Toast.makeText(getActivity(), "Saved", Toast.LENGTH_LONG).show();

@@ -214,7 +214,7 @@ public class LayoutSetUp extends MainNavigation {
 
             currentDbManager.addCurrent(currentDb);
 
-            moneyInCat = "starting balance";
+            moneyInCat = "start";
             moneyInAmount = balanceAmount;
             moneyInDate = new Date();
             moneyInTimestamp = new Timestamp(moneyInDate.getTime());

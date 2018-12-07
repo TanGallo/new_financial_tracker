@@ -6,18 +6,28 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.text.SimpleDateFormat;
+import java.time.DayOfWeek;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import ca.gotchasomething.mynance.DbHelper;
+import ca.gotchasomething.mynance.General;
 import ca.gotchasomething.mynance.tabFragments.DailyMoneyIn;
 
 public class MoneyOutDbManager {
 
+    public Cursor cursorMoneyOut, cursorMoneyOut2, cursorMoneyOut3, cursorMoneyOut4, cursorMoneyOut8, cursorMoneyOut9, cursorMoneyOut11;
     private DbHelper dbHelperMoneyOut;
     public Double totalCCPaymentDue, totalCCPaymentBDue;
-    SQLiteDatabase dbMoneyOut, dbMoneyOut2, dbMoneyOut3, dbMoneyOut4, dbMoneyOut5, dbMoneyOut6, dbMoneyOut7, dbMoneyOut8, dbMoneyOut9, dbMoneyOut10;
-    Cursor cursorMoneyOut, cursorMoneyOut2, cursorMoneyOut3, cursorMoneyOut4, cursorMoneyOut8, cursorMoneyOut9;
+    General general = new General();
+    SQLiteDatabase dbMoneyOut, dbMoneyOut2, dbMoneyOut3, dbMoneyOut4, dbMoneyOut5, dbMoneyOut6, dbMoneyOut7, dbMoneyOut8, dbMoneyOut9, dbMoneyOut10,
+            dbMoneyOut11;
 
     public MoneyOutDbManager(Context context) {
         dbHelperMoneyOut = DbHelper.getInstance(context);
@@ -38,11 +48,13 @@ public class MoneyOutDbManager {
                 MoneyOutDb moneyOut = new MoneyOutDb(
                         cursorMoneyOut.getString(cursorMoneyOut.getColumnIndex(DbHelper.MONEYOUTCAT)),
                         cursorMoneyOut.getString(cursorMoneyOut.getColumnIndex(DbHelper.MONEYOUTPRIORITY)),
+                        cursorMoneyOut.getString(cursorMoneyOut.getColumnIndex(DbHelper.MONEYOUTWEEKLY)),
                         cursorMoneyOut.getDouble(cursorMoneyOut.getColumnIndex(DbHelper.MONEYOUTAMOUNT)),
                         cursorMoneyOut.getString(cursorMoneyOut.getColumnIndex(DbHelper.MONEYOUTCREATEDON)),
                         cursorMoneyOut.getString(cursorMoneyOut.getColumnIndex(DbHelper.MONEYOUTCC)),
                         cursorMoneyOut.getInt(cursorMoneyOut.getColumnIndex(DbHelper.MONEYOUTTOPAY)),
                         cursorMoneyOut.getInt(cursorMoneyOut.getColumnIndex(DbHelper.MONEYOUTPAID)),
+                        cursorMoneyOut.getLong(cursorMoneyOut.getColumnIndex(DbHelper.EXPREFKEYMO)),
                         cursorMoneyOut.getLong(cursorMoneyOut.getColumnIndex(DbHelper.ID))
                 );
 
@@ -59,11 +71,13 @@ public class MoneyOutDbManager {
         ContentValues newMoneyOut = new ContentValues();
         newMoneyOut.put(DbHelper.MONEYOUTCAT, moneyOut.getMoneyOutCat());
         newMoneyOut.put(DbHelper.MONEYOUTPRIORITY, moneyOut.getMoneyOutPriority());
+        newMoneyOut.put(DbHelper.MONEYOUTWEEKLY, moneyOut.getMoneyOutWeekly());
         newMoneyOut.put(DbHelper.MONEYOUTAMOUNT, moneyOut.getMoneyOutAmount());
         newMoneyOut.put(DbHelper.MONEYOUTCREATEDON, moneyOut.getMoneyOutCreatedOn());
         newMoneyOut.put(DbHelper.MONEYOUTCC, moneyOut.getMoneyOutCC());
         newMoneyOut.put(DbHelper.MONEYOUTTOPAY, moneyOut.getMoneyOutToPay());
         newMoneyOut.put(DbHelper.MONEYOUTPAID, moneyOut.getMoneyOutPaid());
+        newMoneyOut.put(DbHelper.EXPREFKEYMO, moneyOut.getExpRefKeyMO());
 
         dbMoneyOut2 = dbHelperMoneyOut.getWritableDatabase();
         dbMoneyOut2.insert(DbHelper.MONEY_OUT_TABLE_NAME, null, newMoneyOut);
@@ -74,11 +88,13 @@ public class MoneyOutDbManager {
         ContentValues updateMoneyOut = new ContentValues();
         updateMoneyOut.put(DbHelper.MONEYOUTCAT, moneyOut.getMoneyOutCat());
         updateMoneyOut.put(DbHelper.MONEYOUTPRIORITY, moneyOut.getMoneyOutPriority());
+        updateMoneyOut.put(DbHelper.MONEYOUTWEEKLY, moneyOut.getMoneyOutWeekly());
         updateMoneyOut.put(DbHelper.MONEYOUTAMOUNT, moneyOut.getMoneyOutAmount());
         updateMoneyOut.put(DbHelper.MONEYOUTCREATEDON, moneyOut.getMoneyOutCreatedOn());
         updateMoneyOut.put(DbHelper.MONEYOUTCC, moneyOut.getMoneyOutCC());
         updateMoneyOut.put(DbHelper.MONEYOUTTOPAY, moneyOut.getMoneyOutToPay());
         updateMoneyOut.put(DbHelper.MONEYOUTPAID, moneyOut.getMoneyOutPaid());
+        updateMoneyOut.put(DbHelper.EXPREFKEYMO, moneyOut.getExpRefKeyMO());
 
         dbMoneyOut3 = dbHelperMoneyOut.getWritableDatabase();
 
@@ -117,11 +133,13 @@ public class MoneyOutDbManager {
                 MoneyOutDb cashTransList = new MoneyOutDb(
                         cursorMoneyOut4.getString(cursorMoneyOut4.getColumnIndex(DbHelper.MONEYOUTCAT)),
                         cursorMoneyOut4.getString(cursorMoneyOut4.getColumnIndex(DbHelper.MONEYOUTPRIORITY)),
+                        cursorMoneyOut4.getString(cursorMoneyOut4.getColumnIndex(DbHelper.MONEYOUTWEEKLY)),
                         cursorMoneyOut4.getDouble(cursorMoneyOut4.getColumnIndex(DbHelper.MONEYOUTAMOUNT)),
                         cursorMoneyOut4.getString(cursorMoneyOut4.getColumnIndex(DbHelper.MONEYOUTCREATEDON)),
                         cursorMoneyOut4.getString(cursorMoneyOut4.getColumnIndex(DbHelper.MONEYOUTCC)),
                         cursorMoneyOut4.getInt(cursorMoneyOut4.getColumnIndex(DbHelper.MONEYOUTTOPAY)),
                         cursorMoneyOut4.getInt(cursorMoneyOut4.getColumnIndex(DbHelper.MONEYOUTPAID)),
+                        cursorMoneyOut4.getLong(cursorMoneyOut4.getColumnIndex(DbHelper.EXPREFKEYMO)),
                         cursorMoneyOut4.getLong(cursorMoneyOut4.getColumnIndex(DbHelper.ID))
                 );
 
@@ -148,11 +166,13 @@ public class MoneyOutDbManager {
                 MoneyOutDb ccTransList = new MoneyOutDb(
                         cursorMoneyOut2.getString(cursorMoneyOut2.getColumnIndex(DbHelper.MONEYOUTCAT)),
                         cursorMoneyOut2.getString(cursorMoneyOut2.getColumnIndex(DbHelper.MONEYOUTPRIORITY)),
+                        cursorMoneyOut2.getString(cursorMoneyOut2.getColumnIndex(DbHelper.MONEYOUTWEEKLY)),
                         cursorMoneyOut2.getDouble(cursorMoneyOut2.getColumnIndex(DbHelper.MONEYOUTAMOUNT)),
                         cursorMoneyOut2.getString(cursorMoneyOut2.getColumnIndex(DbHelper.MONEYOUTCREATEDON)),
                         cursorMoneyOut2.getString(cursorMoneyOut2.getColumnIndex(DbHelper.MONEYOUTCC)),
                         cursorMoneyOut2.getInt(cursorMoneyOut2.getColumnIndex(DbHelper.MONEYOUTTOPAY)),
                         cursorMoneyOut2.getInt(cursorMoneyOut2.getColumnIndex(DbHelper.MONEYOUTPAID)),
+                        cursorMoneyOut2.getLong(cursorMoneyOut2.getColumnIndex(DbHelper.EXPREFKEYMO)),
                         cursorMoneyOut2.getLong(cursorMoneyOut2.getColumnIndex(DbHelper.ID))
                 );
 
@@ -170,7 +190,7 @@ public class MoneyOutDbManager {
 
         cursorMoneyOut3 = dbMoneyOut6.rawQuery(
                 "SELECT * FROM " + DbHelper.MONEY_OUT_TABLE_NAME + " WHERE " + DbHelper.MONEYOUTCC + " = 'Y' AND "
-                + DbHelper.MONEYOUTPAID + " = '0'", null);
+                        + DbHelper.MONEYOUTPAID + " = '0'", null);
 
         List<MoneyOutDb> ccTransToPay = new ArrayList<>();
 
@@ -180,11 +200,13 @@ public class MoneyOutDbManager {
                 MoneyOutDb ccTransToPayList = new MoneyOutDb(
                         cursorMoneyOut3.getString(cursorMoneyOut3.getColumnIndex(DbHelper.MONEYOUTCAT)),
                         cursorMoneyOut3.getString(cursorMoneyOut3.getColumnIndex(DbHelper.MONEYOUTPRIORITY)),
+                        cursorMoneyOut3.getString(cursorMoneyOut3.getColumnIndex(DbHelper.MONEYOUTWEEKLY)),
                         cursorMoneyOut3.getDouble(cursorMoneyOut3.getColumnIndex(DbHelper.MONEYOUTAMOUNT)),
                         cursorMoneyOut3.getString(cursorMoneyOut3.getColumnIndex(DbHelper.MONEYOUTCREATEDON)),
                         cursorMoneyOut3.getString(cursorMoneyOut3.getColumnIndex(DbHelper.MONEYOUTCC)),
                         cursorMoneyOut3.getInt(cursorMoneyOut3.getColumnIndex(DbHelper.MONEYOUTTOPAY)),
                         cursorMoneyOut3.getInt(cursorMoneyOut3.getColumnIndex(DbHelper.MONEYOUTPAID)),
+                        cursorMoneyOut3.getLong(cursorMoneyOut3.getColumnIndex(DbHelper.EXPREFKEYMO)),
                         cursorMoneyOut3.getLong(cursorMoneyOut3.getColumnIndex(DbHelper.ID))
                 );
 
@@ -234,4 +256,45 @@ public class MoneyOutDbManager {
         dbMoneyOut10.update(DbHelper.MONEY_OUT_TABLE_NAME, updateMoneyOutPaid, DbHelper.MONEYOUTTOPAY + "= '1' AND " + DbHelper.MONEYOUTPAID
                 + " = '0'", null);
     }
+
+    /*public void getSpentThisWeek() {
+
+        dbMoneyOut11 = dbHelperMoneyOut.getReadableDatabase();
+        cursorMoneyOut11 = dbMoneyOut11.rawQuery("SELECT sum(moneyOutAmount) FROM " + DbHelper.MONEY_OUT_TABLE_NAME + " WHERE "
+                + DbHelper.MONEYOUTWEEKLY + " = 'Y' AND " + DbHelper.MONEYOUTCREATEDON + " IN " + general.validDates()
+                + " GROUP BY " + DbHelper.MONEYOUTCAT, null);*/
+
+        /*dbHelperMoneyOut.getWritableDatabase();
+
+        List<Double> spentThisWeekList = new ArrayList<>();
+
+        if(cursorMoneyOut11.moveToFirst()) {
+            do {
+                spentThisWeekList.add(cursorMoneyOut11.getDouble(0));
+            } while(cursorMoneyOut11.moveToNext());
+        }
+
+        if (cursorMoneyOut11.moveToFirst()) {
+            while (!cursorMoneyOut11.isAfterLast()) {
+
+                MoneyOutDb spentThisWeek = new MoneyOutDb(
+                        cursorMoneyOut11.getString(cursorMoneyOut11.getColumnIndex(DbHelper.MONEYOUTCAT)),
+                        cursorMoneyOut11.getString(cursorMoneyOut11.getColumnIndex(DbHelper.MONEYOUTPRIORITY)),
+                        cursorMoneyOut11.getString(cursorMoneyOut11.getColumnIndex(DbHelper.MONEYOUTWEEKLY)),
+                        cursorMoneyOut11.getDouble(cursorMoneyOut11.getColumnIndex(DbHelper.MONEYOUTAMOUNT)),
+                        cursorMoneyOut11.getString(cursorMoneyOut11.getColumnIndex(DbHelper.MONEYOUTCREATEDON)),
+                        cursorMoneyOut11.getString(cursorMoneyOut11.getColumnIndex(DbHelper.MONEYOUTCC)),
+                        cursorMoneyOut11.getInt(cursorMoneyOut11.getColumnIndex(DbHelper.MONEYOUTTOPAY)),
+                        cursorMoneyOut11.getInt(cursorMoneyOut11.getColumnIndex(DbHelper.MONEYOUTPAID)),
+                        cursorMoneyOut11.getLong(cursorMoneyOut11.getColumnIndex(DbHelper.EXPREFKEYMO)),
+                        cursorMoneyOut11.getLong(cursorMoneyOut11.getColumnIndex(DbHelper.ID))
+                );
+
+                spentThisWeekList.add(spentThisWeek);
+                cursorMoneyOut11.moveToNext();
+            }
+        }
+        cursorMoneyOut11.close();
+        return spentThisWeekList;*/
+    //}
 }

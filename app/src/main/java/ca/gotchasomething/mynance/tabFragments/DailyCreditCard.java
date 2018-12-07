@@ -19,6 +19,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 import java.text.NumberFormat;
 import java.util.List;
+
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import ca.gotchasomething.mynance.DbHelper;
 import ca.gotchasomething.mynance.LayoutDailyMoney;
 import ca.gotchasomething.mynance.R;
@@ -36,6 +39,8 @@ public class DailyCreditCard extends Fragment {
     DbHelper moneyOutHelper3, currentHelper3, currentHelper4;
     Double ccAmountD, totalCCPaymentDue, currentAccountBalance, currentAvailableBalance, totalCCPaymentBDue, newCurrentAvailableBalance,
             newCurrentAccountBalance, currentAccountBalance2, totalCCPaymentDue2, currentAvailableBalance2, totalCCPaymentBDue2, totalCCPaymentDue3;
+    FragmentManager fm;
+    FragmentTransaction transaction;
     Intent refreshView;
     ListView ccListView;
     MoneyOutDb moneyOutDb;
@@ -122,8 +127,10 @@ public class DailyCreditCard extends Fragment {
 
             resetToPay();
 
-            refreshView = new Intent(getContext(), LayoutDailyMoney.class);
-            startActivity(refreshView);
+            replaceFragment(new DailyCreditCard());
+
+            /*refreshView = new Intent(getContext(), LayoutDailyMoney.class);
+            startActivity(refreshView);*/
         }
     };
 
@@ -278,5 +285,13 @@ public class DailyCreditCard extends Fragment {
         public TextView ccCat;
         public TextView ccAmount;
         public CheckBox ccCheck;
+    }
+
+    public void replaceFragment(Fragment fragment) {
+        fm = getFragmentManager();
+        transaction = fm.beginTransaction();
+        transaction.replace(R.id.daily_fragment_container, fragment);
+
+        transaction.commit();
     }
 }
