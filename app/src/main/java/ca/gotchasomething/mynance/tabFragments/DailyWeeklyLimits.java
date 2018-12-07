@@ -19,6 +19,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 import androidx.fragment.app.FragmentManager;
@@ -33,8 +35,8 @@ import ca.gotchasomething.mynance.data.MoneyOutDbManager;
 
 public class DailyWeeklyLimits extends Fragment {
 
-    Cursor moneyOutCursor;
-    DbHelper moneyOutHelper;
+    Cursor moneyOutCursor, moneyOutCursor2;
+    DbHelper moneyOutHelper, moneyOutHelper2;
     Double annualLimit, weeklyLimitD, spentThisWeek, spentThisWeek2, amountLeft;
     ExpenseBudgetDbManager expenseBudgetDbManager;
     FragmentManager fm;
@@ -43,7 +45,7 @@ public class DailyWeeklyLimits extends Fragment {
     ListView weeklyLimitListView;
     long expenseId;
     NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
-    SQLiteDatabase moneyOutDbDb;
+    SQLiteDatabase moneyOutDbDb, moneyOutDbDb2;
     String amountLeftS, spentThisWeekS;
     TextView amountLeftText;
     View v;
@@ -75,14 +77,40 @@ public class DailyWeeklyLimits extends Fragment {
 
     }
 
+    /*public List<String> alsoValidDates() {
+        List<String> alsoValidDates = new ArrayList<>();
+        moneyOutHelper2 = new DbHelper(getContext());
+        moneyOutDbDb2 = moneyOutHelper2.getReadableDatabase();
+        moneyOutCursor2 = moneyOutDbDb2.rawQuery("SELECT (moneyOutCreatedOn)" + " FROM " + DbHelper.MONEY_OUT_TABLE_NAME + " WHERE "
+                + DbHelper.EXPREFKEYMO + " = " + String.valueOf(expenseId), null);
+        moneyOutHelper2.getWritableDatabase();
+        moneyOutCursor2.moveToFirst();
+        if (moneyOutCursor2.moveToFirst()) {
+            do {
+                alsoValidDates.add(moneyOutCursor2.getString(0));
+            } while (moneyOutCursor2.moveToNext());
+        }
+        return alsoValidDates;
+    }*/
+
     public Double getSpentThisWeek() {
+
         moneyOutHelper = new DbHelper(getContext());
         moneyOutDbDb = moneyOutHelper.getReadableDatabase();
-        moneyOutCursor = moneyOutDbDb.rawQuery("SELECT sum(moneyOutAmount) FROM " + DbHelper.MONEY_OUT_TABLE_NAME + " WHERE "
-                + DbHelper.EXPREFKEYMO + " = " + String.valueOf(expenseId), null);
         /*moneyOutCursor = moneyOutDbDb.rawQuery("SELECT sum(moneyOutAmount) FROM " + DbHelper.MONEY_OUT_TABLE_NAME + " WHERE "
-                + DbHelper.EXPREFKEYMO + " = " + String.valueOf(expenseId) + " AND " + String.valueOf(DbHelper.MONEYOUTCREATEDON) + " IN "
-                + general.validDates(), null);*/
+                + DbHelper.EXPREFKEYMO + " = " + String.valueOf(expenseId), null);*/
+        //String[] args = general.newDatesList();
+        moneyOutCursor = moneyOutDbDb.rawQuery("SELECT SUM(moneyOutAmount) FROM "
+                + DbHelper.MONEY_OUT_TABLE_NAME
+                + " WHERE "
+                + DbHelper.EXPREFKEYMO
+                + " = "
+                + String.valueOf(expenseId)
+                + " AND "
+                + DbHelper.MONEYOUTCREATEDON
+                //+ " =?", args);
+                + " IN "
+                + general.thisWeek(), null);
         try {
             moneyOutCursor.moveToFirst();
         } catch(Exception e) {
@@ -91,7 +119,6 @@ public class DailyWeeklyLimits extends Fragment {
         }
         spentThisWeek = moneyOutCursor.getDouble(0);
         moneyOutCursor.close();
-
 
         return spentThisWeek;
     }

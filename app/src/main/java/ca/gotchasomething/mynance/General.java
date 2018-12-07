@@ -16,6 +16,7 @@ public class General {
     public Double dollars, percent;
     public int startIndex;
     public int endIndex;
+    public List<String> thisWeek;
     public String startingString, startingString2, subStringResult, subStringResult2, subStringResult3, percentS;
     public TextView tv, tv2;
 
@@ -55,8 +56,6 @@ public class General {
 
     public void extractingDates(List<String> dateList1, List<Date> dateList2) {
 
-        //List<Date> dateList2 = new ArrayList<>(dateList1.size());
-
         for (String s : dateList1) {
             try {
                 dateObj = new SimpleDateFormat("dd-MMM-yyyy").parse(s);
@@ -67,9 +66,9 @@ public class General {
         }
     }
 
-    public List<String> validDates() {
+    public List<String> thisWeek() {
 
-        List<String> validDates = new ArrayList<>();
+        thisWeek = new ArrayList<>();
 
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy");
         Calendar cal = Calendar.getInstance();
@@ -77,53 +76,61 @@ public class General {
         int day = cal.get(Calendar.DAY_OF_WEEK);
         switch (day) {
             case Calendar.MONDAY:
-                validDates.add(sdf.format(today));
+                thisWeek.add(sdf.format(today));
                 break;
             case Calendar.TUESDAY:
                 cal.add(Calendar.DAY_OF_WEEK, -2);
                 for (int i = 0; i < 3; i++) {
                     cal.add(Calendar.DAY_OF_WEEK, 1);
-                    validDates.add(sdf.format(cal.getTime()));
+                    thisWeek.add(sdf.format(cal.getTime()));
                 }
                 break;
             case Calendar.WEDNESDAY:
                 cal.add(Calendar.DAY_OF_WEEK, -3);
                 for (int i = 0; i < 3; i++) {
                     cal.add(Calendar.DAY_OF_WEEK, 1);
-                    validDates.add(sdf.format(cal.getTime()));
+                    thisWeek.add(sdf.format(cal.getTime()));
                 }
                 break;
             case Calendar.THURSDAY:
                 cal.add(Calendar.DAY_OF_WEEK, -4);
                 for (int i = 0; i < 4; i++) {
                     cal.add(Calendar.DAY_OF_WEEK, 1);
-                    validDates.add(sdf.format(cal.getTime()));
+                    thisWeek.add(sdf.format(cal.getTime()));
                 }
                 break;
             case Calendar.FRIDAY:
                 cal.add(Calendar.DAY_OF_WEEK, -5);
                 for (int i = 0; i < 5; i++) {
                     cal.add(Calendar.DAY_OF_WEEK, 1);
-                    validDates.add(sdf.format(cal.getTime()));
+                    thisWeek.add(sdf.format(cal.getTime()));
                 }
                 break;
             case Calendar.SATURDAY:
                 cal.add(Calendar.DAY_OF_WEEK, -6);
                 for (int i = 0; i < 6; i++) {
                     cal.add(Calendar.DAY_OF_WEEK, 1);
-                    validDates.add(sdf.format(cal.getTime()));
+                    thisWeek.add(sdf.format(cal.getTime()));
                 }
                 break;
             case Calendar.SUNDAY:
                 cal.add(Calendar.DAY_OF_WEEK, -7);
                 for (int i = 0; i < 7; i++) {
                     cal.add(Calendar.DAY_OF_WEEK, 1);
-                    validDates.add(sdf.format(cal.getTime()));
+                    thisWeek.add(sdf.format(cal.getTime()));
                 }
                 break;
         }
 
-        return validDates;
+        return thisWeek;
     }
+
+    /*public String[] newDatesList() {
+
+        String[] newDatesList = thisWeek().toArray(new String[thisWeek().size()]);
+
+        return newDatesList();
+    }*/
+
 
 }

@@ -196,15 +196,6 @@ public class LayoutDebt extends MainNavigation {
 
         general.extractingDates(dates3, dates2);
 
-        /*for (String s : dates3) {
-            try {
-                dateObj = new SimpleDateFormat("dd-MMM-yyyy").parse(s);
-                dates2.add(dateObj);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-        }*/
-
         try {
             latestDateD = Collections.max(dates2);
         } catch (NoSuchElementException e) {
