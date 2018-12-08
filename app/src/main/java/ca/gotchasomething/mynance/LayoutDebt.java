@@ -79,7 +79,7 @@ public class LayoutDebt extends MainNavigation {
     SimpleDateFormat latestDateS, debtEndS;
     String totalDebt2 = null, latestDate = null, totalDebtS = null, debtAmountS = null, debtAmount2 = null, debtFrequencyS = null, debtEnd = null,
             debtAmountS2, debtPaymentsS, debtPercentS;
-    TextView totalDebtOwing, totalDebtPaidByDate, debtListName, debtListAmount, debtListFreeDate, debtDateResult;
+    TextView totalDebtOwing, totalDebtPaidByDate, debtListName, debtListAmount, debtListFreeDate, debtDateResult, totalDebtPaidLabel;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -100,6 +100,7 @@ public class LayoutDebt extends MainNavigation {
         setUpDbManager = new SetUpDbManager(this);
 
         totalDebtOwing = findViewById(R.id.totalDebtOwing);
+        totalDebtPaidLabel = findViewById(R.id.totalDebtPaidLabel);
         totalDebtPaidByDate = findViewById(R.id.totalDebtPaidByDate);
 
         debtListView = findViewById(R.id.debtListView);
@@ -117,6 +118,12 @@ public class LayoutDebt extends MainNavigation {
         debtDbManager = new DebtDbManager(this);
         debtAdapter = new DebtDbAdapter(this, debtDbManager.getDebts());
         debtListView.setAdapter(debtAdapter);
+
+        if(debtAdapter.getCount() == 0) {
+            totalDebtPaidLabel.setVisibility(View.GONE);
+        } else {
+            totalDebtPaidLabel.setVisibility(View.VISIBLE);
+        }
 
         debtHeaderText();
     }
@@ -166,8 +173,14 @@ public class LayoutDebt extends MainNavigation {
             totalDebtOwing.setText(totalDebt2);
         }
 
-        totalDebtPaidByDate.setVisibility(View.VISIBLE);
-        totalDebtPaidByDate.setText(latestDate());
+        if(debtAdapter.getCount() == 0) {
+            totalDebtPaidLabel.setVisibility(View.GONE);
+            totalDebtPaidByDate.setVisibility(View.GONE);
+        } else {
+            totalDebtPaidLabel.setVisibility(View.VISIBLE);
+            totalDebtPaidByDate.setVisibility(View.VISIBLE);
+            totalDebtPaidByDate.setText(latestDate());
+        }
     }
 
     public String latestDate() {

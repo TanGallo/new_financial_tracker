@@ -5,6 +5,7 @@
     <color name="colorAccent">#FF4081</color>
 
     <color name="colorWhite">#ffffff</color>
+    <color name="colorGreen">#03ac13</color>
 
     <color name="activeDots">#fffafa</color>
     <color name="inactiveDots">#83878b</color>

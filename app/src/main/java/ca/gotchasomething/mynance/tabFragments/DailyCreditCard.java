@@ -48,7 +48,7 @@ public class DailyCreditCard extends Fragment {
     NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
     SQLiteDatabase moneyOutDbDb3, currentDbDb3, currentDbDb4;
     String ccAmountS, ccAmount2, totalCCPaymentDueS;
-    TextView checkBelowLabel, totalCCPaymentDueLabel, totalCCPaymentDueAmount, ccPaidLabel, ccOopsText;
+    TextView checkBelowLabel, totalCCPaymentDueLabel, totalCCPaymentDueAmount, ccPaidLabel, ccOopsText, noCCTransLabel;
     View v;
 
     public DailyCreditCard() {
@@ -69,6 +69,8 @@ public class DailyCreditCard extends Fragment {
 
         currentDbManager = new CurrentDbManager(getContext());
 
+        noCCTransLabel = v.findViewById(R.id.noCCTransLabel);
+        noCCTransLabel.setVisibility(View.GONE);
         checkBelowLabel = v.findViewById(R.id.checkBelowLabel);
         totalCCPaymentDueLabel = v.findViewById(R.id.totalCCPaymentDueLabel);
         totalCCPaymentDueLabel.setVisibility(View.GONE);
@@ -129,8 +131,6 @@ public class DailyCreditCard extends Fragment {
 
             replaceFragment(new DailyCreditCard());
 
-            /*refreshView = new Intent(getContext(), LayoutDailyMoney.class);
-            startActivity(refreshView);*/
         }
     };
 
@@ -165,7 +165,15 @@ public class DailyCreditCard extends Fragment {
         moneyOutDbDb3.update(DbHelper.MONEY_OUT_TABLE_NAME, updateMoneyOutToPay, DbHelper.MONEYOUTTOPAY + "= '1' AND " + DbHelper.MONEYOUTPAID
                 + " = '0'", null);
 
-        checkBelowLabel.setVisibility(View.VISIBLE);
+        if(ccAdapter.getCount() == 0) {
+            noCCTransLabel.setVisibility(View.VISIBLE);
+            checkBelowLabel.setVisibility(View.GONE);
+        } else {
+            noCCTransLabel.setVisibility(View.GONE);
+            checkBelowLabel.setVisibility(View.VISIBLE);
+        }
+
+        //checkBelowLabel.setVisibility(View.VISIBLE);
         totalCCPaymentDueLabel.setVisibility(View.GONE);
         totalCCPaymentDueAmount.setVisibility(View.GONE);
         ccPaidLabel.setVisibility(View.GONE);

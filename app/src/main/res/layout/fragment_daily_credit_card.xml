@@ -11,6 +11,19 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <TextView
+            android:id="@+id/noCCTransLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginEnd="70dp"
+            android:layout_marginStart="70dp"
+            android:text="You have no outstanding credit card purchases!"
+            android:textAlignment="center"
+            android:textColor="@color/colorGreen"
+            android:textSize="16sp" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -21,7 +34,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:text="Check the boxes below of the credit card transactions that you want to pay today."
+                android:textAlignment="center"
+                android:text="Check the boxes below of the credit card purchases that you want to pay today."
                 android:textSize="16sp" />
 
         </LinearLayout>
@@ -106,7 +120,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:text="Outstanding credit card transactions"
+                android:text="Outstanding credit card purchases"
                 android:textSize="16sp" />
 
             <TextView
