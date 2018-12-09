@@ -124,13 +124,4 @@ public class General {
 
         return thisWeek;
     }
-
-    /*public String[] newDatesList() {
-
-        String[] newDatesList = thisWeek().toArray(new String[thisWeek().size()]);
-
-        return newDatesList();
-    }*/
-
-
 }

@@ -1,5 +1,5 @@
 package ca.gotchasomething.mynance;
-
+/*
 import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -22,3 +22,4 @@ public class LayoutSpendingReport extends MainNavigation {
         toggle.syncState();
     }
 }
+*/

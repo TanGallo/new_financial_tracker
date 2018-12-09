@@ -41,9 +41,9 @@ import ca.gotchasomething.mynance.data.ExpenseBudgetDbManager;
 import ca.gotchasomething.mynance.data.IncomeBudgetDb;
 import ca.gotchasomething.mynance.data.IncomeBudgetDbManager;
 import ca.gotchasomething.mynance.data.DebtDb;
-import ca.gotchasomething.mynance.data.DebtDbManager;
+//import ca.gotchasomething.mynance.data.DebtDbManager;
 import ca.gotchasomething.mynance.data.SetUpDb;
-import ca.gotchasomething.mynance.data.SetUpDbManager;
+//import ca.gotchasomething.mynance.data.SetUpDbManager;
 
 public class LayoutBudget extends MainNavigation {
 
@@ -56,8 +56,9 @@ public class LayoutBudget extends MainNavigation {
     Date debtEndD, savingsDateD;
     DbHelper setUpHelper, incomeDbHelper, expenseDbHelper, debtDbHelper, debtDbHelper2, debtDbHelper3, savingsDbHelper,
             savingsDbHelper2, savingsDbHelper3, moneyOutDbHelper, moneyOutDbHelper2;
+    DbManager dbManager;
     DebtDb debt;
-    DebtDbManager debtDbManager;
+    //DebtDbManager debtDbManager;
     Double totalIncome = 0.0, totalIncomeD = 0.0, incomeAnnualAmountD = 0.0, totalExpenses = 0.0, totalExpensesD = 0.0, expenseAnnualAmountD = 0.0,
             incomeAvailableD = 0.0, incomeAvailableN, numberOfYearsToPayDebt = 0.0, numberOfYearsToSavingsGoal = 0.0, balanceAmount = 0.0,
             budgetIncomeAmountD, budgetExpenseAmountD, totalIncomeR, totalExpensesR;
@@ -84,7 +85,7 @@ public class LayoutBudget extends MainNavigation {
             budgetExpenseYesRadioButton, budgetExpenseNoRadioButton;
     RadioGroup budgetIncomeFrequencyRadioGroup, budgetExpenseFrequencyRadioGroup, budgetExpenseABRadioGroup, budgetExpenseReminderRadioGroup;
     SetUpDb setUpDb;
-    SetUpDbManager setUpDbManager;
+    //SetUpDbManager setUpDbManager;
     SimpleDateFormat debtEndS, savingsDateS;
     SQLiteDatabase setUpDbDb, incomeDb, expenseDb, debtDb, debtDb2, debtDb3, savingsDb, savingsDb2, savingsDb3, moneyOutDb, moneyOutDb2;
     String incomeFrequencyS = null, incomeAnnualAmountS = null, incomeAnnualAmount2 = null, expenseFrequencyS = null, expenseWeeklyS = null,
@@ -109,7 +110,8 @@ public class LayoutBudget extends MainNavigation {
         toggle.syncState();
 
         general = new General();
-        setUpDbManager = new SetUpDbManager(this);
+        dbManager = new DbManager(this);
+        //setUpDbManager = new SetUpDbManager(this);
         incomeDbManager = new IncomeBudgetDbManager(this);
 
         budgetIncomeTotalText = findViewById(R.id.budgetIncomeTotalText);
@@ -131,10 +133,15 @@ public class LayoutBudget extends MainNavigation {
         doneBudgetSetUpButton = findViewById(R.id.doneBudgetSetUpButton);
         doneBudgetSetUpButton.setOnClickListener(onClickDoneBudgetSetUpButton);
 
-        setUpDbManager.budgetSetUpCheck();
-        if (setUpDbManager.budgetSetUpCheck() > 0) {
+        //dbManager.budgetSetUpCheck();
+        if (dbManager.budgetSetUpCheck() > 0) {
             doneBudgetSetUpButton.setVisibility(View.GONE);
         }
+
+        /*setUpDbManager.budgetSetUpCheck();
+        if (setUpDbManager.budgetSetUpCheck() > 0) {
+            doneBudgetSetUpButton.setVisibility(View.GONE);
+        }*/
 
         incomeAdapter = new IncomeDbAdapter(this, incomeDbManager.getIncomes());
         budgetIncomeDetails.setAdapter(incomeAdapter);
@@ -143,7 +150,7 @@ public class LayoutBudget extends MainNavigation {
         expenseAdapter = new ExpenseDbAdapter(this, expenseDbManager.getExpense());
         budgetExpensesDetails.setAdapter(expenseAdapter);
 
-        debtDbManager = new DebtDbManager(this);
+        //debtDbManager = new DebtDbManager(this);
 
         budgetHeaderText();
 
@@ -155,7 +162,8 @@ public class LayoutBudget extends MainNavigation {
             budgetDone = 1;
 
             setUpDb = new SetUpDb(debtsDone, savingsDone, budgetDone, balanceDone, balanceAmount, tourDone, 0);
-            setUpDbManager.addSetUp(setUpDb);
+            dbManager.addSetUp(setUpDb);
+            //setUpDbManager.addSetUp(setUpDb);
 
             Toast toast = Toast.makeText(getApplicationContext(), "You can edit this list by clicking BUDGET on the menu", Toast.LENGTH_LONG);
             LinearLayout toastLayout = (LinearLayout) toast.getView();

@@ -2,13 +2,13 @@ package ca.gotchasomething.mynance.data;
 //Db description
 
 public class SetUpDb {
-    private int debtsDone;
-    private int savingsDone;
-    private int budgetDone;
-    private int balanceDone;
-    private Double balanceAmount;
-    private int tourDone;
-    private long id;
+    private int debtsDone; //1
+    private int savingsDone; //2
+    private int budgetDone; //3
+    private int balanceDone; //4
+    private Double balanceAmount; //5
+    private int tourDone; //6
+    private long id; //0
 
     public SetUpDb(
             int debtsDone,

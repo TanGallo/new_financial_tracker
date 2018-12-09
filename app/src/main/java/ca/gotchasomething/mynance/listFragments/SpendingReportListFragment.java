@@ -1,5 +1,5 @@
 package ca.gotchasomething.mynance.listFragments;
-
+/*
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
@@ -21,3 +21,4 @@ public class SpendingReportListFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_list_entries_income, container, false);
     }
 }
+*/

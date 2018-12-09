@@ -24,7 +24,7 @@ import androidx.annotation.Nullable;
 import ca.gotchasomething.mynance.data.ExpenseBudgetDb;
 import ca.gotchasomething.mynance.data.ExpenseBudgetDbManager;
 import ca.gotchasomething.mynance.data.SavingsDb;
-import ca.gotchasomething.mynance.data.SavingsDbManager;
+//import ca.gotchasomething.mynance.data.SavingsDbManager;
 
 public class AddSavings extends LayoutSavings {
 
@@ -33,6 +33,7 @@ public class AddSavings extends LayoutSavings {
     Cursor expenseCursor2;
     Date savingsDateD;
     DbHelper expenseDbHelper2;
+    DbManager dbManager;
     Double savingsAmount = 0.0, savingsRate = 0.0, savingsPayments = 0.0, savingsFrequency = 0.0, savingsGoal = 0.0, expenseAmount = 0.0, expenseFrequency = 0.0,
             expenseAnnualAmount = 0.0, expenseAAnnualAmount = 0.0, expenseBAnnualAmount = 0.0, frequency = 0.0, amount = 0.0, rate = 0.0, payments = 0.0,
             numberOfYearsToSavingsGoal = 0.0;
@@ -45,7 +46,7 @@ public class AddSavings extends LayoutSavings {
     RadioButton savingsWeeklyRadioButton, savingsBiWeeklyRadioButton, savingsMonthlyRadioButton, savingsAnnuallyRadioButton;
     RadioGroup savingsFrequencyRadioGroup;
     SavingsDb saving;
-    SavingsDbManager savingsDbManager;
+    //SavingsDbManager savingsDbManager;
     SimpleDateFormat savingsDateS;
     SQLiteDatabase db, expenseDb2;
     String savingsName = null, savingsDate = null, savingsFrequencyS = null, expenseName = null, expensePriority = null, expenseWeekly = null;
@@ -56,7 +57,8 @@ public class AddSavings extends LayoutSavings {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_edit_savings);
 
-        savingsDbManager = new SavingsDbManager(this);
+        //savingsDbManager = new SavingsDbManager(this);
+        dbManager = new DbManager(this);
         expenseDbManager = new ExpenseBudgetDbManager(this);
 
         savingsNameEntry = findViewById(R.id.savingsNameEntry);
@@ -209,7 +211,7 @@ public class AddSavings extends LayoutSavings {
                     expRefKeyS,
                     0);
 
-            savingsDbManager.addSavings(saving);
+            dbManager.addSavings(saving);
 
             Toast toast = Toast.makeText(getBaseContext(), "This savings info has been saved to your BUDGET",
                     Toast.LENGTH_LONG);

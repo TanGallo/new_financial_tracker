@@ -44,9 +44,9 @@ import java.util.NoSuchElementException;
 
 import ca.gotchasomething.mynance.data.ExpenseBudgetDbManager;
 import ca.gotchasomething.mynance.data.DebtDb;
-import ca.gotchasomething.mynance.data.DebtDbManager;
+//import ca.gotchasomething.mynance.data.DebtDbManager;
 import ca.gotchasomething.mynance.data.SetUpDb;
-import ca.gotchasomething.mynance.data.SetUpDbManager;
+//import ca.gotchasomething.mynance.data.SetUpDbManager;
 
 public class LayoutDebt extends MainNavigation {
 
@@ -55,9 +55,10 @@ public class LayoutDebt extends MainNavigation {
     Cursor expenseCursor, debtCursor2;
     Date debtEndD, dateObj, latestDateD;
     DbHelper expenseDbHelper, debtDbHelper2;
+    DbManager dbManager;
     DebtDb debtDb;
     DebtDbAdapter debtAdapter;
-    DebtDbManager debtDbManager;
+    //DebtDbManager debtDbManager;
     Double totalDebt = 0.0, totalDebtD = 0.0, debtAmountD = 0.0, a = 0.0, numberOfYearsToPayDebt = 0.0, balanceAmount, amount = 0.0, rate = 0.0,
             payments = 0.0, frequency = 0.0, expenseAnnualAmount = 0.0, debtAmountD2, debtPaymentsD, debtPercentD, debtPercentD2;
     EditText debtNameEntry, debtAmountEntry, debtPercentEntry, debtPaymentsEntry;
@@ -75,7 +76,7 @@ public class LayoutDebt extends MainNavigation {
     RadioGroup debtFrequencyRadioGroup;
     SQLiteDatabase expenseDb, debtDbDb2;
     SetUpDb setUpDb;
-    SetUpDbManager setUpDbManager;
+    //SetUpDbManager setUpDbManager;
     SimpleDateFormat latestDateS, debtEndS;
     String totalDebt2 = null, latestDate = null, totalDebtS = null, debtAmountS = null, debtAmount2 = null, debtFrequencyS = null, debtEnd = null,
             debtAmountS2, debtPaymentsS, debtPercentS;
@@ -97,7 +98,8 @@ public class LayoutDebt extends MainNavigation {
         toggle.syncState();
 
         general = new General();
-        setUpDbManager = new SetUpDbManager(this);
+        dbManager = new DbManager(this);
+        //setUpDbManager = new SetUpDbManager(this);
 
         totalDebtOwing = findViewById(R.id.totalDebtOwing);
         totalDebtPaidLabel = findViewById(R.id.totalDebtPaidLabel);
@@ -110,13 +112,18 @@ public class LayoutDebt extends MainNavigation {
         doneDebtsSetUpButton = findViewById(R.id.doneDebtsSetUpButton);
         doneDebtsSetUpButton.setOnClickListener(onClickDoneDebtsSetUpButton);
 
-        setUpDbManager.debtSetUpCheck();
-        if (setUpDbManager.debtSetUpCheck() > 0) {
+        //dbManager.debtSetUpCheck();
+        if (dbManager.debtSetUpCheck() > 0) {
             doneDebtsSetUpButton.setVisibility(View.GONE);
         }
 
-        debtDbManager = new DebtDbManager(this);
-        debtAdapter = new DebtDbAdapter(this, debtDbManager.getDebts());
+        /*setUpDbManager.debtSetUpCheck();
+        if (setUpDbManager.debtSetUpCheck() > 0) {
+            doneDebtsSetUpButton.setVisibility(View.GONE);
+        }*/
+
+        //debtDbManager = new DebtDbManager(this);
+        debtAdapter = new DebtDbAdapter(this, dbManager.getDebts());
         debtListView.setAdapter(debtAdapter);
 
         if(debtAdapter.getCount() == 0) {
@@ -139,7 +146,8 @@ public class LayoutDebt extends MainNavigation {
             tourDone = 0;
 
             setUpDb = new SetUpDb(debtsDone, savingsDone, budgetDone, balanceDone, balanceAmount, tourDone, 0);
-            setUpDbManager.addSetUp(setUpDb);
+            dbManager.addSetUp(setUpDb);
+            //setUpDbManager.addSetUp(setUpDb);
 
             Toast toast = Toast.makeText(getApplicationContext(), "You can edit this list by clicking DEBTS on the menu", Toast.LENGTH_LONG);
             LinearLayout toastLayout = (LinearLayout) toast.getView();
@@ -156,7 +164,7 @@ public class LayoutDebt extends MainNavigation {
 
     public void debtHeaderText() {
 
-        totalDebt = debtDbManager.sumTotalDebt();
+        totalDebt = dbManager.sumTotalDebt();
 
         try {
             totalDebtS = String.valueOf(totalDebt);
@@ -541,8 +549,8 @@ public class LayoutDebt extends MainNavigation {
                             }
                             debtDb.setDebtFrequency(Double.valueOf(debtFrequencyS));
 
-                            debtDbManager.updateDebt(debtDb);
-                            debtAdapter.updateDebts(debtDbManager.getDebts());
+                            dbManager.updateDebt(debtDb);
+                            debtAdapter.updateDebts(dbManager.getDebts());
                             notifyDataSetChanged();
 
                             Toast.makeText(getBaseContext(), "Your changes have been saved",
@@ -573,7 +581,7 @@ public class LayoutDebt extends MainNavigation {
                 public void onClick(View v) {
 
                     debtDb = (DebtDb) holder.debtDeleted.getTag();
-                    debtDbManager.deleteDebt(debtDb);
+                    dbManager.deleteDebt(debtDb);
 
                     try {
                         String[] args = new String[]{String.valueOf(findExpenseId())};
@@ -582,7 +590,7 @@ public class LayoutDebt extends MainNavigation {
                         e.printStackTrace();
                     }
 
-                    debtAdapter.updateDebts(debtDbManager.getDebts());
+                    debtAdapter.updateDebts(dbManager.getDebts());
                     notifyDataSetChanged();
 
                     debtHeaderText();

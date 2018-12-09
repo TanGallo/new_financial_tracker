@@ -25,6 +25,7 @@ public class LayoutDailyMoney extends MainNavigation {
 
     Button moneyInButton, moneyOutButton;
     CurrentDbManager currentDbManager;
+    DbManager dbManager;
     Double newAccountBalance, newAvailableBalance;
     FragmentManager fm;
     FragmentTransaction transaction;
@@ -49,6 +50,7 @@ public class LayoutDailyMoney extends MainNavigation {
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
+        dbManager = new DbManager(this);
         currentDbManager = new CurrentDbManager(this);
 
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);

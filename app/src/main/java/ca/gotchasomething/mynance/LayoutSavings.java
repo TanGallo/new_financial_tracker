@@ -37,9 +37,9 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import ca.gotchasomething.mynance.data.ExpenseBudgetDbManager;
 import ca.gotchasomething.mynance.data.SavingsDb;
-import ca.gotchasomething.mynance.data.SavingsDbManager;
+//import ca.gotchasomething.mynance.data.SavingsDbManager;
 import ca.gotchasomething.mynance.data.SetUpDb;
-import ca.gotchasomething.mynance.data.SetUpDbManager;
+//import ca.gotchasomething.mynance.data.SetUpDbManager;
 
 public class LayoutSavings extends MainNavigation {
 
@@ -48,6 +48,7 @@ public class LayoutSavings extends MainNavigation {
     Cursor expenseCursor, savingsCursor, setUpCursor;
     Date savingsDateD;
     DbHelper setUpHelper, expenseDbHelper, savingsDbHelper;
+    DbManager dbManager;
     Double amount = 0.0, expenseAnnualAmount = 0.0, totalSavings = 0.0, totalSavingsD = 0.0, savingsGoalD = 0.0, savingsCurrentD = 0.0, rate = 0.0,
             a = 0.0, payments = 0.0, frequency = 0.0, numberOfYearsToSavingsGoal = 0.0, balanceAmount = 0.0, goalAmount, savingsAmount, savingsAmountD,
             savingsPaymentsD, savingsGoalD2, savingsPercentD, savingsPercentD2;
@@ -66,9 +67,9 @@ public class LayoutSavings extends MainNavigation {
     RadioGroup savingsFrequencyRadioGroup;
     SavingsDbAdapter savingsAdapter;
     SavingsDb savingsDb;
-    SavingsDbManager savingsDbManager;
+    //SavingsDbManager savingsDbManager;
     SetUpDb setUpDb;
-    SetUpDbManager setUpDbManager;
+    //SetUpDbManager setUpDbManager;
     SimpleDateFormat savingsDateS;
     SQLiteDatabase expenseDb, savingsDbDb, setUpDbDb;
     String totalSavings2 = null, totalSavingsS = null, savingsGoalS = null, savingsGoal2 = null, savingsCurrentS = null, savingsCurrent2 = null,
@@ -91,7 +92,8 @@ public class LayoutSavings extends MainNavigation {
         toggle.syncState();
 
         general = new General();
-        setUpDbManager = new SetUpDbManager(this);
+        dbManager = new DbManager(this);
+        //setUpDbManager = new SetUpDbManager(this);
 
         totalSavedText = findViewById(R.id.totalSavedText);
 
@@ -102,13 +104,18 @@ public class LayoutSavings extends MainNavigation {
         doneSavingsSetUpButton = findViewById(R.id.doneSavingsSetUpButton);
         doneSavingsSetUpButton.setOnClickListener(onClickDoneSavingsSetUpButton);
 
-        setUpDbManager.savingsSetUpCheck();
-        if (setUpDbManager.savingsSetUpCheck() > 0) {
+        //dbManager.savingsSetUpCheck();
+        if (dbManager.savingsSetUpCheck() > 0) {
             doneSavingsSetUpButton.setVisibility(View.GONE);
         }
 
-        savingsDbManager = new SavingsDbManager(this);
-        savingsAdapter = new SavingsDbAdapter(this, savingsDbManager.getSavings());
+        /*setUpDbManager.savingsSetUpCheck();
+        if (setUpDbManager.savingsSetUpCheck() > 0) {
+            doneSavingsSetUpButton.setVisibility(View.GONE);
+        }*/
+
+        //savingsDbManager = new SavingsDbManager(this);
+        savingsAdapter = new SavingsDbAdapter(this, dbManager.getSavings());
         savingsListView.setAdapter(savingsAdapter);
 
         savingsHeaderText();
@@ -120,7 +127,8 @@ public class LayoutSavings extends MainNavigation {
             savingsDone = 1;
 
             setUpDb = new SetUpDb(debtsDone, savingsDone, budgetDone, balanceDone, balanceAmount, tourDone, 0);
-            setUpDbManager.addSetUp(setUpDb);
+            dbManager.addSetUp(setUpDb);
+            //setUpDbManager.addSetUp(setUpDb);
 
             Toast toast = Toast.makeText(getApplicationContext(), "You can edit this list by clicking SAVINGS on the menu", Toast.LENGTH_LONG);
             LinearLayout toastLayout = (LinearLayout) toast.getView();
@@ -137,7 +145,7 @@ public class LayoutSavings extends MainNavigation {
 
     public void savingsHeaderText() {
 
-        totalSavings = savingsDbManager.sumTotalSavings();
+        totalSavings = dbManager.sumTotalSavings();
 
         try {
             totalSavingsS = String.valueOf(totalSavings);
@@ -527,8 +535,8 @@ public class LayoutSavings extends MainNavigation {
                                 savingsDb.setSavingsGoal(general.extractingDollars(savingsGoalAmountEntry));
                             }
 
-                            savingsDbManager.updateSavings(savingsDb);
-                            savingsAdapter.updateSavings(savingsDbManager.getSavings());
+                            dbManager.updateSavings(savingsDb);
+                            savingsAdapter.updateSavings(dbManager.getSavings());
                             notifyDataSetChanged();
 
                             Toast.makeText(getBaseContext(), "Your changes have been saved",
@@ -559,7 +567,7 @@ public class LayoutSavings extends MainNavigation {
                 public void onClick(View v) {
 
                     savingsDb = (SavingsDb) holder.savingsDeleted.getTag();
-                    savingsDbManager.deleteSavings(savingsDb);
+                    dbManager.deleteSavings(savingsDb);
 
                     try {
                         String[] args = new String[]{String.valueOf(findExpenseId())};
@@ -568,7 +576,7 @@ public class LayoutSavings extends MainNavigation {
                         e.printStackTrace();
                     }
 
-                    savingsAdapter.updateSavings(savingsDbManager.getSavings());
+                    savingsAdapter.updateSavings(dbManager.getSavings());
                     notifyDataSetChanged();
 
                     savingsHeaderText();

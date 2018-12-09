@@ -21,7 +21,7 @@ import ca.gotchasomething.mynance.data.CurrentDbManager;
 import ca.gotchasomething.mynance.data.MoneyInDb;
 import ca.gotchasomething.mynance.data.MoneyInDbManager;
 import ca.gotchasomething.mynance.data.SetUpDb;
-import ca.gotchasomething.mynance.data.SetUpDbManager;
+//import ca.gotchasomething.mynance.data.SetUpDbManager;
 
 public class LayoutSetUp extends MainNavigation {
 
@@ -30,6 +30,7 @@ public class LayoutSetUp extends MainNavigation {
     CurrentDb currentDb;
     CurrentDbManager currentDbManager;
     Date moneyInDate;
+    DbManager dbManager;
     Double startingBalanceResult = 0.0, balanceAmount = 0.0, moneyInAmount = 0.0, currentAccountBalance = 0.0, currentAvailableBalance = 0.0;
     EditText setUpAccountAmount;
     int debtsDone, savingsDone, budgetDone, balanceDone, tourDone;
@@ -38,7 +39,7 @@ public class LayoutSetUp extends MainNavigation {
     MoneyInDbManager moneyInDbManager;
     NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
     SetUpDb setUpDb;
-    SetUpDbManager setUpDbManager;
+    //SetUpDbManager setUpDbManager;
     SimpleDateFormat moneyInSDF;
     String startingBalanceS, startingBalance2, moneyInCat, moneyInCreatedOn;
     TextView setUpDebtsLabel, setUpSavingsLabel, setUpBudgetLabel, setUpAccountAmountLabel, setUpAccountAmountLabel2, setUpAccountAmountLabel3,
@@ -60,7 +61,8 @@ public class LayoutSetUp extends MainNavigation {
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        setUpDbManager = new SetUpDbManager(this);
+        dbManager = new DbManager(this);
+        //setUpDbManager = new SetUpDbManager(this);
         moneyInDbManager = new MoneyInDbManager(this);
         currentDbManager = new CurrentDbManager(this);
 
@@ -111,8 +113,8 @@ public class LayoutSetUp extends MainNavigation {
         setUpAccountCheckbox.setOnCheckedChangeListener(onCheckBalanceDone);
         setUpTourCheckbox.setOnCheckedChangeListener(onCheckTourCheckbox);
 
-        setUpDbManager.debtSetUpCheck();
-        if (setUpDbManager.debtSetUpCheck() > 0) {
+        //dbManager.debtSetUpCheck();
+        if (dbManager.debtSetUpCheck() > 0) {
             setUpDebtsLabel.setVisibility(View.VISIBLE);
             setUpDebtsButton.setVisibility(View.GONE);
             setUpDebtsCheckbox.setChecked(true);
@@ -120,8 +122,17 @@ public class LayoutSetUp extends MainNavigation {
             setUpSavingsLabel.setVisibility(View.GONE);
         }
 
-        setUpDbManager.savingsSetUpCheck();
-        if (setUpDbManager.savingsSetUpCheck() > 0) {
+        /*setUpDbManager.debtSetUpCheck();
+        if (setUpDbManager.debtSetUpCheck() > 0) {
+            setUpDebtsLabel.setVisibility(View.VISIBLE);
+            setUpDebtsButton.setVisibility(View.GONE);
+            setUpDebtsCheckbox.setChecked(true);
+            setUpSavingsButton.setVisibility(View.VISIBLE);
+            setUpSavingsLabel.setVisibility(View.GONE);
+        }*/
+
+        //dbManager.savingsSetUpCheck();
+        if (dbManager.savingsSetUpCheck() > 0) {
             setUpSavingsLabel.setVisibility(View.VISIBLE);
             setUpSavingsButton.setVisibility(View.GONE);
             setUpSavingsCheckbox.setChecked(true);
@@ -129,8 +140,17 @@ public class LayoutSetUp extends MainNavigation {
             setUpBudgetLabel.setVisibility(View.GONE);
         }
 
-        setUpDbManager.budgetSetUpCheck();
-        if (setUpDbManager.budgetSetUpCheck() > 0) {
+        /*setUpDbManager.savingsSetUpCheck();
+        if (setUpDbManager.savingsSetUpCheck() > 0) {
+            setUpSavingsLabel.setVisibility(View.VISIBLE);
+            setUpSavingsButton.setVisibility(View.GONE);
+            setUpSavingsCheckbox.setChecked(true);
+            setUpBudgetButton.setVisibility(View.VISIBLE);
+            setUpBudgetLabel.setVisibility(View.GONE);
+        }*/
+
+        //dbManager.budgetSetUpCheck();
+        if (dbManager.budgetSetUpCheck() > 0) {
             setUpBudgetLabel.setVisibility(View.VISIBLE);
             setUpBudgetButton.setVisibility(View.GONE);
             setUpBudgetCheckbox.setChecked(true);
@@ -140,7 +160,38 @@ public class LayoutSetUp extends MainNavigation {
             setUpAccountAmount.setVisibility(View.VISIBLE);
         }
 
-        setUpDbManager.balanceSetUpCheck();
+        /*setUpDbManager.budgetSetUpCheck();
+        if (setUpDbManager.budgetSetUpCheck() > 0) {
+            setUpBudgetLabel.setVisibility(View.VISIBLE);
+            setUpBudgetButton.setVisibility(View.GONE);
+            setUpBudgetCheckbox.setChecked(true);
+            setUpAccountAmountLabel.setVisibility(View.VISIBLE);
+            setUpAccountAmountLabel2.setVisibility(View.VISIBLE);
+            setUpAccountAmountLabel3.setVisibility(View.GONE);
+            setUpAccountAmount.setVisibility(View.VISIBLE);
+        }*/
+
+        //dbManager.balanceSetUpCheck();
+        if (dbManager.balanceSetUpCheck() > 0) {
+            setUpAccountAmountLabel.setVisibility(View.GONE);
+            setUpAccountAmountLabel2.setVisibility(View.GONE);
+            setUpAccountAmountLabel3.setVisibility(View.VISIBLE);
+            setUpAccountAmount.setVisibility(View.GONE);
+            setUpAccountAmountResult.setVisibility(View.VISIBLE);
+            dbManager.retrieveStartingBalance();
+            startingBalance2 = currencyFormat.format(startingBalanceResult);
+            setUpAccountAmountResult.setText(startingBalance2);
+            setUpAccountCheckbox.setChecked(true);
+            almostDone.setVisibility(View.VISIBLE);
+            setUpTourLabel.setVisibility(View.VISIBLE);
+            setUpTourLabel2.setVisibility(View.VISIBLE);
+            setUpTourLabel3.setVisibility(View.VISIBLE);
+            setUpTourLabel4.setVisibility(View.VISIBLE);
+            setUpGotItLabel.setVisibility(View.VISIBLE);
+            setUpTourCheckbox.setVisibility(View.VISIBLE);
+        }
+
+        /*setUpDbManager.balanceSetUpCheck();
         if (setUpDbManager.balanceSetUpCheck() > 0) {
             setUpAccountAmountLabel.setVisibility(View.GONE);
             setUpAccountAmountLabel2.setVisibility(View.GONE);
@@ -158,14 +209,21 @@ public class LayoutSetUp extends MainNavigation {
             setUpTourLabel4.setVisibility(View.VISIBLE);
             setUpGotItLabel.setVisibility(View.VISIBLE);
             setUpTourCheckbox.setVisibility(View.VISIBLE);
-        }
+        }*/
 
-        setUpDbManager.tourSetUpCheck();
-        if (setUpDbManager.tourSetUpCheck() > 0) {
+        //dbManager.tourSetUpCheck();
+        if (dbManager.tourSetUpCheck() > 0) {
             toMainActivity = new Intent(LayoutSetUp.this, MainActivity.class);
             toMainActivity.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
             startActivity(toMainActivity);
         }
+
+        /*setUpDbManager.tourSetUpCheck();
+        if (setUpDbManager.tourSetUpCheck() > 0) {
+            toMainActivity = new Intent(LayoutSetUp.this, MainActivity.class);
+            toMainActivity.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+            startActivity(toMainActivity);
+        }*/
 
     }
 
@@ -180,7 +238,8 @@ public class LayoutSetUp extends MainNavigation {
             tourDone = 1;
 
             setUpDb = new SetUpDb(debtsDone, savingsDone, budgetDone, balanceDone, balanceAmount, tourDone, 0);
-            setUpDbManager.addSetUp(setUpDb);
+            dbManager.addSetUp(setUpDb);
+            //setUpDbManager.addSetUp(setUpDb);
 
             toMainActivity = new Intent(LayoutSetUp.this, MainActivity.class);
             toMainActivity.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
@@ -205,7 +264,8 @@ public class LayoutSetUp extends MainNavigation {
             }
 
             setUpDb = new SetUpDb(debtsDone, savingsDone, budgetDone, balanceDone, balanceAmount, tourDone, 0);
-            setUpDbManager.addSetUp(setUpDb);
+            dbManager.addSetUp(setUpDb);
+            //setUpDbManager.addSetUp(setUpDb);
 
             currentAccountBalance = balanceAmount;
             currentAvailableBalance = balanceAmount * currentDbManager.retrieveBPercentage();
@@ -230,7 +290,8 @@ public class LayoutSetUp extends MainNavigation {
             setUpAccountAmountLabel3.setVisibility(View.VISIBLE);
             setUpAccountAmount.setVisibility(View.GONE);
             setUpAccountAmountResult.setVisibility(View.VISIBLE);
-            setUpDbManager.retrieveStartingBalance();
+            dbManager.retrieveStartingBalance();
+            //setUpDbManager.retrieveStartingBalance();
             startingBalance2 = currencyFormat.format(startingBalanceResult);
             setUpAccountAmountResult.setText(startingBalance2);
             setUpAccountCheckbox.setChecked(true);

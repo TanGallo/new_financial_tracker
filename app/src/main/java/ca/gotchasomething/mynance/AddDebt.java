@@ -26,7 +26,7 @@ import java.util.List;
 import ca.gotchasomething.mynance.data.ExpenseBudgetDb;
 import ca.gotchasomething.mynance.data.ExpenseBudgetDbManager;
 import ca.gotchasomething.mynance.data.DebtDb;
-import ca.gotchasomething.mynance.data.DebtDbManager;
+//import ca.gotchasomething.mynance.data.DebtDbManager;
 
 public class AddDebt extends LayoutDebt {
 
@@ -35,8 +35,9 @@ public class AddDebt extends LayoutDebt {
     Cursor expenseCursor2;
     Date debtEndD;
     DbHelper expenseDbHelper2;
+    DbManager dbManager;
     DebtDb debt;
-    DebtDbManager debtDbManager;
+    //DebtDbManager debtDbManager;
     Double debtAmount = 0.0, debtRate = 0.0, debtPayments = 0.0, debtFrequency = 0.0, expenseAmount = 0.0, expenseFrequency = 0.0, expenseAnnualAmount = 0.0,
             expenseAAnnualAmount = 0.0, expenseBAnnualAmount = 0.0, amount = 0.0, rate = 0.0, frequency = 0.0, payments = 0.0, numberOfYearsToPayDebt = 0.0;
     EditText debtNameEntry, debtAmountEntry, debtPercentEntry, debtPaymentsEntry;
@@ -57,7 +58,7 @@ public class AddDebt extends LayoutDebt {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_edit_debt);
 
-        debtDbManager = new DebtDbManager(this);
+        dbManager = new DbManager(this);
         expenseDbManager = new ExpenseBudgetDbManager(this);
 
         debtNameEntry = findViewById(R.id.debtNameEntry);
@@ -200,7 +201,7 @@ public class AddDebt extends LayoutDebt {
                     expRefKeyD,
                     0);
 
-            debtDbManager.addDebt(debt);
+            dbManager.addDebt(debt);
 
             Toast toast = Toast.makeText(getBaseContext(), "This debt has been saved to your BUDGET",
                     Toast.LENGTH_LONG);
