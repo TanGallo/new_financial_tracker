@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import ca.gotchasomething.mynance.DbHelper;
 import ca.gotchasomething.mynance.R;
-import ca.gotchasomething.mynance.data.MoneyOutDbManager;
+//import ca.gotchasomething.mynance.data.MoneyOutDbManager;
 
 public class MoneyOutSpinnerAdapter extends CursorAdapter {
 

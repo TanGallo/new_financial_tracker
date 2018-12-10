@@ -23,11 +23,12 @@ import java.util.List;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import ca.gotchasomething.mynance.DbHelper;
+import ca.gotchasomething.mynance.DbManager;
 import ca.gotchasomething.mynance.LayoutDailyMoney;
 import ca.gotchasomething.mynance.R;
-import ca.gotchasomething.mynance.data.CurrentDbManager;
+//import ca.gotchasomething.mynance.data.CurrentDbManager;
 import ca.gotchasomething.mynance.data.MoneyOutDb;
-import ca.gotchasomething.mynance.data.MoneyOutDbManager;
+//import ca.gotchasomething.mynance.data.MoneyOutDbManager;
 
 public class DailyCreditCard extends Fragment {
 
@@ -35,8 +36,9 @@ public class DailyCreditCard extends Fragment {
     CCAdapter ccAdapter;
     CheckBox ccPaidCheckbox;
     ContentValues moneyOutValue, moneyOutValue2;
-    CurrentDbManager currentDbManager;
+    //CurrentDbManager currentDbManager;
     DbHelper moneyOutHelper3, currentHelper3, currentHelper4;
+    DbManager dbManager;
     Double ccAmountD, totalCCPaymentDue, currentAccountBalance, currentAvailableBalance, totalCCPaymentBDue, newCurrentAvailableBalance,
             newCurrentAccountBalance, currentAccountBalance2, totalCCPaymentDue2, currentAvailableBalance2, totalCCPaymentBDue2, totalCCPaymentDue3;
     FragmentManager fm;
@@ -44,7 +46,7 @@ public class DailyCreditCard extends Fragment {
     Intent refreshView;
     ListView ccListView;
     MoneyOutDb moneyOutDb;
-    MoneyOutDbManager moneyOutDbManager;
+    //MoneyOutDbManager moneyOutDbManager;
     NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
     SQLiteDatabase moneyOutDbDb3, currentDbDb3, currentDbDb4;
     String ccAmountS, ccAmount2, totalCCPaymentDueS;
@@ -67,7 +69,7 @@ public class DailyCreditCard extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        currentDbManager = new CurrentDbManager(getContext());
+        //dbManager = new DbManager(getContext());
 
         noCCTransLabel = v.findViewById(R.id.noCCTransLabel);
         noCCTransLabel.setVisibility(View.GONE);
@@ -85,8 +87,8 @@ public class DailyCreditCard extends Fragment {
 
         ccListView = v.findViewById(R.id.ccListView);
 
-        moneyOutDbManager = new MoneyOutDbManager(getContext());
-        ccAdapter = new CCAdapter(getContext(), moneyOutDbManager.getCCTransToPay());
+        dbManager = new DbManager(getContext());
+        ccAdapter = new CCAdapter(getContext(), dbManager.getCCTransToPay());
         ccListView.setAdapter(ccAdapter);
 
         ccPaidCheckbox.setOnCheckedChangeListener(onCheckCCPaid);
@@ -96,8 +98,8 @@ public class DailyCreditCard extends Fragment {
     }
 
     public void updateCurrentAvailableBalance() {
-        currentAvailableBalance = currentDbManager.retrieveCurrentAvailableBalance();
-        totalCCPaymentBDue = moneyOutDbManager.retrieveToPayBTotal();
+        currentAvailableBalance = dbManager.retrieveCurrentAvailableBalance();
+        totalCCPaymentBDue = dbManager.retrieveToPayBTotal();
         newCurrentAvailableBalance = currentAvailableBalance - totalCCPaymentBDue;
 
         moneyOutValue = new ContentValues();
@@ -108,8 +110,8 @@ public class DailyCreditCard extends Fragment {
     }
 
     public void updateCurrentAccountBalance() {
-        currentAccountBalance = currentDbManager.retrieveCurrentAccountBalance();
-        totalCCPaymentDue3 = moneyOutDbManager.retrieveToPayTotal();
+        currentAccountBalance = dbManager.retrieveCurrentAccountBalance();
+        totalCCPaymentDue3 = dbManager.retrieveToPayTotal();
         newCurrentAccountBalance = currentAccountBalance - totalCCPaymentDue3;
 
         moneyOutValue2 = new ContentValues();
@@ -125,7 +127,7 @@ public class DailyCreditCard extends Fragment {
 
             updateCurrentAccountBalance();
             updateCurrentAvailableBalance();
-            moneyOutDbManager.updatePaid();
+            dbManager.updatePaid();
 
             resetToPay();
 
@@ -137,10 +139,10 @@ public class DailyCreditCard extends Fragment {
 
     public void checkIfPaymentPossible() {
 
-        totalCCPaymentBDue2 = moneyOutDbManager.retrieveToPayBTotal();
-        currentAvailableBalance2 = currentDbManager.retrieveCurrentAvailableBalance();
-        totalCCPaymentDue2 = moneyOutDbManager.retrieveToPayTotal();
-        currentAccountBalance2 = currentDbManager.retrieveCurrentAccountBalance();
+        totalCCPaymentBDue2 = dbManager.retrieveToPayBTotal();
+        currentAvailableBalance2 = dbManager.retrieveCurrentAvailableBalance();
+        totalCCPaymentDue2 = dbManager.retrieveToPayTotal();
+        currentAccountBalance2 = dbManager.retrieveCurrentAccountBalance();
 
         if (totalCCPaymentBDue2 > currentAvailableBalance2) {
             possible = false;
@@ -183,7 +185,7 @@ public class DailyCreditCard extends Fragment {
 
     public void updateCCPaymentDue() {
 
-        totalCCPaymentDue = moneyOutDbManager.retrieveToPayTotal();
+        totalCCPaymentDue = dbManager.retrieveToPayTotal();
 
         if (totalCCPaymentDue.equals(0.0)) {
             resetToPay();
@@ -275,10 +277,10 @@ public class DailyCreditCard extends Fragment {
 
                     if (isChecked) {
                         moneyOutDb.setMoneyOutToPay(1);
-                        moneyOutDbManager.updateMoneyOut(moneyOutDb);
+                        dbManager.updateMoneyOut(moneyOutDb);
                     } else {
                         moneyOutDb.setMoneyOutToPay(0);
-                        moneyOutDbManager.updateMoneyOut(moneyOutDb);
+                        dbManager.updateMoneyOut(moneyOutDb);
                     }
 
                     updateCCPaymentDue();

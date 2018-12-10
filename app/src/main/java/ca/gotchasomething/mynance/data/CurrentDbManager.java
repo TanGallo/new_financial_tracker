@@ -1,6 +1,6 @@
 package ca.gotchasomething.mynance.data;
 //ContentProvider
-
+/*
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -139,3 +139,4 @@ public class CurrentDbManager {
         return currentAvailableBalance;
     }
 }
+*/

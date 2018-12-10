@@ -32,7 +32,7 @@ import ca.gotchasomething.mynance.R;
 import ca.gotchasomething.mynance.data.ExpenseBudgetDb;
 //import ca.gotchasomething.mynance.data.ExpenseBudgetDbManager;
 import ca.gotchasomething.mynance.data.MoneyOutDb;
-import ca.gotchasomething.mynance.data.MoneyOutDbManager;
+//import ca.gotchasomething.mynance.data.MoneyOutDbManager;
 
 public class DailyWeeklyLimits extends Fragment {
 

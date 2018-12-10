@@ -39,7 +39,7 @@ import java.util.List;
 import ca.gotchasomething.mynance.data.ExpenseBudgetDb;
 //import ca.gotchasomething.mynance.data.ExpenseBudgetDbManager;
 import ca.gotchasomething.mynance.data.IncomeBudgetDb;
-import ca.gotchasomething.mynance.data.IncomeBudgetDbManager;
+//import ca.gotchasomething.mynance.data.IncomeBudgetDbManager;
 import ca.gotchasomething.mynance.data.DebtDb;
 //import ca.gotchasomething.mynance.data.DebtDbManager;
 import ca.gotchasomething.mynance.data.SetUpDb;
@@ -71,7 +71,7 @@ public class LayoutBudget extends MainNavigation {
     FloatingActionButton budgetIncomePlusButton, budgetExpensePlusButton;
     ImageButton editIncomeButton, deleteIncomeButton, editExpenseButton, deleteExpenseButton;
     IncomeBudgetDb incomeBudgetDb;
-    IncomeBudgetDbManager incomeDbManager;
+    //IncomeBudgetDbManager incomeDbManager;
     IncomeDbAdapter incomeAdapter;
     int numberOfDaysToPayDebt = 0, numberOfDaysToSavingsGoal = 0, budgetDoneCheck = 0, debtsDone, savingsDone, budgetDone, balanceDone, tourDone;
     Intent backToSetUp, incomePlusButton, expensePlusButton, backToBudget, backToBudget2, backToBudget3, backToBudget4;
@@ -112,7 +112,7 @@ public class LayoutBudget extends MainNavigation {
         general = new General();
         dbManager = new DbManager(this);
         //setUpDbManager = new SetUpDbManager(this);
-        incomeDbManager = new IncomeBudgetDbManager(this);
+        //incomeDbManager = new IncomeBudgetDbManager(this);
 
         budgetIncomeTotalText = findViewById(R.id.budgetIncomeTotalText);
         budgetExpensesTotalText = findViewById(R.id.budgetExpensesTotalText);
@@ -143,7 +143,7 @@ public class LayoutBudget extends MainNavigation {
             doneBudgetSetUpButton.setVisibility(View.GONE);
         }*/
 
-        incomeAdapter = new IncomeDbAdapter(this, incomeDbManager.getIncomes());
+        incomeAdapter = new IncomeDbAdapter(this, dbManager.getIncomes());
         budgetIncomeDetails.setAdapter(incomeAdapter);
 
         //expenseDbManager = new ExpenseBudgetDbManager(this);
@@ -180,7 +180,7 @@ public class LayoutBudget extends MainNavigation {
 
     public void budgetHeaderText() {
 
-        totalIncomeR = incomeDbManager.sumTotalIncome();
+        totalIncomeR = dbManager.sumTotalIncome();
         totalExpensesR = dbManager.sumTotalExpenses();
 
         try {
@@ -594,8 +594,8 @@ public class LayoutBudget extends MainNavigation {
                             incomeBudgetDb.setIncomeFrequency(Double.valueOf(incomeFrequencyS));
                             incomeBudgetDb.setIncomeAnnualAmount(incomeBudgetDb.getIncomeAmount() * incomeBudgetDb.getIncomeFrequency());
 
-                            incomeDbManager.updateIncome(incomeBudgetDb);
-                            incomeAdapter.updateIncomes(incomeDbManager.getIncomes());
+                            dbManager.updateIncome(incomeBudgetDb);
+                            incomeAdapter.updateIncomes(dbManager.getIncomes());
                             incomeAdapter.notifyDataSetChanged();
                             Toast.makeText(getBaseContext(), "Your changes have been saved",
                                     Toast.LENGTH_LONG).show();
@@ -616,8 +616,8 @@ public class LayoutBudget extends MainNavigation {
                 @Override
                 public void onClick(View v) {
                     incomeBudgetDb = (IncomeBudgetDb) incomeHolder.incomeDeleted.getTag();
-                    incomeDbManager.deleteIncome(incomeBudgetDb);
-                    incomeAdapter.updateIncomes(incomeDbManager.getIncomes());
+                    dbManager.deleteIncome(incomeBudgetDb);
+                    incomeAdapter.updateIncomes(dbManager.getIncomes());
                     incomeAdapter.notifyDataSetChanged();
 
                     budgetHeaderText();

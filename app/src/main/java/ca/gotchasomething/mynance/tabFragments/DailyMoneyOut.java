@@ -34,12 +34,13 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import ca.gotchasomething.mynance.DbHelper;
+import ca.gotchasomething.mynance.DbManager;
 import ca.gotchasomething.mynance.General;
 import ca.gotchasomething.mynance.LayoutDailyMoney;
 import ca.gotchasomething.mynance.R;
-import ca.gotchasomething.mynance.data.CurrentDbManager;
+//import ca.gotchasomething.mynance.data.CurrentDbManager;
 import ca.gotchasomething.mynance.data.MoneyOutDb;
-import ca.gotchasomething.mynance.data.MoneyOutDbManager;
+//import ca.gotchasomething.mynance.data.MoneyOutDbManager;
 import ca.gotchasomething.mynance.spinners.MoneyOutSpinnerAdapter;
 
 public class DailyMoneyOut extends Fragment {
@@ -47,10 +48,11 @@ public class DailyMoneyOut extends Fragment {
     boolean possible = true;
     Button moneyOutButton, cancelMoneyOutEntryButton, updateMoneyOutEntryButton;
     ContentValues moneyOutValue, moneyOutValue2;
-    CurrentDbManager currentDbManager;
+    //CurrentDbManager currentDbManager;
     Cursor moneyOutCursor;
     Date moneyOutDate;
     DbHelper moneyOutDbHelper, currentHelper3, currentHelper5;
+    DbManager dbManager;
     Double moneyOutAmount, currentAccountBalance, newCurrentAccountBalance3, currentAvailableBalance, newCurrentAvailableBalance3, moneyOutD,
             oldMoneyOutAmount, newMoneyOutAmount, moneyOutAmountD;
     EditText moneyOutAmountText, moneyOutAmountEditText;
@@ -63,7 +65,7 @@ public class DailyMoneyOut extends Fragment {
     long moneyOutRefKeyMO, expRefKeyMO;
     MoneyOutAdapter moneyOutAdapter;
     MoneyOutDb moneyOutDb;
-    MoneyOutDbManager moneyOutDbManager;
+    //MoneyOutDbManager moneyOutDbManager;
     MoneyOutSpinnerAdapter moneyOutSpinnerAdapter;
     NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
     SimpleDateFormat moneyOutSDF;
@@ -93,7 +95,7 @@ public class DailyMoneyOut extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         general = new General();
-        currentDbManager = new CurrentDbManager(getContext());
+        //currentDbManager = new CurrentDbManager(getContext());
 
         moneyOutAmountText = v.findViewById(R.id.moneyOutAmount);
         moneyOutButton = v.findViewById(R.id.moneyOutButton);
@@ -111,8 +113,8 @@ public class DailyMoneyOut extends Fragment {
 
         moneyOutButton.setOnClickListener(onClickMoneyOutButton);
 
-        moneyOutDbManager = new MoneyOutDbManager(getContext());
-        moneyOutAdapter = new MoneyOutAdapter(getContext(), moneyOutDbManager.getCashTrans());
+        dbManager = new DbManager(getContext());
+        moneyOutAdapter = new MoneyOutAdapter(getContext(), dbManager.getCashTrans());
         moneyOutList.setAdapter(moneyOutAdapter);
 
         moneyOutCatSpinner = v.findViewById(R.id.moneyOutCatSpinner);
@@ -149,7 +151,7 @@ public class DailyMoneyOut extends Fragment {
     }*/
 
     public void updateCurrentAvailableBalanceMoneyOut() {
-        currentAvailableBalance = currentDbManager.retrieveCurrentAvailableBalance();
+        currentAvailableBalance = dbManager.retrieveCurrentAvailableBalance();
         newCurrentAvailableBalance3 = currentAvailableBalance - moneyOutAmount;
 
         if (newCurrentAvailableBalance3 < 0) {
@@ -166,7 +168,7 @@ public class DailyMoneyOut extends Fragment {
     }
 
     public void updateCurrentAccountBalanceMoneyOut() {
-        currentAccountBalance = currentDbManager.retrieveCurrentAccountBalance();
+        currentAccountBalance = dbManager.retrieveCurrentAccountBalance();
         newCurrentAccountBalance3 = currentAccountBalance - moneyOutAmount;
 
         if (newCurrentAccountBalance3 < 0) {
@@ -218,12 +220,12 @@ public class DailyMoneyOut extends Fragment {
             moneyOutDb = new MoneyOutDb(moneyOutCat, moneyOutPriority, moneyOutWeekly, moneyOutAmount, moneyOutCreatedOn,
                     moneyOutCC, moneyOutToPay, moneyOutPaid, expRefKeyMO, 0);
 
-            moneyOutDbManager.addMoneyOut(moneyOutDb);
+            dbManager.addMoneyOut(moneyOutDb);
             Toast.makeText(getActivity(), "Saved", Toast.LENGTH_LONG).show();
             moneyOutAmountText.setText("");
             moneyOutCatSpinner.setSelection(0, false);
 
-            moneyOutAdapter.updateCashTrans(moneyOutDbManager.getCashTrans());
+            moneyOutAdapter.updateCashTrans(dbManager.getCashTrans());
             moneyOutAdapter.notifyDataSetChanged();
 
             if (moneyOutPriority.equals("B")) {
@@ -325,7 +327,7 @@ public class DailyMoneyOut extends Fragment {
 
                     getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
-                    moneyOutDbManager = new MoneyOutDbManager(getContext());
+                    dbManager = new DbManager(getContext());
 
                     moneyOutCatText.setVisibility(View.VISIBLE);
                     moneyOutAmountEditText.setVisibility(View.VISIBLE);
@@ -355,8 +357,8 @@ public class DailyMoneyOut extends Fragment {
 
                             moneyOutAmount = newMoneyOutAmount - oldMoneyOutAmount;
 
-                            moneyOutDbManager.updateMoneyOut(moneyOutDb);
-                            moneyOutAdapter.updateCashTrans(moneyOutDbManager.getCashTrans());
+                            dbManager.updateMoneyOut(moneyOutDb);
+                            moneyOutAdapter.updateCashTrans(dbManager.getCashTrans());
                             notifyDataSetChanged();
 
                             Toast.makeText(getContext(), "Your changes have been saved",
@@ -410,8 +412,8 @@ public class DailyMoneyOut extends Fragment {
                     moneyOutAmount = -(Double.valueOf(cashTrans.get(position).getMoneyOutAmount()));
 
                     moneyOutDb = (MoneyOutDb) holder.moneyOutDelete.getTag();
-                    moneyOutDbManager.deleteMoneyOut(moneyOutDb);
-                    moneyOutAdapter.updateCashTrans(moneyOutDbManager.getCashTrans());
+                    dbManager.deleteMoneyOut(moneyOutDb);
+                    moneyOutAdapter.updateCashTrans(dbManager.getCashTrans());
                     notifyDataSetChanged();
 
                     updateCurrentAvailableBalanceMoneyOut();

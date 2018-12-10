@@ -14,7 +14,7 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 import java.text.NumberFormat;
 import androidx.fragment.app.FragmentTransaction;
-import ca.gotchasomething.mynance.data.CurrentDbManager;
+//import ca.gotchasomething.mynance.data.CurrentDbManager;
 import ca.gotchasomething.mynance.tabFragments.DailyMoneyCC;
 import ca.gotchasomething.mynance.tabFragments.DailyMoneyIn;
 import ca.gotchasomething.mynance.tabFragments.DailyCreditCard;
@@ -24,7 +24,7 @@ import ca.gotchasomething.mynance.tabFragments.DailyWeeklyLimits;
 public class LayoutDailyMoney extends MainNavigation {
 
     Button moneyInButton, moneyOutButton;
-    CurrentDbManager currentDbManager;
+    //CurrentDbManager currentDbManager;
     DbManager dbManager;
     Double newAccountBalance, newAvailableBalance;
     FragmentManager fm;
@@ -51,7 +51,7 @@ public class LayoutDailyMoney extends MainNavigation {
         toggle.syncState();
 
         dbManager = new DbManager(this);
-        currentDbManager = new CurrentDbManager(this);
+        //currentDbManager = new CurrentDbManager(this);
 
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
@@ -77,8 +77,8 @@ public class LayoutDailyMoney extends MainNavigation {
 
     public void dailyHeaderText() {
 
-        newAccountBalance = currentDbManager.retrieveCurrentAccountBalance();
-        newAvailableBalance = currentDbManager.retrieveCurrentAvailableBalance();
+        newAccountBalance = dbManager.retrieveCurrentAccountBalance();
+        newAvailableBalance = dbManager.retrieveCurrentAvailableBalance();
 
         if(newAccountBalance < newAvailableBalance || newAccountBalance == 0.0) {
             newAvailableBalance = 0.0;

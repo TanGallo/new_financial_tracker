@@ -32,11 +32,12 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import ca.gotchasomething.mynance.DbHelper;
+import ca.gotchasomething.mynance.DbManager;
 import ca.gotchasomething.mynance.General;
 import ca.gotchasomething.mynance.R;
-import ca.gotchasomething.mynance.data.CurrentDbManager;
+//import ca.gotchasomething.mynance.data.CurrentDbManager;
 import ca.gotchasomething.mynance.data.MoneyOutDb;
-import ca.gotchasomething.mynance.data.MoneyOutDbManager;
+//import ca.gotchasomething.mynance.data.MoneyOutDbManager;
 import ca.gotchasomething.mynance.spinners.MoneyOutSpinnerAdapter;
 
 public class DailyMoneyCC extends Fragment {
@@ -44,10 +45,11 @@ public class DailyMoneyCC extends Fragment {
     boolean possible = true;
     Button ccTransButton, cancelCCTransEntryButton, updateCCTransEntryButton;
     CCTransAdapter ccTransAdapter;
-    CurrentDbManager currentDbManager;
+    //CurrentDbManager currentDbManager;
     Cursor moneyOutCursor2;
     Date moneyOutDate;
     DbHelper moneyOutDbHelper2;
+    DbManager dbManager;
     Double moneyOutAmount, ccTransAmountD, oldMoneyOutAmount, newMoneyOutAmount, ccTransAmountD2;
     EditText ccTransAmountText, ccTransAmountEditText;
     General general;
@@ -55,7 +57,7 @@ public class DailyMoneyCC extends Fragment {
     ListView ccTransList;
     long moneyOutRefKeyMO, expRefKeyMO;
     MoneyOutDb moneyOutDb;
-    MoneyOutDbManager moneyOutDbManager;
+    //MoneyOutDbManager moneyOutDbManager;
     MoneyOutSpinnerAdapter ccTransSpinnerAdapter;
     NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
     SimpleDateFormat moneyOutSDF;
@@ -85,7 +87,7 @@ public class DailyMoneyCC extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         general = new General();
-        currentDbManager = new CurrentDbManager(getContext());
+        //currentDbManager = new CurrentDbManager(getContext());
 
         ccTransAmountText = v.findViewById(R.id.ccTransAmount);
         ccTransButton = v.findViewById(R.id.ccTransButton);
@@ -103,8 +105,8 @@ public class DailyMoneyCC extends Fragment {
 
         ccTransButton.setOnClickListener(onClickCCTransButton);
 
-        moneyOutDbManager = new MoneyOutDbManager(getContext());
-        ccTransAdapter = new CCTransAdapter(getContext(), moneyOutDbManager.getCCTrans());
+        dbManager = new DbManager(getContext());
+        ccTransAdapter = new CCTransAdapter(getContext(), dbManager.getCCTrans());
         ccTransList.setAdapter(ccTransAdapter);
 
         ccTransCatSpinner = v.findViewById(R.id.ccTransCatSpinner);
@@ -158,12 +160,12 @@ public class DailyMoneyCC extends Fragment {
             moneyOutDb = new MoneyOutDb(moneyOutCat, moneyOutPriority, moneyOutWeekly, moneyOutAmount, moneyOutCreatedOn,
                     moneyOutCC, moneyOutToPay, moneyOutPaid, expRefKeyMO,  0);
 
-            moneyOutDbManager.addMoneyOut(moneyOutDb);
+            dbManager.addMoneyOut(moneyOutDb);
             Toast.makeText(getActivity(), "Saved", Toast.LENGTH_LONG).show();
             ccTransAmountText.setText("");
             ccTransCatSpinner.setSelection(0, false);
 
-            ccTransAdapter.updateCCTrans(moneyOutDbManager.getCCTrans());
+            ccTransAdapter.updateCCTrans(dbManager.getCCTrans());
             ccTransAdapter.notifyDataSetChanged();
         }
     };
@@ -249,7 +251,7 @@ public class DailyMoneyCC extends Fragment {
 
                     getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
-                    moneyOutDbManager = new MoneyOutDbManager(getContext());
+                    dbManager = new DbManager(getContext());
 
                     ccTransCatText.setVisibility(View.VISIBLE);
                     ccTransAmountEditText.setVisibility(View.VISIBLE);
@@ -281,8 +283,8 @@ public class DailyMoneyCC extends Fragment {
 
                     moneyOutAmount = newMoneyOutAmount - oldMoneyOutAmount;
 
-                    moneyOutDbManager.updateMoneyOut(moneyOutDb);
-                    ccTransAdapter.updateCCTrans(moneyOutDbManager.getCCTrans());
+                    dbManager.updateMoneyOut(moneyOutDb);
+                    ccTransAdapter.updateCCTrans(dbManager.getCCTrans());
                     notifyDataSetChanged();
 
                     Toast.makeText(getContext(), "Your changes have been saved",
@@ -313,8 +315,8 @@ public class DailyMoneyCC extends Fragment {
                 @Override
                 public void onClick(View v) {
                     moneyOutDb = (MoneyOutDb) holder.ccTransDelete.getTag();
-                    moneyOutDbManager.deleteMoneyOut(moneyOutDb);
-                    ccTransAdapter.updateCCTrans(moneyOutDbManager.getCCTrans());
+                    dbManager.deleteMoneyOut(moneyOutDb);
+                    ccTransAdapter.updateCCTrans(dbManager.getCCTrans());
                     notifyDataSetChanged();
                 }
             });

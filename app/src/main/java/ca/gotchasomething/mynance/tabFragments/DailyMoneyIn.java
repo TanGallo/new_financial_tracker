@@ -30,22 +30,24 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import ca.gotchasomething.mynance.DbHelper;
+import ca.gotchasomething.mynance.DbManager;
 import ca.gotchasomething.mynance.General;
 import ca.gotchasomething.mynance.LayoutDailyMoney;
 import ca.gotchasomething.mynance.R;
-import ca.gotchasomething.mynance.data.CurrentDbManager;
+//import ca.gotchasomething.mynance.data.CurrentDbManager;
 import ca.gotchasomething.mynance.data.MoneyInDb;
-import ca.gotchasomething.mynance.data.MoneyInDbManager;
+//import ca.gotchasomething.mynance.data.MoneyInDbManager;
 import ca.gotchasomething.mynance.spinners.MoneyInSpinnerAdapter;
 
 public class DailyMoneyIn extends Fragment {
 
     Button moneyInButton, cancelMoneyInEntryButton, updateMoneyInEntryButton;
     ContentValues moneyInValue, moneyInValue2;
-    CurrentDbManager currentDbManager;
+    //CurrentDbManager currentDbManager;
     Cursor moneyInCursor;
     Date moneyInDate;
     DbHelper moneyInDbHelper, currentHelper4, currentHelper6;
+    DbManager dbManager;
     Double moneyInAmount, moneyInD, newCurrentAccountBalance, currentAccountBalance, percentB, currentAvailableBalance, newCurrentAvailableBalance2,
             newMoneyInAmount, oldMoneyInAmount, moneyInAmountD;
     EditText moneyInAmountText, moneyInAmountEditText;
@@ -54,7 +56,7 @@ public class DailyMoneyIn extends Fragment {
     ListView moneyInList;
     MoneyInAdapter moneyInAdapter;
     MoneyInDb moneyInDb;
-    MoneyInDbManager moneyInDbManager;
+    //MoneyInDbManager moneyInDbManager;
     MoneyInSpinnerAdapter moneyInSpinnerAdapter;
     NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
     SimpleDateFormat moneyInSDF;
@@ -83,7 +85,7 @@ public class DailyMoneyIn extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         general = new General();
-        currentDbManager = new CurrentDbManager(getContext());
+        //currentDbManager = new CurrentDbManager(getContext());
 
         moneyInAmountText = v.findViewById(R.id.moneyInAmount);
         moneyInButton = v.findViewById(R.id.moneyInButton);
@@ -101,8 +103,8 @@ public class DailyMoneyIn extends Fragment {
 
         moneyInButton.setOnClickListener(onClickMoneyInButton);
 
-        moneyInDbManager = new MoneyInDbManager(getContext());
-        moneyInAdapter = new MoneyInAdapter(getContext(), moneyInDbManager.getMoneyIns());
+        dbManager = new DbManager(getContext());
+        moneyInAdapter = new MoneyInAdapter(getContext(), dbManager.getMoneyIns());
         moneyInList.setAdapter(moneyInAdapter);
 
         moneyInCatSpinner = v.findViewById(R.id.moneyInCatSpinner);
@@ -121,8 +123,8 @@ public class DailyMoneyIn extends Fragment {
     }
 
     public void updateCurrentAvailableBalanceMoneyIn() {
-        percentB = currentDbManager.retrieveBPercentage();
-        currentAvailableBalance = currentDbManager.retrieveCurrentAvailableBalance();
+        percentB = dbManager.retrieveBPercentage();
+        currentAvailableBalance = dbManager.retrieveCurrentAvailableBalance();
         newCurrentAvailableBalance2 = currentAvailableBalance + (moneyInAmount * percentB);
 
         moneyInValue2 = new ContentValues();
@@ -133,7 +135,7 @@ public class DailyMoneyIn extends Fragment {
     }
 
     public void updateCurrentAccountBalanceMoneyIn() {
-        currentAccountBalance = currentDbManager.retrieveCurrentAccountBalance();
+        currentAccountBalance = dbManager.retrieveCurrentAccountBalance();
         newCurrentAccountBalance = currentAccountBalance + moneyInAmount;
 
         moneyInValue = new ContentValues();
@@ -168,12 +170,12 @@ public class DailyMoneyIn extends Fragment {
 
             moneyInDb = new MoneyInDb(moneyInCat, moneyInAmount, moneyInCreatedOn, 0);
 
-            moneyInDbManager.addMoneyIn(moneyInDb);
+            dbManager.addMoneyIn(moneyInDb);
             Toast.makeText(getActivity(), "Saved", Toast.LENGTH_LONG).show();
             moneyInAmountText.setText("");
             moneyInCatSpinner.setSelection(0, false);
 
-            moneyInAdapter.updateMoneyIn(moneyInDbManager.getMoneyIns());
+            moneyInAdapter.updateMoneyIn(dbManager.getMoneyIns());
             moneyInAdapter.notifyDataSetChanged();
 
             updateCurrentAccountBalanceMoneyIn();
@@ -266,7 +268,7 @@ public class DailyMoneyIn extends Fragment {
 
                     getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
-                    moneyInDbManager = new MoneyInDbManager(getContext());
+                    dbManager = new DbManager(getContext());
 
                     moneyInCatText.setVisibility(View.VISIBLE);
                     moneyInAmountEditText.setVisibility(View.VISIBLE);
@@ -296,8 +298,8 @@ public class DailyMoneyIn extends Fragment {
 
                             moneyInAmount = newMoneyInAmount - oldMoneyInAmount;
 
-                            moneyInDbManager.updateMoneyIn(moneyInDb);
-                            moneyInAdapter.updateMoneyIn(moneyInDbManager.getMoneyIns());
+                            dbManager.updateMoneyIn(moneyInDb);
+                            moneyInAdapter.updateMoneyIn(dbManager.getMoneyIns());
                             notifyDataSetChanged();
 
                             Toast.makeText(getContext(), "Your changes have been saved",
@@ -343,8 +345,8 @@ public class DailyMoneyIn extends Fragment {
                     moneyInAmount = -(Double.valueOf(moneyIn.get(position).getMoneyInAmount()));
 
                     moneyInDb = (MoneyInDb) holder.moneyInDelete.getTag();
-                    moneyInDbManager.deleteMoneyIn(moneyInDb);
-                    moneyInAdapter.updateMoneyIn(moneyInDbManager.getMoneyIns());
+                    dbManager.deleteMoneyIn(moneyInDb);
+                    moneyInAdapter.updateMoneyIn(dbManager.getMoneyIns());
                     notifyDataSetChanged();
 
                     updateCurrentAvailableBalanceMoneyIn();

@@ -17,9 +17,9 @@ import java.util.Date;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import ca.gotchasomething.mynance.data.CurrentDb;
-import ca.gotchasomething.mynance.data.CurrentDbManager;
+//import ca.gotchasomething.mynance.data.CurrentDbManager;
 import ca.gotchasomething.mynance.data.MoneyInDb;
-import ca.gotchasomething.mynance.data.MoneyInDbManager;
+//import ca.gotchasomething.mynance.data.MoneyInDbManager;
 import ca.gotchasomething.mynance.data.SetUpDb;
 //import ca.gotchasomething.mynance.data.SetUpDbManager;
 
@@ -28,7 +28,7 @@ public class LayoutSetUp extends MainNavigation {
     Button setUpDebtsButton, setUpSavingsButton, setUpBudgetButton;
     CheckBox setUpDebtsCheckbox, setUpSavingsCheckbox, setUpBudgetCheckbox, setUpAccountCheckbox, setUpTourCheckbox;
     CurrentDb currentDb;
-    CurrentDbManager currentDbManager;
+    //CurrentDbManager currentDbManager;
     Date moneyInDate;
     DbManager dbManager;
     Double startingBalanceResult = 0.0, balanceAmount = 0.0, moneyInAmount = 0.0, currentAccountBalance = 0.0, currentAvailableBalance = 0.0;
@@ -36,7 +36,7 @@ public class LayoutSetUp extends MainNavigation {
     int debtsDone, savingsDone, budgetDone, balanceDone, tourDone;
     Intent setUpDebts, setUpSavings, setUpBudget, toMainActivity;
     MoneyInDb moneyInDb;
-    MoneyInDbManager moneyInDbManager;
+    //MoneyInDbManager moneyInDbManager;
     NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
     SetUpDb setUpDb;
     //SetUpDbManager setUpDbManager;
@@ -63,8 +63,8 @@ public class LayoutSetUp extends MainNavigation {
 
         dbManager = new DbManager(this);
         //setUpDbManager = new SetUpDbManager(this);
-        moneyInDbManager = new MoneyInDbManager(this);
-        currentDbManager = new CurrentDbManager(this);
+        //moneyInDbManager = new MoneyInDbManager(this);
+        //currentDbManager = new CurrentDbManager(this);
 
         setUpDebtsButton = findViewById(R.id.setUpDebtsButton);
         setUpDebtsLabel = findViewById(R.id.setUpDebtsLabel);
@@ -268,11 +268,11 @@ public class LayoutSetUp extends MainNavigation {
             //setUpDbManager.addSetUp(setUpDb);
 
             currentAccountBalance = balanceAmount;
-            currentAvailableBalance = balanceAmount * currentDbManager.retrieveBPercentage();
+            currentAvailableBalance = balanceAmount * dbManager.retrieveBPercentage();
 
             currentDb = new CurrentDb(currentAccountBalance, currentAvailableBalance, 0);
 
-            currentDbManager.addCurrent(currentDb);
+            dbManager.addCurrent(currentDb);
 
             moneyInCat = "start";
             moneyInAmount = balanceAmount;
@@ -283,7 +283,7 @@ public class LayoutSetUp extends MainNavigation {
 
             moneyInDb = new MoneyInDb(moneyInCat, moneyInAmount, moneyInCreatedOn, 0);
 
-            moneyInDbManager.addMoneyIn(moneyInDb);
+            dbManager.addMoneyIn(moneyInDb);
 
             setUpAccountAmountLabel.setVisibility(View.GONE);
             setUpAccountAmountLabel2.setVisibility(View.GONE);

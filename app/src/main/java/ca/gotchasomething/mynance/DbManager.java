@@ -12,6 +12,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+import ca.gotchasomething.mynance.data.CurrentDb;
 import ca.gotchasomething.mynance.data.DebtDb;
 import ca.gotchasomething.mynance.data.ExpenseBudgetDb;
 import ca.gotchasomething.mynance.data.IncomeBudgetDb;
@@ -26,7 +27,8 @@ public class DbManager {
     public Cursor cursor;
     public Date debtEndD, savingsDateD;
     public DbHelper dbHelper;
-    public Double startingBalanceResult, totalDebt, numberOfYearsToPayDebt, numberOfYearsToSavingsGoal, totalSavings, totalExpenses;
+    public Double startingBalanceResult, totalDebt, numberOfYearsToPayDebt, numberOfYearsToSavingsGoal, totalSavings, totalExpenses, totalIncome,
+            totalCCPaymentDue, totalCCPaymentBDue, currentAccountBalance, currentAvailableBalance, totalBudgetAExpenses, percentB;
     public int tourDoneCheck, balanceDoneCheck, budgetDoneCheck, savingsDoneCheck, debtsDoneCheck, numberOfDaysToPayDebt, numberOfDaysToSavingsGoal;
     public SimpleDateFormat debtEndS, savingsDateS;
     public SQLiteDatabase db;
@@ -96,6 +98,7 @@ public class DbManager {
         for (SetUpDb s : getSetUp()) {
             tourDoneList.add(s.getTourDone());
         }
+        tourDoneCheck = 0;
         if (tourDoneList.size() == 0) {
             tourDoneCheck = 0;
         } else {
@@ -109,6 +112,7 @@ public class DbManager {
         for (SetUpDb s : getSetUp()) {
             startingBalanceList.add(s.getBalanceAmount());
         }
+        startingBalanceResult = 0.0;
         if (startingBalanceList.size() == 0) {
             startingBalanceResult = 0.0;
         } else {
@@ -122,6 +126,7 @@ public class DbManager {
         for (SetUpDb s : getSetUp()) {
             balanceDoneList.add(s.getBalanceDone());
         }
+        balanceDoneCheck = 0;
         if (balanceDoneList.size() == 0) {
             balanceDoneCheck = 0;
         } else {
@@ -135,6 +140,7 @@ public class DbManager {
         for (SetUpDb s : getSetUp()) {
             budgetDoneList.add(s.getBudgetDone());
         }
+        budgetDoneCheck = 0;
         if (budgetDoneList.size() == 0) {
             budgetDoneCheck = 0;
         } else {
@@ -148,6 +154,7 @@ public class DbManager {
         for (SetUpDb s : getSetUp()) {
             savingsDoneList.add(s.getSavingsDone());
         }
+        savingsDoneCheck = 0;
         if (savingsDoneList.size() == 0) {
             savingsDoneCheck = 0;
         } else {
@@ -161,6 +168,7 @@ public class DbManager {
         for (SetUpDb s : getSetUp()) {
             debtsDoneList.add(s.getDebtsDone());
         }
+        debtsDoneCheck = 0;
         if (debtsDoneList.size() == 0) {
             debtsDoneCheck = 0;
         } else {
@@ -252,6 +260,7 @@ public class DbManager {
         for (DebtDb d : getDebts()) {
             debtAmountList.add(d.getDebtAmount());
         }
+        totalDebt = 0.0;
         if (debtAmountList.size() == 0) {
             totalDebt = 0.0;
         } else {
@@ -348,6 +357,7 @@ public class DbManager {
         for (SavingsDb d : getSavings()) {
             savingsAmountList.add(d.getSavingsAmount());
         }
+        totalSavings = 0.0;
         if (savingsAmountList.size() == 0) {
             totalSavings = 0.0;
         } else {
@@ -460,8 +470,9 @@ public class DbManager {
         List<Double> expensesAmountList = new ArrayList<>(getExpense().size());
         totalExpenses = 0.0;
         for (ExpenseBudgetDb e : getExpense()) {
-            expensesAmountList.add(e.getExpenseAmount());
+            expensesAmountList.add(e.getExpenseAnnualAmount());
         }
+        totalExpenses = 0.0;
         if (expensesAmountList.size() == 0) {
             totalExpenses = 0.0;
         } else {
@@ -473,188 +484,142 @@ public class DbManager {
     }
 
     public List<IncomeBudgetDb> getIncomes() {
-
-        dbIncome = dbHelperIncome.getReadableDatabase();
-
-        cursorIncome = dbIncome.rawQuery(
-                "SELECT * FROM " + DbHelper.INCOME_TABLE_NAME + " ORDER BY " + DbHelper.INCOMEANNUALAMOUNT + " DESC",
-                null);
-
+        db = dbHelper.getReadableDatabase();
+        cursor = db.rawQuery("SELECT * FROM " + DbHelper.INCOME_TABLE_NAME + " ORDER BY " + DbHelper.INCOMEANNUALAMOUNT + " DESC", null);
         List<IncomeBudgetDb> incomes = new ArrayList<>();
-
-        if (cursorIncome.moveToFirst()) {
-            while (!cursorIncome.isAfterLast()) {
-
+        if (cursor.moveToFirst()) {
+            while (!cursor.isAfterLast()) {
                 IncomeBudgetDb income = new IncomeBudgetDb(
-                        cursorIncome.getString(cursorIncome.getColumnIndex(DbHelper.INCOMENAME)),
-                        cursorIncome.getDouble(cursorIncome.getColumnIndex(DbHelper.INCOMEAMOUNT)),
-                        cursorIncome.getDouble(cursorIncome.getColumnIndex(DbHelper.INCOMEFREQUENCY)),
-                        cursorIncome.getDouble(cursorIncome.getColumnIndex(DbHelper.INCOMEANNUALAMOUNT)),
-                        cursorIncome.getLong(cursorIncome.getColumnIndex(DbHelper.ID))
+                        cursor.getString(cursor.getColumnIndex(DbHelper.INCOMENAME)),
+                        cursor.getDouble(cursor.getColumnIndex(DbHelper.INCOMEAMOUNT)),
+                        cursor.getDouble(cursor.getColumnIndex(DbHelper.INCOMEFREQUENCY)),
+                        cursor.getDouble(cursor.getColumnIndex(DbHelper.INCOMEANNUALAMOUNT)),
+                        cursor.getLong(cursor.getColumnIndex(DbHelper.ID))
                 );
-
                 incomes.add(income); //adds new items to bottom of list
-                cursorIncome.moveToNext();
+                cursor.moveToNext();
             }
         }
-        cursorIncome.close();
+        cursor.close();
         return incomes;
     }
 
     public void addIncome(IncomeBudgetDb income) {
-
         ContentValues newIncome = new ContentValues();
         newIncome.put(DbHelper.INCOMENAME, income.getIncomeName());
         newIncome.put(DbHelper.INCOMEAMOUNT, income.getIncomeAmount());
         newIncome.put(DbHelper.INCOMEFREQUENCY, income.getIncomeFrequency());
         newIncome.put(DbHelper.INCOMEANNUALAMOUNT, income.getIncomeAnnualAmount());
-
-        dbIncome2 = dbHelperIncome.getWritableDatabase();
-        dbIncome2.insert(DbHelper.INCOME_TABLE_NAME, null, newIncome);
+        db = dbHelper.getWritableDatabase();
+        db.insert(DbHelper.INCOME_TABLE_NAME, null, newIncome);
     }
 
     public void updateIncome(IncomeBudgetDb income) {
-
         ContentValues updateIncome = new ContentValues();
         updateIncome.put(DbHelper.INCOMENAME, income.getIncomeName());
         updateIncome.put(DbHelper.INCOMEAMOUNT, income.getIncomeAmount());
         updateIncome.put(DbHelper.INCOMEFREQUENCY, income.getIncomeFrequency());
         updateIncome.put(DbHelper.INCOMEANNUALAMOUNT, income.getIncomeAnnualAmount());
-
-        dbIncome3 = dbHelperIncome.getWritableDatabase();
-
+        db = dbHelper.getWritableDatabase();
         String[] args = new String[]{String.valueOf(income.getId())};
-
-        dbIncome3.update(
-                DbHelper.INCOME_TABLE_NAME,
-                updateIncome,
-                DbHelper.ID + "=?",
-                args);
+        db.update(DbHelper.INCOME_TABLE_NAME, updateIncome, DbHelper.ID + "=?", args);
     }
 
     public void deleteIncome(IncomeBudgetDb income) {
-        dbIncome4 = dbHelperIncome.getWritableDatabase();
-
+        db = dbHelper.getWritableDatabase();
         String[] args = new String[]{String.valueOf(income.getId())};
-
-        dbIncome4.delete(
-                DbHelper.INCOME_TABLE_NAME,
-                DbHelper.ID + "=?",
-                args);
+        db.delete(DbHelper.INCOME_TABLE_NAME, DbHelper.ID + "=?", args);
     }
 
     public Double sumTotalIncome() {
-        dbIncome5 = dbHelperIncome.getReadableDatabase();
-        cursorIncome5 = dbIncome5.rawQuery("SELECT sum(incomeAnnualAmount)" + " FROM " + DbHelper.INCOME_TABLE_NAME, null);
-        cursorIncome5.moveToFirst();
-        totalIncome = cursorIncome5.getDouble(0);
-        cursorIncome5.close();
-
+        List<Double> incomeList = new ArrayList<>(getIncomes().size());
+        totalIncome = 0.0;
+        for (IncomeBudgetDb i : getIncomes()) {
+            incomeList.add(i.getIncomeAnnualAmount());
+        }
+        totalIncome = 0.0;
+        if (incomeList.size() == 0) {
+            totalIncome = 0.0;
+        } else {
+            for (Double dbl : incomeList) {
+                totalIncome += dbl;
+            }
+        }
         return totalIncome;
     }
 
     public List<MoneyInDb> getMoneyIns() {
-
-        dbMoneyIn = dbHelperMoneyIn.getReadableDatabase();
-
-        cursorMoneyIn = dbMoneyIn.rawQuery(
-                "SELECT * FROM " + DbHelper.MONEY_IN_TABLE_NAME, null);
-
+        db = dbHelper.getReadableDatabase();
+        cursor = db.rawQuery("SELECT * FROM " + DbHelper.MONEY_IN_TABLE_NAME, null);
         List<MoneyInDb> moneyIns = new ArrayList<>();
-
-        if (cursorMoneyIn.moveToFirst()) {
-            while (!cursorMoneyIn.isAfterLast()) {
-
+        if (cursor.moveToFirst()) {
+            while (!cursor.isAfterLast()) {
                 MoneyInDb moneyIn = new MoneyInDb(
-                        cursorMoneyIn.getString(cursorMoneyIn.getColumnIndex(DbHelper.MONEYINCAT)),
-                        cursorMoneyIn.getDouble(cursorMoneyIn.getColumnIndex(DbHelper.MONEYINAMOUNT)),
-                        cursorMoneyIn.getString(cursorMoneyIn.getColumnIndex(DbHelper.MONEYINCREATEDON)),
-                        cursorMoneyIn.getLong(cursorMoneyIn.getColumnIndex(DbHelper.ID))
+                        cursor.getString(cursor.getColumnIndex(DbHelper.MONEYINCAT)),
+                        cursor.getDouble(cursor.getColumnIndex(DbHelper.MONEYINAMOUNT)),
+                        cursor.getString(cursor.getColumnIndex(DbHelper.MONEYINCREATEDON)),
+                        cursor.getLong(cursor.getColumnIndex(DbHelper.ID))
                 );
-
                 moneyIns.add(0, moneyIn); //adds new items to beginning of list
-                cursorMoneyIn.moveToNext();
+                cursor.moveToNext();
             }
         }
-        cursorMoneyIn.close();
+        cursor.close();
         return moneyIns;
     }
 
     public void addMoneyIn(MoneyInDb moneyIn) {
-
         ContentValues newMoneyIn = new ContentValues();
         newMoneyIn.put(DbHelper.MONEYINCAT, moneyIn.getMoneyInCat());
         newMoneyIn.put(DbHelper.MONEYINAMOUNT, moneyIn.getMoneyInAmount());
         newMoneyIn.put(DbHelper.MONEYINCREATEDON, moneyIn.getMoneyInCreatedOn());
-
-        dbMoneyIn2 = dbHelperMoneyIn.getWritableDatabase();
-        dbMoneyIn2.insert(DbHelper.MONEY_IN_TABLE_NAME, null, newMoneyIn);
+        db = dbHelper.getWritableDatabase();
+        db.insert(DbHelper.MONEY_IN_TABLE_NAME, null, newMoneyIn);
     }
 
     public void updateMoneyIn(MoneyInDb moneyIn) {
-
         ContentValues updateMoneyIn = new ContentValues();
         updateMoneyIn.put(DbHelper.MONEYINCAT, moneyIn.getMoneyInCat());
         updateMoneyIn.put(DbHelper.MONEYINAMOUNT, moneyIn.getMoneyInAmount());
         updateMoneyIn.put(DbHelper.MONEYINCREATEDON, moneyIn.getMoneyInCreatedOn());
-
-        dbMoneyIn3 = dbHelperMoneyIn.getWritableDatabase();
-
+        db = dbHelper.getWritableDatabase();
         String[] args = new String[]{String.valueOf(moneyIn.getId())};
-
-        dbMoneyIn3.update(
-                DbHelper.MONEY_IN_TABLE_NAME,
-                updateMoneyIn,
-                DbHelper.ID + "=?",
-                args);
+        db.update(DbHelper.MONEY_IN_TABLE_NAME, updateMoneyIn, DbHelper.ID + "=?", args);
     }
 
     public void deleteMoneyIn(MoneyInDb moneyIn) {
-        dbMoneyIn4 = dbHelperMoneyIn.getWritableDatabase();
-
+        db = dbHelper.getWritableDatabase();
         String[] args = new String[]{String.valueOf(moneyIn.getId())};
-
-        dbMoneyIn4.delete(
-                DbHelper.MONEY_IN_TABLE_NAME,
-                DbHelper.ID + "=?",
-                args);
+        db.delete(DbHelper.MONEY_IN_TABLE_NAME, DbHelper.ID + "=?", args);
     }
 
     public List<MoneyOutDb> getMoneyOuts() {
-
-        dbMoneyOut = dbHelperMoneyOut.getReadableDatabase();
-
-        cursorMoneyOut = dbMoneyOut.rawQuery(
-                "SELECT * FROM " + DbHelper.MONEY_OUT_TABLE_NAME, null);
-
+        db = dbHelper.getReadableDatabase();
+        cursor = db.rawQuery("SELECT * FROM " + DbHelper.MONEY_OUT_TABLE_NAME, null);
         List<MoneyOutDb> moneyOuts = new ArrayList<>();
-
-        if (cursorMoneyOut.moveToFirst()) {
-            while (!cursorMoneyOut.isAfterLast()) {
-
+        if (cursor.moveToFirst()) {
+            while (!cursor.isAfterLast()) {
                 MoneyOutDb moneyOut = new MoneyOutDb(
-                        cursorMoneyOut.getString(cursorMoneyOut.getColumnIndex(DbHelper.MONEYOUTCAT)),
-                        cursorMoneyOut.getString(cursorMoneyOut.getColumnIndex(DbHelper.MONEYOUTPRIORITY)),
-                        cursorMoneyOut.getString(cursorMoneyOut.getColumnIndex(DbHelper.MONEYOUTWEEKLY)),
-                        cursorMoneyOut.getDouble(cursorMoneyOut.getColumnIndex(DbHelper.MONEYOUTAMOUNT)),
-                        cursorMoneyOut.getString(cursorMoneyOut.getColumnIndex(DbHelper.MONEYOUTCREATEDON)),
-                        cursorMoneyOut.getString(cursorMoneyOut.getColumnIndex(DbHelper.MONEYOUTCC)),
-                        cursorMoneyOut.getInt(cursorMoneyOut.getColumnIndex(DbHelper.MONEYOUTTOPAY)),
-                        cursorMoneyOut.getInt(cursorMoneyOut.getColumnIndex(DbHelper.MONEYOUTPAID)),
-                        cursorMoneyOut.getLong(cursorMoneyOut.getColumnIndex(DbHelper.EXPREFKEYMO)),
-                        cursorMoneyOut.getLong(cursorMoneyOut.getColumnIndex(DbHelper.ID))
+                        cursor.getString(cursor.getColumnIndex(DbHelper.MONEYOUTCAT)),
+                        cursor.getString(cursor.getColumnIndex(DbHelper.MONEYOUTPRIORITY)),
+                        cursor.getString(cursor.getColumnIndex(DbHelper.MONEYOUTWEEKLY)),
+                        cursor.getDouble(cursor.getColumnIndex(DbHelper.MONEYOUTAMOUNT)),
+                        cursor.getString(cursor.getColumnIndex(DbHelper.MONEYOUTCREATEDON)),
+                        cursor.getString(cursor.getColumnIndex(DbHelper.MONEYOUTCC)),
+                        cursor.getInt(cursor.getColumnIndex(DbHelper.MONEYOUTTOPAY)),
+                        cursor.getInt(cursor.getColumnIndex(DbHelper.MONEYOUTPAID)),
+                        cursor.getLong(cursor.getColumnIndex(DbHelper.EXPREFKEYMO)),
+                        cursor.getLong(cursor.getColumnIndex(DbHelper.ID))
                 );
-
                 moneyOuts.add(0, moneyOut); //adds new items to beginning of list
-                cursorMoneyOut.moveToNext();
+                cursor.moveToNext();
             }
         }
-        cursorMoneyOut.close();
+        cursor.close();
         return moneyOuts;
     }
 
     public void addMoneyOut(MoneyOutDb moneyOut) {
-
         ContentValues newMoneyOut = new ContentValues();
         newMoneyOut.put(DbHelper.MONEYOUTCAT, moneyOut.getMoneyOutCat());
         newMoneyOut.put(DbHelper.MONEYOUTPRIORITY, moneyOut.getMoneyOutPriority());
@@ -665,13 +630,11 @@ public class DbManager {
         newMoneyOut.put(DbHelper.MONEYOUTTOPAY, moneyOut.getMoneyOutToPay());
         newMoneyOut.put(DbHelper.MONEYOUTPAID, moneyOut.getMoneyOutPaid());
         newMoneyOut.put(DbHelper.EXPREFKEYMO, moneyOut.getExpRefKeyMO());
-
-        dbMoneyOut2 = dbHelperMoneyOut.getWritableDatabase();
-        dbMoneyOut2.insert(DbHelper.MONEY_OUT_TABLE_NAME, null, newMoneyOut);
+        db = dbHelper.getWritableDatabase();
+        db.insert(DbHelper.MONEY_OUT_TABLE_NAME, null, newMoneyOut);
     }
 
     public void updateMoneyOut(MoneyOutDb moneyOut) {
-
         ContentValues updateMoneyOut = new ContentValues();
         updateMoneyOut.put(DbHelper.MONEYOUTCAT, moneyOut.getMoneyOutCat());
         updateMoneyOut.put(DbHelper.MONEYOUTPRIORITY, moneyOut.getMoneyOutPriority());
@@ -682,165 +645,228 @@ public class DbManager {
         updateMoneyOut.put(DbHelper.MONEYOUTTOPAY, moneyOut.getMoneyOutToPay());
         updateMoneyOut.put(DbHelper.MONEYOUTPAID, moneyOut.getMoneyOutPaid());
         updateMoneyOut.put(DbHelper.EXPREFKEYMO, moneyOut.getExpRefKeyMO());
-
-        dbMoneyOut3 = dbHelperMoneyOut.getWritableDatabase();
-
+        db = dbHelper.getWritableDatabase();
         String[] args = new String[]{String.valueOf(moneyOut.getId())};
-
-        dbMoneyOut3.update(
-                DbHelper.MONEY_OUT_TABLE_NAME,
-                updateMoneyOut,
-                DbHelper.ID + "=?",
-                args);
+        db.update(DbHelper.MONEY_OUT_TABLE_NAME, updateMoneyOut, DbHelper.ID + "=?", args);
     }
 
     public void deleteMoneyOut(MoneyOutDb moneyOut) {
-        dbMoneyOut4 = dbHelperMoneyOut.getWritableDatabase();
-
+        db = dbHelper.getWritableDatabase();
         String[] args = new String[]{String.valueOf(moneyOut.getId())};
+        db.delete(DbHelper.MONEY_OUT_TABLE_NAME, DbHelper.ID + "=?", args);
+    }
 
-        dbMoneyOut4.delete(
-                DbHelper.MONEY_OUT_TABLE_NAME,
-                DbHelper.ID + "=?",
-                args);
+    public List<CurrentDb> getCurrent() {
+        db = dbHelper.getReadableDatabase();
+        cursor = db.rawQuery("SELECT * FROM " + DbHelper.CURRENT_TABLE_NAME, null);
+        List<CurrentDb> currents = new ArrayList<>();
+        if (cursor.moveToFirst()) {
+            while (!cursor.isAfterLast()) {
+                CurrentDb current = new CurrentDb(
+                        cursor.getDouble(cursor.getColumnIndex(DbHelper.CURRENTACCOUNTBALANCE)),
+                        cursor.getDouble(cursor.getColumnIndex(DbHelper.CURRENTAVAILABLEBALANCE)),
+                        cursor.getLong(cursor.getColumnIndex(DbHelper.ID))
+                );
+                currents.add(0, current); //adds new items to beginning of list
+                cursor.moveToNext();
+            }
+        }
+        cursor.close();
+        return currents;
+    }
+
+    public void addCurrent(CurrentDb current) {
+        ContentValues newCurrent = new ContentValues();
+        newCurrent.put(DbHelper.CURRENTACCOUNTBALANCE, current.getCurrentAccountBalance());
+        newCurrent.put(DbHelper.CURRENTAVAILABLEBALANCE, current.getCurrentAvailableBalance());
+        db = dbHelper.getWritableDatabase();
+        db.insert(DbHelper.CURRENT_TABLE_NAME, null, newCurrent);
+    }
+
+    public void updateCurrent(CurrentDb current) {
+        ContentValues updateCurrent = new ContentValues();
+        updateCurrent.put(DbHelper.CURRENTACCOUNTBALANCE, current.getCurrentAccountBalance());
+        updateCurrent.put(DbHelper.CURRENTAVAILABLEBALANCE, current.getCurrentAvailableBalance());
+        db = dbHelper.getWritableDatabase();
+        String[] args = new String[]{String.valueOf(current.getId())};
+        db.update(DbHelper.CURRENT_TABLE_NAME, updateCurrent, DbHelper.ID + "=?", args);
+    }
+
+    public void deleteCurrent(CurrentDb current) {
+        db = dbHelper.getWritableDatabase();
+        String[] args = new String[]{String.valueOf(current.getId())};
+        db.delete(DbHelper.CURRENT_TABLE_NAME, DbHelper.ID + "=?", args);
+    }
+
+    public Double retrieveCurrentAccountBalance() {
+        List<Double> currentList = new ArrayList<>(getCurrent().size());
+        for (CurrentDb c : getCurrent()) {
+            currentList.add(c.getCurrentAccountBalance());
+        }
+        currentAccountBalance = 0.0;
+        if (currentList.size() == 0) {
+            currentAccountBalance = 0.0;
+        } else {
+            for (Double dbl : currentList) {
+                currentAccountBalance += dbl;
+            }
+        }
+        return currentAccountBalance;
+    }
+
+    public Double retrieveBPercentage() {
+        List<Double> expenseList = new ArrayList<>(getExpense().size());
+        for (ExpenseBudgetDb e : getExpense()) {
+            if (e.getExpensePriority().equals("A")) {
+                expenseList.add(e.getExpenseAAnnualAmount());
+            }
+        }
+        totalBudgetAExpenses = 0.0;
+        if (expenseList.size() == 0) {
+            totalBudgetAExpenses = 0.0;
+        } else {
+            for (Double dbl : expenseList) {
+                totalBudgetAExpenses += dbl;
+            }
+        }
+        percentB = 1 - (totalBudgetAExpenses / sumTotalIncome());
+        return percentB;
+    }
+
+    public Double retrieveCurrentAvailableBalance() {
+        List<Double> currentList = new ArrayList<>(getCurrent().size());
+        for (CurrentDb c : getCurrent()) {
+            currentList.add(c.getCurrentAvailableBalance());
+        }
+        currentAvailableBalance = 0.0;
+        if (currentList.size() == 0) {
+            currentAvailableBalance = 0.0;
+        } else {
+            for (Double dbl : currentList) {
+                currentAvailableBalance += dbl;
+            }
+        }
+        return currentAvailableBalance;
     }
 
     public List<MoneyOutDb> getCashTrans() {
-
-        dbMoneyOut7 = dbHelperMoneyOut.getReadableDatabase();
-
-        cursorMoneyOut4 = dbMoneyOut7.rawQuery(
-                "SELECT * FROM " + DbHelper.MONEY_OUT_TABLE_NAME + " WHERE " + DbHelper.MONEYOUTCC + " = 'N'", null);
-
+        db = dbHelper.getReadableDatabase();
+        cursor = db.rawQuery("SELECT * FROM " + DbHelper.MONEY_OUT_TABLE_NAME + " WHERE " + DbHelper.MONEYOUTCC + " = 'N'", null);
         List<MoneyOutDb> cashTrans = new ArrayList<>();
-
-        if (cursorMoneyOut4.moveToFirst()) {
-            while (!cursorMoneyOut4.isAfterLast()) {
-
+        if (cursor.moveToFirst()) {
+            while (!cursor.isAfterLast()) {
                 MoneyOutDb cashTransList = new MoneyOutDb(
-                        cursorMoneyOut4.getString(cursorMoneyOut4.getColumnIndex(DbHelper.MONEYOUTCAT)),
-                        cursorMoneyOut4.getString(cursorMoneyOut4.getColumnIndex(DbHelper.MONEYOUTPRIORITY)),
-                        cursorMoneyOut4.getString(cursorMoneyOut4.getColumnIndex(DbHelper.MONEYOUTWEEKLY)),
-                        cursorMoneyOut4.getDouble(cursorMoneyOut4.getColumnIndex(DbHelper.MONEYOUTAMOUNT)),
-                        cursorMoneyOut4.getString(cursorMoneyOut4.getColumnIndex(DbHelper.MONEYOUTCREATEDON)),
-                        cursorMoneyOut4.getString(cursorMoneyOut4.getColumnIndex(DbHelper.MONEYOUTCC)),
-                        cursorMoneyOut4.getInt(cursorMoneyOut4.getColumnIndex(DbHelper.MONEYOUTTOPAY)),
-                        cursorMoneyOut4.getInt(cursorMoneyOut4.getColumnIndex(DbHelper.MONEYOUTPAID)),
-                        cursorMoneyOut4.getLong(cursorMoneyOut4.getColumnIndex(DbHelper.EXPREFKEYMO)),
-                        cursorMoneyOut4.getLong(cursorMoneyOut4.getColumnIndex(DbHelper.ID))
+                        cursor.getString(cursor.getColumnIndex(DbHelper.MONEYOUTCAT)),
+                        cursor.getString(cursor.getColumnIndex(DbHelper.MONEYOUTPRIORITY)),
+                        cursor.getString(cursor.getColumnIndex(DbHelper.MONEYOUTWEEKLY)),
+                        cursor.getDouble(cursor.getColumnIndex(DbHelper.MONEYOUTAMOUNT)),
+                        cursor.getString(cursor.getColumnIndex(DbHelper.MONEYOUTCREATEDON)),
+                        cursor.getString(cursor.getColumnIndex(DbHelper.MONEYOUTCC)),
+                        cursor.getInt(cursor.getColumnIndex(DbHelper.MONEYOUTTOPAY)),
+                        cursor.getInt(cursor.getColumnIndex(DbHelper.MONEYOUTPAID)),
+                        cursor.getLong(cursor.getColumnIndex(DbHelper.EXPREFKEYMO)),
+                        cursor.getLong(cursor.getColumnIndex(DbHelper.ID))
                 );
-
                 cashTrans.add(0, cashTransList); //adds new items to beginning of list
-                cursorMoneyOut4.moveToNext();
+                cursor.moveToNext();
             }
         }
-        cursorMoneyOut4.close();
+        cursor.close();
         return cashTrans;
     }
 
     public List<MoneyOutDb> getCCTrans() {
-
-        dbMoneyOut5 = dbHelperMoneyOut.getReadableDatabase();
-
-        cursorMoneyOut2 = dbMoneyOut5.rawQuery(
-                "SELECT * FROM " + DbHelper.MONEY_OUT_TABLE_NAME + " WHERE " + DbHelper.MONEYOUTCC + " = 'Y'", null);
-
+        db = dbHelper.getReadableDatabase();
+        cursor = db.rawQuery("SELECT * FROM " + DbHelper.MONEY_OUT_TABLE_NAME + " WHERE " + DbHelper.MONEYOUTCC + " = 'Y'", null);
         List<MoneyOutDb> ccTrans = new ArrayList<>();
-
-        if (cursorMoneyOut2.moveToFirst()) {
-            while (!cursorMoneyOut2.isAfterLast()) {
-
+        if (cursor.moveToFirst()) {
+            while (!cursor.isAfterLast()) {
                 MoneyOutDb ccTransList = new MoneyOutDb(
-                        cursorMoneyOut2.getString(cursorMoneyOut2.getColumnIndex(DbHelper.MONEYOUTCAT)),
-                        cursorMoneyOut2.getString(cursorMoneyOut2.getColumnIndex(DbHelper.MONEYOUTPRIORITY)),
-                        cursorMoneyOut2.getString(cursorMoneyOut2.getColumnIndex(DbHelper.MONEYOUTWEEKLY)),
-                        cursorMoneyOut2.getDouble(cursorMoneyOut2.getColumnIndex(DbHelper.MONEYOUTAMOUNT)),
-                        cursorMoneyOut2.getString(cursorMoneyOut2.getColumnIndex(DbHelper.MONEYOUTCREATEDON)),
-                        cursorMoneyOut2.getString(cursorMoneyOut2.getColumnIndex(DbHelper.MONEYOUTCC)),
-                        cursorMoneyOut2.getInt(cursorMoneyOut2.getColumnIndex(DbHelper.MONEYOUTTOPAY)),
-                        cursorMoneyOut2.getInt(cursorMoneyOut2.getColumnIndex(DbHelper.MONEYOUTPAID)),
-                        cursorMoneyOut2.getLong(cursorMoneyOut2.getColumnIndex(DbHelper.EXPREFKEYMO)),
-                        cursorMoneyOut2.getLong(cursorMoneyOut2.getColumnIndex(DbHelper.ID))
+                        cursor.getString(cursor.getColumnIndex(DbHelper.MONEYOUTCAT)),
+                        cursor.getString(cursor.getColumnIndex(DbHelper.MONEYOUTPRIORITY)),
+                        cursor.getString(cursor.getColumnIndex(DbHelper.MONEYOUTWEEKLY)),
+                        cursor.getDouble(cursor.getColumnIndex(DbHelper.MONEYOUTAMOUNT)),
+                        cursor.getString(cursor.getColumnIndex(DbHelper.MONEYOUTCREATEDON)),
+                        cursor.getString(cursor.getColumnIndex(DbHelper.MONEYOUTCC)),
+                        cursor.getInt(cursor.getColumnIndex(DbHelper.MONEYOUTTOPAY)),
+                        cursor.getInt(cursor.getColumnIndex(DbHelper.MONEYOUTPAID)),
+                        cursor.getLong(cursor.getColumnIndex(DbHelper.EXPREFKEYMO)),
+                        cursor.getLong(cursor.getColumnIndex(DbHelper.ID))
                 );
-
                 ccTrans.add(0, ccTransList); //adds new items to beginning of list
-                cursorMoneyOut2.moveToNext();
+                cursor.moveToNext();
             }
         }
-        cursorMoneyOut2.close();
+        cursor.close();
         return ccTrans;
     }
 
     public List<MoneyOutDb> getCCTransToPay() {
-
-        dbMoneyOut6 = dbHelperMoneyOut.getReadableDatabase();
-
-        cursorMoneyOut3 = dbMoneyOut6.rawQuery(
-                "SELECT * FROM " + DbHelper.MONEY_OUT_TABLE_NAME + " WHERE " + DbHelper.MONEYOUTCC + " = 'Y' AND "
-                        + DbHelper.MONEYOUTPAID + " = '0'", null);
-
+        db = dbHelper.getReadableDatabase();
+        cursor = db.rawQuery("SELECT * FROM " + DbHelper.MONEY_OUT_TABLE_NAME + " WHERE " + DbHelper.MONEYOUTCC + " = 'Y' AND " + DbHelper.MONEYOUTPAID + " = '0'", null);
         List<MoneyOutDb> ccTransToPay = new ArrayList<>();
-
-        if (cursorMoneyOut3.moveToFirst()) {
-            while (!cursorMoneyOut3.isAfterLast()) {
-
+        if (cursor.moveToFirst()) {
+            while (!cursor.isAfterLast()) {
                 MoneyOutDb ccTransToPayList = new MoneyOutDb(
-                        cursorMoneyOut3.getString(cursorMoneyOut3.getColumnIndex(DbHelper.MONEYOUTCAT)),
-                        cursorMoneyOut3.getString(cursorMoneyOut3.getColumnIndex(DbHelper.MONEYOUTPRIORITY)),
-                        cursorMoneyOut3.getString(cursorMoneyOut3.getColumnIndex(DbHelper.MONEYOUTWEEKLY)),
-                        cursorMoneyOut3.getDouble(cursorMoneyOut3.getColumnIndex(DbHelper.MONEYOUTAMOUNT)),
-                        cursorMoneyOut3.getString(cursorMoneyOut3.getColumnIndex(DbHelper.MONEYOUTCREATEDON)),
-                        cursorMoneyOut3.getString(cursorMoneyOut3.getColumnIndex(DbHelper.MONEYOUTCC)),
-                        cursorMoneyOut3.getInt(cursorMoneyOut3.getColumnIndex(DbHelper.MONEYOUTTOPAY)),
-                        cursorMoneyOut3.getInt(cursorMoneyOut3.getColumnIndex(DbHelper.MONEYOUTPAID)),
-                        cursorMoneyOut3.getLong(cursorMoneyOut3.getColumnIndex(DbHelper.EXPREFKEYMO)),
-                        cursorMoneyOut3.getLong(cursorMoneyOut3.getColumnIndex(DbHelper.ID))
+                        cursor.getString(cursor.getColumnIndex(DbHelper.MONEYOUTCAT)),
+                        cursor.getString(cursor.getColumnIndex(DbHelper.MONEYOUTPRIORITY)),
+                        cursor.getString(cursor.getColumnIndex(DbHelper.MONEYOUTWEEKLY)),
+                        cursor.getDouble(cursor.getColumnIndex(DbHelper.MONEYOUTAMOUNT)),
+                        cursor.getString(cursor.getColumnIndex(DbHelper.MONEYOUTCREATEDON)),
+                        cursor.getString(cursor.getColumnIndex(DbHelper.MONEYOUTCC)),
+                        cursor.getInt(cursor.getColumnIndex(DbHelper.MONEYOUTTOPAY)),
+                        cursor.getInt(cursor.getColumnIndex(DbHelper.MONEYOUTPAID)),
+                        cursor.getLong(cursor.getColumnIndex(DbHelper.EXPREFKEYMO)),
+                        cursor.getLong(cursor.getColumnIndex(DbHelper.ID))
                 );
-
                 ccTransToPay.add(ccTransToPayList); //adds new items to end of list
-                cursorMoneyOut3.moveToNext();
+                cursor.moveToNext();
             }
         }
-        cursorMoneyOut3.close();
+        cursor.close();
         return ccTransToPay;
     }
 
     public Double retrieveToPayTotal() {
-        dbMoneyOut8 = dbHelperMoneyOut.getReadableDatabase();
-        cursorMoneyOut8 = dbMoneyOut8.rawQuery("SELECT sum(moneyOutAmount) FROM " + DbHelper.MONEY_OUT_TABLE_NAME
-                + " WHERE " + DbHelper.MONEYOUTTOPAY + " = '1' AND " + DbHelper.MONEYOUTPAID + " = '0'", null);
-        try {
-            cursorMoneyOut8.moveToFirst();
-        } catch (Exception e) {
-            totalCCPaymentDue = 0.0;
+        List<Double> toPayList = new ArrayList<>();
+        for (MoneyOutDb m : getMoneyOuts()) {
+            if (m.getMoneyOutToPay() == 1 && m.getMoneyOutPaid() == 0) {
+                toPayList.add(m.getMoneyOutAmount());
+            }
         }
-        totalCCPaymentDue = cursorMoneyOut8.getDouble(0);
-        cursorMoneyOut8.close();
-
+        totalCCPaymentDue = 0.0;
+        if (toPayList.size() == 0) {
+            totalCCPaymentDue = 0.0;
+        } else {
+            for (Double dbl : toPayList) {
+                totalCCPaymentDue += dbl;
+            }
+        }
         return totalCCPaymentDue;
     }
 
     public Double retrieveToPayBTotal() {
-        dbMoneyOut9 = dbHelperMoneyOut.getReadableDatabase();
-        cursorMoneyOut9 = dbMoneyOut9.rawQuery("SELECT sum(moneyOutAmount) FROM " + DbHelper.MONEY_OUT_TABLE_NAME
-                + " WHERE " + DbHelper.MONEYOUTTOPAY + " = '1' AND " + DbHelper.MONEYOUTPAID + " = '0' AND " + DbHelper.MONEYOUTPRIORITY + " = 'B'", null);
-        try {
-            cursorMoneyOut9.moveToFirst();
-        } catch (Exception e) {
-            totalCCPaymentBDue = 0.0;
+        List<Double> toPayBList = new ArrayList<>();
+        for (MoneyOutDb m : getMoneyOuts()) {
+            if (m.getMoneyOutToPay() == 1 && m.getMoneyOutPaid() == 0 && m.getMoneyOutPriority().equals("B")) {
+                toPayBList.add(m.getMoneyOutAmount());
+            }
         }
-        totalCCPaymentBDue = cursorMoneyOut9.getDouble(0);
-        cursorMoneyOut9.close();
-
+        totalCCPaymentBDue = 0.0;
+        if (toPayBList.size() == 0) {
+            totalCCPaymentBDue = 0.0;
+        } else {
+            for (Double dbl : toPayBList) {
+                totalCCPaymentBDue += dbl;
+            }
+        }
         return totalCCPaymentBDue;
     }
 
     public void updatePaid() {
-
-        dbMoneyOut10 = dbHelperMoneyOut.getWritableDatabase();
+        db = dbHelper.getWritableDatabase();
         ContentValues updateMoneyOutPaid = new ContentValues();
         updateMoneyOutPaid.put(DbHelper.MONEYOUTPAID, 1);
-        dbMoneyOut10.update(DbHelper.MONEY_OUT_TABLE_NAME, updateMoneyOutPaid, DbHelper.MONEYOUTTOPAY + "= '1' AND " + DbHelper.MONEYOUTPAID
-                + " = '0'", null);
+        db.update(DbHelper.MONEY_OUT_TABLE_NAME, updateMoneyOutPaid, DbHelper.MONEYOUTTOPAY + "= '1' AND " + DbHelper.MONEYOUTPAID + " = '0'", null);
     }
 }

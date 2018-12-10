@@ -9,15 +9,16 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import ca.gotchasomething.mynance.data.IncomeBudgetDb;
-import ca.gotchasomething.mynance.data.IncomeBudgetDbManager;
+//import ca.gotchasomething.mynance.data.IncomeBudgetDbManager;
 
 public class AddBudgetIncome extends LayoutBudget {
 
     Button budgetAddIncomeButton, budgetUpdateIncomeButton;
+    DbManager dbManager;
     Double incomeAmount, incomeFrequency, incomeAnnualAmount;
     EditText budgetIncomeCategory, budgetIncomeAmount;
     IncomeBudgetDb incomeBudgetDb;
-    IncomeBudgetDbManager incomeDbManager;
+    //IncomeBudgetDbManager incomeDbManager;
     Intent backToBudget, backToBudget2;
     long id;
     RadioButton budgetIncomeWeeklyRadioButton, budgetIncomeBiWeeklyRadioButton, budgetIncomeBiMonthlyRadioButton,
@@ -49,7 +50,7 @@ public class AddBudgetIncome extends LayoutBudget {
         budgetAddIncomeButton.setOnClickListener(onClickAddIncomeButton);
         budgetIncomeFrequencyRadioGroup.setOnCheckedChangeListener(onCheckIncomeFrequency);
 
-        incomeDbManager = new IncomeBudgetDbManager(this);
+        dbManager = new DbManager(this);
     }
 
     //handle radioGroup for incomeFrequency
@@ -105,8 +106,8 @@ public class AddBudgetIncome extends LayoutBudget {
                     incomeAnnualAmount,
                     0);
 
-            incomeDbManager.addIncome(incomeBudgetDb);
-            incomeAdapter.updateIncomes(incomeDbManager.getIncomes());
+            dbManager.addIncome(incomeBudgetDb);
+            incomeAdapter.updateIncomes(dbManager.getIncomes());
             incomeAdapter.notifyDataSetChanged();
 
             backToBudget = new Intent(AddBudgetIncome.this, LayoutBudget.class);
