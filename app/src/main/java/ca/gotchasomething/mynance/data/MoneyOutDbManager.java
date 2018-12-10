@@ -1,6 +1,6 @@
 package ca.gotchasomething.mynance.data;
 //ContentProvider
-
+/*
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -255,7 +255,7 @@ public class MoneyOutDbManager {
         updateMoneyOutPaid.put(DbHelper.MONEYOUTPAID, 1);
         dbMoneyOut10.update(DbHelper.MONEY_OUT_TABLE_NAME, updateMoneyOutPaid, DbHelper.MONEYOUTTOPAY + "= '1' AND " + DbHelper.MONEYOUTPAID
                 + " = '0'", null);
-    }
+    }*/
 
     /*public void getSpentThisWeek() {
 
@@ -297,4 +297,4 @@ public class MoneyOutDbManager {
         cursorMoneyOut11.close();
         return spentThisWeekList;*/
     //}
-}
+//}

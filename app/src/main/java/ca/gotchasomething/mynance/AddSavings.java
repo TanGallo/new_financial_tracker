@@ -22,7 +22,7 @@ import java.util.List;
 
 import androidx.annotation.Nullable;
 import ca.gotchasomething.mynance.data.ExpenseBudgetDb;
-import ca.gotchasomething.mynance.data.ExpenseBudgetDbManager;
+//import ca.gotchasomething.mynance.data.ExpenseBudgetDbManager;
 import ca.gotchasomething.mynance.data.SavingsDb;
 //import ca.gotchasomething.mynance.data.SavingsDbManager;
 
@@ -39,7 +39,7 @@ public class AddSavings extends LayoutSavings {
             numberOfYearsToSavingsGoal = 0.0;
     EditText savingsNameEntry, savingsAmountEntry, savingsPercentEntry, savingsPaymentsEntry, savingsGoalAmountEntry;
     ExpenseBudgetDb expenseBudgetDb;
-    ExpenseBudgetDbManager expenseDbManager;
+    //ExpenseBudgetDbManager expenseDbManager;
     Integer numberOfDaysToSavingsGoal = 0;
     Intent backToSavingsLayout, backToSavingsLayout2;
     long expRefKeyS;
@@ -59,7 +59,7 @@ public class AddSavings extends LayoutSavings {
 
         //savingsDbManager = new SavingsDbManager(this);
         dbManager = new DbManager(this);
-        expenseDbManager = new ExpenseBudgetDbManager(this);
+        //expenseDbManager = new ExpenseBudgetDbManager(this);
 
         savingsNameEntry = findViewById(R.id.savingsNameEntry);
         savingsAmountEntry = findViewById(R.id.savingsAmountEntry);
@@ -189,7 +189,7 @@ public class AddSavings extends LayoutSavings {
                     expenseBAnnualAmount,
                     0);
 
-            expenseDbManager.addExpense(expenseBudgetDb);
+            dbManager.addExpense(expenseBudgetDb);
 
             savingsName = savingsNameEntry.getText().toString();
             savingsAmount = Double.valueOf(savingsAmountEntry.getText().toString());

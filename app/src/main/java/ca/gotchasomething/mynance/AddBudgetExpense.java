@@ -16,15 +16,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import ca.gotchasomething.mynance.data.ExpenseBudgetDb;
-import ca.gotchasomething.mynance.data.ExpenseBudgetDbManager;
+//import ca.gotchasomething.mynance.data.ExpenseBudgetDbManager;
 
 public class AddBudgetExpense extends LayoutBudget {
 
     Button budgetCancelExpenseButton, budgetAddExpenseButton, budgetUpdateExpenseButton;
+    DbManager dbManager;
     Double expenseAmount = 0.0, expenseFrequency = 0.0, expenseAnnualAmount = 0.0, expenseAAnnualAmount = 0.0, expenseBAnnualAmount = 0.0;
     EditText budgetExpenseCategory, budgetExpenseAmount;
     ExpenseBudgetDb expenseBudgetDb;
-    ExpenseBudgetDbManager expenseDbManager;
+    //ExpenseBudgetDbManager expenseDbManager;
     Intent backToBudget, backToBudget2;
     long id = 0;
     RadioButton budgetExpenseWeeklyRadioButton, budgetExpenseBiWeeklyRadioButton, budgetExpenseBiMonthlyRadioButton,
@@ -71,7 +72,7 @@ public class AddBudgetExpense extends LayoutBudget {
         budgetExpenseABRadioGroup.setOnCheckedChangeListener(onCheckExpenseAB);
         budgetExpenseReminderRadioGroup.setOnCheckedChangeListener(onCheckExpenseReminder);
 
-        expenseDbManager = new ExpenseBudgetDbManager(this);
+        dbManager = new DbManager(this);
     }
 
     //handle radioGroup for expenseFrequency
@@ -182,11 +183,11 @@ public class AddBudgetExpense extends LayoutBudget {
                     0);
 
             try {
-                expenseDbManager.addExpense(expenseBudgetDb);
+                dbManager.addExpense(expenseBudgetDb);
             } catch (SQLiteConstraintException e) {
                 Toast.makeText(getApplicationContext(), "Name must be unique", Toast.LENGTH_LONG).show();
             }
-            expenseAdapter.updateExpenses(expenseDbManager.getExpense());
+            expenseAdapter.updateExpenses(dbManager.getExpense());
             expenseAdapter.notifyDataSetChanged();
 
             backToBudget = new Intent(AddBudgetExpense.this, LayoutBudget.class);

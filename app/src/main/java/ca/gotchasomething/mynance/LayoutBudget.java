@@ -37,7 +37,7 @@ import java.util.Date;
 import java.util.List;
 
 import ca.gotchasomething.mynance.data.ExpenseBudgetDb;
-import ca.gotchasomething.mynance.data.ExpenseBudgetDbManager;
+//import ca.gotchasomething.mynance.data.ExpenseBudgetDbManager;
 import ca.gotchasomething.mynance.data.IncomeBudgetDb;
 import ca.gotchasomething.mynance.data.IncomeBudgetDbManager;
 import ca.gotchasomething.mynance.data.DebtDb;
@@ -65,7 +65,7 @@ public class LayoutBudget extends MainNavigation {
     EditText budgetIncomeCategoryText, budgetIncomeAmountText, budgetIncomeCategory, budgetIncomeAmount, budgetExpenseCategoryText,
             budgetExpenseAmountText, budgetExpenseCategory, budgetExpenseAmount;
     ExpenseBudgetDb expenseBudgetDb;
-    ExpenseBudgetDbManager expenseDbManager;
+    //ExpenseBudgetDbManager expenseDbManager;
     ExpenseDbAdapter expenseAdapter;
     General general;
     FloatingActionButton budgetIncomePlusButton, budgetExpensePlusButton;
@@ -146,8 +146,8 @@ public class LayoutBudget extends MainNavigation {
         incomeAdapter = new IncomeDbAdapter(this, incomeDbManager.getIncomes());
         budgetIncomeDetails.setAdapter(incomeAdapter);
 
-        expenseDbManager = new ExpenseBudgetDbManager(this);
-        expenseAdapter = new ExpenseDbAdapter(this, expenseDbManager.getExpense());
+        //expenseDbManager = new ExpenseBudgetDbManager(this);
+        expenseAdapter = new ExpenseDbAdapter(this, dbManager.getExpense());
         budgetExpensesDetails.setAdapter(expenseAdapter);
 
         //debtDbManager = new DebtDbManager(this);
@@ -181,7 +181,7 @@ public class LayoutBudget extends MainNavigation {
     public void budgetHeaderText() {
 
         totalIncomeR = incomeDbManager.sumTotalIncome();
-        totalExpensesR = expenseDbManager.sumTotalExpenses();
+        totalExpensesR = dbManager.sumTotalExpenses();
 
         try {
             totalIncomeS = String.valueOf(totalIncomeR);
@@ -911,7 +911,7 @@ public class LayoutBudget extends MainNavigation {
                                 expenseBudgetDb.setExpenseAAnnualAmount(0.0);
                             }
 
-                            expenseDbManager.updateExpense(expenseBudgetDb);
+                            dbManager.updateExpense(expenseBudgetDb);
 
                             try {
                                 String[] args = new String[]{String.valueOf(findDebtId())};
@@ -971,7 +971,7 @@ public class LayoutBudget extends MainNavigation {
                                 e11.printStackTrace();
                             }
 
-                            expenseAdapter.updateExpenses(expenseDbManager.getExpense());
+                            expenseAdapter.updateExpenses(dbManager.getExpense());
                             expenseAdapter.notifyDataSetChanged();
                             Toast.makeText(getBaseContext(), "Your changes have been saved",
                                     Toast.LENGTH_LONG).show();
@@ -992,7 +992,7 @@ public class LayoutBudget extends MainNavigation {
                 public void onClick(View v) {
 
                     expenseBudgetDb = (ExpenseBudgetDb) expenseHolder.expenseDeleted.getTag();
-                    expenseDbManager.deleteExpense(expenseBudgetDb);
+                    dbManager.deleteExpense(expenseBudgetDb);
 
                     try {
                         String[] args = new String[]{String.valueOf(findDebtId())};
@@ -1008,7 +1008,7 @@ public class LayoutBudget extends MainNavigation {
                         e13.getStackTrace();
                     }
 
-                    expenseAdapter.updateExpenses(expenseDbManager.getExpense());
+                    expenseAdapter.updateExpenses(dbManager.getExpense());
                     budgetHeaderText();
                     notifyDataSetChanged();
                 }

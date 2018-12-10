@@ -2,15 +2,15 @@ package ca.gotchasomething.mynance.data;
 //Db description
 
 public class ExpenseBudgetDb {
-    private String expenseName;
-    private Double expenseAmount;
-    private Double expenseFrequency;
-    private String expensePriority;
-    private String expenseWeekly;
-    private Double expenseAnnualAmount;
-    private Double expenseAAnnualAmount;
-    private Double expenseBAnnualAmount;
-    private long id;
+    private String expenseName; //1
+    private Double expenseAmount; //2
+    private Double expenseFrequency; //3
+    private String expensePriority; //4
+    private String expenseWeekly; //5
+    private Double expenseAnnualAmount; //6
+    private Double expenseAAnnualAmount; //7
+    private Double expenseBAnnualAmount; //8
+    private long id; //0
 
     public ExpenseBudgetDb(
             String expenseName,

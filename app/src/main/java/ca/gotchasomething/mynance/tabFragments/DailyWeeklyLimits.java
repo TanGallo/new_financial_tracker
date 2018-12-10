@@ -26,10 +26,11 @@ import java.util.List;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import ca.gotchasomething.mynance.DbHelper;
+import ca.gotchasomething.mynance.DbManager;
 import ca.gotchasomething.mynance.General;
 import ca.gotchasomething.mynance.R;
 import ca.gotchasomething.mynance.data.ExpenseBudgetDb;
-import ca.gotchasomething.mynance.data.ExpenseBudgetDbManager;
+//import ca.gotchasomething.mynance.data.ExpenseBudgetDbManager;
 import ca.gotchasomething.mynance.data.MoneyOutDb;
 import ca.gotchasomething.mynance.data.MoneyOutDbManager;
 
@@ -37,8 +38,9 @@ public class DailyWeeklyLimits extends Fragment {
 
     Cursor moneyOutCursor, moneyOutCursor2;
     DbHelper moneyOutHelper, moneyOutHelper2;
+    DbManager dbManager;
     Double annualLimit, weeklyLimitD, spentThisWeek, spentThisWeek2, amountLeft;
-    ExpenseBudgetDbManager expenseBudgetDbManager;
+    //ExpenseBudgetDbManager expenseBudgetDbManager;
     FragmentManager fm;
     FragmentTransaction transaction;
     General general;
@@ -71,8 +73,8 @@ public class DailyWeeklyLimits extends Fragment {
 
         weeklyLimitListView = v.findViewById(R.id.weeklyLimitListView);
 
-        expenseBudgetDbManager = new ExpenseBudgetDbManager(getContext());
-        weeklyLimitsAdapter = new WeeklyLimitsAdapter(getContext(), expenseBudgetDbManager.getWeeklyLimits());
+        dbManager = new DbManager(getContext());
+        weeklyLimitsAdapter = new WeeklyLimitsAdapter(getContext(), dbManager.getWeeklyLimits());
         weeklyLimitListView.setAdapter(weeklyLimitsAdapter);
 
     }

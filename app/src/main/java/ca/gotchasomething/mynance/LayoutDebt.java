@@ -42,7 +42,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-import ca.gotchasomething.mynance.data.ExpenseBudgetDbManager;
+//import ca.gotchasomething.mynance.data.ExpenseBudgetDbManager;
 import ca.gotchasomething.mynance.data.DebtDb;
 //import ca.gotchasomething.mynance.data.DebtDbManager;
 import ca.gotchasomething.mynance.data.SetUpDb;
@@ -62,7 +62,7 @@ public class LayoutDebt extends MainNavigation {
     Double totalDebt = 0.0, totalDebtD = 0.0, debtAmountD = 0.0, a = 0.0, numberOfYearsToPayDebt = 0.0, balanceAmount, amount = 0.0, rate = 0.0,
             payments = 0.0, frequency = 0.0, expenseAnnualAmount = 0.0, debtAmountD2, debtPaymentsD, debtPercentD, debtPercentD2;
     EditText debtNameEntry, debtAmountEntry, debtPercentEntry, debtPaymentsEntry;
-    ExpenseBudgetDbManager expenseBudgetDbManager;
+    //ExpenseBudgetDbManager expenseBudgetDbManager;
     FloatingActionButton addDebtButton;
     General general;
     int debtsDone, savingsDone, budgetDone, balanceDone, tourDone;
@@ -426,7 +426,7 @@ public class LayoutDebt extends MainNavigation {
                     setContentView(R.layout.add_edit_debt);
                     LayoutDebt.this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
-                    expenseBudgetDbManager = new ExpenseBudgetDbManager(getApplicationContext());
+                    dbManager = new DbManager(getApplicationContext());
 
                     debtNameEntry = findViewById(R.id.debtNameEntry);
                     debtAmountEntry = findViewById(R.id.debtAmountEntry);

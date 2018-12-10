@@ -35,7 +35,7 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
-import ca.gotchasomething.mynance.data.ExpenseBudgetDbManager;
+//import ca.gotchasomething.mynance.data.ExpenseBudgetDbManager;
 import ca.gotchasomething.mynance.data.SavingsDb;
 //import ca.gotchasomething.mynance.data.SavingsDbManager;
 import ca.gotchasomething.mynance.data.SetUpDb;
@@ -53,7 +53,7 @@ public class LayoutSavings extends MainNavigation {
             a = 0.0, payments = 0.0, frequency = 0.0, numberOfYearsToSavingsGoal = 0.0, balanceAmount = 0.0, goalAmount, savingsAmount, savingsAmountD,
             savingsPaymentsD, savingsGoalD2, savingsPercentD, savingsPercentD2;
     EditText savingsNameEntry, savingsAmountEntry, savingsPercentEntry, savingsPaymentsEntry, savingsGoalAmountEntry;
-    ExpenseBudgetDbManager expenseBudgetDbManager;
+    //ExpenseBudgetDbManager expenseBudgetDbManager;
     FloatingActionButton addSavingsButton;
     General general;
     int savingsDoneCheck = 0, debtsDone, savingsDone, budgetDone, balanceDone, tourDone;
@@ -395,7 +395,7 @@ public class LayoutSavings extends MainNavigation {
                     setContentView(R.layout.add_edit_savings);
                     LayoutSavings.this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
-                    expenseBudgetDbManager = new ExpenseBudgetDbManager(getApplicationContext());
+                    dbManager = new DbManager(getApplicationContext());
 
                     savingsNameEntry = findViewById(R.id.savingsNameEntry);
                     savingsAmountEntry = findViewById(R.id.savingsAmountEntry);
