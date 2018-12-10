@@ -12,43 +12,32 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Date;
-import java.util.List;
 
 import androidx.annotation.Nullable;
 import ca.gotchasomething.mynance.data.ExpenseBudgetDb;
-//import ca.gotchasomething.mynance.data.ExpenseBudgetDbManager;
 import ca.gotchasomething.mynance.data.SavingsDb;
-//import ca.gotchasomething.mynance.data.SavingsDbManager;
 
 public class AddSavings extends LayoutSavings {
 
     Button saveSavingsButton, updateSavingsButton, cancelSavingsButton;
     Calendar savingsCal;
-    Cursor expenseCursor2;
     Date savingsDateD;
-    DbHelper expenseDbHelper2;
     DbManager dbManager;
     Double savingsAmount = 0.0, savingsRate = 0.0, savingsPayments = 0.0, savingsFrequency = 0.0, savingsGoal = 0.0, expenseAmount = 0.0, expenseFrequency = 0.0,
             expenseAnnualAmount = 0.0, expenseAAnnualAmount = 0.0, expenseBAnnualAmount = 0.0, frequency = 0.0, amount = 0.0, rate = 0.0, payments = 0.0,
             numberOfYearsToSavingsGoal = 0.0;
     EditText savingsNameEntry, savingsAmountEntry, savingsPercentEntry, savingsPaymentsEntry, savingsGoalAmountEntry;
     ExpenseBudgetDb expenseBudgetDb;
-    //ExpenseBudgetDbManager expenseDbManager;
     Integer numberOfDaysToSavingsGoal = 0;
     Intent backToSavingsLayout, backToSavingsLayout2;
     long expRefKeyS;
     RadioButton savingsWeeklyRadioButton, savingsBiWeeklyRadioButton, savingsMonthlyRadioButton, savingsAnnuallyRadioButton;
     RadioGroup savingsFrequencyRadioGroup;
     SavingsDb saving;
-    //SavingsDbManager savingsDbManager;
     SimpleDateFormat savingsDateS;
-    SQLiteDatabase db, expenseDb2;
     String savingsName = null, savingsDate = null, savingsFrequencyS = null, expenseName = null, expensePriority = null, expenseWeekly = null;
     TextView savingsDateResult;
 
@@ -57,9 +46,7 @@ public class AddSavings extends LayoutSavings {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_edit_savings);
 
-        //savingsDbManager = new SavingsDbManager(this);
         dbManager = new DbManager(this);
-        //expenseDbManager = new ExpenseBudgetDbManager(this);
 
         savingsNameEntry = findViewById(R.id.savingsNameEntry);
         savingsAmountEntry = findViewById(R.id.savingsAmountEntry);
@@ -76,7 +63,6 @@ public class AddSavings extends LayoutSavings {
         updateSavingsButton = findViewById(R.id.updateSavingsButton);
         updateSavingsButton.setVisibility(View.GONE);
         cancelSavingsButton = findViewById(R.id.cancelSavingsButton);
-        db = openOrCreateDatabase("Mynance.db", MODE_PRIVATE, null);
 
         savingsFrequencyRadioGroup.setOnCheckedChangeListener(onCheckSavingsFrequency);
         cancelSavingsButton.setOnClickListener(onClickCancelSavingsButton);
@@ -106,24 +92,6 @@ public class AddSavings extends LayoutSavings {
             }
         }
     };
-
-    public long findExpenseId() {
-        List<Long> ids = new ArrayList<>();
-        expenseDbHelper2 = new DbHelper(this);
-        expenseDb2 = expenseDbHelper2.getReadableDatabase();
-        expenseCursor2 = expenseDb2.rawQuery("SELECT " + DbHelper.ID + " FROM " + DbHelper.EXPENSES_TABLE_NAME, null);
-        expenseDbHelper2.getWritableDatabase();
-        expenseCursor2.moveToFirst();
-        if (expenseCursor2.moveToFirst()) {
-            do {
-                ids.add(expenseCursor2.getLong(0));
-            } while (expenseCursor2.moveToNext());
-        }
-
-        idResult = Collections.max(ids);
-
-        return idResult;
-    }
 
     public String calcSavingsDate() {
 
@@ -197,8 +165,7 @@ public class AddSavings extends LayoutSavings {
             savingsPayments = Double.valueOf(savingsPaymentsEntry.getText().toString());
             savingsFrequency = Double.valueOf(savingsFrequencyS);
             savingsGoal = Double.valueOf(savingsGoalAmountEntry.getText().toString());
-            savingsDate = calcSavingsDate();
-            expRefKeyS = findExpenseId();
+            expRefKeyS = dbManager.findLatestExpenseId();
 
             saving = new SavingsDb(
                     savingsName,

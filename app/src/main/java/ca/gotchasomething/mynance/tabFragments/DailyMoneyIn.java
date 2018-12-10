@@ -34,21 +34,18 @@ import ca.gotchasomething.mynance.DbManager;
 import ca.gotchasomething.mynance.General;
 import ca.gotchasomething.mynance.LayoutDailyMoney;
 import ca.gotchasomething.mynance.R;
-//import ca.gotchasomething.mynance.data.CurrentDbManager;
 import ca.gotchasomething.mynance.data.MoneyInDb;
-//import ca.gotchasomething.mynance.data.MoneyInDbManager;
 import ca.gotchasomething.mynance.spinners.MoneyInSpinnerAdapter;
 
 public class DailyMoneyIn extends Fragment {
 
     Button moneyInButton, cancelMoneyInEntryButton, updateMoneyInEntryButton;
     ContentValues moneyInValue, moneyInValue2;
-    //CurrentDbManager currentDbManager;
-    Cursor moneyInCursor;
+    Cursor cursor2;
     Date moneyInDate;
-    DbHelper moneyInDbHelper, currentHelper4, currentHelper6;
+    DbHelper dbHelper2, dbHelper3, dbHelper4;
     DbManager dbManager;
-    Double moneyInAmount, moneyInD, newCurrentAccountBalance, currentAccountBalance, percentB, currentAvailableBalance, newCurrentAvailableBalance2,
+    Double moneyInAmount, moneyInD, newAccountBalance, oldAccountBalance, percentB, oldAvailableBalance, newAvailableBalance,
             newMoneyInAmount, oldMoneyInAmount, moneyInAmountD;
     EditText moneyInAmountText, moneyInAmountEditText;
     General general;
@@ -56,12 +53,11 @@ public class DailyMoneyIn extends Fragment {
     ListView moneyInList;
     MoneyInAdapter moneyInAdapter;
     MoneyInDb moneyInDb;
-    //MoneyInDbManager moneyInDbManager;
     MoneyInSpinnerAdapter moneyInSpinnerAdapter;
     NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
     SimpleDateFormat moneyInSDF;
     Spinner moneyInCatSpinner;
-    SQLiteDatabase moneyInDbDb, currentDbDb4, currentDbDb6;
+    SQLiteDatabase db2, db3, db4;
     String moneyInCatS, moneyInCat, moneyInCreatedOn, moneyInS, moneyIn2, moneyInAmountS;
     TextView moneyInCatText;
     Timestamp moneyInTimestamp;
@@ -85,7 +81,7 @@ public class DailyMoneyIn extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         general = new General();
-        //currentDbManager = new CurrentDbManager(getContext());
+        dbManager = new DbManager(getContext());
 
         moneyInAmountText = v.findViewById(R.id.moneyInAmount);
         moneyInButton = v.findViewById(R.id.moneyInButton);
@@ -103,19 +99,14 @@ public class DailyMoneyIn extends Fragment {
 
         moneyInButton.setOnClickListener(onClickMoneyInButton);
 
-        dbManager = new DbManager(getContext());
         moneyInAdapter = new MoneyInAdapter(getContext(), dbManager.getMoneyIns());
         moneyInList.setAdapter(moneyInAdapter);
 
         moneyInCatSpinner = v.findViewById(R.id.moneyInCatSpinner);
-        moneyInDbHelper = new DbHelper(getContext());
-        moneyInDbDb = moneyInDbHelper.getReadableDatabase();
-        moneyInCursor = moneyInDbDb.rawQuery("SELECT * FROM " +
-                DbHelper.INCOME_TABLE_NAME +
-                " ORDER BY " +
-                DbHelper.INCOMENAME +
-                " ASC", null);
-        moneyInSpinnerAdapter = new MoneyInSpinnerAdapter(getContext(), moneyInCursor);
+        dbHelper2 = new DbHelper(getContext());
+        db2 = dbHelper2.getReadableDatabase();
+        cursor2 = db2.rawQuery("SELECT * FROM " + DbHelper.INCOME_TABLE_NAME + " ORDER BY " + DbHelper.INCOMENAME + " ASC", null);
+        moneyInSpinnerAdapter = new MoneyInSpinnerAdapter(getContext(), cursor2);
         moneyInCatSpinner.setAdapter(moneyInSpinnerAdapter);
 
         moneyInCatSpinner.setOnItemSelectedListener(moneyInSpinnerSelection);
@@ -124,31 +115,33 @@ public class DailyMoneyIn extends Fragment {
 
     public void updateCurrentAvailableBalanceMoneyIn() {
         percentB = dbManager.retrieveBPercentage();
-        currentAvailableBalance = dbManager.retrieveCurrentAvailableBalance();
-        newCurrentAvailableBalance2 = currentAvailableBalance + (moneyInAmount * percentB);
-
+        oldAvailableBalance = dbManager.retrieveCurrentAvailableBalance();
+        newAvailableBalance = oldAvailableBalance + (moneyInAmount * percentB);
         moneyInValue2 = new ContentValues();
-        moneyInValue2.put(DbHelper.CURRENTAVAILABLEBALANCE, newCurrentAvailableBalance2);
-        currentHelper4 = new DbHelper(getContext());
-        currentDbDb4 = currentHelper4.getWritableDatabase();
-        currentDbDb4.update(DbHelper.CURRENT_TABLE_NAME, moneyInValue2, DbHelper.ID + "= '1'", null);
+        moneyInValue2.put(DbHelper.CURRENTAVAILABLEBALANCE, newAvailableBalance);
+        dbHelper3 = new DbHelper(getContext());
+        db3 = dbHelper3.getWritableDatabase();
+        db3.update(DbHelper.CURRENT_TABLE_NAME, moneyInValue2, DbHelper.ID + "= '1'", null);
+        db3.close();
+
     }
 
     public void updateCurrentAccountBalanceMoneyIn() {
-        currentAccountBalance = dbManager.retrieveCurrentAccountBalance();
-        newCurrentAccountBalance = currentAccountBalance + moneyInAmount;
-
+        oldAccountBalance = dbManager.retrieveCurrentAccountBalance();
+        newAccountBalance = oldAccountBalance + moneyInAmount;
         moneyInValue = new ContentValues();
-        moneyInValue.put(DbHelper.CURRENTACCOUNTBALANCE, newCurrentAccountBalance);
-        currentHelper6 = new DbHelper(getContext());
-        currentDbDb6 = currentHelper6.getWritableDatabase();
-        currentDbDb6.update(DbHelper.CURRENT_TABLE_NAME, moneyInValue, DbHelper.ID + "= '1'", null);
+        moneyInValue.put(DbHelper.CURRENTACCOUNTBALANCE, newAccountBalance);
+        dbHelper4 = new DbHelper(getContext());
+        db4 = dbHelper4.getWritableDatabase();
+        db4.update(DbHelper.CURRENT_TABLE_NAME, moneyInValue, DbHelper.ID + "= '1'", null);
+        db4.close();
+
     }
 
     AdapterView.OnItemSelectedListener moneyInSpinnerSelection = new AdapterView.OnItemSelectedListener() {
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-            moneyInCatS = moneyInCursor.getString(moneyInCursor.getColumnIndexOrThrow(DbHelper.INCOMENAME));
+            moneyInCatS = cursor2.getString(cursor2.getColumnIndexOrThrow(DbHelper.INCOMENAME));
         }
 
         @Override
@@ -291,7 +284,7 @@ public class DailyMoneyIn extends Fragment {
                             try {
                                 moneyInDb.setMoneyInAmount(Double.valueOf(moneyInAmountEditText.getText().toString()));
                                 newMoneyInAmount = Double.valueOf(moneyInAmountEditText.getText().toString());
-                            } catch(NumberFormatException e) {
+                            } catch (NumberFormatException e) {
                                 moneyInDb.setMoneyInAmount(general.extractingDollars(moneyInAmountEditText));
                                 newMoneyInAmount = general.extractingDollars(moneyInAmountEditText);
                             }

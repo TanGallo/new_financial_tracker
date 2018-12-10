@@ -2,7 +2,6 @@ package ca.gotchasomething.mynance.spinners;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +10,6 @@ import android.widget.TextView;
 
 import ca.gotchasomething.mynance.DbHelper;
 import ca.gotchasomething.mynance.R;
-//import ca.gotchasomething.mynance.data.MoneyOutDbManager;
 
 public class MoneyOutSpinnerAdapter extends CursorAdapter {
 

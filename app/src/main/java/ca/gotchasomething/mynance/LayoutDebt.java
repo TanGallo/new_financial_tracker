@@ -7,14 +7,10 @@ import android.database.Cursor;
 import android.database.CursorIndexOutOfBoundsException;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
 import androidx.appcompat.app.ActionBarDrawerToggle;
-
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -31,9 +27,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import java.text.NumberFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -42,27 +36,22 @@ import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-//import ca.gotchasomething.mynance.data.ExpenseBudgetDbManager;
 import ca.gotchasomething.mynance.data.DebtDb;
-//import ca.gotchasomething.mynance.data.DebtDbManager;
 import ca.gotchasomething.mynance.data.SetUpDb;
-//import ca.gotchasomething.mynance.data.SetUpDbManager;
 
 public class LayoutDebt extends MainNavigation {
 
     Button saveDebtButton, updateDebtButton, cancelDebtButton, doneDebtsSetUpButton;
     Calendar debtCal;
     Cursor expenseCursor, debtCursor2;
-    Date debtEndD, dateObj, latestDateD;
+    Date debtEndD, latestDateD;
     DbHelper expenseDbHelper, debtDbHelper2;
     DbManager dbManager;
     DebtDb debtDb;
     DebtDbAdapter debtAdapter;
-    //DebtDbManager debtDbManager;
     Double totalDebt = 0.0, totalDebtD = 0.0, debtAmountD = 0.0, a = 0.0, numberOfYearsToPayDebt = 0.0, balanceAmount, amount = 0.0, rate = 0.0,
             payments = 0.0, frequency = 0.0, expenseAnnualAmount = 0.0, debtAmountD2, debtPaymentsD, debtPercentD, debtPercentD2;
     EditText debtNameEntry, debtAmountEntry, debtPercentEntry, debtPaymentsEntry;
-    //ExpenseBudgetDbManager expenseBudgetDbManager;
     FloatingActionButton addDebtButton;
     General general;
     int debtsDone, savingsDone, budgetDone, balanceDone, tourDone;
@@ -76,7 +65,6 @@ public class LayoutDebt extends MainNavigation {
     RadioGroup debtFrequencyRadioGroup;
     SQLiteDatabase expenseDb, debtDbDb2;
     SetUpDb setUpDb;
-    //SetUpDbManager setUpDbManager;
     SimpleDateFormat latestDateS, debtEndS;
     String totalDebt2 = null, latestDate = null, totalDebtS = null, debtAmountS = null, debtAmount2 = null, debtFrequencyS = null, debtEnd = null,
             debtAmountS2, debtPaymentsS, debtPercentS;
@@ -99,7 +87,6 @@ public class LayoutDebt extends MainNavigation {
 
         general = new General();
         dbManager = new DbManager(this);
-        //setUpDbManager = new SetUpDbManager(this);
 
         totalDebtOwing = findViewById(R.id.totalDebtOwing);
         totalDebtPaidLabel = findViewById(R.id.totalDebtPaidLabel);
@@ -112,17 +99,10 @@ public class LayoutDebt extends MainNavigation {
         doneDebtsSetUpButton = findViewById(R.id.doneDebtsSetUpButton);
         doneDebtsSetUpButton.setOnClickListener(onClickDoneDebtsSetUpButton);
 
-        //dbManager.debtSetUpCheck();
         if (dbManager.debtSetUpCheck() > 0) {
             doneDebtsSetUpButton.setVisibility(View.GONE);
         }
 
-        /*setUpDbManager.debtSetUpCheck();
-        if (setUpDbManager.debtSetUpCheck() > 0) {
-            doneDebtsSetUpButton.setVisibility(View.GONE);
-        }*/
-
-        //debtDbManager = new DebtDbManager(this);
         debtAdapter = new DebtDbAdapter(this, dbManager.getDebts());
         debtListView.setAdapter(debtAdapter);
 
@@ -147,7 +127,6 @@ public class LayoutDebt extends MainNavigation {
 
             setUpDb = new SetUpDb(debtsDone, savingsDone, budgetDone, balanceDone, balanceAmount, tourDone, 0);
             dbManager.addSetUp(setUpDb);
-            //setUpDbManager.addSetUp(setUpDb);
 
             Toast toast = Toast.makeText(getApplicationContext(), "You can edit this list by clicking DEBTS on the menu", Toast.LENGTH_LONG);
             LinearLayout toastLayout = (LinearLayout) toast.getView();
@@ -233,7 +212,7 @@ public class LayoutDebt extends MainNavigation {
         return latestDate;
     }
 
-    public long findExpenseId() {
+    public long findMatchingExpenseId() {
         expenseDbHelper = new DbHelper(this);
         expenseDb = expenseDbHelper.getReadableDatabase();
         expenseCursor = expenseDb.rawQuery("SELECT " + DbHelper.ID + " FROM " + DbHelper.EXPENSES_TABLE_NAME + " WHERE " + DbHelper.ID +
@@ -505,7 +484,7 @@ public class LayoutDebt extends MainNavigation {
                         @Override
                         public void onClick(View v) {
 
-                            String[] args = new String[]{String.valueOf(findExpenseId())};
+                            String[] args = new String[]{String.valueOf(findMatchingExpenseId())};
                             ContentValues values = new ContentValues();
 
                             values.put(DbHelper.EXPENSENAME, debtNameEntry.getText().toString());
@@ -584,7 +563,7 @@ public class LayoutDebt extends MainNavigation {
                     dbManager.deleteDebt(debtDb);
 
                     try {
-                        String[] args = new String[]{String.valueOf(findExpenseId())};
+                        String[] args = new String[]{String.valueOf(findMatchingExpenseId())};
                         expenseDb.delete(DbHelper.EXPENSES_TABLE_NAME, DbHelper.ID + "=?", args);
                     } catch (CursorIndexOutOfBoundsException e) {
                         e.printStackTrace();

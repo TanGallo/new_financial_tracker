@@ -2,8 +2,6 @@ package ca.gotchasomething.mynance.tabFragments;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.Intent;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
@@ -19,16 +17,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 import java.text.NumberFormat;
 import java.util.List;
-
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import ca.gotchasomething.mynance.DbHelper;
 import ca.gotchasomething.mynance.DbManager;
-import ca.gotchasomething.mynance.LayoutDailyMoney;
 import ca.gotchasomething.mynance.R;
-//import ca.gotchasomething.mynance.data.CurrentDbManager;
 import ca.gotchasomething.mynance.data.MoneyOutDb;
-//import ca.gotchasomething.mynance.data.MoneyOutDbManager;
 
 public class DailyCreditCard extends Fragment {
 
@@ -36,17 +30,14 @@ public class DailyCreditCard extends Fragment {
     CCAdapter ccAdapter;
     CheckBox ccPaidCheckbox;
     ContentValues moneyOutValue, moneyOutValue2;
-    //CurrentDbManager currentDbManager;
     DbHelper moneyOutHelper3, currentHelper3, currentHelper4;
     DbManager dbManager;
     Double ccAmountD, totalCCPaymentDue, currentAccountBalance, currentAvailableBalance, totalCCPaymentBDue, newCurrentAvailableBalance,
             newCurrentAccountBalance, currentAccountBalance2, totalCCPaymentDue2, currentAvailableBalance2, totalCCPaymentBDue2, totalCCPaymentDue3;
     FragmentManager fm;
     FragmentTransaction transaction;
-    Intent refreshView;
     ListView ccListView;
     MoneyOutDb moneyOutDb;
-    //MoneyOutDbManager moneyOutDbManager;
     NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
     SQLiteDatabase moneyOutDbDb3, currentDbDb3, currentDbDb4;
     String ccAmountS, ccAmount2, totalCCPaymentDueS;
@@ -69,7 +60,7 @@ public class DailyCreditCard extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        //dbManager = new DbManager(getContext());
+        dbManager = new DbManager(getContext());
 
         noCCTransLabel = v.findViewById(R.id.noCCTransLabel);
         noCCTransLabel.setVisibility(View.GONE);
@@ -87,7 +78,6 @@ public class DailyCreditCard extends Fragment {
 
         ccListView = v.findViewById(R.id.ccListView);
 
-        dbManager = new DbManager(getContext());
         ccAdapter = new CCAdapter(getContext(), dbManager.getCCTransToPay());
         ccListView.setAdapter(ccAdapter);
 
@@ -144,6 +134,7 @@ public class DailyCreditCard extends Fragment {
         totalCCPaymentDue2 = dbManager.retrieveToPayTotal();
         currentAccountBalance2 = dbManager.retrieveCurrentAccountBalance();
 
+        possible = true;
         if (totalCCPaymentBDue2 > currentAvailableBalance2) {
             possible = false;
             ccPaidLabel.setVisibility(View.GONE);
@@ -175,7 +166,6 @@ public class DailyCreditCard extends Fragment {
             checkBelowLabel.setVisibility(View.VISIBLE);
         }
 
-        //checkBelowLabel.setVisibility(View.VISIBLE);
         totalCCPaymentDueLabel.setVisibility(View.GONE);
         totalCCPaymentDueAmount.setVisibility(View.GONE);
         ccPaidLabel.setVisibility(View.GONE);
@@ -301,7 +291,6 @@ public class DailyCreditCard extends Fragment {
         fm = getFragmentManager();
         transaction = fm.beginTransaction();
         transaction.replace(R.id.daily_fragment_container, fragment);
-
         transaction.commit();
     }
 }

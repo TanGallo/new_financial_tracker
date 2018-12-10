@@ -1,7 +1,5 @@
 package ca.gotchasomething.mynance;
 
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
 import com.google.android.material.tabs.TabLayout;
@@ -14,7 +12,6 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 import java.text.NumberFormat;
 import androidx.fragment.app.FragmentTransaction;
-//import ca.gotchasomething.mynance.data.CurrentDbManager;
 import ca.gotchasomething.mynance.tabFragments.DailyMoneyCC;
 import ca.gotchasomething.mynance.tabFragments.DailyMoneyIn;
 import ca.gotchasomething.mynance.tabFragments.DailyCreditCard;
@@ -24,7 +21,6 @@ import ca.gotchasomething.mynance.tabFragments.DailyWeeklyLimits;
 public class LayoutDailyMoney extends MainNavigation {
 
     Button moneyInButton, moneyOutButton;
-    //CurrentDbManager currentDbManager;
     DbManager dbManager;
     Double newAccountBalance, newAvailableBalance;
     FragmentManager fm;
@@ -51,7 +47,6 @@ public class LayoutDailyMoney extends MainNavigation {
         toggle.syncState();
 
         dbManager = new DbManager(this);
-        //currentDbManager = new CurrentDbManager(this);
 
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
@@ -80,8 +75,12 @@ public class LayoutDailyMoney extends MainNavigation {
         newAccountBalance = dbManager.retrieveCurrentAccountBalance();
         newAvailableBalance = dbManager.retrieveCurrentAvailableBalance();
 
-        if(newAccountBalance < newAvailableBalance || newAccountBalance == 0.0) {
+        if(newAccountBalance < newAvailableBalance || newAccountBalance == 0.0 || newAvailableBalance < 0.0) {
             newAvailableBalance = 0.0;
+        }
+
+        if(newAccountBalance < 0.0) {
+            newAccountBalance = 0.0;
         }
 
         accountBalance2 = currencyFormat.format(newAccountBalance);

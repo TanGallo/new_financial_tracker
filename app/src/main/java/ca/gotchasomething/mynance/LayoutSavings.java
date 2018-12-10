@@ -23,55 +23,46 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
-//import ca.gotchasomething.mynance.data.ExpenseBudgetDbManager;
 import ca.gotchasomething.mynance.data.SavingsDb;
-//import ca.gotchasomething.mynance.data.SavingsDbManager;
 import ca.gotchasomething.mynance.data.SetUpDb;
-//import ca.gotchasomething.mynance.data.SetUpDbManager;
 
 public class LayoutSavings extends MainNavigation {
 
     Button saveSavingsButton, updateSavingsButton, cancelSavingsButton, doneSavingsSetUpButton;
     Calendar savingsCal;
-    Cursor expenseCursor, savingsCursor, setUpCursor;
+    Cursor expenseCursor;
     Date savingsDateD;
-    DbHelper setUpHelper, expenseDbHelper, savingsDbHelper;
+    DbHelper expenseDbHelper;
     DbManager dbManager;
     Double amount = 0.0, expenseAnnualAmount = 0.0, totalSavings = 0.0, totalSavingsD = 0.0, savingsGoalD = 0.0, savingsCurrentD = 0.0, rate = 0.0,
             a = 0.0, payments = 0.0, frequency = 0.0, numberOfYearsToSavingsGoal = 0.0, balanceAmount = 0.0, goalAmount, savingsAmount, savingsAmountD,
             savingsPaymentsD, savingsGoalD2, savingsPercentD, savingsPercentD2;
     EditText savingsNameEntry, savingsAmountEntry, savingsPercentEntry, savingsPaymentsEntry, savingsGoalAmountEntry;
-    //ExpenseBudgetDbManager expenseBudgetDbManager;
     FloatingActionButton addSavingsButton;
     General general;
-    int savingsDoneCheck = 0, debtsDone, savingsDone, budgetDone, balanceDone, tourDone;
+    int debtsDone, savingsDone, budgetDone, balanceDone, tourDone;
     Integer numberOfDaysToSavingsGoal = 0;
     Intent addNewSavings, backToSavingsScreen, backToSavingsScreen2, backToSetUp;
     ListView savingsListView;
-    long id, idResult;
+    long id;
     NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
     NumberFormat percentFormat = NumberFormat.getPercentInstance();
     RadioButton savingsWeeklyRadioButton, savingsBiWeeklyRadioButton, savingsMonthlyRadioButton, savingsAnnuallyRadioButton;
     RadioGroup savingsFrequencyRadioGroup;
     SavingsDbAdapter savingsAdapter;
     SavingsDb savingsDb;
-    //SavingsDbManager savingsDbManager;
     SetUpDb setUpDb;
-    //SetUpDbManager setUpDbManager;
     SimpleDateFormat savingsDateS;
-    SQLiteDatabase expenseDb, savingsDbDb, setUpDbDb;
+    SQLiteDatabase expenseDb;
     String totalSavings2 = null, totalSavingsS = null, savingsGoalS = null, savingsGoal2 = null, savingsCurrentS = null, savingsCurrent2 = null,
             savingsDate = null, savingsFrequencyS = null, savingsAmountS, savingsPaymentsS, savingsGoalS2, savingsPercentS;
     TextView totalSavedText, savingsListName, savingsListGoalAmount, savingsListDate, savingsListCurrentAmount, savingsDateResult;
@@ -93,7 +84,6 @@ public class LayoutSavings extends MainNavigation {
 
         general = new General();
         dbManager = new DbManager(this);
-        //setUpDbManager = new SetUpDbManager(this);
 
         totalSavedText = findViewById(R.id.totalSavedText);
 
@@ -104,17 +94,10 @@ public class LayoutSavings extends MainNavigation {
         doneSavingsSetUpButton = findViewById(R.id.doneSavingsSetUpButton);
         doneSavingsSetUpButton.setOnClickListener(onClickDoneSavingsSetUpButton);
 
-        //dbManager.savingsSetUpCheck();
         if (dbManager.savingsSetUpCheck() > 0) {
             doneSavingsSetUpButton.setVisibility(View.GONE);
         }
 
-        /*setUpDbManager.savingsSetUpCheck();
-        if (setUpDbManager.savingsSetUpCheck() > 0) {
-            doneSavingsSetUpButton.setVisibility(View.GONE);
-        }*/
-
-        //savingsDbManager = new SavingsDbManager(this);
         savingsAdapter = new SavingsDbAdapter(this, dbManager.getSavings());
         savingsListView.setAdapter(savingsAdapter);
 
@@ -128,7 +111,6 @@ public class LayoutSavings extends MainNavigation {
 
             setUpDb = new SetUpDb(debtsDone, savingsDone, budgetDone, balanceDone, balanceAmount, tourDone, 0);
             dbManager.addSetUp(setUpDb);
-            //setUpDbManager.addSetUp(setUpDb);
 
             Toast toast = Toast.makeText(getApplicationContext(), "You can edit this list by clicking SAVINGS on the menu", Toast.LENGTH_LONG);
             LinearLayout toastLayout = (LinearLayout) toast.getView();
@@ -163,7 +145,7 @@ public class LayoutSavings extends MainNavigation {
         }
     }
 
-    public long findExpenseId() {
+    public long findMatchingExpenseId() {
         expenseDbHelper = new DbHelper(this);
         expenseDb = expenseDbHelper.getReadableDatabase();
         expenseCursor = expenseDb.rawQuery("SELECT " + DbHelper.ID + " FROM " + DbHelper.EXPENSES_TABLE_NAME + " WHERE " + DbHelper.ID +
@@ -488,7 +470,7 @@ public class LayoutSavings extends MainNavigation {
                         @Override
                         public void onClick(View v) {
 
-                            String[] args = new String[]{String.valueOf(findExpenseId())};
+                            String[] args = new String[]{String.valueOf(findMatchingExpenseId())};
                             ContentValues values = new ContentValues();
 
                             values.put(DbHelper.EXPENSENAME, savingsNameEntry.getText().toString());
@@ -570,7 +552,7 @@ public class LayoutSavings extends MainNavigation {
                     dbManager.deleteSavings(savingsDb);
 
                     try {
-                        String[] args = new String[]{String.valueOf(findExpenseId())};
+                        String[] args = new String[]{String.valueOf(findMatchingExpenseId())};
                         expenseDb.delete(DbHelper.EXPENSES_TABLE_NAME, DbHelper.ID + "=?", args);
                     } catch (CursorIndexOutOfBoundsException e) {
                         e.printStackTrace();

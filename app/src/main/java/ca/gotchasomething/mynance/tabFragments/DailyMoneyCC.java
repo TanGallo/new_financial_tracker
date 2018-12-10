@@ -1,8 +1,6 @@
 package ca.gotchasomething.mynance.tabFragments;
 
-import android.content.ContentValues;
 import android.content.Context;
-import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -19,25 +17,19 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import java.sql.Timestamp;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import ca.gotchasomething.mynance.DbHelper;
 import ca.gotchasomething.mynance.DbManager;
 import ca.gotchasomething.mynance.General;
 import ca.gotchasomething.mynance.R;
-//import ca.gotchasomething.mynance.data.CurrentDbManager;
 import ca.gotchasomething.mynance.data.MoneyOutDb;
-//import ca.gotchasomething.mynance.data.MoneyOutDbManager;
 import ca.gotchasomething.mynance.spinners.MoneyOutSpinnerAdapter;
 
 public class DailyMoneyCC extends Fragment {
@@ -45,7 +37,6 @@ public class DailyMoneyCC extends Fragment {
     boolean possible = true;
     Button ccTransButton, cancelCCTransEntryButton, updateCCTransEntryButton;
     CCTransAdapter ccTransAdapter;
-    //CurrentDbManager currentDbManager;
     Cursor moneyOutCursor2;
     Date moneyOutDate;
     DbHelper moneyOutDbHelper2;
@@ -57,7 +48,6 @@ public class DailyMoneyCC extends Fragment {
     ListView ccTransList;
     long moneyOutRefKeyMO, expRefKeyMO;
     MoneyOutDb moneyOutDb;
-    //MoneyOutDbManager moneyOutDbManager;
     MoneyOutSpinnerAdapter ccTransSpinnerAdapter;
     NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
     SimpleDateFormat moneyOutSDF;
@@ -87,7 +77,6 @@ public class DailyMoneyCC extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         general = new General();
-        //currentDbManager = new CurrentDbManager(getContext());
 
         ccTransAmountText = v.findViewById(R.id.ccTransAmount);
         ccTransButton = v.findViewById(R.id.ccTransButton);
@@ -112,11 +101,7 @@ public class DailyMoneyCC extends Fragment {
         ccTransCatSpinner = v.findViewById(R.id.ccTransCatSpinner);
         moneyOutDbHelper2 = new DbHelper(getContext());
         moneyOutDbDb2 = moneyOutDbHelper2.getReadableDatabase();
-        moneyOutCursor2 = moneyOutDbDb2.rawQuery("SELECT * FROM " +
-                DbHelper.EXPENSES_TABLE_NAME +
-                " ORDER BY " +
-                DbHelper.EXPENSENAME +
-                " ASC", null);
+        moneyOutCursor2 = moneyOutDbDb2.rawQuery("SELECT * FROM " + DbHelper.EXPENSES_TABLE_NAME + " ORDER BY " + DbHelper.EXPENSENAME + " ASC", null);
         ccTransSpinnerAdapter = new MoneyOutSpinnerAdapter(getContext(), moneyOutCursor2);
         ccTransCatSpinner.setAdapter(ccTransSpinnerAdapter);
 
@@ -131,12 +116,10 @@ public class DailyMoneyCC extends Fragment {
             ccTransPriorityS = moneyOutCursor2.getString(moneyOutCursor2.getColumnIndexOrThrow(DbHelper.EXPENSEPRIORITY));
             moneyOutWeeklyS = moneyOutCursor2.getString(moneyOutCursor2.getColumnIndexOrThrow(DbHelper.EXPENSEWEEKLY));
             moneyOutRefKeyMO = moneyOutCursor2.getLong(moneyOutCursor2.getColumnIndexOrThrow(DbHelper.ID));
-
         }
 
         @Override
         public void onNothingSelected(AdapterView<?> parent) {
-
         }
     };
 

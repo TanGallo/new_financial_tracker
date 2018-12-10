@@ -16,7 +16,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import ca.gotchasomething.mynance.data.ExpenseBudgetDb;
-//import ca.gotchasomething.mynance.data.ExpenseBudgetDbManager;
 
 public class AddBudgetExpense extends LayoutBudget {
 
@@ -25,7 +24,6 @@ public class AddBudgetExpense extends LayoutBudget {
     Double expenseAmount = 0.0, expenseFrequency = 0.0, expenseAnnualAmount = 0.0, expenseAAnnualAmount = 0.0, expenseBAnnualAmount = 0.0;
     EditText budgetExpenseCategory, budgetExpenseAmount;
     ExpenseBudgetDb expenseBudgetDb;
-    //ExpenseBudgetDbManager expenseDbManager;
     Intent backToBudget, backToBudget2;
     long id = 0;
     RadioButton budgetExpenseWeeklyRadioButton, budgetExpenseBiWeeklyRadioButton, budgetExpenseBiMonthlyRadioButton,

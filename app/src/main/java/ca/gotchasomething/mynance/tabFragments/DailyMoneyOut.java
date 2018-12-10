@@ -23,8 +23,6 @@ import android.widget.Toast;
 import java.sql.Timestamp;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -36,11 +34,8 @@ import androidx.fragment.app.FragmentTransaction;
 import ca.gotchasomething.mynance.DbHelper;
 import ca.gotchasomething.mynance.DbManager;
 import ca.gotchasomething.mynance.General;
-import ca.gotchasomething.mynance.LayoutDailyMoney;
 import ca.gotchasomething.mynance.R;
-//import ca.gotchasomething.mynance.data.CurrentDbManager;
 import ca.gotchasomething.mynance.data.MoneyOutDb;
-//import ca.gotchasomething.mynance.data.MoneyOutDbManager;
 import ca.gotchasomething.mynance.spinners.MoneyOutSpinnerAdapter;
 
 public class DailyMoneyOut extends Fragment {
@@ -48,7 +43,6 @@ public class DailyMoneyOut extends Fragment {
     boolean possible = true;
     Button moneyOutButton, cancelMoneyOutEntryButton, updateMoneyOutEntryButton;
     ContentValues moneyOutValue, moneyOutValue2;
-    //CurrentDbManager currentDbManager;
     Cursor moneyOutCursor;
     Date moneyOutDate;
     DbHelper moneyOutDbHelper, currentHelper3, currentHelper5;
@@ -65,7 +59,6 @@ public class DailyMoneyOut extends Fragment {
     long moneyOutRefKeyMO, expRefKeyMO;
     MoneyOutAdapter moneyOutAdapter;
     MoneyOutDb moneyOutDb;
-    //MoneyOutDbManager moneyOutDbManager;
     MoneyOutSpinnerAdapter moneyOutSpinnerAdapter;
     NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
     SimpleDateFormat moneyOutSDF;
@@ -95,7 +88,7 @@ public class DailyMoneyOut extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         general = new General();
-        //currentDbManager = new CurrentDbManager(getContext());
+        dbManager = new DbManager(getContext());
 
         moneyOutAmountText = v.findViewById(R.id.moneyOutAmount);
         moneyOutButton = v.findViewById(R.id.moneyOutButton);
@@ -113,18 +106,13 @@ public class DailyMoneyOut extends Fragment {
 
         moneyOutButton.setOnClickListener(onClickMoneyOutButton);
 
-        dbManager = new DbManager(getContext());
         moneyOutAdapter = new MoneyOutAdapter(getContext(), dbManager.getCashTrans());
         moneyOutList.setAdapter(moneyOutAdapter);
 
         moneyOutCatSpinner = v.findViewById(R.id.moneyOutCatSpinner);
         moneyOutDbHelper = new DbHelper(getContext());
         moneyOutDbDb = moneyOutDbHelper.getReadableDatabase();
-        moneyOutCursor = moneyOutDbDb.rawQuery("SELECT * FROM " +
-                DbHelper.EXPENSES_TABLE_NAME +
-                " ORDER BY " +
-                DbHelper.EXPENSENAME +
-                " ASC", null);
+        moneyOutCursor = moneyOutDbDb.rawQuery("SELECT * FROM " + DbHelper.EXPENSES_TABLE_NAME + " ORDER BY " + DbHelper.EXPENSENAME + " ASC", null);
         moneyOutSpinnerAdapter = new MoneyOutSpinnerAdapter(getContext(), moneyOutCursor);
         moneyOutCatSpinner.setAdapter(moneyOutSpinnerAdapter);
 
@@ -132,33 +120,15 @@ public class DailyMoneyOut extends Fragment {
 
     }
 
-    /*public long findExpenseId() {
-        List<Long> ids = new ArrayList<>();
-        expenseDbHelper = new DbHelper(getContext());
-        expenseDb = expenseDbHelper.getReadableDatabase();
-        expenseCursor = expenseDb.rawQuery("SELECT " + DbHelper.ID + " FROM " + DbHelper.EXPENSES_TABLE_NAME, null);
-        expenseDbHelper.getWritableDatabase();
-        expenseCursor.moveToFirst();
-        if (expenseCursor.moveToFirst()) {
-            do {
-                ids.add(expenseCursor.getLong(0));
-            } while (expenseCursor.moveToNext());
-        }
-
-        idResult = Collections.max(ids);
-
-        return idResult;
-    }*/
-
     public void updateCurrentAvailableBalanceMoneyOut() {
         currentAvailableBalance = dbManager.retrieveCurrentAvailableBalance();
         newCurrentAvailableBalance3 = currentAvailableBalance - moneyOutAmount;
 
+        possible = true;
         if (newCurrentAvailableBalance3 < 0) {
             Toast.makeText(getContext(), "You cannot make this purchase. See the Help section if you'd like suggestions.", Toast.LENGTH_LONG).show();
             possible = false;
         } else {
-
             moneyOutValue2 = new ContentValues();
             moneyOutValue2.put(DbHelper.CURRENTAVAILABLEBALANCE, newCurrentAvailableBalance3);
             currentHelper5 = new DbHelper(getContext());
@@ -171,11 +141,11 @@ public class DailyMoneyOut extends Fragment {
         currentAccountBalance = dbManager.retrieveCurrentAccountBalance();
         newCurrentAccountBalance3 = currentAccountBalance - moneyOutAmount;
 
+        possible = true;
         if (newCurrentAccountBalance3 < 0) {
             Toast.makeText(getContext(), "You cannot make this purchase. See the Help section if you'd like suggestions.", Toast.LENGTH_LONG).show();
             possible = false;
         } else {
-
             moneyOutValue = new ContentValues();
             moneyOutValue.put(DbHelper.CURRENTACCOUNTBALANCE, newCurrentAccountBalance3);
             currentHelper3 = new DbHelper(getContext());
@@ -370,8 +340,15 @@ public class DailyMoneyOut extends Fragment {
                             updateMoneyOutEntryButton.setVisibility(View.GONE);
                             moneyOutLine.setVisibility(View.GONE);
 
-                            updateCurrentAccountBalanceMoneyOut();
-                            updateCurrentAvailableBalanceMoneyOut();
+                            if (moneyOutDb.getMoneyOutPriority().equals("B")) {
+                                updateCurrentAvailableBalanceMoneyOut();
+
+                                if (possible) {
+                                    updateCurrentAccountBalanceMoneyOut();
+                                }
+                            } else if (moneyOutDb.getMoneyOutPriority().equals("A")) {
+                                updateCurrentAccountBalanceMoneyOut();
+                            }
 
                             replaceFragment(new DailyMoneyOut());
 
@@ -416,8 +393,13 @@ public class DailyMoneyOut extends Fragment {
                     moneyOutAdapter.updateCashTrans(dbManager.getCashTrans());
                     notifyDataSetChanged();
 
-                    updateCurrentAvailableBalanceMoneyOut();
-                    updateCurrentAccountBalanceMoneyOut();
+                    if (moneyOutDb.getMoneyOutPriority().equals("B")) {
+                        updateCurrentAvailableBalanceMoneyOut();
+                        updateCurrentAccountBalanceMoneyOut();
+
+                    } else if (moneyOutDb.getMoneyOutPriority().equals("A")) {
+                        updateCurrentAccountBalanceMoneyOut();
+                    }
 
                     replaceFragment(new DailyMoneyOut());
 
@@ -443,7 +425,6 @@ public class DailyMoneyOut extends Fragment {
         fm = getFragmentManager();
         transaction = fm.beginTransaction();
         transaction.replace(R.id.daily_fragment_container, fragment);
-
         transaction.commit();
     }
 }

@@ -7,14 +7,10 @@ import android.database.Cursor;
 import android.database.CursorIndexOutOfBoundsException;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
 import androidx.appcompat.app.ActionBarDrawerToggle;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,7 +25,6 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -37,46 +32,38 @@ import java.util.Date;
 import java.util.List;
 
 import ca.gotchasomething.mynance.data.ExpenseBudgetDb;
-//import ca.gotchasomething.mynance.data.ExpenseBudgetDbManager;
 import ca.gotchasomething.mynance.data.IncomeBudgetDb;
-//import ca.gotchasomething.mynance.data.IncomeBudgetDbManager;
 import ca.gotchasomething.mynance.data.DebtDb;
-//import ca.gotchasomething.mynance.data.DebtDbManager;
 import ca.gotchasomething.mynance.data.SetUpDb;
-//import ca.gotchasomething.mynance.data.SetUpDbManager;
 
 public class LayoutBudget extends MainNavigation {
 
-    boolean foundNoDebtId, foundNoSavingsId, foundNoMoneyOutId;
+    boolean foundNoDebtId, foundNoSavingsId;
     Button doneBudgetSetUpButton, budgetCancelIncomeButton, budgetAddIncomeButton, budgetUpdateIncomeButton, budgetCancelExpenseButton,
             budgetAddExpenseButton, budgetUpdateExpenseButton;
     Calendar debtCal, savingsCal;
-    Cursor setUpCursor, incomeCursor, expenseCursor, debtCursor, debtCursor2, debtCursor3, debtCursor4, debtCursor5, debtCursor6, savingsCursor,
-            savingsCursor2, savingsCursor3, savingsCursor4, savingsCursor5, savingsCursor6, savingsCursor7, moneyOutCursor, moneyOutCursor2;
+    Cursor debtCursor, debtCursor2, debtCursor3, debtCursor4, debtCursor5, debtCursor6, savingsCursor,
+            savingsCursor2, savingsCursor3, savingsCursor4, savingsCursor5, savingsCursor6, savingsCursor7, moneyOutCursor;
     Date debtEndD, savingsDateD;
-    DbHelper setUpHelper, incomeDbHelper, expenseDbHelper, debtDbHelper, debtDbHelper2, debtDbHelper3, savingsDbHelper,
-            savingsDbHelper2, savingsDbHelper3, moneyOutDbHelper, moneyOutDbHelper2;
+    DbHelper debtDbHelper, debtDbHelper2, debtDbHelper3, savingsDbHelper, savingsDbHelper2, savingsDbHelper3, moneyOutDbHelper;
     DbManager dbManager;
     DebtDb debt;
-    //DebtDbManager debtDbManager;
-    Double totalIncome = 0.0, totalIncomeD = 0.0, incomeAnnualAmountD = 0.0, totalExpenses = 0.0, totalExpensesD = 0.0, expenseAnnualAmountD = 0.0,
+    Double totalIncomeD = 0.0, incomeAnnualAmountD = 0.0, totalExpensesD = 0.0, expenseAnnualAmountD = 0.0,
             incomeAvailableD = 0.0, incomeAvailableN, numberOfYearsToPayDebt = 0.0, numberOfYearsToSavingsGoal = 0.0, balanceAmount = 0.0,
             budgetIncomeAmountD, budgetExpenseAmountD, totalIncomeR, totalExpensesR;
     EditText budgetIncomeCategoryText, budgetIncomeAmountText, budgetIncomeCategory, budgetIncomeAmount, budgetExpenseCategoryText,
             budgetExpenseAmountText, budgetExpenseCategory, budgetExpenseAmount;
     ExpenseBudgetDb expenseBudgetDb;
-    //ExpenseBudgetDbManager expenseDbManager;
     ExpenseDbAdapter expenseAdapter;
     General general;
     FloatingActionButton budgetIncomePlusButton, budgetExpensePlusButton;
     ImageButton editIncomeButton, deleteIncomeButton, editExpenseButton, deleteExpenseButton;
     IncomeBudgetDb incomeBudgetDb;
-    //IncomeBudgetDbManager incomeDbManager;
     IncomeDbAdapter incomeAdapter;
-    int numberOfDaysToPayDebt = 0, numberOfDaysToSavingsGoal = 0, budgetDoneCheck = 0, debtsDone, savingsDone, budgetDone, balanceDone, tourDone;
+    int numberOfDaysToPayDebt = 0, numberOfDaysToSavingsGoal = 0, debtsDone, savingsDone, budgetDone, balanceDone, tourDone;
     Intent backToSetUp, incomePlusButton, expensePlusButton, backToBudget, backToBudget2, backToBudget3, backToBudget4;
     ListView budgetIncomeDetails, budgetExpensesDetails;
-    long id, debtId;
+    long id;
     NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
     RadioButton budgetIncomeWeeklyRadioButton, budgetIncomeBiWeeklyRadioButton, budgetIncomeBiMonthlyRadioButton,
             budgetIncomeMonthlyRadioButton, budgetIncomeBiAnnuallyRadioButton, budgetIncomeAnnuallyRadioButton, budgetExpenseWeeklyRadioButton,
@@ -85,9 +72,8 @@ public class LayoutBudget extends MainNavigation {
             budgetExpenseYesRadioButton, budgetExpenseNoRadioButton;
     RadioGroup budgetIncomeFrequencyRadioGroup, budgetExpenseFrequencyRadioGroup, budgetExpenseABRadioGroup, budgetExpenseReminderRadioGroup;
     SetUpDb setUpDb;
-    //SetUpDbManager setUpDbManager;
     SimpleDateFormat debtEndS, savingsDateS;
-    SQLiteDatabase setUpDbDb, incomeDb, expenseDb, debtDb, debtDb2, debtDb3, savingsDb, savingsDb2, savingsDb3, moneyOutDb, moneyOutDb2;
+    SQLiteDatabase debtDb, debtDb2, debtDb3, savingsDb, savingsDb2, savingsDb3, moneyOutDb;
     String incomeFrequencyS = null, incomeAnnualAmountS = null, incomeAnnualAmount2 = null, expenseFrequencyS = null, expenseWeeklyS = null,
             expensePriorityS = null, expenseAnnualAmount2 = null, totalIncomeS = null, totalIncome2 = null, expenseAnnualAmountS = null,
             totalExpensesS = null, totalExpenses2 = null, incomeAvailable2 = null, incomeAvailableN2 = null, debtEnd = null, savingsDate = null,
@@ -111,8 +97,6 @@ public class LayoutBudget extends MainNavigation {
 
         general = new General();
         dbManager = new DbManager(this);
-        //setUpDbManager = new SetUpDbManager(this);
-        //incomeDbManager = new IncomeBudgetDbManager(this);
 
         budgetIncomeTotalText = findViewById(R.id.budgetIncomeTotalText);
         budgetExpensesTotalText = findViewById(R.id.budgetExpensesTotalText);
@@ -133,24 +117,15 @@ public class LayoutBudget extends MainNavigation {
         doneBudgetSetUpButton = findViewById(R.id.doneBudgetSetUpButton);
         doneBudgetSetUpButton.setOnClickListener(onClickDoneBudgetSetUpButton);
 
-        //dbManager.budgetSetUpCheck();
         if (dbManager.budgetSetUpCheck() > 0) {
             doneBudgetSetUpButton.setVisibility(View.GONE);
         }
 
-        /*setUpDbManager.budgetSetUpCheck();
-        if (setUpDbManager.budgetSetUpCheck() > 0) {
-            doneBudgetSetUpButton.setVisibility(View.GONE);
-        }*/
-
         incomeAdapter = new IncomeDbAdapter(this, dbManager.getIncomes());
         budgetIncomeDetails.setAdapter(incomeAdapter);
 
-        //expenseDbManager = new ExpenseBudgetDbManager(this);
         expenseAdapter = new ExpenseDbAdapter(this, dbManager.getExpense());
         budgetExpensesDetails.setAdapter(expenseAdapter);
-
-        //debtDbManager = new DebtDbManager(this);
 
         budgetHeaderText();
 
@@ -163,7 +138,6 @@ public class LayoutBudget extends MainNavigation {
 
             setUpDb = new SetUpDb(debtsDone, savingsDone, budgetDone, balanceDone, balanceAmount, tourDone, 0);
             dbManager.addSetUp(setUpDb);
-            //setUpDbManager.addSetUp(setUpDb);
 
             Toast toast = Toast.makeText(getApplicationContext(), "You can edit this list by clicking BUDGET on the menu", Toast.LENGTH_LONG);
             LinearLayout toastLayout = (LinearLayout) toast.getView();
@@ -260,7 +234,7 @@ public class LayoutBudget extends MainNavigation {
         }
     };
 
-    public long findDebtId() {
+    public long findMatchingDebtId() {
         debtDbHelper = new DbHelper(this);
         debtDb = debtDbHelper.getReadableDatabase();
         debtCursor = debtDb.rawQuery("SELECT " + DbHelper.ID + " FROM " + DbHelper.DEBTS_TABLE_NAME + " WHERE " + DbHelper.EXPREFKEYD +
@@ -272,7 +246,7 @@ public class LayoutBudget extends MainNavigation {
         return id;
     }
 
-    public long findMoneyOutId() {
+    public long findMatchingMoneyOutId() {
         moneyOutDbHelper = new DbHelper(this);
         moneyOutDb = moneyOutDbHelper.getReadableDatabase();
         moneyOutCursor = moneyOutDb.rawQuery("SELECT " + DbHelper.ID + " FROM " + DbHelper.MONEY_OUT_TABLE_NAME + " WHERE " + DbHelper.EXPREFKEYMO +
@@ -284,7 +258,7 @@ public class LayoutBudget extends MainNavigation {
         return id;
     }
 
-    public boolean foundNoDebtId(Cursor debtCursor6) {
+    public boolean foundNoMatchingDebtId(Cursor debtCursor6) {
         debtDbHelper3 = new DbHelper(this);
         debtDb3 = debtDbHelper3.getReadableDatabase();
         debtCursor6 = debtDb3.rawQuery("SELECT " + DbHelper.ID + " FROM " + DbHelper.DEBTS_TABLE_NAME + " WHERE " + DbHelper.EXPREFKEYD +
@@ -344,7 +318,7 @@ public class LayoutBudget extends MainNavigation {
         return debtEnd;
     }
 
-    public long findSavingsId() {
+    public long findMatchingSavingsId() {
         savingsDbHelper = new DbHelper(this);
         savingsDb = savingsDbHelper.getReadableDatabase();
         savingsCursor = savingsDb.rawQuery("SELECT " + DbHelper.ID + " FROM " + DbHelper.SAVINGS_TABLE_NAME + " WHERE " + DbHelper.EXPREFKEYS +
@@ -356,7 +330,7 @@ public class LayoutBudget extends MainNavigation {
         return id;
     }
 
-    public boolean foundNoSavingsId(Cursor savingsCursor2) {
+    public boolean foundNoMatchingSavingsId(Cursor savingsCursor2) {
         savingsDbHelper2 = new DbHelper(this);
         savingsDb2 = savingsDbHelper2.getReadableDatabase();
         savingsCursor2 = savingsDb2.rawQuery("SELECT " + DbHelper.ID + " FROM " + DbHelper.SAVINGS_TABLE_NAME + " WHERE " + DbHelper.EXPREFKEYS +
@@ -734,8 +708,8 @@ public class LayoutBudget extends MainNavigation {
 
                     budgetExpenseCategory.setText(expenseBudgetDb.getExpenseName());
 
-                    foundNoDebtId(debtCursor6);
-                    foundNoSavingsId(savingsCursor2);
+                    foundNoMatchingDebtId(debtCursor6);
+                    foundNoMatchingSavingsId(savingsCursor2);
 
                     if (!foundNoDebtId) {
                         budgetExpenseWeeklyRadioButton.setVisibility(View.VISIBLE);
@@ -914,7 +888,7 @@ public class LayoutBudget extends MainNavigation {
                             dbManager.updateExpense(expenseBudgetDb);
 
                             try {
-                                String[] args = new String[]{String.valueOf(findDebtId())};
+                                String[] args = new String[]{String.valueOf(findMatchingDebtId())};
                                 ContentValues debtValues = new ContentValues();
 
                                 debtValues.put(DbHelper.DEBTNAME, budgetExpenseCategory.getText().toString());
@@ -936,7 +910,7 @@ public class LayoutBudget extends MainNavigation {
                             }
 
                             try {
-                                String[] args2 = new String[]{String.valueOf(findSavingsId())};
+                                String[] args2 = new String[]{String.valueOf(findMatchingSavingsId())};
                                 ContentValues savingsValues = new ContentValues();
 
                                 savingsValues.put(DbHelper.SAVINGSNAME, budgetExpenseCategory.getText().toString());
@@ -958,7 +932,7 @@ public class LayoutBudget extends MainNavigation {
                             }
 
                             try {
-                                String[] args3 = new String[]{String.valueOf(findMoneyOutId())};
+                                String[] args3 = new String[]{String.valueOf(findMatchingMoneyOutId())};
                                 ContentValues moneyOutValues = new ContentValues();
 
                                 moneyOutValues.put(DbHelper.MONEYOUTCAT, budgetExpenseCategory.getText().toString());
@@ -995,14 +969,14 @@ public class LayoutBudget extends MainNavigation {
                     dbManager.deleteExpense(expenseBudgetDb);
 
                     try {
-                        String[] args = new String[]{String.valueOf(findDebtId())};
+                        String[] args = new String[]{String.valueOf(findMatchingDebtId())};
                         debtDb.delete(DbHelper.DEBTS_TABLE_NAME, DbHelper.ID + "=?", args);
                     } catch (Exception e12) {
                         e12.getStackTrace();
                     }
 
                     try {
-                        String[] args2 = new String[]{String.valueOf(findSavingsId())};
+                        String[] args2 = new String[]{String.valueOf(findMatchingSavingsId())};
                         savingsDb.delete(DbHelper.SAVINGS_TABLE_NAME, DbHelper.ID + "=?", args2);
                     } catch (Exception e13) {
                         e13.getStackTrace();

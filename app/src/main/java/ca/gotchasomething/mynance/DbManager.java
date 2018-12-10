@@ -30,6 +30,7 @@ public class DbManager {
     public Double startingBalanceResult, totalDebt, numberOfYearsToPayDebt, numberOfYearsToSavingsGoal, totalSavings, totalExpenses, totalIncome,
             totalCCPaymentDue, totalCCPaymentBDue, currentAccountBalance, currentAvailableBalance, totalBudgetAExpenses, percentB;
     public int tourDoneCheck, balanceDoneCheck, budgetDoneCheck, savingsDoneCheck, debtsDoneCheck, numberOfDaysToPayDebt, numberOfDaysToSavingsGoal;
+    public Long expenseId;
     public SimpleDateFormat debtEndS, savingsDateS;
     public SQLiteDatabase db;
     public String debtEnd, savingsDate;
@@ -428,6 +429,20 @@ public class DbManager {
         db.delete(DbHelper.EXPENSES_TABLE_NAME, DbHelper.ID + "=?", args);
     }
 
+    public Long findLatestExpenseId() {
+        List<Long> expenseIds = new ArrayList<>(getExpense().size());
+        for(ExpenseBudgetDb e : getExpense()) {
+            expenseIds.add(e.getId());
+        }
+        expenseId = null;
+        if(expenseIds.size() == 0) {
+            expenseId = null;
+        } else {
+            expenseId = Collections.max(expenseIds);
+            }
+        return expenseId;
+    }
+
     public List<ExpenseBudgetDb> getWeeklyLimits() {
         /*List<ExpenseBudgetDb> weeklyLimits = new ArrayList<>();
         for (ExpenseBudgetDb e : getExpense()) {
@@ -734,16 +749,16 @@ public class DbManager {
     }
 
     public Double retrieveCurrentAvailableBalance() {
-        List<Double> currentList = new ArrayList<>(getCurrent().size());
-        for (CurrentDb c : getCurrent()) {
-            currentList.add(c.getCurrentAvailableBalance());
+        List<Double> currentList2 = new ArrayList<>(getCurrent().size());
+        for (CurrentDb c2 : getCurrent()) {
+            currentList2.add(c2.getCurrentAvailableBalance());
         }
         currentAvailableBalance = 0.0;
-        if (currentList.size() == 0) {
+        if (currentList2.size() == 0) {
             currentAvailableBalance = 0.0;
         } else {
-            for (Double dbl : currentList) {
-                currentAvailableBalance += dbl;
+            for (Double dbl2 : currentList2) {
+                currentAvailableBalance += dbl2;
             }
         }
         return currentAvailableBalance;

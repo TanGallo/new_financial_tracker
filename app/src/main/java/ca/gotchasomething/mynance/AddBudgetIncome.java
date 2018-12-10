@@ -9,7 +9,6 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import ca.gotchasomething.mynance.data.IncomeBudgetDb;
-//import ca.gotchasomething.mynance.data.IncomeBudgetDbManager;
 
 public class AddBudgetIncome extends LayoutBudget {
 
@@ -18,7 +17,6 @@ public class AddBudgetIncome extends LayoutBudget {
     Double incomeAmount, incomeFrequency, incomeAnnualAmount;
     EditText budgetIncomeCategory, budgetIncomeAmount;
     IncomeBudgetDb incomeBudgetDb;
-    //IncomeBudgetDbManager incomeDbManager;
     Intent backToBudget, backToBudget2;
     long id;
     RadioButton budgetIncomeWeeklyRadioButton, budgetIncomeBiWeeklyRadioButton, budgetIncomeBiMonthlyRadioButton,

@@ -4,9 +4,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-
 import androidx.annotation.Nullable;
-
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,7 +13,6 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -24,9 +21,7 @@ import java.util.Date;
 import java.util.List;
 
 import ca.gotchasomething.mynance.data.ExpenseBudgetDb;
-//import ca.gotchasomething.mynance.data.ExpenseBudgetDbManager;
 import ca.gotchasomething.mynance.data.DebtDb;
-//import ca.gotchasomething.mynance.data.DebtDbManager;
 
 public class AddDebt extends LayoutDebt {
 
@@ -37,12 +32,10 @@ public class AddDebt extends LayoutDebt {
     DbHelper expenseDbHelper2;
     DbManager dbManager;
     DebtDb debt;
-    //DebtDbManager debtDbManager;
     Double debtAmount = 0.0, debtRate = 0.0, debtPayments = 0.0, debtFrequency = 0.0, expenseAmount = 0.0, expenseFrequency = 0.0, expenseAnnualAmount = 0.0,
             expenseAAnnualAmount = 0.0, expenseBAnnualAmount = 0.0, amount = 0.0, rate = 0.0, frequency = 0.0, payments = 0.0, numberOfYearsToPayDebt = 0.0;
     EditText debtNameEntry, debtAmountEntry, debtPercentEntry, debtPaymentsEntry;
     ExpenseBudgetDb expenseBudgetDb;
-    //ExpenseBudgetDbManager expenseDbManager;
     Integer numberOfDaysToPayDebt = 0;
     Intent backToDebtLayout, backToDebtLayout2;
     long expRefKeyD, idResult;
@@ -59,7 +52,6 @@ public class AddDebt extends LayoutDebt {
         setContentView(R.layout.add_edit_debt);
 
         dbManager = new DbManager(this);
-        //expenseDbManager = new ExpenseBudgetDbManager(this);
 
         debtNameEntry = findViewById(R.id.debtNameEntry);
         debtAmountEntry = findViewById(R.id.debtAmountEntry);
@@ -74,7 +66,6 @@ public class AddDebt extends LayoutDebt {
         updateDebtButton = findViewById(R.id.updateDebtButton);
         updateDebtButton.setVisibility(View.GONE);
         cancelDebtButton = findViewById(R.id.cancelDebtButton);
-        db = openOrCreateDatabase("Mynance.db", MODE_PRIVATE, null);
 
         debtFrequencyRadioGroup.setOnCheckedChangeListener(onCheckDebtFrequency);
         cancelDebtButton.setOnClickListener(onClickCancelDebtButton);
@@ -100,24 +91,6 @@ public class AddDebt extends LayoutDebt {
             }
         }
     };
-
-    public long findExpenseId2() {
-        List<Long> ids = new ArrayList<>();
-        expenseDbHelper2 = new DbHelper(this);
-        expenseDb2 = expenseDbHelper2.getReadableDatabase();
-        expenseCursor2 = expenseDb2.rawQuery("SELECT " + DbHelper.ID + " FROM " + DbHelper.EXPENSES_TABLE_NAME, null);
-        expenseDbHelper2.getWritableDatabase();
-        expenseCursor2.moveToFirst();
-        if (expenseCursor2.moveToFirst()) {
-            do {
-                ids.add(expenseCursor2.getLong(0));
-            } while (expenseCursor2.moveToNext());
-        }
-
-        idResult = Collections.max(ids);
-
-        return idResult;
-    }
 
     public String calcDebtDate() {
 
@@ -188,8 +161,7 @@ public class AddDebt extends LayoutDebt {
             debtRate = Double.valueOf(debtPercentEntry.getText().toString());
             debtPayments = Double.valueOf(debtPaymentsEntry.getText().toString());
             debtFrequency = Double.valueOf(debtFrequencyS);
-            debtEnd = calcDebtDate();
-            expRefKeyD = findExpenseId2();
+            expRefKeyD = dbManager.findLatestExpenseId();
 
             debt = new DebtDb(
                     debtName,

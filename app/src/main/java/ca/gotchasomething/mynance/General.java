@@ -28,14 +28,22 @@ public class General {
             startIndex = startingString.indexOf("$") + 1;
             endIndex = startingString.length();
             subStringResult = startingString.substring(startIndex, endIndex);
-            dollars = Double.parseDouble(subStringResult);
+            try {
+                dollars = Double.parseDouble(subStringResult);
+            } catch(NumberFormatException e) {
+                e.printStackTrace();
+            }
 
         } else {
             startIndex = startingString.indexOf("$") + 1;
             endIndex = startingString.length();
             subStringResult = startingString.substring(startIndex, endIndex);
             subStringResult2 = subStringResult.replace(",", "");
-            dollars = Double.parseDouble(subStringResult2);
+            try {
+                dollars = Double.parseDouble(subStringResult2);
+            }catch(NumberFormatException e2) {
+                e2.printStackTrace();
+            }
         }
 
         return dollars;
