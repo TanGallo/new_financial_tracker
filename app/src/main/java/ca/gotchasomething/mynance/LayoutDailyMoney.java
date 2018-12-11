@@ -1,16 +1,22 @@
 package ca.gotchasomething.mynance;
 
 import android.os.Bundle;
+
 import androidx.annotation.Nullable;
+
 import com.google.android.material.tabs.TabLayout;
+
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+
 import java.text.NumberFormat;
+
 import androidx.fragment.app.FragmentTransaction;
 import ca.gotchasomething.mynance.tabFragments.DailyMoneyCC;
 import ca.gotchasomething.mynance.tabFragments.DailyMoneyIn;
@@ -29,6 +35,7 @@ public class LayoutDailyMoney extends MainNavigation {
     NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
     String availableBalance2, accountBalance2;
     TabLayout tl;
+    TabLayout.Tab tab;
     TextView totalAccountText, availableAccountText;
 
     @Override
@@ -64,7 +71,17 @@ public class LayoutDailyMoney extends MainNavigation {
         tl.addTab(tl.newTab().setText("Pay cc"));
         tl.addTab(tl.newTab().setText("Weekly Limits"));
 
-        replaceFragment(new DailyMoneyIn());
+        if(dbManager.retrieveCurrentPageId() == 1) {
+            replaceFragment(new DailyMoneyIn());
+        } else if(dbManager.retrieveCurrentPageId() == 2) {
+            replaceFragment(new DailyMoneyOut());
+        } else if(dbManager.retrieveCurrentPageId() == 3) {
+            replaceFragment(new DailyMoneyCC());
+        } else if(dbManager.retrieveCurrentPageId() == 4) {
+            replaceFragment(new DailyCreditCard());
+        } else if(dbManager.retrieveCurrentPageId() == 5) {
+            replaceFragment(new DailyWeeklyLimits());
+        }
 
         tl.addOnTabSelectedListener(onTabSelectedListener);
 
@@ -75,11 +92,11 @@ public class LayoutDailyMoney extends MainNavigation {
         newAccountBalance = dbManager.retrieveCurrentAccountBalance();
         newAvailableBalance = dbManager.retrieveCurrentAvailableBalance();
 
-        if(newAccountBalance < newAvailableBalance || newAccountBalance == 0.0 || newAvailableBalance < 0.0) {
+        if (newAccountBalance < newAvailableBalance || newAccountBalance == 0.0 || newAvailableBalance < 0.0) {
             newAvailableBalance = 0.0;
         }
 
-        if(newAccountBalance < 0.0) {
+        if (newAccountBalance < 0.0) {
             newAccountBalance = 0.0;
         }
 
@@ -122,7 +139,6 @@ public class LayoutDailyMoney extends MainNavigation {
         fm = getSupportFragmentManager();
         transaction = fm.beginTransaction();
         transaction.replace(R.id.daily_fragment_container, fragment);
-
         transaction.commit();
     }
 }

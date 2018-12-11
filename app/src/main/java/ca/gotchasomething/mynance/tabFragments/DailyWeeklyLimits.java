@@ -1,5 +1,6 @@
 package ca.gotchasomething.mynance.tabFragments;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.CursorIndexOutOfBoundsException;
@@ -36,8 +37,9 @@ import ca.gotchasomething.mynance.data.MoneyOutDb;
 
 public class DailyWeeklyLimits extends Fragment {
 
+    ContentValues currentValue;
     Cursor moneyOutCursor, moneyOutCursor2;
-    DbHelper moneyOutHelper, moneyOutHelper2;
+    DbHelper dbHelper2, dbHelper3;
     DbManager dbManager;
     Double annualLimit, weeklyLimitD, spentThisWeek, spentThisWeek2, amountLeft;
     //ExpenseBudgetDbManager expenseBudgetDbManager;
@@ -47,7 +49,7 @@ public class DailyWeeklyLimits extends Fragment {
     ListView weeklyLimitListView;
     long expenseId;
     NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
-    SQLiteDatabase moneyOutDbDb, moneyOutDbDb2;
+    SQLiteDatabase db2, db3;
     String amountLeftS, spentThisWeekS;
     TextView amountLeftText;
     View v;
@@ -77,6 +79,12 @@ public class DailyWeeklyLimits extends Fragment {
         weeklyLimitsAdapter = new WeeklyLimitsAdapter(getContext(), dbManager.getWeeklyLimits());
         weeklyLimitListView.setAdapter(weeklyLimitsAdapter);
 
+        currentValue = new ContentValues();
+        currentValue.put(DbHelper.CURRENTPAGEID, 5);
+        dbHelper3 = new DbHelper(getContext());
+        db3 = dbHelper3.getWritableDatabase();
+        db3.update(DbHelper.CURRENT_TABLE_NAME, currentValue, DbHelper.ID + "= '1'", null);
+
     }
 
     /*public List<String> alsoValidDates() {
@@ -97,12 +105,12 @@ public class DailyWeeklyLimits extends Fragment {
 
     public Double getSpentThisWeek() {
 
-        moneyOutHelper = new DbHelper(getContext());
-        moneyOutDbDb = moneyOutHelper.getReadableDatabase();
+        dbHelper2 = new DbHelper(getContext());
+        db2 = dbHelper2.getReadableDatabase();
         /*moneyOutCursor = moneyOutDbDb.rawQuery("SELECT sum(moneyOutAmount) FROM " + DbHelper.MONEY_OUT_TABLE_NAME + " WHERE "
                 + DbHelper.EXPREFKEYMO + " = " + String.valueOf(expenseId), null);*/
         //String[] args = general.newDatesList();
-        moneyOutCursor = moneyOutDbDb.rawQuery("SELECT SUM(moneyOutAmount) FROM "
+        moneyOutCursor = db2.rawQuery("SELECT SUM(moneyOutAmount) FROM "
                 + DbHelper.MONEY_OUT_TABLE_NAME
                 + " WHERE "
                 + DbHelper.EXPREFKEYMO

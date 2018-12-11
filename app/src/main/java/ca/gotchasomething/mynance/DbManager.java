@@ -29,7 +29,7 @@ public class DbManager {
     public DbHelper dbHelper;
     public Double startingBalanceResult, totalDebt, numberOfYearsToPayDebt, numberOfYearsToSavingsGoal, totalSavings, totalExpenses, totalIncome,
             totalCCPaymentDue, totalCCPaymentBDue, currentAccountBalance, currentAvailableBalance, totalBudgetAExpenses, percentB;
-    public int tourDoneCheck, balanceDoneCheck, budgetDoneCheck, savingsDoneCheck, debtsDoneCheck, numberOfDaysToPayDebt, numberOfDaysToSavingsGoal;
+    public int tourDoneCheck, balanceDoneCheck, budgetDoneCheck, savingsDoneCheck, debtsDoneCheck, numberOfDaysToPayDebt, numberOfDaysToSavingsGoal, currentPageId;
     public Long expenseId;
     public SimpleDateFormat debtEndS, savingsDateS;
     public SQLiteDatabase db;
@@ -431,15 +431,15 @@ public class DbManager {
 
     public Long findLatestExpenseId() {
         List<Long> expenseIds = new ArrayList<>(getExpense().size());
-        for(ExpenseBudgetDb e : getExpense()) {
+        for (ExpenseBudgetDb e : getExpense()) {
             expenseIds.add(e.getId());
         }
         expenseId = null;
-        if(expenseIds.size() == 0) {
+        if (expenseIds.size() == 0) {
             expenseId = null;
         } else {
             expenseId = Collections.max(expenseIds);
-            }
+        }
         return expenseId;
     }
 
@@ -680,6 +680,7 @@ public class DbManager {
                 CurrentDb current = new CurrentDb(
                         cursor.getDouble(cursor.getColumnIndex(DbHelper.CURRENTACCOUNTBALANCE)),
                         cursor.getDouble(cursor.getColumnIndex(DbHelper.CURRENTAVAILABLEBALANCE)),
+                        cursor.getInt(cursor.getColumnIndex(DbHelper.CURRENTPAGEID)),
                         cursor.getLong(cursor.getColumnIndex(DbHelper.ID))
                 );
                 currents.add(0, current); //adds new items to beginning of list
@@ -694,6 +695,7 @@ public class DbManager {
         ContentValues newCurrent = new ContentValues();
         newCurrent.put(DbHelper.CURRENTACCOUNTBALANCE, current.getCurrentAccountBalance());
         newCurrent.put(DbHelper.CURRENTAVAILABLEBALANCE, current.getCurrentAvailableBalance());
+        newCurrent.put(DbHelper.CURRENTPAGEID, current.getCurrentPageId());
         db = dbHelper.getWritableDatabase();
         db.insert(DbHelper.CURRENT_TABLE_NAME, null, newCurrent);
     }
@@ -702,6 +704,7 @@ public class DbManager {
         ContentValues updateCurrent = new ContentValues();
         updateCurrent.put(DbHelper.CURRENTACCOUNTBALANCE, current.getCurrentAccountBalance());
         updateCurrent.put(DbHelper.CURRENTAVAILABLEBALANCE, current.getCurrentAvailableBalance());
+        updateCurrent.put(DbHelper.CURRENTPAGEID, current.getCurrentPageId());
         db = dbHelper.getWritableDatabase();
         String[] args = new String[]{String.valueOf(current.getId())};
         db.update(DbHelper.CURRENT_TABLE_NAME, updateCurrent, DbHelper.ID + "=?", args);
@@ -762,6 +765,20 @@ public class DbManager {
             }
         }
         return currentAvailableBalance;
+    }
+
+    public int retrieveCurrentPageId() {
+        List<Integer> currentPageList = new ArrayList<>(getCurrent().size());
+        for (CurrentDb c3 : getCurrent()) {
+            currentPageList.add(c3.getCurrentPageId());
+        }
+        currentPageId = 1;
+        if (currentPageList.size() == 0) {
+            currentPageId = 1;
+        } else {
+            currentPageId = Collections.max(currentPageList);
+        }
+        return currentPageId;
     }
 
     public List<MoneyOutDb> getCashTrans() {

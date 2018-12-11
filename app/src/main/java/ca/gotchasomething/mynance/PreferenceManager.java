@@ -42,5 +42,4 @@ public class PreferenceManager {
     public void clearPreferences() {
         sharedPreferences.edit().clear().apply();
     }
-
 }

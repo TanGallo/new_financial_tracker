@@ -19,13 +19,11 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import java.sql.Timestamp;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -34,7 +32,9 @@ import androidx.fragment.app.FragmentTransaction;
 import ca.gotchasomething.mynance.DbHelper;
 import ca.gotchasomething.mynance.DbManager;
 import ca.gotchasomething.mynance.General;
+import ca.gotchasomething.mynance.LayoutDailyMoney;
 import ca.gotchasomething.mynance.R;
+import ca.gotchasomething.mynance.data.CurrentDb;
 import ca.gotchasomething.mynance.data.MoneyOutDb;
 import ca.gotchasomething.mynance.spinners.MoneyOutSpinnerAdapter;
 
@@ -42,10 +42,11 @@ public class DailyMoneyOut extends Fragment {
 
     boolean possible = true;
     Button moneyOutButton, cancelMoneyOutEntryButton, updateMoneyOutEntryButton;
-    ContentValues moneyOutValue, moneyOutValue2;
+    ContentValues moneyOutValue, moneyOutValue2, currentValue;
+    CurrentDb currentDb;
     Cursor moneyOutCursor;
     Date moneyOutDate;
-    DbHelper moneyOutDbHelper, currentHelper3, currentHelper5;
+    DbHelper dbHelper2, dbHelper3, dbHelper4, dbHelper5;
     DbManager dbManager;
     Double moneyOutAmount, currentAccountBalance, newCurrentAccountBalance3, currentAvailableBalance, newCurrentAvailableBalance3, moneyOutD,
             oldMoneyOutAmount, newMoneyOutAmount, moneyOutAmountD;
@@ -53,7 +54,7 @@ public class DailyMoneyOut extends Fragment {
     FragmentManager fm;
     FragmentTransaction transaction;
     General general;
-    int moneyOutToPay, moneyOutPaid;
+    int moneyOutToPay, moneyOutPaid, currentPageId;
     Intent backToDaily, backToDaily2, backToDaily3;
     ListView moneyOutList;
     long moneyOutRefKeyMO, expRefKeyMO;
@@ -63,7 +64,7 @@ public class DailyMoneyOut extends Fragment {
     NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
     SimpleDateFormat moneyOutSDF;
     Spinner moneyOutCatSpinner;
-    SQLiteDatabase moneyOutDbDb, currentDbDb3, currentDbDb5;
+    SQLiteDatabase db2, db3, db4, db5;
     String moneyOutCatS, moneyOutCat, moneyOutPriority, moneyOutWeekly, moneyOutPriorityS, moneyOutWeeklyS, moneyOutCreatedOn, moneyOutCC, moneyOutS,
             moneyOut2, moneyOutAmountS;
     TextView moneyOutCatText;
@@ -86,6 +87,8 @@ public class DailyMoneyOut extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        replaceFragment(new DailyMoneyOut());
 
         general = new General();
         dbManager = new DbManager(getContext());
@@ -110,13 +113,19 @@ public class DailyMoneyOut extends Fragment {
         moneyOutList.setAdapter(moneyOutAdapter);
 
         moneyOutCatSpinner = v.findViewById(R.id.moneyOutCatSpinner);
-        moneyOutDbHelper = new DbHelper(getContext());
-        moneyOutDbDb = moneyOutDbHelper.getReadableDatabase();
-        moneyOutCursor = moneyOutDbDb.rawQuery("SELECT * FROM " + DbHelper.EXPENSES_TABLE_NAME + " ORDER BY " + DbHelper.EXPENSENAME + " ASC", null);
+        dbHelper2 = new DbHelper(getContext());
+        db2 = dbHelper2.getReadableDatabase();
+        moneyOutCursor = db2.rawQuery("SELECT * FROM " + DbHelper.EXPENSES_TABLE_NAME + " ORDER BY " + DbHelper.EXPENSENAME + " ASC", null);
         moneyOutSpinnerAdapter = new MoneyOutSpinnerAdapter(getContext(), moneyOutCursor);
         moneyOutCatSpinner.setAdapter(moneyOutSpinnerAdapter);
 
         moneyOutCatSpinner.setOnItemSelectedListener(moneyOutSpinnerSelection);
+
+        currentValue = new ContentValues();
+        currentValue.put(DbHelper.CURRENTPAGEID, 2);
+        dbHelper5 = new DbHelper(getContext());
+        db5 = dbHelper5.getWritableDatabase();
+        db5.update(DbHelper.CURRENT_TABLE_NAME, currentValue, DbHelper.ID + "= '1'", null);
 
     }
 
@@ -131,9 +140,9 @@ public class DailyMoneyOut extends Fragment {
         } else {
             moneyOutValue2 = new ContentValues();
             moneyOutValue2.put(DbHelper.CURRENTAVAILABLEBALANCE, newCurrentAvailableBalance3);
-            currentHelper5 = new DbHelper(getContext());
-            currentDbDb5 = currentHelper5.getWritableDatabase();
-            currentDbDb5.update(DbHelper.CURRENT_TABLE_NAME, moneyOutValue2, DbHelper.ID + "= '1'", null);
+            dbHelper4 = new DbHelper(getContext());
+            db4 = dbHelper4.getWritableDatabase();
+            db4.update(DbHelper.CURRENT_TABLE_NAME, moneyOutValue2, DbHelper.ID + "= '1'", null);
         }
     }
 
@@ -148,9 +157,9 @@ public class DailyMoneyOut extends Fragment {
         } else {
             moneyOutValue = new ContentValues();
             moneyOutValue.put(DbHelper.CURRENTACCOUNTBALANCE, newCurrentAccountBalance3);
-            currentHelper3 = new DbHelper(getContext());
-            currentDbDb3 = currentHelper3.getWritableDatabase();
-            currentDbDb3.update(DbHelper.CURRENT_TABLE_NAME, moneyOutValue, DbHelper.ID + "= '1'", null);
+            dbHelper3 = new DbHelper(getContext());
+            db3 = dbHelper3.getWritableDatabase();
+            db3.update(DbHelper.CURRENT_TABLE_NAME, moneyOutValue, DbHelper.ID + "= '1'", null);
         }
     }
 
@@ -208,11 +217,9 @@ public class DailyMoneyOut extends Fragment {
                 updateCurrentAccountBalanceMoneyOut();
             }
 
-            replaceFragment(new DailyMoneyOut());
-
-            /*backToDaily2 = new Intent(getContext(), LayoutDailyMoney.class);
+            backToDaily2 = new Intent(getContext(), LayoutDailyMoney.class);
             backToDaily2.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-            startActivity(backToDaily2);*/
+            startActivity(backToDaily2);
         }
     };
 
@@ -350,11 +357,11 @@ public class DailyMoneyOut extends Fragment {
                                 updateCurrentAccountBalanceMoneyOut();
                             }
 
-                            replaceFragment(new DailyMoneyOut());
+                            //replaceFragment(new DailyMoneyOut());
 
-                            /*backToDaily2 = new Intent(getContext(), LayoutDailyMoney.class);
+                            backToDaily2 = new Intent(getContext(), LayoutDailyMoney.class);
                             backToDaily2.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-                            startActivity(backToDaily2);*/
+                            startActivity(backToDaily2);
                         }
                     });
 
@@ -369,11 +376,11 @@ public class DailyMoneyOut extends Fragment {
                             updateMoneyOutEntryButton.setVisibility(View.GONE);
                             moneyOutLine.setVisibility(View.GONE);
 
-                            replaceFragment(new DailyMoneyOut());
+                            //replaceFragment(new DailyMoneyOut());
 
-                            /*backToDaily3 = new Intent(getContext(), LayoutDailyMoney.class);
+                            backToDaily3 = new Intent(getContext(), LayoutDailyMoney.class);
                             backToDaily3.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-                            startActivity(backToDaily3);*/
+                            startActivity(backToDaily3);
                         }
                     });
                 }
@@ -401,11 +408,11 @@ public class DailyMoneyOut extends Fragment {
                         updateCurrentAccountBalanceMoneyOut();
                     }
 
-                    replaceFragment(new DailyMoneyOut());
+                    //replaceFragment(new DailyMoneyOut());
 
-                    //backToDaily = new Intent(getContext(), LayoutDailyMoney.class);
-                    //backToDaily.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-                    //startActivity(backToDaily);
+                    backToDaily = new Intent(getContext(), LayoutDailyMoney.class);
+                    backToDaily.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+                    startActivity(backToDaily);
                 }
             });
 

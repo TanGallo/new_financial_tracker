@@ -20,15 +20,18 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.tabs.TabLayout;
+
 import java.sql.Timestamp;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import ca.gotchasomething.mynance.DbHelper;
 import ca.gotchasomething.mynance.DbManager;
 import ca.gotchasomething.mynance.General;
@@ -40,14 +43,16 @@ import ca.gotchasomething.mynance.spinners.MoneyInSpinnerAdapter;
 public class DailyMoneyIn extends Fragment {
 
     Button moneyInButton, cancelMoneyInEntryButton, updateMoneyInEntryButton;
-    ContentValues moneyInValue, moneyInValue2;
+    ContentValues moneyInValue, moneyInValue2, currentValue;
     Cursor cursor2;
     Date moneyInDate;
-    DbHelper dbHelper2, dbHelper3, dbHelper4;
+    DbHelper dbHelper2, dbHelper3, dbHelper4, dbHelper5;
     DbManager dbManager;
     Double moneyInAmount, moneyInD, newAccountBalance, oldAccountBalance, percentB, oldAvailableBalance, newAvailableBalance,
             newMoneyInAmount, oldMoneyInAmount, moneyInAmountD;
     EditText moneyInAmountText, moneyInAmountEditText;
+    FragmentManager fm;
+    FragmentTransaction transaction;
     General general;
     Intent backToDaily, backToDaily2, backToDaily3, backToDaily4;
     ListView moneyInList;
@@ -57,7 +62,7 @@ public class DailyMoneyIn extends Fragment {
     NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
     SimpleDateFormat moneyInSDF;
     Spinner moneyInCatSpinner;
-    SQLiteDatabase db2, db3, db4;
+    SQLiteDatabase db2, db3, db4, db5;
     String moneyInCatS, moneyInCat, moneyInCreatedOn, moneyInS, moneyIn2, moneyInAmountS;
     TextView moneyInCatText;
     Timestamp moneyInTimestamp;
@@ -110,6 +115,12 @@ public class DailyMoneyIn extends Fragment {
         moneyInCatSpinner.setAdapter(moneyInSpinnerAdapter);
 
         moneyInCatSpinner.setOnItemSelectedListener(moneyInSpinnerSelection);
+
+        currentValue = new ContentValues();
+        currentValue.put(DbHelper.CURRENTPAGEID, 1);
+        dbHelper5 = new DbHelper(getContext());
+        db5 = dbHelper5.getWritableDatabase();
+        db5.update(DbHelper.CURRENT_TABLE_NAME, currentValue, DbHelper.ID + "= '1'", null);
 
     }
 

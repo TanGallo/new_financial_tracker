@@ -27,7 +27,7 @@ public class LayoutSetUp extends MainNavigation {
     DbManager dbManager;
     Double startingBalanceResult = 0.0, balanceAmount = 0.0, moneyInAmount = 0.0, currentAccountBalance = 0.0, currentAvailableBalance = 0.0;
     EditText setUpAccountAmount;
-    int debtsDone, savingsDone, budgetDone, balanceDone, tourDone;
+    int debtsDone, savingsDone, budgetDone, balanceDone, tourDone, currentPageId;
     Intent setUpDebts, setUpSavings, setUpBudget, toMainActivity;
     MoneyInDb moneyInDb;
     NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
@@ -194,8 +194,9 @@ public class LayoutSetUp extends MainNavigation {
 
             currentAccountBalance = balanceAmount;
             currentAvailableBalance = balanceAmount * dbManager.retrieveBPercentage();
+            currentPageId = 1;
 
-            currentDb = new CurrentDb(currentAccountBalance, currentAvailableBalance, 0);
+            currentDb = new CurrentDb(currentAccountBalance, currentAvailableBalance, currentPageId, 0);
 
             dbManager.addCurrent(currentDb);
 

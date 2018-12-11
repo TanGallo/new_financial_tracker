@@ -75,6 +75,7 @@ public class DbHelper extends SQLiteOpenHelper {
     public static final String CURRENT_TABLE_NAME = "current";
     public static final String CURRENTACCOUNTBALANCE = "currentAccountBalance";
     public static final String CURRENTAVAILABLEBALANCE = "currentAvailableBalance";
+    public static final String CURRENTPAGEID = "currentPageId";
 
     //singleton pattern
     public static DbHelper instance = null;
@@ -160,7 +161,8 @@ public class DbHelper extends SQLiteOpenHelper {
     private static final String createCurrentQuery = "CREATE TABLE " + CURRENT_TABLE_NAME +
             " (_id INTEGER PRIMARY KEY," +
             " currentAccountBalance REAL," +
-            " currentAvailableBalance REAL)";
+            " currentAvailableBalance REAL," +
+            " currentPageId INTEGER)";
 
     @Override
     public void onCreate(SQLiteDatabase db) {

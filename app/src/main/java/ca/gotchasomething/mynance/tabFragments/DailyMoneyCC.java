@@ -1,5 +1,6 @@
 package ca.gotchasomething.mynance.tabFragments;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -37,9 +38,10 @@ public class DailyMoneyCC extends Fragment {
     boolean possible = true;
     Button ccTransButton, cancelCCTransEntryButton, updateCCTransEntryButton;
     CCTransAdapter ccTransAdapter;
-    Cursor moneyOutCursor2;
+    ContentValues currentValue;
+    Cursor cursor2;
     Date moneyOutDate;
-    DbHelper moneyOutDbHelper2;
+    DbHelper dbHelper2, dbHelper3;
     DbManager dbManager;
     Double moneyOutAmount, ccTransAmountD, oldMoneyOutAmount, newMoneyOutAmount, ccTransAmountD2;
     EditText ccTransAmountText, ccTransAmountEditText;
@@ -52,7 +54,7 @@ public class DailyMoneyCC extends Fragment {
     NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
     SimpleDateFormat moneyOutSDF;
     Spinner ccTransCatSpinner;
-    SQLiteDatabase moneyOutDbDb2;
+    SQLiteDatabase db2, db3;
     String moneyOutCat, moneyOutPriority, moneyOutWeekly, moneyOutCreatedOn, moneyOutCC, ccTransCatS, ccTransPriorityS, moneyOutWeeklyS, ccTransAmountS,
             ccTransAmount2, ccTransAmountS2;
     TextView ccTransCatText;
@@ -99,23 +101,29 @@ public class DailyMoneyCC extends Fragment {
         ccTransList.setAdapter(ccTransAdapter);
 
         ccTransCatSpinner = v.findViewById(R.id.ccTransCatSpinner);
-        moneyOutDbHelper2 = new DbHelper(getContext());
-        moneyOutDbDb2 = moneyOutDbHelper2.getReadableDatabase();
-        moneyOutCursor2 = moneyOutDbDb2.rawQuery("SELECT * FROM " + DbHelper.EXPENSES_TABLE_NAME + " ORDER BY " + DbHelper.EXPENSENAME + " ASC", null);
-        ccTransSpinnerAdapter = new MoneyOutSpinnerAdapter(getContext(), moneyOutCursor2);
+        dbHelper2 = new DbHelper(getContext());
+        db2 = dbHelper2.getReadableDatabase();
+        cursor2 = db2.rawQuery("SELECT * FROM " + DbHelper.EXPENSES_TABLE_NAME + " ORDER BY " + DbHelper.EXPENSENAME + " ASC", null);
+        ccTransSpinnerAdapter = new MoneyOutSpinnerAdapter(getContext(), cursor2);
         ccTransCatSpinner.setAdapter(ccTransSpinnerAdapter);
 
         ccTransCatSpinner.setOnItemSelectedListener(ccTransSpinnerSelection);
+
+        currentValue = new ContentValues();
+        currentValue.put(DbHelper.CURRENTPAGEID, 3);
+        dbHelper3 = new DbHelper(getContext());
+        db3 = dbHelper3.getWritableDatabase();
+        db3.update(DbHelper.CURRENT_TABLE_NAME, currentValue, DbHelper.ID + "= '1'", null);
 
     }
 
     AdapterView.OnItemSelectedListener ccTransSpinnerSelection = new AdapterView.OnItemSelectedListener() {
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-            ccTransCatS = moneyOutCursor2.getString(moneyOutCursor2.getColumnIndexOrThrow(DbHelper.EXPENSENAME));
-            ccTransPriorityS = moneyOutCursor2.getString(moneyOutCursor2.getColumnIndexOrThrow(DbHelper.EXPENSEPRIORITY));
-            moneyOutWeeklyS = moneyOutCursor2.getString(moneyOutCursor2.getColumnIndexOrThrow(DbHelper.EXPENSEWEEKLY));
-            moneyOutRefKeyMO = moneyOutCursor2.getLong(moneyOutCursor2.getColumnIndexOrThrow(DbHelper.ID));
+            ccTransCatS = cursor2.getString(cursor2.getColumnIndexOrThrow(DbHelper.EXPENSENAME));
+            ccTransPriorityS = cursor2.getString(cursor2.getColumnIndexOrThrow(DbHelper.EXPENSEPRIORITY));
+            moneyOutWeeklyS = cursor2.getString(cursor2.getColumnIndexOrThrow(DbHelper.EXPENSEWEEKLY));
+            moneyOutRefKeyMO = cursor2.getLong(cursor2.getColumnIndexOrThrow(DbHelper.ID));
         }
 
         @Override

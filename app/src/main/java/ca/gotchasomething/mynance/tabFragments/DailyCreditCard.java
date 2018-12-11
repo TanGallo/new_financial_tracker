@@ -2,11 +2,14 @@ package ca.gotchasomething.mynance.tabFragments;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,12 +18,15 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.TextView;
+
 import java.text.NumberFormat;
 import java.util.List;
+
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import ca.gotchasomething.mynance.DbHelper;
 import ca.gotchasomething.mynance.DbManager;
+import ca.gotchasomething.mynance.LayoutDailyMoney;
 import ca.gotchasomething.mynance.R;
 import ca.gotchasomething.mynance.data.MoneyOutDb;
 
@@ -29,17 +35,18 @@ public class DailyCreditCard extends Fragment {
     boolean possible = true;
     CCAdapter ccAdapter;
     CheckBox ccPaidCheckbox;
-    ContentValues moneyOutValue, moneyOutValue2;
-    DbHelper moneyOutHelper3, currentHelper3, currentHelper4;
+    ContentValues moneyOutValue, moneyOutValue2, currentValue;
+    DbHelper dbHelper2, dbHelper3, dbHelper4, dbHelper5;
     DbManager dbManager;
     Double ccAmountD, totalCCPaymentDue, currentAccountBalance, currentAvailableBalance, totalCCPaymentBDue, newCurrentAvailableBalance,
             newCurrentAccountBalance, currentAccountBalance2, totalCCPaymentDue2, currentAvailableBalance2, totalCCPaymentBDue2, totalCCPaymentDue3;
     FragmentManager fm;
     FragmentTransaction transaction;
+    Intent refresh;
     ListView ccListView;
     MoneyOutDb moneyOutDb;
     NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
-    SQLiteDatabase moneyOutDbDb3, currentDbDb3, currentDbDb4;
+    SQLiteDatabase db2, db3, db4, db5;
     String ccAmountS, ccAmount2, totalCCPaymentDueS;
     TextView checkBelowLabel, totalCCPaymentDueLabel, totalCCPaymentDueAmount, ccPaidLabel, ccOopsText, noCCTransLabel;
     View v;
@@ -85,6 +92,13 @@ public class DailyCreditCard extends Fragment {
 
         resetToPay();
         updateCCPaymentDue();
+
+        currentValue = new ContentValues();
+        currentValue.put(DbHelper.CURRENTPAGEID, 4);
+        dbHelper5 = new DbHelper(getContext());
+        db5 = dbHelper5.getWritableDatabase();
+        db5.update(DbHelper.CURRENT_TABLE_NAME, currentValue, DbHelper.ID + "= '1'", null);
+        db5.close();
     }
 
     public void updateCurrentAvailableBalance() {
@@ -94,9 +108,9 @@ public class DailyCreditCard extends Fragment {
 
         moneyOutValue = new ContentValues();
         moneyOutValue.put(DbHelper.CURRENTAVAILABLEBALANCE, newCurrentAvailableBalance);
-        currentHelper3 = new DbHelper(getContext());
-        currentDbDb3 = currentHelper3.getWritableDatabase();
-        currentDbDb3.update(DbHelper.CURRENT_TABLE_NAME, moneyOutValue, DbHelper.ID + "= '1'", null);
+        dbHelper3 = new DbHelper(getContext());
+        db3 = dbHelper3.getWritableDatabase();
+        db3.update(DbHelper.CURRENT_TABLE_NAME, moneyOutValue, DbHelper.ID + "= '1'", null);
     }
 
     public void updateCurrentAccountBalance() {
@@ -106,9 +120,9 @@ public class DailyCreditCard extends Fragment {
 
         moneyOutValue2 = new ContentValues();
         moneyOutValue2.put(DbHelper.CURRENTACCOUNTBALANCE, newCurrentAccountBalance);
-        currentHelper4 = new DbHelper(getContext());
-        currentDbDb4 = currentHelper4.getWritableDatabase();
-        currentDbDb4.update(DbHelper.CURRENT_TABLE_NAME, moneyOutValue2, DbHelper.ID + "= '1'", null);
+        dbHelper4 = new DbHelper(getContext());
+        db4 = dbHelper4.getWritableDatabase();
+        db4.update(DbHelper.CURRENT_TABLE_NAME, moneyOutValue2, DbHelper.ID + "= '1'", null);
     }
 
     CompoundButton.OnCheckedChangeListener onCheckCCPaid = new CompoundButton.OnCheckedChangeListener() {
@@ -121,8 +135,10 @@ public class DailyCreditCard extends Fragment {
 
             resetToPay();
 
-            replaceFragment(new DailyCreditCard());
-
+            //replaceFragment(new DailyCreditCard());
+            refresh = new Intent(getContext(), LayoutDailyMoney.class);
+            refresh.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+            startActivity(refresh);
         }
     };
 
@@ -151,14 +167,14 @@ public class DailyCreditCard extends Fragment {
     }
 
     public void resetToPay() {
-        moneyOutHelper3 = new DbHelper(getContext());
-        moneyOutDbDb3 = moneyOutHelper3.getWritableDatabase();
+        dbHelper2 = new DbHelper(getContext());
+        db2 = dbHelper2.getWritableDatabase();
         ContentValues updateMoneyOutToPay = new ContentValues();
         updateMoneyOutToPay.put(DbHelper.MONEYOUTTOPAY, 0);
-        moneyOutDbDb3.update(DbHelper.MONEY_OUT_TABLE_NAME, updateMoneyOutToPay, DbHelper.MONEYOUTTOPAY + "= '1' AND " + DbHelper.MONEYOUTPAID
+        db2.update(DbHelper.MONEY_OUT_TABLE_NAME, updateMoneyOutToPay, DbHelper.MONEYOUTTOPAY + "= '1' AND " + DbHelper.MONEYOUTPAID
                 + " = '0'", null);
 
-        if(ccAdapter.getCount() == 0) {
+        if (ccAdapter.getCount() == 0) {
             noCCTransLabel.setVisibility(View.VISIBLE);
             checkBelowLabel.setVisibility(View.GONE);
         } else {

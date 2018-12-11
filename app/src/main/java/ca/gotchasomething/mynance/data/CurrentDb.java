@@ -4,14 +4,17 @@ package ca.gotchasomething.mynance.data;
 public class CurrentDb {
     private Double currentAccountBalance;
     private Double currentAvailableBalance;
+    private int currentPageId;
     private long id;
 
     public CurrentDb(
             Double currentAccountBalance,
             Double currentAvailableBalance,
+            int currentPageId,
             long id) {
         this.currentAccountBalance = currentAccountBalance;
         this.currentAvailableBalance = currentAvailableBalance;
+        this.currentPageId = currentPageId;
         this.id = id;
     }
 
@@ -20,6 +23,9 @@ public class CurrentDb {
 
     public Double getCurrentAvailableBalance() { return currentAvailableBalance; }
     public void setCurrentAvailableBalance(Double currentAvailableBalance) { this.currentAvailableBalance = currentAvailableBalance; }
+
+    public int getCurrentPageId() { return currentPageId; }
+    public void setCurrentPageId(int currentPageId) { this.currentPageId = currentPageId; }
 
     public long getId() { return id; }
     public void setId(long id) { this.id = id; }
