@@ -4,13 +4,26 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.icu.util.ValueIterator;
+import android.inputmethodservice.Keyboard;
+import android.renderscript.Element;
 
+import java.sql.RowId;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
+import java.util.stream.Collectors;
 
 import ca.gotchasomething.mynance.data.CurrentDb;
 import ca.gotchasomething.mynance.data.DebtDb;
@@ -28,12 +41,13 @@ public class DbManager {
     public Date debtEndD, savingsDateD;
     public DbHelper dbHelper;
     public Double startingBalanceResult, totalDebt, numberOfYearsToPayDebt, numberOfYearsToSavingsGoal, totalSavings, totalExpenses, totalIncome,
-            totalCCPaymentDue, totalCCPaymentBDue, currentAccountBalance, currentAvailableBalance, totalBudgetAExpenses, percentB;
-    public int tourDoneCheck, balanceDoneCheck, budgetDoneCheck, savingsDoneCheck, debtsDoneCheck, numberOfDaysToPayDebt, numberOfDaysToSavingsGoal, currentPageId;
+            totalCCPaymentDue, totalCCPaymentBDue, currentAccountBalance, currentAvailableBalance, totalBudgetAExpenses, percentB, totalSpent, spentThisWeekD;
+    General general = new General();
+    public int spentThisWeek2, amountLeft2, tourDoneCheck, balanceDoneCheck, budgetDoneCheck, savingsDoneCheck, debtsDoneCheck, numberOfDaysToPayDebt, numberOfDaysToSavingsGoal, currentPageId;
     public Long expenseId;
     public SimpleDateFormat debtEndS, savingsDateS;
     public SQLiteDatabase db;
-    public String debtEnd, savingsDate;
+    public String debtEnd, savingsDate, category, startingBalance, spentThisWeek, amountLeft, expRef, expRefMO, createdOn, spentAmount, category2;
 
     public DbManager(Context context) {
         dbHelper = DbHelper.getInstance(context);
@@ -444,40 +458,13 @@ public class DbManager {
     }
 
     public List<ExpenseBudgetDb> getWeeklyLimits() {
-        /*List<ExpenseBudgetDb> weeklyLimits = new ArrayList<>();
-        for (ExpenseBudgetDb e : getExpense()) {
-            if(e.getExpenseWeekly() == "Y") {
-                weeklyLimits.add(e);
-                String weeklyCat = e.getExpenseName();
-                Double weeklyAnnual = e.getExpenseBAnnualAmount();
-                Double weeklyWeekly = weeklyAnnual / 52;
-                Double spentThisWeek = ;
-                Double leftThisWeek = weeklyWeekly - spentThisWeek;
-                //amount left
-                //amount already spent this week
-            }
-        }*/
-        db = dbHelper.getReadableDatabase();
-        cursor = db.rawQuery("SELECT * FROM " + DbHelper.EXPENSES_TABLE_NAME + " WHERE " + DbHelper.EXPENSEWEEKLY + " = 'Y'", null);
         List<ExpenseBudgetDb> weeklyLimits = new ArrayList<>();
-        if (cursor.moveToFirst()) {
-            while (!cursor.isAfterLast()) {
-                ExpenseBudgetDb weekly = new ExpenseBudgetDb(
-                        cursor.getString(cursor.getColumnIndex(DbHelper.EXPENSENAME)),
-                        cursor.getDouble(cursor.getColumnIndex(DbHelper.EXPENSEAMOUNT)),
-                        cursor.getDouble(cursor.getColumnIndex(DbHelper.EXPENSEFREQUENCY)),
-                        cursor.getString(cursor.getColumnIndex(DbHelper.EXPENSEPRIORITY)),
-                        cursor.getString(cursor.getColumnIndex(DbHelper.EXPENSEWEEKLY)),
-                        cursor.getDouble(cursor.getColumnIndex(DbHelper.EXPENSEANNUALAMOUNT)),
-                        cursor.getDouble(cursor.getColumnIndex(DbHelper.EXPENSEAANNUALAMOUNT)),
-                        cursor.getDouble(cursor.getColumnIndex(DbHelper.EXPENSEBANNUALAMOUNT)),
-                        cursor.getLong(cursor.getColumnIndex(DbHelper.ID))
-                );
-                weeklyLimits.add(weekly); //adds new items to bottom of list
-                cursor.moveToNext();
+        for (ExpenseBudgetDb e : getExpense()) {
+            if (e.getExpenseWeekly().equals("Y")) {
+                weeklyLimits.add(e);
+                expenseId = e.getId();
             }
         }
-        cursor.close();
         return weeklyLimits;
     }
 
