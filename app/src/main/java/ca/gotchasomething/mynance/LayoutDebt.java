@@ -37,6 +37,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 import ca.gotchasomething.mynance.data.DebtDb;
+import ca.gotchasomething.mynance.data.ExpenseBudgetDb;
 import ca.gotchasomething.mynance.data.SetUpDb;
 
 public class LayoutDebt extends MainNavigation {
@@ -45,16 +46,16 @@ public class LayoutDebt extends MainNavigation {
     Calendar debtCal;
     Cursor expenseCursor, debtCursor2;
     Date debtEndD, latestDateD;
-    DbHelper expenseDbHelper, debtDbHelper2;
+    DbHelper dbHelper, debtDbHelper2;
     DbManager dbManager;
     DebtDb debtDb;
     DebtDbAdapter debtAdapter;
     Double totalDebt = 0.0, totalDebtD = 0.0, debtAmountD = 0.0, a = 0.0, numberOfYearsToPayDebt = 0.0, balanceAmount, amount = 0.0, rate = 0.0,
-            payments = 0.0, frequency = 0.0, expenseAnnualAmount = 0.0, debtAmountD2, debtPaymentsD, debtPercentD, debtPercentD2;
+            payments = 0.0, frequency = 0.0, expenseAnnualAmount = 0.0, debtAmountD2 = 0.0, debtPaymentsD = 0.0, debtPercentD = 0.0, debtPercentD2 = 0.0;
     EditText debtNameEntry, debtAmountEntry, debtPercentEntry, debtPaymentsEntry;
     FloatingActionButton addDebtButton;
     General general;
-    int debtsDone, savingsDone, budgetDone, balanceDone, tourDone;
+    int debtsDone = 0, savingsDone = 0, budgetDone = 0, balanceDone = 0, tourDone = 0;
     Integer numberOfDaysToPayDebt = 0;
     Intent addNewDebt, backToDebtScreen, backToDebtScreen2, backToSetUp;
     ListView debtListView;
@@ -67,7 +68,7 @@ public class LayoutDebt extends MainNavigation {
     SetUpDb setUpDb;
     SimpleDateFormat latestDateS, debtEndS;
     String totalDebt2 = null, latestDate = null, totalDebtS = null, debtAmountS = null, debtAmount2 = null, debtFrequencyS = null, debtEnd = null,
-            debtAmountS2, debtPaymentsS, debtPercentS;
+            debtAmountS2 = null, debtPaymentsS = null, debtPercentS = null;
     TextView totalDebtOwing, totalDebtPaidByDate, debtListName, debtListAmount, debtListFreeDate, debtDateResult, totalDebtPaidLabel;
 
     @Override
@@ -172,57 +173,30 @@ public class LayoutDebt extends MainNavigation {
 
     public String latestDate() {
         List<String> dates = new ArrayList<>();
-        debtDbHelper2 = new DbHelper(this);
-        debtDbDb2 = debtDbHelper2.getReadableDatabase();
-        debtCursor2 = debtDbDb2.rawQuery("SELECT (debtEnd)" + " FROM " + DbHelper.DEBTS_TABLE_NAME, null);
-        debtDbHelper2.getWritableDatabase();
-        debtCursor2.moveToFirst();
-        if (debtCursor2.moveToFirst()) {
-            do {
-                dates.add(debtCursor2.getString(0));
-            } while (debtCursor2.moveToNext());
+        for(DebtDb d : dbManager.getDebts()) {
+            dates.add(d.getDebtEnd());
         }
-
         List<String> dates3 = new ArrayList<>(dates.size());
-
         for (String s : dates) {
             int startIndex = s.indexOf("by") + 2;
             int endIndex = s.length();
             String dateResult = s.substring(startIndex, endIndex);
             dates3.add(dateResult);
         }
-
         List<Date> dates2 = new ArrayList<>(dates3.size());
-
         general.extractingDates(dates3, dates2);
-
         try {
             latestDateD = Collections.max(dates2);
         } catch (NoSuchElementException e) {
             totalDebtPaidByDate.setVisibility(View.GONE);
         }
-
         try {
             latestDateS = new SimpleDateFormat("dd-MMM-yyyy");
             latestDate = latestDateS.format(latestDateD);
         } catch (Exception e2) {
             totalDebtPaidByDate.setVisibility(View.GONE);
         }
-
         return latestDate;
-    }
-
-    public long findMatchingExpenseId() {
-        expenseDbHelper = new DbHelper(this);
-        expenseDb = expenseDbHelper.getReadableDatabase();
-        expenseCursor = expenseDb.rawQuery("SELECT " + DbHelper.ID + " FROM " + DbHelper.EXPENSES_TABLE_NAME + " WHERE " + DbHelper.ID +
-                " = '" + String.valueOf(debtDb.getExpRefKeyD()) + "'", null);
-        expenseCursor.moveToFirst();
-        id = expenseCursor.getLong(0);
-
-        expenseCursor.close();
-
-        return id;
     }
 
     public String calcDebtDate() {
@@ -484,9 +458,11 @@ public class LayoutDebt extends MainNavigation {
                         @Override
                         public void onClick(View v) {
 
-                            String[] args = new String[]{String.valueOf(findMatchingExpenseId())};
-                            ContentValues values = new ContentValues();
+                            dbHelper = new DbHelper(getContext());
+                            expenseDb = dbHelper.getWritableDatabase();
 
+                            String[] args = new String[]{String.valueOf(debtDb.getExpRefKeyD())};
+                            ContentValues values = new ContentValues();
                             values.put(DbHelper.EXPENSENAME, debtNameEntry.getText().toString());
 
                             try {
@@ -506,6 +482,8 @@ public class LayoutDebt extends MainNavigation {
                             values.put(DbHelper.EXPENSEAANNUALAMOUNT, expenseAnnualAmount);
 
                             expenseDb.update(DbHelper.EXPENSES_TABLE_NAME, values, DbHelper.ID + "=?", args);
+
+                            expenseDb.close();
 
                             debtDb.setDebtName(debtNameEntry.getText().toString());
 
@@ -562,12 +540,17 @@ public class LayoutDebt extends MainNavigation {
                     debtDb = (DebtDb) holder.debtDeleted.getTag();
                     dbManager.deleteDebt(debtDb);
 
+                    dbHelper = new DbHelper(getContext());
+                    expenseDb = dbHelper.getWritableDatabase();
+
                     try {
-                        String[] args = new String[]{String.valueOf(findMatchingExpenseId())};
+                        String[] args = new String[]{String.valueOf(debtDb.getExpRefKeyD())};
                         expenseDb.delete(DbHelper.EXPENSES_TABLE_NAME, DbHelper.ID + "=?", args);
                     } catch (CursorIndexOutOfBoundsException e) {
                         e.printStackTrace();
                     }
+
+                    expenseDb.close();
 
                     debtAdapter.updateDebts(dbManager.getDebts());
                     notifyDataSetChanged();

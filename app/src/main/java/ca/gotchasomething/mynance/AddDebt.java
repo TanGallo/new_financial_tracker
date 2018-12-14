@@ -43,7 +43,7 @@ public class AddDebt extends LayoutDebt {
     RadioGroup debtFrequencyRadioGroup;
     SimpleDateFormat debtEndS;
     SQLiteDatabase db, expenseDb2;
-    String debtName = null, debtEnd = null, debtFrequencyS = null, expenseName = null, expensePriority = null, expenseWeekly = null, debtEndString;
+    String debtName = null, debtEnd = null, debtFrequencyS = null, expenseName = null, expensePriority = null, expenseWeekly = null, debtEndString = null;
     TextView debtDateResult;
 
     @Override

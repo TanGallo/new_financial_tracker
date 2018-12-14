@@ -3,12 +3,8 @@ package ca.gotchasomething.mynance.tabFragments;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.CursorIndexOutOfBoundsException;
-import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -18,40 +14,29 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-
 import java.text.NumberFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import ca.gotchasomething.mynance.DbHelper;
 import ca.gotchasomething.mynance.DbManager;
 import ca.gotchasomething.mynance.General;
 import ca.gotchasomething.mynance.R;
 import ca.gotchasomething.mynance.data.ExpenseBudgetDb;
-//import ca.gotchasomething.mynance.data.ExpenseBudgetDbManager;
 import ca.gotchasomething.mynance.data.MoneyOutDb;
-//import ca.gotchasomething.mynance.data.MoneyOutDbManager;
 
 public class DailyWeeklyLimits extends Fragment {
 
     ContentValues currentValue;
-    Cursor moneyOutCursor, moneyOutCursor2;
+    Cursor moneyOutCursor;
     DbHelper dbHelper2, dbHelper3;
     DbManager dbManager;
-    Double annualLimit, weeklyLimitD, spentThisWeek, spentThisWeek2, amountLeft;
-    //ExpenseBudgetDbManager expenseBudgetDbManager;
-    FragmentManager fm;
-    FragmentTransaction transaction;
+    Double annualLimit = 0.0, weeklyLimitD = 0.0, spentThisWeek = 0.0, spentThisWeek2 = 0.0, amountLeft = 0.0, startingBalance = 0.0, spentAmount = 0.0;
     General general;
     ListView weeklyLimitListView;
     long expenseId;
     NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
     SQLiteDatabase db2, db3;
-    String amountLeftS, spentThisWeekS;
-    TextView amountLeftText;
+    String amountLeftS = null, spentThisWeekS = null, startingBalanceS = null, spentAmountS = null;
     View v;
     WeeklyLimitsAdapter weeklyLimitsAdapter;
 
@@ -84,53 +69,8 @@ public class DailyWeeklyLimits extends Fragment {
         dbHelper3 = new DbHelper(getContext());
         db3 = dbHelper3.getWritableDatabase();
         db3.update(DbHelper.CURRENT_TABLE_NAME, currentValue, DbHelper.ID + "= '1'", null);
+        db3.close();
 
-    }
-
-    /*public List<String> alsoValidDates() {
-        List<String> alsoValidDates = new ArrayList<>();
-        moneyOutHelper2 = new DbHelper(getContext());
-        moneyOutDbDb2 = moneyOutHelper2.getReadableDatabase();
-        moneyOutCursor2 = moneyOutDbDb2.rawQuery("SELECT (moneyOutCreatedOn)" + " FROM " + DbHelper.MONEY_OUT_TABLE_NAME + " WHERE "
-                + DbHelper.EXPREFKEYMO + " = " + String.valueOf(expenseId), null);
-        moneyOutHelper2.getWritableDatabase();
-        moneyOutCursor2.moveToFirst();
-        if (moneyOutCursor2.moveToFirst()) {
-            do {
-                alsoValidDates.add(moneyOutCursor2.getString(0));
-            } while (moneyOutCursor2.moveToNext());
-        }
-        return alsoValidDates;
-    }*/
-
-    public Double getSpentThisWeek() {
-
-        dbHelper2 = new DbHelper(getContext());
-        db2 = dbHelper2.getReadableDatabase();
-        /*moneyOutCursor = moneyOutDbDb.rawQuery("SELECT sum(moneyOutAmount) FROM " + DbHelper.MONEY_OUT_TABLE_NAME + " WHERE "
-                + DbHelper.EXPREFKEYMO + " = " + String.valueOf(expenseId), null);*/
-        //String[] args = general.newDatesList();
-        moneyOutCursor = db2.rawQuery("SELECT SUM(moneyOutAmount) FROM "
-                + DbHelper.MONEY_OUT_TABLE_NAME
-                + " WHERE "
-                + DbHelper.EXPREFKEYMO
-                + " = "
-                + String.valueOf(expenseId)
-                + " AND "
-                + DbHelper.MONEYOUTCREATEDON
-                //+ " =?", args);
-                + " IN "
-                + general.thisWeek(), null);
-        try {
-            moneyOutCursor.moveToFirst();
-        } catch(Exception e) {
-            spentThisWeek = 0.0;
-            moneyOutCursor.close();
-        }
-        spentThisWeek = moneyOutCursor.getDouble(0);
-        moneyOutCursor.close();
-
-        return spentThisWeek;
     }
 
     //list adapter
@@ -167,7 +107,7 @@ public class DailyWeeklyLimits extends Fragment {
             final ViewHolderWeeklyLimits holder;
 
             if (convertView == null) {
-                convertView = LayoutInflater.from(v.getContext()).inflate(
+                convertView = LayoutInflater.from(context).inflate(
                         R.layout.fragment_list_daily_weekly_limits,
                         parent, false);
 
@@ -185,18 +125,33 @@ public class DailyWeeklyLimits extends Fragment {
             //retrieve spendingCategory
             holder.spendingCategory.setText(weeklyLimits.get(position).getExpenseName());
 
-            //retrieve amountLeft
+            //retrieve amount spent in this category during general.thisWeek();
             expenseId = weeklyLimits.get(position).getId();
-            spentThisWeek2 = getSpentThisWeek();
-            annualLimit = weeklyLimits.get(position).getExpenseBAnnualAmount();
-            weeklyLimitD = annualLimit / 52;
-            amountLeft = weeklyLimitD - spentThisWeek2;
-            amountLeftS = currencyFormat.format(amountLeft);
-            holder.amountLeftText.setText(String.valueOf(amountLeftS));
 
-            //retrieve amount spent in this category during general.validDates();
-            spentThisWeekS = currencyFormat.format(spentThisWeek2);
-            holder.spentAmount.setText(spentThisWeekS);
+            List<Double> spentThisWeekList = new ArrayList<>();
+            for(MoneyOutDb m : dbManager.getMoneyOuts()) {
+                if(String.valueOf(m.getExpRefKeyMO()).equals(String.valueOf(expenseId)) && general.thisWeek().contains(m.getMoneyOutCreatedOn())) {
+                    spentThisWeekList.add(m.getMoneyOutAmount());
+                }
+            }
+            spentThisWeek = 0.0;
+            if(spentThisWeekList.size() == 0) {
+                spentThisWeek = 0.0;
+            } else {
+                for(Double dbl : spentThisWeekList) {
+                    spentThisWeek += dbl;
+                }
+            }
+
+            //spentAmount = getSpentThisWeek();
+            spentAmountS = currencyFormat.format(spentThisWeek);
+            holder.spentAmount.setText(spentAmountS);
+
+            //retrieve amountLeft
+            startingBalance = weeklyLimits.get(position).getExpenseBAnnualAmount() / 52;
+            amountLeft = startingBalance - spentThisWeek;
+            amountLeftS = currencyFormat.format(amountLeft);
+            holder.amountLeftText.setText(amountLeftS);
 
             return convertView;
         }
@@ -207,12 +162,4 @@ public class DailyWeeklyLimits extends Fragment {
         private TextView amountLeftText;
         private TextView spentAmount;
     }
-
-    /*public void replaceFragment(Fragment fragment) {
-        fm = getFragmentManager();
-        transaction = fm.beginTransaction();
-        transaction.replace(R.id.daily_fragment_container, fragment);
-
-        transaction.commit();
-    }*/
 }

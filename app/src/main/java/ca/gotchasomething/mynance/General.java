@@ -13,11 +13,10 @@ import java.util.List;
 public class General {
 
     public Date dateObj;
-    public Double dollars, percent;
-    public int startIndex;
-    public int endIndex;
+    public Double dollars = 0.0, percent = 0.0;
+    public int startIndex = 0, endIndex = 0;
     public List<String> thisWeek;
-    public String startingString, startingString2, subStringResult, subStringResult2, subStringResult3, percentS;
+    public String startingString = null, startingString2 = null, subStringResult = null, subStringResult2 = null, subStringResult3 = null, percentS = null;
     public TextView tv, tv2;
 
     public Double extractingDollars(TextView tv) {

@@ -27,14 +27,11 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import ca.gotchasomething.mynance.DbHelper;
 import ca.gotchasomething.mynance.DbManager;
 import ca.gotchasomething.mynance.General;
 import ca.gotchasomething.mynance.LayoutDailyMoney;
 import ca.gotchasomething.mynance.R;
-import ca.gotchasomething.mynance.data.CurrentDb;
 import ca.gotchasomething.mynance.data.MoneyOutDb;
 import ca.gotchasomething.mynance.spinners.MoneyOutSpinnerAdapter;
 
@@ -43,18 +40,15 @@ public class DailyMoneyOut extends Fragment {
     boolean possible = true;
     Button moneyOutButton, cancelMoneyOutEntryButton, updateMoneyOutEntryButton;
     ContentValues moneyOutValue, moneyOutValue2, currentValue;
-    CurrentDb currentDb;
     Cursor moneyOutCursor;
     Date moneyOutDate;
     DbHelper dbHelper2, dbHelper3, dbHelper4, dbHelper5;
     DbManager dbManager;
-    Double moneyOutAmount, currentAccountBalance, newCurrentAccountBalance3, currentAvailableBalance, newCurrentAvailableBalance3, moneyOutD,
-            oldMoneyOutAmount, newMoneyOutAmount, moneyOutAmountD;
+    Double moneyOutAmount = 0.0, currentAccountBalance = 0.0, newCurrentAccountBalance3 = 0.0, currentAvailableBalance = 0.0, newCurrentAvailableBalance3 = 0.0,
+            moneyOutD = 0.0, oldMoneyOutAmount = 0.0, newMoneyOutAmount = 0.0, moneyOutAmountD = 0.0;
     EditText moneyOutAmountText, moneyOutAmountEditText;
-    FragmentManager fm;
-    FragmentTransaction transaction;
     General general;
-    int moneyOutToPay, moneyOutPaid, currentPageId;
+    int moneyOutToPay = 0, moneyOutPaid = 0;
     Intent backToDaily, backToDaily2, backToDaily3;
     ListView moneyOutList;
     long moneyOutRefKeyMO, expRefKeyMO;
@@ -65,8 +59,8 @@ public class DailyMoneyOut extends Fragment {
     SimpleDateFormat moneyOutSDF;
     Spinner moneyOutCatSpinner;
     SQLiteDatabase db2, db3, db4, db5;
-    String moneyOutCatS, moneyOutCat, moneyOutPriority, moneyOutWeekly, moneyOutPriorityS, moneyOutWeeklyS, moneyOutCreatedOn, moneyOutCC, moneyOutS,
-            moneyOut2, moneyOutAmountS;
+    String moneyOutCatS = null, moneyOutCat = null, moneyOutPriority = null, moneyOutWeekly = null, moneyOutPriorityS = null, moneyOutWeeklyS = null,
+            moneyOutCreatedOn = null, moneyOutCC = null, moneyOutS = null, moneyOut2 = null, moneyOutAmountS = null;
     TextView moneyOutCatText;
     Timestamp moneyOutTimestamp;
     View v, moneyOutLine;
@@ -87,8 +81,6 @@ public class DailyMoneyOut extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        replaceFragment(new DailyMoneyOut());
 
         general = new General();
         dbManager = new DbManager(getContext());
@@ -126,6 +118,7 @@ public class DailyMoneyOut extends Fragment {
         dbHelper5 = new DbHelper(getContext());
         db5 = dbHelper5.getWritableDatabase();
         db5.update(DbHelper.CURRENT_TABLE_NAME, currentValue, DbHelper.ID + "= '1'", null);
+        db5.close();
 
     }
 
@@ -143,6 +136,7 @@ public class DailyMoneyOut extends Fragment {
             dbHelper4 = new DbHelper(getContext());
             db4 = dbHelper4.getWritableDatabase();
             db4.update(DbHelper.CURRENT_TABLE_NAME, moneyOutValue2, DbHelper.ID + "= '1'", null);
+            db4.close();
         }
     }
 
@@ -160,6 +154,7 @@ public class DailyMoneyOut extends Fragment {
             dbHelper3 = new DbHelper(getContext());
             db3 = dbHelper3.getWritableDatabase();
             db3.update(DbHelper.CURRENT_TABLE_NAME, moneyOutValue, DbHelper.ID + "= '1'", null);
+            db3.close();
         }
     }
 
@@ -357,8 +352,6 @@ public class DailyMoneyOut extends Fragment {
                                 updateCurrentAccountBalanceMoneyOut();
                             }
 
-                            //replaceFragment(new DailyMoneyOut());
-
                             backToDaily2 = new Intent(getContext(), LayoutDailyMoney.class);
                             backToDaily2.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
                             startActivity(backToDaily2);
@@ -375,8 +368,6 @@ public class DailyMoneyOut extends Fragment {
                             cancelMoneyOutEntryButton.setVisibility(View.GONE);
                             updateMoneyOutEntryButton.setVisibility(View.GONE);
                             moneyOutLine.setVisibility(View.GONE);
-
-                            //replaceFragment(new DailyMoneyOut());
 
                             backToDaily3 = new Intent(getContext(), LayoutDailyMoney.class);
                             backToDaily3.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
@@ -408,8 +399,6 @@ public class DailyMoneyOut extends Fragment {
                         updateCurrentAccountBalanceMoneyOut();
                     }
 
-                    //replaceFragment(new DailyMoneyOut());
-
                     backToDaily = new Intent(getContext(), LayoutDailyMoney.class);
                     backToDaily.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
                     startActivity(backToDaily);
@@ -426,12 +415,5 @@ public class DailyMoneyOut extends Fragment {
         public TextView moneyOutAmount;
         ImageButton moneyOutEdit;
         ImageButton moneyOutDelete;
-    }
-
-    public void replaceFragment(Fragment fragment) {
-        fm = getFragmentManager();
-        transaction = fm.beginTransaction();
-        transaction.replace(R.id.daily_fragment_container, fragment);
-        transaction.commit();
     }
 }

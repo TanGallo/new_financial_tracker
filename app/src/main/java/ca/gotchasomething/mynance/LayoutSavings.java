@@ -41,15 +41,15 @@ public class LayoutSavings extends MainNavigation {
     Calendar savingsCal;
     Cursor expenseCursor;
     Date savingsDateD;
-    DbHelper expenseDbHelper;
+    DbHelper dbHelper;
     DbManager dbManager;
     Double amount = 0.0, expenseAnnualAmount = 0.0, totalSavings = 0.0, totalSavingsD = 0.0, savingsGoalD = 0.0, savingsCurrentD = 0.0, rate = 0.0,
-            a = 0.0, payments = 0.0, frequency = 0.0, numberOfYearsToSavingsGoal = 0.0, balanceAmount = 0.0, goalAmount, savingsAmount, savingsAmountD,
-            savingsPaymentsD, savingsGoalD2, savingsPercentD, savingsPercentD2;
+            a = 0.0, payments = 0.0, frequency = 0.0, numberOfYearsToSavingsGoal = 0.0, balanceAmount = 0.0, goalAmount = 0.0, savingsAmount = 0.0, savingsAmountD = 0.0,
+            savingsPaymentsD = 0.0, savingsGoalD2 = 0.0, savingsPercentD = 0.0, savingsPercentD2 = 0.0;
     EditText savingsNameEntry, savingsAmountEntry, savingsPercentEntry, savingsPaymentsEntry, savingsGoalAmountEntry;
     FloatingActionButton addSavingsButton;
     General general;
-    int debtsDone, savingsDone, budgetDone, balanceDone, tourDone;
+    int debtsDone = 0, savingsDone = 0, budgetDone = 0, balanceDone = 0, tourDone = 0;
     Integer numberOfDaysToSavingsGoal = 0;
     Intent addNewSavings, backToSavingsScreen, backToSavingsScreen2, backToSetUp;
     ListView savingsListView;
@@ -64,7 +64,7 @@ public class LayoutSavings extends MainNavigation {
     SimpleDateFormat savingsDateS;
     SQLiteDatabase expenseDb;
     String totalSavings2 = null, totalSavingsS = null, savingsGoalS = null, savingsGoal2 = null, savingsCurrentS = null, savingsCurrent2 = null,
-            savingsDate = null, savingsFrequencyS = null, savingsAmountS, savingsPaymentsS, savingsGoalS2, savingsPercentS;
+            savingsDate = null, savingsFrequencyS = null, savingsAmountS = null, savingsPaymentsS = null, savingsGoalS2 = null, savingsPercentS = null;
     TextView totalSavedText, savingsListName, savingsListGoalAmount, savingsListDate, savingsListCurrentAmount, savingsDateResult;
 
     @Override
@@ -143,18 +143,6 @@ public class LayoutSavings extends MainNavigation {
         } catch (NumberFormatException e) {
             totalSavedText.setText(totalSavings2);
         }
-    }
-
-    public long findMatchingExpenseId() {
-        expenseDbHelper = new DbHelper(this);
-        expenseDb = expenseDbHelper.getReadableDatabase();
-        expenseCursor = expenseDb.rawQuery("SELECT " + DbHelper.ID + " FROM " + DbHelper.EXPENSES_TABLE_NAME + " WHERE " + DbHelper.ID +
-                " = '" + String.valueOf(savingsDb.getExpRefKeyS()) + "'", null);
-        expenseCursor.moveToFirst();
-        id = expenseCursor.getLong(0);
-        expenseCursor.close();
-
-        return id;
     }
 
     public String calcSavingsDate() {
@@ -470,7 +458,10 @@ public class LayoutSavings extends MainNavigation {
                         @Override
                         public void onClick(View v) {
 
-                            String[] args = new String[]{String.valueOf(findMatchingExpenseId())};
+                            dbHelper = new DbHelper(getContext());
+                            expenseDb = dbHelper.getWritableDatabase();
+
+                            String[] args = new String[]{String.valueOf(savingsDb.getExpRefKeyS())};
                             ContentValues values = new ContentValues();
 
                             values.put(DbHelper.EXPENSENAME, savingsNameEntry.getText().toString());
@@ -491,6 +482,8 @@ public class LayoutSavings extends MainNavigation {
                             values.put(DbHelper.EXPENSEAANNUALAMOUNT, expenseAnnualAmount);
 
                             expenseDb.update(DbHelper.EXPENSES_TABLE_NAME, values, DbHelper.ID + "=?", args);
+
+                            expenseDb.close();
 
                             savingsDb.setSavingsName(savingsNameEntry.getText().toString());
                             try {
@@ -551,12 +544,17 @@ public class LayoutSavings extends MainNavigation {
                     savingsDb = (SavingsDb) holder.savingsDeleted.getTag();
                     dbManager.deleteSavings(savingsDb);
 
+                    dbHelper = new DbHelper(getContext());
+                    expenseDb = dbHelper.getWritableDatabase();
+
                     try {
-                        String[] args = new String[]{String.valueOf(findMatchingExpenseId())};
+                        String[] args = new String[]{String.valueOf(savingsDb.getExpRefKeyS())};
                         expenseDb.delete(DbHelper.EXPENSES_TABLE_NAME, DbHelper.ID + "=?", args);
                     } catch (CursorIndexOutOfBoundsException e) {
                         e.printStackTrace();
                     }
+
+                    expenseDb.close();
 
                     savingsAdapter.updateSavings(dbManager.getSavings());
                     notifyDataSetChanged();

@@ -14,7 +14,7 @@ public class AddBudgetIncome extends LayoutBudget {
 
     Button budgetAddIncomeButton, budgetUpdateIncomeButton;
     DbManager dbManager;
-    Double incomeAmount, incomeFrequency, incomeAnnualAmount;
+    Double incomeAmount = 0.0, incomeFrequency = 0.0, incomeAnnualAmount = 0.0;
     EditText budgetIncomeCategory, budgetIncomeAmount;
     IncomeBudgetDb incomeBudgetDb;
     Intent backToBudget, backToBudget2;
@@ -22,7 +22,7 @@ public class AddBudgetIncome extends LayoutBudget {
     RadioButton budgetIncomeWeeklyRadioButton, budgetIncomeBiWeeklyRadioButton, budgetIncomeBiMonthlyRadioButton,
             budgetIncomeMonthlyRadioButton, budgetIncomeBiAnnuallyRadioButton, budgetIncomeAnnuallyRadioButton;
     RadioGroup budgetIncomeFrequencyRadioGroup;
-    String incomeName, incomeFrequencyS;
+    String incomeName = null, incomeFrequencyS = null;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

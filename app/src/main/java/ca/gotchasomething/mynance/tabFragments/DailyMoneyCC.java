@@ -43,10 +43,10 @@ public class DailyMoneyCC extends Fragment {
     Date moneyOutDate;
     DbHelper dbHelper2, dbHelper3;
     DbManager dbManager;
-    Double moneyOutAmount, ccTransAmountD, oldMoneyOutAmount, newMoneyOutAmount, ccTransAmountD2;
+    Double moneyOutAmount = 0.0, ccTransAmountD = 0.0, oldMoneyOutAmount = 0.0, newMoneyOutAmount = 0.0, ccTransAmountD2 = 0.0;
     EditText ccTransAmountText, ccTransAmountEditText;
     General general;
-    int moneyOutToPay, moneyOutPaid;
+    int moneyOutToPay = 0, moneyOutPaid = 0;
     ListView ccTransList;
     long moneyOutRefKeyMO, expRefKeyMO;
     MoneyOutDb moneyOutDb;
@@ -55,8 +55,8 @@ public class DailyMoneyCC extends Fragment {
     SimpleDateFormat moneyOutSDF;
     Spinner ccTransCatSpinner;
     SQLiteDatabase db2, db3;
-    String moneyOutCat, moneyOutPriority, moneyOutWeekly, moneyOutCreatedOn, moneyOutCC, ccTransCatS, ccTransPriorityS, moneyOutWeeklyS, ccTransAmountS,
-            ccTransAmount2, ccTransAmountS2;
+    String moneyOutCat = null, moneyOutPriority = null, moneyOutWeekly = null, moneyOutCreatedOn = null, moneyOutCC = null, ccTransCatS = null,
+            ccTransPriorityS = null, moneyOutWeeklyS = null, ccTransAmountS = null, ccTransAmount2 = null, ccTransAmountS2 = null;
     TextView ccTransCatText;
     Timestamp moneyOutTimestamp;
     View v, ccTransLine;
@@ -114,6 +114,7 @@ public class DailyMoneyCC extends Fragment {
         dbHelper3 = new DbHelper(getContext());
         db3 = dbHelper3.getWritableDatabase();
         db3.update(DbHelper.CURRENT_TABLE_NAME, currentValue, DbHelper.ID + "= '1'", null);
+        db3.close();
 
     }
 

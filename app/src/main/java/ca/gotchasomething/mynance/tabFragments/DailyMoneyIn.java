@@ -19,9 +19,6 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.google.android.material.tabs.TabLayout;
-
 import java.sql.Timestamp;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
@@ -48,11 +45,9 @@ public class DailyMoneyIn extends Fragment {
     Date moneyInDate;
     DbHelper dbHelper2, dbHelper3, dbHelper4, dbHelper5;
     DbManager dbManager;
-    Double moneyInAmount, moneyInD, newAccountBalance, oldAccountBalance, percentB, oldAvailableBalance, newAvailableBalance,
-            newMoneyInAmount, oldMoneyInAmount, moneyInAmountD;
+    Double moneyInAmount = 0.0, moneyInD = 0.0, newAccountBalance = 0.0, oldAccountBalance = 0.0, percentB = 0.0, oldAvailableBalance = 0.0, newAvailableBalance = 0.0,
+            newMoneyInAmount = 0.0, oldMoneyInAmount = 0.0, moneyInAmountD = 0.0;
     EditText moneyInAmountText, moneyInAmountEditText;
-    FragmentManager fm;
-    FragmentTransaction transaction;
     General general;
     Intent backToDaily, backToDaily2, backToDaily3, backToDaily4;
     ListView moneyInList;
@@ -63,7 +58,7 @@ public class DailyMoneyIn extends Fragment {
     SimpleDateFormat moneyInSDF;
     Spinner moneyInCatSpinner;
     SQLiteDatabase db2, db3, db4, db5;
-    String moneyInCatS, moneyInCat, moneyInCreatedOn, moneyInS, moneyIn2, moneyInAmountS;
+    String moneyInCatS = null, moneyInCat = null, moneyInCreatedOn = null, moneyInS = null, moneyIn2 = null, moneyInAmountS = null;
     TextView moneyInCatText;
     Timestamp moneyInTimestamp;
     View v, moneyInLine;
@@ -121,6 +116,7 @@ public class DailyMoneyIn extends Fragment {
         dbHelper5 = new DbHelper(getContext());
         db5 = dbHelper5.getWritableDatabase();
         db5.update(DbHelper.CURRENT_TABLE_NAME, currentValue, DbHelper.ID + "= '1'", null);
+        db5.close();
 
     }
 

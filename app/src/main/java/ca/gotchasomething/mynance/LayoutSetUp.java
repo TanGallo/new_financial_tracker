@@ -27,13 +27,13 @@ public class LayoutSetUp extends MainNavigation {
     DbManager dbManager;
     Double startingBalanceResult = 0.0, balanceAmount = 0.0, moneyInAmount = 0.0, currentAccountBalance = 0.0, currentAvailableBalance = 0.0;
     EditText setUpAccountAmount;
-    int debtsDone, savingsDone, budgetDone, balanceDone, tourDone, currentPageId;
+    int debtsDone = 0, savingsDone = 0, budgetDone = 0, balanceDone = 0, tourDone = 0, currentPageId = 0;
     Intent setUpDebts, setUpSavings, setUpBudget, toMainActivity;
     MoneyInDb moneyInDb;
     NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
     SetUpDb setUpDb;
     SimpleDateFormat moneyInSDF;
-    String startingBalanceS, startingBalance2, moneyInCat, moneyInCreatedOn;
+    String startingBalanceS = null, startingBalance2 = null, moneyInCat = null, moneyInCreatedOn = null;
     TextView setUpDebtsLabel, setUpSavingsLabel, setUpBudgetLabel, setUpAccountAmountLabel, setUpAccountAmountLabel2, setUpAccountAmountLabel3,
             setUpAccountAmountResult, almostDone, setUpTourLabel, setUpTourLabel2, setUpTourLabel3, setUpTourLabel4, setUpGotItLabel;
     Timestamp moneyInTimestamp;
