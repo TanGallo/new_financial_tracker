@@ -644,14 +644,14 @@ public class LayoutBudget extends MainNavigation {
                     findMatchingDebtId();
                     findMatchingSavingsId();
 
-                    if (!foundDebtId) {
+                    if (foundDebtId) {
                         budgetExpenseWeeklyRadioButton.setVisibility(View.VISIBLE);
                         budgetExpenseBiWeeklyRadioButton.setVisibility(View.VISIBLE);
                         budgetExpenseBiMonthlyRadioButton.setVisibility(View.GONE);
                         budgetExpenseMonthlyRadioButton.setVisibility(View.VISIBLE);
                         budgetExpenseBiAnnuallyRadioButton.setVisibility(View.GONE);
                         budgetExpenseAnnuallyRadioButton.setVisibility(View.GONE);
-                    } else if (!foundSavingsId) {
+                    } else if (foundSavingsId) {
                         budgetExpenseWeeklyRadioButton.setVisibility(View.VISIBLE);
                         budgetExpenseBiWeeklyRadioButton.setVisibility(View.VISIBLE);
                         budgetExpenseBiMonthlyRadioButton.setVisibility(View.GONE);

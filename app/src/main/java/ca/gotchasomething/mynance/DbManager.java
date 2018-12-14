@@ -4,26 +4,12 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.icu.util.ValueIterator;
-import android.inputmethodservice.Keyboard;
-import android.renderscript.Element;
-
-import java.sql.RowId;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
-import java.util.stream.Collectors;
 
 import ca.gotchasomething.mynance.data.CurrentDb;
 import ca.gotchasomething.mynance.data.DebtDb;
@@ -40,14 +26,15 @@ public class DbManager {
     public Cursor cursor;
     public Date debtEndD, savingsDateD;
     public DbHelper dbHelper;
-    public Double startingBalanceResult, totalDebt, numberOfYearsToPayDebt, numberOfYearsToSavingsGoal, totalSavings, totalExpenses, totalIncome,
-            totalCCPaymentDue, totalCCPaymentBDue, currentAccountBalance, currentAvailableBalance, totalBudgetAExpenses, percentB, totalSpent, spentThisWeekD;
-    General general = new General();
-    public int spentThisWeek2, amountLeft2, tourDoneCheck, balanceDoneCheck, budgetDoneCheck, savingsDoneCheck, debtsDoneCheck, numberOfDaysToPayDebt, numberOfDaysToSavingsGoal, currentPageId;
+    public Double startingBalanceResult = 0.0, totalDebt = 0.0, numberOfYearsToPayDebt = 0.0, numberOfYearsToSavingsGoal = 0.0, totalSavings = 0.0,
+            totalExpenses = 0.0, totalIncome = 0.0, totalCCPaymentDue = 0.0, totalCCPaymentBDue = 0.0, currentAccountBalance = 0.0,
+            currentAvailableBalance = 0.0, totalBudgetAExpenses = 0.0, percentB = 0.0;
+    public int tourDoneCheck = 0, balanceDoneCheck = 0, budgetDoneCheck = 0, savingsDoneCheck = 0, debtsDoneCheck = 0, numberOfDaysToPayDebt = 0,
+            numberOfDaysToSavingsGoal = 0, currentPageId = 0;
     public Long expenseId;
     public SimpleDateFormat debtEndS, savingsDateS;
     public SQLiteDatabase db;
-    public String debtEnd, savingsDate, category, startingBalance, spentThisWeek, amountLeft, expRef, expRefMO, createdOn, spentAmount, category2;
+    public String debtEnd = null, savingsDate = null, category = null, spentAmount = null;
 
     public DbManager(Context context) {
         dbHelper = DbHelper.getInstance(context);
@@ -385,7 +372,7 @@ public class DbManager {
 
     public List<ExpenseBudgetDb> getExpense() {
         db = dbHelper.getReadableDatabase();
-        cursor = db.rawQuery("SELECT * FROM " + DbHelper.EXPENSES_TABLE_NAME + " ORDER BY " + DbHelper.EXPENSEAANNUALAMOUNT + " DESC", null);
+        cursor = db.rawQuery("SELECT * FROM " + DbHelper.EXPENSES_TABLE_NAME + " ORDER BY " + DbHelper.EXPENSEANNUALAMOUNT + " DESC", null);
         List<ExpenseBudgetDb> expenses = new ArrayList<>();
         if (cursor.moveToFirst()) {
             while (!cursor.isAfterLast()) {
@@ -704,16 +691,10 @@ public class DbManager {
     }
 
     public Double retrieveCurrentAccountBalance() {
-        List<Double> currentList = new ArrayList<>(getCurrent().size());
-        for (CurrentDb c : getCurrent()) {
-            currentList.add(c.getCurrentAccountBalance());
-        }
         currentAccountBalance = 0.0;
-        if (currentList.size() == 0) {
-            currentAccountBalance = 0.0;
-        } else {
-            for (Double dbl : currentList) {
-                currentAccountBalance += dbl;
+        for (CurrentDb c : getCurrent()) {
+            if (c.getId() == 1) {
+                currentAccountBalance = c.getCurrentAccountBalance();
             }
         }
         return currentAccountBalance;
@@ -739,110 +720,60 @@ public class DbManager {
     }
 
     public Double retrieveCurrentAvailableBalance() {
-        List<Double> currentList2 = new ArrayList<>(getCurrent().size());
-        for (CurrentDb c2 : getCurrent()) {
-            currentList2.add(c2.getCurrentAvailableBalance());
-        }
         currentAvailableBalance = 0.0;
-        if (currentList2.size() == 0) {
-            currentAvailableBalance = 0.0;
-        } else {
-            for (Double dbl2 : currentList2) {
-                currentAvailableBalance += dbl2;
+        db = dbHelper.getWritableDatabase();
+        for (CurrentDb c2 : getCurrent()) {
+            if (c2.getId() == 1) {
+                currentAvailableBalance = c2.getCurrentAvailableBalance();
             }
         }
+        if (currentAvailableBalance <= 0 || retrieveCurrentAccountBalance() < currentAvailableBalance || retrieveCurrentAccountBalance() == 0.0) {
+            ContentValues zero = new ContentValues();
+            zero.put(DbHelper.CURRENTAVAILABLEBALANCE, 0.0);
+            db.update(DbHelper.CURRENT_TABLE_NAME, zero, DbHelper.ID + "= '1'", null);
+            currentAvailableBalance = 0.0;
+        }
+        db.close();
         return currentAvailableBalance;
     }
 
     public int retrieveCurrentPageId() {
-        List<Integer> currentPageList = new ArrayList<>(getCurrent().size());
+        currentPageId = 0;
         for (CurrentDb c3 : getCurrent()) {
-            currentPageList.add(c3.getCurrentPageId());
-        }
-        currentPageId = 1;
-        if (currentPageList.size() == 0) {
-            currentPageId = 1;
-        } else {
-            currentPageId = Collections.max(currentPageList);
+            if (c3.getId() == 1) {
+                currentPageId = c3.getCurrentPageId();
+            }
         }
         return currentPageId;
     }
 
     public List<MoneyOutDb> getCashTrans() {
-        db = dbHelper.getReadableDatabase();
-        cursor = db.rawQuery("SELECT * FROM " + DbHelper.MONEY_OUT_TABLE_NAME + " WHERE " + DbHelper.MONEYOUTCC + " = 'N'", null);
         List<MoneyOutDb> cashTrans = new ArrayList<>();
-        if (cursor.moveToFirst()) {
-            while (!cursor.isAfterLast()) {
-                MoneyOutDb cashTransList = new MoneyOutDb(
-                        cursor.getString(cursor.getColumnIndex(DbHelper.MONEYOUTCAT)),
-                        cursor.getString(cursor.getColumnIndex(DbHelper.MONEYOUTPRIORITY)),
-                        cursor.getString(cursor.getColumnIndex(DbHelper.MONEYOUTWEEKLY)),
-                        cursor.getDouble(cursor.getColumnIndex(DbHelper.MONEYOUTAMOUNT)),
-                        cursor.getString(cursor.getColumnIndex(DbHelper.MONEYOUTCREATEDON)),
-                        cursor.getString(cursor.getColumnIndex(DbHelper.MONEYOUTCC)),
-                        cursor.getInt(cursor.getColumnIndex(DbHelper.MONEYOUTTOPAY)),
-                        cursor.getInt(cursor.getColumnIndex(DbHelper.MONEYOUTPAID)),
-                        cursor.getLong(cursor.getColumnIndex(DbHelper.EXPREFKEYMO)),
-                        cursor.getLong(cursor.getColumnIndex(DbHelper.ID))
-                );
-                cashTrans.add(0, cashTransList); //adds new items to beginning of list
-                cursor.moveToNext();
+        for(MoneyOutDb m : getMoneyOuts()) {
+            if(m.getMoneyOutCC().equals("N")) {
+                cashTrans.add(m);
             }
         }
-        cursor.close();
         return cashTrans;
     }
 
     public List<MoneyOutDb> getCCTrans() {
-        db = dbHelper.getReadableDatabase();
-        cursor = db.rawQuery("SELECT * FROM " + DbHelper.MONEY_OUT_TABLE_NAME + " WHERE " + DbHelper.MONEYOUTCC + " = 'Y'", null);
         List<MoneyOutDb> ccTrans = new ArrayList<>();
-        if (cursor.moveToFirst()) {
-            while (!cursor.isAfterLast()) {
-                MoneyOutDb ccTransList = new MoneyOutDb(
-                        cursor.getString(cursor.getColumnIndex(DbHelper.MONEYOUTCAT)),
-                        cursor.getString(cursor.getColumnIndex(DbHelper.MONEYOUTPRIORITY)),
-                        cursor.getString(cursor.getColumnIndex(DbHelper.MONEYOUTWEEKLY)),
-                        cursor.getDouble(cursor.getColumnIndex(DbHelper.MONEYOUTAMOUNT)),
-                        cursor.getString(cursor.getColumnIndex(DbHelper.MONEYOUTCREATEDON)),
-                        cursor.getString(cursor.getColumnIndex(DbHelper.MONEYOUTCC)),
-                        cursor.getInt(cursor.getColumnIndex(DbHelper.MONEYOUTTOPAY)),
-                        cursor.getInt(cursor.getColumnIndex(DbHelper.MONEYOUTPAID)),
-                        cursor.getLong(cursor.getColumnIndex(DbHelper.EXPREFKEYMO)),
-                        cursor.getLong(cursor.getColumnIndex(DbHelper.ID))
-                );
-                ccTrans.add(0, ccTransList); //adds new items to beginning of list
-                cursor.moveToNext();
+        for(MoneyOutDb m2 : getMoneyOuts()) {
+            if(m2.getMoneyOutCC().equals("Y")) {
+                ccTrans.add(m2);
             }
         }
-        cursor.close();
         return ccTrans;
     }
 
     public List<MoneyOutDb> getCCTransToPay() {
-        db = dbHelper.getReadableDatabase();
-        cursor = db.rawQuery("SELECT * FROM " + DbHelper.MONEY_OUT_TABLE_NAME + " WHERE " + DbHelper.MONEYOUTCC + " = 'Y' AND " + DbHelper.MONEYOUTPAID + " = '0'", null);
         List<MoneyOutDb> ccTransToPay = new ArrayList<>();
-        if (cursor.moveToFirst()) {
-            while (!cursor.isAfterLast()) {
-                MoneyOutDb ccTransToPayList = new MoneyOutDb(
-                        cursor.getString(cursor.getColumnIndex(DbHelper.MONEYOUTCAT)),
-                        cursor.getString(cursor.getColumnIndex(DbHelper.MONEYOUTPRIORITY)),
-                        cursor.getString(cursor.getColumnIndex(DbHelper.MONEYOUTWEEKLY)),
-                        cursor.getDouble(cursor.getColumnIndex(DbHelper.MONEYOUTAMOUNT)),
-                        cursor.getString(cursor.getColumnIndex(DbHelper.MONEYOUTCREATEDON)),
-                        cursor.getString(cursor.getColumnIndex(DbHelper.MONEYOUTCC)),
-                        cursor.getInt(cursor.getColumnIndex(DbHelper.MONEYOUTTOPAY)),
-                        cursor.getInt(cursor.getColumnIndex(DbHelper.MONEYOUTPAID)),
-                        cursor.getLong(cursor.getColumnIndex(DbHelper.EXPREFKEYMO)),
-                        cursor.getLong(cursor.getColumnIndex(DbHelper.ID))
-                );
-                ccTransToPay.add(ccTransToPayList); //adds new items to end of list
-                cursor.moveToNext();
+        for(MoneyOutDb m3 : getMoneyOuts()) {
+            if(m3.getMoneyOutCC().equals("Y") && m3.getMoneyOutPaid() == 0){
+                ccTransToPay.add(m3);
             }
         }
-        cursor.close();
         return ccTransToPay;
     }
 

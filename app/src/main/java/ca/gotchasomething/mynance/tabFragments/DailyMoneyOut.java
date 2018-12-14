@@ -123,8 +123,7 @@ public class DailyMoneyOut extends Fragment {
     }
 
     public void updateCurrentAvailableBalanceMoneyOut() {
-        currentAvailableBalance = dbManager.retrieveCurrentAvailableBalance();
-        newCurrentAvailableBalance3 = currentAvailableBalance - moneyOutAmount;
+        newCurrentAvailableBalance3 = dbManager.retrieveCurrentAvailableBalance() - moneyOutAmount;
 
         possible = true;
         if (newCurrentAvailableBalance3 < 0) {
@@ -141,8 +140,7 @@ public class DailyMoneyOut extends Fragment {
     }
 
     public void updateCurrentAccountBalanceMoneyOut() {
-        currentAccountBalance = dbManager.retrieveCurrentAccountBalance();
-        newCurrentAccountBalance3 = currentAccountBalance - moneyOutAmount;
+        newCurrentAccountBalance3 = dbManager.retrieveCurrentAccountBalance() - moneyOutAmount;
 
         possible = true;
         if (newCurrentAccountBalance3 < 0) {

@@ -19,11 +19,13 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import java.sql.Timestamp;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -121,21 +123,23 @@ public class DailyMoneyIn extends Fragment {
     }
 
     public void updateCurrentAvailableBalanceMoneyIn() {
-        percentB = dbManager.retrieveBPercentage();
-        oldAvailableBalance = dbManager.retrieveCurrentAvailableBalance();
-        newAvailableBalance = oldAvailableBalance + (moneyInAmount * percentB);
-        moneyInValue2 = new ContentValues();
-        moneyInValue2.put(DbHelper.CURRENTAVAILABLEBALANCE, newAvailableBalance);
         dbHelper3 = new DbHelper(getContext());
         db3 = dbHelper3.getWritableDatabase();
+        percentB = dbManager.retrieveBPercentage();
+        if(dbManager.retrieveCurrentAccountBalance() < moneyInAmount) {
+            newAvailableBalance = dbManager.retrieveCurrentAvailableBalance() + (dbManager.retrieveCurrentAccountBalance() * percentB);
+        } else {
+            newAvailableBalance = dbManager.retrieveCurrentAvailableBalance() + (moneyInAmount * percentB);
+        }
+
+        moneyInValue2 = new ContentValues();
+        moneyInValue2.put(DbHelper.CURRENTAVAILABLEBALANCE, newAvailableBalance);
         db3.update(DbHelper.CURRENT_TABLE_NAME, moneyInValue2, DbHelper.ID + "= '1'", null);
         db3.close();
-
     }
 
     public void updateCurrentAccountBalanceMoneyIn() {
-        oldAccountBalance = dbManager.retrieveCurrentAccountBalance();
-        newAccountBalance = oldAccountBalance + moneyInAmount;
+        newAccountBalance = dbManager.retrieveCurrentAccountBalance() + moneyInAmount;
         moneyInValue = new ContentValues();
         moneyInValue.put(DbHelper.CURRENTACCOUNTBALANCE, newAccountBalance);
         dbHelper4 = new DbHelper(getContext());
@@ -345,16 +349,20 @@ public class DailyMoneyIn extends Fragment {
                     moneyInAmount = -(Double.valueOf(moneyIn.get(position).getMoneyInAmount()));
 
                     moneyInDb = (MoneyInDb) holder.moneyInDelete.getTag();
-                    dbManager.deleteMoneyIn(moneyInDb);
-                    moneyInAdapter.updateMoneyIn(dbManager.getMoneyIns());
-                    notifyDataSetChanged();
+                    if (moneyInDb.getId() == 1) {
+                        Toast.makeText(getContext(), "You cannot delete this entry.", Toast.LENGTH_LONG).show();
+                    } else {
+                        dbManager.deleteMoneyIn(moneyInDb);
+                        moneyInAdapter.updateMoneyIn(dbManager.getMoneyIns());
+                        notifyDataSetChanged();
 
-                    updateCurrentAvailableBalanceMoneyIn();
-                    updateCurrentAccountBalanceMoneyIn();
+                        updateCurrentAccountBalanceMoneyIn();
+                        updateCurrentAvailableBalanceMoneyIn();
 
-                    backToDaily4 = new Intent(getContext(), LayoutDailyMoney.class);
-                    backToDaily4.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-                    startActivity(backToDaily4);
+                        backToDaily4 = new Intent(getContext(), LayoutDailyMoney.class);
+                        backToDaily4.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+                        startActivity(backToDaily4);
+                    }
                 }
             });
 

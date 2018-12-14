@@ -134,8 +134,7 @@ public class LayoutSetUp extends MainNavigation {
             setUpAccountAmountLabel3.setVisibility(View.VISIBLE);
             setUpAccountAmount.setVisibility(View.GONE);
             setUpAccountAmountResult.setVisibility(View.VISIBLE);
-            dbManager.retrieveStartingBalance();
-            startingBalance2 = currencyFormat.format(startingBalanceResult);
+            startingBalance2 = currencyFormat.format(dbManager.retrieveStartingBalance());
             setUpAccountAmountResult.setText(startingBalance2);
             setUpAccountCheckbox.setChecked(true);
             almostDone.setVisibility(View.VISIBLE);
@@ -216,8 +215,7 @@ public class LayoutSetUp extends MainNavigation {
             setUpAccountAmountLabel3.setVisibility(View.VISIBLE);
             setUpAccountAmount.setVisibility(View.GONE);
             setUpAccountAmountResult.setVisibility(View.VISIBLE);
-            dbManager.retrieveStartingBalance();
-            startingBalance2 = currencyFormat.format(startingBalanceResult);
+            startingBalance2 = currencyFormat.format(dbManager.retrieveStartingBalance());
             setUpAccountAmountResult.setText(startingBalance2);
             setUpAccountCheckbox.setChecked(true);
             almostDone.setVisibility(View.VISIBLE);
