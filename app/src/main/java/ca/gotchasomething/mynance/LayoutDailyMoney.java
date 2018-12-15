@@ -95,14 +95,6 @@ public class LayoutDailyMoney extends MainNavigation {
         newAccountBalance = dbManager.retrieveCurrentAccountBalance();
         newAvailableBalance = dbManager.retrieveCurrentAvailableBalance();
 
-        /*if (newAccountBalance < newAvailableBalance || newAccountBalance == 0.0 || newAvailableBalance < 0.0) {
-            newAvailableBalance = 0.0;
-        }
-
-        if (newAccountBalance < 0.0) {
-            newAccountBalance = 0.0;
-        }*/
-
         accountBalance2 = currencyFormat.format(newAccountBalance);
         availableBalance2 = currencyFormat.format(newAvailableBalance);
 

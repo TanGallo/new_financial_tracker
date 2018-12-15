@@ -45,16 +45,18 @@ public class DailyMoneyOut extends Fragment {
     boolean possible = true, foundMatchingDebtId = false, foundMatchingSavingsId = false;
     Button moneyOutButton, cancelMoneyOutEntryButton, updateMoneyOutEntryButton;
     Calendar debtCal, savingsCal;
-    ContentValues moneyOutValue, moneyOutValue2, moneyOutValue3, moneyOutValue4, moneyOutValue5, moneyOutValue6, moneyOutValue7, moneyOutValue8, currentValue;
+    ContentValues moneyOutValue, moneyOutValue2, moneyOutValue3, moneyOutValue4, moneyOutValue5, moneyOutValue6, moneyOutValue7, moneyOutValue8, moneyOutValue9,
+            moneyOutValue10, moneyOutValue11, moneyOutValue12, moneyOutValue13, moneyOutValue14, currentValue;
     Cursor moneyOutCursor;
     Date moneyOutDate, debtEndD, savingsDateD;
     DbHelper dbHelper, dbHelper2, dbHelper3, dbHelper4, dbHelper5, dbHelper6, dbHelper7;
     DbManager dbManager;
     DebtDb debt;
     Double moneyOutAmount = 0.0, currentAccountBalance = 0.0, newCurrentAccountBalance3 = 0.0, currentAvailableBalance = 0.0, newCurrentAvailableBalance3 = 0.0,
-            moneyOutD = 0.0, oldMoneyOutAmount = 0.0, newMoneyOutAmount = 0.0, moneyOutAmountD = 0.0, currentDebtAmount = 0.0, currentSavingsAmount = 0.0,
-            newDebtAmount = 0.0, newSavingsAmount = 0.0, currentDebtRate = 0.0, currentDebtPayments = 0.0, currentDebtFrequency = 0.0,
-            numberOfYearsToPayDebt = 0.0, currentSavingsRate = 0.0, currentSavingsPayments = 0.0, currentSavingsFrequency = 0.0, numberOfYearsToSavingsGoal = 0.0;
+            moneyOutD = 0.0, oldMoneyOutAmount = 0.0, newMoneyOutAmount = 0.0, moneyOutAmountD = 0.0, currentDebtAmount = 0.0, debtAmount = 0.0,
+            currentSavingsAmount = 0.0, newDebtAmount = 0.0, newSavingsAmount = 0.0, currentDebtRate = 0.0, currentDebtPayments = 0.0, currentDebtFrequency = 0.0,
+            numberOfYearsToPayDebt = 0.0, currentSavingsRate = 0.0, currentSavingsPayments = 0.0, currentSavingsFrequency = 0.0, numberOfYearsToSavingsGoal = 0.0,
+            savingsAmount = 0.0;
     EditText moneyOutAmountText, moneyOutAmountEditText;
     General general;
     int moneyOutToPay = 0, moneyOutPaid = 0, numberOfDaysToPayDebt = 0, numberOfDaysToSavingsGoal = 0;
@@ -182,6 +184,7 @@ public class DailyMoneyOut extends Fragment {
     };
 
     public long findMatchingDebtId() {
+        foundMatchingDebtId = false;
         for (DebtDb d : dbManager.getDebts()) {
             try {
                 if (d.getExpRefKeyD() == moneyOutRefKeyMO) {
@@ -195,20 +198,29 @@ public class DailyMoneyOut extends Fragment {
         return debtId;
     }
 
+    public Double findCurrentDebtAmount() {
+        for(DebtDb d3 : dbManager.getDebts()) {
+            if(d3.getExpRefKeyD() == moneyOutRefKeyMO) {
+                    currentDebtAmount = d3.getDebtAmount();
+                }
+            }
+            return currentDebtAmount;
+    }
+
     public String calcDebtDate() {
         for (DebtDb d2 : dbManager.getDebts()) {
             if (d2.getId() == findMatchingDebtId()) {
-                currentDebtAmount = d2.getDebtAmount();
+                debtAmount = d2.getDebtAmount();
                 currentDebtRate = d2.getDebtRate();
                 currentDebtPayments = d2.getDebtPayments();
                 currentDebtFrequency = d2.getDebtFrequency();
             }
 
             debtCal = Calendar.getInstance();
-            numberOfYearsToPayDebt = -(Math.log(1 - (currentDebtAmount * (currentDebtRate / 100) / (currentDebtPayments * currentDebtFrequency))) / (currentDebtFrequency * Math.log(1 + ((currentDebtRate / 100) / currentDebtFrequency))));
+            numberOfYearsToPayDebt = -(Math.log(1 - (debtAmount * (currentDebtRate / 100) / (currentDebtPayments * currentDebtFrequency))) / (currentDebtFrequency * Math.log(1 + ((currentDebtRate / 100) / currentDebtFrequency))));
             numberOfDaysToPayDebt = (int) Math.round(numberOfYearsToPayDebt * 365);
 
-            if (currentDebtAmount <= 0) {
+            if (debtAmount <= 0) {
                 debtEnd = getString(R.string.debt_paid);
 
             } else if (numberOfDaysToPayDebt > Integer.MAX_VALUE || numberOfDaysToPayDebt <= 0) {
@@ -227,6 +239,7 @@ public class DailyMoneyOut extends Fragment {
     }
 
     public long findMatchingSavingsId() {
+        foundMatchingSavingsId = false;
         for (SavingsDb s : dbManager.getSavings()) {
             try {
                 if (s.getExpRefKeyS() == moneyOutRefKeyMO) {
@@ -240,20 +253,29 @@ public class DailyMoneyOut extends Fragment {
         return savingsId;
     }
 
+    public Double findCurrentSavingsAmount() {
+        for(SavingsDb s3 : dbManager.getSavings()) {
+            if(s3.getExpRefKeyS() == moneyOutRefKeyMO) {
+                currentSavingsAmount = s3.getSavingsAmount();
+            }
+        }
+        return currentSavingsAmount;
+    }
+
     public String calcSavingsDate() {
         for (SavingsDb s2 : dbManager.getSavings()) {
             if (s2.getId() == findMatchingSavingsId()) {
-                currentSavingsAmount = s2.getSavingsAmount();
+                savingsAmount = s2.getSavingsAmount();
                 currentSavingsRate = s2.getSavingsRate();
                 currentSavingsPayments = s2.getSavingsPayments();
                 currentSavingsFrequency = s2.getSavingsFrequency();
             }
 
             savingsCal = Calendar.getInstance();
-            numberOfYearsToSavingsGoal = -(Math.log(1 - (currentSavingsAmount * (currentSavingsRate / 100) / (currentSavingsPayments * currentSavingsFrequency))) / (currentSavingsFrequency * Math.log(1 + ((currentSavingsRate / 100) / currentSavingsFrequency))));
+            numberOfYearsToSavingsGoal = -(Math.log(1 - (savingsAmount * (currentSavingsRate / 100) / (currentSavingsPayments * currentSavingsFrequency))) / (currentSavingsFrequency * Math.log(1 + ((currentSavingsRate / 100) / currentSavingsFrequency))));
             numberOfDaysToSavingsGoal = (int) Math.round(numberOfYearsToSavingsGoal * 365);
 
-            if (currentSavingsAmount <= 0) {
+            if (savingsAmount <= 0) {
                 savingsDate = getString(R.string.goal_achieved);
 
             } else if (numberOfDaysToSavingsGoal > Integer.MAX_VALUE || numberOfDaysToSavingsGoal <= 0) {
@@ -300,21 +322,23 @@ public class DailyMoneyOut extends Fragment {
 
             findMatchingDebtId();
             if (foundMatchingDebtId) {
-                calcDebtDate();
-                newDebtAmount = currentDebtAmount - moneyOutAmount;
+                newDebtAmount = findCurrentDebtAmount() - moneyOutAmount;
                 moneyOutValue3 = new ContentValues();
                 moneyOutValue3.put(DbHelper.DEBTAMOUNT, newDebtAmount);
-                moneyOutValue3.put(DbHelper.DEBTEND, calcDebtDate());
                 db.update(DbHelper.DEBTS_TABLE_NAME, moneyOutValue3, DbHelper.ID + "=" + findMatchingDebtId(), null);
+                moneyOutValue4 = new ContentValues();
+                moneyOutValue4.put(DbHelper.DEBTEND, calcDebtDate());
+                db.update(DbHelper.DEBTS_TABLE_NAME, moneyOutValue4, DbHelper.ID + "=" + findMatchingDebtId(), null);
             }
             findMatchingSavingsId();
             if (foundMatchingSavingsId) {
-                calcSavingsDate();
-                newSavingsAmount = currentSavingsAmount + moneyOutAmount;
-                moneyOutValue4 = new ContentValues();
-                moneyOutValue4.put(DbHelper.SAVINGSAMOUNT, newSavingsAmount);
-                moneyOutValue4.put(DbHelper.SAVINGSDATE, calcSavingsDate());
-                db.update(DbHelper.SAVINGS_TABLE_NAME, moneyOutValue4, DbHelper.ID + "=" + findMatchingSavingsId(), null);
+                newSavingsAmount = findCurrentSavingsAmount() + moneyOutAmount;
+                moneyOutValue5 = new ContentValues();
+                moneyOutValue5.put(DbHelper.SAVINGSAMOUNT, newSavingsAmount);
+                db.update(DbHelper.SAVINGS_TABLE_NAME, moneyOutValue5, DbHelper.ID + "=" + findMatchingSavingsId(), null);
+                moneyOutValue6 = new ContentValues();
+                moneyOutValue6.put(DbHelper.SAVINGSDATE, calcSavingsDate());
+                db.update(DbHelper.SAVINGS_TABLE_NAME, moneyOutValue6, DbHelper.ID + "=" + findMatchingSavingsId(), null);
             }
             db.close();
 
@@ -438,6 +462,7 @@ public class DailyMoneyOut extends Fragment {
                     moneyOutAmountD = moneyOutDb.getMoneyOutAmount();
                     moneyOutAmountS = currencyFormat.format(moneyOutAmountD);
                     moneyOutAmountEditText.setText(moneyOutAmountS);
+                    moneyOutRefKeyMO = moneyOutDb.getExpRefKeyMO();
 
                     oldMoneyOutAmount = general.extractingDollars(moneyOutAmountEditText);
 
@@ -459,21 +484,23 @@ public class DailyMoneyOut extends Fragment {
 
                             findMatchingDebtId();
                             if (foundMatchingDebtId) {
-                                calcDebtDate();
-                                newDebtAmount = currentDebtAmount - moneyOutAmount;
-                                moneyOutValue5 = new ContentValues();
-                                moneyOutValue5.put(DbHelper.DEBTAMOUNT, newDebtAmount);
-                                moneyOutValue5.put(DbHelper.DEBTEND, calcDebtDate());
-                                db6.update(DbHelper.DEBTS_TABLE_NAME, moneyOutValue5, DbHelper.ID + "=" + findMatchingDebtId(), null);
+                                newDebtAmount = findCurrentDebtAmount() - moneyOutAmount;
+                                moneyOutValue7 = new ContentValues();
+                                moneyOutValue7.put(DbHelper.DEBTAMOUNT, newDebtAmount);
+                                db6.update(DbHelper.DEBTS_TABLE_NAME, moneyOutValue7, DbHelper.ID + "=" + findMatchingDebtId(), null);
+                                moneyOutValue8 = new ContentValues();
+                                moneyOutValue8.put(DbHelper.DEBTEND, calcDebtDate());
+                                db6.update(DbHelper.DEBTS_TABLE_NAME, moneyOutValue8, DbHelper.ID + "=" + findMatchingDebtId(), null);
                             }
                             findMatchingSavingsId();
                             if (foundMatchingSavingsId) {
-                                calcSavingsDate();
-                                newSavingsAmount = currentSavingsAmount + moneyOutAmount;
-                                moneyOutValue6 = new ContentValues();
-                                moneyOutValue6.put(DbHelper.SAVINGSAMOUNT, newSavingsAmount);
-                                moneyOutValue6.put(DbHelper.SAVINGSDATE, calcSavingsDate());
-                                db6.update(DbHelper.SAVINGS_TABLE_NAME, moneyOutValue6, DbHelper.ID + "=" + findMatchingSavingsId(), null);
+                                newSavingsAmount = findCurrentSavingsAmount() + moneyOutAmount;
+                                moneyOutValue9 = new ContentValues();
+                                moneyOutValue9.put(DbHelper.SAVINGSAMOUNT, newSavingsAmount);
+                                db6.update(DbHelper.SAVINGS_TABLE_NAME, moneyOutValue9, DbHelper.ID + "=" + findMatchingSavingsId(), null);
+                                moneyOutValue10 = new ContentValues();
+                                moneyOutValue10.put(DbHelper.SAVINGSDATE, calcSavingsDate());
+                                db6.update(DbHelper.SAVINGS_TABLE_NAME, moneyOutValue10, DbHelper.ID + "=" + findMatchingSavingsId(), null);
                             }
                             db6.close();
 
@@ -534,28 +561,32 @@ public class DailyMoneyOut extends Fragment {
                     dbHelper7 = new DbHelper(getContext());
                     db7 = dbHelper7.getWritableDatabase();
 
-                    moneyOutAmount = -(Double.valueOf(cashTrans.get(position).getMoneyOutAmount()));
-
                     moneyOutDb = (MoneyOutDb) holder.moneyOutDelete.getTag();
+
+                    moneyOutAmount = -(cashTrans.get(position).getMoneyOutAmount());
+                    moneyOutRefKeyMO = cashTrans.get(position).getExpRefKeyMO();
+
                     dbManager.deleteMoneyOut(moneyOutDb);
 
                     findMatchingDebtId();
                     if (foundMatchingDebtId) {
-                        calcDebtDate();
-                        newDebtAmount = currentDebtAmount - moneyOutAmount;
-                        moneyOutValue7 = new ContentValues();
-                        moneyOutValue7.put(DbHelper.DEBTAMOUNT, newDebtAmount);
-                        moneyOutValue7.put(DbHelper.DEBTEND, calcDebtDate());
-                        db7.update(DbHelper.DEBTS_TABLE_NAME, moneyOutValue7, DbHelper.ID + "=" + findMatchingDebtId(), null);
+                        newDebtAmount = findCurrentDebtAmount() - moneyOutAmount;
+                        moneyOutValue11 = new ContentValues();
+                        moneyOutValue11.put(DbHelper.DEBTAMOUNT, newDebtAmount);
+                        db7.update(DbHelper.DEBTS_TABLE_NAME, moneyOutValue11, DbHelper.ID + "=" + findMatchingDebtId(), null);
+                        moneyOutValue12 = new ContentValues();
+                        moneyOutValue12.put(DbHelper.DEBTEND, calcDebtDate());
+                        db7.update(DbHelper.DEBTS_TABLE_NAME, moneyOutValue12, DbHelper.ID + "=" + findMatchingDebtId(), null);
                     }
                     findMatchingSavingsId();
                     if (foundMatchingSavingsId) {
-                        calcSavingsDate();
-                        newSavingsAmount = currentSavingsAmount + moneyOutAmount;
-                        moneyOutValue8 = new ContentValues();
-                        moneyOutValue8.put(DbHelper.SAVINGSAMOUNT, newSavingsAmount);
-                        moneyOutValue8.put(DbHelper.SAVINGSDATE, calcSavingsDate());
-                        db7.update(DbHelper.SAVINGS_TABLE_NAME, moneyOutValue8, DbHelper.ID + "=" + findMatchingSavingsId(), null);
+                        newSavingsAmount = findCurrentSavingsAmount() + moneyOutAmount;
+                        moneyOutValue13 = new ContentValues();
+                        moneyOutValue13.put(DbHelper.SAVINGSAMOUNT, newSavingsAmount);
+                        db7.update(DbHelper.SAVINGS_TABLE_NAME, moneyOutValue13, DbHelper.ID + "=" + findMatchingSavingsId(), null);
+                        moneyOutValue14 = new ContentValues();
+                        moneyOutValue14.put(DbHelper.SAVINGSDATE, calcSavingsDate());
+                        db7.update(DbHelper.SAVINGS_TABLE_NAME, moneyOutValue14, DbHelper.ID + "=" + findMatchingSavingsId(), null);
                     }
                     db7.close();
 

@@ -27,6 +27,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -44,10 +45,8 @@ public class LayoutBudget extends MainNavigation {
     Button doneBudgetSetUpButton, budgetCancelIncomeButton, budgetAddIncomeButton, budgetUpdateIncomeButton, budgetCancelExpenseButton,
             budgetAddExpenseButton, budgetUpdateExpenseButton;
     Calendar debtCal, savingsCal;
-    Cursor debtCursor, debtCursor2, debtCursor3, debtCursor4, debtCursor5, debtCursor6, savingsCursor,
-            savingsCursor2, savingsCursor3, savingsCursor4, savingsCursor5, savingsCursor6, savingsCursor7, moneyOutCursor;
     Date debtEndD, savingsDateD;
-    DbHelper dbHelper, debtDbHelper2, debtDbHelper3, savingsDbHelper, savingsDbHelper2, savingsDbHelper3, moneyOutDbHelper;
+    DbHelper dbHelper;
     DbManager dbManager;
     DebtDb debt;
     Double totalIncomeD = 0.0, incomeAnnualAmountD = 0.0, totalExpensesD = 0.0, expenseAnnualAmountD = 0.0,
@@ -76,11 +75,11 @@ public class LayoutBudget extends MainNavigation {
     RadioGroup budgetIncomeFrequencyRadioGroup, budgetExpenseFrequencyRadioGroup, budgetExpenseABRadioGroup, budgetExpenseReminderRadioGroup;
     SetUpDb setUpDb;
     SimpleDateFormat debtEndS, savingsDateS;
-    SQLiteDatabase db, debtDb, debtDb2, debtDb3, savingsDb, savingsDb2, savingsDb3, moneyOutDb;
+    SQLiteDatabase db;
     String incomeFrequencyS = null, incomeAnnualAmountS = null, incomeAnnualAmount2 = null, expenseFrequencyS = null, expenseWeeklyS = null,
             expensePriorityS = null, expenseAnnualAmount2 = null, totalIncomeS = null, totalIncome2 = null, expenseAnnualAmountS = null,
             totalExpensesS = null, totalExpenses2 = null, incomeAvailable2 = null, incomeAvailableN2 = null, debtEnd = null, savingsDate = null,
-            budgetIncomeAmountS = null, budgetExpenseAmountS = null;
+            budgetIncomeAmountS = null, budgetExpenseAmountS = null, moneyOutId = null;
     TextView budgetIncomeTotalText, budgetExpensesTotalText, budgetOopsText, budgetOopsAmountText, headerLabel2, incomeAvailable, weeklyGuidanceLabel;
 
     @Override
@@ -247,13 +246,14 @@ public class LayoutBudget extends MainNavigation {
         return id;
     }
 
-    public long findMatchingMoneyOutId() {
+    public List<Long> findMatchingMoneyOutId() {
+        List<Long> moneyOutIdList = new ArrayList<>();
         for(MoneyOutDb m : dbManager.getMoneyOuts()) {
             if(m.getExpRefKeyMO() == expenseBudgetDb.getId()) {
-                id = m.getId();
+                moneyOutIdList.add(id = m.getId());
             }
         }
-        return id;
+        return moneyOutIdList;
     }
 
     public String updateDebtEndDate() {
@@ -868,18 +868,19 @@ public class LayoutBudget extends MainNavigation {
                             }
 
                             try {
-                                String[] args3 = new String[]{String.valueOf(findMatchingMoneyOutId())};
-                                ContentValues moneyOutValues = new ContentValues();
-
-                                moneyOutValues.put(DbHelper.MONEYOUTCAT, budgetExpenseCategory.getText().toString());
-                                moneyOutValues.put(DbHelper.MONEYOUTPRIORITY, expensePriorityS);
-                                moneyOutValues.put(DbHelper.MONEYOUTWEEKLY, expenseWeeklyS);
-
-                                db.update(DbHelper.MONEY_OUT_TABLE_NAME, moneyOutValues, DbHelper.ID + "=?", args3);
+                                for(Long l : findMatchingMoneyOutId()) {
+                                    moneyOutId = l.toString();
+                                    ContentValues moneyOutValues = new ContentValues();
+                                    moneyOutValues.put(DbHelper.MONEYOUTCAT, budgetExpenseCategory.getText().toString());
+                                    moneyOutValues.put(DbHelper.MONEYOUTPRIORITY, expensePriorityS);
+                                    moneyOutValues.put(DbHelper.MONEYOUTWEEKLY, expenseWeeklyS);
+                                    db.update(DbHelper.MONEY_OUT_TABLE_NAME, moneyOutValues, DbHelper.ID + "=" + moneyOutId, null);
+                                }
 
                             } catch (CursorIndexOutOfBoundsException e11) {
                                 e11.printStackTrace();
                             }
+                            db.close();
 
                             expenseAdapter.updateExpenses(dbManager.getExpense());
                             expenseAdapter.notifyDataSetChanged();
@@ -920,6 +921,7 @@ public class LayoutBudget extends MainNavigation {
                     } catch (Exception e13) {
                         e13.getStackTrace();
                     }
+                    db.close();
 
                     expenseAdapter.updateExpenses(dbManager.getExpense());
                     budgetHeaderText();
