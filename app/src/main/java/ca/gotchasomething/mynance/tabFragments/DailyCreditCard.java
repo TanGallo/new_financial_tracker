@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ListView;
@@ -26,7 +27,8 @@ import ca.gotchasomething.mynance.data.MoneyOutDb;
 
 public class DailyCreditCard extends Fragment {
 
-    boolean possible = true;
+    boolean possibleA = true, possibleB = true;
+    Button ccTransCancelButton, ccTransContinueButton;
     CCAdapter ccAdapter;
     CheckBox ccPaidCheckbox;
     ContentValues moneyOutValue, moneyOutValue2, currentValue;
@@ -41,7 +43,8 @@ public class DailyCreditCard extends Fragment {
     NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
     SQLiteDatabase db2, db3, db4, db5;
     String ccAmountS = null, ccAmount2 = null, totalCCPaymentDueS = null;
-    TextView checkBelowLabel, totalCCPaymentDueLabel, totalCCPaymentDueAmount, ccPaidLabel, ccOopsText, noCCTransLabel;
+    TextView checkBelowLabel, totalCCPaymentDueLabel, totalCCPaymentDueAmount, ccPaidLabel, noCCTransLabel, ccTransPaymentNotPossibleBText,
+            ccTransPaymentNotPossibleAText, ccTransContinueAnywayText;
     View v;
 
     public DailyCreditCard() {
@@ -64,6 +67,16 @@ public class DailyCreditCard extends Fragment {
 
         noCCTransLabel = v.findViewById(R.id.noCCTransLabel);
         noCCTransLabel.setVisibility(View.GONE);
+        ccTransPaymentNotPossibleAText = v.findViewById(R.id.ccTransPaymentNotPossibleAText);
+        ccTransPaymentNotPossibleAText.setVisibility(View.GONE);
+        ccTransPaymentNotPossibleBText = v.findViewById(R.id.ccTransPaymentNotPossibleBText);
+        ccTransPaymentNotPossibleBText.setVisibility(View.GONE);
+        ccTransContinueAnywayText = v.findViewById(R.id.ccTransContinueAnywayText);
+        ccTransContinueAnywayText.setVisibility(View.GONE);
+        ccTransCancelButton = v.findViewById(R.id.ccTransCancelButton);
+        ccTransCancelButton.setVisibility(View.GONE);
+        ccTransContinueButton = v.findViewById(R.id.ccTransContinueButton);
+        ccTransContinueButton.setVisibility(View.GONE);
         checkBelowLabel = v.findViewById(R.id.checkBelowLabel);
         totalCCPaymentDueLabel = v.findViewById(R.id.totalCCPaymentDueLabel);
         totalCCPaymentDueLabel.setVisibility(View.GONE);
@@ -73,8 +86,6 @@ public class DailyCreditCard extends Fragment {
         ccPaidLabel.setVisibility(View.GONE);
         ccPaidCheckbox = v.findViewById(R.id.ccPaidCheckbox);
         ccPaidCheckbox.setVisibility(View.GONE);
-        ccOopsText = v.findViewById(R.id.ccOopsText);
-        ccOopsText.setVisibility(View.GONE);
 
         ccListView = v.findViewById(R.id.ccListView);
 
@@ -92,6 +103,26 @@ public class DailyCreditCard extends Fragment {
         db5 = dbHelper5.getWritableDatabase();
         db5.update(DbHelper.CURRENT_TABLE_NAME, currentValue, DbHelper.ID + "= '1'", null);
         db5.close();
+    }
+
+    public void cancelTransaction() {
+        ccTransPaymentNotPossibleAText.setVisibility(View.GONE);
+        ccTransPaymentNotPossibleBText.setVisibility(View.GONE);
+        ccTransContinueAnywayText.setVisibility(View.GONE);
+        ccTransCancelButton.setVisibility(View.GONE);
+        ccTransContinueButton.setVisibility(View.GONE);
+    }
+
+    public void continueTransaction() {
+        updateCurrentAccountBalance();
+        updateCurrentAvailableBalance();
+        dbManager.updatePaid();
+
+        resetToPay();
+
+        refresh = new Intent(getContext(), LayoutDailyMoney.class);
+        refresh.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+        startActivity(refresh);
     }
 
     public void updateCurrentAvailableBalance() {
@@ -124,15 +155,7 @@ public class DailyCreditCard extends Fragment {
         @Override
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
-            updateCurrentAccountBalance();
-            updateCurrentAvailableBalance();
-            dbManager.updatePaid();
-
-            resetToPay();
-
-            refresh = new Intent(getContext(), LayoutDailyMoney.class);
-            refresh.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-            startActivity(refresh);
+            continueTransaction();
         }
     };
 
@@ -144,19 +167,18 @@ public class DailyCreditCard extends Fragment {
         totalCCPaymentDue2 = dbManager.retrieveToPayTotal();
         currentAccountBalance2 = dbManager.retrieveCurrentAccountBalance();
 
-        possible = true;
+        possibleA = true;
+        possibleB = true;
         if (totalCCPaymentBDue2 > currentAvailableBalance2) {
-            possible = false;
-            ccPaidLabel.setVisibility(View.GONE);
-            ccPaidCheckbox.setVisibility(View.GONE);
-            ccOopsText.setVisibility(View.VISIBLE);
+            possibleB = false;
         } else if (totalCCPaymentDue2 > currentAccountBalance2) {
-            possible = false;
-            ccPaidLabel.setVisibility(View.GONE);
-            ccPaidCheckbox.setVisibility(View.GONE);
-            ccOopsText.setVisibility(View.VISIBLE);
+            possibleA = false;
         } else {
-            ccOopsText.setVisibility(View.GONE);
+            ccTransPaymentNotPossibleAText.setVisibility(View.GONE);
+            ccTransPaymentNotPossibleBText.setVisibility(View.GONE);
+            ccTransContinueAnywayText.setVisibility(View.GONE);
+            ccTransCancelButton.setVisibility(View.GONE);
+            ccTransContinueButton.setVisibility(View.GONE);
         }
     }
 
@@ -181,7 +203,11 @@ public class DailyCreditCard extends Fragment {
         totalCCPaymentDueAmount.setVisibility(View.GONE);
         ccPaidLabel.setVisibility(View.GONE);
         ccPaidCheckbox.setVisibility(View.GONE);
-        ccOopsText.setVisibility(View.GONE);
+        ccTransPaymentNotPossibleAText.setVisibility(View.GONE);
+        ccTransPaymentNotPossibleBText.setVisibility(View.GONE);
+        ccTransContinueAnywayText.setVisibility(View.GONE);
+        ccTransCancelButton.setVisibility(View.GONE);
+        ccTransContinueButton.setVisibility(View.GONE);
     }
 
     public void updateCCPaymentDue() {
@@ -285,6 +311,52 @@ public class DailyCreditCard extends Fragment {
                     }
 
                     updateCCPaymentDue();
+
+                    if(!possibleB) {
+                        ccPaidLabel.setVisibility(View.GONE);
+                        ccPaidCheckbox.setVisibility(View.GONE);
+                        ccTransPaymentNotPossibleBText.setVisibility(View.VISIBLE);
+                        ccTransContinueAnywayText.setVisibility(View.VISIBLE);
+                        ccTransCancelButton.setVisibility(View.VISIBLE);
+                        ccTransContinueButton.setVisibility(View.VISIBLE);
+
+                        ccTransCancelButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                holder.ccCheck.setChecked(false);
+                                cancelTransaction();
+                            }
+                        });
+
+                        ccTransContinueButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                continueTransaction();
+                            }
+                        });
+                    } else if(!possibleA) {
+                        ccPaidLabel.setVisibility(View.GONE);
+                        ccPaidCheckbox.setVisibility(View.GONE);
+                        ccTransPaymentNotPossibleAText.setVisibility(View.VISIBLE);
+                        ccTransContinueAnywayText.setVisibility(View.VISIBLE);
+                        ccTransCancelButton.setVisibility(View.VISIBLE);
+                        ccTransContinueButton.setVisibility(View.VISIBLE);
+
+                        ccTransCancelButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                holder.ccCheck.setChecked(false);
+                                cancelTransaction();
+                            }
+                        });
+
+                        ccTransContinueButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                continueTransaction();
+                            }
+                        });
+                    }
                 }
             });
 

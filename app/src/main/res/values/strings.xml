@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">MYnance</string>
+    <string name="my_preference">ca.gotchasomething.ca.MyPref</string>
+    <string name="my_preference_key">ca.gotchasomething.ca.MyPrefKey</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="daily_money">Daily Money</string>
@@ -8,25 +10,31 @@
     <string name="savings">Savings</string>
     <string name="mynance">MYnance</string>
     <string name="logo">Logo</string>
+    <string name="continue1">Continue</string>
+    <string name="continue_anyway">Continue anyway?</string>
+    <string name="cancel">Cancel</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="too_far">Too far in the future</string>
-    <string name="goal_achieved">Goal achieved!</string>
-    <string name="goal_will">Will be saved by </string>
-    <string name="debt_paid">Debt paid!</string>
-    <string name="debt_will">Will be paid by </string>
     <string name="slide1Title">Welcome to MYnance!</string>
     <string name="slide1Description">Manage your money and keep on top of your debt in just a few steps</string>
     <string name="slide2Title">Step 1:</string>
-    <string name="slide2Description">Simply follow the quick list in the guided set up process</string>
+    <string name="slide2Description">Simply follow the steps in the guided set up process</string>
     <string name="next_button">next</string>
     <string name="start_button">Got it!</string>
-    <string name="my_preference">ca.gotchasomething.ca.MyPref</string>
-    <string name="my_preference_key">ca.gotchasomething.ca.MyPrefKey</string>
     <string name="skip_button">skip intro</string>
     <string name="slide3Title">Step 2:</string>
     <string name="slide3Description">Go to \'Daily Money\' to make income and spending entries, track your credit card transactions, and watch your weekly spending limits</string>
     <string name="slide4Title">MYnance will let you know how much money in your bank account is actually available for spending at any given time</string>
     <string name="slide5Title">MYnance will help you keep on top of your credit card spending so you avoid getting into consumer debt</string>
     <string name="slide6Title">Visit the \'Help\' section if you need more guidance</string>
+
+    <string name="too_far">Too far in the future</string>
+    <string name="goal_achieved">Goal achieved!</string>
+    <string name="goal_will">Will be saved by </string>
+    <string name="debt_paid">Debt paid!</string>
+    <string name="debt_will">Will be paid by </string>
+    <string name="payment_not_possible_B">You don\'t have enough spending money left in your account to make this purchase. You will be spending money that is reserved for other expenses.</string>
+    <string name="payment_not_possible_A">You don\'t have enough money in your account to make this purchase. You will put your balance into the negative.</string>
+    <string name="continue_warning">NOTE: Your account balances will not be affected until you pay this item in the \'Pay CC\' tab.</string>
+
+
 </resources>
