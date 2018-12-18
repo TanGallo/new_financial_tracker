@@ -37,6 +37,7 @@ public class DailyWeeklyLimits extends Fragment {
     NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
     SQLiteDatabase db2, db3;
     String amountLeftS = null, spentThisWeekS = null, startingBalanceS = null, spentAmountS = null;
+    TextView noWeeklyLabel, noWeeklyLabel2;
     View v;
     WeeklyLimitsAdapter weeklyLimitsAdapter;
 
@@ -59,10 +60,21 @@ public class DailyWeeklyLimits extends Fragment {
         general = new General();
 
         weeklyLimitListView = v.findViewById(R.id.weeklyLimitListView);
+        noWeeklyLabel = v.findViewById(R.id.noWeeklyLabel);
+        noWeeklyLabel.setVisibility(View.GONE);
+        noWeeklyLabel2 = v.findViewById(R.id.noWeeklyLabel2);
+        noWeeklyLabel2.setVisibility(View.GONE);
 
         dbManager = new DbManager(getContext());
         weeklyLimitsAdapter = new WeeklyLimitsAdapter(getContext(), dbManager.getWeeklyLimits());
         weeklyLimitListView.setAdapter(weeklyLimitsAdapter);
+        if(weeklyLimitsAdapter.getCount() == 0) {
+            noWeeklyLabel.setVisibility(View.VISIBLE);
+            noWeeklyLabel2.setVisibility(View.VISIBLE);
+        } else {
+            noWeeklyLabel.setVisibility(View.GONE);
+            noWeeklyLabel2.setVisibility(View.GONE);
+        }
 
         currentValue = new ContentValues();
         currentValue.put(DbHelper.CURRENTPAGEID, 5);

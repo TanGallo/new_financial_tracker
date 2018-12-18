@@ -158,6 +158,7 @@
         </androidx.core.widget.NestedScrollView>
 
         <View
+            android:id="@+id/ccLine"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_below="@id/debt_header_layout"
@@ -174,6 +175,7 @@
             android:orientation="horizontal">
 
             <TextView
+                android:id="@+id/ccHeaderLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
@@ -181,6 +183,7 @@
                 android:textSize="16sp" />
 
             <TextView
+                android:id="@+id/ccPayLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"

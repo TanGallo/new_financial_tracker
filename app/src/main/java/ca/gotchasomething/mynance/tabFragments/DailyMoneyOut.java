@@ -46,16 +46,16 @@ public class DailyMoneyOut extends Fragment {
     Button moneyOutButton, cancelMoneyOutEntryButton, updateMoneyOutEntryButton, paymentNotPossibleContinueButton;
     Calendar debtCal, savingsCal;
     ContentValues moneyOutValue, moneyOutValue2, moneyOutValue3, moneyOutValue4, moneyOutValue5, moneyOutValue6, moneyOutValue7, moneyOutValue8,
-            moneyOutValue9, moneyOutValue10, moneyOutValue11, moneyOutValue12, moneyOutValue13, moneyOutValue14, moneyOutValue15, moneyOutValue16,
-            moneyOutValue17, moneyOutValue18, currentValue;
+            moneyOutValue9, moneyOutValue10, moneyOutValue11, moneyOutValue12, moneyOutValue13, moneyOutValue14, moneyOutValue15, moneyOutValue17,
+            moneyOutValue18, currentValue;
     Cursor moneyOutCursor;
     Date moneyOutDate, debtEndD, savingsDateD;
-    DbHelper dbHelper2, dbHelper3, dbHelper4, dbHelper5, dbHelper6, dbHelper7, dbHelper8;
+    DbHelper dbHelper2, dbHelper3, dbHelper4, dbHelper5, dbHelper7, dbHelper8;
     DbManager dbManager;
-    Double moneyOutAmount = 0.0, newCurrentAccountBalance = 0.0, newCurrentAccountBalance2 = 0.0, newCurrentAccountBalance3 = 0.0,
-            newCurrentAvailableBalance3 = 0.0, moneyOutD = 0.0, oldMoneyOutAmount = 0.0, newMoneyOutAmount = 0.0, moneyOutAmountD = 0.0,
-            currentDebtAmount = 0.0, debtAmount = 0.0, currentSavingsAmount = 0.0, newDebtAmount = 0.0, newSavingsAmount = 0.0, currentDebtRate = 0.0,
-            currentDebtPayments = 0.0, currentDebtFrequency = 0.0, numberOfYearsToPayDebt = 0.0, currentSavingsRate = 0.0, currentSavingsPayments = 0.0,
+    Double moneyOutAmount = 0.0, newCurrentAccountBalance2 = 0.0, newCurrentAccountBalance3 = 0.0, newCurrentAvailableBalance3 = 0.0,
+            moneyOutD = 0.0, oldMoneyOutAmount = 0.0, newMoneyOutAmount = 0.0, moneyOutAmountD = 0.0, currentDebtAmount = 0.0, debtAmount = 0.0,
+            currentSavingsAmount = 0.0, newDebtAmount = 0.0, newSavingsAmount = 0.0, currentDebtRate = 0.0, currentDebtPayments = 0.0,
+            currentDebtFrequency = 0.0, numberOfYearsToPayDebt = 0.0, currentSavingsRate = 0.0, currentSavingsPayments = 0.0,
             currentSavingsFrequency = 0.0, numberOfYearsToSavingsGoal = 0.0, savingsAmount = 0.0, newCurrentAvailableBalance = 0.0,
             newCurrentAccountBalance4 = 0.0;
     EditText moneyOutAmountText, moneyOutAmountEditText;
@@ -73,9 +73,9 @@ public class DailyMoneyOut extends Fragment {
     SQLiteDatabase db2, db3, db4, db5, db6, db7, db8;
     String moneyOutCatS = null, moneyOutCat = null, moneyOutPriority = null, moneyOutWeekly = null, moneyOutPriorityS = null, moneyOutWeeklyS = null,
             moneyOutCreatedOn = null, moneyOutCC = null, moneyOutS = null, moneyOut2 = null, moneyOutAmountS = null, debtEnd = null, savingsDate = null;
-    TextView moneyOutCatText, paymentNotPossibleAText, paymentNotPossibleBText, continueAnywayText;
+    TextView moneyOutCatText, paymentNotPossibleAText, paymentNotPossibleBText, continueAnywayText, newMoneyOutLabel;
     Timestamp moneyOutTimestamp;
-    View v, moneyOutLine;
+    View v, moneyOutLine, moneyOutLine2;
 
     public DailyMoneyOut() {
         // Required empty public constructor
@@ -118,11 +118,19 @@ public class DailyMoneyOut extends Fragment {
         updateMoneyOutEntryButton.setVisibility(View.GONE);
         moneyOutLine = v.findViewById(R.id.moneyOutLine);
         moneyOutLine.setVisibility(View.GONE);
+        moneyOutLine2 = v.findViewById(R.id.moneyOutLine2);
+        newMoneyOutLabel = v.findViewById(R.id.newMoneyOutLabel);
+        newMoneyOutLabel.setVisibility(View.GONE);
 
         moneyOutButton.setOnClickListener(onClickMoneyOutButton);
 
         moneyOutAdapter = new MoneyOutAdapter(getContext(), dbManager.getCashTrans());
         moneyOutList.setAdapter(moneyOutAdapter);
+        if(moneyOutAdapter.getCount() == 0) {
+            newMoneyOutLabel.setVisibility(View.VISIBLE);
+        } else {
+            newMoneyOutLabel.setVisibility(View.GONE);
+        }
 
         moneyOutCatSpinner = v.findViewById(R.id.moneyOutCatSpinner);
         dbHelper2 = new DbHelper(getContext());
@@ -563,6 +571,10 @@ public class DailyMoneyOut extends Fragment {
 
                     dbManager = new DbManager(getContext());
 
+                    moneyOutAmountText.setVisibility(View.GONE);
+                    moneyOutCatSpinner.setVisibility(View.GONE);
+                    moneyOutButton.setVisibility(View.GONE);
+                    moneyOutLine2.setVisibility(View.GONE);
                     moneyOutCatText.setVisibility(View.VISIBLE);
                     moneyOutAmountEditText.setVisibility(View.VISIBLE);
                     cancelMoneyOutEntryButton.setVisibility(View.VISIBLE);

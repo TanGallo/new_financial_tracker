@@ -44,8 +44,8 @@ public class DailyCreditCard extends Fragment {
     SQLiteDatabase db2, db3, db4, db5;
     String ccAmountS = null, ccAmount2 = null, totalCCPaymentDueS = null;
     TextView checkBelowLabel, totalCCPaymentDueLabel, totalCCPaymentDueAmount, ccPaidLabel, noCCTransLabel, ccTransPaymentNotPossibleBText,
-            ccTransPaymentNotPossibleAText, ccTransContinueAnywayText;
-    View v;
+            ccTransPaymentNotPossibleAText, ccTransContinueAnywayText, ccHeaderLabel, ccPayLabel;
+    View v, ccLine;
 
     public DailyCreditCard() {
         // Required empty public constructor
@@ -67,6 +67,9 @@ public class DailyCreditCard extends Fragment {
 
         noCCTransLabel = v.findViewById(R.id.noCCTransLabel);
         noCCTransLabel.setVisibility(View.GONE);
+        ccHeaderLabel = v.findViewById(R.id.ccHeaderLabel);
+        ccPayLabel = v.findViewById(R.id.ccPayLabel);
+        ccLine = v.findViewById(R.id.ccLine);
         ccTransPaymentNotPossibleAText = v.findViewById(R.id.ccTransPaymentNotPossibleAText);
         ccTransPaymentNotPossibleAText.setVisibility(View.GONE);
         ccTransPaymentNotPossibleBText = v.findViewById(R.id.ccTransPaymentNotPossibleBText);
@@ -194,9 +197,15 @@ public class DailyCreditCard extends Fragment {
         if (ccAdapter.getCount() == 0) {
             noCCTransLabel.setVisibility(View.VISIBLE);
             checkBelowLabel.setVisibility(View.GONE);
+            ccHeaderLabel.setVisibility(View.GONE);
+            ccPayLabel.setVisibility(View.GONE);
+            ccLine.setVisibility(View.GONE);
         } else {
             noCCTransLabel.setVisibility(View.GONE);
             checkBelowLabel.setVisibility(View.VISIBLE);
+            ccHeaderLabel.setVisibility(View.VISIBLE);
+            ccPayLabel.setVisibility(View.VISIBLE);
+            ccLine.setVisibility(View.VISIBLE);
         }
 
         totalCCPaymentDueLabel.setVisibility(View.GONE);

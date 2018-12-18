@@ -38,7 +38,7 @@ import ca.gotchasomething.mynance.spinners.MoneyOutSpinnerAdapter;
 
 public class DailyMoneyCC extends Fragment {
 
-    boolean paymentAPossible = true, paymentBPossible = true, possible = true, foundMatchingDebtId = false, foundMatchingSavingsId = false;
+    boolean paymentAPossible = true, paymentBPossible = true, foundMatchingDebtId = false, foundMatchingSavingsId = false;
     Button ccTransButton, cancelCCTransEntryButton, updateCCTransEntryButton, ccPaymentNotPossibleContinueButton;
     Calendar debtCal, savingsCal;
     CCTransAdapter ccTransAdapter;
@@ -64,10 +64,11 @@ public class DailyMoneyCC extends Fragment {
     Spinner ccTransCatSpinner;
     SQLiteDatabase db, db2, db3, db4, db5;
     String moneyOutCat = null, moneyOutPriority = null, moneyOutWeekly = null, moneyOutCreatedOn = null, moneyOutCC = null, ccTransCatS = null,
-            ccTransPriorityS = null, moneyOutWeeklyS = null, ccTransAmountS = null, ccTransAmount2 = null, ccTransAmountS2 = null, debtEnd = null, savingsDate = null;
-    TextView ccTransCatText, ccPaymentNotPossibleAText, ccPaymentNotPossibleBText, ccContinueAnywayText, ccContinueWarningText;
+            ccTransPriorityS = null, moneyOutWeeklyS = null, ccTransAmountS = null, ccTransAmount2 = null, ccTransAmountS2 = null, debtEnd = null,
+            savingsDate = null;
+    TextView ccTransCatText, ccPaymentNotPossibleAText, ccPaymentNotPossibleBText, ccContinueAnywayText, ccContinueWarningText, newMoneyCCLabel;
     Timestamp moneyOutTimestamp;
-    View v, ccTransLine;
+    View v, ccTransLine, ccTransLine2;
 
     public DailyMoneyCC() {
         // Required empty public constructor
@@ -111,12 +112,20 @@ public class DailyMoneyCC extends Fragment {
         updateCCTransEntryButton.setVisibility(View.GONE);
         ccTransLine = v.findViewById(R.id.ccTransLine);
         ccTransLine.setVisibility(View.GONE);
+        ccTransLine2 = v.findViewById(R.id.ccTransLine2);
+        newMoneyCCLabel = v.findViewById(R.id.newMoneyCCLabel);
+        newMoneyCCLabel.setVisibility(View.GONE);
 
         ccTransButton.setOnClickListener(onClickCCTransButton);
 
         dbManager = new DbManager(getContext());
         ccTransAdapter = new CCTransAdapter(getContext(), dbManager.getCCTrans());
         ccTransList.setAdapter(ccTransAdapter);
+        if(ccTransAdapter.getCount() == 0) {
+            newMoneyCCLabel.setVisibility(View.VISIBLE);
+        } else {
+            newMoneyCCLabel.setVisibility(View.GONE);
+        }
 
         ccTransCatSpinner = v.findViewById(R.id.ccTransCatSpinner);
         dbHelper2 = new DbHelper(getContext());
@@ -162,6 +171,11 @@ public class DailyMoneyCC extends Fragment {
         cancelCCTransEntryButton.setVisibility(View.GONE);
         updateCCTransEntryButton.setVisibility(View.GONE);
         ccTransLine.setVisibility(View.GONE);
+
+        ccTransAmountText.setVisibility(View.VISIBLE);
+        ccTransCatSpinner.setVisibility(View.VISIBLE);
+        ccTransButton.setVisibility(View.VISIBLE);
+        ccTransLine2.setVisibility(View.VISIBLE);
     }
 
     public void continueTransaction() {
@@ -210,6 +224,7 @@ public class DailyMoneyCC extends Fragment {
         cancelCCTransEntryButton.setVisibility(View.GONE);
         updateCCTransEntryButton.setVisibility(View.GONE);
         ccTransLine.setVisibility(View.GONE);
+        newMoneyCCLabel.setVisibility(View.GONE);
     }
 
     public void continueUpdate() {
@@ -254,6 +269,11 @@ public class DailyMoneyCC extends Fragment {
         cancelCCTransEntryButton.setVisibility(View.GONE);
         updateCCTransEntryButton.setVisibility(View.GONE);
         ccTransLine.setVisibility(View.GONE);
+
+        ccTransAmountText.setVisibility(View.VISIBLE);
+        ccTransCatSpinner.setVisibility(View.VISIBLE);
+        ccTransButton.setVisibility(View.VISIBLE);
+        ccTransLine2.setVisibility(View.VISIBLE);
     }
 
     public long findMatchingDebtId() {
@@ -562,6 +582,10 @@ public class DailyMoneyCC extends Fragment {
 
                     dbManager = new DbManager(getContext());
 
+                    ccTransAmountText.setVisibility(View.GONE);
+                    ccTransCatSpinner.setVisibility(View.GONE);
+                    ccTransButton.setVisibility(View.GONE);
+                    ccTransLine2.setVisibility(View.GONE);
                     ccTransCatText.setVisibility(View.VISIBLE);
                     ccTransAmountEditText.setVisibility(View.VISIBLE);
                     cancelCCTransEntryButton.setVisibility(View.VISIBLE);

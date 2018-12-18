@@ -47,8 +47,8 @@ public class DailyMoneyIn extends Fragment {
     Date moneyInDate;
     DbHelper dbHelper2, dbHelper3, dbHelper4, dbHelper5;
     DbManager dbManager;
-    Double moneyInAmount = 0.0, moneyInD = 0.0, newAccountBalance = 0.0, oldAccountBalance = 0.0, percentB = 0.0, oldAvailableBalance = 0.0, newAvailableBalance = 0.0,
-            newMoneyInAmount = 0.0, oldMoneyInAmount = 0.0, moneyInAmountD = 0.0;
+    Double moneyInAmount = 0.0, moneyInD = 0.0, newAccountBalance = 0.0, percentB = 0.0, newAvailableBalance = 0.0, newMoneyInAmount = 0.0,
+            oldMoneyInAmount = 0.0, moneyInAmountD = 0.0;
     EditText moneyInAmountText, moneyInAmountEditText;
     General general;
     Intent backToDaily, backToDaily2, backToDaily3, backToDaily4;
@@ -63,7 +63,7 @@ public class DailyMoneyIn extends Fragment {
     String moneyInCatS = null, moneyInCat = null, moneyInCreatedOn = null, moneyInS = null, moneyIn2 = null, moneyInAmountS = null;
     TextView moneyInCatText;
     Timestamp moneyInTimestamp;
-    View v, moneyInLine;
+    View v, moneyInLine, moneyInLine2;
 
     public DailyMoneyIn() {
         // Required empty public constructor
@@ -98,6 +98,7 @@ public class DailyMoneyIn extends Fragment {
         updateMoneyInEntryButton.setVisibility(View.GONE);
         moneyInLine = v.findViewById(R.id.moneyInLine);
         moneyInLine.setVisibility(View.GONE);
+        moneyInLine2 = v.findViewById(R.id.moneyInLine2);
 
         moneyInButton.setOnClickListener(onClickMoneyInButton);
 
@@ -274,6 +275,10 @@ public class DailyMoneyIn extends Fragment {
 
                     dbManager = new DbManager(getContext());
 
+                    moneyInAmountText.setVisibility(View.GONE);
+                    moneyInCatSpinner.setVisibility(View.GONE);
+                    moneyInButton.setVisibility(View.GONE);
+                    moneyInLine2.setVisibility(View.GONE);
                     moneyInCatText.setVisibility(View.VISIBLE);
                     moneyInAmountEditText.setVisibility(View.VISIBLE);
                     cancelMoneyInEntryButton.setVisibility(View.VISIBLE);
