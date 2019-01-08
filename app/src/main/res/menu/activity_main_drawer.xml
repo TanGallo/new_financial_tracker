@@ -19,6 +19,10 @@
         android:icon="@drawable/ic_attach_money_black_24dp"
         android:title="@string/savings" />
     <item
+        android:id="@+id/menu_spending_report"
+        android:icon="@drawable/ic_trending_up_black_24dp"
+        android:title="@string/spending_report" />
+    <item
         android:id="@+id/menu_help"
         android:icon="@drawable/ic_help_outline_black_24dp"
         android:title="Help" />

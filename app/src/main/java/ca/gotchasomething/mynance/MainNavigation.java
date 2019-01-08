@@ -25,15 +25,10 @@ import android.view.View;
 public class MainNavigation extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     ActionBarDrawerToggle toggle;
-    boolean before = false;
-    Cursor setUpCursor;
-    DbHelper setUpHelper;
     protected DrawerLayout drawer;
-    int setUpDoneCheck;
-    Intent i, i2, i3, i4, i5, i6, i7, i8;
+    Intent i, i2, i4, i5, i6, i7;
     Menu menu;
     NavigationView navigationView;
-    SQLiteDatabase setUpDbDb;
     Toolbar toolbar;
 
     @Override
@@ -46,59 +41,10 @@ public class MainNavigation extends AppCompatActivity implements NavigationView.
         drawer = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
 
-        //menuConfig();
-
         toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
     }
-
-    /*public void menuConfig() {
-        beforeSetUpOrAfter();
-
-        menu = navigationView.getMenu();
-        if(before) {
-            menu.findItem(R.id.menu_daily_money).setEnabled(false);
-            menu.findItem(R.id.menu_budget).setEnabled(false);
-            menu.findItem(R.id.menu_debt).setEnabled(false);
-            menu.findItem(R.id.menu_savings).setEnabled(false);
-            menu.findItem(R.id.menu_edit_entries).setVisible(false);
-            menu.findItem(R.id.menu_income_entries).setVisible(false);
-            menu.findItem(R.id.menu_spending_entries).setVisible(false);
-        } else {
-            menu.findItem(R.id.menu_set_up).setVisible(false);
-        }
-
-        navigationView.setNavigationItemSelectedListener(this);
-    }
-
-    public int doneSetUpCheck() {
-        setUpHelper = new DbHelper(this);
-        setUpDbDb = setUpHelper.getReadableDatabase();
-        setUpCursor = setUpDbDb.rawQuery("SELECT max(tourDone)" + " FROM " + DbHelper.SET_UP_TABLE_NAME, null);
-        try {
-            setUpCursor.moveToFirst();
-            setUpDoneCheck = setUpCursor.getInt(0);
-        } catch (CursorIndexOutOfBoundsException e) {
-            setUpDoneCheck = 0;
-        }
-        setUpCursor.close();
-
-        return setUpDoneCheck;
-    }
-
-    public boolean beforeSetUpOrAfter() {
-        doneSetUpCheck();
-
-        if (setUpDoneCheck <= 0) {
-            before = true;
-        } else {
-            before = false;
-        }
-
-        return before;
-    }*/
-
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -124,6 +70,11 @@ public class MainNavigation extends AppCompatActivity implements NavigationView.
                 i5 = new Intent(MainNavigation.this, LayoutSavings.class);
                 i5.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
                 startActivity(i5);
+                break;
+            case R.id.menu_spending_report:
+                i7 = new Intent(MainNavigation.this, LayoutSpendingReport.class);
+                i7.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+                startActivity(i7);
                 break;
             case R.id.menu_help:
                 i6 = new Intent(MainNavigation.this, LayoutHelp.class);

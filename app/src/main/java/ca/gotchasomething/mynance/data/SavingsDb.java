@@ -4,10 +4,11 @@ package ca.gotchasomething.mynance.data;
 public class SavingsDb {
     private String savingsName;
     private Double savingsAmount;
-    private Double savingsRate;
+    private Double savingsGoal;
     private Double savingsPayments;
     private Double savingsFrequency;
-    private Double savingsGoal;
+    private Double savingsRate;
+    private Double savingsIntFrequency;
     private String savingsDate;
     private long expRefKeyS;
     private long id;
@@ -15,19 +16,21 @@ public class SavingsDb {
     public SavingsDb(
             String savingsName,
             Double savingsAmount,
-            Double savingsRate,
+            Double savingsGoal,
             Double savingsPayments,
             Double savingsFrequency,
-            Double savingsGoal,
+            Double savingsRate,
+            Double savingsIntFrequency,
             String savingsDate,
             long expRefKeyS,
             long id) {
         this.savingsName = savingsName;
         this.savingsAmount = savingsAmount;
-        this.savingsRate = savingsRate;
+        this.savingsGoal = savingsGoal;
         this.savingsPayments = savingsPayments;
         this.savingsFrequency = savingsFrequency;
-        this.savingsGoal = savingsGoal;
+        this.savingsRate = savingsRate;
+        this.savingsIntFrequency = savingsIntFrequency;
         this.savingsDate = savingsDate;
         this.expRefKeyS = expRefKeyS;
         this.id = id;
@@ -39,8 +42,8 @@ public class SavingsDb {
     public Double getSavingsAmount() { return savingsAmount; }
     public void setSavingsAmount(Double savingsAmount) { this.savingsAmount = savingsAmount; }
 
-    public Double getSavingsRate() { return savingsRate; }
-    public void setSavingsRate(Double savingsRate) { this.savingsRate = savingsRate; }
+    public Double getSavingsGoal() { return savingsGoal; }
+    public void setSavingsGoal(Double savingsGoal) { this.savingsGoal = savingsGoal; }
 
     public Double getSavingsPayments() { return savingsPayments; }
     public void setSavingsPayments(Double savingsPayments) { this.savingsPayments = savingsPayments; }
@@ -48,8 +51,11 @@ public class SavingsDb {
     public Double getSavingsFrequency() { return savingsFrequency; }
     public void setSavingsFrequency(Double savingsFrequency) { this.savingsFrequency = savingsFrequency; }
 
-    public Double getSavingsGoal() { return savingsGoal; }
-    public void setSavingsGoal(Double savingsGoal) { this.savingsGoal = savingsGoal; }
+    public Double getSavingsRate() { return savingsRate; }
+    public void setSavingsRate(Double savingsRate) { this.savingsRate = savingsRate; }
+
+    public Double getSavingsIntFrequency() { return savingsIntFrequency; }
+    public void setSavingsIntFrequency(Double savingsIntFrequency) { this.savingsIntFrequency = savingsIntFrequency; }
 
     public String getSavingsDate() { return savingsDate; }
     public void setSavingsDate(String savingsDate) { this.savingsDate = savingsDate; }

@@ -63,7 +63,7 @@ public class DailyMoneyOut extends Fragment {
     int moneyOutToPay = 0, moneyOutPaid = 0, numberOfDaysToPayDebt = 0, numberOfDaysToSavingsGoal = 0;
     Intent backToDaily;
     ListView moneyOutList;
-    long moneyOutRefKeyMO, expRefKeyMO, debtId, savingsId;
+    long moneyOutRefKeyMO, expRefKeyMO, debtId, savingsId, moneyOutChargingDebtId;
     MoneyOutAdapter moneyOutAdapter;
     MoneyOutDb moneyOutDb;
     MoneyOutSpinnerAdapter moneyOutSpinnerAdapter;
@@ -72,7 +72,8 @@ public class DailyMoneyOut extends Fragment {
     Spinner moneyOutCatSpinner;
     SQLiteDatabase db2, db3, db4, db5, db6, db7, db8;
     String moneyOutCatS = null, moneyOutCat = null, moneyOutPriority = null, moneyOutWeekly = null, moneyOutPriorityS = null, moneyOutWeeklyS = null,
-            moneyOutCreatedOn = null, moneyOutCC = null, moneyOutS = null, moneyOut2 = null, moneyOutAmountS = null, debtEnd = null, savingsDate = null;
+            moneyOutCreatedOn = null, moneyOutCC = null, moneyOutS = null, moneyOut2 = null, moneyOutAmountS = null, debtEnd = null,
+            savingsDate = null, moneyOutDebtCat = null;
     TextView moneyOutCatText, paymentNotPossibleAText, paymentNotPossibleBText, continueAnywayText, newMoneyOutLabel;
     Timestamp moneyOutTimestamp;
     View v, moneyOutLine, moneyOutLine2;
@@ -183,7 +184,7 @@ public class DailyMoneyOut extends Fragment {
 
     public void makePaymentA() {
         moneyOutDb = new MoneyOutDb(moneyOutCat, moneyOutPriority, moneyOutWeekly, moneyOutAmount, moneyOutCreatedOn,
-                moneyOutCC, moneyOutToPay, moneyOutPaid, expRefKeyMO, 0);
+                moneyOutCC, moneyOutDebtCat, moneyOutChargingDebtId, moneyOutToPay, moneyOutPaid, expRefKeyMO, 0);
         dbManager.addMoneyOut(moneyOutDb);
 
         newCurrentAccountBalance3 = dbManager.retrieveCurrentAccountBalance() - moneyOutAmount;
@@ -395,6 +396,8 @@ public class DailyMoneyOut extends Fragment {
             moneyOutSDF = new SimpleDateFormat("dd-MMM-yyyy");
             moneyOutCreatedOn = moneyOutSDF.format(moneyOutTimestamp);
             moneyOutCC = "N";
+            moneyOutDebtCat = "N/A";
+            moneyOutChargingDebtId = 0;
             moneyOutToPay = 0;
             moneyOutPaid = 0;
             expRefKeyMO = moneyOutRefKeyMO;

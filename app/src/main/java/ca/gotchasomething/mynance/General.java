@@ -10,12 +10,15 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import ca.gotchasomething.mynance.data.MoneyOutDb;
+
 public class General {
 
     public Date dateObj;
     public Double dollars = 0.0, percent = 0.0;
     public int startIndex = 0, endIndex = 0;
     public List<String> thisWeek;
+    public List<String> yearsList;
     public String startingString = null, startingString2 = null, subStringResult = null, subStringResult2 = null, subStringResult3 = null, percentS = null;
     public TextView tv, tv2;
 
@@ -29,7 +32,7 @@ public class General {
             subStringResult = startingString.substring(startIndex, endIndex);
             try {
                 dollars = Double.parseDouble(subStringResult);
-            } catch(NumberFormatException e) {
+            } catch (NumberFormatException e) {
                 e.printStackTrace();
             }
 
@@ -40,7 +43,7 @@ public class General {
             subStringResult2 = subStringResult.replace(",", "");
             try {
                 dollars = Double.parseDouble(subStringResult2);
-            }catch(NumberFormatException e2) {
+            } catch (NumberFormatException e2) {
                 e2.printStackTrace();
             }
         }
@@ -131,4 +134,6 @@ public class General {
 
         return thisWeek;
     }
+
 }
+

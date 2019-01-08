@@ -22,7 +22,7 @@
             android:text="You have no outstanding credit card purchases!"
             android:textAlignment="center"
             android:textColor="@color/colorGreen"
-            android:textSize="16sp" />
+            android:textSize="18sp" />
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"

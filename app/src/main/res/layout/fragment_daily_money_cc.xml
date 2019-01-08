@@ -11,13 +11,6 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:text="Credit card purchases:"
-            android:textSize="16sp" />
-
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -126,57 +119,76 @@
 
                 </RelativeLayout>
 
-            </LinearLayout>
+                <View
+                    android:id="@+id/ccTransLine"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_below="@id/debt_header_layout"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:alpha=".5"
+                    android:background="@color/colorPrimary"></View>
 
-        </androidx.core.widget.NestedScrollView>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:orientation="horizontal">
 
-        <View
-            android:id="@+id/ccTransLine"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_below="@id/debt_header_layout"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="10dp"
-            android:alpha=".5"
-            android:background="@color/colorPrimary"></View>
+                    <EditText
+                        android:id="@+id/ccTransAmount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:hint="Enter amount"
+                        android:textSize="16sp" />
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+                    <Spinner
+                        android:id="@+id/ccTransCatSpinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@id/ccTransAmount"
+                        android:layout_centerVertical="true"
+                        android:layout_margin="10dp"
+                        android:layout_toEndOf="@id/ccTransAmount"
+                        android:gravity="fill_horizontal">
 
-            <EditText
-                android:id="@+id/ccTransAmount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:hint="Enter amount"
-                android:textSize="16sp" />
+                    </Spinner>
 
-            <Spinner
-                android:id="@+id/ccTransCatSpinner"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_margin="10dp"
-                android:layout_toStartOf="@id/ccTransButton"
-                android:layout_toEndOf="@id/ccTransAmount"
-                android:gravity="fill_horizontal">
+                    <TextView
+                        android:id="@+id/ccTransDebtCatLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/ccTransAmount"
+                        android:layout_margin="10dp"
+                        android:hint="On which DEBT?"
+                        android:textSize="16sp" />
 
-            </Spinner>
+                    <Spinner
+                        android:id="@+id/ccTransDebtCatSpinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/ccTransAmount"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="10dp"
+                        android:layout_toEndOf="@id/ccTransDebtCatLabel"
+                        android:gravity="fill_horizontal">
 
-            <Button
-                android:id="@+id/ccTransButton"
-                android:layout_width="70dp"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_margin="10dp"
-                android:text="enter"
-                android:textSize="14sp" />
+                    </Spinner>
 
-        </RelativeLayout>
+                    <Button
+                        android:id="@+id/ccTransButton"
+                        android:layout_width="70dp"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/ccTransDebtCatLabel"
+                        android:layout_alignParentEnd="true"
+                        android:layout_margin="10dp"
+                        android:text="enter"
+                        android:textSize="14sp" />
+
+                </RelativeLayout>
 
         <View
             android:id="@+id/ccTransLine2"
@@ -198,9 +210,27 @@
             android:layout_marginTop="10dp"
             android:layout_marginEnd="70dp"
             android:layout_marginBottom="10dp"
-            android:text="Use this tab to record all the transactions when you use your credit card."           android:textAlignment="center"
+            android:text="NOTE: There must be a DEBT item created for each credit card."
+            android:textAlignment="center"
             android:textColor="@color/colorGreen"
             android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/newMoneyCCLabel2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="70dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="70dp"
+            android:layout_marginBottom="10dp"
+            android:text="Use this tab to record all the transactions when you use your credit cards."
+            android:textAlignment="center"
+            android:textColor="@color/colorGreen"
+            android:textSize="18sp" />
+
+            </LinearLayout>
+
+        </androidx.core.widget.NestedScrollView>
 
         <ListView
             android:id="@+id/ccTransList"

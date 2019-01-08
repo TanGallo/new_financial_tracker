@@ -35,6 +35,8 @@
     <string name="payment_not_possible_B">You don\'t have enough spending money left in your account to make this purchase. You will be spending money that is reserved for other expenses.</string>
     <string name="payment_not_possible_A">You don\'t have enough money in your account to make this purchase. You will put your balance into the negative.</string>
     <string name="continue_warning">NOTE: Your account balances will not be affected until you pay this item in the \'Pay CC\' tab.</string>
+    <string name="no_debt_item_warning">You must create a DEBT item to charge this purchase against.</string>
+    <string name="spending_report">Spending Report</string>
 
 
 </resources>

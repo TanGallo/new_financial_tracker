@@ -51,29 +51,11 @@
                 android:textSize="18sp" />
 
             <TextView
-                android:id="@+id/savingsPercentEntryLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:text="What interest rate is being earned?"
-                android:textSize="16sp" />
-
-
-            <EditText
-                android:id="@+id/savingsPercentEntry"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
-                android:inputType="numberDecimal"
-                android:textSize="18sp" />
-
-            <TextView
                 android:id="@+id/savingsGoalAmountEntryLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:text="What is the amount you want to save?"
+                android:text="What is the total amount you want to save?"
                 android:textSize="16sp" />
 
             <EditText
@@ -142,6 +124,56 @@
 
                 <RadioButton
                     android:id="@+id/savingsAnnuallyRadioButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Once a year"
+                    android:textSize="15sp" />
+
+            </RadioGroup>
+
+            <TextView
+                android:id="@+id/savingsPercentEntryLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:text="What is the annual interest rate being earned?"
+                android:textSize="16sp" />
+
+
+            <EditText
+                android:id="@+id/savingsPercentEntry"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:inputType="numberDecimal"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/savingsIntFrequencyLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:text="How often is the interest compounded?"
+                android:textSize="16sp" />
+
+            <RadioGroup
+                android:id="@+id/savingsIntFrequencyRadioGroup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp">
+
+                <RadioButton
+                    android:id="@+id/savingsIntMonthlyRadioButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Once a month"
+                    android:textSize="15sp" />
+
+                <RadioButton
+                    android:id="@+id/savingsIntAnnuallyRadioButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Once a year"

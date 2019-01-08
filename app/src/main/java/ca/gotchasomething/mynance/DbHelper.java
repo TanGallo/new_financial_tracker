@@ -41,10 +41,11 @@ public class DbHelper extends SQLiteOpenHelper {
     public static final String SAVINGS_TABLE_NAME = "savings";
     public static final String SAVINGSNAME = "savingsName";
     public static final String SAVINGSAMOUNT = "savingsAmount";
-    public static final String SAVINGSRATE = "savingsRate";
+    public static final String SAVINGSGOAL = "savingsGoal";
     public static final String SAVINGSPAYMENTS = "savingsPayments";
     public static final String SAVINGSFREQUENCY = "savingsFrequency";
-    public static final String SAVINGSGOAL = "savingsGoal";
+    public static final String SAVINGSRATE = "savingsRate";
+    public static final String SAVINGSINTFREQUENCY = "savingsIntFrequency";
     public static final String SAVINGSDATE = "savingsDate";
     public static final String EXPREFKEYS = "expRefKeyS";
 
@@ -60,6 +61,8 @@ public class DbHelper extends SQLiteOpenHelper {
     public static final String MONEYOUTAMOUNT = "moneyOutAmount";
     public static final String MONEYOUTCREATEDON = "moneyOutCreatedOn";
     public static final String MONEYOUTCC = "moneyOutCC";
+    public static final String MONEYOUTDEBTCAT = "moneyOutDebtCat";
+    public static final String MONEYOUTCHARGINGDEBTID = "moneyOutChargingDebtId";
     public static final String MONEYOUTTOPAY = "moneyOutToPay";
     public static final String MONEYOUTPAID = "moneyOutPaid";
     public static final String EXPREFKEYMO = "expRefKeyMO";
@@ -124,10 +127,11 @@ public class DbHelper extends SQLiteOpenHelper {
             " (_id INTEGER PRIMARY KEY," +
             " savingsName TEXT," +
             " savingsAmount REAL," +
-            " savingsRate REAL," +
+            " savingsGoal REAL," +
             " savingsPayments REAL," +
             " savingsFrequency REAL," +
-            " savingsGoal REAL," +
+            " savingsRate REAL," +
+            " savingsIntFrequency REAL," +
             " savingsDate TEXT," +
             " expRefKeyS INTEGER)";
 
@@ -145,6 +149,8 @@ public class DbHelper extends SQLiteOpenHelper {
             " moneyOutAmount REAL," +
             " moneyOutCreatedOn TEXT," +
             " moneyOutCC TEXT," +
+            " moneyOutDebtCat TEXT," +
+            " moneyOutChargingDebtId INTEGER," +
             " moneyOutToPay INTEGER," +
             " moneyOutPaid INTEGER," +
             " expRefKeyMO INTEGER)";

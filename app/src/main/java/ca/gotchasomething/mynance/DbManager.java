@@ -24,17 +24,19 @@ public class DbManager {
 
     public Calendar cal;
     public Cursor cursor;
-    public Date debtEndD, savingsDateD;
+    public Date debtEndD, savingsDateD, dateObj;
     public DbHelper dbHelper;
     public Double startingBalanceResult = 0.0, totalDebt = 0.0, numberOfYearsToPayDebt = 0.0, numberOfYearsToSavingsGoal = 0.0, totalSavings = 0.0,
             totalExpenses = 0.0, totalIncome = 0.0, totalCCPaymentDue = 0.0, totalCCPaymentBDue = 0.0, currentAccountBalance = 0.0,
             currentAvailableBalance = 0.0, totalBudgetAExpenses = 0.0, percentB = 0.0;
+    public General general = new General();
     public int tourDoneCheck = 0, balanceDoneCheck = 0, budgetDoneCheck = 0, savingsDoneCheck = 0, debtsDoneCheck = 0, numberOfDaysToPayDebt = 0,
-            numberOfDaysToSavingsGoal = 0, currentPageId = 0;
+            numberOfDaysToSavingsGoal = 0, currentPageId = 0, debtCount = 0, startIndex = 0, endIndex = 0;
     public Long expenseId;
     public SimpleDateFormat debtEndS, savingsDateS;
     public SQLiteDatabase db;
-    public String debtEnd = null, savingsDate = null, category = null, spentAmount = null;
+    public String debtEnd = null, savingsDate = null, category = null, spentAmount = null, month = null, year = null, startingString = null,
+            subStringResult = null;
 
     public DbManager(Context context) {
         dbHelper = DbHelper.getInstance(context);
@@ -273,6 +275,11 @@ public class DbManager {
         return totalDebt;
     }
 
+    public int getDebtCount() {
+        debtCount = getDebts().size();
+        return debtCount;
+    }
+
     public List<SavingsDb> getSavings() {
         db = dbHelper.getReadableDatabase();
         cursor = db.rawQuery("SELECT * FROM " + DbHelper.SAVINGS_TABLE_NAME + " ORDER BY " + DbHelper.SAVINGSGOAL + " DESC", null);
@@ -282,10 +289,11 @@ public class DbManager {
                 SavingsDb saving = new SavingsDb(
                         cursor.getString(cursor.getColumnIndex(DbHelper.SAVINGSNAME)),
                         cursor.getDouble(cursor.getColumnIndex(DbHelper.SAVINGSAMOUNT)),
-                        cursor.getDouble(cursor.getColumnIndex(DbHelper.SAVINGSRATE)),
+                        cursor.getDouble(cursor.getColumnIndex(DbHelper.SAVINGSGOAL)),
                         cursor.getDouble(cursor.getColumnIndex(DbHelper.SAVINGSPAYMENTS)),
                         cursor.getDouble(cursor.getColumnIndex(DbHelper.SAVINGSFREQUENCY)),
-                        cursor.getDouble(cursor.getColumnIndex(DbHelper.SAVINGSGOAL)),
+                        cursor.getDouble(cursor.getColumnIndex(DbHelper.SAVINGSRATE)),
+                        cursor.getDouble(cursor.getColumnIndex(DbHelper.SAVINGSINTFREQUENCY)),
                         cursor.getString(cursor.getColumnIndex(DbHelper.SAVINGSDATE)),
                         cursor.getLong(cursor.getColumnIndex(DbHelper.EXPREFKEYS)),
                         cursor.getLong(cursor.getColumnIndex(DbHelper.ID))
@@ -302,10 +310,11 @@ public class DbManager {
         ContentValues newSavings = new ContentValues();
         newSavings.put(DbHelper.SAVINGSNAME, saving.getSavingsName());
         newSavings.put(DbHelper.SAVINGSAMOUNT, saving.getSavingsAmount());
-        newSavings.put(DbHelper.SAVINGSRATE, saving.getSavingsRate());
+        newSavings.put(DbHelper.SAVINGSGOAL, saving.getSavingsGoal());
         newSavings.put(DbHelper.SAVINGSPAYMENTS, saving.getSavingsPayments());
         newSavings.put(DbHelper.SAVINGSFREQUENCY, saving.getSavingsFrequency());
-        newSavings.put(DbHelper.SAVINGSGOAL, saving.getSavingsGoal());
+        newSavings.put(DbHelper.SAVINGSRATE, saving.getSavingsRate());
+        newSavings.put(DbHelper.SAVINGSINTFREQUENCY, saving.getSavingsIntFrequency());
         newSavings.put(DbHelper.SAVINGSDATE, savingsEndDate(saving));
         newSavings.put(DbHelper.EXPREFKEYS, saving.getExpRefKeyS());
         db = dbHelper.getWritableDatabase();
@@ -316,10 +325,11 @@ public class DbManager {
         ContentValues updateSaving = new ContentValues();
         updateSaving.put(DbHelper.SAVINGSNAME, saving.getSavingsName());
         updateSaving.put(DbHelper.SAVINGSAMOUNT, saving.getSavingsAmount());
-        updateSaving.put(DbHelper.SAVINGSRATE, saving.getSavingsRate());
+        updateSaving.put(DbHelper.SAVINGSGOAL, saving.getSavingsGoal());
         updateSaving.put(DbHelper.SAVINGSPAYMENTS, saving.getSavingsPayments());
         updateSaving.put(DbHelper.SAVINGSFREQUENCY, saving.getSavingsFrequency());
-        updateSaving.put(DbHelper.SAVINGSGOAL, saving.getSavingsGoal());
+        updateSaving.put(DbHelper.SAVINGSRATE, saving.getSavingsRate());
+        updateSaving.put(DbHelper.SAVINGSINTFREQUENCY, saving.getSavingsIntFrequency());
         updateSaving.put(DbHelper.SAVINGSDATE, savingsEndDate(saving));
         updateSaving.put(DbHelper.EXPREFKEYS, saving.getExpRefKeyS());
         db = dbHelper.getWritableDatabase();
@@ -595,6 +605,8 @@ public class DbManager {
                         cursor.getDouble(cursor.getColumnIndex(DbHelper.MONEYOUTAMOUNT)),
                         cursor.getString(cursor.getColumnIndex(DbHelper.MONEYOUTCREATEDON)),
                         cursor.getString(cursor.getColumnIndex(DbHelper.MONEYOUTCC)),
+                        cursor.getString(cursor.getColumnIndex(DbHelper.MONEYOUTDEBTCAT)),
+                        cursor.getLong(cursor.getColumnIndex(DbHelper.MONEYOUTCHARGINGDEBTID)),
                         cursor.getInt(cursor.getColumnIndex(DbHelper.MONEYOUTTOPAY)),
                         cursor.getInt(cursor.getColumnIndex(DbHelper.MONEYOUTPAID)),
                         cursor.getLong(cursor.getColumnIndex(DbHelper.EXPREFKEYMO)),
@@ -616,6 +628,8 @@ public class DbManager {
         newMoneyOut.put(DbHelper.MONEYOUTAMOUNT, moneyOut.getMoneyOutAmount());
         newMoneyOut.put(DbHelper.MONEYOUTCREATEDON, moneyOut.getMoneyOutCreatedOn());
         newMoneyOut.put(DbHelper.MONEYOUTCC, moneyOut.getMoneyOutCC());
+        newMoneyOut.put(DbHelper.MONEYOUTDEBTCAT, moneyOut.getMoneyOutDebtCat());
+        newMoneyOut.put(DbHelper.MONEYOUTCHARGINGDEBTID, moneyOut.getMoneyOutChargingDebtId());
         newMoneyOut.put(DbHelper.MONEYOUTTOPAY, moneyOut.getMoneyOutToPay());
         newMoneyOut.put(DbHelper.MONEYOUTPAID, moneyOut.getMoneyOutPaid());
         newMoneyOut.put(DbHelper.EXPREFKEYMO, moneyOut.getExpRefKeyMO());
@@ -631,6 +645,8 @@ public class DbManager {
         updateMoneyOut.put(DbHelper.MONEYOUTAMOUNT, moneyOut.getMoneyOutAmount());
         updateMoneyOut.put(DbHelper.MONEYOUTCREATEDON, moneyOut.getMoneyOutCreatedOn());
         updateMoneyOut.put(DbHelper.MONEYOUTCC, moneyOut.getMoneyOutCC());
+        updateMoneyOut.put(DbHelper.MONEYOUTDEBTCAT, moneyOut.getMoneyOutDebtCat());
+        updateMoneyOut.put(DbHelper.MONEYOUTCHARGINGDEBTID, moneyOut.getMoneyOutChargingDebtId());
         updateMoneyOut.put(DbHelper.MONEYOUTTOPAY, moneyOut.getMoneyOutToPay());
         updateMoneyOut.put(DbHelper.MONEYOUTPAID, moneyOut.getMoneyOutPaid());
         updateMoneyOut.put(DbHelper.EXPREFKEYMO, moneyOut.getExpRefKeyMO());
@@ -643,6 +659,41 @@ public class DbManager {
         db = dbHelper.getWritableDatabase();
         String[] args = new String[]{String.valueOf(moneyOut.getId())};
         db.delete(DbHelper.MONEY_OUT_TABLE_NAME, DbHelper.ID + "=?", args);
+    }
+
+    public List<String> getYearsList() {
+        List<String> yearsList = new ArrayList<>();
+
+        if (getMoneyOuts().size() == 0) {
+            yearsList = null;
+        } else {
+            List<String> allYears = new ArrayList<>(getMoneyOuts().size());
+            for (MoneyOutDb m : getMoneyOuts()) {
+                allYears.add(m.getMoneyOutCreatedOn());
+            }
+            List<Date> allDates = new ArrayList<>(allYears.size());
+            general.extractingDates(allYears, allDates);
+
+            for (Date d : allDates) {
+                startingString = d.toString();
+                startIndex = startingString.length() - 4;
+                endIndex = startingString.length();
+                subStringResult = startingString.substring(startIndex, endIndex);
+                yearsList.add(subStringResult);
+            }
+        }
+
+        return yearsList;
+    }
+
+    public List<MoneyOutDb> getSpendingReport() {
+        List<MoneyOutDb> spendingReport = new ArrayList<>();
+        for(MoneyOutDb m: getMoneyOuts()) {
+            if(m.getMoneyOutCreatedOn().contains(month) && m.getMoneyOutCreatedOn().contains(year)) {
+                spendingReport.add(m);
+            }
+        }
+        return spendingReport;
     }
 
     public List<CurrentDb> getCurrent() {

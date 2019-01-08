@@ -5,6 +5,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
+
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -70,7 +73,57 @@ public class AddDebt extends LayoutDebt {
         debtFrequencyRadioGroup.setOnCheckedChangeListener(onCheckDebtFrequency);
         cancelDebtButton.setOnClickListener(onClickCancelDebtButton);
         saveDebtButton.setOnClickListener(onClickSaveDebtButton);
+
+        debtAmountEntry.addTextChangedListener(onChangeDebtAmount);
+        debtPercentEntry.addTextChangedListener(onChangeDebtPercent);
+        debtPaymentsEntry.addTextChangedListener(onChangeDebtPayments);
+
     }
+
+    TextWatcher onChangeDebtAmount = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            debtDateResult.setText(calcDebtDate());
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+        }
+    };
+
+    TextWatcher onChangeDebtPercent = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            debtDateResult.setText(calcDebtDate());
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+        }
+    };
+
+    TextWatcher onChangeDebtPayments = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            debtDateResult.setText(calcDebtDate());
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+        }
+    };
 
     RadioGroup.OnCheckedChangeListener onCheckDebtFrequency = new RadioGroup.OnCheckedChangeListener() {
         @Override
@@ -94,10 +147,26 @@ public class AddDebt extends LayoutDebt {
 
     public String calcDebtDate() {
 
-        amount = Double.valueOf(debtAmountEntry.getText().toString());
-        rate = Double.valueOf(debtPercentEntry.getText().toString());
-        payments = Double.valueOf(debtPaymentsEntry.getText().toString());
-        frequency = Double.valueOf(debtFrequencyS);
+        try {
+            amount = Double.valueOf(debtAmountEntry.getText().toString());
+        } catch(Exception e) {
+            amount = 0.0;
+        }
+        try {
+            rate = Double.valueOf(debtPercentEntry.getText().toString());
+        } catch(Exception e2) {
+            rate = 0.0;
+        }
+        try {
+            payments = Double.valueOf(debtPaymentsEntry.getText().toString());
+        } catch(Exception e3) {
+            payments = 0.0;
+        }
+        try {
+            frequency = Double.valueOf(debtFrequencyS);
+        } catch(Exception e4) {
+            frequency = 0.0;
+        }
 
         debtCal = Calendar.getInstance();
         numberOfYearsToPayDebt = -(Math.log(1 - (amount * (rate / 100) / (payments * frequency))) / (frequency * Math.log(1 + ((rate / 100) / frequency))));

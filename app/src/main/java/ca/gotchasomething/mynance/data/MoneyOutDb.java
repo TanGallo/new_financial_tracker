@@ -8,6 +8,8 @@ public class MoneyOutDb {
     private Double moneyOutAmount; //4
     private String moneyOutCreatedOn; //5
     private String moneyOutCC; //6
+    private String moneyOutDebtCat;
+    private long moneyOutChargingDebtId;
     private int moneyOutToPay; //7
     private int moneyOutPaid; //8
     private long expRefKeyMO; //9
@@ -20,6 +22,8 @@ public class MoneyOutDb {
             Double moneyOutAmount,
             String moneyOutCreatedOn,
             String moneyOutCC,
+            String moneyOutDebtCat,
+            long moneyOutChargingDebtId,
             int moneyOutToPay,
             int moneyOutPaid,
             long expRefKeyMO,
@@ -30,6 +34,8 @@ public class MoneyOutDb {
         this.moneyOutAmount = moneyOutAmount;
         this.moneyOutCreatedOn = moneyOutCreatedOn;
         this.moneyOutCC = moneyOutCC;
+        this.moneyOutDebtCat = moneyOutDebtCat;
+        this.moneyOutChargingDebtId = moneyOutChargingDebtId;
         this.moneyOutToPay = moneyOutToPay;
         this.moneyOutPaid = moneyOutPaid;
         this.expRefKeyMO = expRefKeyMO;
@@ -53,6 +59,12 @@ public class MoneyOutDb {
 
     public String getMoneyOutCC() { return moneyOutCC; }
     public void setMoneyOutCC(String moneyOutCC) { this.moneyOutCC = moneyOutCC; }
+
+    public String getMoneyOutDebtCat() { return moneyOutDebtCat; }
+    public void setMoneyOutDebtCat(String moneyOutDebtCat) { this.moneyOutDebtCat = moneyOutDebtCat; }
+
+    public long getMoneyOutChargingDebtId() { return moneyOutChargingDebtId; }
+    public void setMoneyOutChargingDebtId(long moneyOutChargingDebtId) { this.moneyOutChargingDebtId = moneyOutChargingDebtId; }
 
     public int getMoneyOutToPay() { return moneyOutToPay; }
     public void setMoneyOutToPay(int moneyOutToPay) { this.moneyOutToPay = moneyOutToPay; }
