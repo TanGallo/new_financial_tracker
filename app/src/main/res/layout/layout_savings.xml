@@ -90,6 +90,28 @@
                     android:alpha=".5"
                     android:background="@color/colorPrimary"></View>
 
+                <TextView
+                    android:id="@+id/emptySavingsText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:text="You haven't entered any savings yet."
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center_horizontal"
+                    android:textColor="@color/colorGreen"
+                    android:textSize="18sp"/>
+
+                <TextView
+                    android:id="@+id/emptySavingsText2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:text="Press the PLUS button above to add savings."
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center_horizontal"
+                    android:textColor="@color/colorGreen"
+                    android:textSize="18sp"/>
+
                 <ListView
                     android:id="@+id/savingsListView"
                     android:layout_width="match_parent"

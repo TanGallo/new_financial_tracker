@@ -37,6 +37,7 @@
     <string name="continue_warning">NOTE: Your account balances will not be affected until you pay this item in the \'Pay CC\' tab.</string>
     <string name="no_debt_item_warning">You must create a DEBT item to charge this purchase against.</string>
     <string name="spending_report">Spending Report</string>
+    <string name="goal_never">There is no money here.</string>
 
 
 </resources>

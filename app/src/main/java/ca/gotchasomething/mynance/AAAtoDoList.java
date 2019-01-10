@@ -1,15 +1,15 @@
 /*
 
-getSpendingReport method not recognizing Strings "month" and "year":
-    move method to LayoutSpendingReport and change spendingReport list adapter accordingly
-        have list appear only on "show report" button being pushed
+remove duplicate years from dbManager.getYearsList()
+loop that says: if(yearsList(position) = yearsList(position) +1) {
+yearsList.remove(currentPosition) }
+remove duplicate categories from spending report
+fix math in spending report
+fix spending report so error shows if no entries in the time period
 
-FORMULA FOR SAVINGS DATE CALCULATION
-DBL CHECK CALCULATION FOR DEBT DATE
 WARNING WHEN WEEKLY LIMIT ALREADY SPENT
-CHANGE MENU (ADD SPENDING REPORT)
 ADD SPENDING REPORT (USER CAN CHOOSE FILTERS FOR REPORT)
-ADD GENERATE BUDGET FUNCTION
+ADD GENERATE/UPDATE BUDGET FUNCTION
 RED EXCLAMATION MARKS TO SHOW UP ON TABS OR MENU TO FLAG ISSUES
 ADD RATINGS REQUEST
 DBL CHECK ONBOARDING GOOD

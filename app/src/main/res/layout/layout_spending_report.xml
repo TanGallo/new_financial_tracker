@@ -37,26 +37,25 @@
                 android:layout_marginTop="20dp"
                 android:orientation="vertical">
 
-                <RelativeLayout
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
-                    android:orientation="horizontal">
+                    android:orientation="vertical">
 
                     <Spinner
                         android:id="@+id/monthSpinner"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_toStartOf="@id/yearSpinner"></Spinner>
+                    ></Spinner>
 
                     <Spinner
                         android:id="@+id/yearSpinner"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
                         ></Spinner>
 
-                </RelativeLayout>
+                </LinearLayout>
 
                 <Button
                     android:id="@+id/spendingReportButton"
@@ -78,12 +77,19 @@
                     android:alpha=".5"
                     android:background="@color/colorPrimary"></View>
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
                 <TextView
                     android:id="@+id/emptySpinnersText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:text="You haven't entered any spending yet."
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center_horizontal"
                     android:textColor="@color/colorGreen"
                     android:textSize="18sp"/>
 
@@ -92,7 +98,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
-                    android:text="Go to DAILY MONEY to record your spending."
+                    android:text="Go to DAILY MONEY to record your spending in the MONEY OUT tab."
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center_horizontal"
                     android:textColor="@color/colorGreen"
                     android:textSize="18sp"/>
 
@@ -102,6 +110,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:text="Choose a month and year and press the 'show report' button"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center_horizontal"
                     android:textColor="@color/colorGreen"
                     android:textSize="18sp"/>
 
@@ -111,8 +121,12 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:text="There was no spending during that period"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center_horizontal"
                     android:textColor="@color/colorGreen"
                     android:textSize="18sp"/>
+
+            </LinearLayout>
 
                 <ListView
                     android:id="@+id/spendingListView"

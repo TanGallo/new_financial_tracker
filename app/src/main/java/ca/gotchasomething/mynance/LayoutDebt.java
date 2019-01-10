@@ -69,7 +69,8 @@ public class LayoutDebt extends MainNavigation {
     SimpleDateFormat latestDateS, debtEndS;
     String totalDebt2 = null, latestDate = null, totalDebtS = null, debtAmountS = null, debtAmount2 = null, debtFrequencyS = null, debtEnd = null,
             debtAmountS2 = null, debtPaymentsS = null, debtPercentS = null;
-    TextView totalDebtOwing, totalDebtPaidByDate, debtListName, debtListAmount, debtListFreeDate, debtDateResult, totalDebtPaidLabel;
+    TextView totalDebtOwing, totalDebtPaidByDate, debtListName, debtListAmount, debtListFreeDate, debtDateResult, totalDebtPaidLabel, emptyDebtsText,
+            emptyDebtsText2;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -91,6 +92,8 @@ public class LayoutDebt extends MainNavigation {
         totalDebtOwing = findViewById(R.id.totalDebtOwing);
         totalDebtPaidLabel = findViewById(R.id.totalDebtPaidLabel);
         totalDebtPaidByDate = findViewById(R.id.totalDebtPaidByDate);
+        emptyDebtsText = findViewById(R.id.emptyDebtsText);
+        emptyDebtsText2 = findViewById(R.id.emptyDebtsText2);
 
         debtListView = findViewById(R.id.debtListView);
         addDebtButton = findViewById(R.id.addDebtButton);
@@ -108,8 +111,12 @@ public class LayoutDebt extends MainNavigation {
 
         if(debtAdapter.getCount() == 0) {
             totalDebtPaidLabel.setVisibility(View.GONE);
+            emptyDebtsText.setVisibility(View.VISIBLE);
+            emptyDebtsText2.setVisibility(View.VISIBLE);
         } else {
             totalDebtPaidLabel.setVisibility(View.VISIBLE);
+            emptyDebtsText.setVisibility(View.GONE);
+            emptyDebtsText2.setVisibility(View.GONE);
         }
 
         debtHeaderText();
@@ -553,6 +560,15 @@ public class LayoutDebt extends MainNavigation {
 
                     debtAdapter.updateDebts(dbManager.getDebts());
                     notifyDataSetChanged();
+                    if(debtAdapter.getCount() == 0) {
+                        totalDebtPaidLabel.setVisibility(View.GONE);
+                        emptyDebtsText.setVisibility(View.VISIBLE);
+                        emptyDebtsText2.setVisibility(View.VISIBLE);
+                    } else {
+                        totalDebtPaidLabel.setVisibility(View.VISIBLE);
+                        emptyDebtsText.setVisibility(View.GONE);
+                        emptyDebtsText2.setVisibility(View.GONE);
+                    }
 
                     debtHeaderText();
                 }

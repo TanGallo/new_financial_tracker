@@ -21,6 +21,7 @@ import ca.gotchasomething.mynance.data.MoneyOutDb;
 
 public class LayoutSpendingReport extends MainNavigation {
 
+    ArrayAdapter monthSpinnerAdapter, yearSpinnerAdapter;
     Button spendingReportButton;
     DbManager dbManager;
     Double totalSpent = 0.0;
@@ -53,17 +54,18 @@ public class LayoutSpendingReport extends MainNavigation {
         spendingReportButton = findViewById(R.id.spendingReportButton);
         introText = findViewById(R.id.introText);
         emptyListText = findViewById(R.id.emptyListText);
-        emptyListText.setVisibility(View.GONE);
+        //emptyListText.setVisibility(View.GONE);
         emptySpinnersText = findViewById(R.id.emptySpinnersText);
         emptySpinnersText2 = findViewById(R.id.emptySpinnersText2);
 
         spendingListView = findViewById(R.id.spendingListView);
         spendingListView.setVisibility(View.GONE);
 
+        spendingReportButton.setOnClickListener(onClickShowReport);
+
         monthSpinner = findViewById(R.id.monthSpinner);
         months = new String[]{"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
-        ArrayAdapter<String> monthSpinnerAdapter = new ArrayAdapter<>(
-                this, R.layout.spinner_layout, months);
+        monthSpinnerAdapter = new ArrayAdapter(this, R.layout.spinner_layout, R.id.spinnerText, months);
         monthSpinner.setAdapter(monthSpinnerAdapter);
         monthSpinner.setOnItemSelectedListener(onMonthSelected);
 
@@ -81,26 +83,35 @@ public class LayoutSpendingReport extends MainNavigation {
             monthSpinner.setVisibility(View.VISIBLE);
             yearSpinner.setVisibility(View.VISIBLE);
             spendingReportButton.setVisibility(View.VISIBLE);
+
+            yearSpinnerAdapter = new ArrayAdapter(this, R.layout.spinner_layout, R.id.spinnerText, years);
+            yearSpinner.setAdapter(yearSpinnerAdapter);
+            yearSpinner.setOnItemSelectedListener(onYearSelected);
         }
-        ArrayAdapter<String> yearSpinnerAdapter = new ArrayAdapter<>(
-                this, R.layout.spinner_layout, years);
-        yearSpinner.setAdapter(yearSpinnerAdapter);
-        yearSpinner.setOnItemSelectedListener(onYearSelected);
 
-
-        spendingReportAdapter = new SpendingReportAdapter(getApplicationContext(), dbManager.getSpendingReport());
-        spendingListView.setAdapter(spendingReportAdapter);
-        if (spendingReportAdapter.getCount() == 0) {
-            emptyListText.setVisibility(View.VISIBLE);
+        if(dbManager.getMoneyOuts().size() == 0) {
+            emptySpinnersText.setVisibility(View.VISIBLE);
+            emptySpinnersText2.setVisibility(View.VISIBLE);
+            monthSpinner.setVisibility(View.GONE);
+            yearSpinner.setVisibility(View.GONE);
+            spendingReportButton.setVisibility(View.GONE);
+            introText.setVisibility(View.GONE);
+            emptyListText.setVisibility(View.GONE);
         } else {
+            emptySpinnersText.setVisibility(View.GONE);
+            emptySpinnersText2.setVisibility(View.GONE);
+            monthSpinner.setVisibility(View.VISIBLE);
+            yearSpinner.setVisibility(View.VISIBLE);
+            spendingReportButton.setVisibility(View.VISIBLE);
+            introText.setVisibility(View.VISIBLE);
             emptyListText.setVisibility(View.GONE);
         }
-
     }
 
     Spinner.OnItemSelectedListener onMonthSelected = new AdapterView.OnItemSelectedListener() {
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            monthSelected = String.valueOf(monthSpinner.getItemAtPosition(0));
             switch (monthSelected) {
                 case "January":
                     month = "Jan";
@@ -159,6 +170,26 @@ public class LayoutSpendingReport extends MainNavigation {
         }
     };
 
+    View.OnClickListener onClickShowReport = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+
+            introText.setVisibility(View.GONE);
+            emptySpinnersText.setVisibility(View.GONE);
+            emptySpinnersText2.setVisibility(View.GONE);
+
+            spendingReportAdapter = new SpendingReportAdapter(getApplicationContext(), dbManager.getSpendingReport());
+            spendingListView.setAdapter(spendingReportAdapter);
+            if (spendingReportAdapter.getCount() == 0) {
+                emptyListText.setVisibility(View.VISIBLE);
+                spendingListView.setVisibility(View.GONE);
+            } else {
+                emptyListText.setVisibility(View.GONE);
+                spendingListView.setVisibility(View.VISIBLE);
+            }
+        }
+    };
+
     public class SpendingReportAdapter extends ArrayAdapter<MoneyOutDb> {
 
         private Context context;
@@ -205,13 +236,27 @@ public class LayoutSpendingReport extends MainNavigation {
                 holder = (SpendingReportViewHolder) convertView.getTag();
             }
 
+            List<MoneyOutDb> spendingReport = new ArrayList<>();
+            for(MoneyOutDb m: dbManager.getMoneyOuts()) {
+                if(m.getMoneyOutCreatedOn().contains(month) && m.getMoneyOutCreatedOn().contains(year)) {
+                    spendingReport.add(m);
+                }
+            }
+
             //retrieve spending category
             holder.spendingReportCat.setText(spendingReport.get(position).getMoneyOutCat());
 
             //retrieve spent amount in each category
+            List<MoneyOutDb> spendingReport2 = new ArrayList<>();
+            for(MoneyOutDb m: dbManager.getMoneyOuts()) {
+                if(m.getMoneyOutCreatedOn().contains(String.valueOf(month)) && m.getMoneyOutCreatedOn().contains(String.valueOf(year))) {
+                    spendingReport2.add(m);
+                }
+            }
+
             List<Double> totalSpentList = new ArrayList<>();
-            for (MoneyOutDb m : dbManager.getSpendingReport()) {
-                totalSpentList.add(m.getMoneyOutAmount());
+            for (MoneyOutDb m2 : spendingReport2) {
+                totalSpentList.add(m2.getMoneyOutAmount());
             }
             for (Double dbl : totalSpentList) {
                 totalSpent += dbl;

@@ -23,12 +23,15 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -44,8 +47,8 @@ public class LayoutSavings extends MainNavigation {
     DbHelper dbHelper;
     DbManager dbManager;
     Double amount = 0.0, expenseAnnualAmount = 0.0, totalSavings = 0.0, totalSavingsD = 0.0, savingsGoalD = 0.0, savingsCurrentD = 0.0, rate = 0.0,
-            a = 0.0, payments = 0.0, frequency = 0.0, numberOfYearsToSavingsGoal = 0.0, balanceAmount = 0.0, goalAmount = 0.0, savingsAmount = 0.0, savingsAmountD = 0.0,
-            savingsPaymentsD = 0.0, savingsGoalD2 = 0.0, savingsPercentD = 0.0, savingsPercentD2 = 0.0;
+            a = 0.0, payments = 0.0, frequency = 0.0, balanceAmount = 0.0, goal = 0.0, savingsAmountD = 0.0, savingsPaymentsD = 0.0,
+            savingsGoalD2 = 0.0, savingsPercentD = 0.0, savingsPercentD2 = 0.0, rate2 = 0.0, intFrequency = 0.0, years = 0.0;
     EditText savingsNameEntry, savingsAmountEntry, savingsPercentEntry, savingsPaymentsEntry, savingsGoalAmountEntry;
     FloatingActionButton addSavingsButton;
     General general;
@@ -65,7 +68,8 @@ public class LayoutSavings extends MainNavigation {
     SQLiteDatabase expenseDb;
     String totalSavings2 = null, totalSavingsS = null, savingsGoalS = null, savingsGoal2 = null, savingsCurrentS = null, savingsCurrent2 = null,
             savingsDate = null, savingsFrequencyS = null, savingsAmountS = null, savingsPaymentsS = null, savingsGoalS2 = null, savingsPercentS = null, savingsIntFrequencyS = null;
-    TextView totalSavedText, savingsListName, savingsListGoalAmount, savingsListDate, savingsListCurrentAmount, savingsDateResult;
+    TextView totalSavedText, savingsListName, savingsListGoalAmount, savingsListDate, savingsListCurrentAmount, savingsDateResult, emptysavingsText,
+            emptysavingsText2, savingsFrequencyLabel, savingsIntFrequencyLabel;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -85,6 +89,8 @@ public class LayoutSavings extends MainNavigation {
         dbManager = new DbManager(this);
 
         totalSavedText = findViewById(R.id.totalSavedText);
+        emptysavingsText = findViewById(R.id.emptySavingsText);
+        emptysavingsText2 = findViewById(R.id.emptySavingsText2);
 
         savingsListView = findViewById(R.id.savingsListView);
         addSavingsButton = findViewById(R.id.addSavingsButton);
@@ -99,6 +105,14 @@ public class LayoutSavings extends MainNavigation {
 
         savingsAdapter = new SavingsDbAdapter(this, dbManager.getSavings());
         savingsListView.setAdapter(savingsAdapter);
+
+        if (savingsAdapter.getCount() == 0) {
+            emptysavingsText.setVisibility(View.VISIBLE);
+            emptysavingsText2.setVisibility(View.VISIBLE);
+        } else {
+            emptysavingsText.setVisibility(View.GONE);
+            emptysavingsText2.setVisibility(View.GONE);
+        }
 
         savingsHeaderText();
     }
@@ -144,101 +158,107 @@ public class LayoutSavings extends MainNavigation {
         }
     }
 
-    public String calcSavingsDate() {
+    public Double findNumberOfYears() {
 
-        if (savingsGoalAmountEntry.getText().toString().equals("") || savingsAmountEntry.getText().toString().equals("")) {
+        if (savingsAmountEntry.getText().toString().equals("")) {
             amount = 0.0;
         } else {
             try {
-                goalAmount = Double.valueOf(savingsGoalAmountEntry.getText().toString());
-            } catch (NumberFormatException e2) {
-                goalAmount = general.extractingDollars(savingsGoalAmountEntry);
-            }
-
-            try {
-                savingsAmount = Double.valueOf(savingsAmountEntry.getText().toString());
-            } catch (NumberFormatException e3) {
-                savingsAmount = general.extractingDollars(savingsAmountEntry);
+                amount = Double.valueOf(savingsAmountEntry.getText().toString());
+            } catch (Exception e) {
+                amount = general.extractingDollars(savingsAmountEntry);
             }
         }
-        amount = goalAmount - savingsAmount;
-
-
-        if (savingsPercentEntry.getText().toString().equals("")) {
-            rate = 0.0;
+        if (savingsGoalAmountEntry.getText().toString().equals("")) {
+            goal = amount;
         } else {
             try {
-                rate = Double.valueOf(savingsPercentEntry.getText().toString());
-            } catch (NumberFormatException e4) {
-                rate = general.extractingPercents(savingsPercentEntry);
+                goal = Double.valueOf(savingsGoalAmountEntry.getText().toString());
+            } catch (Exception e2) {
+                goal = general.extractingDollars(savingsGoalAmountEntry);
             }
         }
-
+        if (goal < amount) {
+            goal = amount;
+        }
+        if (savingsPercentEntry.getText().toString().equals("")) {
+            rate = 0.01;
+        } else {
+            try {
+                rate2 = Double.valueOf(savingsPercentEntry.getText().toString());
+                rate = rate2 / 100;
+            } catch (Exception e3) {
+                rate2 = general.extractingPercents(savingsPercentEntry);
+                rate = rate2 / 100;
+            }
+        }
+        if (rate <= 0) {
+            rate = .01;
+            savingsIntAnnuallyRadioButton.setChecked(true);
+        }
         if (savingsPaymentsEntry.getText().toString().equals("")) {
             payments = 0.0;
         } else {
             try {
                 payments = Double.valueOf(savingsPaymentsEntry.getText().toString());
-            } catch(NumberFormatException e5) {
+            } catch (Exception e4) {
                 payments = general.extractingDollars(savingsPaymentsEntry);
             }
         }
+        if (payments <= 0) {
+            payments = 0.1;
+            savingsAnnuallyRadioButton.setChecked(true);
+        }
 
         frequency = Double.valueOf(savingsFrequencyS);
+        intFrequency = Double.valueOf(savingsIntFrequencyS);
+
+        years = .00274;
+
+        do {
+            years++;
+        }
+        while (((amount * Math.pow((1 + rate / intFrequency), (intFrequency * years))) + (((payments * frequency) / 12) * ((Math.pow((1 + rate / intFrequency), (intFrequency * years)) - 1) / (rate / intFrequency)) * (1 + rate / intFrequency))) <= goal);
+
+        if (amount == 0 && payments == 0.1) {
+            years = null;
+        }
+        if (goal == amount) {
+            years = 0.0;
+        }
+
+        return years;
+    }
+
+    public String calcSavingsDate() {
 
         savingsCal = Calendar.getInstance();
-        numberOfYearsToSavingsGoal = -(Math.log(1 - (amount * (rate / 100) / (payments * frequency))) / (frequency * Math.log(1 + ((rate / 100) / frequency))));
-        numberOfDaysToSavingsGoal = (int) Math.round(numberOfYearsToSavingsGoal * 365);
 
-        if (amount <= 0) {
-            savingsDate = getString(R.string.goal_achieved);
-
-        } else if (numberOfDaysToSavingsGoal > Integer.MAX_VALUE || numberOfDaysToSavingsGoal <= 0) {
-            Toast.makeText(getApplicationContext(), R.string.too_far, Toast.LENGTH_LONG).show();
-            savingsDate = getString(R.string.too_far);
-
+        if (findNumberOfYears() == null) {
+            savingsDate = getString(R.string.goal_never);
         } else {
 
-            savingsCal.add(Calendar.DATE, numberOfDaysToSavingsGoal);
-            savingsDateD = savingsCal.getTime();
-            savingsDateS = new SimpleDateFormat("dd-MMM-yyyy");
-            savingsDate = getString(R.string.goal_will) + " " + savingsDateS.format(savingsDateD);
+            numberOfDaysToSavingsGoal = (int) Math.round(findNumberOfYears() * 365);
+
+            if ((numberOfDaysToSavingsGoal) <= 0) {
+                savingsDate = getString(R.string.goal_achieved);
+
+            } else if (numberOfDaysToSavingsGoal > Integer.MAX_VALUE) {
+                savingsDate = getString(R.string.too_far);
+
+            } else {
+
+                savingsCal.add(Calendar.DATE, numberOfDaysToSavingsGoal);
+                savingsDateD = savingsCal.getTime();
+                savingsDateS = new SimpleDateFormat("dd-MMM-yyyy");
+                savingsDate = getString(R.string.goal_will) + " " + savingsDateS.format(savingsDateD);
+            }
         }
 
         return savingsDate;
     }
 
     TextWatcher onChangeSavingsAmount = new TextWatcher() {
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-        }
-
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-            savingsDateResult.setText(calcSavingsDate());
-        }
-
-        @Override
-        public void afterTextChanged(Editable s) {
-        }
-    };
-
-    TextWatcher onChangeSavingsPercent = new TextWatcher() {
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-        }
-
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-            savingsDateResult.setText(calcSavingsDate());
-        }
-
-        @Override
-        public void afterTextChanged(Editable s) {
-        }
-    };
-
-    TextWatcher onChangeSavingsPayments = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
         }
@@ -260,6 +280,54 @@ public class LayoutSavings extends MainNavigation {
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
+            savingsDateResult.setText(calcSavingsDate());
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+        }
+    };
+
+    TextWatcher onChangeSavingsPayments = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            if(savingsPaymentsEntry.getText().toString().equals("0") || general.extractingDollars(savingsPaymentsEntry) == 0) {
+                savingsFrequencyLabel.setVisibility(View.GONE);
+                savingsFrequencyRadioGroup.setVisibility(View.GONE);
+                savingsAnnuallyRadioButton.setChecked(true);
+            } else {
+                savingsFrequencyLabel.setVisibility(View.VISIBLE);
+                savingsFrequencyRadioGroup.setVisibility(View.VISIBLE);
+            }
+
+            savingsDateResult.setText(calcSavingsDate());
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+        }
+    };
+
+    TextWatcher onChangeSavingsPercent = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            if(savingsPercentEntry.getText().toString().equals("0") || general.extractingPercents(savingsPercentEntry) == 0) {
+                savingsIntFrequencyLabel.setVisibility(View.GONE);
+                savingsIntFrequencyRadioGroup.setVisibility(View.GONE);
+                savingsIntAnnuallyRadioButton.setChecked(true);
+            } else {
+                savingsIntFrequencyLabel.setVisibility(View.VISIBLE);
+                savingsIntFrequencyRadioGroup.setVisibility(View.VISIBLE);
+            }
+
             savingsDateResult.setText(calcSavingsDate());
         }
 
@@ -372,15 +440,17 @@ public class LayoutSavings extends MainNavigation {
                     savingsPaymentsEntry = findViewById(R.id.savingsPaymentsEntry);
                     savingsPercentEntry = findViewById(R.id.savingsPercentEntry);
                     savingsDateResult = findViewById(R.id.savingsDateResult);
+                    savingsFrequencyLabel = findViewById(R.id.savingsFrequencyLabel);
+                    savingsIntFrequencyLabel = findViewById(R.id.savingsIntFrequencyLabel);
 
                     savingsFrequencyRadioGroup = findViewById(R.id.savingsFrequencyRadioGroup);
-                    //savingsIntFrequencyRadioGroup = findViewById(R.id.savingsIntFrequencyRadioGroup);
+                    savingsIntFrequencyRadioGroup = findViewById(R.id.savingsIntFrequencyRadioGroup);
                     savingsWeeklyRadioButton = findViewById(R.id.savingsWeeklyRadioButton);
                     savingsBiWeeklyRadioButton = findViewById(R.id.savingsBiWeeklyRadioButton);
                     savingsMonthlyRadioButton = findViewById(R.id.savingsMonthlyRadioButton);
                     savingsAnnuallyRadioButton = findViewById(R.id.savingsAnnuallyRadioButton);
-                    //savingsIntMonthlyRadioButton = findViewById(R.id.savingsIntMonthlyRadioButton);
-                    //savingsIntAnnuallyRadioButton = findViewById(R.id.savingsIntAnnuallyRadioButton);
+                    savingsIntMonthlyRadioButton = findViewById(R.id.savingsIntMonthlyRadioButton);
+                    savingsIntAnnuallyRadioButton = findViewById(R.id.savingsIntAnnuallyRadioButton);
 
                     saveSavingsButton = findViewById(R.id.saveSavingsButton);
                     saveSavingsButton.setVisibility(View.GONE);
@@ -396,6 +466,24 @@ public class LayoutSavings extends MainNavigation {
                     savingsAmountEntry.setText(savingsAmountS);
                     savingsAmountEntry.addTextChangedListener(onChangeSavingsAmount);
 
+                    savingsGoalD2 = savingsDb.getSavingsGoal();
+                    savingsGoalS2 = currencyFormat.format(savingsGoalD2);
+                    savingsGoalAmountEntry.setText(savingsGoalS2);
+                    savingsGoalAmountEntry.addTextChangedListener(onChangeSavingsGoal);
+
+                    savingsPaymentsD = savingsDb.getSavingsPayments();
+                    savingsPaymentsS = currencyFormat.format(savingsPaymentsD);
+                    savingsPaymentsEntry.setText(savingsPaymentsS);
+                    savingsPaymentsEntry.addTextChangedListener(onChangeSavingsPayments);
+
+                    if(savingsDb.getSavingsPayments() == 0) {
+                        savingsFrequencyLabel.setVisibility(View.GONE);
+                        savingsFrequencyRadioGroup.setVisibility(View.GONE);
+                    } else {
+                        savingsFrequencyLabel.setVisibility(View.VISIBLE);
+                        savingsFrequencyRadioGroup.setVisibility(View.VISIBLE);
+                    }
+
                     savingsPercentD = savingsDb.getSavingsRate();
                     savingsPercentD2 = savingsPercentD / 100;
                     percentFormat.setMinimumFractionDigits(2);
@@ -403,15 +491,13 @@ public class LayoutSavings extends MainNavigation {
                     savingsPercentEntry.setText(savingsPercentS);
                     savingsPercentEntry.addTextChangedListener(onChangeSavingsPercent);
 
-                    savingsPaymentsD = savingsDb.getSavingsPayments();
-                    savingsPaymentsS = currencyFormat.format(savingsPaymentsD);
-                    savingsPaymentsEntry.setText(savingsPaymentsS);
-                    savingsPaymentsEntry.addTextChangedListener(onChangeSavingsPayments);
-
-                    savingsGoalD2 = savingsDb.getSavingsGoal();
-                    savingsGoalS2 = currencyFormat.format(savingsGoalD2);
-                    savingsGoalAmountEntry.setText(savingsGoalS2);
-                    savingsGoalAmountEntry.addTextChangedListener(onChangeSavingsGoal);
+                    if(savingsDb.getSavingsRate() == 0) {
+                        savingsIntFrequencyLabel.setVisibility(View.GONE);
+                        savingsIntFrequencyRadioGroup.setVisibility(View.GONE);
+                    } else {
+                        savingsIntFrequencyLabel.setVisibility(View.VISIBLE);
+                        savingsIntFrequencyRadioGroup.setVisibility(View.VISIBLE);
+                    }
 
                     //set radio button selections from data
                     if (savingsDb.getSavingsFrequency() == 52) {
@@ -428,15 +514,15 @@ public class LayoutSavings extends MainNavigation {
                         savingsFrequencyS = "1";
                     }
 
-                    /*if (savingsDb.getSavingsIntFrequency() == 12) {
+                    if (savingsDb.getSavingsIntFrequency() == 12) {
                         savingsIntMonthlyRadioButton.setChecked(true);
                         savingsIntFrequencyS = "12";
                     } else if (savingsDb.getSavingsIntFrequency() == 1) {
                         savingsIntAnnuallyRadioButton.setChecked(true);
                         savingsIntFrequencyS = "1";
-                    }*/
+                    }
 
-                    savingsDateResult.setText(calcSavingsDate());
+                    savingsDateResult.setText(savingsDb.getSavingsDate());
 
                     //update db if radio buttons changed
                     savingsFrequencyRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -463,7 +549,7 @@ public class LayoutSavings extends MainNavigation {
                         }
                     });
 
-                    /*savingsIntFrequencyRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+                    savingsIntFrequencyRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
                         @Override
                         public void onCheckedChanged(RadioGroup group, int checkedId) {
                             switch (checkedId) {
@@ -477,7 +563,7 @@ public class LayoutSavings extends MainNavigation {
                                     break;
                             }
                         }
-                    });*/
+                    });
 
                     updateSavingsButton.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -490,7 +576,7 @@ public class LayoutSavings extends MainNavigation {
                             ContentValues values = new ContentValues();
 
                             values.put(DbHelper.EXPENSENAME, savingsNameEntry.getText().toString());
-                            try{
+                            try {
                                 values.put(DbHelper.EXPENSEAMOUNT, Double.valueOf(savingsPaymentsEntry.getText().toString()));
                             } catch (NumberFormatException e8) {
                                 values.put(DbHelper.EXPENSEAMOUNT, general.extractingDollars(savingsPaymentsEntry));
@@ -511,6 +597,7 @@ public class LayoutSavings extends MainNavigation {
                             expenseDb.close();
 
                             savingsDb.setSavingsName(savingsNameEntry.getText().toString());
+
                             try {
                                 savingsDb.setSavingsAmount(Double.valueOf(savingsAmountEntry.getText().toString()));
                             } catch (NumberFormatException e10) {
@@ -518,9 +605,9 @@ public class LayoutSavings extends MainNavigation {
                             }
 
                             try {
-                                savingsDb.setSavingsRate(Double.valueOf(savingsPercentEntry.getText().toString()));
-                            } catch (NumberFormatException e13) {
-                                savingsDb.setSavingsRate(general.extractingPercents(savingsPercentEntry));
+                                savingsDb.setSavingsGoal(Double.valueOf(savingsGoalAmountEntry.getText().toString()));
+                            } catch (NumberFormatException e12) {
+                                savingsDb.setSavingsGoal(general.extractingDollars(savingsGoalAmountEntry));
                             }
 
                             try {
@@ -529,21 +616,32 @@ public class LayoutSavings extends MainNavigation {
                                 savingsDb.setSavingsPayments(general.extractingDollars(savingsPaymentsEntry));
                             }
 
-                            if(savingsDb.getSavingsPayments().equals("0.0") || savingsDb.getSavingsPayments().equals("0.1")) {
-                                savingsDb.setSavingsIntFrequency(12.0);
+                            if(savingsDb.getSavingsPayments() == 0) {
+                                savingsFrequencyLabel.setVisibility(View.GONE);
+                                savingsFrequencyRadioGroup.setVisibility(View.GONE);
                             } else {
-                                savingsDb.setSavingsIntFrequency(1.0);
+                                savingsFrequencyLabel.setVisibility(View.VISIBLE);
+                                savingsFrequencyRadioGroup.setVisibility(View.VISIBLE);
+                            }
+
+                            try {
+                                savingsDb.setSavingsRate(Double.valueOf(savingsPercentEntry.getText().toString()));
+                            } catch (NumberFormatException e13) {
+                                savingsDb.setSavingsRate(general.extractingPercents(savingsPercentEntry));
+                            }
+
+                            if(savingsDb.getSavingsRate() == 0) {
+                                savingsIntFrequencyLabel.setVisibility(View.GONE);
+                                savingsIntFrequencyRadioGroup.setVisibility(View.GONE);
+                            } else {
+                                savingsIntFrequencyLabel.setVisibility(View.VISIBLE);
+                                savingsIntFrequencyRadioGroup.setVisibility(View.VISIBLE);
                             }
 
                             savingsDb.setSavingsFrequency(Double.valueOf(savingsFrequencyS));
+                            savingsDb.setSavingsIntFrequency(Double.valueOf(savingsIntFrequencyS));
 
-                            try {
-                                savingsDb.setSavingsGoal(Double.valueOf(savingsGoalAmountEntry.getText().toString()));
-                            } catch (NumberFormatException e12) {
-                                savingsDb.setSavingsGoal(general.extractingDollars(savingsGoalAmountEntry));
-                            }
-
-                            //savingsDb.setSavingsIntFrequency(Double.valueOf(savingsIntFrequencyS));
+                            savingsDb.setSavingsDate(calcSavingsDate());
 
                             dbManager.updateSavings(savingsDb);
                             savingsAdapter.updateSavings(dbManager.getSavings());
@@ -593,6 +691,13 @@ public class LayoutSavings extends MainNavigation {
 
                     savingsAdapter.updateSavings(dbManager.getSavings());
                     notifyDataSetChanged();
+                    if (savingsAdapter.getCount() == 0) {
+                        emptysavingsText.setVisibility(View.VISIBLE);
+                        emptysavingsText2.setVisibility(View.VISIBLE);
+                    } else {
+                        emptysavingsText.setVisibility(View.GONE);
+                        emptysavingsText2.setVisibility(View.GONE);
+                    }
 
                     savingsHeaderText();
                 }
