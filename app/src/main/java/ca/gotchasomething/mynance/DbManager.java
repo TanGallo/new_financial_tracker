@@ -11,6 +11,8 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
+import java.util.SortedSet;
 
 import ca.gotchasomething.mynance.data.CurrentDb;
 import ca.gotchasomething.mynance.data.DebtDb;
@@ -25,19 +27,20 @@ public class DbManager {
 
     public Calendar cal;
     public Cursor cursor;
-    public Date debtEndD, savingsDateD, dateObj;
+    public Date debtEndD, savingsDateD, dateObj, thisDate;
     public DbHelper dbHelper;
     public Double startingBalanceResult = 0.0, totalDebt = 0.0, numberOfYearsToPayDebt = 0.0, numberOfYearsToSavingsGoal = 0.0, totalSavings = 0.0,
             totalExpenses = 0.0, totalIncome = 0.0, totalCCPaymentDue = 0.0, totalCCPaymentBDue = 0.0, currentAccountBalance = 0.0,
             currentAvailableBalance = 0.0, totalBudgetAExpenses = 0.0, percentB = 0.0;
     public General general = new General();
     public int tourDoneCheck = 0, balanceDoneCheck = 0, budgetDoneCheck = 0, savingsDoneCheck = 0, debtsDoneCheck = 0, numberOfDaysToPayDebt = 0,
-            numberOfDaysToSavingsGoal = 0, currentPageId = 0, debtCount = 0, startIndex = 0, endIndex = 0;
+            numberOfDaysToSavingsGoal = 0, currentPageId = 0, debtCount = 0, startIndex = 0, endIndex = 0, earliestYear = 0, startIndex2 = 0,
+            endIndex2 = 0, latestYear = 0;
     public Long expenseId;
     public SimpleDateFormat debtEndS, savingsDateS;
     public SQLiteDatabase db;
     public String debtEnd = null, savingsDate = null, category = null, spentAmount = null, month = null, year = null, startingString = null,
-            subStringResult = null;
+            subStringResult = null, subStringResult2 = null;
 
     public DbManager(Context context) {
         dbHelper = DbHelper.getInstance(context);
@@ -678,6 +681,50 @@ public class DbManager {
         db.delete(DbHelper.MONEY_OUT_TABLE_NAME, DbHelper.ID + "=?", args);
     }
 
+    /*public void getSpendingSummary() {
+        db = dbHelper.getReadableDatabase();
+        cursor = db.rawQuery("SELECT * FROM " + DbHelper.MONEY_OUT_TABLE_NAME, null);
+    }*/
+
+    /*public List<MoneyOutDb> getSpendingList() {
+        List<MoneyOutDb> allSpending = new ArrayList<>(getMoneyOuts().size());
+        for(MoneyOutDb m : getMoneyOuts()) {
+            allSpending.add(m);
+            String spentDate = m.getMoneyOutCreatedOn();
+            try {
+                thisDate = new SimpleDateFormat("dd-MMM-yyyy").parse(spentDate);
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
+            String startingStringYear = thisDate.toString();
+            int startIndexY = startingStringYear.length() - 4;
+            int endIndexY = startingStringYear.length();
+            String subStringYear = startingStringYear.substring(startIndexY, endIndexY);
+            int startIndexM = startingStringYear.length() - 8;
+            int endIndexM = startingStringYear.length() - 6;
+            String subStringMonth = startingStringYear.substring(startIndexM, endIndexM);
+            String category = m.getMoneyOutCat();
+            Double amountSpent = m.getMoneyOutAmount();
+        }
+
+        return spendingList;
+    }*/
+
+    /*public List<MoneyOutDb> getSpendingReport() {
+        List<MoneyOutDb> spendingReport = new ArrayList<>(getMoneyOuts().size());
+        db = dbHelper.getReadableDatabase();
+        cursor = db.rawQuery("SELECT " + DbHelper.MONEYOUTAMOUNT + " FROM " + DbHelper.MONEY_OUT_TABLE_NAME
+                + " ORDER BY " + DbHelper.MONEYOUTCREATEDON + " DESC, " + DbHelper.MONEYOUTCAT + " ASC", null);
+        if(cursor.moveToFirst()) {
+            while(!cursor.isAfterLast()) {
+
+            }
+        };
+
+
+        return spendingReport;
+    }*/
+
     public List<String> getYearsList() {
         List<String> yearsList = new ArrayList<>();
 
@@ -703,14 +750,63 @@ public class DbManager {
         return yearsList;
     }
 
-    public List<MoneyOutDb> getSpendingReport() {
-        List<MoneyOutDb> spendingReport = new ArrayList<>();
-        for(MoneyOutDb m: getMoneyOuts()) {
-            //if(m.getMoneyOutCreatedOn().contains(month) && m.getMoneyOutCreatedOn().contains(year)) {
-                spendingReport.add(m);
-            //}
+    /*public List<String> getYearMonthList() {
+        List<String> yearMonthList = new ArrayList<>();
+
+        try {
+            List<String> allDates = new ArrayList<>(getMoneyOuts().size());
+            for (MoneyOutDb m : getMoneyOuts()) {
+                allDates.add(m.getMoneyOutCreatedOn());
+            }
+            List<Date> monthYears = new ArrayList<>(allDates.size());
+            general.extractingDates(allDates, monthYears);
+
+            Collections.sort(monthYears);
+
+            for (Date d : monthYears) {
+                startingString = d.toString();
+                startIndex = startingString.length() - 4;
+                endIndex = startingString.length();
+                subStringResult = startingString.substring(startIndex, endIndex);
+                startIndex2 = startingString.indexOf(0) + 5;
+                endIndex2 = startIndex2 + 3;
+                subStringResult = startingString.substring(startIndex, endIndex);
+                subStringResult2 = startingString.substring(startIndex2, endIndex2);
+                yearMonthList.add(subStringResult2 + " " + subStringResult);
+            }
+        } catch (NullPointerException e) {
+            e.printStackTrace();
         }
-        return spendingReport;
+
+        return yearMonthList;
+    }*/
+
+    public Integer getEarliestEntry() {
+        List<Integer> years = new ArrayList<>(getYearsList().size());
+        for (String s : getYearsList()) {
+            years.add(Integer.valueOf(s));
+        }
+        earliestYear = 0;
+        if (years.size() == 0) {
+            earliestYear = 0;
+        } else {
+            earliestYear = Collections.min(years);
+        }
+        return earliestYear;
+    }
+
+    public Integer getLatestEntry() {
+        List<Integer> years2 = new ArrayList<>(getYearsList().size());
+        for (String s : getYearsList()) {
+            years2.add(Integer.valueOf(s));
+        }
+        latestYear = 0;
+        if (years2.size() == 0) {
+            latestYear = 0;
+        } else {
+            latestYear = Collections.max(years2);
+        }
+        return latestYear;
     }
 
     public List<CurrentDb> getCurrent() {
