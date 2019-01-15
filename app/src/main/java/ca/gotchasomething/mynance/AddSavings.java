@@ -238,29 +238,28 @@ public class AddSavings extends LayoutSavings {
         frequency = Double.valueOf(savingsFrequencyS);
         intFrequency = Double.valueOf(savingsIntFrequencyS);
 
-        years = .00274;
-
-        do {
-            years++;
-        } while(((amount * Math.pow((1 + rate / intFrequency), (intFrequency * years))) + (((payments * frequency) / 12) * ((Math.pow((1 + rate / intFrequency), (intFrequency * years)) - 1) / (rate / intFrequency)) * (1 + rate / intFrequency))) <= goal);
-
         if(amount == 0 && payments == 0.1) {
             years = null;
-        }
-        if(goal == amount) {
+        } else if(goal == amount) {
             years = 0.0;
+        } else {
+            years = .00274;
         }
 
+        if(years == 0) {
+            years = 0.0;
+        } else {
+            do {
+                years++;
+            }
+            while (((amount * Math.pow((1 + rate / intFrequency), (intFrequency * years))) + (((payments * frequency) / 12) * ((Math.pow((1 + rate / intFrequency), (intFrequency * years)) - 1) / (rate / intFrequency)) * (1 + rate / intFrequency))) <= goal);
+        }
         return years;
         }
 
     public String calcSavingsDate() {
 
         savingsCal = Calendar.getInstance();
-
-        if(findNumberOfYears() == null) {
-            savingsDate = getString(R.string.goal_never);
-        } else {
 
             numberOfDaysToSavingsGoal = (int) Math.round(findNumberOfYears() * 365);
 
@@ -277,7 +276,6 @@ public class AddSavings extends LayoutSavings {
                 savingsDateS = new SimpleDateFormat("dd-MMM-yyyy");
                 savingsDate = getString(R.string.goal_will) + " " + savingsDateS.format(savingsDateD);
             }
-        }
 
         return savingsDate;
     }

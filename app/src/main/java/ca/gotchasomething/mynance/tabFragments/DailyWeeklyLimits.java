@@ -37,7 +37,7 @@ public class DailyWeeklyLimits extends Fragment {
     NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
     SQLiteDatabase db2, db3;
     String amountLeftS = null, spentThisWeekS = null, startingBalanceS = null, spentAmountS = null;
-    TextView noWeeklyLabel, noWeeklyLabel2;
+    TextView noWeeklyLabel, noWeeklyLabel2, amountLeftWarning, amountLeftLabel;
     View v;
     WeeklyLimitsAdapter weeklyLimitsAdapter;
 
@@ -128,6 +128,9 @@ public class DailyWeeklyLimits extends Fragment {
                 holder.spendingCategory = convertView.findViewById(R.id.spendingCategory);
                 holder.amountLeftText = convertView.findViewById(R.id.amountLeftText);
                 holder.spentAmount = convertView.findViewById(R.id.spentAmount);
+                amountLeftLabel = convertView.findViewById(R.id.amountLeftLabel);
+                amountLeftWarning = convertView.findViewById(R.id.amountLeftWarning);
+                amountLeftWarning.setVisibility(View.GONE);
                 convertView.setTag(holder);
 
             } else {
@@ -164,6 +167,14 @@ public class DailyWeeklyLimits extends Fragment {
             amountLeft = startingBalance - spentThisWeek;
             amountLeftS = currencyFormat.format(amountLeft);
             holder.amountLeftText.setText(amountLeftS);
+
+            if(amountLeft <= 0) {
+                amountLeftWarning.setVisibility(View.VISIBLE);
+                amountLeftLabel.setVisibility(View.GONE);
+            } else {
+                amountLeftWarning.setVisibility(View.GONE);
+                amountLeftLabel.setVisibility(View.VISIBLE);
+            }
 
             return convertView;
         }
