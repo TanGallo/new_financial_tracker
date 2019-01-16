@@ -24,8 +24,8 @@ public class LayoutOnboardingP extends AppCompatActivity implements View.OnClick
 
     private AdapterOnboarding adapter;
     private Button skipButton, nextButton;
-    Cursor setUpCursor, setUpCursor2, expenseCursor, incomeCursor;
-    DbHelper setUpHelper, setUpHelper2, expenseHelper, incomeHelper;
+    Cursor setUpCursor;
+    DbHelper setUpHelper;
     private ImageView[] dots;
     int tourDoneYes;
     private int[] onboardingSlides = {
@@ -149,23 +149,6 @@ public class LayoutOnboardingP extends AppCompatActivity implements View.OnClick
             finish();
         } else {
             startActivity(new Intent(this, MainActivity.class));
-
-            /*Double startingBalance = retrieveStartingBalance();
-            if(startingBalance.isNaN() || startingBalance < 0 || startingBalance == 0) {
-                startingBalance = 0.0;
-            }
-            String startingBalance2 = currencyFormat.format(startingBalance);
-            TextView totalAccountText = findViewById(R.id.totalAccountText);
-            totalAccountText.setText(startingBalance2);
-
-            Double startingBalanceAvailable = startingBalance * retrieveBPercentage();
-            if(startingBalance == 0) {
-                startingBalanceAvailable = 0.0;
-            }
-            String startingBalanceAvailable2 = currencyFormat.format(startingBalanceAvailable);
-            TextView availableAccountText = findViewById(R.id.availableAccountText);
-            availableAccountText.setText(startingBalanceAvailable2);*/
-
             finish();
         }
     }
@@ -180,36 +163,4 @@ public class LayoutOnboardingP extends AppCompatActivity implements View.OnClick
             new PreferenceManager(this).writePreferences();
         }
     }
-
-    /*public Double retrieveStartingBalance() {
-        setUpHelper2 = new DbHelper(this);
-        setUpDbDb2 = setUpHelper2.getReadableDatabase();
-        setUpCursor2 = setUpDbDb2.rawQuery("SELECT max(balanceAmount)" + " FROM " + DbHelper.SET_UP_TABLE_NAME, null);
-        setUpCursor2.moveToFirst();
-        Double startingBalanceResult = setUpCursor2.getDouble(0);
-        setUpCursor2.close();
-
-        return startingBalanceResult;
-    }
-
-    public Double retrieveBPercentage() {
-        expenseHelper = new DbHelper(this);
-        expenseDbDb = expenseHelper.getReadableDatabase();
-        expenseCursor = expenseDbDb.rawQuery("SELECT sum(expenseAAnnualAmount)" + " FROM " + DbHelper.EXPENSES_TABLE_NAME, null);
-        expenseCursor.moveToFirst();
-        Double totalAExpenses = expenseCursor.getDouble(0);
-        expenseCursor.close();
-
-        incomeHelper = new DbHelper(this);
-        incomeDbDb = incomeHelper.getReadableDatabase();
-        incomeCursor = incomeDbDb.rawQuery("SELECT sum(incomeAnnualAmount)" + " FROM " + DbHelper.INCOME_TABLE_NAME, null);
-        incomeCursor.moveToFirst();
-        Double totalIncome = incomeCursor.getDouble(0);
-        incomeCursor.close();
-
-        Double percentB = 1 - (totalAExpenses / totalIncome);
-
-        return percentB;
-
-    }*/
 }

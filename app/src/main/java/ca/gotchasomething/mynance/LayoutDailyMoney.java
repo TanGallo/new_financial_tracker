@@ -6,6 +6,8 @@ import com.google.android.material.tabs.TabLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+
+import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -29,7 +31,7 @@ public class LayoutDailyMoney extends MainNavigation {
     NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
     String availableBalance2 = null, accountBalance2 = null;
     TabLayout tl;
-    TextView totalAccountText, availableAccountText;
+    TextView totalAccountText, availableAccountText, budgetWarningText;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -49,6 +51,8 @@ public class LayoutDailyMoney extends MainNavigation {
 
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
+        budgetWarningText = findViewById(R.id.budgetWarningText);
+        budgetWarningText.setVisibility(View.GONE);
         totalAccountText = findViewById(R.id.totalAccountText);
         availableAccountText = findViewById(R.id.availableAccountText);
 
@@ -90,6 +94,12 @@ public class LayoutDailyMoney extends MainNavigation {
     }
 
     public void dailyHeaderText() {
+
+        if(dbManager.sumTotalExpenses() > dbManager.sumTotalIncome()) {
+            budgetWarningText.setVisibility(View.VISIBLE);
+        } else {
+            budgetWarningText.setVisibility(View.GONE);
+        }
 
         newAccountBalance = dbManager.retrieveCurrentAccountBalance();
         newAvailableBalance = dbManager.retrieveCurrentAvailableBalance();

@@ -17,7 +17,7 @@
     <string name="slide1Title">Welcome to MYnance!</string>
     <string name="slide1Description">Manage your money and keep on top of your debt in just a few steps</string>
     <string name="slide2Title">Step 1:</string>
-    <string name="slide2Description">Simply follow the steps in the guided set up process</string>
+    <string name="slide2Description">Simply follow along with the guided set up process</string>
     <string name="next_button">next</string>
     <string name="start_button">Got it!</string>
     <string name="skip_button">skip intro</string>
@@ -38,6 +38,8 @@
     <string name="no_debt_item_warning">You must create a DEBT item to charge this purchase against.</string>
     <string name="spending_report">Spending Report</string>
     <string name="goal_never">There is no money here.</string>
+    <string name="generate_budget">Update budget</string>
+    <string name="budget2">BUDGET</string>
 
 
 </resources>

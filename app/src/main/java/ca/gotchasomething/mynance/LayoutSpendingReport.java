@@ -11,10 +11,12 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
+
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -66,7 +68,7 @@ public class LayoutSpendingReport extends MainNavigation {
         spendingReportButton.setOnClickListener(onClickShowReport);
 
         monthSpinner = findViewById(R.id.monthSpinner);
-        months = new String[]{"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
+        months = new String[]{"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December", "Entire year to date"};
         monthSpinnerAdapter = new ArrayAdapter(this, R.layout.spinner_layout, R.id.spinnerText, months);
         monthSpinner.setAdapter(monthSpinnerAdapter);
         monthSpinner.setOnItemSelectedListener(onMonthSelected);
@@ -152,6 +154,9 @@ public class LayoutSpendingReport extends MainNavigation {
                     break;
                 case "December":
                     month = "Dec";
+                    break;
+                case "Entire year to date":
+                    month = "all";
                     break;
             }
         }
@@ -242,8 +247,14 @@ public class LayoutSpendingReport extends MainNavigation {
             List<Double> spentPerCategory = new ArrayList<>();
             for (MoneyOutDb m : dbManager.getMoneyOuts()) {
                 spentDate = m.getMoneyOutCreatedOn();
-                if (String.valueOf(m.getExpRefKeyMO()).equals(String.valueOf(expenseId)) && spentDate.contains(month) && spentDate.contains(year)) {
-                    spentPerCategory.add(m.getMoneyOutAmount());
+                if (month.equals("all")) {
+                    if (String.valueOf(m.getExpRefKeyMO()).equals(String.valueOf(expenseId)) && spentDate.contains(year)) {
+                        spentPerCategory.add(m.getMoneyOutAmount());
+                    }
+                } else {
+                    if (String.valueOf(m.getExpRefKeyMO()).equals(String.valueOf(expenseId)) && spentDate.contains(month) && spentDate.contains(year)) {
+                        spentPerCategory.add(m.getMoneyOutAmount());
+                    }
                 }
             }
 
