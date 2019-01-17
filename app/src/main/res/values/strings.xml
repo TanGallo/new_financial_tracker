@@ -40,6 +40,7 @@
     <string name="goal_never">There is no money here.</string>
     <string name="generate_budget">Update budget</string>
     <string name="budget2">BUDGET</string>
+    <string name="email_warning">There are no email clients installed</string>
 
 
 </resources>

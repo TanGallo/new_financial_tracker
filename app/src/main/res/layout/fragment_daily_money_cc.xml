@@ -60,6 +60,13 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/updateCreditCardLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/entry_box"
+                    android:orientation="vertical">
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
@@ -95,6 +102,7 @@
                         android:layout_gravity="end"
                         android:layout_margin="10dp"
                         android:gravity="center"
+                        android:background="@drawable/entry_box"
                         android:text="Cancel" />
 
                     <Button
@@ -105,6 +113,7 @@
                         android:layout_gravity="end"
                         android:layout_margin="10dp"
                         android:gravity="center"
+                        android:background="@drawable/entry_box"
                         android:text="Update" />
 
                     <Button
@@ -115,9 +124,12 @@
                         android:layout_gravity="end"
                         android:layout_margin="10dp"
                         android:gravity="center"
+                        android:background="@drawable/entry_box"
                         android:text="continue" />
 
                 </RelativeLayout>
+
+                </LinearLayout>
 
                 <View
                     android:id="@+id/ccTransLine"
@@ -132,9 +144,11 @@
                     android:background="@color/colorPrimary"></View>
 
                 <RelativeLayout
+                    android:id="@+id/addCreditCardLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
+                    android:background="@drawable/entry_box"
                     android:orientation="horizontal">
 
                     <EditText
@@ -186,6 +200,7 @@
                         android:layout_alignParentEnd="true"
                         android:layout_margin="10dp"
                         android:text="enter"
+                        android:background="@drawable/entry_box"
                         android:textSize="14sp" />
 
                 </RelativeLayout>

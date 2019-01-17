@@ -25,10 +25,16 @@ import android.view.View;
 public class MainNavigation extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     ActionBarDrawerToggle toggle;
+    Boolean before = false;
+    Cursor setUpCursor;
+    DbHelper setUpHelper;
+    public DbManager dbManager;
     protected DrawerLayout drawer;
+    int tourDoneYes;
     Intent i, i2, i4, i5, i6, i7;
     Menu menu;
     NavigationView navigationView;
+    SQLiteDatabase setUpDbDb;
     Toolbar toolbar;
 
     @Override
@@ -38,13 +44,67 @@ public class MainNavigation extends AppCompatActivity implements NavigationView.
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+
         drawer = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
+        menuConfig();
 
         toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
     }
+
+
+    public void menuConfig() {
+        beforeSetUpOrAfter();
+        menu = navigationView.getMenu();
+        if (before) {
+            menu.findItem(R.id.menu_daily_money).setVisible(false);
+            menu.findItem(R.id.menu_budget).setVisible(false);
+            menu.findItem(R.id.menu_debt).setVisible(false);
+            menu.findItem(R.id.menu_savings).setVisible(false);
+            menu.findItem(R.id.menu_spending_report).setVisible(false);
+            menu.findItem(R.id.menu_help).setVisible(false);
+            menu.findItem(R.id.menu_daily_money).setEnabled(false);
+            menu.findItem(R.id.menu_budget).setEnabled(false);
+            menu.findItem(R.id.menu_debt).setEnabled(false);
+            menu.findItem(R.id.menu_savings).setEnabled(false);
+            menu.findItem(R.id.menu_spending_report).setEnabled(false);
+            menu.findItem(R.id.menu_help).setEnabled(false);
+        } else {
+            menu.findItem(R.id.menu_daily_money).setVisible(true);
+            menu.findItem(R.id.menu_budget).setVisible(true);
+            menu.findItem(R.id.menu_debt).setVisible(true);
+            menu.findItem(R.id.menu_savings).setVisible(true);
+            menu.findItem(R.id.menu_spending_report).setVisible(true);
+            menu.findItem(R.id.menu_help).setVisible(true);
+            menu.findItem(R.id.menu_daily_money).setEnabled(true);
+            menu.findItem(R.id.menu_budget).setEnabled(true);
+            menu.findItem(R.id.menu_debt).setEnabled(true);
+            menu.findItem(R.id.menu_savings).setEnabled(true);
+            menu.findItem(R.id.menu_spending_report).setEnabled(true);
+            menu.findItem(R.id.menu_help).setEnabled(true);
+        }
+        navigationView.setNavigationItemSelectedListener(this);
+    }
+
+    public boolean beforeSetUpOrAfter() {
+        setUpHelper = new DbHelper(getApplicationContext());
+        setUpDbDb = setUpHelper.getReadableDatabase();
+        setUpCursor = setUpDbDb.rawQuery(" SELECT max(tourDone) FROM " + DbHelper.SET_UP_TABLE_NAME + "", null);
+        setUpCursor.moveToFirst();
+        tourDoneYes = setUpCursor.getInt(0);
+        setUpCursor.close();
+
+        if (tourDoneYes <= 0) {
+            before = true;
+        } else {
+            before = false;
+        }
+
+        return before;
+    }
+
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {

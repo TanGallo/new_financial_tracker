@@ -52,6 +52,8 @@ public class LayoutSetUp extends MainNavigation {
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
+        menuConfig();
+
         dbManager = new DbManager(this);
 
         setUpDebtsButton = findViewById(R.id.setUpDebtsButton);

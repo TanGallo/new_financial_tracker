@@ -24,20 +24,1200 @@
             android:theme="@style/ThemeOverlay.AppCompat.Dark" />
 
         <FrameLayout
-            android:id="@+id/fragment_container"
+            android:id="@+id/help_body"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-        </FrameLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tab_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="?attr/actionBarSize"
-            app:tabBackground="@drawable/tab_view"
-            app:tabGravity="fill"
-            app:tabMode="fixed"></com.google.android.material.tabs.TabLayout>
+                <androidx.core.widget.NestedScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/helpSetUp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="10dp"
+                                android:text="Set Up"
+                                android:textSize="18sp" />
+
+                            <RelativeLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content">
+
+                                <ImageButton
+                                    android:id="@+id/downSetUpButton"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_marginEnd="120dp"
+                                    android:scaleType="fitCenter"
+                                    android:src="@drawable/ic_arrow_drop_down_blue_24dp" />
+
+                                <ImageButton
+                                    android:id="@+id/upSetUpButton"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_marginEnd="120dp"
+                                    android:scaleType="fitCenter"
+                                    android:src="@drawable/ic_arrow_drop_up_blue_24dp" />
+
+                            </RelativeLayout>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/setUpText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="10dp"
+                                android:text="The automatic set up process walked you through setting up your debts, savings, and budget."
+                                android:textSize="18sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="10dp"
+                                android:text="All of these items can be changed manually by using the MENU to access their screens."
+                                android:textSize="18sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="10dp"
+                                android:text="You also entered a starting balance for your bank account. This amount cannot be changed directly."
+                                android:textSize="18sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="10dp"
+                                android:text="You can adjust the amount in your bank account by making entries in the DAILY MONEY screen."
+                                android:textSize="18sp" />
+
+                        </LinearLayout>
+
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginEnd="10dp"
+                            android:layout_marginBottom="10dp"
+                            android:alpha=".5"
+                            android:background="@color/colorPrimary"></View>
+
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/helpDailyMoney"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="10dp"
+                                android:text="Daily Money"
+                                android:textSize="18sp" />
+
+                            <RelativeLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content">
+
+                                <ImageButton
+                                    android:id="@+id/downDailyMoneyButton"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_marginEnd="120dp"
+                                    android:scaleType="fitCenter"
+                                    android:src="@drawable/ic_arrow_drop_down_blue_24dp" />
+
+                                <ImageButton
+                                    android:id="@+id/upDailyMoneyButton"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_marginEnd="120dp"
+                                    android:scaleType="fitCenter"
+                                    android:src="@drawable/ic_arrow_drop_up_blue_24dp" />
+
+                            </RelativeLayout>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/dailyMoneyText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:orientation="vertical">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/helpMoneyIn"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_margin="10dp"
+                                    android:text="Money In"
+                                    android:textSize="18sp" />
+
+                                <RelativeLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content">
+
+                                    <ImageButton
+                                        android:id="@+id/downMoneyInButton"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentEnd="true"
+                                        android:layout_marginEnd="120dp"
+                                        android:scaleType="fitCenter"
+                                        android:src="@drawable/ic_arrow_drop_down_pink_24dp" />
+
+                                    <ImageButton
+                                        android:id="@+id/upMoneyInButton"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentEnd="true"
+                                        android:layout_marginEnd="120dp"
+                                        android:scaleType="fitCenter"
+                                        android:src="@drawable/ic_arrow_drop_up_pink_24dp" />
+
+                                </RelativeLayout>
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/moneyInText"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="10dp"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_margin="10dp"
+                                    android:text="Use this tab to record any money that goes into your bank account."
+                                    android:textSize="18sp" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_margin="10dp"
+                                    android:text="Each entry will map to an income item in your BUDGET."
+                                    android:textSize="18sp" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_margin="10dp"
+                                    android:text="When you created your budget, you identified which expense items were for needs and which were for optional spending."
+                                    android:textSize="18sp" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_margin="10dp"
+                                    android:text="The appropriate percentage of each MONEY IN entry will be reserved for needs according to these BUDGET entries. The remainder will be allotted to the 'available to spend' amount."
+                                    android:textSize="18sp" />
+
+                            </LinearLayout>
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginEnd="10dp"
+                                android:layout_marginBottom="10dp"
+                                android:alpha=".5"
+                                android:background="@color/colorAccent"></View>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/helpMoneyOut"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_margin="10dp"
+                                    android:text="Money Out"
+                                    android:textSize="18sp" />
+
+                                <RelativeLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content">
+
+                                    <ImageButton
+                                        android:id="@+id/downMoneyOutButton"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentEnd="true"
+                                        android:layout_marginEnd="120dp"
+                                        android:scaleType="fitCenter"
+                                        android:src="@drawable/ic_arrow_drop_down_pink_24dp" />
+
+                                    <ImageButton
+                                        android:id="@+id/upMoneyOutButton"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentEnd="true"
+                                        android:layout_marginEnd="120dp"
+                                        android:scaleType="fitCenter"
+                                        android:src="@drawable/ic_arrow_drop_up_pink_24dp" />
+
+                                </RelativeLayout>
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/moneyOutText"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="10dp"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_margin="10dp"
+                                    android:text="Use this tab to record any CASH that comes out of your bank account, either as a cheque, cash withdrawal, or debit card purchase."
+                                    android:textSize="18sp" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_margin="10dp"
+                                    android:text="NOTE: It is up to you whether you create 'cash withdrawal' as an expense item in your budget and track withdrawals as one item or whether you account for cash withdrawals as a breakdown of what the money was used for (i.e. $20 withdrawal entered as $10 towards 'entertainment' and $10 towards 'miscellaneous')."
+                                    android:textSize="18sp" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_margin="10dp"
+                                    android:text="JUST BE SURE that each cash withdrawal is only entered once in MONEY OUT, otherwise too much money will be taken out of your 'total' and 'available to spend' balances."
+                                    android:textSize="18sp" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_margin="10dp"
+                                    android:text="Purchases made on a credit card must be entered in the CREDIT CARD tab so that the credit card's DEBTS record will be updated accordingly."
+                                    android:textSize="18sp" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_margin="10dp"
+                                    android:text="You can view a summary of your MONEY OUT items in the SPENDING REPORT screen."
+                                    android:textSize="18sp" />
+
+                            </LinearLayout>
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginEnd="10dp"
+                                android:layout_marginBottom="10dp"
+                                android:alpha=".5"
+                                android:background="@color/colorAccent"></View>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/helpCreditCard"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_margin="10dp"
+                                    android:text="Credit Card"
+                                    android:textSize="18sp" />
+
+                                <RelativeLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content">
+
+                                    <ImageButton
+                                        android:id="@+id/downCreditCardButton"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentEnd="true"
+                                        android:layout_marginEnd="120dp"
+                                        android:scaleType="fitCenter"
+                                        android:src="@drawable/ic_arrow_drop_down_pink_24dp" />
+
+                                    <ImageButton
+                                        android:id="@+id/upCreditCardButton"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentEnd="true"
+                                        android:layout_marginEnd="120dp"
+                                        android:scaleType="fitCenter"
+                                        android:src="@drawable/ic_arrow_drop_up_pink_24dp" />
+
+                                </RelativeLayout>
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/creditCardText"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="10dp"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_margin="10dp"
+                                    android:text="Use this tab to record any purchases made against credit cards or lines of credit."
+                                    android:textSize="18sp" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_margin="10dp"
+                                    android:text="For each purchase, you will select an expense item in your BUDGET, such as 'insurance' or 'entertainment. You will also select which DEBTS item to map the purchase against."
+                                    android:textSize="18sp" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_margin="10dp"
+                                    android:text="The DEBTS item's balance owing will be updated accordingly."
+                                    android:textSize="18sp" />
+
+                                <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="10dp"
+                                android:text="NOTE: Be careful about mapping a purchase to the same BUDGET and DEBTS item."
+                                android:textSize="18sp" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_margin="10dp"
+                                    android:text="It is possible to use a DEBTS item as the selected budget item. For example, if you took money from a credit card to pay down a line of credit."
+                                    android:textSize="18sp" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_margin="10dp"
+                                    android:text="In that case, the amount of the purchase would be added to the balance owing on the credit card and subtracted from the balance owing on the line of credit. If you mapped to the same item twice, the balance owing on the DEBTS item would not update correctly."
+                                    android:textSize="18sp" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_margin="10dp"
+                                    android:text="Purchases entered in this tab will have no effect on your 'total' and 'available to spend' balances."
+                                    android:textSize="18sp" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_margin="10dp"
+                                    android:text="Payments to your DEBTS items should be made in the PAY CC tab. Your 'total' and 'available to spend' balances will change when payments are made in the PAY CC tab and the DEBTS item's balance owing will be updated accordingly."
+                                    android:textSize="18sp" />
+
+                            </LinearLayout>
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginEnd="10dp"
+                                android:layout_marginBottom="10dp"
+                                android:alpha=".5"
+                                android:background="@color/colorAccent"></View>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/helpPayCC"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_margin="10dp"
+                                    android:text="Pay CC"
+                                    android:textSize="18sp" />
+
+                                <RelativeLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content">
+
+                                    <ImageButton
+                                        android:id="@+id/downPayCCButton"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentEnd="true"
+                                        android:layout_marginEnd="120dp"
+                                        android:scaleType="fitCenter"
+                                        android:src="@drawable/ic_arrow_drop_down_pink_24dp" />
+
+                                    <ImageButton
+                                        android:id="@+id/upPayCCButton"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentEnd="true"
+                                        android:layout_marginEnd="120dp"
+                                        android:scaleType="fitCenter"
+                                        android:src="@drawable/ic_arrow_drop_up_pink_24dp" />
+
+                                </RelativeLayout>
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/payCCText"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="10dp"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_margin="10dp"
+                                    android:text="MYnance is a great tool to help you make sure you avoid consumer debt. Use this tab to manage money owing on DEBTS items resulting from purchases."
+                                    android:textSize="18sp" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_margin="10dp"
+                                    android:text="Enter any purchases you make on credit cards or lines of credit in the CREDIT CARD tab and make frequent payments to them using the PAY CC tab."
+                                    android:textSize="18sp" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_margin="10dp"
+                                    android:text="MYnance will alert you if you are trying to make a payment when you don't have the funds available in your 'total' or 'available to spend' balances."
+                                    android:textSize="18sp" />
+
+                            </LinearLayout>
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginEnd="10dp"
+                                android:layout_marginBottom="10dp"
+                                android:alpha=".5"
+                                android:background="@color/colorAccent"></View>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/helpWeeklyLimits"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_margin="10dp"
+                                    android:text="Weekly Limits"
+                                    android:textSize="18sp" />
+
+                                <RelativeLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content">
+
+                                    <ImageButton
+                                        android:id="@+id/downWeeklyLimitsButton"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentEnd="true"
+                                        android:layout_marginEnd="120dp"
+                                        android:scaleType="fitCenter"
+                                        android:src="@drawable/ic_arrow_drop_down_pink_24dp" />
+
+                                    <ImageButton
+                                        android:id="@+id/upWeeklyLimitsButton"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentEnd="true"
+                                        android:layout_marginEnd="120dp"
+                                        android:scaleType="fitCenter"
+                                        android:src="@drawable/ic_arrow_drop_up_pink_24dp" />
+
+                                </RelativeLayout>
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/weeklyLimitsText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:orientation="vertical">
+
+                            <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:text="When you create expense items in your BUDGET and identify them as 'optional', you will be given the choice whether or not to manage their weekly spending limits."
+                            android:textSize="18sp" />
+
+                            <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:text="You can change this setting for any expense item at any time in the BUDGET screen by clicking on the pencil icon next to the item."
+                            android:textSize="18sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="10dp"
+                                android:text="MYnance will break the yearly amount for the item down to a weekly limit and track how much is left each week to spend on the item."
+                                android:textSize="18sp" />
+
+                        </LinearLayout>
+
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginEnd="10dp"
+                            android:layout_marginBottom="10dp"
+                            android:alpha=".5"
+                            android:background="@color/colorPrimary"></View>
+
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/helpBudget"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="10dp"
+                                android:text="Budget"
+                                android:textSize="18sp" />
+
+                            <RelativeLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content">
+
+                                <ImageButton
+                                    android:id="@+id/downBudgetButton"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_marginEnd="120dp"
+                                    android:scaleType="fitCenter"
+                                    android:src="@drawable/ic_arrow_drop_down_blue_24dp" />
+
+                                <ImageButton
+                                    android:id="@+id/upBudgetButton"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_marginEnd="120dp"
+                                    android:scaleType="fitCenter"
+                                    android:src="@drawable/ic_arrow_drop_up_blue_24dp" />
+
+                            </RelativeLayout>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/budgetText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="10dp"
+                                android:text="The budget you create is for a year, so the total income and total expenses showing are calculated for a year based on your entries."
+                                android:textSize="18sp" />
+
+                            <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:text="Use the PLUS buttons to add income items or expense items."
+                            android:textSize="18sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="10dp"
+                                android:text="You make a budget for 2 reasons:"
+                                android:textSize="18sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="10dp"
+                                android:text="1. To make sure you are not spending more money than you earn."
+                                android:textSize="18sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="10dp"
+                                android:text="2. To give you spending guidelines for optional items like gifts, entertainment, clothing, etc."
+                                android:textSize="18sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="10dp"
+                                android:text="MYnance will alert you if your budget does not balance (i.e. if you are spending more money than you earn)."
+                                android:textSize="18sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="10dp"
+                                android:text="MYnance is a real-world budgeting app. We believe that tracking each expense category separately is too restrictive an approach and does not align with most peoples' reality."
+                                android:textSize="18sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="10dp"
+                                android:text="Instead, the money needed to pay for expense categories identified by you as needs will be 'reserved' in your bank account and the remainder will be 'available to spend'."
+                                android:textSize="18sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="10dp"
+                                android:text="MYnance can help you to track your spending on optional items (see DAILY MONEY - WEEKLY LIMITS section)."
+                                android:textSize="18sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="10dp"
+                                android:text="Amounts spent on DEBTS and SAVINGS will be added to your budget automatically and treated as needs, so that the money will be 'reserved' in your bank account. The money for those items will not show as 'available for spending'."
+                                android:textSize="18sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="10dp"
+                                android:text="You should adjust your budget any time a major change occurs (i.e. you get a raise at work or the amount of a payment changes)."
+                                android:textSize="18sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="10dp"
+                                android:text="You should review and update your budget at least once a year."
+                                android:textSize="18sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="10dp"
+                                android:text="You can use the SPENDING REPORT as a guideline when updating your budget."
+                                android:textSize="18sp" />
+
+                        </LinearLayout>
+
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginEnd="10dp"
+                            android:layout_marginBottom="10dp"
+                            android:alpha=".5"
+                            android:background="@color/colorPrimary"></View>
+
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/helpDebts"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="10dp"
+                                android:text="Debts"
+                                android:textSize="18sp" />
+
+                            <RelativeLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content">
+
+                                <ImageButton
+                                    android:id="@+id/downDebtsButton"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_marginEnd="120dp"
+                                    android:scaleType="fitCenter"
+                                    android:src="@drawable/ic_arrow_drop_down_blue_24dp" />
+
+                                <ImageButton
+                                    android:id="@+id/upDebtsButton"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_marginEnd="120dp"
+                                    android:scaleType="fitCenter"
+                                    android:src="@drawable/ic_arrow_drop_up_blue_24dp" />
+
+                            </RelativeLayout>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/debtsText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="10dp"
+                                android:text="MYnance will calculate the date that a debt will be paid off, based on your entries."
+                                android:textSize="18sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="10dp"
+                                android:text="You can use the DEBTS screen to see the effects of changing a loan or credit card payment."
+                                android:textSize="18sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="10dp"
+                                android:text="When adding or updating a debt item, the payment amount you enter will automatically be added to your budget and treated as a need, so the money will be reserved in your bank account. Money reserved for debts will not show as 'available to spend'."
+                                android:textSize="18sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="10dp"
+                                android:text="Each credit card you own must be set up in the DEBTS screen if you want to record purchases against them in the DAILY MONEY - CREDIT CARD tab."
+                                android:textSize="18sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="10dp"
+                                android:text="MYnance will help you keep your credit card balances at zero in the DAILY MONEY - PAY CC tab."
+                                android:textSize="18sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="10dp"
+                                android:text="Purchases against and payments to your debts in the DAILY MONEY tabs will be automatically added or subtracted to the balances owing in the DEBTS screen."
+                                android:textSize="18sp" />
+
+                        </LinearLayout>
+
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginEnd="10dp"
+                            android:layout_marginBottom="10dp"
+                            android:alpha=".5"
+                            android:background="@color/colorPrimary"></View>
+
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/helpSavings"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="10dp"
+                                android:text="Savings"
+                                android:textSize="18sp" />
+
+                            <RelativeLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content">
+
+                                <ImageButton
+                                    android:id="@+id/downSavingsButton"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_marginEnd="120dp"
+                                    android:scaleType="fitCenter"
+                                    android:src="@drawable/ic_arrow_drop_down_blue_24dp" />
+
+                                <ImageButton
+                                    android:id="@+id/upSavingsButton"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_marginEnd="120dp"
+                                    android:scaleType="fitCenter"
+                                    android:src="@drawable/ic_arrow_drop_up_blue_24dp" />
+
+                            </RelativeLayout>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/savingsText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="10dp"
+                                android:text="MYnance will calculate the date that a savings goal will be met, based on your entries."
+                                android:textSize="18sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="10dp"
+                                android:text="You can use the SAVINGS screen to make a savings plan."
+                                android:textSize="18sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="10dp"
+                                android:text="When adding or updating a savings item, the contribution amount that you enter will automatically be added to your budget and treated as a need, so the money will be reserved in your bank account. Money reserved for savings will not show as 'available to spend'."
+                                android:textSize="18sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="10dp"
+                                android:text="Payments towards your savings items in the DAILY MONEY tabs will be automatically added to the balances in the SAVINGS screen."
+                                android:textSize="18sp" />
+
+                        </LinearLayout>
+
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginEnd="10dp"
+                            android:layout_marginBottom="10dp"
+                            android:alpha=".5"
+                            android:background="@color/colorPrimary"></View>
+
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/helpSpendingReport"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="10dp"
+                                android:text="Spending Report"
+                                android:textSize="18sp" />
+
+                            <RelativeLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content">
+
+                                <ImageButton
+                                    android:id="@+id/downSpendingReportButton"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_marginEnd="120dp"
+                                    android:scaleType="fitCenter"
+                                    android:src="@drawable/ic_arrow_drop_down_blue_24dp" />
+
+                                <ImageButton
+                                    android:id="@+id/upSpendingReportButton"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_marginEnd="120dp"
+                                    android:scaleType="fitCenter"
+                                    android:src="@drawable/ic_arrow_drop_up_blue_24dp" />
+
+                            </RelativeLayout>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/spendingReportText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="10dp"
+                                android:text="MYnance will show you your spending in each expense category of your budget by month or for the year to date."
+                                android:textSize="18sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="10dp"
+                                android:text="Simply use the pull-down menus to choose the period of time that you'd like to see."
+                                android:textSize="18sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="10dp"
+                                android:text="When updating your budget, you can use the year to date spending report to see what your actual spending was in each category and use those numbers as the new budget amounts."
+                                android:textSize="18sp" />
+
+                        </LinearLayout>
+
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginEnd="10dp"
+                            android:layout_marginBottom="10dp"
+                            android:alpha=".5"
+                            android:background="@color/colorPrimary"></View>
+
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/helpContactUs"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="10dp"
+                                android:text="Contact Us"
+                                android:textSize="18sp" />
+
+                            <RelativeLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content">
+
+                                <ImageButton
+                                    android:id="@+id/downContactUsButton"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_marginEnd="120dp"
+                                    android:scaleType="fitCenter"
+                                    android:src="@drawable/ic_arrow_drop_down_blue_24dp" />
+
+                                <ImageButton
+                                    android:id="@+id/upContactUsButton"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_marginEnd="120dp"
+                                    android:scaleType="fitCenter"
+                                    android:src="@drawable/ic_arrow_drop_up_blue_24dp" />
+
+                            </RelativeLayout>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/contactUsText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="10dp"
+                                android:text="Contact us, we'd love to hear from you!"
+                                android:textSize="18sp" />
+
+                            <TextView
+                                android:id="@+id/emailTextLabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="10dp"
+                                android:text="Send us an email:"
+                                android:textSize="18sp" />
+
+                            <TextView
+                                android:id="@+id/emailText"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="10dp"
+                                android:text="gotchasomething.ca@gmail.com"
+                                android:textSize="18sp"
+                                android:textColor="@color/colorAccent"/>
+
+                            <TextView
+                                android:id="@+id/urlTextLabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="10dp"
+                                android:text="or visit our website:"
+                                android:textSize="18sp" />
+
+                            <TextView
+                                android:id="@+id/urlText"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="10dp"
+                                android:text="www.gotchasomething.ca"
+                                android:textSize="18sp"
+                                android:textColor="@color/colorAccent"/>
+
+                        </LinearLayout>
+
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginEnd="10dp"
+                            android:layout_marginBottom="10dp"
+                            android:alpha=".5"
+                            android:background="@color/colorPrimary"></View>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/helpRate"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="10dp"
+                                android:text="Rate this app"
+                                android:textSize="18sp" />
+
+                            <LinearLayout
+                                android:id="@+id/ratingsLayout"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <ImageButton
+                                    android:id="@+id/starButton1"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:scaleType="fitCenter"
+                                    android:src="@drawable/ic_star_border_blue_24dp" />
+
+                                <ImageButton
+                                    android:id="@+id/starButton2"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:scaleType="fitCenter"
+                                    android:src="@drawable/ic_star_border_blue_24dp" />
+
+                                <ImageButton
+                                    android:id="@+id/starButton3"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:scaleType="fitCenter"
+                                    android:src="@drawable/ic_star_border_blue_24dp" />
+
+                                <ImageButton
+                                    android:id="@+id/starButton4"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:scaleType="fitCenter"
+                                    android:src="@drawable/ic_star_border_blue_24dp" />
+
+                                <ImageButton
+                                    android:id="@+id/starButton5"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:scaleType="fitCenter"
+                                    android:src="@drawable/ic_star_border_blue_24dp" />
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </androidx.core.widget.NestedScrollView>
+
+            </LinearLayout>
+
+        </FrameLayout>
 
     </LinearLayout>
 

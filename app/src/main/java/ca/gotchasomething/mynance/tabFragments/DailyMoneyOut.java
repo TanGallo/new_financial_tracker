@@ -15,7 +15,9 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -62,12 +64,14 @@ public class DailyMoneyOut extends Fragment {
     General general;
     int moneyOutToPay = 0, moneyOutPaid = 0, numberOfDaysToPayDebt = 0, numberOfDaysToSavingsGoal = 0;
     Intent backToDaily;
+    LinearLayout updateMoneyOutLayout;
     ListView moneyOutList;
     long moneyOutRefKeyMO, expRefKeyMO, debtId, savingsId, moneyOutChargingDebtId;
     MoneyOutAdapter moneyOutAdapter;
     MoneyOutDb moneyOutDb;
     MoneyOutSpinnerAdapter moneyOutSpinnerAdapter;
     NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
+    RelativeLayout addMoneyOutLayout;
     SimpleDateFormat moneyOutSDF, debtEndS, savingsDateS;
     Spinner moneyOutCatSpinner;
     SQLiteDatabase db2, db3, db4, db5, db6, db7, db8;
@@ -98,6 +102,9 @@ public class DailyMoneyOut extends Fragment {
         general = new General();
         dbManager = new DbManager(getContext());
 
+        addMoneyOutLayout = v.findViewById(R.id.addMoneyOutLayout);
+        updateMoneyOutLayout = v.findViewById(R.id.updateMoneyOutLayout);
+        updateMoneyOutLayout.setVisibility(View.GONE);
         paymentNotPossibleAText = v.findViewById(R.id.paymentNotPossibleAText);
         paymentNotPossibleAText.setVisibility(View.GONE);
         paymentNotPossibleBText = v.findViewById(R.id.paymentNotPossibleBText);
@@ -574,6 +581,8 @@ public class DailyMoneyOut extends Fragment {
 
                     dbManager = new DbManager(getContext());
 
+                    addMoneyOutLayout.setVisibility(View.GONE);
+                    updateMoneyOutLayout.setVisibility(View.VISIBLE);
                     moneyOutAmountText.setVisibility(View.GONE);
                     moneyOutCatSpinner.setVisibility(View.GONE);
                     moneyOutButton.setVisibility(View.GONE);
@@ -596,6 +605,8 @@ public class DailyMoneyOut extends Fragment {
                     updateMoneyOutEntryButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+
+                            //updateMoneyOutLayout.setVisibility(View.GONE);
 
                             try {
                                 moneyOutDb.setMoneyOutAmount(Double.valueOf(moneyOutAmountEditText.getText().toString()));
@@ -701,6 +712,8 @@ public class DailyMoneyOut extends Fragment {
                     {
                         @Override
                         public void onClick(View v) {
+                            updateMoneyOutLayout.setVisibility(View.GONE);
+                            //addMoneyOutLayout.setVisibility(View.GONE);
                             cancelTransaction();
                         }
                     });

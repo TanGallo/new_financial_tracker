@@ -1,6 +1,8 @@
 package ca.gotchasomething.mynance;
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,15 +19,20 @@ public class LayoutOnboardingL extends AppCompatActivity implements View.OnClick
 
     private AdapterOnboarding adapter;
     private Button skipButton, nextButton;
+    Cursor setUpCursor;
+    DbHelper setUpHelper;
     private ImageView[] dots;
+    int tourDoneYes;
     private int[] onboardingSlides = {
             R.layout.layout_onboarding_1_landscape,
-            //R.layout.layout_onboarding_2L,
-            //R.layout.layout_onboarding_3L,
-            //R.layout.layout_onboarding_4L,
-            //R.layout.layout_onboarding_5L
+            R.layout.layout_onboarding_2_landscape,
+            R.layout.layout_onboarding_3_landscape,
+            R.layout.layout_onboarding_4_landscape,
+            R.layout.layout_onboarding_5_landscape,
+            R.layout.layout_onboarding_6_landscape
     };
     private LinearLayout dotsLayout;
+    SQLiteDatabase setUpDbDb;
     ViewPager viewPager;
 
     @Override
@@ -124,8 +131,20 @@ public class LayoutOnboardingL extends AppCompatActivity implements View.OnClick
     }
 
     private void loadHome() {
-        startActivity(new Intent(this, MainActivity.class));
-        finish();
+        setUpHelper = new DbHelper(getApplicationContext());
+        setUpDbDb = setUpHelper.getReadableDatabase();
+        setUpCursor = setUpDbDb.rawQuery(" SELECT max(tourDone) FROM " + DbHelper.SET_UP_TABLE_NAME + "", null);
+        setUpCursor.moveToFirst();
+        tourDoneYes = setUpCursor.getInt(0);
+        setUpCursor.close();
+
+        if (tourDoneYes <= 0) {
+            startActivity(new Intent(this, LayoutSetUp.class));
+            finish();
+        } else {
+            startActivity(new Intent(this, MainActivity.class));
+            finish();
+        }
     }
 
     private void loadNextSlide() {

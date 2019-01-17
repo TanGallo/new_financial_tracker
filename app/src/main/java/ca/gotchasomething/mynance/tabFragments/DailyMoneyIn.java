@@ -15,7 +15,9 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -52,11 +54,13 @@ public class DailyMoneyIn extends Fragment {
     EditText moneyInAmountText, moneyInAmountEditText;
     General general;
     Intent backToDaily, backToDaily2, backToDaily3, backToDaily4;
+    LinearLayout updateMoneyInLayout;
     ListView moneyInList;
     MoneyInAdapter moneyInAdapter;
     MoneyInDb moneyInDb;
     MoneyInSpinnerAdapter moneyInSpinnerAdapter;
     NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
+    RelativeLayout addMoneyInLayout;
     SimpleDateFormat moneyInSDF;
     Spinner moneyInCatSpinner;
     SQLiteDatabase db2, db3, db4, db5;
@@ -85,6 +89,9 @@ public class DailyMoneyIn extends Fragment {
         general = new General();
         dbManager = new DbManager(getContext());
 
+        updateMoneyInLayout = v.findViewById(R.id.updateMoneyInLayout);
+        updateMoneyInLayout.setVisibility(View.GONE);
+        addMoneyInLayout = v.findViewById(R.id.addMoneyInLayout);
         moneyInAmountText = v.findViewById(R.id.moneyInAmount);
         moneyInButton = v.findViewById(R.id.moneyInButton);
         moneyInList = v.findViewById(R.id.moneyInList);
@@ -275,6 +282,8 @@ public class DailyMoneyIn extends Fragment {
 
                     dbManager = new DbManager(getContext());
 
+                    updateMoneyInLayout.setVisibility(View.VISIBLE);
+                    addMoneyInLayout.setVisibility(View.GONE);
                     moneyInAmountText.setVisibility(View.GONE);
                     moneyInCatSpinner.setVisibility(View.GONE);
                     moneyInButton.setVisibility(View.GONE);
@@ -314,6 +323,8 @@ public class DailyMoneyIn extends Fragment {
                             Toast.makeText(getContext(), "Your changes have been saved",
                                     Toast.LENGTH_LONG).show();
 
+                            updateMoneyInLayout.setVisibility(View.GONE);
+                            addMoneyInLayout.setVisibility(View.GONE);
                             moneyInCatText.setVisibility(View.GONE);
                             moneyInAmountEditText.setVisibility(View.GONE);
                             cancelMoneyInEntryButton.setVisibility(View.GONE);
@@ -332,6 +343,8 @@ public class DailyMoneyIn extends Fragment {
                     cancelMoneyInEntryButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+                            addMoneyInLayout.setVisibility(View.GONE);
+                            updateMoneyInLayout.setVisibility(View.GONE);
                             moneyInCatText.setVisibility(View.GONE);
                             moneyInAmountEditText.setVisibility(View.GONE);
                             cancelMoneyInEntryButton.setVisibility(View.GONE);

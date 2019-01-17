@@ -52,6 +52,13 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/updateMoneyOutLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/entry_box"
+                    android:orientation="vertical">
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
@@ -87,6 +94,7 @@
                         android:layout_gravity="end"
                         android:layout_margin="10dp"
                         android:gravity="center"
+                        android:background="@drawable/entry_box"
                         android:text="Cancel" />
 
                     <Button
@@ -97,6 +105,7 @@
                         android:layout_gravity="end"
                         android:layout_margin="10dp"
                         android:gravity="center"
+                        android:background="@drawable/entry_box"
                         android:text="Update" />
 
                     <Button
@@ -107,9 +116,12 @@
                         android:layout_gravity="end"
                         android:layout_margin="10dp"
                         android:gravity="center"
+                        android:background="@drawable/entry_box"
                         android:text="continue" />
 
                 </RelativeLayout>
+
+            </LinearLayout>
 
             </LinearLayout>
 
@@ -128,8 +140,10 @@
             android:background="@color/colorPrimary"></View>
 
         <RelativeLayout
+            android:id="@+id/addMoneyOutLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/entry_box"
             android:orientation="horizontal">
 
             <EditText
@@ -159,6 +173,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_margin="10dp"
                 android:text="enter"
+                android:background="@drawable/entry_box"
                 android:textSize="14sp" />
 
         </RelativeLayout>

@@ -100,7 +100,11 @@ public class DbManager {
     public int tourSetUpCheck() {
         List<Integer> tourDoneList = new ArrayList<>(getSetUp().size());
         for (SetUpDb s : getSetUp()) {
-            tourDoneList.add(s.getTourDone());
+            try {
+                tourDoneList.add(s.getTourDone());
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
         }
         tourDoneCheck = 0;
         if (tourDoneList.size() == 0) {

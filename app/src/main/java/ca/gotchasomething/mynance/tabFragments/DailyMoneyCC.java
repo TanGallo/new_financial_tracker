@@ -14,7 +14,9 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -61,12 +63,14 @@ public class DailyMoneyCC extends Fragment {
     EditText ccTransAmountText, ccTransAmountEditText;
     General general;
     int moneyOutToPay = 0, moneyOutPaid = 0, numberOfDaysToPayDebt = 0, numberOfDaysToSavingsGoal = 0, numberOfDaysToPayDebt3 = 0;
+    LinearLayout updateCreditCardLayout;
     ListView ccTransList;
     long moneyOutRefKeyMO, expRefKeyMO, debtId, savingsId, chargingDebtIdS, moneyOutChargingDebtId;
     MoneyOutDb moneyOutDb;
     MoneyOutSpinnerAdapter ccTransSpinnerAdapter;
     MoneyOutCCSpinnerAdapter ccTransSpinnerAdapter2;
     NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
+    RelativeLayout addCreditCardLayout;
     SimpleDateFormat moneyOutSDF, debtEndS, savingsDateS, debtEndS3;
     Spinner ccTransCatSpinner, ccTransDebtCatSpinner;
     SQLiteDatabase db, db2, db3, db4, db5, db6;
@@ -97,6 +101,9 @@ public class DailyMoneyCC extends Fragment {
 
         general = new General();
 
+        addCreditCardLayout = v.findViewById(R.id.addCreditCardLayout);
+        updateCreditCardLayout = v.findViewById(R.id.updateCreditCardLayout);
+        updateCreditCardLayout.setVisibility(View.GONE);
         ccPaymentNotPossibleAText = v.findViewById(R.id.ccPaymentNotPossibleAText);
         ccPaymentNotPossibleAText.setVisibility(View.GONE);
         ccPaymentNotPossibleBText = v.findViewById(R.id.ccPaymentNotPossibleBText);
@@ -687,6 +694,8 @@ public class DailyMoneyCC extends Fragment {
 
                     dbManager = new DbManager(getContext());
 
+                    addCreditCardLayout.setVisibility(View.GONE);
+                    updateCreditCardLayout.setVisibility(View.VISIBLE);
                     ccTransAmountText.setVisibility(View.GONE);
                     ccTransCatSpinner.setVisibility(View.GONE);
                     ccTransDebtCatSpinner.setVisibility(View.GONE);
@@ -715,6 +724,9 @@ public class DailyMoneyCC extends Fragment {
             updateCCTransEntryButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+
+                    updateCreditCardLayout.setVisibility(View.GONE);
+                    addCreditCardLayout.setVisibility(View.VISIBLE);
 
                     try {
                         moneyOutDb.setMoneyOutAmount(Double.valueOf(ccTransAmountEditText.getText().toString()));
@@ -823,6 +835,8 @@ public class DailyMoneyCC extends Fragment {
             cancelCCTransEntryButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    updateCreditCardLayout.setVisibility(View.GONE);
+                    addCreditCardLayout.setVisibility(View.VISIBLE);
                     cancelTransaction();
                 }
             });

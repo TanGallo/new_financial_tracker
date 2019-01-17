@@ -37,8 +37,7 @@ public class LayoutOnboardingP extends AppCompatActivity implements View.OnClick
             R.layout.layout_onboarding_6
     };
     private LinearLayout dotsLayout;
-    NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
-    SQLiteDatabase setUpDbDb, setUpDbDb2, expenseDbDb, incomeDbDb;
+    SQLiteDatabase setUpDbDb;
     ViewPager viewPager;
 
     @Override
