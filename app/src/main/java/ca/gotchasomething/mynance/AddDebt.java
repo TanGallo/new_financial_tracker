@@ -25,6 +25,7 @@ import java.util.List;
 
 import ca.gotchasomething.mynance.data.ExpenseBudgetDb;
 import ca.gotchasomething.mynance.data.DebtDb;
+import ca.gotchasomething.mynance.data.IncomeBudgetDb;
 
 public class AddDebt extends LayoutDebt {
 
@@ -36,17 +37,20 @@ public class AddDebt extends LayoutDebt {
     DbManager dbManager;
     DebtDb debt;
     Double debtAmount = 0.0, debtRate = 0.0, debtPayments = 0.0, debtFrequency = 0.0, expenseAmount = 0.0, expenseFrequency = 0.0, expenseAnnualAmount = 0.0,
-            expenseAAnnualAmount = 0.0, expenseBAnnualAmount = 0.0, amount = 0.0, rate = 0.0, frequency = 0.0, payments = 0.0, numberOfYearsToPayDebt = 0.0;
-    EditText debtNameEntry, debtAmountEntry, debtPercentEntry, debtPaymentsEntry;
+            expenseAAnnualAmount = 0.0, expenseBAnnualAmount = 0.0, amount = 0.0, rate = 0.0, frequency = 0.0, payments = 0.0, numberOfYearsToPayDebt = 0.0,
+            incomeAmount = 0.0, incomeFrequency = 0.0, incomeAnnualAmount = 0.0, debtLimit = 0.0;
+    EditText debtNameEntry, debtLimitEntry, debtAmountEntry, debtPercentEntry, debtPaymentsEntry;
     ExpenseBudgetDb expenseBudgetDb;
+    IncomeBudgetDb incomeBudgetDb;
     Integer numberOfDaysToPayDebt = 0;
     Intent backToDebtLayout, backToDebtLayout2;
-    long expRefKeyD, idResult;
+    long expRefKeyD, incRefKeyD, idResult;
     RadioButton debtWeeklyRadioButton, debtBiWeeklyRadioButton, debtMonthlyRadioButton;
     RadioGroup debtFrequencyRadioGroup;
     SimpleDateFormat debtEndS;
     SQLiteDatabase db, expenseDb2;
-    String debtName = null, debtEnd = null, debtFrequencyS = null, expenseName = null, expensePriority = null, expenseWeekly = null, debtEndString = null;
+    String debtName = null, debtEnd = null, debtFrequencyS = null, expenseName = null, expensePriority = null, expenseWeekly = null, debtEndString = null,
+            incomeName = null;
     TextView debtDateResult;
 
     @Override
@@ -57,6 +61,7 @@ public class AddDebt extends LayoutDebt {
         dbManager = new DbManager(this);
 
         debtNameEntry = findViewById(R.id.debtNameEntry);
+        debtLimitEntry = findViewById(R.id.debtLimitEntry);
         debtAmountEntry = findViewById(R.id.debtAmountEntry);
         debtPercentEntry = findViewById(R.id.debtPercentEntry);
         debtPaymentsEntry = findViewById(R.id.debtPaymentsEntry);
@@ -203,6 +208,20 @@ public class AddDebt extends LayoutDebt {
         @Override
         public void onClick(View v) {
 
+            incomeName = debtNameEntry.getText().toString();
+            incomeAmount = 0.0;
+            incomeFrequency = 1.0;
+            incomeAnnualAmount = 0.0;
+
+            incomeBudgetDb = new IncomeBudgetDb(
+                    incomeName,
+                    incomeAmount,
+                    incomeFrequency,
+                    incomeAnnualAmount,
+                    0);
+
+            dbManager.addIncome(incomeBudgetDb);
+
             expenseName = debtNameEntry.getText().toString();
             expenseAmount = Double.valueOf(debtPaymentsEntry.getText().toString());
             expenseFrequency = Double.valueOf(debtFrequencyS);
@@ -226,20 +245,24 @@ public class AddDebt extends LayoutDebt {
             dbManager.addExpense(expenseBudgetDb);
 
             debtName = debtNameEntry.getText().toString();
+            debtLimit = Double.valueOf(debtLimitEntry.getText().toString());
             debtAmount = Double.valueOf(debtAmountEntry.getText().toString());
             debtRate = Double.valueOf(debtPercentEntry.getText().toString());
             debtPayments = Double.valueOf(debtPaymentsEntry.getText().toString());
             debtFrequency = Double.valueOf(debtFrequencyS);
             expRefKeyD = dbManager.findLatestExpenseId();
+            incRefKeyD = dbManager.findLatestIncomeId();
 
             debt = new DebtDb(
                     debtName,
+                    debtLimit,
                     debtAmount,
                     debtRate,
                     debtPayments,
                     debtFrequency,
                     debtEnd,
                     expRefKeyD,
+                    incRefKeyD,
                     0);
 
             dbManager.addDebt(debt);

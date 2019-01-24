@@ -38,29 +38,33 @@
                 android:orientation="vertical">
 
                 <LinearLayout
+                    android:id="@+id/spendingReportLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
+                    android:background="@drawable/entry_box"
                     android:orientation="vertical">
 
                     <Spinner
                     android:id="@+id/monthSpinner"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                        android:layout_margin="10dp"></Spinner>
+                        android:layout_margin="5dp"></Spinner>
 
                     <Spinner
                         android:id="@+id/yearSpinner"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_margin="10dp"></Spinner>
+                        android:layout_margin="5dp"></Spinner>
 
                     <Button
                         android:id="@+id/spendingReportButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
+                        android:layout_margin="5dp"
                         android:layout_gravity="end"
+                        android:background="@drawable/entry_box"
+                        android:textSize="12sp"
                         android:text="show report"/>
 
                 </LinearLayout>

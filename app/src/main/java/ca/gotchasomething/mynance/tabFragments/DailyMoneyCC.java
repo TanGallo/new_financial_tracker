@@ -44,7 +44,7 @@ import ca.gotchasomething.mynance.spinners.MoneyOutSpinnerAdapter;
 public class DailyMoneyCC extends Fragment {
 
     boolean paymentAPossible = true, paymentBPossible = true, foundMatchingDebtId = false, foundMatchingSavingsId = false;
-    Button ccTransButton, cancelCCTransEntryButton, updateCCTransEntryButton, ccPaymentNotPossibleContinueButton;
+    Button ccTransButton, cancelCCTransEntryButton, updateCCTransEntryButton, noCCButton, yesCCButton;
     Calendar debtCal, debtCal3, savingsCal;
     CCTransAdapter ccTransAdapter;
     ContentValues currentValue, moneyOutValue, moneyOutValue2, moneyOutValue3, moneyOutValue4, moneyOutValue5, moneyOutValue6, moneyOutValue7,
@@ -59,7 +59,7 @@ public class DailyMoneyCC extends Fragment {
             currentSavingsAmount = 0.0, savingsAmount = 0.0, currentSavingsRate = 0.0, currentSavingsPayments = 0.0, currentSavingsFrequency = 0.0,
             numberOfYearsToSavingsGoal = 0.0, newDebtAmount = 0.0, newDebtAmount2 = 0.0, newSavingsAmount = 0.0, currentChargingDebtAmount = 0.0,
             debtAmount3 = 0.0, currentDebtRate3 = 0.0, currentDebtPayments3 = 0.0, currentDebtFrequency3 = 0.0, numberOfYearsToPayDebt3 = 0.0,
-            newDebtAmount3 = 0.0, newDebtAmount4;
+            newDebtAmount3 = 0.0, newDebtAmount4 = 0.0, years = 0.0, savingsGoal = 0.0, savingsIntFrequency = 0.0, rate = 0.0;
     EditText ccTransAmountText, ccTransAmountEditText;
     General general;
     int moneyOutToPay = 0, moneyOutPaid = 0, numberOfDaysToPayDebt = 0, numberOfDaysToSavingsGoal = 0, numberOfDaysToPayDebt3 = 0;
@@ -112,8 +112,10 @@ public class DailyMoneyCC extends Fragment {
         ccContinueAnywayText.setVisibility(View.GONE);
         ccContinueWarningText = v.findViewById(R.id.ccContinueWarningText);
         ccContinueWarningText.setVisibility(View.GONE);
-        ccPaymentNotPossibleContinueButton = v.findViewById(R.id.ccPaymentNotPossibleContinueButton);
-        ccPaymentNotPossibleContinueButton.setVisibility(View.GONE);
+        noCCButton = v.findViewById(R.id.noCCButton);
+        noCCButton.setVisibility(View.GONE);
+        yesCCButton = v.findViewById(R.id.yesCCButton);
+        yesCCButton.setVisibility(View.GONE);
         ccTransAmountText = v.findViewById(R.id.ccTransAmount);
         ccTransButton = v.findViewById(R.id.ccTransButton);
         ccTransList = v.findViewById(R.id.ccTransList);
@@ -142,6 +144,7 @@ public class DailyMoneyCC extends Fragment {
         if (ccTransAdapter.getCount() == 0) {
             newMoneyCCLabel.setVisibility(View.VISIBLE);
             newMoneyCCLabel2.setVisibility(View.VISIBLE);
+            updateCreditCardLayout.setVisibility(View.GONE);
         } else {
             newMoneyCCLabel.setVisibility(View.GONE);
             newMoneyCCLabel2.setVisibility(View.GONE);
@@ -203,9 +206,10 @@ public class DailyMoneyCC extends Fragment {
     public void cancelTransaction() {
         ccPaymentNotPossibleAText.setVisibility(View.GONE);
         ccPaymentNotPossibleBText.setVisibility(View.GONE);
-        ccPaymentNotPossibleContinueButton.setVisibility(View.GONE);
         ccContinueAnywayText.setVisibility(View.GONE);
         ccContinueWarningText.setVisibility(View.GONE);
+        noCCButton.setVisibility(View.GONE);
+        yesCCButton.setVisibility(View.GONE);
 
         ccTransCatText.setVisibility(View.GONE);
         ccTransAmountEditText.setVisibility(View.GONE);
@@ -266,9 +270,10 @@ public class DailyMoneyCC extends Fragment {
 
         ccPaymentNotPossibleAText.setVisibility(View.GONE);
         ccPaymentNotPossibleBText.setVisibility(View.GONE);
-        ccPaymentNotPossibleContinueButton.setVisibility(View.GONE);
         ccContinueAnywayText.setVisibility(View.GONE);
         ccContinueWarningText.setVisibility(View.GONE);
+        noCCButton.setVisibility(View.GONE);
+        yesCCButton.setVisibility(View.GONE);
 
         ccTransCatText.setVisibility(View.GONE);
         ccTransAmountEditText.setVisibility(View.GONE);
@@ -320,9 +325,10 @@ public class DailyMoneyCC extends Fragment {
 
         ccPaymentNotPossibleAText.setVisibility(View.GONE);
         ccPaymentNotPossibleBText.setVisibility(View.GONE);
-        ccPaymentNotPossibleContinueButton.setVisibility(View.GONE);
         ccContinueAnywayText.setVisibility(View.GONE);
         ccContinueWarningText.setVisibility(View.GONE);
+        noCCButton.setVisibility(View.GONE);
+        yesCCButton.setVisibility(View.GONE);
 
         ccTransCatText.setVisibility(View.GONE);
         ccTransAmountEditText.setVisibility(View.GONE);
@@ -457,36 +463,61 @@ public class DailyMoneyCC extends Fragment {
         return currentSavingsAmount;
     }
 
-    public String calcSavingsDate() {
+    public Double findSavingsYears() {
         for (SavingsDb s2 : dbManager.getSavings()) {
             if (s2.getId() == findMatchingSavingsId()) {
                 savingsAmount = s2.getSavingsAmount();
+                savingsGoal = s2.getSavingsGoal();
                 currentSavingsRate = s2.getSavingsRate();
                 currentSavingsPayments = s2.getSavingsPayments();
                 currentSavingsFrequency = s2.getSavingsFrequency();
-            }
-
-            savingsCal = Calendar.getInstance();
-            numberOfYearsToSavingsGoal = -(Math.log(1 - (savingsAmount * (currentSavingsRate / 100) / (currentSavingsPayments * currentSavingsFrequency))) / (currentSavingsFrequency * Math.log(1 + ((currentSavingsRate / 100) / currentSavingsFrequency))));
-            numberOfDaysToSavingsGoal = (int) Math.round(numberOfYearsToSavingsGoal * 365);
-
-            if (savingsAmount <= 0) {
-                savingsDate = getString(R.string.goal_achieved);
-
-            } else if (numberOfDaysToSavingsGoal > Integer.MAX_VALUE || numberOfDaysToSavingsGoal <= 0) {
-
-                Toast.makeText(getContext(), R.string.too_far, Toast.LENGTH_LONG).show();
-                savingsDate = getString(R.string.too_far);
-
-            } else {
-
-                savingsCal.add(Calendar.DATE, numberOfDaysToSavingsGoal);
-                savingsDateD = savingsCal.getTime();
-                savingsDateS = new SimpleDateFormat("dd-MMM-yyyy");
-                savingsDate = getString(R.string.goal_will) + " " + savingsDateS.format(savingsDateD);
+                savingsIntFrequency = s2.getSavingsIntFrequency();
             }
         }
+        if(savingsGoal < savingsAmount) {
+            savingsGoal = savingsAmount;
+        }
+        rate = currentSavingsRate / 100;
+        if(rate == 0) {
+            rate = .01;
+        }
+        if(currentSavingsPayments == 0) {
+            currentSavingsPayments = 0.01;
+        }
+        if (savingsAmount == 0 && currentSavingsPayments == 0.01) {
+            years = 0.0;
+        } else if (savingsGoal.equals(savingsAmount)) {
+            years = 0.0;
+        } else {
+            years = 0.0;
+            do {
+                years = years + .00274;
+            }
+            while (savingsGoal >= (savingsAmount * (Math.pow((1 + rate / savingsIntFrequency), savingsIntFrequency * years))) + (((currentSavingsPayments * currentSavingsFrequency) / 12) * (((Math.pow((1 + rate / savingsIntFrequency), savingsIntFrequency * years)) - 1) / (rate / savingsIntFrequency)) * (1 + rate / savingsIntFrequency)));
+        }
 
+        return years;
+    }
+
+    public String calcSavingsDate() {
+
+        savingsCal = Calendar.getInstance();
+
+        numberOfDaysToSavingsGoal = (int) Math.round(findSavingsYears() * 365);
+
+        if ((numberOfDaysToSavingsGoal) <= 0) {
+            savingsDate = getString(R.string.goal_achieved);
+
+        } else if (numberOfDaysToSavingsGoal > Integer.MAX_VALUE) {
+            savingsDate = getString(R.string.too_far);
+
+        } else {
+
+            savingsCal.add(Calendar.DATE, numberOfDaysToSavingsGoal);
+            savingsDateD = savingsCal.getTime();
+            savingsDateS = new SimpleDateFormat("dd-MMM-yyyy");
+            savingsDate = getString(R.string.goal_will) + " " + savingsDateS.format(savingsDateD);
+        }
         return savingsDate;
     }
 
@@ -532,17 +563,17 @@ public class DailyMoneyCC extends Fragment {
                         ccPaymentNotPossibleAText.setVisibility(View.VISIBLE);
                         ccContinueWarningText.setVisibility(View.VISIBLE);
                         ccContinueAnywayText.setVisibility(View.VISIBLE);
-                        cancelCCTransEntryButton.setVisibility(View.VISIBLE);
-                        ccPaymentNotPossibleContinueButton.setVisibility(View.VISIBLE);
+                        noCCButton.setVisibility(View.VISIBLE);
+                        yesCCButton.setVisibility(View.VISIBLE);
 
-                        cancelCCTransEntryButton.setOnClickListener(new View.OnClickListener() {
+                        noCCButton.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 cancelTransaction();
                             }
                         });
 
-                        ccPaymentNotPossibleContinueButton.setOnClickListener(new View.OnClickListener() {
+                        yesCCButton.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 continueTransaction();
@@ -560,17 +591,17 @@ public class DailyMoneyCC extends Fragment {
                         ccPaymentNotPossibleBText.setVisibility(View.VISIBLE);
                         ccContinueWarningText.setVisibility(View.VISIBLE);
                         ccContinueAnywayText.setVisibility(View.VISIBLE);
-                        cancelCCTransEntryButton.setVisibility(View.VISIBLE);
-                        ccPaymentNotPossibleContinueButton.setVisibility(View.VISIBLE);
+                        noCCButton.setVisibility(View.VISIBLE);
+                        yesCCButton.setVisibility(View.VISIBLE);
 
-                        cancelCCTransEntryButton.setOnClickListener(new View.OnClickListener() {
+                        noCCButton.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 cancelTransaction();
                             }
                         });
 
-                        ccPaymentNotPossibleContinueButton.setOnClickListener(new View.OnClickListener() {
+                        yesCCButton.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 continueTransaction();
@@ -583,17 +614,17 @@ public class DailyMoneyCC extends Fragment {
                         ccPaymentNotPossibleBText.setVisibility(View.VISIBLE);
                         ccContinueWarningText.setVisibility(View.VISIBLE);
                         ccContinueAnywayText.setVisibility(View.VISIBLE);
-                        cancelCCTransEntryButton.setVisibility(View.VISIBLE);
-                        ccPaymentNotPossibleContinueButton.setVisibility(View.VISIBLE);
+                        noCCButton.setVisibility(View.VISIBLE);
+                        yesCCButton.setVisibility(View.VISIBLE);
 
-                        cancelCCTransEntryButton.setOnClickListener(new View.OnClickListener() {
+                        noCCButton.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 cancelTransaction();
                             }
                         });
 
-                        ccPaymentNotPossibleContinueButton.setOnClickListener(new View.OnClickListener() {
+                        yesCCButton.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 continueTransaction();
@@ -758,17 +789,17 @@ public class DailyMoneyCC extends Fragment {
                             ccPaymentNotPossibleAText.setVisibility(View.VISIBLE);
                             ccContinueWarningText.setVisibility(View.VISIBLE);
                             ccContinueAnywayText.setVisibility(View.VISIBLE);
-                            cancelCCTransEntryButton.setVisibility(View.VISIBLE);
-                            ccPaymentNotPossibleContinueButton.setVisibility(View.VISIBLE);
+                            noCCButton.setVisibility(View.VISIBLE);
+                            yesCCButton.setVisibility(View.VISIBLE);
 
-                            cancelCCTransEntryButton.setOnClickListener(new View.OnClickListener() {
+                            noCCButton.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
                                     cancelTransaction();
                                 }
                             });
 
-                            ccPaymentNotPossibleContinueButton.setOnClickListener(new View.OnClickListener() {
+                            yesCCButton.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
                                     continueUpdate();
@@ -786,17 +817,17 @@ public class DailyMoneyCC extends Fragment {
                             ccPaymentNotPossibleBText.setVisibility(View.VISIBLE);
                             ccContinueWarningText.setVisibility(View.VISIBLE);
                             ccContinueAnywayText.setVisibility(View.VISIBLE);
-                            cancelCCTransEntryButton.setVisibility(View.VISIBLE);
-                            ccPaymentNotPossibleContinueButton.setVisibility(View.VISIBLE);
+                            noCCButton.setVisibility(View.VISIBLE);
+                            yesCCButton.setVisibility(View.VISIBLE);
 
-                            cancelCCTransEntryButton.setOnClickListener(new View.OnClickListener() {
+                            noCCButton.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
                                     cancelTransaction();
                                 }
                             });
 
-                            ccPaymentNotPossibleContinueButton.setOnClickListener(new View.OnClickListener() {
+                            yesCCButton.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
                                     continueUpdate();
@@ -809,17 +840,17 @@ public class DailyMoneyCC extends Fragment {
                             ccPaymentNotPossibleBText.setVisibility(View.VISIBLE);
                             ccContinueWarningText.setVisibility(View.VISIBLE);
                             ccContinueAnywayText.setVisibility(View.VISIBLE);
-                            cancelCCTransEntryButton.setVisibility(View.VISIBLE);
-                            ccPaymentNotPossibleContinueButton.setVisibility(View.VISIBLE);
+                            noCCButton.setVisibility(View.VISIBLE);
+                            yesCCButton.setVisibility(View.VISIBLE);
 
-                            cancelCCTransEntryButton.setOnClickListener(new View.OnClickListener() {
+                            noCCButton.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
                                     cancelTransaction();
                                 }
                             });
 
-                            ccPaymentNotPossibleContinueButton.setOnClickListener(new View.OnClickListener() {
+                            yesCCButton.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
                                     continueUpdate();
@@ -889,6 +920,14 @@ public class DailyMoneyCC extends Fragment {
 
                     ccTransAdapter.updateCCTrans(dbManager.getCCTrans());
                     notifyDataSetChanged();
+                    if (ccTransAdapter.getCount() == 0) {
+                        newMoneyCCLabel.setVisibility(View.VISIBLE);
+                        newMoneyCCLabel2.setVisibility(View.VISIBLE);
+                        updateCreditCardLayout.setVisibility(View.GONE);
+                    } else {
+                        newMoneyCCLabel.setVisibility(View.GONE);
+                        newMoneyCCLabel2.setVisibility(View.GONE);
+                    }
                 }
             });
 

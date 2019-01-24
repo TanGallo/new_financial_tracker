@@ -29,6 +29,7 @@ public class LayoutSetUp extends MainNavigation {
     EditText setUpAccountAmount;
     int debtsDone = 0, savingsDone = 0, budgetDone = 0, balanceDone = 0, tourDone = 0, currentPageId = 0;
     Intent setUpDebts, setUpSavings, setUpBudget, toMainActivity;
+    long incRefKeyMI;
     MoneyInDb moneyInDb;
     NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
     SetUpDb setUpDb;
@@ -206,8 +207,9 @@ public class LayoutSetUp extends MainNavigation {
             moneyInTimestamp = new Timestamp(moneyInDate.getTime());
             moneyInSDF = new SimpleDateFormat("dd-MMM-yyyy");
             moneyInCreatedOn = moneyInSDF.format(moneyInTimestamp);
+            incRefKeyMI = 1;
 
-            moneyInDb = new MoneyInDb(moneyInCat, moneyInAmount, moneyInCreatedOn, 0);
+            moneyInDb = new MoneyInDb(moneyInCat, moneyInAmount, moneyInCreatedOn, incRefKeyMI, 0);
 
             dbManager.addMoneyIn(moneyInDb);
 

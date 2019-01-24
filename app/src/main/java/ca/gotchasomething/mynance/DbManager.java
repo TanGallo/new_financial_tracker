@@ -33,7 +33,7 @@ public class DbManager {
     public General general = new General();
     public int tourDoneCheck = 0, balanceDoneCheck = 0, budgetDoneCheck = 0, savingsDoneCheck = 0, debtsDoneCheck = 0, numberOfDaysToPayDebt = 0,
             currentPageId = 0, debtCount = 0, startIndex = 0, endIndex = 0, earliestYear = 0, latestYear = 0;
-    public Long expenseId;
+    public Long expenseId, incomeId;
     public SimpleDateFormat debtEndS;
     public SQLiteDatabase db;
     public String debtEnd = null, category = null, spentAmount = null, startingString = null, subStringResult = null;
@@ -193,12 +193,14 @@ public class DbManager {
             while (!cursor.isAfterLast()) {
                 DebtDb debt = new DebtDb(
                         cursor.getString(cursor.getColumnIndex(DbHelper.DEBTNAME)),
+                        cursor.getDouble(cursor.getColumnIndex(DbHelper.DEBTLIMIT)),
                         cursor.getDouble(cursor.getColumnIndex(DbHelper.DEBTAMOUNT)),
                         cursor.getDouble(cursor.getColumnIndex(DbHelper.DEBTRATE)),
                         cursor.getDouble(cursor.getColumnIndex(DbHelper.DEBTPAYMENTS)),
                         cursor.getDouble(cursor.getColumnIndex(DbHelper.DEBTFREQUENCY)),
                         cursor.getString(cursor.getColumnIndex(DbHelper.DEBTEND)),
                         cursor.getLong(cursor.getColumnIndex(DbHelper.EXPREFKEYD)),
+                        cursor.getLong(cursor.getColumnIndex(DbHelper.INCREFKEYD)),
                         cursor.getLong(cursor.getColumnIndex(DbHelper.ID))
                 );
                 debts.add(debt); //adds new items to end of list
@@ -212,12 +214,14 @@ public class DbManager {
     public void addDebt(DebtDb debt) {
         ContentValues newDebt = new ContentValues();
         newDebt.put(DbHelper.DEBTNAME, debt.getDebtName());
+        newDebt.put(DbHelper.DEBTLIMIT, debt.getDebtLimit());
         newDebt.put(DbHelper.DEBTAMOUNT, debt.getDebtAmount());
         newDebt.put(DbHelper.DEBTRATE, debt.getDebtRate());
         newDebt.put(DbHelper.DEBTPAYMENTS, debt.getDebtPayments());
         newDebt.put(DbHelper.DEBTFREQUENCY, debt.getDebtFrequency());
         newDebt.put(DbHelper.DEBTEND, debtEndDate(debt));
         newDebt.put(DbHelper.EXPREFKEYD, debt.getExpRefKeyD());
+        newDebt.put(DbHelper.INCREFKEYD, debt.getIncRefKeyD());
         db = dbHelper.getWritableDatabase();
         db.insert(DbHelper.DEBTS_TABLE_NAME, null, newDebt);
     }
@@ -225,12 +229,14 @@ public class DbManager {
     public void updateDebt(DebtDb debt) {
         ContentValues updateDebt = new ContentValues();
         updateDebt.put(DbHelper.DEBTNAME, debt.getDebtName());
+        updateDebt.put(DbHelper.DEBTLIMIT, debt.getDebtLimit());
         updateDebt.put(DbHelper.DEBTAMOUNT, debt.getDebtAmount());
         updateDebt.put(DbHelper.DEBTRATE, debt.getDebtRate());
         updateDebt.put(DbHelper.DEBTPAYMENTS, debt.getDebtPayments());
         updateDebt.put(DbHelper.DEBTFREQUENCY, debt.getDebtFrequency());
         updateDebt.put(DbHelper.DEBTEND, debtEndDate(debt));
         updateDebt.put(DbHelper.EXPREFKEYD, debt.getExpRefKeyD());
+        updateDebt.put(DbHelper.INCREFKEYD, debt.getIncRefKeyD());
         db = dbHelper.getWritableDatabase();
         String[] args = new String[]{String.valueOf(debt.getId())};
         db.update(DbHelper.DEBTS_TABLE_NAME, updateDebt, DbHelper.ID + "=?", args);
@@ -300,6 +306,7 @@ public class DbManager {
                         cursor.getDouble(cursor.getColumnIndex(DbHelper.SAVINGSINTFREQUENCY)),
                         cursor.getString(cursor.getColumnIndex(DbHelper.SAVINGSDATE)),
                         cursor.getLong(cursor.getColumnIndex(DbHelper.EXPREFKEYS)),
+                        cursor.getLong(cursor.getColumnIndex(DbHelper.INCREFKEYS)),
                         cursor.getLong(cursor.getColumnIndex(DbHelper.ID))
                 );
                 savings.add(saving); //adds new items to end of list
@@ -321,6 +328,7 @@ public class DbManager {
         newSavings.put(DbHelper.SAVINGSINTFREQUENCY, saving.getSavingsIntFrequency());
         newSavings.put(DbHelper.SAVINGSDATE, saving.getSavingsDate());
         newSavings.put(DbHelper.EXPREFKEYS, saving.getExpRefKeyS());
+        newSavings.put(DbHelper.INCREFKEYS, saving.getIncRefKeyS());
         db = dbHelper.getWritableDatabase();
         db.insert(DbHelper.SAVINGS_TABLE_NAME, null, newSavings);
     }
@@ -336,6 +344,7 @@ public class DbManager {
         updateSaving.put(DbHelper.SAVINGSINTFREQUENCY, saving.getSavingsIntFrequency());
         updateSaving.put(DbHelper.SAVINGSDATE, saving.getSavingsDate());
         updateSaving.put(DbHelper.EXPREFKEYS, saving.getExpRefKeyS());
+        updateSaving.put(DbHelper.INCREFKEYS, saving.getIncRefKeyS());
         db = dbHelper.getWritableDatabase();
         String[] args = new String[]{String.valueOf(saving.getId())};
         db.update(DbHelper.SAVINGS_TABLE_NAME, updateSaving, DbHelper.ID + "=?", args);
@@ -514,6 +523,20 @@ public class DbManager {
         db.delete(DbHelper.INCOME_TABLE_NAME, DbHelper.ID + "=?", args);
     }
 
+    public Long findLatestIncomeId() {
+        List<Long> incomeIds = new ArrayList<>(getIncomes().size());
+        for (IncomeBudgetDb i : getIncomes()) {
+            incomeIds.add(i.getId());
+        }
+        incomeId = null;
+        if (incomeIds.size() == 0) {
+            incomeId = null;
+        } else {
+            incomeId = Collections.max(incomeIds);
+        }
+        return incomeId;
+    }
+
     public Double sumTotalIncome() {
         List<Double> incomeList = new ArrayList<>(getIncomes().size());
         totalIncome = 0.0;
@@ -541,6 +564,7 @@ public class DbManager {
                         cursor.getString(cursor.getColumnIndex(DbHelper.MONEYINCAT)),
                         cursor.getDouble(cursor.getColumnIndex(DbHelper.MONEYINAMOUNT)),
                         cursor.getString(cursor.getColumnIndex(DbHelper.MONEYINCREATEDON)),
+                        cursor.getLong(cursor.getColumnIndex(DbHelper.INCREFKEYMI)),
                         cursor.getLong(cursor.getColumnIndex(DbHelper.ID))
                 );
                 moneyIns.add(0, moneyIn); //adds new items to beginning of list
@@ -556,6 +580,7 @@ public class DbManager {
         newMoneyIn.put(DbHelper.MONEYINCAT, moneyIn.getMoneyInCat());
         newMoneyIn.put(DbHelper.MONEYINAMOUNT, moneyIn.getMoneyInAmount());
         newMoneyIn.put(DbHelper.MONEYINCREATEDON, moneyIn.getMoneyInCreatedOn());
+        newMoneyIn.put(DbHelper.INCREFKEYMI, moneyIn.getIncRefKeyMI());
         db = dbHelper.getWritableDatabase();
         db.insert(DbHelper.MONEY_IN_TABLE_NAME, null, newMoneyIn);
     }
@@ -565,6 +590,7 @@ public class DbManager {
         updateMoneyIn.put(DbHelper.MONEYINCAT, moneyIn.getMoneyInCat());
         updateMoneyIn.put(DbHelper.MONEYINAMOUNT, moneyIn.getMoneyInAmount());
         updateMoneyIn.put(DbHelper.MONEYINCREATEDON, moneyIn.getMoneyInCreatedOn());
+        updateMoneyIn.put(DbHelper.INCREFKEYMI, moneyIn.getIncRefKeyMI());
         db = dbHelper.getWritableDatabase();
         String[] args = new String[]{String.valueOf(moneyIn.getId())};
         db.update(DbHelper.MONEY_IN_TABLE_NAME, updateMoneyIn, DbHelper.ID + "=?", args);

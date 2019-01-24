@@ -45,7 +45,7 @@ import ca.gotchasomething.mynance.spinners.MoneyOutSpinnerAdapter;
 public class DailyMoneyOut extends Fragment {
 
     boolean paymentAPossible = true, paymentBPossible = true, foundMatchingDebtId = false, foundMatchingSavingsId = false;
-    Button moneyOutButton, cancelMoneyOutEntryButton, updateMoneyOutEntryButton, paymentNotPossibleContinueButton;
+    Button moneyOutButton, cancelMoneyOutEntryButton, updateMoneyOutEntryButton, paymentNotPossibleContinueButton, noMoneyOutButton, yesMoneyOutButton;
     Calendar debtCal, savingsCal;
     ContentValues moneyOutValue, moneyOutValue2, moneyOutValue3, moneyOutValue4, moneyOutValue5, moneyOutValue6, moneyOutValue7, moneyOutValue8,
             moneyOutValue9, moneyOutValue10, moneyOutValue11, moneyOutValue12, moneyOutValue13, moneyOutValue14, moneyOutValue15, moneyOutValue17,
@@ -58,8 +58,8 @@ public class DailyMoneyOut extends Fragment {
             moneyOutD = 0.0, oldMoneyOutAmount = 0.0, newMoneyOutAmount = 0.0, moneyOutAmountD = 0.0, currentDebtAmount = 0.0, debtAmount = 0.0,
             currentSavingsAmount = 0.0, newDebtAmount = 0.0, newSavingsAmount = 0.0, currentDebtRate = 0.0, currentDebtPayments = 0.0,
             currentDebtFrequency = 0.0, numberOfYearsToPayDebt = 0.0, currentSavingsRate = 0.0, currentSavingsPayments = 0.0,
-            currentSavingsFrequency = 0.0, numberOfYearsToSavingsGoal = 0.0, savingsAmount = 0.0, newCurrentAvailableBalance = 0.0,
-            newCurrentAccountBalance4 = 0.0;
+            currentSavingsFrequency = 0.0, savingsAmount = 0.0, newCurrentAvailableBalance = 0.0,
+            newCurrentAccountBalance4 = 0.0, savingsGoal = 0.0, rate = 0.0, savingsIntFrequency = 0.0, years = 0.0;
     EditText moneyOutAmountText, moneyOutAmountEditText;
     General general;
     int moneyOutToPay = 0, moneyOutPaid = 0, numberOfDaysToPayDebt = 0, numberOfDaysToSavingsGoal = 0;
@@ -111,6 +111,10 @@ public class DailyMoneyOut extends Fragment {
         paymentNotPossibleBText.setVisibility(View.GONE);
         continueAnywayText = v.findViewById(R.id.continueAnywayText);
         continueAnywayText.setVisibility(View.GONE);
+        noMoneyOutButton = v.findViewById(R.id.noMoneyOutButton);
+        noMoneyOutButton.setVisibility(View.GONE);
+        yesMoneyOutButton = v.findViewById(R.id.yesMoneyOutButton);
+        yesMoneyOutButton.setVisibility(View.GONE);
         paymentNotPossibleContinueButton = v.findViewById(R.id.paymentNotPossibleContinueButton);
         paymentNotPossibleContinueButton.setVisibility(View.GONE);
         moneyOutAmountText = v.findViewById(R.id.moneyOutAmount);
@@ -161,8 +165,8 @@ public class DailyMoneyOut extends Fragment {
     public void cancelTransaction() {
         paymentNotPossibleAText.setVisibility(View.GONE);
         paymentNotPossibleBText.setVisibility(View.GONE);
-        cancelMoneyOutEntryButton.setVisibility(View.GONE);
-        paymentNotPossibleContinueButton.setVisibility(View.GONE);
+        noMoneyOutButton.setVisibility(View.GONE);
+        yesMoneyOutButton.setVisibility(View.GONE);
 
         moneyOutCatText.setVisibility(View.GONE);
         moneyOutAmountEditText.setVisibility(View.GONE);
@@ -357,36 +361,61 @@ public class DailyMoneyOut extends Fragment {
         return currentSavingsAmount;
     }
 
-    public String calcSavingsDate() {
+    public Double findSavingsYears() {
         for (SavingsDb s2 : dbManager.getSavings()) {
             if (s2.getId() == findMatchingSavingsId()) {
                 savingsAmount = s2.getSavingsAmount();
+                savingsGoal = s2.getSavingsGoal();
                 currentSavingsRate = s2.getSavingsRate();
                 currentSavingsPayments = s2.getSavingsPayments();
                 currentSavingsFrequency = s2.getSavingsFrequency();
-            }
-
-            savingsCal = Calendar.getInstance();
-            numberOfYearsToSavingsGoal = -(Math.log(1 - (savingsAmount * (currentSavingsRate / 100) / (currentSavingsPayments * currentSavingsFrequency))) / (currentSavingsFrequency * Math.log(1 + ((currentSavingsRate / 100) / currentSavingsFrequency))));
-            numberOfDaysToSavingsGoal = (int) Math.round(numberOfYearsToSavingsGoal * 365);
-
-            if (savingsAmount <= 0) {
-                savingsDate = getString(R.string.goal_achieved);
-
-            } else if (numberOfDaysToSavingsGoal > Integer.MAX_VALUE || numberOfDaysToSavingsGoal <= 0) {
-
-                Toast.makeText(getContext(), R.string.too_far, Toast.LENGTH_LONG).show();
-                savingsDate = getString(R.string.too_far);
-
-            } else {
-
-                savingsCal.add(Calendar.DATE, numberOfDaysToSavingsGoal);
-                savingsDateD = savingsCal.getTime();
-                savingsDateS = new SimpleDateFormat("dd-MMM-yyyy");
-                savingsDate = getString(R.string.goal_will) + " " + savingsDateS.format(savingsDateD);
+                savingsIntFrequency = s2.getSavingsIntFrequency();
             }
         }
+        if(savingsGoal < savingsAmount) {
+            savingsGoal = savingsAmount;
+        }
+        rate = currentSavingsRate / 100;
+        if(rate == 0) {
+            rate = .01;
+        }
+        if(currentSavingsPayments == 0) {
+            currentSavingsPayments = 0.01;
+        }
+        if (savingsAmount == 0 && currentSavingsPayments == 0.01) {
+            years = 0.0;
+        } else if (savingsGoal.equals(savingsAmount)) {
+            years = 0.0;
+        } else {
+            years = 0.0;
+            do {
+                years = years + .00274;
+            }
+            while (savingsGoal >= (savingsAmount * (Math.pow((1 + rate / savingsIntFrequency), savingsIntFrequency * years))) + (((currentSavingsPayments * currentSavingsFrequency) / 12) * (((Math.pow((1 + rate / savingsIntFrequency), savingsIntFrequency * years)) - 1) / (rate / savingsIntFrequency)) * (1 + rate / savingsIntFrequency)));
+        }
 
+        return years;
+    }
+
+    public String calcSavingsDate() {
+
+        savingsCal = Calendar.getInstance();
+
+        numberOfDaysToSavingsGoal = (int) Math.round(findSavingsYears() * 365);
+
+        if ((numberOfDaysToSavingsGoal) <= 0) {
+            savingsDate = getString(R.string.goal_achieved);
+
+        } else if (numberOfDaysToSavingsGoal > Integer.MAX_VALUE) {
+            savingsDate = getString(R.string.too_far);
+
+        } else {
+
+            savingsCal.add(Calendar.DATE, numberOfDaysToSavingsGoal);
+            savingsDateD = savingsCal.getTime();
+            savingsDateS = new SimpleDateFormat("dd-MMM-yyyy");
+            savingsDate = getString(R.string.goal_will) + " " + savingsDateS.format(savingsDateD);
+        }
         return savingsDate;
     }
 
@@ -426,17 +455,18 @@ public class DailyMoneyOut extends Fragment {
                     backToLayoutDailyMoney();
                 } else if (!paymentAPossible) {
                     paymentNotPossibleAText.setVisibility(View.VISIBLE);
-                    cancelMoneyOutEntryButton.setVisibility(View.VISIBLE);
-                    paymentNotPossibleContinueButton.setVisibility(View.VISIBLE);
+                    noMoneyOutButton.setVisibility(View.VISIBLE);
+                    continueAnywayText.setVisibility(View.VISIBLE);
+                    yesMoneyOutButton.setVisibility(View.VISIBLE);
 
-                    cancelMoneyOutEntryButton.setOnClickListener(new View.OnClickListener() {
+                    noMoneyOutButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             cancelTransaction();
                         }
                     });
 
-                    paymentNotPossibleContinueButton.setOnClickListener(new View.OnClickListener() {
+                    yesMoneyOutButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             makePaymentA();
@@ -451,17 +481,18 @@ public class DailyMoneyOut extends Fragment {
                     backToLayoutDailyMoney();
                 } else if (!paymentBPossible && paymentAPossible) {
                     paymentNotPossibleBText.setVisibility(View.VISIBLE);
-                    cancelMoneyOutEntryButton.setVisibility(View.VISIBLE);
-                    paymentNotPossibleContinueButton.setVisibility(View.VISIBLE);
+                    noMoneyOutButton.setVisibility(View.VISIBLE);
+                    yesMoneyOutButton.setVisibility(View.VISIBLE);
+                    continueAnywayText.setVisibility(View.VISIBLE);
 
-                    cancelMoneyOutEntryButton.setOnClickListener(new View.OnClickListener() {
+                    noMoneyOutButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             cancelTransaction();
                         }
                     });
 
-                    paymentNotPossibleContinueButton.setOnClickListener(new View.OnClickListener() {
+                    yesMoneyOutButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             makePaymentA();
@@ -472,17 +503,18 @@ public class DailyMoneyOut extends Fragment {
                 } else if (!paymentBPossible && !paymentAPossible) {
                     paymentNotPossibleAText.setVisibility(View.VISIBLE);
                     paymentNotPossibleBText.setVisibility(View.VISIBLE);
-                    cancelMoneyOutEntryButton.setVisibility(View.VISIBLE);
-                    paymentNotPossibleContinueButton.setVisibility(View.VISIBLE);
+                    continueAnywayText.setVisibility(View.VISIBLE);
+                    noMoneyOutButton.setVisibility(View.VISIBLE);
+                    yesMoneyOutButton.setVisibility(View.VISIBLE);
 
-                    cancelMoneyOutEntryButton.setOnClickListener(new View.OnClickListener() {
+                    noMoneyOutButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             cancelTransaction();
                         }
                     });
 
-                    paymentNotPossibleContinueButton.setOnClickListener(new View.OnClickListener() {
+                    yesMoneyOutButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             makePaymentA();
@@ -606,8 +638,6 @@ public class DailyMoneyOut extends Fragment {
                         @Override
                         public void onClick(View v) {
 
-                            //updateMoneyOutLayout.setVisibility(View.GONE);
-
                             try {
                                 moneyOutDb.setMoneyOutAmount(Double.valueOf(moneyOutAmountEditText.getText().toString()));
                                 newMoneyOutAmount = Double.valueOf(moneyOutAmountEditText.getText().toString());
@@ -635,17 +665,17 @@ public class DailyMoneyOut extends Fragment {
                                     backToLayoutDailyMoney();
                                 } else if (!paymentAPossible) {
                                     paymentNotPossibleAText.setVisibility(View.VISIBLE);
-                                    cancelMoneyOutEntryButton.setVisibility(View.VISIBLE);
-                                    paymentNotPossibleContinueButton.setVisibility(View.VISIBLE);
+                                    noMoneyOutButton.setVisibility(View.VISIBLE);
+                                    yesMoneyOutButton.setVisibility(View.VISIBLE);
 
-                                    cancelMoneyOutEntryButton.setOnClickListener(new View.OnClickListener() {
+                                    noMoneyOutButton.setOnClickListener(new View.OnClickListener() {
                                         @Override
                                         public void onClick(View v) {
                                             cancelTransaction();
                                         }
                                     });
 
-                                    paymentNotPossibleContinueButton.setOnClickListener(new View.OnClickListener() {
+                                    yesMoneyOutButton.setOnClickListener(new View.OnClickListener() {
                                         @Override
                                         public void onClick(View v) {
                                             updateA();
@@ -660,17 +690,17 @@ public class DailyMoneyOut extends Fragment {
                                     backToLayoutDailyMoney();
                                 } else if (!paymentBPossible && paymentAPossible) {
                                     paymentNotPossibleBText.setVisibility(View.VISIBLE);
-                                    cancelMoneyOutEntryButton.setVisibility(View.VISIBLE);
-                                    paymentNotPossibleContinueButton.setVisibility(View.VISIBLE);
+                                    noMoneyOutButton.setVisibility(View.VISIBLE);
+                                    yesMoneyOutButton.setVisibility(View.VISIBLE);
 
-                                    cancelMoneyOutEntryButton.setOnClickListener(new View.OnClickListener() {
+                                    noMoneyOutButton.setOnClickListener(new View.OnClickListener() {
                                         @Override
                                         public void onClick(View v) {
                                             cancelTransaction();
                                         }
                                     });
 
-                                    paymentNotPossibleContinueButton.setOnClickListener(new View.OnClickListener() {
+                                    yesMoneyOutButton.setOnClickListener(new View.OnClickListener() {
                                         @Override
                                         public void onClick(View v) {
                                             updateA();
@@ -681,17 +711,17 @@ public class DailyMoneyOut extends Fragment {
                                 } else if (!paymentBPossible && !paymentAPossible) {
                                     paymentNotPossibleAText.setVisibility(View.VISIBLE);
                                     paymentNotPossibleBText.setVisibility(View.VISIBLE);
-                                    cancelMoneyOutEntryButton.setVisibility(View.VISIBLE);
-                                    paymentNotPossibleContinueButton.setVisibility(View.VISIBLE);
+                                    noMoneyOutButton.setVisibility(View.VISIBLE);
+                                    yesMoneyOutButton.setVisibility(View.VISIBLE);
 
-                                    cancelMoneyOutEntryButton.setOnClickListener(new View.OnClickListener() {
+                                    noMoneyOutButton.setOnClickListener(new View.OnClickListener() {
                                         @Override
                                         public void onClick(View v) {
                                             cancelTransaction();
                                         }
                                     });
 
-                                    paymentNotPossibleContinueButton.setOnClickListener(new View.OnClickListener() {
+                                    yesMoneyOutButton.setOnClickListener(new View.OnClickListener() {
                                         @Override
                                         public void onClick(View v) {
                                             updateA();
@@ -713,7 +743,6 @@ public class DailyMoneyOut extends Fragment {
                         @Override
                         public void onClick(View v) {
                             updateMoneyOutLayout.setVisibility(View.GONE);
-                            //addMoneyOutLayout.setVisibility(View.GONE);
                             cancelTransaction();
                         }
                     });

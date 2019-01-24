@@ -45,14 +45,17 @@ public class LayoutBudget extends MainNavigation {
     Button doneBudgetSetUpButton, budgetCancelIncomeButton, budgetAddIncomeButton, budgetUpdateIncomeButton, budgetCancelExpenseButton,
             budgetAddExpenseButton, budgetUpdateExpenseButton;
     Calendar debtCal, savingsCal;
+    ContentValues debtValues, debtValues2, debtValues3, debtValues4, savingsValues, savingsValues2, savingsValues3, savingsValues4;
     Date debtEndD, savingsDateD;
-    DbHelper dbHelper;
+    DbHelper dbHelper, dbHelper2;
     DbManager dbManager;
     DebtDb debt;
     Double totalIncomeD = 0.0, incomeAnnualAmountD = 0.0, totalExpensesD = 0.0, expenseAnnualAmountD = 0.0,
             incomeAvailableD = 0.0, incomeAvailableN = 0.0, numberOfYearsToPayDebt = 0.0, numberOfYearsToSavingsGoal = 0.0, balanceAmount = 0.0,
             budgetIncomeAmountD = 0.0, budgetExpenseAmountD = 0.0, totalIncomeR = 0.0, totalExpensesR = 0.0, savingsAmount2 = 0.0, savingsGoal2 = 0.0,
-            savingsRate2 = 0.0, savingsPayments2 = 0.0, savingsFrequency2 = 0.0, debtAmount2 = 0.0, debtRate2 = 0.0, debtPayments2 = 0.0, debtFrequency2 = 0.0;
+            savingsRate2 = 0.0, savingsPayments2 = 0.0, savingsFrequency2 = 0.0, debtAmount2 = 0.0, debtRate2 = 0.0, debtPayments2 = 0.0, debtFrequency2 = 0.0,
+            savingsAmount = 0.0, savingsGoal = 0.0, currentSavingsRate = 0.0, currentSavingsPayments = 0.0, currentSavingsFrequency = 0.0, savingsIntFrequency = 0.0,
+            rate = 0.0, years = 0.0;
     EditText budgetIncomeCategoryText, budgetIncomeAmountText, budgetIncomeCategory, budgetIncomeAmount, budgetExpenseCategoryText,
             budgetExpenseAmountText, budgetExpenseCategory, budgetExpenseAmount;
     ExpenseBudgetDb expenseBudgetDb;
@@ -75,7 +78,7 @@ public class LayoutBudget extends MainNavigation {
     RadioGroup budgetIncomeFrequencyRadioGroup, budgetExpenseFrequencyRadioGroup, budgetExpenseABRadioGroup, budgetExpenseReminderRadioGroup;
     SetUpDb setUpDb;
     SimpleDateFormat debtEndS, savingsDateS;
-    SQLiteDatabase db;
+    SQLiteDatabase db, db2;
     String incomeFrequencyS = null, incomeAnnualAmountS = null, incomeAnnualAmount2 = null, expenseFrequencyS = null, expenseWeeklyS = null,
             expensePriorityS = null, expenseAnnualAmount2 = null, totalIncomeS = null, totalIncome2 = null, expenseAnnualAmountS = null,
             totalExpensesS = null, totalExpenses2 = null, incomeAvailable2 = null, incomeAvailableN2 = null, debtEnd = null, savingsDate = null,
@@ -296,27 +299,52 @@ public class LayoutBudget extends MainNavigation {
         return id;
     }
 
-    public String updateSavingsDate() {
-        for(SavingsDb s : dbManager.getSavings()) {
-            if (String.valueOf(s.getExpRefKeyS()).equals(String.valueOf(expenseBudgetDb.getId()))) {
-                savingsAmount2 = s.getSavingsAmount();
-                savingsGoal2 = s.getSavingsGoal();
-                savingsRate2 = s.getSavingsRate();
-                savingsPayments2 = s.getSavingsPayments();
-                savingsFrequency2 = s.getSavingsFrequency();
+    public Double findSavingsYears() {
+        for (SavingsDb s2 : dbManager.getSavings()) {
+            if (s2.getId() == findMatchingSavingsId()) {
+                savingsAmount = s2.getSavingsAmount();
+                savingsGoal = s2.getSavingsGoal();
+                currentSavingsRate = s2.getSavingsRate();
+                currentSavingsPayments = s2.getSavingsPayments();
+                currentSavingsFrequency = s2.getSavingsFrequency();
+                savingsIntFrequency = s2.getSavingsIntFrequency();
             }
         }
+        if (savingsGoal < savingsAmount) {
+            savingsGoal = savingsAmount;
+        }
+        rate = currentSavingsRate / 100;
+        if (rate == 0) {
+            rate = .01;
+        }
+        if (currentSavingsPayments == 0) {
+            currentSavingsPayments = 0.01;
+        }
+        if (savingsAmount == 0 && currentSavingsPayments == 0.01) {
+            years = 0.0;
+        } else if (savingsGoal.equals(savingsAmount)) {
+            years = 0.0;
+        } else {
+            years = 0.0;
+            do {
+                years = years + .00274;
+            }
+            while (savingsGoal >= (savingsAmount * (Math.pow((1 + rate / savingsIntFrequency), savingsIntFrequency * years))) + (((currentSavingsPayments * currentSavingsFrequency) / 12) * (((Math.pow((1 + rate / savingsIntFrequency), savingsIntFrequency * years)) - 1) / (rate / savingsIntFrequency)) * (1 + rate / savingsIntFrequency)));
+        }
+
+        return years;
+    }
+
+    public String updateSavingsDate() {
 
         savingsCal = Calendar.getInstance();
-        numberOfYearsToSavingsGoal = -(Math.log(1 - ((savingsGoal2 - savingsAmount2) * (savingsRate2 / 100) / (savingsPayments2 * savingsFrequency2))) / (savingsFrequency2 *
-                Math.log(1 + ((savingsRate2 / 100) / savingsFrequency2))));
-        numberOfDaysToSavingsGoal = (int) Math.round(numberOfYearsToSavingsGoal * 365);
 
-        if (savingsGoal2 - savingsAmount2 <= 0) {
+        numberOfDaysToSavingsGoal = (int) Math.round(findSavingsYears() * 365);
+
+        if ((numberOfDaysToSavingsGoal) <= 0) {
             savingsDate = getString(R.string.goal_achieved);
 
-        } else if (numberOfDaysToSavingsGoal > Integer.MAX_VALUE || numberOfDaysToSavingsGoal <= 0) {
-            Toast.makeText(getApplicationContext(), R.string.too_far, Toast.LENGTH_LONG).show();
+        } else if (numberOfDaysToSavingsGoal > Integer.MAX_VALUE) {
             savingsDate = getString(R.string.too_far);
 
         } else {
@@ -326,7 +354,6 @@ public class LayoutBudget extends MainNavigation {
             savingsDateS = new SimpleDateFormat("dd-MMM-yyyy");
             savingsDate = getString(R.string.goal_will) + " " + savingsDateS.format(savingsDateD);
         }
-
         return savingsDate;
     }
 
@@ -505,6 +532,58 @@ public class LayoutBudget extends MainNavigation {
                             incomeAdapter.notifyDataSetChanged();
                             Toast.makeText(getBaseContext(), "Your changes have been saved",
                                     Toast.LENGTH_LONG).show();
+
+                            dbHelper2 = new DbHelper(getContext());
+                            db2 = dbHelper2.getWritableDatabase();
+
+                            try {
+                                String[] args3 = new String[]{String.valueOf(findMatchingDebtId())};
+                                debtValues3 = new ContentValues();
+
+                                debtValues3.put(DbHelper.DEBTNAME, budgetIncomeCategory.getText().toString());
+                                debtValues3.put(DbHelper.INCOMENAME, budgetIncomeCategory.getText().toString());
+                                /*try {
+                                    debtValues3.put(DbHelper.DEBTPAYMENTS, Double.valueOf(budgetIncomeAmount.getText().toString()));
+                                } catch (NumberFormatException e7) {
+                                    debtValues3.put(DbHelper.DEBTPAYMENTS, general.extractingDollars(budgetIncomeAmount));
+                                }
+                                debtValues3.put(DbHelper.DEBTFREQUENCY, Double.valueOf(incomeFrequencyS));*/
+
+                                db2.update(DbHelper.DEBTS_TABLE_NAME, debtValues3, DbHelper.ID + "=?", args3);
+                                db2.update(DbHelper.INCOME_TABLE_NAME, debtValues3, DbHelper.INCREFKEYMI + "=?", args3);
+
+                                /*debtValues4 = new ContentValues();
+                                debtValues4.put(DbHelper.DEBTEND, updateDebtEndDate());
+                                db2.update(DbHelper.DEBTS_TABLE_NAME, debtValues4, DbHelper.ID + "=?", args3);*/
+
+                            } catch (CursorIndexOutOfBoundsException e8) {
+                                e8.printStackTrace();
+                            }
+
+                            try {
+                                String[] args4 = new String[]{String.valueOf(findMatchingSavingsId())};
+                                savingsValues3 = new ContentValues();
+
+                                savingsValues3.put(DbHelper.SAVINGSNAME, budgetIncomeCategory.getText().toString());
+                                savingsValues3.put(DbHelper.INCOMENAME, budgetIncomeCategory.getText().toString());
+                                try {
+                                    savingsValues3.put(DbHelper.SAVINGSPAYMENTS, Double.valueOf(budgetIncomeAmount.getText().toString()));
+                                } catch (NumberFormatException e9) {
+                                    savingsValues3.put(DbHelper.SAVINGSPAYMENTS, general.extractingDollars(budgetIncomeAmount));
+                                }
+                                savingsValues3.put(DbHelper.SAVINGSFREQUENCY, Double.valueOf(incomeFrequencyS));
+
+                                db2.update(DbHelper.SAVINGS_TABLE_NAME, savingsValues3, DbHelper.ID + "=?", args4);
+                                db2.update(DbHelper.INCOME_TABLE_NAME, savingsValues3, DbHelper.INCREFKEYMI + "=?", args4);
+
+                                savingsValues4 = new ContentValues();
+                                savingsValues4.put(DbHelper.SAVINGSDATE, updateSavingsDate());
+                                db2.update(DbHelper.SAVINGS_TABLE_NAME, savingsValues4, DbHelper.ID + "=?", args4);
+
+                            } catch (CursorIndexOutOfBoundsException e10) {
+                                e10.printStackTrace();
+                            }
+
 
                             backToBudget = new Intent(LayoutBudget.this, LayoutBudget.class);
                             backToBudget.setFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
@@ -824,9 +903,10 @@ public class LayoutBudget extends MainNavigation {
 
                             try {
                                 String[] args = new String[]{String.valueOf(findMatchingDebtId())};
-                                ContentValues debtValues = new ContentValues();
+                                debtValues = new ContentValues();
 
                                 debtValues.put(DbHelper.DEBTNAME, budgetExpenseCategory.getText().toString());
+                                debtValues.put(DbHelper.INCOMENAME, budgetExpenseCategory.getText().toString());
                                 try {
                                     debtValues.put(DbHelper.DEBTPAYMENTS, Double.valueOf(budgetExpenseAmount.getText().toString()));
                                 } catch (NumberFormatException e7) {
@@ -835,8 +915,9 @@ public class LayoutBudget extends MainNavigation {
                                 debtValues.put(DbHelper.DEBTFREQUENCY, Double.valueOf(expenseFrequencyS));
 
                                 db.update(DbHelper.DEBTS_TABLE_NAME, debtValues, DbHelper.ID + "=?", args);
+                                db.update(DbHelper.INCOME_TABLE_NAME, debtValues, DbHelper.INCREFKEYMI + "=?", args);
 
-                                ContentValues debtValues2 = new ContentValues();
+                                debtValues2 = new ContentValues();
                                 debtValues2.put(DbHelper.DEBTEND, updateDebtEndDate());
                                 db.update(DbHelper.DEBTS_TABLE_NAME, debtValues2, DbHelper.ID + "=?", args);
 
@@ -846,9 +927,10 @@ public class LayoutBudget extends MainNavigation {
 
                             try {
                                 String[] args2 = new String[]{String.valueOf(findMatchingSavingsId())};
-                                ContentValues savingsValues = new ContentValues();
+                                savingsValues = new ContentValues();
 
                                 savingsValues.put(DbHelper.SAVINGSNAME, budgetExpenseCategory.getText().toString());
+                                savingsValues.put(DbHelper.INCOMENAME, budgetExpenseCategory.getText().toString());
                                 try {
                                     savingsValues.put(DbHelper.SAVINGSPAYMENTS, Double.valueOf(budgetExpenseAmount.getText().toString()));
                                 } catch (NumberFormatException e9) {
@@ -857,8 +939,9 @@ public class LayoutBudget extends MainNavigation {
                                 savingsValues.put(DbHelper.SAVINGSFREQUENCY, Double.valueOf(expenseFrequencyS));
 
                                 db.update(DbHelper.SAVINGS_TABLE_NAME, savingsValues, DbHelper.ID + "=?", args2);
+                                db.update(DbHelper.INCOME_TABLE_NAME, savingsValues, DbHelper.INCREFKEYMI + "=?", args2);
 
-                                ContentValues savingsValues2 = new ContentValues();
+                                savingsValues2 = new ContentValues();
                                 savingsValues2.put(DbHelper.SAVINGSDATE, updateSavingsDate());
                                 db.update(DbHelper.SAVINGS_TABLE_NAME, savingsValues2, DbHelper.ID + "=?", args2);
 

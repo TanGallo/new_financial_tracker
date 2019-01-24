@@ -5,16 +5,19 @@ public class MoneyInDb {
     private String moneyInCat;
     private Double moneyInAmount;
     private String moneyInCreatedOn;
+    private long incRefKeyMI;
     private long id;
 
     public MoneyInDb(
             String moneyInCat,
             Double moneyInAmount,
             String moneyInCreatedOn,
+            long incRefKeyMI,
             long id) {
         this.moneyInCat = moneyInCat;
         this.moneyInAmount = moneyInAmount;
         this.moneyInCreatedOn = moneyInCreatedOn;
+        this.incRefKeyMI = incRefKeyMI;
         this.id = id;
     }
 
@@ -26,6 +29,9 @@ public class MoneyInDb {
 
     public String getMoneyInCreatedOn() { return moneyInCreatedOn; }
     public void setMoneyInCreatedOn(String moneyInCreatedOn) { this.moneyInCreatedOn = moneyInCreatedOn; }
+
+    public long getIncRefKeyMI() { return incRefKeyMI; }
+    public void setIncRefKeyMI(long incRefKeyMI) { this.incRefKeyMI = incRefKeyMI; }
 
     public long getId() { return id; }
     public void setId(long id) { this.id = id; }

@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -30,6 +31,7 @@ public class LayoutSpendingReport extends MainNavigation {
     DbManager dbManager;
     Double totalSpent = 0.0;
     General general;
+    LinearLayout spendingReportLayout, debt_header_layout;
     ListView spendingListView;
     long expenseId;
     NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
@@ -56,6 +58,8 @@ public class LayoutSpendingReport extends MainNavigation {
         general = new General();
         dbManager = new DbManager(getApplicationContext());
 
+        spendingReportLayout = findViewById(R.id.spendingReportLayout);
+        debt_header_layout = findViewById(R.id.debt_header_layout);
         spendingReportButton = findViewById(R.id.spendingReportButton);
         emptyListText = findViewById(R.id.emptyListText);
         emptyListText.setVisibility(View.GONE);
@@ -81,6 +85,8 @@ public class LayoutSpendingReport extends MainNavigation {
         if (yearsList.size() == 0) {
             emptySpinnersText.setVisibility(View.VISIBLE);
             emptySpinnersText2.setVisibility(View.VISIBLE);
+            debt_header_layout.setVisibility(View.GONE);
+            spendingReportLayout.setVisibility(View.GONE);
             monthSpinner.setVisibility(View.GONE);
             yearSpinner.setVisibility(View.GONE);
             spendingReportButton.setVisibility(View.GONE);
@@ -88,6 +94,8 @@ public class LayoutSpendingReport extends MainNavigation {
             years = yearsList.toArray(new String[yearsList.size()]);
             emptySpinnersText.setVisibility(View.GONE);
             emptySpinnersText2.setVisibility(View.GONE);
+            debt_header_layout.setVisibility(View.VISIBLE);
+            spendingReportLayout.setVisibility(View.VISIBLE);
             monthSpinner.setVisibility(View.VISIBLE);
             yearSpinner.setVisibility(View.VISIBLE);
             spendingReportButton.setVisibility(View.VISIBLE);

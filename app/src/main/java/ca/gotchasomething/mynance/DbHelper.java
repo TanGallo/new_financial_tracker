@@ -31,12 +31,14 @@ public class DbHelper extends SQLiteOpenHelper {
 
     public static final String DEBTS_TABLE_NAME = "debts";
     public static final String DEBTNAME = "debtName";
+    public static final String DEBTLIMIT = "debtLimit";
     public static final String DEBTAMOUNT = "debtAmount";
     public static final String DEBTRATE = "debtRate";
     public static final String DEBTPAYMENTS = "debtPayments";
     public static final String DEBTFREQUENCY = "debtFrequency";
     public static final String DEBTEND = "debtEnd";
     public static final String EXPREFKEYD = "expRefKeyD";
+    public static final String INCREFKEYD = "incRefKeyD";
 
     public static final String SAVINGS_TABLE_NAME = "savings";
     public static final String SAVINGSNAME = "savingsName";
@@ -48,15 +50,17 @@ public class DbHelper extends SQLiteOpenHelper {
     public static final String SAVINGSINTFREQUENCY = "savingsIntFrequency";
     public static final String SAVINGSDATE = "savingsDate";
     public static final String EXPREFKEYS = "expRefKeyS";
+    public static final String INCREFKEYS = "incRefKeyS";
 
     public static final String MONEY_IN_TABLE_NAME = "moneyIn";
     public static final String MONEYINCAT = "moneyInCat";
     public static final String MONEYINAMOUNT = "moneyInAmount";
     public static final String MONEYINCREATEDON = "moneyInCreatedOn";
+    public static final String INCREFKEYMI = "incRefKeyMI";
 
     public static final String MONEY_OUT_TABLE_NAME = "moneyOut";
     public static final String MONEYOUTCAT = "moneyOutCat";
-    public static final String MONEYOUTPRIORITY= "moneyOutPriority";
+    public static final String MONEYOUTPRIORITY = "moneyOutPriority";
     public static final String MONEYOUTWEEKLY = "moneyOutWeekly";
     public static final String MONEYOUTAMOUNT = "moneyOutAmount";
     public static final String MONEYOUTCREATEDON = "moneyOutCreatedOn";
@@ -104,7 +108,7 @@ public class DbHelper extends SQLiteOpenHelper {
             " expenseAnnualAmount REAL NOT NULL," +
             " expenseAAnnualAmount REAL NOT NULL," +
             " expenseBAnnualAmount REAL NOT NULL)";// +
-            //" CONSTRAINT unique_name UNIQUE (expenseName))";
+    //" CONSTRAINT unique_name UNIQUE (expenseName))";
 
     private static final String createIncomesQuery = "CREATE TABLE " + INCOME_TABLE_NAME +
             " (_id INTEGER PRIMARY KEY," +
@@ -116,12 +120,14 @@ public class DbHelper extends SQLiteOpenHelper {
     private static final String createDebtsQuery = "CREATE TABLE " + DEBTS_TABLE_NAME +
             " (_id INTEGER PRIMARY KEY," +
             " debtName TEXT," +
+            " debtLimit REAL," +
             " debtAmount REAL," +
             " debtRate REAL," +
             " debtPayments REAL," +
             " debtFrequency REAL," +
             " debtEnd TEXT," +
-            " expRefKeyD INTEGER)";
+            " expRefKeyD INTEGER," +
+            " incRefKeyD INTEGER)";
 
     private static final String createSavingsQuery = "CREATE TABLE " + SAVINGS_TABLE_NAME +
             " (_id INTEGER PRIMARY KEY," +
@@ -133,13 +139,15 @@ public class DbHelper extends SQLiteOpenHelper {
             " savingsRate REAL," +
             " savingsIntFrequency REAL," +
             " savingsDate TEXT," +
-            " expRefKeyS INTEGER)";
+            " expRefKeyS INTEGER," +
+            " incRefKeyS INTEGER)";
 
     private static final String createMoneyInQuery = "CREATE TABLE " + MONEY_IN_TABLE_NAME +
             " (_id INTEGER PRIMARY KEY," +
             " moneyInCat TEXT," +
             " moneyInAmount REAL," +
-            " moneyInCreatedOn TEXT)";
+            " moneyInCreatedOn TEXT," +
+            " incRefKeyMI INTEGER)";
 
     private static final String createMoneyOutQuery = "CREATE TABLE " + MONEY_OUT_TABLE_NAME +
             " (_id INTEGER PRIMARY KEY," +

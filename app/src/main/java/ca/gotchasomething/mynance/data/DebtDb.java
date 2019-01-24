@@ -3,35 +3,44 @@ package ca.gotchasomething.mynance.data;
 
 public class DebtDb {
     private String debtName;
+    private Double debtLimit;
     private Double debtAmount;
     private Double debtRate;
     private Double debtPayments;
     private Double debtFrequency;
     private String debtEnd;
     private long expRefKeyD;
+    private long incRefKeyD;
     private long id;
 
     public DebtDb (
             String debtName,
+            Double debtLimit,
             Double debtAmount,
             Double debtRate,
             Double debtPayments,
             Double debtFrequency,
             String debtEnd,
             long expRefKeyD,
+            long incRefKeyD,
             long id) {
         this.debtName = debtName;
+        this.debtLimit = debtLimit;
         this.debtAmount = debtAmount;
         this.debtRate = debtRate;
         this.debtPayments = debtPayments;
         this.debtFrequency = debtFrequency;
         this.debtEnd = debtEnd;
         this.expRefKeyD = expRefKeyD;
+        this.incRefKeyD = incRefKeyD;
         this.id = id;
     }
 
     public String getDebtName() { return debtName; }
     public void setDebtName(String debtName) { this.debtName = debtName; }
+
+    public Double getDebtLimit() { return debtLimit; }
+    public void setDebtLimit(Double debtLimit) { this.debtLimit = debtLimit; }
 
     public Double getDebtAmount() { return debtAmount; }
     public void setDebtAmount(Double debtAmount) { this.debtAmount = debtAmount; }
@@ -50,6 +59,9 @@ public class DebtDb {
 
     public long getExpRefKeyD() { return expRefKeyD; }
     public void setExpRefKeyD(long expRefKeyD) { this.expRefKeyD = expRefKeyD; }
+
+    public long getIncRefKeyD() { return incRefKeyD; }
+    public void setIncRefKeyD(long incRefKeyD) { this.incRefKeyD = incRefKeyD; }
 
     public long getId() { return id; }
     public void setId(long id) { this.id = id; }

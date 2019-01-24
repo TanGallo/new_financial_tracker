@@ -15,34 +15,47 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import ca.gotchasomething.mynance.DbHelper;
 import ca.gotchasomething.mynance.DbManager;
 import ca.gotchasomething.mynance.LayoutDailyMoney;
 import ca.gotchasomething.mynance.R;
+import ca.gotchasomething.mynance.data.DebtDb;
 import ca.gotchasomething.mynance.data.MoneyOutDb;
 
 public class DailyCreditCard extends Fragment {
 
     boolean possibleA = true, possibleB = true;
     Button ccTransCancelButton, ccTransContinueButton;
+    Calendar debtCal3;
     CCAdapter ccAdapter;
     CheckBox ccPaidCheckbox;
     ContentValues moneyOutValue, moneyOutValue2, currentValue;
-    DbHelper dbHelper2, dbHelper3, dbHelper4, dbHelper5;
+    Date debtEndD3;
+    DbHelper dbHelper, dbHelper2, dbHelper3, dbHelper4, dbHelper5;
     DbManager dbManager;
     Double ccAmountD = 0.0, totalCCPaymentDue = 0.0, currentAccountBalance = 0.0, currentAvailableBalance = 0.0, totalCCPaymentBDue = 0.0,
             newCurrentAvailableBalance = 0.0, newCurrentAccountBalance = 0.0, currentAccountBalance2 = 0.0, totalCCPaymentDue2 = 0.0,
-            currentAvailableBalance2 = 0.0, totalCCPaymentBDue2 = 0.0, totalCCPaymentDue3 = 0.0;
+            currentAvailableBalance2 = 0.0, totalCCPaymentBDue2 = 0.0, totalCCPaymentDue3 = 0.0, currentChargingDebtAmount = 0.0, newDebtAmount = 0.0,
+            debtAmount3 = 0.0, currentDebtRate3 = 0.0, currentDebtPayments3 = 0.0, currentDebtFrequency3 = 0.0, numberOfYearsToPayDebt3 = 0.0;
+    int numberOfDaysToPayDebt3 = 0;
     Intent refresh;
+    LinearLayout initialCCLayout;
     ListView ccListView;
+    long chargingDebtId;
     MoneyOutDb moneyOutDb;
     NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
-    SQLiteDatabase db2, db3, db4, db5;
-    String ccAmountS = null, ccAmount2 = null, totalCCPaymentDueS = null;
+    SimpleDateFormat debtEndS3;
+    SQLiteDatabase db, db2, db3, db4, db5;
+    String ccAmountS = null, ccAmount2 = null, totalCCPaymentDueS = null, chargingDebtEnd = null;
     TextView checkBelowLabel, totalCCPaymentDueLabel, totalCCPaymentDueAmount, ccPaidLabel, noCCTransLabel, ccTransPaymentNotPossibleBText,
             ccTransPaymentNotPossibleAText, ccTransContinueAnywayText, ccHeaderLabel, ccPayLabel;
     View v, ccLine;
@@ -65,6 +78,7 @@ public class DailyCreditCard extends Fragment {
 
         dbManager = new DbManager(getContext());
 
+        initialCCLayout = v.findViewById(R.id.initalCCLayout);
         noCCTransLabel = v.findViewById(R.id.noCCTransLabel);
         noCCTransLabel.setVisibility(View.GONE);
         ccHeaderLabel = v.findViewById(R.id.ccHeaderLabel);
@@ -108,6 +122,47 @@ public class DailyCreditCard extends Fragment {
         db5.close();
     }
 
+    public String calcChargingDebtDate() {
+        for (DebtDb d2 : dbManager.getDebts()) {
+            if (d2.getId() == chargingDebtId) {
+                debtAmount3 = d2.getDebtAmount();
+                currentDebtRate3 = d2.getDebtRate();
+                currentDebtPayments3 = d2.getDebtPayments();
+                currentDebtFrequency3 = d2.getDebtFrequency();
+            }
+
+            debtCal3 = Calendar.getInstance();
+            numberOfYearsToPayDebt3 = -(Math.log(1 - (debtAmount3 * (currentDebtRate3 / 100) / (currentDebtPayments3 * currentDebtFrequency3))) / (currentDebtFrequency3 * Math.log(1 + ((currentDebtRate3 / 100) / currentDebtFrequency3))));
+            numberOfDaysToPayDebt3 = (int) Math.round(numberOfYearsToPayDebt3 * 365);
+
+            if (debtAmount3 <= 0) {
+                chargingDebtEnd = getString(R.string.debt_paid);
+
+            } else if (numberOfDaysToPayDebt3 > Integer.MAX_VALUE || numberOfDaysToPayDebt3 <= 0) {
+                chargingDebtEnd = getString(R.string.too_far);
+
+            } else {
+                debtCal3 = Calendar.getInstance();
+                debtCal3.add(Calendar.DATE, numberOfDaysToPayDebt3);
+                debtEndD3 = debtCal3.getTime();
+                debtEndS3 = new SimpleDateFormat("dd-MMM-yyyy");
+                chargingDebtEnd = getString(R.string.debt_will) + " " + debtEndS3.format(debtEndD3);
+            }
+        }
+
+        return chargingDebtEnd;
+    }
+
+
+    public Double findCurrentChargingDebtAmount() {
+        for (DebtDb d : dbManager.getDebts()) {
+            if (d.getId() == chargingDebtId) {
+                currentChargingDebtAmount = d.getDebtAmount();
+            }
+        }
+        return currentChargingDebtAmount;
+    }
+
     public void cancelTransaction() {
         ccTransPaymentNotPossibleAText.setVisibility(View.GONE);
         ccTransPaymentNotPossibleBText.setVisibility(View.GONE);
@@ -120,6 +175,18 @@ public class DailyCreditCard extends Fragment {
         updateCurrentAccountBalance();
         updateCurrentAvailableBalance();
         dbManager.updatePaid();
+
+        //update balance owing on appropriate DEBTS
+        dbHelper = new DbHelper(getContext());
+        db = dbHelper.getWritableDatabase();
+
+        newDebtAmount = findCurrentChargingDebtAmount() - ccAmountD;
+        moneyOutValue = new ContentValues();
+        moneyOutValue.put(DbHelper.DEBTAMOUNT, newDebtAmount);
+        db.update(DbHelper.DEBTS_TABLE_NAME, moneyOutValue, DbHelper.ID + "=" + chargingDebtId, null);
+        moneyOutValue2 = new ContentValues();
+        moneyOutValue2.put(DbHelper.DEBTEND, calcChargingDebtDate());
+        db.update(DbHelper.DEBTS_TABLE_NAME, moneyOutValue2, DbHelper.ID + "=" + chargingDebtId, null);
 
         resetToPay();
 
@@ -200,12 +267,14 @@ public class DailyCreditCard extends Fragment {
             ccHeaderLabel.setVisibility(View.GONE);
             ccPayLabel.setVisibility(View.GONE);
             ccLine.setVisibility(View.GONE);
+            initialCCLayout.setVisibility(View.GONE);
         } else {
             noCCTransLabel.setVisibility(View.GONE);
             checkBelowLabel.setVisibility(View.VISIBLE);
             ccHeaderLabel.setVisibility(View.VISIBLE);
             ccPayLabel.setVisibility(View.VISIBLE);
             ccLine.setVisibility(View.VISIBLE);
+            initialCCLayout.setVisibility(View.VISIBLE);
         }
 
         totalCCPaymentDueLabel.setVisibility(View.GONE);
@@ -304,6 +373,8 @@ public class DailyCreditCard extends Fragment {
             } catch (NumberFormatException e) {
                 holder.ccAmount.setText(ccAmount2);
             }
+
+            chargingDebtId = ccTransToPay.get(position).getMoneyOutChargingDebtId();
 
             holder.ccCheck.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override

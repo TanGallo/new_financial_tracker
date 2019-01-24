@@ -41,6 +41,10 @@
                         android:text="@string/payment_not_possible_A"
                         android:textSize="16sp" />
 
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
                     <TextView
                         android:id="@+id/continueAnywayText"
                         android:layout_width="wrap_content"
@@ -48,6 +52,28 @@
                         android:layout_margin="10dp"
                         android:text="@string/continue_anyway"
                         android:textSize="16sp" />
+
+                    <Button
+                        android:id="@+id/yesMoneyOutButton"
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:layout_toStartOf="@id/noMoneyOutButton"
+                        android:text="yes"
+                        android:textSize="12sp"
+                        android:background="@drawable/entry_box"/>
+
+                    <Button
+                        android:id="@+id/noMoneyOutButton"
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:text="no"
+                        android:textSize="12sp"
+                        android:layout_alignParentEnd="true"
+                        android:background="@drawable/entry_box"/>
+
+                    </RelativeLayout>
 
                 </LinearLayout>
 
@@ -67,7 +93,7 @@
                         android:id="@+id/moneyOutCatText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
+                        android:layout_margin="5dp"
                         android:text="Category"
                         android:textSize="16sp" />
 
@@ -75,7 +101,7 @@
                         android:id="@+id/moneyOutAmountEditText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
+                        android:layout_margin="5dp"
                         android:inputType="numberDecimal"
                         android:text="Amount"
                         android:textSize="16sp" />
@@ -92,10 +118,11 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentStart="true"
                         android:layout_gravity="end"
-                        android:layout_margin="10dp"
+                        android:layout_margin="5dp"
                         android:gravity="center"
                         android:background="@drawable/entry_box"
-                        android:text="Cancel" />
+                        android:text="Cancel"
+                        android:textSize="12sp"/>
 
                     <Button
                         android:id="@+id/updateMoneyOutEntryButton"
@@ -103,10 +130,11 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:layout_gravity="end"
-                        android:layout_margin="10dp"
+                        android:layout_margin="5dp"
                         android:gravity="center"
                         android:background="@drawable/entry_box"
-                        android:text="Update" />
+                        android:text="Update"
+                        android:textSize="12sp"/>
 
                     <Button
                         android:id="@+id/paymentNotPossibleContinueButton"
@@ -114,10 +142,11 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:layout_gravity="end"
-                        android:layout_margin="10dp"
+                        android:layout_margin="5dp"
                         android:gravity="center"
                         android:background="@drawable/entry_box"
-                        android:text="continue" />
+                        android:text="continue"
+                        android:textSize="12sp"/>
 
                 </RelativeLayout>
 
@@ -150,8 +179,8 @@
                 android:id="@+id/moneyOutAmount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:hint="Enter amount"
+                android:layout_margin="5dp"
+                android:hint="Amount"
                 android:textSize="16sp" />
 
             <Spinner
@@ -159,7 +188,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_margin="10dp"
+                android:layout_margin="5dp"
                 android:layout_toStartOf="@id/moneyOutButton"
                 android:layout_toEndOf="@id/moneyOutAmount"
                 android:gravity="fill_horizontal">
@@ -168,13 +197,13 @@
 
             <Button
                 android:id="@+id/moneyOutButton"
-                android:layout_width="70dp"
+                android:layout_width="60dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
-                android:layout_margin="10dp"
+                android:layout_margin="5dp"
                 android:text="enter"
                 android:background="@drawable/entry_box"
-                android:textSize="14sp" />
+                android:textSize="12sp" />
 
         </RelativeLayout>
 

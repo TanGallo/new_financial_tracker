@@ -76,6 +76,8 @@
                         android:layout_gravity="end"
                         android:layout_margin="10dp"
                         android:gravity="center"
+                        android:textSize="12sp"
+                        android:background="@drawable/entry_box"
                         android:text="Cancel" />
 
                     <Button
@@ -86,9 +88,18 @@
                         android:layout_gravity="end"
                         android:layout_margin="10dp"
                         android:gravity="center"
+                        android:textSize="12sp"
+                        android:background="@drawable/entry_box"
                         android:text="continue" />
 
                 </RelativeLayout>
+
+                <LinearLayout
+                    android:id="@+id/initalCCLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:background="@drawable/entry_box">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -109,7 +120,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/totalCCPaymentDueLabel"
@@ -124,6 +135,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"
+                        android:layout_gravity="center_horizontal"
                         android:text="$1.00"
                         android:textSize="16sp" />
 
@@ -152,6 +164,8 @@
                         android:layout_marginEnd="10dp" />
 
                 </RelativeLayout>
+
+                </LinearLayout>
 
             </LinearLayout>
 

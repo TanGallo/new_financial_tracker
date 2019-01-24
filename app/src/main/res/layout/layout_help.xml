@@ -106,7 +106,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
-                                android:text="You also entered a starting balance for your bank account. This amount cannot be changed directly."
+                                android:text="You also entered a starting balance for your bank account. This amount can be changed  by clicking on the pencil icon next to it in the DAILY MONEY - MONEY IN tab."
                                 android:textSize="18sp" />
 
                             <TextView
@@ -175,6 +175,20 @@
                             android:layout_height="wrap_content"
                             android:layout_margin="10dp"
                             android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="10dp"
+                                android:text="'Total in Account' is the total amount of money in your bank account. A percentage of this money is reserved for paying 'needs', as identified by you in your BUDGET."
+                                android:textSize="18sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="10dp"
+                                android:text="'Available to Spend' is the amount of money that you can spend on 'optional' expenses, as identified by you in your BUDGET."
+                                android:textSize="18sp" />
 
                             <LinearLayout
                                 android:layout_width="match_parent"
@@ -440,14 +454,21 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_margin="10dp"
-                                    android:text="In that case, the amount of the purchase would be added to the balance owing on the credit card and subtracted from the balance owing on the line of credit. If you mapped to the same item twice, the balance owing on the DEBTS item would not update correctly."
+                                    android:text="In that case, the amount of the payment would be added to the balance owing on the credit card and subtracted from the balance owing on the line of credit. If you mapped to the same item twice, the balance owing on the DEBTS item would not update correctly."
                                     android:textSize="18sp" />
 
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_margin="10dp"
-                                    android:text="Purchases entered in this tab will have no effect on your 'total' and 'available to spend' balances."
+                                    android:text="MYnance wants to help you develop healthy spending habits. It will alert you if you are making purchases against your DEBTS items when you don't have the funds in your account to cover them."
+                                    android:textSize="18sp" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_margin="10dp"
+                                    android:text="Although purchases entered in this tab will have no effect on your 'total' and 'available to spend' balances, you should still avoid accumulating consumer debt."
                                     android:textSize="18sp" />
 
                                 <TextView
@@ -455,6 +476,13 @@
                                     android:layout_height="wrap_content"
                                     android:layout_margin="10dp"
                                     android:text="Payments to your DEBTS items should be made in the PAY CC tab. Your 'total' and 'available to spend' balances will change when payments are made in the PAY CC tab and the DEBTS item's balance owing will be updated accordingly."
+                                    android:textSize="18sp" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_margin="10dp"
+                                    android:text="However, purchases recorded in this tab will show up in your SPENDING REPORT as having been spent on the date the entry was made."
                                     android:textSize="18sp" />
 
                             </LinearLayout>
@@ -523,10 +551,17 @@
                                     android:textSize="18sp" />
 
                                 <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="10dp"
+                                android:text="Enter any purchases you make on credit cards or lines of credit in the CREDIT CARD tab and make frequent payments to them using the PAY CC tab."
+                                android:textSize="18sp" />
+
+                                <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_margin="10dp"
-                                    android:text="Enter any purchases you make on credit cards or lines of credit in the CREDIT CARD tab and make frequent payments to them using the PAY CC tab."
+                                    android:text="If you want to make additional payments to your DEBTS items that don't map to particular purchases, you can enter those transactions in the DAILY MONEY - MONEY OUT tab."
                                     android:textSize="18sp" />
 
                                 <TextView
@@ -744,7 +779,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
-                                android:text="Amounts spent on DEBTS and SAVINGS will be added to your budget automatically and treated as needs, so that the money will be 'reserved' in your bank account. The money for those items will not show as 'available for spending'."
+                                android:text="Payments made to DEBTS and SAVINGS will be added to your budget automatically and treated as needs, so that the money will be 'reserved' in your bank account."
                                 android:textSize="18sp" />
 
                             <TextView
@@ -765,7 +800,14 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
-                                android:text="You can use the SPENDING REPORT as a guideline when updating your budget."
+                                android:text="You can use the SPENDING REPORT as a guideline when updating your budget. Running a spending report for an entire year will show you how much you actually spent in each category."
+                                android:textSize="18sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="10dp"
+                                android:text="Updating your budget will not adjust your bank account balances retroactively. The app will simply adjust the percentage of future entries to 'reserve' for needs in accordance with the changes made to the budget."
                                 android:textSize="18sp" />
 
                         </LinearLayout>
@@ -846,7 +888,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
-                                android:text="When adding or updating a debt item, the payment amount you enter will automatically be added to your budget and treated as a need, so the money will be reserved in your bank account. Money reserved for debts will not show as 'available to spend'."
+                                android:text="When adding or updating a debt item, the payment amount you enter will automatically be added to your budget and treated as a need, so the money will be reserved in your bank account."
                                 android:textSize="18sp" />
 
                             <TextView
@@ -861,6 +903,27 @@
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
                                 android:text="MYnance will help you keep your credit card balances at zero in the DAILY MONEY - PAY CC tab."
+                                android:textSize="18sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="10dp"
+                                android:text="If you take a cash advance off a DEBTS item, you can enter the transaction in the DAILY MONEY - MONEY IN tab. You bank account balances will be adjusted accordingly. DON'T FORGET that only a percentage of that deposit will be 'available to spend'."
+                                android:textSize="18sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="10dp"
+                                android:text="If you take frequent cash advances off DEBTS items, you should adjust your BUDGET to reflect this income."
+                                android:textSize="18sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="10dp"
+                                android:text="NOTE: If you create an INCOME from a DEBT, the amount of the payments to it will be adjusted accordingly, as will the 'debt-free' date for it. These changes will be reflected in the DEBTS screen."
                                 android:textSize="18sp" />
 
                             <TextView
@@ -948,14 +1011,35 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
-                                android:text="When adding or updating a savings item, the contribution amount that you enter will automatically be added to your budget and treated as a need, so the money will be reserved in your bank account. Money reserved for savings will not show as 'available to spend'."
+                                android:text="When adding or updating a savings item, the contribution amount that you enter will automatically be added to your budget and treated as a need, so the money will be reserved in your bank account."
                                 android:textSize="18sp" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
-                                android:text="Payments towards your savings items in the DAILY MONEY tabs will be automatically added to the balances in the SAVINGS screen."
+                                android:text="If you make a withdrawal from a SAVINGS item, this transaction can be entered in the DAILY MONEY - MONEY IN tab. Your bank account balances will be adjusted accordingly. DON'T FORGET that only a percentage of the deposit will be 'available for spending'."
+                                android:textSize="18sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="10dp"
+                                android:text="If you make frequent withdrawals from SAVINGS items, you should adjust your BUDGET to reflect this income."
+                                android:textSize="18sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="10dp"
+                                android:text="NOTE: If you create an INCOME from a SAVINGS item, the amount of the contributions to it will be adjusted accordingly, as will the 'goal achieved' date for it. These changes will be reflected in the SAVINGS screen."
+                                android:textSize="18sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="10dp"
+                                android:text="Payments towards and withdrawals from your savings items in the DAILY MONEY tabs will be automatically added to or subtracted from the balances in the SAVINGS screen."
                                 android:textSize="18sp" />
 
                         </LinearLayout>

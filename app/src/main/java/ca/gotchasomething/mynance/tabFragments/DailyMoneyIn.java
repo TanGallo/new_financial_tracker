@@ -25,6 +25,7 @@ import android.widget.Toast;
 import java.sql.Timestamp;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -38,34 +39,45 @@ import ca.gotchasomething.mynance.DbManager;
 import ca.gotchasomething.mynance.General;
 import ca.gotchasomething.mynance.LayoutDailyMoney;
 import ca.gotchasomething.mynance.R;
+import ca.gotchasomething.mynance.data.DebtDb;
 import ca.gotchasomething.mynance.data.MoneyInDb;
+import ca.gotchasomething.mynance.data.SavingsDb;
 import ca.gotchasomething.mynance.spinners.MoneyInSpinnerAdapter;
 
 public class DailyMoneyIn extends Fragment {
 
-    Button moneyInButton, cancelMoneyInEntryButton, updateMoneyInEntryButton;
-    ContentValues moneyInValue, moneyInValue2, currentValue;
+    Boolean foundMatchingDebtId = false, foundMatchingSavingsId = false;
+    Button moneyInButton, cancelMoneyInEntryButton, updateMoneyInEntryButton, noMoneyInButton, yesMoneyInButton;
+    Calendar debtCal, savingsCal;
+    ContentValues moneyInValue, moneyInValue2, moneyInValue3, moneyInValue4, moneyInValue5, moneyInValue6, moneyInValue7, moneyInValue8, moneyInValue9, moneyInValue10,
+            currentValue;
     Cursor cursor2;
-    Date moneyInDate;
-    DbHelper dbHelper2, dbHelper3, dbHelper4, dbHelper5;
+    Date moneyInDate, debtEndD, savingsDateD;
+    DbHelper dbHelper, dbHelper2, dbHelper3, dbHelper4, dbHelper5, dbHelper6, dbHelper7, dbHelper8;
     DbManager dbManager;
     Double moneyInAmount = 0.0, moneyInD = 0.0, newAccountBalance = 0.0, percentB = 0.0, newAvailableBalance = 0.0, newMoneyInAmount = 0.0,
-            oldMoneyInAmount = 0.0, moneyInAmountD = 0.0;
+            oldMoneyInAmount = 0.0, moneyInAmountD = 0.0, currentDebtAmount = 0.0, debtAmount = 0.0, currentDebtRate = 0.0, currentDebtPayments = 0.0,
+            currentDebtFrequency = 0.0, numberOfYearsToPayDebt = 0.0, currentSavingsAmount = 0.0, savingsAmount = 0.0, savingsGoal = 0.0,
+            currentSavingsRate = 0.0, currentSavingsPayments = 0.0, currentSavingsFrequency = 0.0, savingsIntFrequency = 0.0, rate = 0.0, years = 0.0, debtLimit = 0.0,
+            newDebtAmount = 0.0, newSavingsAmount = 0.0, newDebtAmount2 = 0.0, newSavingsAmount2 = 0.0;
     EditText moneyInAmountText, moneyInAmountEditText;
     General general;
-    Intent backToDaily, backToDaily2, backToDaily3, backToDaily4;
+    int numberOfDaysToPayDebt = 0, numberOfDaysToSavingsGoal = 0;
+    Intent backToDaily, backToDaily2, backToDaily3, backToDaily4, backToDaily5, backToDaily6, backToDaily7, backToDaily8;
     LinearLayout updateMoneyInLayout;
     ListView moneyInList;
+    long incRefKeyMI, moneyInRefKeyMI, debtId, savingsId;
     MoneyInAdapter moneyInAdapter;
     MoneyInDb moneyInDb;
     MoneyInSpinnerAdapter moneyInSpinnerAdapter;
     NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
     RelativeLayout addMoneyInLayout;
-    SimpleDateFormat moneyInSDF;
+    SimpleDateFormat moneyInSDF, debtEndS, savingsDateS;
     Spinner moneyInCatSpinner;
-    SQLiteDatabase db2, db3, db4, db5;
-    String moneyInCatS = null, moneyInCat = null, moneyInCreatedOn = null, moneyInS = null, moneyIn2 = null, moneyInAmountS = null;
-    TextView moneyInCatText;
+    SQLiteDatabase db, db2, db3, db4, db5, db6, db7, db8;
+    String moneyInCatS = null, moneyInCat = null, moneyInCreatedOn = null, moneyInS = null, moneyIn2 = null, moneyInAmountS = null, debtEnd = null,
+            savingsDate = null;
+    TextView moneyInCatText, debtNotPossibleText, debtContinueAnywayText, savingsNotPossibleText;
     Timestamp moneyInTimestamp;
     View v, moneyInLine, moneyInLine2;
 
@@ -89,6 +101,16 @@ public class DailyMoneyIn extends Fragment {
         general = new General();
         dbManager = new DbManager(getContext());
 
+        debtNotPossibleText = v.findViewById(R.id.debtNotPossibleText);
+        debtNotPossibleText.setVisibility(View.GONE);
+        savingsNotPossibleText = v.findViewById(R.id.savingsNotPossibleText);
+        savingsNotPossibleText.setVisibility(View.GONE);
+        debtContinueAnywayText = v.findViewById(R.id.debtContinueAnywayText);
+        debtContinueAnywayText.setVisibility(View.GONE);
+        noMoneyInButton = v.findViewById(R.id.noMoneyInButton);
+        noMoneyInButton.setVisibility(View.GONE);
+        yesMoneyInButton = v.findViewById(R.id.yesMoneyInButton);
+        yesMoneyInButton.setVisibility(View.GONE);
         updateMoneyInLayout = v.findViewById(R.id.updateMoneyInLayout);
         updateMoneyInLayout.setVisibility(View.GONE);
         addMoneyInLayout = v.findViewById(R.id.addMoneyInLayout);
@@ -130,11 +152,174 @@ public class DailyMoneyIn extends Fragment {
 
     }
 
+    public long findMatchingDebtId() {
+        foundMatchingDebtId = false;
+        for (DebtDb d : dbManager.getDebts()) {
+            try {
+                if (d.getIncRefKeyD() == moneyInRefKeyMI) {
+                    debtId = d.getId();
+                    foundMatchingDebtId = true;
+                }
+            } catch (Exception e) {
+                foundMatchingDebtId = false;
+            }
+        }
+        return debtId;
+    }
+
+    public Double findCurrentDebtAmount() {
+        for (DebtDb d3 : dbManager.getDebts()) {
+            if (d3.getIncRefKeyD() == moneyInRefKeyMI) {
+                currentDebtAmount = d3.getDebtAmount();
+                debtLimit = d3.getDebtLimit();
+            }
+        }
+        return currentDebtAmount;
+    }
+
+    public String calcDebtDate() {
+        for (DebtDb d2 : dbManager.getDebts()) {
+            if (d2.getId() == findMatchingDebtId()) {
+                debtAmount = d2.getDebtAmount();
+                currentDebtRate = d2.getDebtRate();
+                currentDebtPayments = d2.getDebtPayments();
+                currentDebtFrequency = d2.getDebtFrequency();
+            }
+
+            debtCal = Calendar.getInstance();
+            numberOfYearsToPayDebt = -(Math.log(1 - (debtAmount * (currentDebtRate / 100) / (currentDebtPayments * currentDebtFrequency))) / (currentDebtFrequency * Math.log(1 + ((currentDebtRate / 100) / currentDebtFrequency))));
+            numberOfDaysToPayDebt = (int) Math.round(numberOfYearsToPayDebt * 365);
+
+            if (debtAmount <= 0) {
+                debtEnd = getString(R.string.debt_paid);
+
+            } else if (numberOfDaysToPayDebt > Integer.MAX_VALUE || numberOfDaysToPayDebt <= 0) {
+                debtEnd = getString(R.string.too_far);
+
+            } else {
+                debtCal = Calendar.getInstance();
+                debtCal.add(Calendar.DATE, numberOfDaysToPayDebt);
+                debtEndD = debtCal.getTime();
+                debtEndS = new SimpleDateFormat("dd-MMM-yyyy");
+                debtEnd = getString(R.string.debt_will) + " " + debtEndS.format(debtEndD);
+            }
+        }
+
+        return debtEnd;
+    }
+
+    public void updateDebtsRecord() {
+        dbHelper = new DbHelper(getContext());
+        db = dbHelper.getWritableDatabase();
+        newDebtAmount = findCurrentDebtAmount() + moneyInAmount;
+        moneyInValue3 = new ContentValues();
+        moneyInValue3.put(DbHelper.DEBTAMOUNT, newDebtAmount);
+        db.update(DbHelper.DEBTS_TABLE_NAME, moneyInValue3, DbHelper.ID + "=" + findMatchingDebtId(), null);
+        moneyInValue4 = new ContentValues();
+        moneyInValue4.put(DbHelper.DEBTEND, calcDebtDate());
+        db.update(DbHelper.DEBTS_TABLE_NAME, moneyInValue4, DbHelper.ID + "=" + findMatchingDebtId(), null);
+    }
+
+    public long findMatchingSavingsId() {
+        foundMatchingSavingsId = false;
+        for (SavingsDb s : dbManager.getSavings()) {
+            try {
+                if (s.getIncRefKeyS() == moneyInRefKeyMI) {
+                    savingsId = s.getId();
+                    foundMatchingSavingsId = true;
+                }
+            } catch (Exception e2) {
+                foundMatchingSavingsId = false;
+            }
+        }
+        return savingsId;
+    }
+
+    public Double findCurrentSavingsAmount() {
+        for (SavingsDb s3 : dbManager.getSavings()) {
+            if (s3.getIncRefKeyS() == moneyInRefKeyMI) {
+                currentSavingsAmount = s3.getSavingsAmount();
+            }
+        }
+        return currentSavingsAmount;
+    }
+
+    public Double findSavingsYears() {
+        for (SavingsDb s2 : dbManager.getSavings()) {
+            if (s2.getId() == findMatchingSavingsId()) {
+                savingsAmount = s2.getSavingsAmount();
+                savingsGoal = s2.getSavingsGoal();
+                currentSavingsRate = s2.getSavingsRate();
+                currentSavingsPayments = s2.getSavingsPayments();
+                currentSavingsFrequency = s2.getSavingsFrequency();
+                savingsIntFrequency = s2.getSavingsIntFrequency();
+            }
+        }
+        if (savingsGoal < savingsAmount) {
+            savingsGoal = savingsAmount;
+        }
+        rate = currentSavingsRate / 100;
+        if (rate == 0) {
+            rate = .01;
+        }
+        if (currentSavingsPayments == 0) {
+            currentSavingsPayments = 0.01;
+        }
+        if (savingsAmount == 0 && currentSavingsPayments == 0.01) {
+            years = 0.0;
+        } else if (savingsGoal.equals(savingsAmount)) {
+            years = 0.0;
+        } else {
+            years = 0.0;
+            do {
+                years = years + .00274;
+            }
+            while (savingsGoal >= (savingsAmount * (Math.pow((1 + rate / savingsIntFrequency), savingsIntFrequency * years))) + (((currentSavingsPayments * currentSavingsFrequency) / 12) * (((Math.pow((1 + rate / savingsIntFrequency), savingsIntFrequency * years)) - 1) / (rate / savingsIntFrequency)) * (1 + rate / savingsIntFrequency)));
+        }
+
+        return years;
+    }
+
+    public String calcSavingsDate() {
+
+        savingsCal = Calendar.getInstance();
+
+        numberOfDaysToSavingsGoal = (int) Math.round(findSavingsYears() * 365);
+
+        if ((numberOfDaysToSavingsGoal) <= 0) {
+            savingsDate = getString(R.string.goal_achieved);
+
+        } else if (numberOfDaysToSavingsGoal > Integer.MAX_VALUE) {
+            savingsDate = getString(R.string.too_far);
+
+        } else {
+
+            savingsCal.add(Calendar.DATE, numberOfDaysToSavingsGoal);
+            savingsDateD = savingsCal.getTime();
+            savingsDateS = new SimpleDateFormat("dd-MMM-yyyy");
+            savingsDate = getString(R.string.goal_will) + " " + savingsDateS.format(savingsDateD);
+        }
+        return savingsDate;
+    }
+
+    public void updateSavingsRecord() {
+        dbHelper6 = new DbHelper(getContext());
+        db6 = dbHelper6.getWritableDatabase();
+        newSavingsAmount = findCurrentSavingsAmount() - moneyInAmount;
+        moneyInValue5 = new ContentValues();
+        moneyInValue5.put(DbHelper.SAVINGSAMOUNT, newSavingsAmount);
+        db6.update(DbHelper.SAVINGS_TABLE_NAME, moneyInValue5, DbHelper.ID + "=" + findMatchingSavingsId(), null);
+        moneyInValue6 = new ContentValues();
+        moneyInValue6.put(DbHelper.SAVINGSDATE, calcSavingsDate());
+        db6.update(DbHelper.SAVINGS_TABLE_NAME, moneyInValue6, DbHelper.ID + "=" + findMatchingSavingsId(), null);
+    }
+
+
     public void updateCurrentAvailableBalanceMoneyIn() {
         dbHelper3 = new DbHelper(getContext());
         db3 = dbHelper3.getWritableDatabase();
         percentB = dbManager.retrieveBPercentage();
-        if(dbManager.retrieveCurrentAccountBalance() < moneyInAmount) {
+        if (dbManager.retrieveCurrentAccountBalance() < moneyInAmount) {
             newAvailableBalance = dbManager.retrieveCurrentAvailableBalance() + (dbManager.retrieveCurrentAccountBalance() * percentB);
         } else {
             newAvailableBalance = dbManager.retrieveCurrentAvailableBalance() + (moneyInAmount * percentB);
@@ -161,6 +346,7 @@ public class DailyMoneyIn extends Fragment {
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
             moneyInCatS = cursor2.getString(cursor2.getColumnIndexOrThrow(DbHelper.INCOMENAME));
+            moneyInRefKeyMI = cursor2.getLong(cursor2.getColumnIndexOrThrow(DbHelper.ID));
         }
 
         @Override
@@ -179,8 +365,87 @@ public class DailyMoneyIn extends Fragment {
             moneyInTimestamp = new Timestamp(moneyInDate.getTime());
             moneyInSDF = new SimpleDateFormat("dd-MMM-yyyy");
             moneyInCreatedOn = moneyInSDF.format(moneyInTimestamp);
+            incRefKeyMI = moneyInRefKeyMI;
 
-            moneyInDb = new MoneyInDb(moneyInCat, moneyInAmount, moneyInCreatedOn, 0);
+            findMatchingDebtId();
+            if (foundMatchingDebtId) {
+                if (findCurrentDebtAmount() + moneyInAmount >= debtLimit) {
+                    debtNotPossibleText.setVisibility(View.VISIBLE);
+                    debtContinueAnywayText.setVisibility(View.VISIBLE);
+                    noMoneyInButton.setVisibility(View.VISIBLE);
+                    yesMoneyInButton.setVisibility(View.VISIBLE);
+
+                    noMoneyInButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            debtNotPossibleText.setVisibility(View.GONE);
+                            savingsNotPossibleText.setVisibility(View.GONE);
+                            debtContinueAnywayText.setVisibility(View.GONE);
+                            noMoneyInButton.setVisibility(View.GONE);
+                            yesMoneyInButton.setVisibility(View.GONE);
+
+                            backToDaily5 = new Intent(getContext(), LayoutDailyMoney.class);
+                            backToDaily5.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+                            startActivity(backToDaily5);
+                        }
+                    });
+                    yesMoneyInButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            updateDebtsRecord();
+                        }
+                    });
+                } else {
+                    updateDebtsRecord();
+                }
+            } else {
+                debtNotPossibleText.setVisibility(View.GONE);
+                savingsNotPossibleText.setVisibility(View.GONE);
+                debtContinueAnywayText.setVisibility(View.GONE);
+                noMoneyInButton.setVisibility(View.GONE);
+                yesMoneyInButton.setVisibility(View.GONE);
+            }
+
+            findMatchingSavingsId();
+            if (foundMatchingSavingsId) {
+                if (findCurrentSavingsAmount() - moneyInAmount >= 0) {
+                    savingsNotPossibleText.setVisibility(View.VISIBLE);
+                    debtContinueAnywayText.setVisibility(View.VISIBLE);
+                    noMoneyInButton.setVisibility(View.VISIBLE);
+                    yesMoneyInButton.setVisibility(View.VISIBLE);
+
+                    noMoneyInButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            debtNotPossibleText.setVisibility(View.GONE);
+                            savingsNotPossibleText.setVisibility(View.GONE);
+                            debtContinueAnywayText.setVisibility(View.GONE);
+                            noMoneyInButton.setVisibility(View.GONE);
+                            yesMoneyInButton.setVisibility(View.GONE);
+
+                            backToDaily6 = new Intent(getContext(), LayoutDailyMoney.class);
+                            backToDaily6.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+                            startActivity(backToDaily6);
+                        }
+                    });
+                    yesMoneyInButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            updateSavingsRecord();
+                        }
+                    });
+                } else {
+                    updateSavingsRecord();
+                }
+            } else {
+                debtNotPossibleText.setVisibility(View.GONE);
+                savingsNotPossibleText.setVisibility(View.GONE);
+                debtContinueAnywayText.setVisibility(View.GONE);
+                noMoneyInButton.setVisibility(View.GONE);
+                yesMoneyInButton.setVisibility(View.GONE);
+            }
+
+            moneyInDb = new MoneyInDb(moneyInCat, moneyInAmount, moneyInCreatedOn, incRefKeyMI, 0);
 
             dbManager.addMoneyIn(moneyInDb);
             Toast.makeText(getActivity(), "Saved", Toast.LENGTH_LONG).show();
@@ -316,6 +581,84 @@ public class DailyMoneyIn extends Fragment {
 
                             moneyInAmount = newMoneyInAmount - oldMoneyInAmount;
 
+                            findMatchingDebtId();
+                            if (foundMatchingDebtId) {
+                                if (findCurrentDebtAmount() + moneyInAmount >= debtLimit) {
+                                    debtNotPossibleText.setVisibility(View.VISIBLE);
+                                    debtContinueAnywayText.setVisibility(View.VISIBLE);
+                                    noMoneyInButton.setVisibility(View.VISIBLE);
+                                    yesMoneyInButton.setVisibility(View.VISIBLE);
+
+                                    noMoneyInButton.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            debtNotPossibleText.setVisibility(View.GONE);
+                                            savingsNotPossibleText.setVisibility(View.GONE);
+                                            debtContinueAnywayText.setVisibility(View.GONE);
+                                            noMoneyInButton.setVisibility(View.GONE);
+                                            yesMoneyInButton.setVisibility(View.GONE);
+
+                                            backToDaily7 = new Intent(getContext(), LayoutDailyMoney.class);
+                                            backToDaily7.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+                                            startActivity(backToDaily7);
+                                        }
+                                    });
+                                    yesMoneyInButton.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            updateDebtsRecord();
+                                        }
+                                    });
+                                } else {
+                                    updateDebtsRecord();
+                                }
+                            } else {
+                                debtNotPossibleText.setVisibility(View.GONE);
+                                savingsNotPossibleText.setVisibility(View.GONE);
+                                debtContinueAnywayText.setVisibility(View.GONE);
+                                noMoneyInButton.setVisibility(View.GONE);
+                                yesMoneyInButton.setVisibility(View.GONE);
+                            }
+
+                            findMatchingSavingsId();
+                            if (foundMatchingSavingsId) {
+                                if (findCurrentSavingsAmount() - moneyInAmount >= 0) {
+                                    savingsNotPossibleText.setVisibility(View.VISIBLE);
+                                    debtContinueAnywayText.setVisibility(View.VISIBLE);
+                                    noMoneyInButton.setVisibility(View.VISIBLE);
+                                    yesMoneyInButton.setVisibility(View.VISIBLE);
+
+                                    noMoneyInButton.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            debtNotPossibleText.setVisibility(View.GONE);
+                                            savingsNotPossibleText.setVisibility(View.GONE);
+                                            debtContinueAnywayText.setVisibility(View.GONE);
+                                            noMoneyInButton.setVisibility(View.GONE);
+                                            yesMoneyInButton.setVisibility(View.GONE);
+
+                                            backToDaily8 = new Intent(getContext(), LayoutDailyMoney.class);
+                                            backToDaily8.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+                                            startActivity(backToDaily8);
+                                        }
+                                    });
+                                    yesMoneyInButton.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            updateSavingsRecord();
+                                        }
+                                    });
+                                } else {
+                                    updateSavingsRecord();
+                                }
+                            } else {
+                                debtNotPossibleText.setVisibility(View.GONE);
+                                savingsNotPossibleText.setVisibility(View.GONE);
+                                debtContinueAnywayText.setVisibility(View.GONE);
+                                noMoneyInButton.setVisibility(View.GONE);
+                                yesMoneyInButton.setVisibility(View.GONE);
+                            }
+
                             dbManager.updateMoneyIn(moneyInDb);
                             moneyInAdapter.updateMoneyIn(dbManager.getMoneyIns());
                             notifyDataSetChanged();
@@ -370,6 +713,32 @@ public class DailyMoneyIn extends Fragment {
                     if (moneyInDb.getId() == 1) {
                         Toast.makeText(getContext(), "You cannot delete this entry.", Toast.LENGTH_LONG).show();
                     } else {
+                        findMatchingDebtId();
+                        if (foundMatchingDebtId) {
+                            dbHelper7 = new DbHelper(getContext());
+                            db7 = dbHelper7.getWritableDatabase();
+                            newDebtAmount2 = findCurrentDebtAmount() - moneyInAmount;
+                            moneyInValue7 = new ContentValues();
+                            moneyInValue7.put(DbHelper.DEBTAMOUNT, newDebtAmount2);
+                            db7.update(DbHelper.DEBTS_TABLE_NAME, moneyInValue7, DbHelper.ID + "=" + findMatchingDebtId(), null);
+                            moneyInValue8 = new ContentValues();
+                            moneyInValue8.put(DbHelper.DEBTEND, calcDebtDate());
+                            db7.update(DbHelper.DEBTS_TABLE_NAME, moneyInValue8, DbHelper.ID + "=" + findMatchingDebtId(), null);
+                        }
+
+                        findMatchingSavingsId();
+                        if (foundMatchingSavingsId) {
+                            dbHelper8 = new DbHelper(getContext());
+                            db8 = dbHelper8.getWritableDatabase();
+                            newSavingsAmount2 = findCurrentSavingsAmount() + moneyInAmount;
+                            moneyInValue9 = new ContentValues();
+                            moneyInValue9.put(DbHelper.SAVINGSAMOUNT, newSavingsAmount2);
+                            db8.update(DbHelper.SAVINGS_TABLE_NAME, moneyInValue9, DbHelper.ID + "=" + findMatchingSavingsId(), null);
+                            moneyInValue10 = new ContentValues();
+                            moneyInValue10.put(DbHelper.SAVINGSDATE, calcSavingsDate());
+                            db8.update(DbHelper.SAVINGS_TABLE_NAME, moneyInValue10, DbHelper.ID + "=" + findMatchingSavingsId(), null);
+                        }
+
                         dbManager.deleteMoneyIn(moneyInDb);
                         moneyInAdapter.updateMoneyIn(dbManager.getMoneyIns());
                         notifyDataSetChanged();

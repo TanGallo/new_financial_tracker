@@ -12,6 +12,66 @@
         android:orientation="vertical">
 
         <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/debtNotPossibleText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:text="There is not enough credit available on this DEBTS item to make this deposit. You will be putting the debt over its limit."
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/savingsNotPossibleText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:text="There is not enough in this SAVINGS item to make this deposit. You will be putting the savings balance into the negative."
+                android:textSize="16sp" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/debtContinueAnywayText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:text="@string/continue_anyway"
+                    android:textSize="16sp" />
+
+                <Button
+                    android:id="@+id/yesMoneyInButton"
+                    android:layout_width="60dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:layout_toStartOf="@id/noMoneyInButton"
+                    android:text="yes"
+                    android:textSize="12sp"
+                    android:background="@drawable/entry_box"/>
+
+                <Button
+                    android:id="@+id/noMoneyInButton"
+                    android:layout_width="60dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginStart="5dp"
+                    android:text="no"
+                    android:textSize="12sp"
+                    android:layout_alignParentEnd="true"
+                    android:background="@drawable/entry_box"/>
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
             android:id="@+id/updateMoneyInLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -27,7 +87,7 @@
                 android:id="@+id/moneyInCatText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
+                android:layout_margin="5dp"
                 android:text="Category"
                 android:textSize="16sp" />
 
@@ -35,7 +95,7 @@
                 android:id="@+id/moneyInAmountEditText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
+                android:layout_margin="5dp"
                 android:inputType="numberDecimal"
                 android:text="Amount"
                 android:textSize="16sp" />
@@ -52,10 +112,11 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_gravity="end"
-                android:layout_margin="10dp"
+                android:layout_margin="5dp"
                 android:gravity="center"
                 android:background="@drawable/entry_box"
-                android:text="Cancel" />
+                android:text="Cancel"
+                android:textSize="12sp"/>
 
             <Button
                 android:id="@+id/updateMoneyInEntryButton"
@@ -63,10 +124,11 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_gravity="end"
-                android:layout_margin="10dp"
+                android:layout_margin="5dp"
                 android:gravity="center"
                 android:background="@drawable/entry_box"
-                android:text="Update" />
+                android:text="Update"
+                android:textSize="12sp"/>
 
         </RelativeLayout>
 
@@ -95,16 +157,17 @@
                 android:id="@+id/moneyInAmount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:hint="Enter amount"
-                android:textSize="16sp" />
+                android:layout_margin="5dp"
+                android:hint="Amount"
+                android:textSize="16sp"
+                android:inputType="numberDecimal"/>
 
             <Spinner
                 android:id="@+id/moneyInCatSpinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_margin="10dp"
+                android:layout_margin="5dp"
                 android:layout_toStartOf="@id/moneyInButton"
                 android:layout_toEndOf="@id/moneyInAmount"
                 android:gravity="fill_horizontal">
@@ -113,13 +176,13 @@
 
             <Button
                 android:id="@+id/moneyInButton"
-                android:layout_width="70dp"
+                android:layout_width="60dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
-                android:layout_margin="10dp"
+                android:layout_margin="5dp"
                 android:text="enter"
                 android:background="@drawable/entry_box"
-                android:textSize="14sp" />
+                android:textSize="12sp" />
 
         </RelativeLayout>
 

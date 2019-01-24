@@ -11,6 +11,7 @@ public class SavingsDb {
     private Double savingsIntFrequency;
     private String savingsDate;
     private long expRefKeyS;
+    private long incRefKeyS;
     private long id;
 
     public SavingsDb(
@@ -23,6 +24,7 @@ public class SavingsDb {
             Double savingsIntFrequency,
             String savingsDate,
             long expRefKeyS,
+            long incRefKeyS,
             long id) {
         this.savingsName = savingsName;
         this.savingsAmount = savingsAmount;
@@ -33,6 +35,7 @@ public class SavingsDb {
         this.savingsIntFrequency = savingsIntFrequency;
         this.savingsDate = savingsDate;
         this.expRefKeyS = expRefKeyS;
+        this.incRefKeyS = incRefKeyS;
         this.id = id;
     }
 
@@ -62,6 +65,9 @@ public class SavingsDb {
 
     public long getExpRefKeyS() { return expRefKeyS; }
     public void setExpRefKeyS(long expRefKeyS) { this.expRefKeyS = expRefKeyS; }
+
+    public long getIncRefKeyS() { return incRefKeyS; }
+    public void setIncRefKeyS(long incRefKeyS) { this.incRefKeyS = incRefKeyS; }
 
     public long getId() { return id; }
     public void setId(long id) { this.id = id; }
