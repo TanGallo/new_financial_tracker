@@ -9,6 +9,7 @@ public class SavingsDb {
     private Double savingsFrequency;
     private Double savingsRate;
     private Double savingsIntFrequency;
+    private Double savingsAnnualIncome;
     private String savingsDate;
     private long expRefKeyS;
     private long incRefKeyS;
@@ -22,6 +23,7 @@ public class SavingsDb {
             Double savingsFrequency,
             Double savingsRate,
             Double savingsIntFrequency,
+            Double savingsAnnualIncome,
             String savingsDate,
             long expRefKeyS,
             long incRefKeyS,
@@ -33,6 +35,7 @@ public class SavingsDb {
         this.savingsFrequency = savingsFrequency;
         this.savingsRate = savingsRate;
         this.savingsIntFrequency = savingsIntFrequency;
+        this.savingsAnnualIncome = savingsAnnualIncome;
         this.savingsDate = savingsDate;
         this.expRefKeyS = expRefKeyS;
         this.incRefKeyS = incRefKeyS;
@@ -59,6 +62,9 @@ public class SavingsDb {
 
     public Double getSavingsIntFrequency() { return savingsIntFrequency; }
     public void setSavingsIntFrequency(Double savingsIntFrequency) { this.savingsIntFrequency = savingsIntFrequency; }
+
+    public Double getSavingsAnnualIncome() { return savingsAnnualIncome; }
+    public void setSavingsAnnualIncome(Double savingsAnnualIncome) { this.savingsAnnualIncome = savingsAnnualIncome; }
 
     public String getSavingsDate() { return savingsDate; }
     public void setSavingsDate(String savingsDate) { this.savingsDate = savingsDate; }

@@ -30,7 +30,8 @@ public class AddSavings extends LayoutSavings {
     DbManager dbManager;
     Double savingsAmount = 0.0, savingsRate = 0.0, savingsPayments = 0.0, savingsFrequency = 0.0, savingsGoal = 0.0, expenseAmount = 0.0, expenseFrequency = 0.0,
             expenseAnnualAmount = 0.0, expenseAAnnualAmount = 0.0, expenseBAnnualAmount = 0.0, frequency = 0.0, amount = 0.0, goal = 0.0, rate = 0.0, payments = 0.0,
-            rate2 = 0.0, savingsIntFrequency = 0.0, intFrequency = 0.0, years = 0.0, incomeAmount = 0.0, incomeFrequency = 0.0, incomeAnnualAmount = 0.0;
+            rate2 = 0.0, savingsIntFrequency = 0.0, intFrequency = 0.0, years = 0.0, incomeAmount = 0.0, incomeFrequency = 0.0,
+            incomeAnnualAmount = 0.0, savingsAnnualIncome = 0.0;
     EditText savingsNameEntry, savingsAmountEntry, savingsPercentEntry, savingsPaymentsEntry, savingsGoalAmountEntry;
     ExpenseBudgetDb expenseBudgetDb;
     IncomeBudgetDb incomeBudgetDb;
@@ -323,6 +324,7 @@ public class AddSavings extends LayoutSavings {
             savingsFrequency = Double.valueOf(savingsFrequencyS);
             savingsRate = Double.valueOf(savingsPercentEntry.getText().toString());
             savingsIntFrequency = Double.valueOf(savingsIntFrequencyS);
+            savingsAnnualIncome = 0.0;
             savingsDate = calcSavingsDate();
             expRefKeyS = dbManager.findLatestExpenseId();
             incRefKeyS = dbManager.findLatestIncomeId();
@@ -335,6 +337,7 @@ public class AddSavings extends LayoutSavings {
                     savingsFrequency,
                     savingsRate,
                     savingsIntFrequency,
+                    savingsAnnualIncome,
                     savingsDate,
                     expRefKeyS,
                     incRefKeyS,

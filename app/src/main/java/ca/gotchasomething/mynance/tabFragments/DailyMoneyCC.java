@@ -36,6 +36,7 @@ import ca.gotchasomething.mynance.DbManager;
 import ca.gotchasomething.mynance.General;
 import ca.gotchasomething.mynance.R;
 import ca.gotchasomething.mynance.data.DebtDb;
+import ca.gotchasomething.mynance.data.IncomeBudgetDb;
 import ca.gotchasomething.mynance.data.MoneyOutDb;
 import ca.gotchasomething.mynance.data.SavingsDb;
 import ca.gotchasomething.mynance.spinners.MoneyOutCCSpinnerAdapter;
@@ -59,13 +60,14 @@ public class DailyMoneyCC extends Fragment {
             currentSavingsAmount = 0.0, savingsAmount = 0.0, currentSavingsRate = 0.0, currentSavingsPayments = 0.0, currentSavingsFrequency = 0.0,
             numberOfYearsToSavingsGoal = 0.0, newDebtAmount = 0.0, newDebtAmount2 = 0.0, newSavingsAmount = 0.0, currentChargingDebtAmount = 0.0,
             debtAmount3 = 0.0, currentDebtRate3 = 0.0, currentDebtPayments3 = 0.0, currentDebtFrequency3 = 0.0, numberOfYearsToPayDebt3 = 0.0,
-            newDebtAmount3 = 0.0, newDebtAmount4 = 0.0, years = 0.0, savingsGoal = 0.0, savingsIntFrequency = 0.0, rate = 0.0;
+            newDebtAmount3 = 0.0, newDebtAmount4 = 0.0, years = 0.0, savingsGoal = 0.0, savingsIntFrequency = 0.0, rate = 0.0, debtAnnualIncome = 0.0,
+            chargingDebtAnnualIncome = 0.0, savingsAnnualIncome = 0.0, amountEntry = 0.0;
     EditText ccTransAmountText, ccTransAmountEditText;
     General general;
     int moneyOutToPay = 0, moneyOutPaid = 0, numberOfDaysToPayDebt = 0, numberOfDaysToSavingsGoal = 0, numberOfDaysToPayDebt3 = 0;
     LinearLayout updateCreditCardLayout;
     ListView ccTransList;
-    long moneyOutRefKeyMO, expRefKeyMO, debtId, savingsId, chargingDebtIdS, moneyOutChargingDebtId;
+    long moneyOutRefKeyMO, expRefKeyMO, debtId, savingsId, chargingDebtIdS, moneyOutChargingDebtId, debtIncomeId, chargingDebtIncomeId, savingsIncomeId;
     MoneyOutDb moneyOutDb;
     MoneyOutSpinnerAdapter ccTransSpinnerAdapter;
     MoneyOutCCSpinnerAdapter ccTransSpinnerAdapter2;
@@ -359,15 +361,6 @@ public class DailyMoneyCC extends Fragment {
         return debtId;
     }
 
-    public Double findCurrentChargingDebtAmount() {
-        for (DebtDb d3 : dbManager.getDebts()) {
-            if (d3.getId() == moneyOutChargingDebtId) {
-                currentChargingDebtAmount = d3.getDebtAmount();
-            }
-        }
-        return currentChargingDebtAmount;
-    }
-
     public Double findCurrentDebtAmount() {
         for (DebtDb d3 : dbManager.getDebts()) {
             if (d3.getExpRefKeyD() == moneyOutRefKeyMO) {
@@ -377,37 +370,6 @@ public class DailyMoneyCC extends Fragment {
         return currentDebtAmount;
     }
 
-    public String calcChargingDebtDate() {
-        for (DebtDb d2 : dbManager.getDebts()) {
-            if (d2.getId() == moneyOutChargingDebtId) {
-                debtAmount3 = d2.getDebtAmount();
-                currentDebtRate3 = d2.getDebtRate();
-                currentDebtPayments3 = d2.getDebtPayments();
-                currentDebtFrequency3 = d2.getDebtFrequency();
-            }
-
-            debtCal3 = Calendar.getInstance();
-            numberOfYearsToPayDebt3 = -(Math.log(1 - (debtAmount3 * (currentDebtRate3 / 100) / (currentDebtPayments3 * currentDebtFrequency3))) / (currentDebtFrequency3 * Math.log(1 + ((currentDebtRate3 / 100) / currentDebtFrequency3))));
-            numberOfDaysToPayDebt3 = (int) Math.round(numberOfYearsToPayDebt3 * 365);
-
-            if (debtAmount3 <= 0) {
-                chargingDebtEnd = getString(R.string.debt_paid);
-
-            } else if (numberOfDaysToPayDebt3 > Integer.MAX_VALUE || numberOfDaysToPayDebt3 <= 0) {
-                chargingDebtEnd = getString(R.string.too_far);
-
-            } else {
-                debtCal3 = Calendar.getInstance();
-                debtCal3.add(Calendar.DATE, numberOfDaysToPayDebt3);
-                debtEndD3 = debtCal3.getTime();
-                debtEndS3 = new SimpleDateFormat("dd-MMM-yyyy");
-                chargingDebtEnd = getString(R.string.debt_will) + " " + debtEndS3.format(debtEndD3);
-            }
-        }
-
-        return chargingDebtEnd;
-    }
-
     public String calcDebtDate() {
         for (DebtDb d2 : dbManager.getDebts()) {
             if (d2.getId() == findMatchingDebtId()) {
@@ -415,10 +377,11 @@ public class DailyMoneyCC extends Fragment {
                 currentDebtRate = d2.getDebtRate();
                 currentDebtPayments = d2.getDebtPayments();
                 currentDebtFrequency = d2.getDebtFrequency();
+                debtAnnualIncome = d2.getDebtAnnualIncome();
             }
 
             debtCal = Calendar.getInstance();
-            numberOfYearsToPayDebt = -(Math.log(1 - (debtAmount * (currentDebtRate / 100) / (currentDebtPayments * currentDebtFrequency))) / (currentDebtFrequency * Math.log(1 + ((currentDebtRate / 100) / currentDebtFrequency))));
+            numberOfYearsToPayDebt = -(Math.log(1 - (debtAmount * (currentDebtRate / 100) / ((currentDebtPayments * currentDebtFrequency) - debtAnnualIncome))) / (currentDebtFrequency * Math.log(1 + ((currentDebtRate / 100) / currentDebtFrequency))));
             numberOfDaysToPayDebt = (int) Math.round(numberOfYearsToPayDebt * 365);
 
             if (debtAmount <= 0) {
@@ -437,6 +400,47 @@ public class DailyMoneyCC extends Fragment {
         }
 
         return debtEnd;
+    }
+
+    public Double findCurrentChargingDebtAmount() {
+        for (DebtDb d3 : dbManager.getDebts()) {
+            if (d3.getId() == moneyOutChargingDebtId) {
+                currentChargingDebtAmount = d3.getDebtAmount();
+            }
+        }
+        return currentChargingDebtAmount;
+    }
+
+    public String calcChargingDebtDate() {
+        for (DebtDb d2 : dbManager.getDebts()) {
+            if (d2.getId() == moneyOutChargingDebtId) {
+                debtAmount3 = d2.getDebtAmount();
+                currentDebtRate3 = d2.getDebtRate();
+                currentDebtPayments3 = d2.getDebtPayments();
+                currentDebtFrequency3 = d2.getDebtFrequency();
+                chargingDebtAnnualIncome = d2.getDebtAnnualIncome();
+            }
+
+            debtCal3 = Calendar.getInstance();
+            numberOfYearsToPayDebt3 = -(Math.log(1 - (debtAmount3 * (currentDebtRate3 / 100) / ((currentDebtPayments3 * currentDebtFrequency3) - chargingDebtAnnualIncome))) / (currentDebtFrequency3 * Math.log(1 + ((currentDebtRate3 / 100) / currentDebtFrequency3))));
+            numberOfDaysToPayDebt3 = (int) Math.round(numberOfYearsToPayDebt3 * 365);
+
+            if (debtAmount3 <= 0) {
+                chargingDebtEnd = getString(R.string.debt_paid);
+
+            } else if (numberOfDaysToPayDebt3 > Integer.MAX_VALUE || numberOfDaysToPayDebt3 <= 0) {
+                chargingDebtEnd = getString(R.string.too_far);
+
+            } else {
+                debtCal3 = Calendar.getInstance();
+                debtCal3.add(Calendar.DATE, numberOfDaysToPayDebt3);
+                debtEndD3 = debtCal3.getTime();
+                debtEndS3 = new SimpleDateFormat("dd-MMM-yyyy");
+                chargingDebtEnd = getString(R.string.debt_will) + " " + debtEndS3.format(debtEndD3);
+            }
+        }
+
+        return chargingDebtEnd;
     }
 
     public long findMatchingSavingsId() {
@@ -472,6 +476,7 @@ public class DailyMoneyCC extends Fragment {
                 currentSavingsPayments = s2.getSavingsPayments();
                 currentSavingsFrequency = s2.getSavingsFrequency();
                 savingsIntFrequency = s2.getSavingsIntFrequency();
+                savingsAnnualIncome = s2.getSavingsAnnualIncome();
             }
         }
         if(savingsGoal < savingsAmount) {
@@ -493,7 +498,7 @@ public class DailyMoneyCC extends Fragment {
             do {
                 years = years + .00274;
             }
-            while (savingsGoal >= (savingsAmount * (Math.pow((1 + rate / savingsIntFrequency), savingsIntFrequency * years))) + (((currentSavingsPayments * currentSavingsFrequency) / 12) * (((Math.pow((1 + rate / savingsIntFrequency), savingsIntFrequency * years)) - 1) / (rate / savingsIntFrequency)) * (1 + rate / savingsIntFrequency)));
+            while (savingsGoal >= (savingsAmount * (Math.pow((1 + rate / savingsIntFrequency), savingsIntFrequency * years))) + ((((currentSavingsPayments * currentSavingsFrequency) - savingsAnnualIncome) / 12) * (((Math.pow((1 + rate / savingsIntFrequency), savingsIntFrequency * years)) - 1) / (rate / savingsIntFrequency)) * (1 + rate / savingsIntFrequency)));
         }
 
         return years;
@@ -760,14 +765,14 @@ public class DailyMoneyCC extends Fragment {
                     addCreditCardLayout.setVisibility(View.VISIBLE);
 
                     try {
-                        moneyOutDb.setMoneyOutAmount(Double.valueOf(ccTransAmountEditText.getText().toString()));
-                        newMoneyOutAmount = Double.valueOf(ccTransAmountEditText.getText().toString());
+                        amountEntry = Double.valueOf(ccTransAmountEditText.getText().toString());
                     } catch (NumberFormatException e) {
-                        moneyOutDb.setMoneyOutAmount(general.extractingDollars(ccTransAmountEditText));
-                        newMoneyOutAmount = general.extractingDollars(ccTransAmountEditText);
+                        amountEntry = general.extractingDollars(ccTransAmountEditText);
                     }
 
-                    moneyOutAmount = newMoneyOutAmount - oldMoneyOutAmount;
+                    moneyOutDb.setMoneyOutAmount(amountEntry);
+
+                    moneyOutAmount = amountEntry - oldMoneyOutAmount;
 
                     paymentAPossible = true;
                     paymentBPossible = true;
@@ -877,18 +882,16 @@ public class DailyMoneyCC extends Fragment {
                 @Override
                 public void onClick(View v) {
 
-                    dbHelper5 = new DbHelper(getContext());
-                    db5 = dbHelper5.getWritableDatabase();
-
                     moneyOutDb = (MoneyOutDb) holder.ccTransDelete.getTag();
 
-                    moneyOutAmount = -(ccTrans.get(position).getMoneyOutAmount());
+                    moneyOutAmount = ccTrans.get(position).getMoneyOutAmount();
                     moneyOutRefKeyMO = ccTrans.get(position).getExpRefKeyMO();
                     moneyOutChargingDebtId = ccTrans.get(position).getMoneyOutChargingDebtId();
 
-                    dbManager.deleteMoneyOut(moneyOutDb);
+                    dbHelper5 = new DbHelper(getContext());
+                    db5 = dbHelper5.getWritableDatabase();
 
-                    newDebtAmount = findCurrentChargingDebtAmount() + moneyOutAmount;
+                    newDebtAmount = findCurrentChargingDebtAmount() - moneyOutAmount;
                     moneyOutValue9 = new ContentValues();
                     moneyOutValue9.put(DbHelper.DEBTAMOUNT, newDebtAmount);
                     db5.update(DbHelper.DEBTS_TABLE_NAME, moneyOutValue9, DbHelper.ID + "=" + moneyOutChargingDebtId, null);
@@ -898,7 +901,7 @@ public class DailyMoneyCC extends Fragment {
 
                     findMatchingDebtId();
                     if (foundMatchingDebtId) {
-                        newDebtAmount4 = findCurrentDebtAmount() - moneyOutAmount;
+                        newDebtAmount4 = findCurrentDebtAmount() + moneyOutAmount;
                         moneyOutValue17 = new ContentValues();
                         moneyOutValue17.put(DbHelper.DEBTAMOUNT, newDebtAmount4);
                         db5.update(DbHelper.DEBTS_TABLE_NAME, moneyOutValue17, DbHelper.ID + "=" + findMatchingDebtId(), null);
@@ -908,7 +911,7 @@ public class DailyMoneyCC extends Fragment {
                     }
                     findMatchingSavingsId();
                     if (foundMatchingSavingsId) {
-                        newSavingsAmount = findCurrentSavingsAmount() + moneyOutAmount;
+                        newSavingsAmount = findCurrentSavingsAmount() - moneyOutAmount;
                         moneyOutValue11 = new ContentValues();
                         moneyOutValue11.put(DbHelper.SAVINGSAMOUNT, newSavingsAmount);
                         db5.update(DbHelper.SAVINGS_TABLE_NAME, moneyOutValue11, DbHelper.ID + "=" + findMatchingSavingsId(), null);
@@ -918,6 +921,7 @@ public class DailyMoneyCC extends Fragment {
                     }
                     db5.close();
 
+                    dbManager.deleteMoneyOut(moneyOutDb);
                     ccTransAdapter.updateCCTrans(dbManager.getCCTrans());
                     notifyDataSetChanged();
                     if (ccTransAdapter.getCount() == 0) {

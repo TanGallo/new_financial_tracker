@@ -198,6 +198,7 @@ public class DbManager {
                         cursor.getDouble(cursor.getColumnIndex(DbHelper.DEBTRATE)),
                         cursor.getDouble(cursor.getColumnIndex(DbHelper.DEBTPAYMENTS)),
                         cursor.getDouble(cursor.getColumnIndex(DbHelper.DEBTFREQUENCY)),
+                        cursor.getDouble(cursor.getColumnIndex(DbHelper.DEBTANNUALINCOME)),
                         cursor.getString(cursor.getColumnIndex(DbHelper.DEBTEND)),
                         cursor.getLong(cursor.getColumnIndex(DbHelper.EXPREFKEYD)),
                         cursor.getLong(cursor.getColumnIndex(DbHelper.INCREFKEYD)),
@@ -219,6 +220,7 @@ public class DbManager {
         newDebt.put(DbHelper.DEBTRATE, debt.getDebtRate());
         newDebt.put(DbHelper.DEBTPAYMENTS, debt.getDebtPayments());
         newDebt.put(DbHelper.DEBTFREQUENCY, debt.getDebtFrequency());
+        newDebt.put(DbHelper.DEBTANNUALINCOME, debt.getDebtAnnualIncome());
         newDebt.put(DbHelper.DEBTEND, debtEndDate(debt));
         newDebt.put(DbHelper.EXPREFKEYD, debt.getExpRefKeyD());
         newDebt.put(DbHelper.INCREFKEYD, debt.getIncRefKeyD());
@@ -234,6 +236,7 @@ public class DbManager {
         updateDebt.put(DbHelper.DEBTRATE, debt.getDebtRate());
         updateDebt.put(DbHelper.DEBTPAYMENTS, debt.getDebtPayments());
         updateDebt.put(DbHelper.DEBTFREQUENCY, debt.getDebtFrequency());
+        updateDebt.put(DbHelper.DEBTANNUALINCOME, debt.getDebtAnnualIncome());
         updateDebt.put(DbHelper.DEBTEND, debtEndDate(debt));
         updateDebt.put(DbHelper.EXPREFKEYD, debt.getExpRefKeyD());
         updateDebt.put(DbHelper.INCREFKEYD, debt.getIncRefKeyD());
@@ -250,9 +253,9 @@ public class DbManager {
 
     public String debtEndDate(DebtDb debt) {
         cal = Calendar.getInstance();
-        //years = -(Math.log(1 - (amount * (rate / 100) / (payments * frequency))) / (frequency * Math.log(1 + ((rate / 100) / frequency))))
+        //years = -(Math.log(1 - (amount * (rate / 100) / ((payments * frequency) - annualIncome))) / (frequency * Math.log(1 + ((rate / 100) / frequency))))
         numberOfYearsToPayDebt = -(Math.log(1 - (debt.getDebtAmount() * (debt.getDebtRate() / 100) /
-                (debt.getDebtPayments() * debt.getDebtFrequency()))) / (debt.getDebtFrequency() *
+                ((debt.getDebtPayments() * debt.getDebtFrequency()) - debt.getDebtAnnualIncome()))) / (debt.getDebtFrequency() *
                 Math.log(1 + ((debt.getDebtRate() / 100) / debt.getDebtFrequency()))));
         numberOfDaysToPayDebt = (int) Math.round(numberOfYearsToPayDebt * 365);
         if (debt.getDebtAmount() <= 0) {
@@ -304,6 +307,7 @@ public class DbManager {
                         cursor.getDouble(cursor.getColumnIndex(DbHelper.SAVINGSFREQUENCY)),
                         cursor.getDouble(cursor.getColumnIndex(DbHelper.SAVINGSRATE)),
                         cursor.getDouble(cursor.getColumnIndex(DbHelper.SAVINGSINTFREQUENCY)),
+                        cursor.getDouble(cursor.getColumnIndex(DbHelper.SAVINGSANNUALINCOME)),
                         cursor.getString(cursor.getColumnIndex(DbHelper.SAVINGSDATE)),
                         cursor.getLong(cursor.getColumnIndex(DbHelper.EXPREFKEYS)),
                         cursor.getLong(cursor.getColumnIndex(DbHelper.INCREFKEYS)),
@@ -326,6 +330,7 @@ public class DbManager {
         newSavings.put(DbHelper.SAVINGSFREQUENCY, saving.getSavingsFrequency());
         newSavings.put(DbHelper.SAVINGSRATE, saving.getSavingsRate());
         newSavings.put(DbHelper.SAVINGSINTFREQUENCY, saving.getSavingsIntFrequency());
+        newSavings.put(DbHelper.DEBTANNUALINCOME, saving.getSavingsAnnualIncome());
         newSavings.put(DbHelper.SAVINGSDATE, saving.getSavingsDate());
         newSavings.put(DbHelper.EXPREFKEYS, saving.getExpRefKeyS());
         newSavings.put(DbHelper.INCREFKEYS, saving.getIncRefKeyS());
@@ -342,6 +347,7 @@ public class DbManager {
         updateSaving.put(DbHelper.SAVINGSFREQUENCY, saving.getSavingsFrequency());
         updateSaving.put(DbHelper.SAVINGSRATE, saving.getSavingsRate());
         updateSaving.put(DbHelper.SAVINGSINTFREQUENCY, saving.getSavingsIntFrequency());
+        updateSaving.put(DbHelper.DEBTANNUALINCOME, saving.getSavingsAnnualIncome());
         updateSaving.put(DbHelper.SAVINGSDATE, saving.getSavingsDate());
         updateSaving.put(DbHelper.EXPREFKEYS, saving.getExpRefKeyS());
         updateSaving.put(DbHelper.INCREFKEYS, saving.getIncRefKeyS());

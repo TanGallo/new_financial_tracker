@@ -40,6 +40,7 @@ import ca.gotchasomething.mynance.General;
 import ca.gotchasomething.mynance.LayoutDailyMoney;
 import ca.gotchasomething.mynance.R;
 import ca.gotchasomething.mynance.data.DebtDb;
+import ca.gotchasomething.mynance.data.IncomeBudgetDb;
 import ca.gotchasomething.mynance.data.MoneyInDb;
 import ca.gotchasomething.mynance.data.SavingsDb;
 import ca.gotchasomething.mynance.spinners.MoneyInSpinnerAdapter;
@@ -59,7 +60,8 @@ public class DailyMoneyIn extends Fragment {
             oldMoneyInAmount = 0.0, moneyInAmountD = 0.0, currentDebtAmount = 0.0, debtAmount = 0.0, currentDebtRate = 0.0, currentDebtPayments = 0.0,
             currentDebtFrequency = 0.0, numberOfYearsToPayDebt = 0.0, currentSavingsAmount = 0.0, savingsAmount = 0.0, savingsGoal = 0.0,
             currentSavingsRate = 0.0, currentSavingsPayments = 0.0, currentSavingsFrequency = 0.0, savingsIntFrequency = 0.0, rate = 0.0, years = 0.0, debtLimit = 0.0,
-            newDebtAmount = 0.0, newSavingsAmount = 0.0, newDebtAmount2 = 0.0, newSavingsAmount2 = 0.0;
+            newDebtAmount = 0.0, newSavingsAmount = 0.0, newDebtAmount2 = 0.0, newSavingsAmount2 = 0.0, debtAnnualIncome = 0.0, savingsAnnualIncome = 0.0,
+            amountEntry = 0.0;
     EditText moneyInAmountText, moneyInAmountEditText;
     General general;
     int numberOfDaysToPayDebt = 0, numberOfDaysToSavingsGoal = 0;
@@ -184,10 +186,11 @@ public class DailyMoneyIn extends Fragment {
                 currentDebtRate = d2.getDebtRate();
                 currentDebtPayments = d2.getDebtPayments();
                 currentDebtFrequency = d2.getDebtFrequency();
+                debtAnnualIncome = d2.getDebtAnnualIncome();
             }
 
             debtCal = Calendar.getInstance();
-            numberOfYearsToPayDebt = -(Math.log(1 - (debtAmount * (currentDebtRate / 100) / (currentDebtPayments * currentDebtFrequency))) / (currentDebtFrequency * Math.log(1 + ((currentDebtRate / 100) / currentDebtFrequency))));
+            numberOfYearsToPayDebt = -(Math.log(1 - (debtAmount * (currentDebtRate / 100) / ((currentDebtPayments * currentDebtFrequency) - debtAnnualIncome))) / (currentDebtFrequency * Math.log(1 + ((currentDebtRate / 100) / currentDebtFrequency))));
             numberOfDaysToPayDebt = (int) Math.round(numberOfYearsToPayDebt * 365);
 
             if (debtAmount <= 0) {
@@ -253,6 +256,7 @@ public class DailyMoneyIn extends Fragment {
                 currentSavingsPayments = s2.getSavingsPayments();
                 currentSavingsFrequency = s2.getSavingsFrequency();
                 savingsIntFrequency = s2.getSavingsIntFrequency();
+                savingsAnnualIncome = s2.getSavingsAnnualIncome();
             }
         }
         if (savingsGoal < savingsAmount) {
@@ -274,7 +278,7 @@ public class DailyMoneyIn extends Fragment {
             do {
                 years = years + .00274;
             }
-            while (savingsGoal >= (savingsAmount * (Math.pow((1 + rate / savingsIntFrequency), savingsIntFrequency * years))) + (((currentSavingsPayments * currentSavingsFrequency) / 12) * (((Math.pow((1 + rate / savingsIntFrequency), savingsIntFrequency * years)) - 1) / (rate / savingsIntFrequency)) * (1 + rate / savingsIntFrequency)));
+            while (savingsGoal >= (savingsAmount * (Math.pow((1 + rate / savingsIntFrequency), savingsIntFrequency * years))) + ((((currentSavingsPayments * currentSavingsFrequency) - savingsAnnualIncome) / 12) * (((Math.pow((1 + rate / savingsIntFrequency), savingsIntFrequency * years)) - 1) / (rate / savingsIntFrequency)) * (1 + rate / savingsIntFrequency)));
         }
 
         return years;
@@ -369,7 +373,7 @@ public class DailyMoneyIn extends Fragment {
 
             findMatchingDebtId();
             if (foundMatchingDebtId) {
-                if (findCurrentDebtAmount() + moneyInAmount >= debtLimit) {
+                if (findCurrentDebtAmount() + moneyInAmount > debtLimit) {
                     debtNotPossibleText.setVisibility(View.VISIBLE);
                     debtContinueAnywayText.setVisibility(View.VISIBLE);
                     noMoneyInButton.setVisibility(View.VISIBLE);
@@ -408,7 +412,7 @@ public class DailyMoneyIn extends Fragment {
 
             findMatchingSavingsId();
             if (foundMatchingSavingsId) {
-                if (findCurrentSavingsAmount() - moneyInAmount >= 0) {
+                if (findCurrentSavingsAmount() - moneyInAmount <= 0) {
                     savingsNotPossibleText.setVisibility(View.VISIBLE);
                     debtContinueAnywayText.setVisibility(View.VISIBLE);
                     noMoneyInButton.setVisibility(View.VISIBLE);
@@ -572,18 +576,16 @@ public class DailyMoneyIn extends Fragment {
                         public void onClick(View v) {
 
                             try {
-                                moneyInDb.setMoneyInAmount(Double.valueOf(moneyInAmountEditText.getText().toString()));
-                                newMoneyInAmount = Double.valueOf(moneyInAmountEditText.getText().toString());
+                                amountEntry = Double.valueOf(moneyInAmountEditText.getText().toString());
                             } catch (NumberFormatException e) {
-                                moneyInDb.setMoneyInAmount(general.extractingDollars(moneyInAmountEditText));
-                                newMoneyInAmount = general.extractingDollars(moneyInAmountEditText);
+                                amountEntry = general.extractingDollars(moneyInAmountEditText);
                             }
 
-                            moneyInAmount = newMoneyInAmount - oldMoneyInAmount;
+                            moneyInAmount = amountEntry - oldMoneyInAmount;
 
                             findMatchingDebtId();
                             if (foundMatchingDebtId) {
-                                if (findCurrentDebtAmount() + moneyInAmount >= debtLimit) {
+                                if (findCurrentDebtAmount() + moneyInAmount > debtLimit) {
                                     debtNotPossibleText.setVisibility(View.VISIBLE);
                                     debtContinueAnywayText.setVisibility(View.VISIBLE);
                                     noMoneyInButton.setVisibility(View.VISIBLE);
@@ -622,7 +624,7 @@ public class DailyMoneyIn extends Fragment {
 
                             findMatchingSavingsId();
                             if (foundMatchingSavingsId) {
-                                if (findCurrentSavingsAmount() - moneyInAmount >= 0) {
+                                if (findCurrentSavingsAmount() - moneyInAmount <= 0) {
                                     savingsNotPossibleText.setVisibility(View.VISIBLE);
                                     debtContinueAnywayText.setVisibility(View.VISIBLE);
                                     noMoneyInButton.setVisibility(View.VISIBLE);
@@ -659,6 +661,7 @@ public class DailyMoneyIn extends Fragment {
                                 yesMoneyInButton.setVisibility(View.GONE);
                             }
 
+                            moneyInDb.setMoneyInAmount(amountEntry);
                             dbManager.updateMoneyIn(moneyInDb);
                             moneyInAdapter.updateMoneyIn(dbManager.getMoneyIns());
                             notifyDataSetChanged();
@@ -707,9 +710,9 @@ public class DailyMoneyIn extends Fragment {
                 @Override
                 public void onClick(View v) {
 
-                    moneyInAmount = -(Double.valueOf(moneyIn.get(position).getMoneyInAmount()));
-
                     moneyInDb = (MoneyInDb) holder.moneyInDelete.getTag();
+                    moneyInAmount = moneyIn.get(position).getMoneyInAmount();
+
                     if (moneyInDb.getId() == 1) {
                         Toast.makeText(getContext(), "You cannot delete this entry.", Toast.LENGTH_LONG).show();
                     } else {

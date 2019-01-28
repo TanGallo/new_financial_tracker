@@ -38,7 +38,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:text="What is the maximum you could borrow?"
+                android:layout_marginEnd="10dp"
+                android:text="What is the maximum you could borrow (or the starting amount of the loan)?"
                 android:textSize="16sp" />
 
             <EditText

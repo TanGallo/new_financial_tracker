@@ -38,7 +38,7 @@ public class AddDebt extends LayoutDebt {
     DebtDb debt;
     Double debtAmount = 0.0, debtRate = 0.0, debtPayments = 0.0, debtFrequency = 0.0, expenseAmount = 0.0, expenseFrequency = 0.0, expenseAnnualAmount = 0.0,
             expenseAAnnualAmount = 0.0, expenseBAnnualAmount = 0.0, amount = 0.0, rate = 0.0, frequency = 0.0, payments = 0.0, numberOfYearsToPayDebt = 0.0,
-            incomeAmount = 0.0, incomeFrequency = 0.0, incomeAnnualAmount = 0.0, debtLimit = 0.0;
+            incomeAmount = 0.0, incomeFrequency = 0.0, incomeAnnualAmount = 0.0, debtLimit = 0.0, debtAnnualIncome = 0.0;
     EditText debtNameEntry, debtLimitEntry, debtAmountEntry, debtPercentEntry, debtPaymentsEntry;
     ExpenseBudgetDb expenseBudgetDb;
     IncomeBudgetDb incomeBudgetDb;
@@ -250,6 +250,7 @@ public class AddDebt extends LayoutDebt {
             debtRate = Double.valueOf(debtPercentEntry.getText().toString());
             debtPayments = Double.valueOf(debtPaymentsEntry.getText().toString());
             debtFrequency = Double.valueOf(debtFrequencyS);
+            debtAnnualIncome = 0.0;
             expRefKeyD = dbManager.findLatestExpenseId();
             incRefKeyD = dbManager.findLatestIncomeId();
 
@@ -260,6 +261,7 @@ public class AddDebt extends LayoutDebt {
                     debtRate,
                     debtPayments,
                     debtFrequency,
+                    debtAnnualIncome,
                     debtEnd,
                     expRefKeyD,
                     incRefKeyD,
