@@ -205,7 +205,7 @@ public class LayoutSetUp extends MainNavigation {
             moneyInAmount = balanceAmount;
             moneyInDate = new Date();
             moneyInTimestamp = new Timestamp(moneyInDate.getTime());
-            moneyInSDF = new SimpleDateFormat(getString(R.string.simple_date_format));
+            moneyInSDF = new SimpleDateFormat("dd-MMM-yyyy");
             moneyInCreatedOn = moneyInSDF.format(moneyInTimestamp);
             incRefKeyMI = 1;
 
@@ -248,7 +248,6 @@ public class LayoutSetUp extends MainNavigation {
             startActivity(setUpSavings);
         }
     };
-
 
     View.OnClickListener onClickSetUpDebtsButton = new View.OnClickListener() {
         @Override

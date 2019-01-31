@@ -182,7 +182,7 @@ public class AddDebt extends LayoutDebt {
             debtCal = Calendar.getInstance();
             debtCal.add(Calendar.DATE, numberOfDaysToPayDebt);
             debtEndD = debtCal.getTime();
-            debtEndS = new SimpleDateFormat(getString(R.string.simple_date_format));
+            debtEndS = new SimpleDateFormat("dd-MMM-yyyy");
             debtEnd = getString(R.string.debt_will) + " " + debtEndS.format(debtEndD);
         }
 
@@ -209,7 +209,34 @@ public class AddDebt extends LayoutDebt {
             if (debtNameEntry.getText().toString().equals("")) {
                 Toast.makeText(getBaseContext(), R.string.no_blanks_warning, Toast.LENGTH_LONG).show();
             } else {
-                incomeName = debtNameEntry.getText().toString();
+                nameEntry = debtNameEntry.getText().toString();
+                if (debtLimitEntry.getText().toString().equals("")) {
+                    Toast.makeText(getBaseContext(), R.string.no_limit_warning, Toast.LENGTH_LONG).show();
+                } else {
+                    limitEntry = Double.valueOf(debtLimitEntry.getText().toString());
+                }
+                if (debtAmountEntry.getText().toString().equals("")) {
+                    amountEntry = 0.0;
+                } else {
+                    amountEntry = Double.valueOf(debtAmountEntry.getText().toString());
+                }
+                if (debtPercentEntry.getText().toString().equals("")) {
+                    rateEntry = 0.0;
+                } else {
+                    rateEntry = Double.valueOf(debtPercentEntry.getText().toString());
+                }
+                if (debtPaymentsEntry.getText().toString().equals("")) {
+                    paymentsEntry = 0.0;
+                } else {
+                    paymentsEntry = Double.valueOf(debtPaymentsEntry.getText().toString());
+                }
+                try {
+                    frequencyEntry = Double.valueOf(debtFrequencyS);
+                } catch(NullPointerException e) {
+                    frequencyEntry = 1.0;
+                }
+
+                incomeName = nameEntry;
                 incomeAmount = 0.0;
                 incomeFrequency = 1.0;
                 incomeAnnualAmount = 0.0;
@@ -223,13 +250,9 @@ public class AddDebt extends LayoutDebt {
 
                 dbManager.addIncome(incomeBudgetDb);
 
-                expenseName = debtNameEntry.getText().toString();
-                if (debtPaymentsEntry.getText().toString().equals("")) {
-                    expenseAmount = 0.0;
-                } else {
-                    expenseAmount = Double.valueOf(debtPaymentsEntry.getText().toString());
-                }
-                expenseFrequency = Double.valueOf(debtFrequencyS);
+                expenseName = nameEntry;
+                expenseAmount = paymentsEntry;
+                expenseFrequency = frequencyEntry;
                 expensePriority = "A";
                 expenseWeekly = "N";
                 expenseAnnualAmount = expenseAmount * expenseFrequency;
@@ -249,56 +272,43 @@ public class AddDebt extends LayoutDebt {
 
                 dbManager.addExpense(expenseBudgetDb);
 
-                debtName = debtNameEntry.getText().toString();
-                if (debtLimitEntry.getText().toString().equals("")) {
-                    Toast.makeText(getBaseContext(), R.string.no_limit_warning, Toast.LENGTH_LONG).show();
-                } else {
-                    debtLimit = Double.valueOf(debtLimitEntry.getText().toString());
-                    if (debtAmountEntry.getText().toString().equals("")) {
-                        debtAmount = 0.0;
-                    } else {
-                        debtAmount = Double.valueOf(debtAmountEntry.getText().toString());
-                    }
-                    if (debtPercentEntry.getText().toString().equals("")) {
-                        debtRate = 0.0;
-                    } else {
-                        debtRate = Double.valueOf(debtPercentEntry.getText().toString());
-                    }
-                    if (debtPaymentsEntry.getText().toString().equals("")) {
-                        debtPayments = 0.0;
-                    } else {
-                        debtPayments = Double.valueOf(debtPaymentsEntry.getText().toString());
-                    }
-                    debtFrequency = Double.valueOf(debtFrequencyS);
-                    debtAnnualIncome = 0.0;
-                    expRefKeyD = dbManager.findLatestExpenseId();
-                    incRefKeyD = dbManager.findLatestIncomeId();
+                debtName = nameEntry;
 
-                    debt = new DebtDb(
-                            debtName,
-                            debtLimit,
-                            debtAmount,
-                            debtRate,
-                            debtPayments,
-                            debtFrequency,
-                            debtAnnualIncome,
-                            debtEnd,
-                            expRefKeyD,
-                            incRefKeyD,
-                            0);
+                debtLimit = limitEntry;
+                debtAmount = amountEntry;
+                debtRate = rateEntry;
+                debtPayments = paymentsEntry;
+                debtFrequency = frequencyEntry;
+                debtAnnualIncome = 0.0;
+                debtEnd = calcDebtDate();
+                expRefKeyD = dbManager.findLatestExpenseId();
+                incRefKeyD = dbManager.findLatestIncomeId();
 
-                    dbManager.addDebt(debt);
+                debt = new DebtDb(
+                        debtName,
+                        debtLimit,
+                        debtAmount,
+                        debtRate,
+                        debtPayments,
+                        debtFrequency,
+                        debtAnnualIncome,
+                        debtEnd,
+                        expRefKeyD,
+                        incRefKeyD,
+                        0);
 
-                    Toast toast = Toast.makeText(getBaseContext(), R.string.debt_saved,
-                            Toast.LENGTH_LONG);
-                    LinearLayout toastLayout = (LinearLayout) toast.getView();
-                    TextView tv = (TextView) toastLayout.getChildAt(0);
-                    tv.setTextSize(20);
-                    toast.show();
+                dbManager.addDebt(debt);
 
-                    debtHeaderText();
-                    backToDebt();
-                }
+                Toast toast = Toast.makeText(getBaseContext(), R.string.debt_saved,
+                        Toast.LENGTH_LONG);
+                LinearLayout toastLayout = (LinearLayout) toast.getView();
+                TextView tv = (TextView) toastLayout.getChildAt(0);
+                tv.setTextSize(20);
+                toast.show();
+
+                debtHeaderText();
+                backToDebt();
+
             }
         }
     };

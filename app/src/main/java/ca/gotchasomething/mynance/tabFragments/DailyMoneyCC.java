@@ -396,7 +396,7 @@ public class DailyMoneyCC extends Fragment {
                 debtCal = Calendar.getInstance();
                 debtCal.add(Calendar.DATE, numberOfDaysToPayDebt);
                 debtEndD = debtCal.getTime();
-                debtEndS = new SimpleDateFormat(getString(R.string.simple_date_format));
+                debtEndS = new SimpleDateFormat("dd-MMM-yyyy");
                 debtEnd = getString(R.string.debt_will) + " " + debtEndS.format(debtEndD);
             }
         }
@@ -446,7 +446,7 @@ public class DailyMoneyCC extends Fragment {
                 debtCal3 = Calendar.getInstance();
                 debtCal3.add(Calendar.DATE, numberOfDaysToPayDebt3);
                 debtEndD3 = debtCal3.getTime();
-                debtEndS3 = new SimpleDateFormat(getString(R.string.simple_date_format));
+                debtEndS3 = new SimpleDateFormat("dd-MMM-yyyy");
                 chargingDebtEnd = getString(R.string.debt_will) + " " + debtEndS3.format(debtEndD3);
             }
         }
@@ -529,7 +529,7 @@ public class DailyMoneyCC extends Fragment {
 
             savingsCal.add(Calendar.DATE, numberOfDaysToSavingsGoal);
             savingsDateD = savingsCal.getTime();
-            savingsDateS = new SimpleDateFormat(getString(R.string.simple_date_format));
+            savingsDateS = new SimpleDateFormat("dd-MMM-yyyy");
             savingsDate = getString(R.string.goal_will) + " " + savingsDateS.format(savingsDateD);
         }
         return savingsDate;
@@ -566,7 +566,7 @@ public class DailyMoneyCC extends Fragment {
                             moneyOutAmount = Double.valueOf(ccTransAmountText.getText().toString());
                             moneyOutDate = new Date();
                             moneyOutTimestamp = new Timestamp(moneyOutDate.getTime());
-                            moneyOutSDF = new SimpleDateFormat(getString(R.string.simple_date_format));
+                            moneyOutSDF = new SimpleDateFormat("dd-MMM-yyyy");
                             moneyOutCreatedOn = moneyOutSDF.format(moneyOutTimestamp);
                             moneyOutCC = "Y";
                             moneyOutDebtCat = ccTransDebtCatS;

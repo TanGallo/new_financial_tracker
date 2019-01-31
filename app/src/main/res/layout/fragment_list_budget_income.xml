@@ -51,6 +51,7 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginBottom="10dp"
                 android:backgroundTint="@android:color/white"
+                android:contentDescription="@string/edit"
                 android:src="@drawable/ic_edit_black_24dp" />
 
             <ImageButton
@@ -59,6 +60,7 @@
                 android:layout_height="18dp"
                 android:layout_marginEnd="10dp"
                 android:backgroundTint="@android:color/white"
+                android:contentDescription="@string/delete"
                 android:src="@drawable/ic_delete_black_24dp" />
 
         </LinearLayout>

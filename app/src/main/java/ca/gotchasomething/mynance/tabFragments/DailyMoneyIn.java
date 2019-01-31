@@ -204,7 +204,7 @@ public class DailyMoneyIn extends Fragment {
                 debtCal = Calendar.getInstance();
                 debtCal.add(Calendar.DATE, numberOfDaysToPayDebt);
                 debtEndD = debtCal.getTime();
-                debtEndS = new SimpleDateFormat(getString(R.string.simple_date_format));
+                debtEndS = new SimpleDateFormat("dd-MMM-yyyy");
                 debtEnd = getString(R.string.debt_will) + " " + debtEndS.format(debtEndD);
             }
         }
@@ -300,7 +300,7 @@ public class DailyMoneyIn extends Fragment {
 
             savingsCal.add(Calendar.DATE, numberOfDaysToSavingsGoal);
             savingsDateD = savingsCal.getTime();
-            savingsDateS = new SimpleDateFormat(getString(R.string.simple_date_format));
+            savingsDateS = new SimpleDateFormat("dd-MMM-yyyy");
             savingsDate = getString(R.string.goal_will) + " " + savingsDateS.format(savingsDateD);
         }
         return savingsDate;
@@ -369,7 +369,7 @@ public class DailyMoneyIn extends Fragment {
             moneyInAmount = Double.valueOf(moneyInAmountText.getText().toString());
             moneyInDate = new Date();
             moneyInTimestamp = new Timestamp(moneyInDate.getTime());
-            moneyInSDF = new SimpleDateFormat(getString(R.string.simple_date_format));
+            moneyInSDF = new SimpleDateFormat("dd-MMM-yyyy");
             moneyInCreatedOn = moneyInSDF.format(moneyInTimestamp);
             incRefKeyMI = moneyInRefKeyMI;
 
@@ -701,7 +701,7 @@ public class DailyMoneyIn extends Fragment {
                 public void onClick(View v) {
 
                     moneyInDb = (MoneyInDb) holder.moneyInDelete.getTag();
-                    moneyInAmount = moneyIn.get(position).getMoneyInAmount();
+                    moneyInAmount = -(moneyIn.get(position).getMoneyInAmount());
 
                     if (moneyInDb.getId() == 1) {
                         Toast.makeText(getContext(), R.string.cannot_delete_warning, Toast.LENGTH_LONG).show();
@@ -710,7 +710,7 @@ public class DailyMoneyIn extends Fragment {
                         if (foundMatchingDebtId) {
                             dbHelper7 = new DbHelper(getContext());
                             db7 = dbHelper7.getWritableDatabase();
-                            newDebtAmount2 = findCurrentDebtAmount() - moneyInAmount;
+                            newDebtAmount2 = findCurrentDebtAmount() + moneyInAmount;
                             moneyInValue7 = new ContentValues();
                             moneyInValue7.put(DbHelper.DEBTAMOUNT, newDebtAmount2);
                             db7.update(DbHelper.DEBTS_TABLE_NAME, moneyInValue7, DbHelper.ID + "=" + findMatchingDebtId(), null);
@@ -723,7 +723,7 @@ public class DailyMoneyIn extends Fragment {
                         if (foundMatchingSavingsId) {
                             dbHelper8 = new DbHelper(getContext());
                             db8 = dbHelper8.getWritableDatabase();
-                            newSavingsAmount2 = findCurrentSavingsAmount() + moneyInAmount;
+                            newSavingsAmount2 = findCurrentSavingsAmount() - moneyInAmount;
                             moneyInValue9 = new ContentValues();
                             moneyInValue9.put(DbHelper.SAVINGSAMOUNT, newSavingsAmount2);
                             db8.update(DbHelper.SAVINGS_TABLE_NAME, moneyInValue9, DbHelper.ID + "=" + findMatchingSavingsId(), null);

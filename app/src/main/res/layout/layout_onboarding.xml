@@ -45,6 +45,7 @@
             android:layout_margin="10dp"
             android:background="@null"
             android:text="@string/skip_button"
+            android:contentDescription="@string/skip_button"
             android:textColor="@color/colorWhite"
             android:textSize="16sp" />
 
@@ -56,6 +57,7 @@
             android:layout_margin="10dp"
             android:background="@null"
             android:text="@string/next_button"
+            android:contentDescription="@string/next_button"
             android:textColor="@color/colorWhite"
             android:textSize="16sp" />
 

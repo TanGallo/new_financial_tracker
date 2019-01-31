@@ -229,8 +229,16 @@ public class AddSavings extends LayoutSavings {
             savingsAnnuallyRadioButton.setChecked(true);
         }
 
-        frequency = Double.valueOf(savingsFrequencyS);
-        intFrequency = Double.valueOf(savingsIntFrequencyS);
+        try {
+            frequency = Double.valueOf(savingsFrequencyS);
+        } catch (NullPointerException e5) {
+            frequency = 1.0;
+        }
+        try {
+            intFrequency = Double.valueOf(savingsIntFrequencyS);
+        } catch (NullPointerException e6) {
+            intFrequency = 12.0;
+        }
 
         if (amount == 0 && payments == 0.01) {
             years = 0.0;
@@ -263,7 +271,7 @@ public class AddSavings extends LayoutSavings {
 
             savingsCal.add(Calendar.DATE, numberOfDaysToSavingsGoal);
             savingsDateD = savingsCal.getTime();
-            savingsDateS = new SimpleDateFormat(getString(R.string.simple_date_format));
+            savingsDateS = new SimpleDateFormat("dd-MMM-yyyy");
             savingsDate = getString(R.string.goal_will) + " " + savingsDateS.format(savingsDateD);
         }
 
@@ -287,10 +295,42 @@ public class AddSavings extends LayoutSavings {
         @Override
         public void onClick(View v) {
 
-            if(savingsNameEntry.getText().toString().equals("")) {
+            if (savingsNameEntry.getText().toString().equals("")) {
                 Toast.makeText(getBaseContext(), R.string.no_blanks_warning, Toast.LENGTH_LONG).show();
             } else {
-                incomeName = savingsNameEntry.getText().toString();
+                nameEntry = savingsNameEntry.getText().toString();
+                if (savingsAmountEntry.getText().toString().equals("")) {
+                    amountEntry = 0.0;
+                } else {
+                    amountEntry = Double.valueOf(savingsAmountEntry.getText().toString());
+                }
+                if (savingsGoalAmountEntry.getText().toString().equals("")) {
+                    goalEntry = 0.0;
+                } else {
+                    goalEntry = Double.valueOf(savingsGoalAmountEntry.getText().toString());
+                }
+                if (savingsPaymentsEntry.getText().toString().equals("")) {
+                    paymentsEntry = 0.0;
+                } else {
+                    paymentsEntry = Double.valueOf(savingsPaymentsEntry.getText().toString());
+                }
+                try {
+                    frequencyEntry = Double.valueOf(savingsFrequencyS);
+                } catch (NullPointerException e7) {
+                    savingsFrequencyS = "1";
+                }
+                if (savingsPercentEntry.getText().toString().equals("")) {
+                    rateEntry = 0.0;
+                } else {
+                    rateEntry = Double.valueOf(savingsPercentEntry.getText().toString());
+                }
+                try {
+                    intFrequencyEntry = Double.valueOf(savingsIntFrequencyS);
+                } catch (NullPointerException e7) {
+                    savingsIntFrequencyS = "12";
+                }
+
+                incomeName = nameEntry;
                 incomeAmount = 0.0;
                 incomeFrequency = 1.0;
                 incomeAnnualAmount = 0.0;
@@ -305,13 +345,9 @@ public class AddSavings extends LayoutSavings {
 
                 dbManager.addIncome(incomeBudgetDb);
 
-                expenseName = savingsNameEntry.getText().toString();
-                if(savingsPaymentsEntry.getText().toString().equals("")) {
-                    expenseAmount = 0.0;
-                } else {
-                    expenseAmount = Double.valueOf(savingsPaymentsEntry.getText().toString());
-                }
-                expenseFrequency = Double.valueOf(savingsFrequencyS);
+                expenseName = nameEntry;
+                expenseAmount = paymentsEntry;
+                expenseFrequency = frequencyEntry;
                 expensePriority = "A";
                 expenseWeekly = "N";
                 expenseAnnualAmount = expenseAmount * expenseFrequency;
@@ -331,29 +367,13 @@ public class AddSavings extends LayoutSavings {
 
                 dbManager.addExpense(expenseBudgetDb);
 
-                savingsName = savingsNameEntry.getText().toString();
-                if(savingsAmountEntry.getText().toString().equals("")) {
-                    savingsAmount = 0.0;
-                } else {
-                    savingsAmount = Double.valueOf(savingsAmountEntry.getText().toString());
-                }
-                if(savingsGoalAmountEntry.getText().toString().equals("")) {
-                    savingsGoal = 0.0;
-                } else {
-                    savingsGoal = Double.valueOf(savingsGoalAmountEntry.getText().toString());
-                }
-                if(savingsPaymentsEntry.getText().toString().equals("")) {
-                    savingsPayments = 0.0;
-                } else {
-                    savingsPayments = Double.valueOf(savingsPaymentsEntry.getText().toString());
-                }
-                savingsFrequency = Double.valueOf(savingsFrequencyS);
-                if(savingsPercentEntry.getText().toString().equals("")) {
-                    savingsRate = 0.0;
-                } else {
-                    savingsRate = Double.valueOf(savingsPercentEntry.getText().toString());
-                }
-                savingsIntFrequency = Double.valueOf(savingsIntFrequencyS);
+                savingsName = nameEntry;
+                savingsAmount = amountEntry;
+                savingsGoal = goalEntry;
+                savingsPayments = paymentsEntry;
+                savingsFrequency = frequencyEntry;
+                savingsRate = rateEntry;
+                savingsIntFrequency = intFrequencyEntry;
                 savingsAnnualIncome = 0.0;
                 savingsDate = calcSavingsDate();
                 expRefKeyS = dbManager.findLatestExpenseId();

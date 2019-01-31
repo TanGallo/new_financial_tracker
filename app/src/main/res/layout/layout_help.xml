@@ -65,6 +65,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_alignParentEnd="true"
                                     android:layout_marginEnd="120dp"
+                                    android:contentDescription="@string/show"
                                     android:scaleType="fitCenter"
                                     android:src="@drawable/ic_arrow_drop_down_blue_24dp" />
 
@@ -74,6 +75,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_alignParentEnd="true"
                                     android:layout_marginEnd="120dp"
+                                    android:contentDescription="@string/hide"
                                     android:scaleType="fitCenter"
                                     android:src="@drawable/ic_arrow_drop_up_blue_24dp" />
 
@@ -153,6 +155,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_alignParentEnd="true"
                                     android:layout_marginEnd="120dp"
+                                    android:contentDescription="@string/show"
                                     android:scaleType="fitCenter"
                                     android:src="@drawable/ic_arrow_drop_down_blue_24dp" />
 
@@ -162,6 +165,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_alignParentEnd="true"
                                     android:layout_marginEnd="120dp"
+                                    android:contentDescription="@string/hide"
                                     android:scaleType="fitCenter"
                                     android:src="@drawable/ic_arrow_drop_up_blue_24dp" />
 
@@ -213,8 +217,10 @@
                                         android:layout_height="wrap_content"
                                         android:layout_alignParentEnd="true"
                                         android:layout_marginEnd="120dp"
+                                        android:contentDescription="@string/show"
                                         android:scaleType="fitCenter"
-                                        android:src="@drawable/ic_arrow_drop_down_pink_24dp" />
+                                        android:src="@drawable/ic_arrow_drop_down_pink_24dp"
+                                        tools:ignore="TooDeepLayout" />
 
                                     <ImageButton
                                         android:id="@+id/upMoneyInButton"
@@ -222,6 +228,7 @@
                                         android:layout_height="wrap_content"
                                         android:layout_alignParentEnd="true"
                                         android:layout_marginEnd="120dp"
+                                        android:contentDescription="@string/hide"
                                         android:scaleType="fitCenter"
                                         android:src="@drawable/ic_arrow_drop_up_pink_24dp" />
 
@@ -299,6 +306,7 @@
                                         android:layout_height="wrap_content"
                                         android:layout_alignParentEnd="true"
                                         android:layout_marginEnd="120dp"
+                                        android:contentDescription="@string/show"
                                         android:scaleType="fitCenter"
                                         android:src="@drawable/ic_arrow_drop_down_pink_24dp" />
 
@@ -308,6 +316,7 @@
                                         android:layout_height="wrap_content"
                                         android:layout_alignParentEnd="true"
                                         android:layout_marginEnd="120dp"
+                                        android:contentDescription="@string/hide"
                                         android:scaleType="fitCenter"
                                         android:src="@drawable/ic_arrow_drop_up_pink_24dp" />
 
@@ -392,6 +401,7 @@
                                         android:layout_height="wrap_content"
                                         android:layout_alignParentEnd="true"
                                         android:layout_marginEnd="120dp"
+                                        android:contentDescription="@string/show"
                                         android:scaleType="fitCenter"
                                         android:src="@drawable/ic_arrow_drop_down_pink_24dp" />
 
@@ -401,6 +411,7 @@
                                         android:layout_height="wrap_content"
                                         android:layout_alignParentEnd="true"
                                         android:layout_marginEnd="120dp"
+                                        android:contentDescription="@string/hide"
                                         android:scaleType="fitCenter"
                                         android:src="@drawable/ic_arrow_drop_up_pink_24dp" />
 
@@ -437,11 +448,11 @@
                                     android:textSize="18sp" />
 
                                 <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_margin="10dp"
-                                android:text="@string/credit_card_4"
-                                android:textSize="18sp" />
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_margin="10dp"
+                                    android:text="@string/credit_card_4"
+                                    android:textSize="18sp" />
 
                                 <TextView
                                     android:layout_width="wrap_content"
@@ -520,6 +531,7 @@
                                         android:layout_height="wrap_content"
                                         android:layout_alignParentEnd="true"
                                         android:layout_marginEnd="120dp"
+                                        android:contentDescription="@string/show"
                                         android:scaleType="fitCenter"
                                         android:src="@drawable/ic_arrow_drop_down_pink_24dp" />
 
@@ -529,6 +541,7 @@
                                         android:layout_height="wrap_content"
                                         android:layout_alignParentEnd="true"
                                         android:layout_marginEnd="120dp"
+                                        android:contentDescription="@string/hide"
                                         android:scaleType="fitCenter"
                                         android:src="@drawable/ic_arrow_drop_up_pink_24dp" />
 
@@ -551,11 +564,11 @@
                                     android:textSize="18sp" />
 
                                 <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_margin="10dp"
-                                android:text="@string/pay_cc_2"
-                                android:textSize="18sp" />
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_margin="10dp"
+                                    android:text="@string/pay_cc_2"
+                                    android:textSize="18sp" />
 
                                 <TextView
                                     android:layout_width="wrap_content"
@@ -606,6 +619,7 @@
                                         android:layout_height="wrap_content"
                                         android:layout_alignParentEnd="true"
                                         android:layout_marginEnd="120dp"
+                                        android:contentDescription="@string/show"
                                         android:scaleType="fitCenter"
                                         android:src="@drawable/ic_arrow_drop_down_pink_24dp" />
 
@@ -615,6 +629,7 @@
                                         android:layout_height="wrap_content"
                                         android:layout_alignParentEnd="true"
                                         android:layout_marginEnd="120dp"
+                                        android:contentDescription="@string/hide"
                                         android:scaleType="fitCenter"
                                         android:src="@drawable/ic_arrow_drop_up_pink_24dp" />
 
@@ -632,18 +647,18 @@
                             android:orientation="vertical">
 
                             <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="10dp"
-                            android:text="@string/weekly_limits_1"
-                            android:textSize="18sp" />
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="10dp"
+                                android:text="@string/weekly_limits_1"
+                                android:textSize="18sp" />
 
                             <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="10dp"
-                            android:text="@string/weekly_limits_2"
-                            android:textSize="18sp" />
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="10dp"
+                                android:text="@string/weekly_limits_2"
+                                android:textSize="18sp" />
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -689,6 +704,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_alignParentEnd="true"
                                     android:layout_marginEnd="120dp"
+                                    android:contentDescription="@string/show"
                                     android:scaleType="fitCenter"
                                     android:src="@drawable/ic_arrow_drop_down_blue_24dp" />
 
@@ -698,6 +714,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_alignParentEnd="true"
                                     android:layout_marginEnd="120dp"
+                                    android:contentDescription="@string/hide"
                                     android:scaleType="fitCenter"
                                     android:src="@drawable/ic_arrow_drop_up_blue_24dp" />
 
@@ -720,11 +737,11 @@
                                 android:textSize="18sp" />
 
                             <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="10dp"
-                            android:text="@string/budget_2"
-                            android:textSize="18sp" />
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="10dp"
+                                android:text="@string/budget_2"
+                                android:textSize="18sp" />
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -847,6 +864,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_alignParentEnd="true"
                                     android:layout_marginEnd="120dp"
+                                    android:contentDescription="@string/show"
                                     android:scaleType="fitCenter"
                                     android:src="@drawable/ic_arrow_drop_down_blue_24dp" />
 
@@ -856,6 +874,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_alignParentEnd="true"
                                     android:layout_marginEnd="120dp"
+                                    android:contentDescription="@string/hide"
                                     android:scaleType="fitCenter"
                                     android:src="@drawable/ic_arrow_drop_up_blue_24dp" />
 
@@ -970,6 +989,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_alignParentEnd="true"
                                     android:layout_marginEnd="120dp"
+                                    android:contentDescription="@string/show"
                                     android:scaleType="fitCenter"
                                     android:src="@drawable/ic_arrow_drop_down_blue_24dp" />
 
@@ -979,6 +999,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_alignParentEnd="true"
                                     android:layout_marginEnd="120dp"
+                                    android:contentDescription="@string/hide"
                                     android:scaleType="fitCenter"
                                     android:src="@drawable/ic_arrow_drop_up_blue_24dp" />
 
@@ -1079,6 +1100,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_alignParentEnd="true"
                                     android:layout_marginEnd="120dp"
+                                    android:contentDescription="@string/show"
                                     android:scaleType="fitCenter"
                                     android:src="@drawable/ic_arrow_drop_down_blue_24dp" />
 
@@ -1088,6 +1110,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_alignParentEnd="true"
                                     android:layout_marginEnd="120dp"
+                                    android:contentDescription="@string/hide"
                                     android:scaleType="fitCenter"
                                     android:src="@drawable/ic_arrow_drop_up_blue_24dp" />
 
@@ -1160,6 +1183,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_alignParentEnd="true"
                                     android:layout_marginEnd="120dp"
+                                    android:contentDescription="@string/show"
                                     android:scaleType="fitCenter"
                                     android:src="@drawable/ic_arrow_drop_down_blue_24dp" />
 
@@ -1169,6 +1193,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_alignParentEnd="true"
                                     android:layout_marginEnd="120dp"
+                                    android:contentDescription="@string/hide"
                                     android:scaleType="fitCenter"
                                     android:src="@drawable/ic_arrow_drop_up_blue_24dp" />
 
@@ -1204,8 +1229,8 @@
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
                                 android:text="@string/email_address"
-                                android:textSize="18sp"
-                                android:textColor="@color/colorAccent"/>
+                                android:textColor="@color/colorAccent"
+                                android:textSize="18sp" />
 
                             <TextView
                                 android:id="@+id/urlTextLabel"
@@ -1221,8 +1246,8 @@
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
                                 android:text="@string/website"
-                                android:textSize="18sp"
-                                android:textColor="@color/colorAccent"/>
+                                android:textColor="@color/colorAccent"
+                                android:textSize="18sp" />
 
                         </LinearLayout>
 
@@ -1260,6 +1285,7 @@
                                     android:id="@+id/starButton1"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:contentDescription="@string/rate_this_app"
                                     android:scaleType="fitCenter"
                                     android:src="@drawable/ic_star_border_blue_24dp" />
 
@@ -1267,6 +1293,7 @@
                                     android:id="@+id/starButton2"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:contentDescription="@string/rate_this_app"
                                     android:scaleType="fitCenter"
                                     android:src="@drawable/ic_star_border_blue_24dp" />
 
@@ -1274,6 +1301,7 @@
                                     android:id="@+id/starButton3"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:contentDescription="@string/rate_this_app"
                                     android:scaleType="fitCenter"
                                     android:src="@drawable/ic_star_border_blue_24dp" />
 
@@ -1281,6 +1309,7 @@
                                     android:id="@+id/starButton4"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:contentDescription="@string/rate_this_app"
                                     android:scaleType="fitCenter"
                                     android:src="@drawable/ic_star_border_blue_24dp" />
 
@@ -1288,6 +1317,7 @@
                                     android:id="@+id/starButton5"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:contentDescription="@string/rate_this_app"
                                     android:scaleType="fitCenter"
                                     android:src="@drawable/ic_star_border_blue_24dp" />
 

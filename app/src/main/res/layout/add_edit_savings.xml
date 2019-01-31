@@ -21,6 +21,7 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
                 android:text="@string/enter_savings_cat"
+                android:labelFor="@id/savingsNameEntry"
                 android:textSize="16sp" />
 
             <EditText
@@ -39,6 +40,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:text="@string/enter_savings_amount"
+                android:labelFor="@id/savingsAmountEntry"
                 android:textSize="16sp" />
 
             <EditText
@@ -56,6 +58,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:text="@string/enter_savings_goal"
+                android:labelFor="@id/savingsGoalAmountEntry"
                 android:textSize="16sp" />
 
             <EditText
@@ -73,6 +76,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:text="@string/enter_savings_payments"
+                android:labelFor="@id/savingsPaymentsEntry"
                 android:textSize="16sp" />
 
 
@@ -93,6 +97,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="10dp"
                 android:text="@string/how_often"
+                android:labelFor="@id/savingsFrequencyRadioGroup"
                 android:textSize="16sp" />
 
             <RadioGroup
@@ -137,6 +142,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:text="@string/enter_savings_rate"
+                android:labelFor="@id/savingsPercentEntry"
                 android:textSize="16sp" />
 
 
@@ -157,6 +163,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="10dp"
                 android:text="@string/enter_int_frequency"
+                android:labelFor="@id/savingsIntFrequencyRadioGroup"
                 android:textSize="16sp" />
 
             <RadioGroup
@@ -204,6 +211,7 @@
                     android:layout_gravity="end"
                     android:layout_margin="10dp"
                     android:gravity="center"
+                    android:contentDescription="@string/cancel"
                     android:text="@string/cancel" />
 
                 <Button
@@ -214,7 +222,9 @@
                     android:layout_gravity="end"
                     android:layout_margin="10dp"
                     android:gravity="center"
-                    android:text="@string/save" />
+                    android:contentDescription="@string/save"
+                    android:text="@string/save"
+                    tools:ignore="RelativeOverlap" />
 
                 <Button
                     android:id="@+id/updateSavingsButton"
@@ -224,7 +234,9 @@
                     android:layout_gravity="end"
                     android:layout_margin="10dp"
                     android:gravity="center"
-                    android:text="@string/update" />
+                    android:contentDescription="@string/update"
+                    android:text="@string/update"
+                    tools:ignore="RelativeOverlap" />
 
             </RelativeLayout>
 

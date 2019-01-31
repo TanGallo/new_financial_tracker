@@ -68,7 +68,8 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"
                         android:text="@string/continue_anyway"
-                        android:textSize="16sp" />
+                        android:textSize="16sp"
+                        tools:ignore="RelativeOverlap" />
 
                     <Button
                         android:id="@+id/yesCCButton"
@@ -78,6 +79,7 @@
                         android:layout_toStartOf="@id/noCCButton"
                         android:text="@string/yes"
                         android:textSize="12sp"
+                        android:contentDescription="@string/yes"
                         android:background="@drawable/entry_box"/>
 
                     <Button
@@ -88,6 +90,7 @@
                         android:text="@string/no"
                         android:textSize="12sp"
                         android:layout_alignParentEnd="true"
+                        android:contentDescription="@string/no"
                         android:background="@drawable/entry_box"/>
 
                     </RelativeLayout>
@@ -121,6 +124,7 @@
                         android:layout_margin="5dp"
                         android:inputType="numberDecimal"
                         android:text="@string/amount"
+                        android:contentDescription="@string/amount"
                         android:textSize="16sp" />
 
                 </LinearLayout>
@@ -139,6 +143,7 @@
                         android:gravity="center"
                         android:background="@drawable/entry_box"
                         android:text="@string/cancel"
+                        android:contentDescription="@string/cancel"
                         android:textSize="12sp"/>
 
                     <Button
@@ -151,7 +156,9 @@
                         android:gravity="center"
                         android:background="@drawable/entry_box"
                         android:text="@string/update"
-                        android:textSize="12sp"/>
+                        android:contentDescription="@string/update"
+                        android:textSize="12sp"
+                        tools:ignore="RelativeOverlap" />
 
                 </RelativeLayout>
 
@@ -226,6 +233,7 @@
                         android:layout_alignParentEnd="true"
                         android:layout_margin="5dp"
                         android:text="@string/enter"
+                        android:contentDescription="@string/enter"
                         android:background="@drawable/entry_box"
                         android:textSize="12sp" />
 

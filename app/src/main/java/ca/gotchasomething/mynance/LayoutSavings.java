@@ -272,7 +272,7 @@ public class LayoutSavings extends MainNavigation {
 
             savingsCal.add(Calendar.DATE, numberOfDaysToSavingsGoal);
             savingsDateD = savingsCal.getTime();
-            savingsDateS = new SimpleDateFormat(getString(R.string.simple_date_format));
+            savingsDateS = new SimpleDateFormat("dd-MMM-yyyy");
             savingsDate = getString(R.string.goal_will) + " " + savingsDateS.format(savingsDateD);
         }
 

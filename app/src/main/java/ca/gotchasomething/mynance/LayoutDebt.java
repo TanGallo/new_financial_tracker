@@ -202,7 +202,7 @@ public class LayoutDebt extends MainNavigation {
             totalDebtPaidByDate.setVisibility(View.GONE);
         }
         try {
-            latestDateS = new SimpleDateFormat(getString(R.string.simple_date_format));
+            latestDateS = new SimpleDateFormat("dd-MMM-yyyy");
             latestDate = latestDateS.format(latestDateD);
         } catch (Exception e2) {
             totalDebtPaidByDate.setVisibility(View.GONE);
@@ -282,7 +282,7 @@ public class LayoutDebt extends MainNavigation {
             debtCal = Calendar.getInstance();
             debtCal.add(Calendar.DATE, numberOfDaysToPayDebt);
             debtEndD = debtCal.getTime();
-            debtEndS = new SimpleDateFormat(getString(R.string.simple_date_format));
+            debtEndS = new SimpleDateFormat("dd-MMM-yyyy");
             debtEnd = getString(R.string.debt_will) + " " + debtEndS.format(debtEndD);
         }
 

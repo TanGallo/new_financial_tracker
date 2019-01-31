@@ -51,6 +51,7 @@
                     android:layout_margin="5dp"
                     android:layout_toStartOf="@id/noMoneyInButton"
                     android:text="@string/yes"
+                    android:contentDescription="@string/yes"
                     android:textSize="12sp"
                     android:background="@drawable/entry_box"/>
 
@@ -63,6 +64,7 @@
                     android:layout_marginBottom="5dp"
                     android:layout_marginStart="5dp"
                     android:text="@string/no"
+                    android:contentDescription="@string/no"
                     android:textSize="12sp"
                     android:layout_alignParentEnd="true"
                     android:background="@drawable/entry_box"/>
@@ -98,6 +100,7 @@
                 android:layout_margin="5dp"
                 android:inputType="numberDecimal"
                 android:text="@string/amount"
+                android:contentDescription="@string/amount"
                 android:textSize="16sp" />
 
         </LinearLayout>
@@ -116,6 +119,7 @@
                 android:gravity="center"
                 android:background="@drawable/entry_box"
                 android:text="@string/cancel"
+                android:contentDescription="@string/cancel"
                 android:textSize="12sp"/>
 
             <Button
@@ -128,7 +132,9 @@
                 android:gravity="center"
                 android:background="@drawable/entry_box"
                 android:text="@string/update"
-                android:textSize="12sp"/>
+                android:contentDescription="@string/update"
+                android:textSize="12sp"
+                tools:ignore="RelativeOverlap" />
 
         </RelativeLayout>
 
@@ -181,6 +187,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_margin="5dp"
                 android:text="@string/enter"
+                android:contentDescription="@string/enter"
                 android:background="@drawable/entry_box"
                 android:textSize="12sp" />
 

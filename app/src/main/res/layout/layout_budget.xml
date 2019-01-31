@@ -105,14 +105,14 @@
                     android:textSize="16sp" />
 
                 <TextView
-                android:id="@+id/budgetOopsText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="10dp"
-                android:text="@string/oops"
-                android:textColor="@android:color/holo_red_light"
-                android:textSize="16sp" />
+                    android:id="@+id/budgetOopsText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/oops"
+                    android:textColor="@android:color/holo_red_light"
+                    android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/budgetOopsAmountText"
@@ -126,11 +126,11 @@
                     android:id="@+id/doneBudgetSetUpButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
                     android:layout_gravity="end"
+                    android:layout_margin="10dp"
                     android:background="@drawable/entry_box"
-                    android:text="@string/done_budget"
-                    />
+                    android:contentDescription="@string/done_budget"
+                    android:text="@string/done_budget" />
 
                 <TextView
                     android:id="@+id/deleteExpText"
@@ -148,14 +148,15 @@
                         android:id="@+id/okButton"
                         android:layout_width="60dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="10dp"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginBottom="5dp"
-                        android:layout_marginStart="5dp"
-                        android:text="@string/ok"
-                        android:textSize="12sp"
                         android:layout_alignParentEnd="true"
-                        android:background="@drawable/entry_box"/>
+                        android:layout_marginStart="5dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginBottom="5dp"
+                        android:background="@drawable/entry_box"
+                        android:text="@string/ok"
+                        android:contentDescription="@string/ok"
+                        android:textSize="12sp" />
 
                 </RelativeLayout>
 
@@ -192,22 +193,23 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content">
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="start"
-                                android:layout_margin="10dp"
-                                android:text="@string/income"
-                                android:textSize="18sp" />
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="start"
+                                    android:layout_margin="10dp"
+                                    android:text="@string/income"
+                                    android:textSize="18sp" />
 
-                            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                                android:id="@+id/budgetIncomePlusButton"
-                                android:layout_width="30dp"
-                                android:layout_height="30dp"
-                                android:layout_margin="10dp"
-                                android:layout_alignParentEnd="true"
-                                android:foreground="@drawable/ic_add_white_24dp"
-                                android:scaleType="fitCenter" />
+                                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                                    android:id="@+id/budgetIncomePlusButton"
+                                    android:layout_width="30dp"
+                                    android:layout_height="30dp"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_margin="10dp"
+                                    android:foreground="@drawable/ic_add_white_24dp"
+                                    android:contentDescription="@string/add"
+                                    android:scaleType="fitCenter" />
 
                             </RelativeLayout>
 
@@ -231,22 +233,23 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content">
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="start"
-                                android:layout_margin="10dp"
-                                android:text="@string/expenses"
-                                android:textSize="18sp" />
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="start"
+                                    android:layout_margin="10dp"
+                                    android:text="@string/expenses"
+                                    android:textSize="18sp" />
 
-                            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                                android:id="@+id/budgetExpensePlusButton"
-                                android:layout_width="30dp"
-                                android:layout_height="30dp"
-                                android:layout_margin="10dp"
-                                android:layout_alignParentEnd="true"
-                                android:foreground="@drawable/ic_add_white_24dp"
-                                android:scaleType="fitCenter" />
+                                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                                    android:id="@+id/budgetExpensePlusButton"
+                                    android:layout_width="30dp"
+                                    android:layout_height="30dp"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_margin="10dp"
+                                    android:foreground="@drawable/ic_add_white_24dp"
+                                    android:contentDescription="@string/add"
+                                    android:scaleType="fitCenter" />
 
                             </RelativeLayout>
 

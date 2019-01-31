@@ -280,7 +280,7 @@ public class LayoutBudget extends MainNavigation {
         } else {
             debtCal.add(Calendar.DATE, numberOfDaysToPayDebt);
             debtEndD = debtCal.getTime();
-            debtEndS = new SimpleDateFormat(getString(R.string.simple_date_format));
+            debtEndS = new SimpleDateFormat("dd-MMM-yyyy");
             debtEnd = getString(R.string.debt_will) + " " + debtEndS.format(debtEndD);
         }
 
@@ -322,7 +322,7 @@ public class LayoutBudget extends MainNavigation {
         } else {
             debtCal2.add(Calendar.DATE, numberOfDaysToPayDebt2);
             debtEndD2 = debtCal2.getTime();
-            debtEndS2 = new SimpleDateFormat(getString(R.string.simple_date_format));
+            debtEndS2 = new SimpleDateFormat("dd-MMM-yyyy");
             debtEnd2 = getString(R.string.debt_will) + " " + debtEndS2.format(debtEndD2);
         }
 
@@ -391,7 +391,7 @@ public class LayoutBudget extends MainNavigation {
 
             savingsCal.add(Calendar.DATE, numberOfDaysToSavingsGoal);
             savingsDateD = savingsCal.getTime();
-            savingsDateS = new SimpleDateFormat(getString(R.string.simple_date_format));
+            savingsDateS = new SimpleDateFormat("dd-MMM-yyyy");
             savingsDate = getString(R.string.goal_will) + " " + savingsDateS.format(savingsDateD);
         }
         return savingsDate;
@@ -459,7 +459,7 @@ public class LayoutBudget extends MainNavigation {
 
             savingsCal2.add(Calendar.DATE, numberOfDaysToSavingsGoal2);
             savingsDateD2 = savingsCal2.getTime();
-            savingsDateS2 = new SimpleDateFormat(getString(R.string.simple_date_format));
+            savingsDateS2 = new SimpleDateFormat("dd-MMM-yyyy");
             savingsDate2 = getString(R.string.goal_will) + " " + savingsDateS2.format(savingsDateD2);
         }
         return savingsDate2;

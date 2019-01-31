@@ -2,6 +2,7 @@ package ca.gotchasomething.mynance;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
@@ -12,6 +13,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+import androidx.appcompat.app.AppCompatActivity;
 import ca.gotchasomething.mynance.data.CurrentDb;
 import ca.gotchasomething.mynance.data.DebtDb;
 import ca.gotchasomething.mynance.data.ExpenseBudgetDb;
@@ -21,7 +23,7 @@ import ca.gotchasomething.mynance.data.MoneyOutDb;
 import ca.gotchasomething.mynance.data.SavingsDb;
 import ca.gotchasomething.mynance.data.SetUpDb;
 
-public class DbManager {
+public class DbManager extends AppCompatActivity {
 
     public Calendar cal;
     public Cursor cursor;
@@ -220,7 +222,8 @@ public class DbManager {
         newDebt.put(DbHelper.DEBTPAYMENTS, debt.getDebtPayments());
         newDebt.put(DbHelper.DEBTFREQUENCY, debt.getDebtFrequency());
         newDebt.put(DbHelper.DEBTANNUALINCOME, debt.getDebtAnnualIncome());
-        newDebt.put(DbHelper.DEBTEND, debtEndDate(debt));
+        //newDebt.put(DbHelper.DEBTEND, debtEndDate(debt));
+        newDebt.put(DbHelper.DEBTEND, debt.getDebtEnd());
         newDebt.put(DbHelper.EXPREFKEYD, debt.getExpRefKeyD());
         newDebt.put(DbHelper.INCREFKEYD, debt.getIncRefKeyD());
         db = dbHelper.getWritableDatabase();
@@ -236,7 +239,8 @@ public class DbManager {
         updateDebt.put(DbHelper.DEBTPAYMENTS, debt.getDebtPayments());
         updateDebt.put(DbHelper.DEBTFREQUENCY, debt.getDebtFrequency());
         updateDebt.put(DbHelper.DEBTANNUALINCOME, debt.getDebtAnnualIncome());
-        updateDebt.put(DbHelper.DEBTEND, debtEndDate(debt));
+        //updateDebt.put(DbHelper.DEBTEND, debtEndDate(debt));
+        updateDebt.put(DbHelper.DEBTEND, debt.getDebtEnd());
         updateDebt.put(DbHelper.EXPREFKEYD, debt.getExpRefKeyD());
         updateDebt.put(DbHelper.INCREFKEYD, debt.getIncRefKeyD());
         db = dbHelper.getWritableDatabase();
@@ -250,7 +254,7 @@ public class DbManager {
         db.delete(DbHelper.DEBTS_TABLE_NAME, DbHelper.ID + "=?", args);
     }
 
-    public String debtEndDate(DebtDb debt) {
+    /*public String debtEndDate(DebtDb debt) {
         cal = Calendar.getInstance();
         //years = -(Math.log(1 - (amount * (rate / 100) / ((payments * frequency) - annualIncome))) / (frequency * Math.log(1 + ((rate / 100) / frequency))))
         numberOfYearsToPayDebt = -(Math.log(1 - (debt.getDebtAmount() * (debt.getDebtRate() / 100) /
@@ -258,17 +262,17 @@ public class DbManager {
                 Math.log(1 + ((debt.getDebtRate() / 100) / debt.getDebtFrequency()))));
         numberOfDaysToPayDebt = (int) Math.round(numberOfYearsToPayDebt * 365);
         if (debt.getDebtAmount() <= 0) {
-            debtEnd = "Debt paid!";
+            debtEnd = getString(R.string.debt_paid);
         } else if (numberOfDaysToPayDebt > Integer.MAX_VALUE || numberOfDaysToPayDebt <= 0) {
-            debtEnd = "Too far in the future";
+            debtEnd = getString(R.string.too_far);
         } else {
             cal.add(Calendar.DATE, numberOfDaysToPayDebt);
             debtEndD = cal.getTime();
             debtEndS = new SimpleDateFormat("dd-MMM-yyyy");
-            debtEnd = "Will be paid by " + debtEndS.format(debtEndD);
+            debtEnd = getString(R.string.debt_will) + " " + debtEndS.format(debtEndD);
         }
         return debtEnd;
-    }
+    }*/
 
     public Double sumTotalDebt() {
         List<Double> debtAmountList = new ArrayList<>(getDebts().size());
@@ -329,7 +333,7 @@ public class DbManager {
         newSavings.put(DbHelper.SAVINGSFREQUENCY, saving.getSavingsFrequency());
         newSavings.put(DbHelper.SAVINGSRATE, saving.getSavingsRate());
         newSavings.put(DbHelper.SAVINGSINTFREQUENCY, saving.getSavingsIntFrequency());
-        newSavings.put(DbHelper.DEBTANNUALINCOME, saving.getSavingsAnnualIncome());
+        newSavings.put(DbHelper.SAVINGSANNUALINCOME, saving.getSavingsAnnualIncome());
         newSavings.put(DbHelper.SAVINGSDATE, saving.getSavingsDate());
         newSavings.put(DbHelper.EXPREFKEYS, saving.getExpRefKeyS());
         newSavings.put(DbHelper.INCREFKEYS, saving.getIncRefKeyS());
@@ -346,7 +350,7 @@ public class DbManager {
         updateSaving.put(DbHelper.SAVINGSFREQUENCY, saving.getSavingsFrequency());
         updateSaving.put(DbHelper.SAVINGSRATE, saving.getSavingsRate());
         updateSaving.put(DbHelper.SAVINGSINTFREQUENCY, saving.getSavingsIntFrequency());
-        updateSaving.put(DbHelper.DEBTANNUALINCOME, saving.getSavingsAnnualIncome());
+        updateSaving.put(DbHelper.SAVINGSANNUALINCOME, saving.getSavingsAnnualIncome());
         updateSaving.put(DbHelper.SAVINGSDATE, saving.getSavingsDate());
         updateSaving.put(DbHelper.EXPREFKEYS, saving.getExpRefKeyS());
         updateSaving.put(DbHelper.INCREFKEYS, saving.getIncRefKeyS());

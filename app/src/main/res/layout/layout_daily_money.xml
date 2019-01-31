@@ -106,6 +106,8 @@
                     android:layout_height="wrap_content"
                     android:minHeight="?attr/actionBarSize"
                     app:tabBackground="@drawable/tab_view"
+                    app:tabSelectedTextColor="@color/colorAccent"
+                    app:tabTextAppearance="@style/Base.TextAppearance.AppCompat.Medium"
                     app:tabGravity="fill"
                     app:tabMode="fixed">
 

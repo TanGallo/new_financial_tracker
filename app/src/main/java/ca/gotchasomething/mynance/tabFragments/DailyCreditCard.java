@@ -145,7 +145,7 @@ public class DailyCreditCard extends Fragment {
                 debtCal3 = Calendar.getInstance();
                 debtCal3.add(Calendar.DATE, numberOfDaysToPayDebt3);
                 debtEndD3 = debtCal3.getTime();
-                debtEndS3 = new SimpleDateFormat(getString(R.string.simple_date_format));
+                debtEndS3 = new SimpleDateFormat("dd-MMM-yyyy");
                 chargingDebtEnd = getString(R.string.debt_will) + " " + debtEndS3.format(debtEndD3);
             }
         }

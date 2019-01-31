@@ -39,6 +39,7 @@
         <activity android:name="ca.gotchasomething.mynance.LayoutSetUp"/>
         <activity android:name="ca.gotchasomething.mynance.LayoutOnboardingL"/>
         <activity android:name="ca.gotchasomething.mynance.LayoutOnboardingP"/>
+
     </application>
 
 </manifest>

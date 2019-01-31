@@ -1,5 +1,6 @@
 package ca.gotchasomething.mynance;
 
+import android.content.res.Resources;
 import android.widget.TextView;
 
 import java.text.ParseException;

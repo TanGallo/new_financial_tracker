@@ -38,15 +38,16 @@
 
                     <Button
                         android:id="@+id/enjoyNoButton"
-                        android:layout_width="wrap_content"
+                        android:layout_width="60dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="end"
                         android:layout_margin="10dp"
                         android:gravity="center"
                         android:text="@string/no"
+                        android:contentDescription="@string/no"
                         android:background="@drawable/entry_box"
                         android:textColor="@color/colorPrimaryDark"
-                        tools:ignore="UnusedAttribute"/>
+                        tools:ignore="ButtonStyle,UnusedAttribute"/>
 
 
                     <Button
@@ -57,21 +58,23 @@
                         android:layout_margin="10dp"
                         android:gravity="center"
                         android:text="@string/not_sure_yet"
+                        android:contentDescription="@string/not_sure_yet"
                         android:background="@drawable/entry_box"
                         android:textColor="@color/colorPrimaryDark"
-                        tools:ignore="UnusedAttribute"/>
+                        tools:ignore="ButtonStyle,UnusedAttribute"/>
 
                     <Button
                         android:id="@+id/enjoyYesButton"
-                        android:layout_width="wrap_content"
+                        android:layout_width="60dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="end"
                         android:layout_margin="10dp"
                         android:gravity="center"
                         android:text="@string/yes"
+                        android:contentDescription="@string/yes"
                         android:background="@drawable/entry_box"
                         android:textColor="@color/colorPrimaryDark"
-                        tools:ignore="UnusedAttribute"/>
+                        tools:ignore="ButtonStyle,UnusedAttribute"/>
 
                 </LinearLayout>
 
@@ -99,9 +102,10 @@
                         android:layout_margin="10dp"
                         android:gravity="center"
                         android:text="@string/not_now"
+                        android:contentDescription="@string/not_now"
                         android:background="@drawable/entry_box"
                         android:textColor="@color/colorPrimaryDark"
-                        tools:ignore="UnusedAttribute"/>
+                        tools:ignore="ButtonStyle,UnusedAttribute"/>
 
 
                     <Button
@@ -112,9 +116,10 @@
                         android:layout_margin="10dp"
                         android:gravity="center"
                         android:text="@string/sure"
+                        android:contentDescription="@string/sure"
                         android:background="@drawable/entry_box"
                         android:textColor="@color/colorPrimaryDark"
-                        tools:ignore="UnusedAttribute"/>
+                        tools:ignore="ButtonStyle,UnusedAttribute"/>
 
                 </LinearLayout>
 
@@ -142,9 +147,10 @@
                         android:layout_margin="10dp"
                         android:gravity="center"
                         android:text="@string/not_now"
+                        android:contentDescription="@string/not_now"
                         android:background="@drawable/entry_box"
                         android:textColor="@color/colorPrimaryDark"
-                        tools:ignore="UnusedAttribute"/>
+                        tools:ignore="ButtonStyle,UnusedAttribute"/>
 
 
                     <Button
@@ -155,9 +161,10 @@
                         android:layout_margin="10dp"
                         android:gravity="center"
                         android:text="@string/sure"
+                        android:contentDescription="@string/sure"
                         android:background="@drawable/entry_box"
                         android:textColor="@color/colorPrimaryDark"
-                        tools:ignore="UnusedAttribute" />
+                        tools:ignore="ButtonStyle,UnusedAttribute" />
 
                 </LinearLayout>
 
@@ -219,6 +226,7 @@
                         android:layout_margin="10dp"
                         android:layout_toStartOf="@id/noMoneyOutButton"
                         android:text="@string/yes"
+                        android:contentDescription="@string/yes"
                         android:textSize="12sp"
                         android:background="@drawable/entry_box"/>
 
@@ -228,6 +236,7 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"
                         android:text="@string/no"
+                        android:contentDescription="@string/no"
                         android:textSize="12sp"
                         android:layout_alignParentEnd="true"
                         android:background="@drawable/entry_box"/>
@@ -263,6 +272,7 @@
                         android:layout_margin="5dp"
                         android:inputType="numberDecimal"
                         android:text="@string/amount"
+                        android:contentDescription="@string/amount"
                         android:textSize="16sp" />
 
                 </LinearLayout>
@@ -281,6 +291,7 @@
                         android:gravity="center"
                         android:background="@drawable/entry_box"
                         android:text="@string/cancel"
+                        android:contentDescription="@string/cancel"
                         android:textSize="12sp"/>
 
                     <Button
@@ -293,7 +304,9 @@
                         android:gravity="center"
                         android:background="@drawable/entry_box"
                         android:text="@string/update"
-                        android:textSize="12sp"/>
+                        android:contentDescription="@string/update"
+                        android:textSize="12sp"
+                        tools:ignore="RelativeOverlap" />
 
                     <Button
                         android:id="@+id/paymentNotPossibleContinueButton"
@@ -305,7 +318,9 @@
                         android:gravity="center"
                         android:background="@drawable/entry_box"
                         android:text="@string/continue1"
-                        android:textSize="12sp"/>
+                        android:contentDescription="@string/continue1"
+                        android:textSize="12sp"
+                        tools:ignore="RelativeOverlap" />
 
                 </RelativeLayout>
 
@@ -362,6 +377,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_margin="5dp"
                 android:text="@string/enter"
+                android:contentDescription="@string/enter"
                 android:background="@drawable/entry_box"
                 android:textSize="12sp" />
 

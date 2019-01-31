@@ -113,7 +113,7 @@ public class DailyMoneyOut extends Fragment {
         general = new General();
         dbManager = new DbManager(getContext());
 
-        ratingsLabel = v.findViewById(R.id.ratingsLayout);
+        ratingsLabel = v.findViewById(R.id.ratingsLabel);
         ratingsLabel.setVisibility(View.GONE);
         enjoyNoButton = v.findViewById(R.id.enjoyNoButton);
         enjoyNoButton.setVisibility(View.GONE);
@@ -421,7 +421,7 @@ public class DailyMoneyOut extends Fragment {
                 debtCal = Calendar.getInstance();
                 debtCal.add(Calendar.DATE, numberOfDaysToPayDebt);
                 debtEndD = debtCal.getTime();
-                debtEndS = new SimpleDateFormat(getString(R.string.simple_date_format));
+                debtEndS = new SimpleDateFormat("dd-MMM-yyyy");
                 debtEnd = getString(R.string.debt_will) + " " + debtEndS.format(debtEndD);
             }
         }
@@ -502,7 +502,7 @@ public class DailyMoneyOut extends Fragment {
         } else {
             savingsCal.add(Calendar.DATE, numberOfDaysToSavingsGoal);
             savingsDateD = savingsCal.getTime();
-            savingsDateS = new SimpleDateFormat(getString(R.string.simple_date_format));
+            savingsDateS = new SimpleDateFormat("dd-MMM-yyyy");
             savingsDate = getString(R.string.goal_will) + " " + savingsDateS.format(savingsDateD);
         }
         return savingsDate;
@@ -525,7 +525,7 @@ public class DailyMoneyOut extends Fragment {
                 }
                 moneyOutDate = new Date();
                 moneyOutTimestamp = new Timestamp(moneyOutDate.getTime());
-                moneyOutSDF = new SimpleDateFormat(getString(R.string.simple_date_format));
+                moneyOutSDF = new SimpleDateFormat("dd-MMM-yyyy");
                 moneyOutCreatedOn = moneyOutSDF.format(moneyOutTimestamp);
                 moneyOutCC = "N";
                 moneyOutDebtCat = "N/A";
