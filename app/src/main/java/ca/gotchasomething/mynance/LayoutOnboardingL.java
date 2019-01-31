@@ -3,9 +3,11 @@ package ca.gotchasomething.mynance;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -43,11 +45,11 @@ public class LayoutOnboardingL extends AppCompatActivity implements View.OnClick
             loadHome();
         }
 
-        /*if (Build.VERSION.SDK_INT >= 19) {
+        if (Build.VERSION.SDK_INT >= 19) {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         } else {
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        }*/
+        }
 
         setContentView(R.layout.layout_onboarding);
 
@@ -65,7 +67,6 @@ public class LayoutOnboardingL extends AppCompatActivity implements View.OnClick
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
             }
 
             @Override
@@ -83,7 +84,6 @@ public class LayoutOnboardingL extends AppCompatActivity implements View.OnClick
 
             @Override
             public void onPageScrollStateChanged(int state) {
-
             }
         });
     }

@@ -49,6 +49,14 @@
                         android:text="@string/continue_warning"
                         android:textSize="16sp" />
 
+                    <TextView
+                        android:id="@+id/ccLimitWarningText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:text="@string/limit_warning"
+                        android:textSize="16sp" />
+
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -68,7 +76,7 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"
                         android:layout_toStartOf="@id/noCCButton"
-                        android:text="yes"
+                        android:text="@string/yes"
                         android:textSize="12sp"
                         android:background="@drawable/entry_box"/>
 
@@ -77,7 +85,7 @@
                         android:layout_width="60dp"
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"
-                        android:text="no"
+                        android:text="@string/no"
                         android:textSize="12sp"
                         android:layout_alignParentEnd="true"
                         android:background="@drawable/entry_box"/>
@@ -103,7 +111,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
-                        android:text="Category"
+                        android:text="@string/category"
                         android:textSize="16sp" />
 
                     <EditText
@@ -112,7 +120,7 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
                         android:inputType="numberDecimal"
-                        android:text="Amount"
+                        android:text="@string/amount"
                         android:textSize="16sp" />
 
                 </LinearLayout>
@@ -130,7 +138,7 @@
                         android:layout_margin="5dp"
                         android:gravity="center"
                         android:background="@drawable/entry_box"
-                        android:text="Cancel"
+                        android:text="@string/cancel"
                         android:textSize="12sp"/>
 
                     <Button
@@ -142,7 +150,7 @@
                         android:layout_margin="5dp"
                         android:gravity="center"
                         android:background="@drawable/entry_box"
-                        android:text="Update"
+                        android:text="@string/update"
                         android:textSize="12sp"/>
 
                 </RelativeLayout>
@@ -165,7 +173,6 @@
                     android:id="@+id/addCreditCardLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
                     android:background="@drawable/entry_box"
                     android:orientation="horizontal">
 
@@ -174,7 +181,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
-                        android:hint="Amount"
+                        android:hint="@string/amount"
+                        android:inputType="numberDecimal"
                         android:textSize="16sp" />
 
                     <Spinner
@@ -195,7 +203,7 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@id/ccTransAmount"
                         android:layout_margin="5dp"
-                        android:hint="On which DEBT?"
+                        android:hint="@string/which_debt"
                         android:textSize="16sp" />
 
                     <Spinner
@@ -217,7 +225,7 @@
                         android:layout_below="@id/ccTransDebtCatLabel"
                         android:layout_alignParentEnd="true"
                         android:layout_margin="5dp"
-                        android:text="enter"
+                        android:text="@string/enter"
                         android:background="@drawable/entry_box"
                         android:textSize="12sp" />
 
@@ -243,7 +251,7 @@
             android:layout_marginTop="10dp"
             android:layout_marginEnd="70dp"
             android:layout_marginBottom="10dp"
-            android:text="NOTE: There must be a DEBT item created for each credit card."
+            android:text="@string/no_debt_warning"
             android:textAlignment="center"
             android:textColor="@color/colorGreen"
             android:textSize="18sp" />
@@ -256,7 +264,7 @@
             android:layout_marginTop="10dp"
             android:layout_marginEnd="70dp"
             android:layout_marginBottom="10dp"
-            android:text="Use this tab to record all the transactions when you use your credit cards."
+            android:text="@string/money_out_cc_prompt"
             android:textAlignment="center"
             android:textColor="@color/colorGreen"
             android:textSize="18sp" />

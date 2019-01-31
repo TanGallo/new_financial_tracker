@@ -24,27 +24,27 @@ import ca.gotchasomething.mynance.data.SavingsDb;
 
 public class AddSavings extends LayoutSavings {
 
-    Button saveSavingsButton, updateSavingsButton, cancelSavingsButton;
+    Button cancelSavingsButton, saveSavingsButton, updateSavingsButton;
     Calendar savingsCal;
     Date savingsDateD;
     DbManager dbManager;
-    Double savingsAmount = 0.0, savingsRate = 0.0, savingsPayments = 0.0, savingsFrequency = 0.0, savingsGoal = 0.0, expenseAmount = 0.0, expenseFrequency = 0.0,
-            expenseAnnualAmount = 0.0, expenseAAnnualAmount = 0.0, expenseBAnnualAmount = 0.0, frequency = 0.0, amount = 0.0, goal = 0.0, rate = 0.0, payments = 0.0,
-            rate2 = 0.0, savingsIntFrequency = 0.0, intFrequency = 0.0, years = 0.0, incomeAmount = 0.0, incomeFrequency = 0.0,
-            incomeAnnualAmount = 0.0, savingsAnnualIncome = 0.0;
-    EditText savingsNameEntry, savingsAmountEntry, savingsPercentEntry, savingsPaymentsEntry, savingsGoalAmountEntry;
+    Double amount = 0.0, expenseAmount = 0.0, expenseAAnnualAmount = 0.0, expenseBAnnualAmount = 0.0, expenseAnnualAmount = 0.0, expenseFrequency = 0.0, frequency = 0.0,
+            goal = 0.0, incomeAmount = 0.0, incomeAnnualAmount = 0.0, incomeFrequency = 0.0, intFrequency = 0.0, payments = 0.0, rate = 0.0, rate2 = 0.0,
+            savingsAmount = 0.0, savingsAnnualIncome = 0.0, savingsFrequency = 0.0, savingsGoal = 0.0, savingsIntFrequency = 0.0, savingsPayments = 0.0,
+            savingsRate = 0.0, years = 0.0;
+    EditText savingsAmountEntry, savingsGoalAmountEntry, savingsNameEntry, savingsPaymentsEntry, savingsPercentEntry;
     ExpenseBudgetDb expenseBudgetDb;
     IncomeBudgetDb incomeBudgetDb;
     Integer numberOfDaysToSavingsGoal = 0;
-    Intent backToSavingsLayout, backToSavingsLayout2;
+    Intent backToSavingsLayout;
     long expRefKeyS, incRefKeyS;
-    RadioButton savingsWeeklyRadioButton, savingsBiWeeklyRadioButton, savingsMonthlyRadioButton, savingsAnnuallyRadioButton,
-            savingsIntMonthlyRadioButton, savingsIntAnnuallyRadioButton;
+    RadioButton savingsAnnuallyRadioButton, savingsBiWeeklyRadioButton, savingsIntAnnuallyRadioButton, savingsIntMonthlyRadioButton, savingsMonthlyRadioButton,
+            savingsWeeklyRadioButton;
     RadioGroup savingsFrequencyRadioGroup, savingsIntFrequencyRadioGroup;
     SavingsDb saving;
     SimpleDateFormat savingsDateS;
-    String savingsName = null, savingsDate = null, savingsFrequencyS = "1", expenseName = null, expensePriority = null, expenseWeekly = null, savingsIntFrequencyS = "12",
-            incomeName = null;
+    String expenseName = null, expensePriority = null, expenseWeekly = null, incomeName = null, savingsDate = null, savingsFrequencyS = null, savingsName = null,
+            savingsIntFrequencyS = null;
     TextView savingsDateResult, savingsFrequencyLabel, savingsIntFrequencyLabel;
 
     @Override
@@ -169,6 +169,8 @@ public class AddSavings extends LayoutSavings {
                     savingsFrequencyS = "1";
                     savingsDateResult.setText(calcSavingsDate());
                     break;
+                default:
+                    savingsFrequencyS = "1";
             }
         }
     };
@@ -185,6 +187,8 @@ public class AddSavings extends LayoutSavings {
                     savingsIntFrequencyS = "1";
                     savingsDateResult.setText(calcSavingsDate());
                     break;
+                default:
+                    savingsIntFrequencyS = "12";
             }
         }
     };
@@ -259,20 +263,23 @@ public class AddSavings extends LayoutSavings {
 
             savingsCal.add(Calendar.DATE, numberOfDaysToSavingsGoal);
             savingsDateD = savingsCal.getTime();
-            savingsDateS = new SimpleDateFormat("dd-MMM-yyyy");
+            savingsDateS = new SimpleDateFormat(getString(R.string.simple_date_format));
             savingsDate = getString(R.string.goal_will) + " " + savingsDateS.format(savingsDateD);
         }
 
         return savingsDate;
     }
 
+    public void backToSavings() {
+        backToSavingsLayout = new Intent(AddSavings.this, LayoutSavings.class);
+        backToSavingsLayout.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+        startActivity(backToSavingsLayout);
+    }
+
     View.OnClickListener onClickCancelSavingsButton = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-
-            backToSavingsLayout2 = new Intent(AddSavings.this, LayoutSavings.class);
-            backToSavingsLayout2.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-            startActivity(backToSavingsLayout2);
+            backToSavings();
         }
     };
 
@@ -280,83 +287,104 @@ public class AddSavings extends LayoutSavings {
         @Override
         public void onClick(View v) {
 
-            incomeName = savingsNameEntry.getText().toString();
-            incomeAmount = 0.0;
-            incomeFrequency = 1.0;
-            incomeAnnualAmount = 0.0;
+            if(savingsNameEntry.getText().toString().equals("")) {
+                Toast.makeText(getBaseContext(), R.string.no_blanks_warning, Toast.LENGTH_LONG).show();
+            } else {
+                incomeName = savingsNameEntry.getText().toString();
+                incomeAmount = 0.0;
+                incomeFrequency = 1.0;
+                incomeAnnualAmount = 0.0;
 
-            incomeBudgetDb = new IncomeBudgetDb(
-                    incomeName,
-                    incomeAmount,
-                    incomeFrequency,
-                    incomeAnnualAmount,
-                    0
-            );
+                incomeBudgetDb = new IncomeBudgetDb(
+                        incomeName,
+                        incomeAmount,
+                        incomeFrequency,
+                        incomeAnnualAmount,
+                        0
+                );
 
-            dbManager.addIncome(incomeBudgetDb);
+                dbManager.addIncome(incomeBudgetDb);
 
-            expenseName = savingsNameEntry.getText().toString();
-            expenseAmount = Double.valueOf(savingsPaymentsEntry.getText().toString());
-            expenseFrequency = Double.valueOf(savingsFrequencyS);
-            expensePriority = "A";
-            expenseWeekly = "N";
-            expenseAnnualAmount = expenseAmount * expenseFrequency;
-            expenseAAnnualAmount = expenseAnnualAmount;
-            expenseBAnnualAmount = 0.0;
+                expenseName = savingsNameEntry.getText().toString();
+                if(savingsPaymentsEntry.getText().toString().equals("")) {
+                    expenseAmount = 0.0;
+                } else {
+                    expenseAmount = Double.valueOf(savingsPaymentsEntry.getText().toString());
+                }
+                expenseFrequency = Double.valueOf(savingsFrequencyS);
+                expensePriority = "A";
+                expenseWeekly = "N";
+                expenseAnnualAmount = expenseAmount * expenseFrequency;
+                expenseAAnnualAmount = expenseAnnualAmount;
+                expenseBAnnualAmount = 0.0;
 
-            expenseBudgetDb = new ExpenseBudgetDb(
-                    expenseName,
-                    expenseAmount,
-                    expenseFrequency,
-                    expensePriority,
-                    expenseWeekly,
-                    expenseAnnualAmount,
-                    expenseAAnnualAmount,
-                    expenseBAnnualAmount,
-                    0);
+                expenseBudgetDb = new ExpenseBudgetDb(
+                        expenseName,
+                        expenseAmount,
+                        expenseFrequency,
+                        expensePriority,
+                        expenseWeekly,
+                        expenseAnnualAmount,
+                        expenseAAnnualAmount,
+                        expenseBAnnualAmount,
+                        0);
 
-            dbManager.addExpense(expenseBudgetDb);
+                dbManager.addExpense(expenseBudgetDb);
 
-            savingsName = savingsNameEntry.getText().toString();
-            savingsAmount = Double.valueOf(savingsAmountEntry.getText().toString());
-            savingsGoal = Double.valueOf(savingsGoalAmountEntry.getText().toString());
-            savingsPayments = Double.valueOf(savingsPaymentsEntry.getText().toString());
-            savingsFrequency = Double.valueOf(savingsFrequencyS);
-            savingsRate = Double.valueOf(savingsPercentEntry.getText().toString());
-            savingsIntFrequency = Double.valueOf(savingsIntFrequencyS);
-            savingsAnnualIncome = 0.0;
-            savingsDate = calcSavingsDate();
-            expRefKeyS = dbManager.findLatestExpenseId();
-            incRefKeyS = dbManager.findLatestIncomeId();
+                savingsName = savingsNameEntry.getText().toString();
+                if(savingsAmountEntry.getText().toString().equals("")) {
+                    savingsAmount = 0.0;
+                } else {
+                    savingsAmount = Double.valueOf(savingsAmountEntry.getText().toString());
+                }
+                if(savingsGoalAmountEntry.getText().toString().equals("")) {
+                    savingsGoal = 0.0;
+                } else {
+                    savingsGoal = Double.valueOf(savingsGoalAmountEntry.getText().toString());
+                }
+                if(savingsPaymentsEntry.getText().toString().equals("")) {
+                    savingsPayments = 0.0;
+                } else {
+                    savingsPayments = Double.valueOf(savingsPaymentsEntry.getText().toString());
+                }
+                savingsFrequency = Double.valueOf(savingsFrequencyS);
+                if(savingsPercentEntry.getText().toString().equals("")) {
+                    savingsRate = 0.0;
+                } else {
+                    savingsRate = Double.valueOf(savingsPercentEntry.getText().toString());
+                }
+                savingsIntFrequency = Double.valueOf(savingsIntFrequencyS);
+                savingsAnnualIncome = 0.0;
+                savingsDate = calcSavingsDate();
+                expRefKeyS = dbManager.findLatestExpenseId();
+                incRefKeyS = dbManager.findLatestIncomeId();
 
-            saving = new SavingsDb(
-                    savingsName,
-                    savingsAmount,
-                    savingsGoal,
-                    savingsPayments,
-                    savingsFrequency,
-                    savingsRate,
-                    savingsIntFrequency,
-                    savingsAnnualIncome,
-                    savingsDate,
-                    expRefKeyS,
-                    incRefKeyS,
-                    0);
+                saving = new SavingsDb(
+                        savingsName,
+                        savingsAmount,
+                        savingsGoal,
+                        savingsPayments,
+                        savingsFrequency,
+                        savingsRate,
+                        savingsIntFrequency,
+                        savingsAnnualIncome,
+                        savingsDate,
+                        expRefKeyS,
+                        incRefKeyS,
+                        0);
 
-            dbManager.addSavings(saving);
+                dbManager.addSavings(saving);
 
-            Toast toast = Toast.makeText(getBaseContext(), "This savings info has been saved to your BUDGET",
-                    Toast.LENGTH_LONG);
-            LinearLayout toastLayout = (LinearLayout) toast.getView();
-            TextView tv = (TextView) toastLayout.getChildAt(0);
-            tv.setTextSize(20);
-            toast.show();
+                Toast toast = Toast.makeText(getBaseContext(), R.string.savings_saved,
+                        Toast.LENGTH_LONG);
+                LinearLayout toastLayout = (LinearLayout) toast.getView();
+                TextView tv = (TextView) toastLayout.getChildAt(0);
+                tv.setTextSize(20);
+                toast.show();
 
-            savingsHeaderText();
-
-            backToSavingsLayout = new Intent(AddSavings.this, LayoutSavings.class);
-            backToSavingsLayout.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-            startActivity(backToSavingsLayout);
+                savingsHeaderText();
+                backToSavings();
+            }
         }
     };
 

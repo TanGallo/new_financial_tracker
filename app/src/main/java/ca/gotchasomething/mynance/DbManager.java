@@ -27,16 +27,15 @@ public class DbManager {
     public Cursor cursor;
     public Date debtEndD;
     public DbHelper dbHelper;
-    public Double startingBalanceResult = 0.0, totalDebt = 0.0, numberOfYearsToPayDebt = 0.0, totalSavings = 0.0,
-            totalExpenses = 0.0, totalIncome = 0.0, totalCCPaymentDue = 0.0, totalCCPaymentBDue = 0.0, currentAccountBalance = 0.0,
-            currentAvailableBalance = 0.0, totalBudgetAExpenses = 0.0, percentB = 0.0;
+    public Double currentAccountBalance = 0.0, currentAvailableBalance = 0.0, numberOfYearsToPayDebt = 0.0, percentB = 0.0, startingBalanceResult = 0.0,
+            totalBudgetAExpenses = 0.0, totalCCPaymentDue = 0.0, totalCCPaymentBDue = 0.0, totalDebt = 0.0, totalExpenses = 0.0, totalIncome = 0.0, totalSavings = 0.0;
     public General general = new General();
-    public int tourDoneCheck = 0, balanceDoneCheck = 0, budgetDoneCheck = 0, savingsDoneCheck = 0, debtsDoneCheck = 0, numberOfDaysToPayDebt = 0,
-            currentPageId = 0, debtCount = 0, startIndex = 0, endIndex = 0, earliestYear = 0, latestYear = 0;
+    public int balanceDoneCheck = 0, budgetDoneCheck = 0, currentPageId = 0, debtCount = 0, debtsDoneCheck = 0, earliestYear = 0, endIndex = 0, latestYear = 0,
+            numberOfDaysToPayDebt = 0, savingsDoneCheck = 0, startIndex = 0, tourDoneCheck = 0;
     public Long expenseId, incomeId;
     public SimpleDateFormat debtEndS;
     public SQLiteDatabase db;
-    public String debtEnd = null, category = null, spentAmount = null, startingString = null, subStringResult = null;
+    public String category = null, debtEnd = null, startingString = null, subStringResult = null;
 
     public DbManager(Context context) {
         dbHelper = DbHelper.getInstance(context);
@@ -636,10 +635,8 @@ public class DbManager {
         } catch (NullPointerException e2) {
             e2.printStackTrace();
         }
-
         cursor.close();
         return moneyOuts;
-
     }
 
     public void addMoneyOut(MoneyOutDb moneyOut) {

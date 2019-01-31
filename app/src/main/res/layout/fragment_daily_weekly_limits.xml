@@ -19,7 +19,7 @@
             android:layout_marginTop="10dp"
             android:layout_marginEnd="70dp"
             android:layout_marginBottom="10dp"
-            android:text="Weekly limits are set up in the BUDGET tab."
+            android:text="@string/weekly_limits_prompt"
             android:textAlignment="center"
             android:textColor="@color/colorGreen"
             android:textSize="18sp" />
@@ -32,7 +32,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="70dp"
                 android:layout_marginBottom="10dp"
-                android:text="Mark budget expense items as 'optional' and you will then be asked whether or not you would like to track their spending on a weekly basis."
+                android:text="@string/weekly_limits_details"
                 android:textAlignment="center"
                 android:textColor="@color/colorGreen"
                 android:textSize="18sp" />

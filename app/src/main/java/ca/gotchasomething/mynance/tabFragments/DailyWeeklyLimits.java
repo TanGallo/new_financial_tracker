@@ -2,7 +2,6 @@ package ca.gotchasomething.mynance.tabFragments;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
@@ -27,17 +26,16 @@ import ca.gotchasomething.mynance.data.MoneyOutDb;
 public class DailyWeeklyLimits extends Fragment {
 
     ContentValues currentValue;
-    Cursor moneyOutCursor;
-    DbHelper dbHelper2, dbHelper3;
+    DbHelper dbHelper3;
     DbManager dbManager;
-    Double annualLimit = 0.0, weeklyLimitD = 0.0, spentThisWeek = 0.0, spentThisWeek2 = 0.0, amountLeft = 0.0, startingBalance = 0.0, spentAmount = 0.0;
+    Double amountLeft = 0.0, spentThisWeek = 0.0, startingBalance = 0.0;
     General general;
     ListView weeklyLimitListView;
     long expenseId;
     NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
-    SQLiteDatabase db2, db3;
-    String amountLeftS = null, spentThisWeekS = null, startingBalanceS = null, spentAmountS = null;
-    TextView noWeeklyLabel, noWeeklyLabel2, amountLeftWarning, amountLeftLabel;
+    SQLiteDatabase db3;
+    String amountLeftS = null, spentAmountS = null;
+    TextView amountLeftLabel, amountLeftWarning, noWeeklyLabel, noWeeklyLabel2;
     View v;
     WeeklyLimitsAdapter weeklyLimitsAdapter;
 
@@ -175,7 +173,6 @@ public class DailyWeeklyLimits extends Fragment {
                 amountLeftWarning.setVisibility(View.GONE);
                 amountLeftLabel.setVisibility(View.VISIBLE);
             }
-
             return convertView;
         }
     }

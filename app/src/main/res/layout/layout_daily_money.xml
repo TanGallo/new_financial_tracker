@@ -39,7 +39,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
-                    android:text="WARNING: Your budget doesn't balance. Please go to the BUDGET screen to fix it."
+                    android:text="@string/budget_does_not_balance"
                     android:layout_gravity="center_horizontal"
                     android:gravity="center_horizontal"
                     android:textColor="@android:color/holo_red_light"
@@ -55,7 +55,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"
-                        android:text="Available to spend:"
+                        android:text="@string/available_to_spend"
                         android:textSize="22sp" />
 
                     <TextView
@@ -63,7 +63,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"
-                        android:text="$1.00"
                         android:textSize="22sp" />
 
                 </LinearLayout>
@@ -78,7 +77,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"
-                        android:text="Total in account:"
+                        android:text="@string/total_in_account"
                         android:textSize="22sp" />
 
                     <TextView
@@ -86,7 +85,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"
-                        android:text="$1.00"
                         android:textSize="22sp" />
 
                 </LinearLayout>

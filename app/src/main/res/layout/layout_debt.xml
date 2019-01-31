@@ -47,7 +47,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"
-                        android:text="Total Owing:"
+                        android:text="@string/total_owing"
                         android:textSize="22sp" />
 
                     <TextView
@@ -55,7 +55,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"
-                        android:text="Amount"
+                        android:text="@string/amount"
                         android:textSize="22sp" />
 
                 </LinearLayout>
@@ -71,7 +71,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"
-                        android:text="Debt-free by"
+                        android:text="@string/debt_free_by"
                         android:textSize="22sp" />
 
                     <TextView
@@ -79,7 +79,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"
-                        android:text="Date"
+                        android:text="@string/date"
                         android:textSize="22sp" />
 
                 </LinearLayout>
@@ -99,7 +99,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:layout_gravity="end"
-                    android:text="done entering debts"
+                    android:text="@string/done_debts"
                     />
 
                 <View
@@ -118,7 +118,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
-                    android:text="You haven't entered any debts yet."
+                    android:text="@string/no_debts_yet"
                     android:layout_gravity="center_horizontal"
                     android:gravity="center_horizontal"
                     android:textColor="@color/colorGreen"
@@ -129,7 +129,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
-                    android:text="Press the PLUS button above to add a debt."
+                    android:text="@string/plus_button_debts"
                     android:layout_gravity="center_horizontal"
                     android:gravity="center_horizontal"
                     android:textColor="@color/colorGreen"

@@ -15,7 +15,6 @@ import android.widget.TextView;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -31,13 +30,13 @@ public class LayoutSpendingReport extends MainNavigation {
     DbManager dbManager;
     Double totalSpent = 0.0;
     General general;
-    LinearLayout spendingReportLayout, debt_header_layout;
+    LinearLayout debtHeaderLayout, spendingReportLayout;
     ListView spendingListView;
     long expenseId;
     NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
     SpendingReportAdapter spendingReportAdapter;
     Spinner monthSpinner, yearSpinner;
-    String month = null, year = null, monthSelected = null, totalSpentS = null, spentDate = null;
+    String month = null, monthSelected = null, spentDate = null, totalSpentS = null, year = null;
     String[] months, years;
     TextView emptyListText, emptySpinnersText, emptySpinnersText2;
 
@@ -59,7 +58,7 @@ public class LayoutSpendingReport extends MainNavigation {
         dbManager = new DbManager(getApplicationContext());
 
         spendingReportLayout = findViewById(R.id.spendingReportLayout);
-        debt_header_layout = findViewById(R.id.debt_header_layout);
+        debtHeaderLayout = findViewById(R.id.debtHeaderLayout);
         spendingReportButton = findViewById(R.id.spendingReportButton);
         emptyListText = findViewById(R.id.emptyListText);
         emptyListText.setVisibility(View.GONE);
@@ -72,7 +71,7 @@ public class LayoutSpendingReport extends MainNavigation {
         spendingReportButton.setOnClickListener(onClickShowReport);
 
         monthSpinner = findViewById(R.id.monthSpinner);
-        months = new String[]{"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December", "Entire year to date"};
+        months = new String[]{getString(R.string.jan), getString(R.string.feb), getString(R.string.mar), getString(R.string.apr), getString(R.string.may), getString(R.string.jun), getString(R.string.jul), getString(R.string.aug), getString(R.string.sep), getString(R.string.oct), getString(R.string.nov), getString(R.string.dec), getString(R.string.year_to_date)};
         monthSpinnerAdapter = new ArrayAdapter(this, R.layout.spinner_layout, R.id.spinnerText, months);
         monthSpinner.setAdapter(monthSpinnerAdapter);
         monthSpinner.setOnItemSelectedListener(onMonthSelected);
@@ -85,7 +84,7 @@ public class LayoutSpendingReport extends MainNavigation {
         if (yearsList.size() == 0) {
             emptySpinnersText.setVisibility(View.VISIBLE);
             emptySpinnersText2.setVisibility(View.VISIBLE);
-            debt_header_layout.setVisibility(View.GONE);
+            debtHeaderLayout.setVisibility(View.GONE);
             spendingReportLayout.setVisibility(View.GONE);
             monthSpinner.setVisibility(View.GONE);
             yearSpinner.setVisibility(View.GONE);
@@ -94,7 +93,7 @@ public class LayoutSpendingReport extends MainNavigation {
             years = yearsList.toArray(new String[yearsList.size()]);
             emptySpinnersText.setVisibility(View.GONE);
             emptySpinnersText2.setVisibility(View.GONE);
-            debt_header_layout.setVisibility(View.VISIBLE);
+            debtHeaderLayout.setVisibility(View.VISIBLE);
             spendingReportLayout.setVisibility(View.VISIBLE);
             monthSpinner.setVisibility(View.VISIBLE);
             yearSpinner.setVisibility(View.VISIBLE);
@@ -126,45 +125,45 @@ public class LayoutSpendingReport extends MainNavigation {
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
             monthSelected = String.valueOf(monthSpinner.getSelectedItem());
-            switch (monthSelected) {
-                case "January":
-                    month = "Jan";
+            switch (position) {
+                case 0:
+                    month = getString(R.string.jan1);
                     break;
-                case "February":
-                    month = "Feb";
+                case 1:
+                    month = getString(R.string.feb1);
                     break;
-                case "March":
-                    month = "Mar";
+                case 2:
+                    month = getString(R.string.mar1);
                     break;
-                case "April":
-                    month = "Apr";
+                case 3:
+                    month = getString(R.string.apr1);
                     break;
-                case "May":
-                    month = "May";
+                case 4:
+                    month = getString(R.string.may1);
                     break;
-                case "June":
-                    month = "Jun";
+                case 5:
+                    month = getString(R.string.jun1);
                     break;
-                case "July":
-                    month = "Jul";
+                case 6:
+                    month = getString(R.string.jul1);
                     break;
-                case "August":
-                    month = "Aug";
+                case 7:
+                    month = getString(R.string.aug1);
                     break;
-                case "September":
-                    month = "Sep";
+                case 8:
+                    month = getString(R.string.sep1);
                     break;
-                case "October":
-                    month = "Oct";
+                case 9:
+                    month = getString(R.string.oct1);
                     break;
-                case "November":
-                    month = "Nov";
+                case 10:
+                    month = getString(R.string.nov1);
                     break;
-                case "December":
-                    month = "Dec";
+                case 11:
+                    month = getString(R.string.dec1);
                     break;
-                case "Entire year to date":
-                    month = "all";
+                case 12:
+                    month = getString(R.string.year_to_date1);
                     break;
             }
         }
@@ -255,7 +254,7 @@ public class LayoutSpendingReport extends MainNavigation {
             List<Double> spentPerCategory = new ArrayList<>();
             for (MoneyOutDb m : dbManager.getMoneyOuts()) {
                 spentDate = m.getMoneyOutCreatedOn();
-                if (month.equals("all")) {
+                if (month == getString(R.string.year_to_date1)) {
                     if (String.valueOf(m.getExpRefKeyMO()).equals(String.valueOf(expenseId)) && spentDate.contains(year)) {
                         spentPerCategory.add(m.getMoneyOutAmount());
                     }

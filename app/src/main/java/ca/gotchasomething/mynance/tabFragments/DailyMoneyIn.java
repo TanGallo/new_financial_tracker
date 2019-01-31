@@ -32,15 +32,12 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import ca.gotchasomething.mynance.DbHelper;
 import ca.gotchasomething.mynance.DbManager;
 import ca.gotchasomething.mynance.General;
 import ca.gotchasomething.mynance.LayoutDailyMoney;
 import ca.gotchasomething.mynance.R;
 import ca.gotchasomething.mynance.data.DebtDb;
-import ca.gotchasomething.mynance.data.IncomeBudgetDb;
 import ca.gotchasomething.mynance.data.MoneyInDb;
 import ca.gotchasomething.mynance.data.SavingsDb;
 import ca.gotchasomething.mynance.spinners.MoneyInSpinnerAdapter;
@@ -48,40 +45,38 @@ import ca.gotchasomething.mynance.spinners.MoneyInSpinnerAdapter;
 public class DailyMoneyIn extends Fragment {
 
     Boolean foundMatchingDebtId = false, foundMatchingSavingsId = false;
-    Button moneyInButton, cancelMoneyInEntryButton, updateMoneyInEntryButton, noMoneyInButton, yesMoneyInButton;
+    Button cancelMoneyInEntryButton, moneyInButton, noMoneyInButton, updateMoneyInEntryButton, yesMoneyInButton;
     Calendar debtCal, savingsCal;
-    ContentValues moneyInValue, moneyInValue2, moneyInValue3, moneyInValue4, moneyInValue5, moneyInValue6, moneyInValue7, moneyInValue8, moneyInValue9, moneyInValue10,
-            currentValue;
+    ContentValues currentValue, moneyInValue, moneyInValue2, moneyInValue3, moneyInValue4, moneyInValue5, moneyInValue6, moneyInValue7, moneyInValue8, moneyInValue9,
+            moneyInValue10;
     Cursor cursor2;
-    Date moneyInDate, debtEndD, savingsDateD;
+    Date debtEndD, moneyInDate, savingsDateD;
     DbHelper dbHelper, dbHelper2, dbHelper3, dbHelper4, dbHelper5, dbHelper6, dbHelper7, dbHelper8;
     DbManager dbManager;
-    Double moneyInAmount = 0.0, moneyInD = 0.0, newAccountBalance = 0.0, percentB = 0.0, newAvailableBalance = 0.0, newMoneyInAmount = 0.0,
-            oldMoneyInAmount = 0.0, moneyInAmountD = 0.0, currentDebtAmount = 0.0, debtAmount = 0.0, currentDebtRate = 0.0, currentDebtPayments = 0.0,
-            currentDebtFrequency = 0.0, numberOfYearsToPayDebt = 0.0, currentSavingsAmount = 0.0, savingsAmount = 0.0, savingsGoal = 0.0,
-            currentSavingsRate = 0.0, currentSavingsPayments = 0.0, currentSavingsFrequency = 0.0, savingsIntFrequency = 0.0, rate = 0.0, years = 0.0, debtLimit = 0.0,
-            newDebtAmount = 0.0, newSavingsAmount = 0.0, newDebtAmount2 = 0.0, newSavingsAmount2 = 0.0, debtAnnualIncome = 0.0, savingsAnnualIncome = 0.0,
-            amountEntry = 0.0;
+    Double amountEntry = 0.0, currentDebtAmount = 0.0, currentDebtFrequency = 0.0, currentDebtPayments = 0.0, currentDebtRate = 0.0, currentSavingsAmount = 0.0,
+            currentSavingsFrequency = 0.0, currentSavingsPayments = 0.0, currentSavingsRate = 0.0, debtAmount = 0.0, debtAnnualIncome = 0.0, debtLimit = 0.0,
+            moneyInAmount = 0.0, moneyInAmountD = 0.0, moneyInD = 0.0, newAccountBalance = 0.0, newAvailableBalance = 0.0, newDebtAmount = 0.0, newDebtAmount2 = 0.0,
+            newSavingsAmount = 0.0, newSavingsAmount2 = 0.0, numberOfYearsToPayDebt = 0.0, oldMoneyInAmount = 0.0, percentB = 0.0, rate = 0.0, savingsAmount = 0.0,
+            savingsAnnualIncome = 0.0, savingsGoal = 0.0, savingsIntFrequency = 0.0, years = 0.0;
     EditText moneyInAmountText, moneyInAmountEditText;
     General general;
     int numberOfDaysToPayDebt = 0, numberOfDaysToSavingsGoal = 0;
-    Intent backToDaily, backToDaily2, backToDaily3, backToDaily4, backToDaily5, backToDaily6, backToDaily7, backToDaily8;
+    Intent backToDaily;
     LinearLayout updateMoneyInLayout;
     ListView moneyInList;
-    long incRefKeyMI, moneyInRefKeyMI, debtId, savingsId;
+    long debtId, incRefKeyMI, moneyInRefKeyMI, savingsId;
     MoneyInAdapter moneyInAdapter;
     MoneyInDb moneyInDb;
     MoneyInSpinnerAdapter moneyInSpinnerAdapter;
     NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
     RelativeLayout addMoneyInLayout;
-    SimpleDateFormat moneyInSDF, debtEndS, savingsDateS;
+    SimpleDateFormat debtEndS, moneyInSDF, savingsDateS;
     Spinner moneyInCatSpinner;
     SQLiteDatabase db, db2, db3, db4, db5, db6, db7, db8;
-    String moneyInCatS = null, moneyInCat = null, moneyInCreatedOn = null, moneyInS = null, moneyIn2 = null, moneyInAmountS = null, debtEnd = null,
-            savingsDate = null;
-    TextView moneyInCatText, debtNotPossibleText, debtContinueAnywayText, savingsNotPossibleText;
+    String debtEnd = null, moneyInAmountS = null, moneyInCatS = null, moneyInCat = null, moneyInCreatedOn = null, moneyIn2 = null, moneyInS = null, savingsDate = null;
+    TextView debtContinueAnywayText, debtNotPossibleText, moneyInCatText, savingsNotPossibleText;
     Timestamp moneyInTimestamp;
-    View v, moneyInLine, moneyInLine2;
+    View moneyInLine, moneyInLine2, v;
 
     public DailyMoneyIn() {
         // Required empty public constructor
@@ -154,6 +149,12 @@ public class DailyMoneyIn extends Fragment {
 
     }
 
+    public void backToDaily() {
+        backToDaily = new Intent(getContext(), LayoutDailyMoney.class);
+        backToDaily.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+        startActivity(backToDaily);
+    }
+
     public long findMatchingDebtId() {
         foundMatchingDebtId = false;
         for (DebtDb d : dbManager.getDebts()) {
@@ -203,7 +204,7 @@ public class DailyMoneyIn extends Fragment {
                 debtCal = Calendar.getInstance();
                 debtCal.add(Calendar.DATE, numberOfDaysToPayDebt);
                 debtEndD = debtCal.getTime();
-                debtEndS = new SimpleDateFormat("dd-MMM-yyyy");
+                debtEndS = new SimpleDateFormat(getString(R.string.simple_date_format));
                 debtEnd = getString(R.string.debt_will) + " " + debtEndS.format(debtEndD);
             }
         }
@@ -287,7 +288,6 @@ public class DailyMoneyIn extends Fragment {
     public String calcSavingsDate() {
 
         savingsCal = Calendar.getInstance();
-
         numberOfDaysToSavingsGoal = (int) Math.round(findSavingsYears() * 365);
 
         if ((numberOfDaysToSavingsGoal) <= 0) {
@@ -300,7 +300,7 @@ public class DailyMoneyIn extends Fragment {
 
             savingsCal.add(Calendar.DATE, numberOfDaysToSavingsGoal);
             savingsDateD = savingsCal.getTime();
-            savingsDateS = new SimpleDateFormat("dd-MMM-yyyy");
+            savingsDateS = new SimpleDateFormat(getString(R.string.simple_date_format));
             savingsDate = getString(R.string.goal_will) + " " + savingsDateS.format(savingsDateD);
         }
         return savingsDate;
@@ -355,7 +355,6 @@ public class DailyMoneyIn extends Fragment {
 
         @Override
         public void onNothingSelected(AdapterView<?> parent) {
-
         }
     };
 
@@ -364,10 +363,13 @@ public class DailyMoneyIn extends Fragment {
         public void onClick(View v) {
 
             moneyInCat = moneyInCatS;
+            if(moneyInAmountText.getText().toString().equals("")) {
+                moneyInAmount = 0.0;
+            }
             moneyInAmount = Double.valueOf(moneyInAmountText.getText().toString());
             moneyInDate = new Date();
             moneyInTimestamp = new Timestamp(moneyInDate.getTime());
-            moneyInSDF = new SimpleDateFormat("dd-MMM-yyyy");
+            moneyInSDF = new SimpleDateFormat(getString(R.string.simple_date_format));
             moneyInCreatedOn = moneyInSDF.format(moneyInTimestamp);
             incRefKeyMI = moneyInRefKeyMI;
 
@@ -388,9 +390,7 @@ public class DailyMoneyIn extends Fragment {
                             noMoneyInButton.setVisibility(View.GONE);
                             yesMoneyInButton.setVisibility(View.GONE);
 
-                            backToDaily5 = new Intent(getContext(), LayoutDailyMoney.class);
-                            backToDaily5.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-                            startActivity(backToDaily5);
+                            backToDaily();
                         }
                     });
                     yesMoneyInButton.setOnClickListener(new View.OnClickListener() {
@@ -427,9 +427,7 @@ public class DailyMoneyIn extends Fragment {
                             noMoneyInButton.setVisibility(View.GONE);
                             yesMoneyInButton.setVisibility(View.GONE);
 
-                            backToDaily6 = new Intent(getContext(), LayoutDailyMoney.class);
-                            backToDaily6.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-                            startActivity(backToDaily6);
+                            backToDaily();
                         }
                     });
                     yesMoneyInButton.setOnClickListener(new View.OnClickListener() {
@@ -452,7 +450,7 @@ public class DailyMoneyIn extends Fragment {
             moneyInDb = new MoneyInDb(moneyInCat, moneyInAmount, moneyInCreatedOn, incRefKeyMI, 0);
 
             dbManager.addMoneyIn(moneyInDb);
-            Toast.makeText(getActivity(), "Saved", Toast.LENGTH_LONG).show();
+            Toast.makeText(getActivity(), R.string.saved, Toast.LENGTH_LONG).show();
             moneyInAmountText.setText("");
             moneyInCatSpinner.setSelection(0, false);
 
@@ -462,9 +460,7 @@ public class DailyMoneyIn extends Fragment {
             updateCurrentAccountBalanceMoneyIn();
             updateCurrentAvailableBalanceMoneyIn();
 
-            backToDaily = new Intent(getContext(), LayoutDailyMoney.class);
-            backToDaily.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-            startActivity(backToDaily);
+            backToDaily();
         }
     };
 
@@ -580,6 +576,9 @@ public class DailyMoneyIn extends Fragment {
                             } catch (NumberFormatException e) {
                                 amountEntry = general.extractingDollars(moneyInAmountEditText);
                             }
+                            if(moneyInAmountEditText.getText().toString().equals("")) {
+                                amountEntry = 0.0;
+                            }
 
                             moneyInAmount = amountEntry - oldMoneyInAmount;
 
@@ -600,9 +599,7 @@ public class DailyMoneyIn extends Fragment {
                                             noMoneyInButton.setVisibility(View.GONE);
                                             yesMoneyInButton.setVisibility(View.GONE);
 
-                                            backToDaily7 = new Intent(getContext(), LayoutDailyMoney.class);
-                                            backToDaily7.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-                                            startActivity(backToDaily7);
+                                            backToDaily();
                                         }
                                     });
                                     yesMoneyInButton.setOnClickListener(new View.OnClickListener() {
@@ -639,9 +636,7 @@ public class DailyMoneyIn extends Fragment {
                                             noMoneyInButton.setVisibility(View.GONE);
                                             yesMoneyInButton.setVisibility(View.GONE);
 
-                                            backToDaily8 = new Intent(getContext(), LayoutDailyMoney.class);
-                                            backToDaily8.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-                                            startActivity(backToDaily8);
+                                            backToDaily();
                                         }
                                     });
                                     yesMoneyInButton.setOnClickListener(new View.OnClickListener() {
@@ -666,8 +661,7 @@ public class DailyMoneyIn extends Fragment {
                             moneyInAdapter.updateMoneyIn(dbManager.getMoneyIns());
                             notifyDataSetChanged();
 
-                            Toast.makeText(getContext(), "Your changes have been saved",
-                                    Toast.LENGTH_LONG).show();
+                            Toast.makeText(getContext(), R.string.changes_saved, Toast.LENGTH_LONG).show();
 
                             updateMoneyInLayout.setVisibility(View.GONE);
                             addMoneyInLayout.setVisibility(View.GONE);
@@ -680,9 +674,7 @@ public class DailyMoneyIn extends Fragment {
                             updateCurrentAccountBalanceMoneyIn();
                             updateCurrentAvailableBalanceMoneyIn();
 
-                            backToDaily2 = new Intent(getContext(), LayoutDailyMoney.class);
-                            backToDaily2.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-                            startActivity(backToDaily2);
+                            backToDaily();
                         }
                     });
 
@@ -697,9 +689,7 @@ public class DailyMoneyIn extends Fragment {
                             updateMoneyInEntryButton.setVisibility(View.GONE);
                             moneyInLine.setVisibility(View.GONE);
 
-                            backToDaily3 = new Intent(getContext(), LayoutDailyMoney.class);
-                            backToDaily3.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-                            startActivity(backToDaily3);
+                            backToDaily();
                         }
                     });
                 }
@@ -714,7 +704,7 @@ public class DailyMoneyIn extends Fragment {
                     moneyInAmount = moneyIn.get(position).getMoneyInAmount();
 
                     if (moneyInDb.getId() == 1) {
-                        Toast.makeText(getContext(), "You cannot delete this entry.", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getContext(), R.string.cannot_delete_warning, Toast.LENGTH_LONG).show();
                     } else {
                         findMatchingDebtId();
                         if (foundMatchingDebtId) {
@@ -749,13 +739,10 @@ public class DailyMoneyIn extends Fragment {
                         updateCurrentAccountBalanceMoneyIn();
                         updateCurrentAvailableBalanceMoneyIn();
 
-                        backToDaily4 = new Intent(getContext(), LayoutDailyMoney.class);
-                        backToDaily4.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-                        startActivity(backToDaily4);
+                        backToDaily();
                     }
                 }
             });
-
             return convertView;
         }
     }

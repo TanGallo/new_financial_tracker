@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
-            android:text="Name this debt"
+            android:text="@string/name_debt"
             android:textSize="16sp" />
 
             <EditText
@@ -39,7 +39,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
-                android:text="What is the maximum you could borrow (or the starting amount of the loan)?"
+                android:text="@string/enter_limit"
                 android:textSize="16sp" />
 
             <EditText
@@ -57,7 +57,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:text="How much do you owe?"
+                android:text="@string/enter_debt_amount"
                 android:textSize="16sp" />
 
             <EditText
@@ -74,7 +74,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:text="What is the interest rate being charged?"
+                android:text="@string/enter_rate"
                 android:textSize="16sp" />
 
             <EditText
@@ -91,7 +91,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
-                android:text="How much are your payments?"
+                android:text="@string/enter_payments"
                 android:textSize="16sp" />
 
             <EditText
@@ -109,7 +109,7 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="10dp"
-                android:text="How often?"
+                android:text="@string/how_often"
                 android:textSize="16sp" />
 
             <RadioGroup
@@ -122,21 +122,21 @@
                     android:id="@+id/debtWeeklyRadioButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Weekly"
+                    android:text="@string/weekly"
                     android:textSize="15sp" />
 
                 <RadioButton
                     android:id="@+id/debtBiWeeklyRadioButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Every 2 weeks"
+                    android:text="@string/bi_weekly"
                     android:textSize="15sp" />
 
                 <RadioButton
                     android:id="@+id/debtMonthlyRadioButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Once a month"
+                    android:text="@string/monthly"
                     android:textSize="15sp" />
 
             </RadioGroup>
@@ -149,7 +149,7 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="10dp"
-                android:text="Date"
+                android:text="@string/date"
                 android:textSize="18sp" />
 
             <RelativeLayout
@@ -164,7 +164,7 @@
                     android:layout_gravity="end"
                     android:layout_margin="10dp"
                     android:gravity="center"
-                    android:text="Cancel" />
+                    android:text="@string/cancel" />
 
                 <Button
                     android:id="@+id/saveDebtButton"
@@ -174,7 +174,7 @@
                     android:layout_gravity="end"
                     android:layout_margin="10dp"
                     android:gravity="center"
-                    android:text="Save" />
+                    android:text="@string/save" />
 
                 <Button
                     android:id="@+id/updateDebtButton"
@@ -184,7 +184,7 @@
                     android:layout_gravity="end"
                     android:layout_margin="10dp"
                     android:gravity="center"
-                    android:text="Update" />
+                    android:text="@string/update" />
 
             </RelativeLayout>
 

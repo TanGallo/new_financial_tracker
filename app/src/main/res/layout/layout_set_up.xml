@@ -52,7 +52,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
                             android:layout_margin="10dp"
-                            android:text="Let's get started!"
+                            android:text="@string/get_started"
                             android:textSize="22sp" />
 
 
@@ -76,7 +76,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentEnd="true"
                                 android:layout_margin="10dp"
-                                android:text="DONE"
+                                android:text="@string/done"
                                 android:textSize="16sp" />
 
                         </RelativeLayout>
@@ -90,14 +90,15 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
-                                android:text="click here to enter your debts" />
+                                android:background="@drawable/entry_box"
+                                android:text="@string/click_here_debts" />
 
                             <TextView
                                 android:id="@+id/setUpDebtsLabel"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
-                                android:text="Enter debts"
+                                android:text="@string/enter_debts"
                                 android:textSize="16sp" />
 
                             <CheckBox
@@ -118,14 +119,15 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
-                                android:text="click here to enter your savings" />
+                                android:background="@drawable/entry_box"
+                                android:text="@string/click_here_savings" />
 
                             <TextView
                                 android:id="@+id/setUpSavingsLabel"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
-                                android:text="Enter savings"
+                                android:text="@string/enter_savings"
                                 android:textSize="16sp" />
 
                             <CheckBox
@@ -146,14 +148,15 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
-                                android:text="click here to finish making your budget" />
+                                android:background="@drawable/entry_box"
+                                android:text="@string/click_here_budget" />
 
                             <TextView
                                 android:id="@+id/setUpBudgetLabel"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
-                                android:text="Finish budget"
+                                android:text="@string/finish_budget"
                                 android:textSize="16sp" />
 
                             <CheckBox
@@ -174,7 +177,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="10dp"
-                                android:text="Starting Balance"
+                                android:text="@string/starting_balance"
                                 android:textSize="16sp" />
 
                             <TextView
@@ -182,7 +185,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="10dp"
-                                android:text="How much money is in your bank account to start?"
+                                android:text="@string/starting_balance_amount"
                                 android:textSize="16sp" />
 
                             <TextView
@@ -191,7 +194,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_below="@id/setUpAccountAmountLabel"
                                 android:layout_marginStart="10dp"
-                                android:text="(Check the box once you've entered an amount below)"
+                                android:text="@string/check_box_starting_balance"
                                 android:textSize="16sp" />
 
                             <EditText
@@ -202,6 +205,7 @@
                             android:layout_marginStart="10dp"
                             android:layout_toStartOf="@id/setUpAccountCheckbox"
                             android:gravity="fill_horizontal"
+                                android:inputType="numberDecimal"
                             android:textSize="16sp" />
 
                             <TextView
@@ -229,7 +233,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:layout_margin="10dp"
-                            android:text="Almost done!"
+                            android:text="@string/almost_done"
                             android:textSize="22sp" />
 
                         <RelativeLayout
@@ -241,7 +245,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
-                                android:text="Now you can manage your money in just a few minutes a day!"
+                                android:text="@string/manage_money"
                                 android:textSize="16sp" />
 
                             <TextView
@@ -250,7 +254,7 @@
                             android:layout_height="wrap_content"
                             android:layout_margin="10dp"
                             android:layout_below="@id/setUpTourLabel"
-                            android:text="Go to 'Daily Money' to make income and spending entries, to track your credit card transactions, and to watch your weekly spending limits"
+                            android:text="@string/go_to_daily_money"
                             android:textSize="16sp" />
 
                             <TextView
@@ -259,7 +263,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
                                 android:layout_below="@id/setUpTourLabel2"
-                                android:text="MYnance will show you how much money in your bank account is actually available to spend at any given time"
+                                android:text="@string/mynance_will_show_you"
                                 android:textSize="16sp" />
 
                             <TextView
@@ -268,7 +272,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
                                 android:layout_below="@id/setUpTourLabel3"
-                                android:text="Go to 'Help' if you need more guidance"
+                                android:text="@string/go_to_help"
                                 android:textSize="16sp" />
 
                             <TextView
@@ -277,7 +281,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
                                 android:layout_below="@id/setUpTourLabel4"
-                                android:text="Check the box when you're ready to start!"
+                                android:text="@string/check_box_to_start"
                                 android:textSize="16sp" />
 
                             <CheckBox

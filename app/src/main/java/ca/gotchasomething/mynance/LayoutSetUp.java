@@ -20,23 +20,23 @@ import ca.gotchasomething.mynance.data.SetUpDb;
 
 public class LayoutSetUp extends MainNavigation {
 
-    Button setUpDebtsButton, setUpSavingsButton, setUpBudgetButton;
-    CheckBox setUpDebtsCheckbox, setUpSavingsCheckbox, setUpBudgetCheckbox, setUpAccountCheckbox, setUpTourCheckbox;
+    Button setUpBudgetButton, setUpDebtsButton, setUpSavingsButton;
+    CheckBox setUpAccountCheckbox, setUpBudgetCheckbox, setUpDebtsCheckbox, setUpSavingsCheckbox, setUpTourCheckbox;
     CurrentDb currentDb;
     Date moneyInDate;
     DbManager dbManager;
-    Double startingBalanceResult = 0.0, balanceAmount = 0.0, moneyInAmount = 0.0, currentAccountBalance = 0.0, currentAvailableBalance = 0.0;
+    Double balanceAmount = 0.0, currentAccountBalance = 0.0, currentAvailableBalance = 0.0, moneyInAmount = 0.0;
     EditText setUpAccountAmount;
-    int debtsDone = 0, savingsDone = 0, budgetDone = 0, balanceDone = 0, tourDone = 0, currentPageId = 0;
-    Intent setUpDebts, setUpSavings, setUpBudget, toMainActivity;
+    int balanceDone = 0, budgetDone = 0, currentPageId = 0, debtsDone = 0, savingsDone = 0, tourDone = 0;
+    Intent setUpBudget, setUpDebts, setUpSavings, toMainActivity;
     long incRefKeyMI;
     MoneyInDb moneyInDb;
     NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
     SetUpDb setUpDb;
     SimpleDateFormat moneyInSDF;
-    String startingBalanceS = null, startingBalance2 = null, moneyInCat = null, moneyInCreatedOn = null;
-    TextView setUpDebtsLabel, setUpSavingsLabel, setUpBudgetLabel, setUpAccountAmountLabel, setUpAccountAmountLabel2, setUpAccountAmountLabel3,
-            setUpAccountAmountResult, almostDone, setUpTourLabel, setUpTourLabel2, setUpTourLabel3, setUpTourLabel4, setUpGotItLabel;
+    String startingBalance2 = null, startingBalanceS = null, moneyInCat = null, moneyInCreatedOn = null;
+    TextView almostDone, setUpAccountAmountLabel, setUpAccountAmountLabel2, setUpAccountAmountLabel3, setUpAccountAmountResult, setUpBudgetLabel, setUpDebtsLabel,
+            setUpGotItLabel, setUpSavingsLabel, setUpTourLabel, setUpTourLabel2, setUpTourLabel3, setUpTourLabel4;
     Timestamp moneyInTimestamp;
 
     @Override
@@ -205,7 +205,7 @@ public class LayoutSetUp extends MainNavigation {
             moneyInAmount = balanceAmount;
             moneyInDate = new Date();
             moneyInTimestamp = new Timestamp(moneyInDate.getTime());
-            moneyInSDF = new SimpleDateFormat("dd-MMM-yyyy");
+            moneyInSDF = new SimpleDateFormat(getString(R.string.simple_date_format));
             moneyInCreatedOn = moneyInSDF.format(moneyInTimestamp);
             incRefKeyMI = 1;
 

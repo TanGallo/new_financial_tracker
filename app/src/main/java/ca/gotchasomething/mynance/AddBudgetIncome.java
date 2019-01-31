@@ -2,27 +2,31 @@ package ca.gotchasomething.mynance;
 
 import android.content.Intent;
 import android.os.Bundle;
+
 import androidx.annotation.Nullable;
+
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Toast;
+
 import ca.gotchasomething.mynance.data.IncomeBudgetDb;
 
 public class AddBudgetIncome extends LayoutBudget {
 
     Button budgetAddIncomeButton, budgetUpdateIncomeButton;
     DbManager dbManager;
-    Double incomeAmount = 0.0, incomeFrequency = 0.0, incomeAnnualAmount = 0.0;
-    EditText budgetIncomeCategory, budgetIncomeAmount;
+    Double incomeAmount = 0.0, incomeAnnualAmount = 0.0, incomeFrequency = 0.0;
+    EditText budgetIncomeAmount, budgetIncomeCategory;
     IncomeBudgetDb incomeBudgetDb;
-    Intent backToBudget, backToBudget2;
+    Intent backToBudget;
     long id;
-    RadioButton budgetIncomeWeeklyRadioButton, budgetIncomeBiWeeklyRadioButton, budgetIncomeBiMonthlyRadioButton,
-            budgetIncomeMonthlyRadioButton, budgetIncomeBiAnnuallyRadioButton, budgetIncomeAnnuallyRadioButton;
+    RadioButton budgetIncomeAnnuallyRadioButton, budgetIncomeBiAnnuallyRadioButton, budgetIncomeBiMonthlyRadioButton, budgetIncomeBiWeeklyRadioButton,
+            budgetIncomeMonthlyRadioButton, budgetIncomeWeeklyRadioButton;
     RadioGroup budgetIncomeFrequencyRadioGroup;
-    String incomeName = null, incomeFrequencyS = null;
+    String incomeFrequencyS = null, incomeName = null;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -75,16 +79,22 @@ public class AddBudgetIncome extends LayoutBudget {
                 case R.id.budgetIncomeAnnuallyRadioButton:
                     incomeFrequencyS = "1";
                     break;
+                default:
+                    incomeFrequencyS = "1";
             }
         }
     };
 
+    public void backToBudget() {
+        backToBudget = new Intent(AddBudgetIncome.this, LayoutBudget.class);
+        backToBudget.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+        startActivity(backToBudget);
+    }
+
     View.OnClickListener onClickCancelIncomeButton = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            backToBudget2 = new Intent(AddBudgetIncome.this, LayoutBudget.class);
-            backToBudget2.setFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-            startActivity(backToBudget2);
+            backToBudget();
         }
     };
 
@@ -92,25 +102,31 @@ public class AddBudgetIncome extends LayoutBudget {
         @Override
         public void onClick(View v) {
 
-            incomeName = budgetIncomeCategory.getText().toString();
-            incomeAmount = Double.valueOf(budgetIncomeAmount.getText().toString());
-            incomeFrequency = Double.valueOf(incomeFrequencyS);
-            incomeAnnualAmount = incomeAmount * incomeFrequency;
+            if(budgetIncomeCategory.getText().toString().equals("")) {
+                Toast.makeText(getBaseContext(), R.string.no_blanks_warning, Toast.LENGTH_LONG).show();
+            } else {
+                incomeName = budgetIncomeCategory.getText().toString();
+                if(budgetIncomeAmount.getText().toString().equals("")) {
+                    incomeAmount = 0.0;
+                } else {
+                    incomeAmount = Double.valueOf(budgetIncomeAmount.getText().toString());
+                }
+                incomeFrequency = Double.valueOf(incomeFrequencyS);
+                incomeAnnualAmount = incomeAmount * incomeFrequency;
 
-            incomeBudgetDb = new IncomeBudgetDb(
-                    incomeName,
-                    incomeAmount,
-                    incomeFrequency,
-                    incomeAnnualAmount,
-                    0);
+                incomeBudgetDb = new IncomeBudgetDb(
+                        incomeName,
+                        incomeAmount,
+                        incomeFrequency,
+                        incomeAnnualAmount,
+                        0);
 
-            dbManager.addIncome(incomeBudgetDb);
-            incomeAdapter.updateIncomes(dbManager.getIncomes());
-            incomeAdapter.notifyDataSetChanged();
+                dbManager.addIncome(incomeBudgetDb);
+                incomeAdapter.updateIncomes(dbManager.getIncomes());
+                incomeAdapter.notifyDataSetChanged();
 
-            backToBudget = new Intent(AddBudgetIncome.this, LayoutBudget.class);
-            backToBudget.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-            startActivity(backToBudget);
+                backToBudget();
+            }
         }
     };
 }

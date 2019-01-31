@@ -2,7 +2,6 @@ package ca.gotchasomething.mynance;
 
 import android.widget.TextView;
 
-import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -10,17 +9,14 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import ca.gotchasomething.mynance.data.MoneyOutDb;
-
 public class General {
 
     public Date dateObj;
     public Double dollars = 0.0, percent = 0.0;
     public int startIndex = 0, endIndex = 0;
     public List<String> thisWeek;
-    public List<String> yearsList;
-    public String startingString = null, startingString2 = null, subStringResult = null, subStringResult2 = null, subStringResult3 = null, percentS = null;
-    public TextView tv, tv2;
+    public String startingString = null, startingString2 = null, subStringResult = null, subStringResult2 = null, percentS = null;
+    public TextView tv;
 
     public Double extractingDollars(TextView tv) {
 

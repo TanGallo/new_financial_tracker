@@ -1,7 +1,6 @@
 package ca.gotchasomething.mynance;
 
 import android.content.Intent;
-import android.database.sqlite.SQLiteConstraintException;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -19,18 +18,17 @@ import ca.gotchasomething.mynance.data.ExpenseBudgetDb;
 
 public class AddBudgetExpense extends LayoutBudget {
 
-    Button budgetCancelExpenseButton, budgetAddExpenseButton, budgetUpdateExpenseButton;
+    Button budgetAddExpenseButton, budgetCancelExpenseButton, budgetUpdateExpenseButton;
     DbManager dbManager;
-    Double expenseAmount = 0.0, expenseFrequency = 0.0, expenseAnnualAmount = 0.0, expenseAAnnualAmount = 0.0, expenseBAnnualAmount = 0.0;
-    EditText budgetExpenseCategory, budgetExpenseAmount;
+    Double expenseAmount = 0.0, expenseAnnualAmount = 0.0, expenseAAnnualAmount = 0.0, expenseBAnnualAmount = 0.0, expenseFrequency = 0.0;
+    EditText budgetExpenseAmount, budgetExpenseCategory;
     ExpenseBudgetDb expenseBudgetDb;
-    Intent backToBudget, backToBudget2;
+    Intent backToBudget;
     long id = 0;
-    RadioButton budgetExpenseWeeklyRadioButton, budgetExpenseBiWeeklyRadioButton, budgetExpenseBiMonthlyRadioButton,
-            budgetExpenseMonthlyRadioButton, budgetExpenseBiAnnuallyRadioButton, budgetExpenseAnnuallyRadioButton, budgetExpenseARadioButton,
-            budgetExpenseBRadioButton, budgetExpenseYesRadioButton, budgetExpenseNoRadioButton;
-    RadioGroup budgetExpenseFrequencyRadioGroup, budgetExpenseABRadioGroup, budgetExpenseReminderRadioGroup;
-    String expenseName = null, expenseFrequencyS = null, expensePriority = null, expensePriorityS = null, expenseWeekly = null, expenseWeeklyS = null;
+    RadioButton budgetExpenseARadioButton, budgetExpenseBRadioButton, budgetExpenseBiWeeklyRadioButton, budgetExpenseBiAnnuallyRadioButton,
+            budgetExpenseBiMonthlyRadioButton, budgetExpenseMonthlyRadioButton, budgetExpenseNoRadioButton, budgetExpenseWeeklyRadioButton, budgetExpenseYesRadioButton;
+    RadioGroup budgetExpenseABRadioGroup, budgetExpenseFrequencyRadioGroup, budgetExpenseReminderRadioGroup;
+    String expenseFrequencyS = null, expenseName = null, expensePriority = null, expensePriorityS = null, expenseWeekly = null, expenseWeeklyS = null;
     TextView weeklyGuidanceLabel;
 
     @Override
@@ -97,6 +95,8 @@ public class AddBudgetExpense extends LayoutBudget {
                 case R.id.budgetExpenseAnnuallyRadioButton:
                     expenseFrequencyS = "1";
                     break;
+                default:
+                    expenseFrequencyS = "1";
             }
         }
     };
@@ -117,6 +117,8 @@ public class AddBudgetExpense extends LayoutBudget {
                     budgetExpenseReminderRadioGroup.setVisibility(View.VISIBLE);
                     weeklyGuidanceLabel.setVisibility(View.VISIBLE);
                     break;
+                default:
+                    expensePriorityS = "A";
             }
 
         }
@@ -135,17 +137,23 @@ public class AddBudgetExpense extends LayoutBudget {
                 case R.id.budgetExpenseNoRadioButton:
                     expenseWeeklyS = "N";
                     break;
+                default:
+                    expenseWeeklyS = "N";
             }
         }
     };
+
+    public void backToBudget() {
+        backToBudget = new Intent(AddBudgetExpense.this, LayoutBudget.class);
+        backToBudget.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+        startActivity(backToBudget);
+    }
 
 
     View.OnClickListener onClickCancelExpenseButton = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            backToBudget2 = new Intent(AddBudgetExpense.this, LayoutBudget.class);
-            backToBudget2.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-            startActivity(backToBudget2);
+            backToBudget();
         }
     };
 
@@ -153,44 +161,46 @@ public class AddBudgetExpense extends LayoutBudget {
         @Override
         public void onClick(View v) {
 
-            expenseName = budgetExpenseCategory.getText().toString();
-            expenseAmount = Double.valueOf(budgetExpenseAmount.getText().toString());
-            expenseFrequency = Double.valueOf(expenseFrequencyS);
-            expensePriority = String.valueOf(expensePriorityS);
-            expenseWeekly = String.valueOf(expenseWeeklyS);
+            if (budgetExpenseCategory.getText().toString().equals("")) {
+                Toast.makeText(getBaseContext(), R.string.no_blanks_warning, Toast.LENGTH_LONG).show();
+            } else {
+                expenseName = budgetExpenseCategory.getText().toString();
+                if((budgetExpenseAmount.getText().toString().equals(""))) {
+                    expenseAmount = 0.0;
+                } else {
+                    expenseAmount = Double.valueOf(budgetExpenseAmount.getText().toString());
+                }
+                expenseFrequency = Double.valueOf(expenseFrequencyS);
+                expensePriority = String.valueOf(expensePriorityS);
+                expenseWeekly = String.valueOf(expenseWeeklyS);
 
-            expenseAnnualAmount = expenseAmount * expenseFrequency;
+                expenseAnnualAmount = expenseAmount * expenseFrequency;
 
-            if (expensePriorityS == "A") {
-                expenseAAnnualAmount = expenseAnnualAmount;
-                expenseBAnnualAmount = 0.0;
-            } else if (expensePriorityS == "B") {
-                expenseBAnnualAmount = expenseAnnualAmount;
-                expenseAAnnualAmount = 0.0;
-            }
+                if (expensePriorityS.equals("A")) {
+                    expenseAAnnualAmount = expenseAnnualAmount;
+                    expenseBAnnualAmount = 0.0;
+                } else if (expensePriorityS.equals("B")) {
+                    expenseBAnnualAmount = expenseAnnualAmount;
+                    expenseAAnnualAmount = 0.0;
+                }
 
-            expenseBudgetDb = new ExpenseBudgetDb(
-                    expenseName,
-                    expenseAmount,
-                    expenseFrequency,
-                    expensePriority,
-                    expenseWeekly,
-                    expenseAnnualAmount,
-                    expenseAAnnualAmount,
-                    expenseBAnnualAmount,
-                    0);
+                expenseBudgetDb = new ExpenseBudgetDb(
+                        expenseName,
+                        expenseAmount,
+                        expenseFrequency,
+                        expensePriority,
+                        expenseWeekly,
+                        expenseAnnualAmount,
+                        expenseAAnnualAmount,
+                        expenseBAnnualAmount,
+                        0);
 
-            try {
                 dbManager.addExpense(expenseBudgetDb);
-            } catch (SQLiteConstraintException e) {
-                Toast.makeText(getApplicationContext(), "Name must be unique", Toast.LENGTH_LONG).show();
-            }
-            expenseAdapter.updateExpenses(dbManager.getExpense());
-            expenseAdapter.notifyDataSetChanged();
+                expenseAdapter.updateExpenses(dbManager.getExpense());
+                expenseAdapter.notifyDataSetChanged();
 
-            backToBudget = new Intent(AddBudgetExpense.this, LayoutBudget.class);
-            backToBudget.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-            startActivity(backToBudget);
+                backToBudget();
+            }
         }
     };
 }

@@ -11,9 +11,6 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
-
-import java.text.NumberFormat;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -48,11 +45,11 @@ public class LayoutOnboardingP extends AppCompatActivity implements View.OnClick
             loadHome();
         }
 
-        /*if (Build.VERSION.SDK_INT >= 19) {
+        if (Build.VERSION.SDK_INT >= 19) {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         } else {
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        }*/
+        }
 
         setContentView(R.layout.layout_onboarding);
 
@@ -70,7 +67,6 @@ public class LayoutOnboardingP extends AppCompatActivity implements View.OnClick
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
             }
 
             @Override
@@ -88,7 +84,6 @@ public class LayoutOnboardingP extends AppCompatActivity implements View.OnClick
 
             @Override
             public void onPageScrollStateChanged(int state) {
-
             }
         });
     }

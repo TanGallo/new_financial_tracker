@@ -21,7 +21,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:text="There is not enough credit available on this DEBTS item to make this deposit. You will be putting the debt over its limit."
+                android:text="@string/not_enough_credit_warning"
                 android:textSize="16sp" />
 
             <TextView
@@ -29,7 +29,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:text="There is not enough in this SAVINGS item to make this deposit. You will be putting the savings balance into the negative."
+                android:text="@string/not_enough_savings_warning"
                 android:textSize="16sp" />
 
             <RelativeLayout
@@ -50,7 +50,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
                     android:layout_toStartOf="@id/noMoneyInButton"
-                    android:text="yes"
+                    android:text="@string/yes"
                     android:textSize="12sp"
                     android:background="@drawable/entry_box"/>
 
@@ -62,7 +62,7 @@
                     android:layout_marginTop="5dp"
                     android:layout_marginBottom="5dp"
                     android:layout_marginStart="5dp"
-                    android:text="no"
+                    android:text="@string/no"
                     android:textSize="12sp"
                     android:layout_alignParentEnd="true"
                     android:background="@drawable/entry_box"/>
@@ -88,7 +88,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
-                android:text="Category"
+                android:text="@string/category"
                 android:textSize="16sp" />
 
             <EditText
@@ -97,7 +97,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:inputType="numberDecimal"
-                android:text="Amount"
+                android:text="@string/amount"
                 android:textSize="16sp" />
 
         </LinearLayout>
@@ -115,7 +115,7 @@
                 android:layout_margin="5dp"
                 android:gravity="center"
                 android:background="@drawable/entry_box"
-                android:text="Cancel"
+                android:text="@string/cancel"
                 android:textSize="12sp"/>
 
             <Button
@@ -127,7 +127,7 @@
                 android:layout_margin="5dp"
                 android:gravity="center"
                 android:background="@drawable/entry_box"
-                android:text="Update"
+                android:text="@string/update"
                 android:textSize="12sp"/>
 
         </RelativeLayout>
@@ -158,7 +158,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
-                android:hint="Amount"
+                android:hint="@string/amount"
                 android:textSize="16sp"
                 android:inputType="numberDecimal"/>
 
@@ -180,7 +180,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_margin="5dp"
-                android:text="enter"
+                android:text="@string/enter"
                 android:background="@drawable/entry_box"
                 android:textSize="12sp" />
 

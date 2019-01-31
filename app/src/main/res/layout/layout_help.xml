@@ -52,7 +52,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
-                                android:text="Set Up"
+                                android:text="@string/set_up"
                                 android:textSize="18sp" />
 
                             <RelativeLayout
@@ -92,28 +92,28 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
-                                android:text="The automatic set up process walked you through setting up your debts, savings, and budget."
+                                android:text="@string/set_up_1"
                                 android:textSize="18sp" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
-                                android:text="All of these items can be changed manually by using the MENU to access their screens."
+                                android:text="@string/set_up_2"
                                 android:textSize="18sp" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
-                                android:text="You also entered a starting balance for your bank account. This amount can be changed  by clicking on the pencil icon next to it in the DAILY MONEY - MONEY IN tab."
+                                android:text="@string/set_up_3"
                                 android:textSize="18sp" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
-                                android:text="You can adjust the amount in your bank account by making entries in the DAILY MONEY screen."
+                                android:text="@string/set_up_4"
                                 android:textSize="18sp" />
 
                         </LinearLayout>
@@ -140,7 +140,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
-                                android:text="Daily Money"
+                                android:text="@string/daily_money"
                                 android:textSize="18sp" />
 
                             <RelativeLayout
@@ -180,14 +180,14 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
-                                android:text="'Total in Account' is the total amount of money in your bank account. A percentage of this money is reserved for paying 'needs', as identified by you in your BUDGET."
+                                android:text="@string/daily_money_1"
                                 android:textSize="18sp" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
-                                android:text="'Available to Spend' is the amount of money that you can spend on 'optional' expenses, as identified by you in your BUDGET."
+                                android:text="@string/daily_money_2"
                                 android:textSize="18sp" />
 
                             <LinearLayout
@@ -200,7 +200,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_margin="10dp"
-                                    android:text="Money In"
+                                    android:text="@string/money_in"
                                     android:textSize="18sp" />
 
                                 <RelativeLayout
@@ -240,28 +240,28 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_margin="10dp"
-                                    android:text="Use this tab to record any money that goes into your bank account."
+                                    android:text="@string/money_in_1"
                                     android:textSize="18sp" />
 
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_margin="10dp"
-                                    android:text="Each entry will map to an income item in your BUDGET."
+                                    android:text="@string/money_in_2"
                                     android:textSize="18sp" />
 
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_margin="10dp"
-                                    android:text="When you created your budget, you identified which expense items were for needs and which were for optional spending."
+                                    android:text="@string/money_in_3"
                                     android:textSize="18sp" />
 
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_margin="10dp"
-                                    android:text="The appropriate percentage of each MONEY IN entry will be reserved for needs according to these BUDGET entries. The remainder will be allotted to the 'available to spend' amount."
+                                    android:text="@string/money_in_4"
                                     android:textSize="18sp" />
 
                             </LinearLayout>
@@ -286,7 +286,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_margin="10dp"
-                                    android:text="Money Out"
+                                    android:text="@string/money_out"
                                     android:textSize="18sp" />
 
                                 <RelativeLayout
@@ -326,35 +326,35 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_margin="10dp"
-                                    android:text="Use this tab to record any CASH that comes out of your bank account, either as a cheque, cash withdrawal, or debit card purchase."
+                                    android:text="@string/money_out_1"
                                     android:textSize="18sp" />
 
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_margin="10dp"
-                                    android:text="NOTE: It is up to you whether you create 'cash withdrawal' as an expense item in your budget and track withdrawals as one item or whether you account for cash withdrawals as a breakdown of what the money was used for (i.e. $20 withdrawal entered as $10 towards 'entertainment' and $10 towards 'miscellaneous')."
+                                    android:text="@string/money_out_2"
                                     android:textSize="18sp" />
 
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_margin="10dp"
-                                    android:text="JUST BE SURE that each cash withdrawal is only entered once in MONEY OUT, otherwise too much money will be taken out of your 'total' and 'available to spend' balances."
+                                    android:text="@string/money_out_3"
                                     android:textSize="18sp" />
 
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_margin="10dp"
-                                    android:text="Purchases made on a credit card must be entered in the CREDIT CARD tab so that the credit card's DEBTS record will be updated accordingly."
+                                    android:text="@string/money_out_4"
                                     android:textSize="18sp" />
 
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_margin="10dp"
-                                    android:text="You can view a summary of your MONEY OUT items in the SPENDING REPORT screen."
+                                    android:text="@string/money_out_5"
                                     android:textSize="18sp" />
 
                             </LinearLayout>
@@ -379,7 +379,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_margin="10dp"
-                                    android:text="Credit Card"
+                                    android:text="@string/credit_card"
                                     android:textSize="18sp" />
 
                                 <RelativeLayout
@@ -419,70 +419,70 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_margin="10dp"
-                                    android:text="Use this tab to record any purchases made against credit cards or lines of credit."
+                                    android:text="@string/credit_card_1"
                                     android:textSize="18sp" />
 
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_margin="10dp"
-                                    android:text="For each purchase, you will select an expense item in your BUDGET, such as 'insurance' or 'entertainment. You will also select which DEBTS item to map the purchase against."
+                                    android:text="@string/credit_card_2"
                                     android:textSize="18sp" />
 
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_margin="10dp"
-                                    android:text="The DEBTS item's balance owing will be updated accordingly."
+                                    android:text="@string/credit_card_3"
                                     android:textSize="18sp" />
 
                                 <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
-                                android:text="NOTE: Be careful about mapping a purchase to the same BUDGET and DEBTS item."
+                                android:text="@string/credit_card_4"
                                 android:textSize="18sp" />
 
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_margin="10dp"
-                                    android:text="It is possible to use a DEBTS item as the selected budget item. For example, if you took money from a credit card to pay down a line of credit."
+                                    android:text="@string/credit_card_5"
                                     android:textSize="18sp" />
 
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_margin="10dp"
-                                    android:text="In that case, the amount of the payment would be added to the balance owing on the credit card and subtracted from the balance owing on the line of credit. If you mapped to the same item twice, the balance owing on the DEBTS item would not update correctly."
+                                    android:text="@string/credit_card_6"
                                     android:textSize="18sp" />
 
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_margin="10dp"
-                                    android:text="MYnance wants to help you develop healthy spending habits. It will alert you if you are making purchases against your DEBTS items when you don't have the funds in your account to cover them."
+                                    android:text="@string/credit_card_7"
                                     android:textSize="18sp" />
 
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_margin="10dp"
-                                    android:text="Although purchases entered in this tab will have no effect on your 'total' and 'available to spend' balances, you should still avoid accumulating consumer debt."
+                                    android:text="@string/credit_card_8"
                                     android:textSize="18sp" />
 
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_margin="10dp"
-                                    android:text="Payments to your DEBTS items should be made in the PAY CC tab. Your 'total' and 'available to spend' balances will change when payments are made in the PAY CC tab and the DEBTS item's balance owing will be updated accordingly."
+                                    android:text="@string/credit_card_9"
                                     android:textSize="18sp" />
 
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_margin="10dp"
-                                    android:text="However, purchases recorded in this tab will show up in your SPENDING REPORT as having been spent on the date the entry was made."
+                                    android:text="@string/credit_card_10"
                                     android:textSize="18sp" />
 
                             </LinearLayout>
@@ -507,7 +507,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_margin="10dp"
-                                    android:text="Pay CC"
+                                    android:text="@string/pay_cc"
                                     android:textSize="18sp" />
 
                                 <RelativeLayout
@@ -547,28 +547,28 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_margin="10dp"
-                                    android:text="MYnance is a great tool to help you make sure you avoid consumer debt. Use this tab to manage money owing on DEBTS items resulting from purchases."
+                                    android:text="@string/pay_cc_1"
                                     android:textSize="18sp" />
 
                                 <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
-                                android:text="Enter any purchases you make on credit cards or lines of credit in the CREDIT CARD tab and make frequent payments to them using the PAY CC tab."
+                                android:text="@string/pay_cc_2"
                                 android:textSize="18sp" />
 
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_margin="10dp"
-                                    android:text="If you want to make additional payments to your DEBTS items that don't map to particular purchases, you can enter those transactions in the DAILY MONEY - MONEY OUT tab."
+                                    android:text="@string/pay_cc_3"
                                     android:textSize="18sp" />
 
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_margin="10dp"
-                                    android:text="MYnance will alert you if you are trying to make a payment when you don't have the funds available in your 'total' or 'available to spend' balances."
+                                    android:text="@string/pay_cc_4"
                                     android:textSize="18sp" />
 
                             </LinearLayout>
@@ -593,7 +593,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_margin="10dp"
-                                    android:text="Weekly Limits"
+                                    android:text="@string/weekly_limits"
                                     android:textSize="18sp" />
 
                                 <RelativeLayout
@@ -635,21 +635,21 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_margin="10dp"
-                            android:text="When you create expense items in your BUDGET and identify them as 'optional', you will be given the choice whether or not to manage their weekly spending limits."
+                            android:text="@string/weekly_limits_1"
                             android:textSize="18sp" />
 
                             <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_margin="10dp"
-                            android:text="You can change this setting for any expense item at any time in the BUDGET screen by clicking on the pencil icon next to the item."
+                            android:text="@string/weekly_limits_2"
                             android:textSize="18sp" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
-                                android:text="MYnance will break the yearly amount for the item down to a weekly limit and track how much is left each week to spend on the item."
+                                android:text="@string/weekly_limits_3"
                                 android:textSize="18sp" />
 
                         </LinearLayout>
@@ -676,7 +676,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
-                                android:text="Budget"
+                                android:text="@string/budget"
                                 android:textSize="18sp" />
 
                             <RelativeLayout
@@ -716,98 +716,98 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
-                                android:text="The budget you create is for a year, so the total income and total expenses showing are calculated for a year based on your entries."
+                                android:text="@string/budget_1"
                                 android:textSize="18sp" />
 
                             <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_margin="10dp"
-                            android:text="Use the PLUS buttons to add income items or expense items."
+                            android:text="@string/budget_2"
                             android:textSize="18sp" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
-                                android:text="You make a budget for 2 reasons:"
+                                android:text="@string/budget_3"
                                 android:textSize="18sp" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
-                                android:text="1. To make sure you are not spending more money than you earn."
+                                android:text="@string/budget_4"
                                 android:textSize="18sp" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
-                                android:text="2. To give you spending guidelines for optional items like gifts, entertainment, clothing, etc."
+                                android:text="@string/budget_5"
                                 android:textSize="18sp" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
-                                android:text="MYnance will alert you if your budget does not balance (i.e. if you are spending more money than you earn)."
+                                android:text="@string/budget_6"
                                 android:textSize="18sp" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
-                                android:text="MYnance is a real-world budgeting app. We believe that tracking each expense category separately is too restrictive an approach and does not align with most peoples' reality."
+                                android:text="@string/budget_7"
                                 android:textSize="18sp" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
-                                android:text="Instead, the money needed to pay for expense categories identified by you as needs will be 'reserved' in your bank account and the remainder will be 'available to spend'."
+                                android:text="@string/budget_8"
                                 android:textSize="18sp" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
-                                android:text="MYnance can help you to track your spending on optional items (see DAILY MONEY - WEEKLY LIMITS section)."
+                                android:text="@string/budget_9"
                                 android:textSize="18sp" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
-                                android:text="Payments made to DEBTS and SAVINGS will be added to your budget automatically and treated as needs, so that the money will be 'reserved' in your bank account."
+                                android:text="@string/budget_10"
                                 android:textSize="18sp" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
-                                android:text="You should adjust your budget any time a major change occurs (i.e. you get a raise at work or the amount of a payment changes)."
+                                android:text="@string/budget_11"
                                 android:textSize="18sp" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
-                                android:text="You should review and update your budget at least once a year."
+                                android:text="@string/budget_12"
                                 android:textSize="18sp" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
-                                android:text="You can use the SPENDING REPORT as a guideline when updating your budget. Running a spending report for an entire year will show you how much you actually spent in each category."
+                                android:text="@string/budget_13"
                                 android:textSize="18sp" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
-                                android:text="Updating your budget will not adjust your bank account balances retroactively. The app will simply adjust the percentage of future entries to 'reserve' for needs in accordance with the changes made to the budget."
+                                android:text="@string/budget_14"
                                 android:textSize="18sp" />
 
                         </LinearLayout>
@@ -834,7 +834,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
-                                android:text="Debts"
+                                android:text="@string/debts"
                                 android:textSize="18sp" />
 
                             <RelativeLayout
@@ -874,63 +874,63 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
-                                android:text="MYnance will calculate the date that a debt will be paid off, based on your entries."
+                                android:text="@string/debts_1"
                                 android:textSize="18sp" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
-                                android:text="You can use the DEBTS screen to see the effects of changing a loan or credit card payment."
+                                android:text="@string/debts_2"
                                 android:textSize="18sp" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
-                                android:text="When adding or updating a debt item, the payment amount you enter will automatically be added to your budget and treated as a need, so the money will be reserved in your bank account."
+                                android:text="@string/debts_3"
                                 android:textSize="18sp" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
-                                android:text="Each credit card you own must be set up in the DEBTS screen if you want to record purchases against them in the DAILY MONEY - CREDIT CARD tab."
+                                android:text="@string/debts_4"
                                 android:textSize="18sp" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
-                                android:text="MYnance will help you keep your credit card balances at zero in the DAILY MONEY - PAY CC tab."
+                                android:text="@string/debts_5"
                                 android:textSize="18sp" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
-                                android:text="If you take a cash advance off a DEBTS item, you can enter the transaction in the DAILY MONEY - MONEY IN tab. You bank account balances will be adjusted accordingly. DON'T FORGET that only a percentage of that deposit will be 'available to spend'."
+                                android:text="@string/debts_6"
                                 android:textSize="18sp" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
-                                android:text="If you take frequent cash advances off DEBTS items, you should adjust your BUDGET to reflect this income."
+                                android:text="@string/debts_7"
                                 android:textSize="18sp" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
-                                android:text="NOTE: If you create an INCOME from a DEBT, the amount of the payments to it will be adjusted accordingly, as will the 'debt-free' date for it. These changes will be reflected in the DEBTS screen."
+                                android:text="@string/debts_8"
                                 android:textSize="18sp" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
-                                android:text="Purchases against and payments to your debts in the DAILY MONEY tabs will be automatically added or subtracted to the balances owing in the DEBTS screen."
+                                android:text="@string/debts_9"
                                 android:textSize="18sp" />
 
                         </LinearLayout>
@@ -957,7 +957,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
-                                android:text="Savings"
+                                android:text="@string/savings"
                                 android:textSize="18sp" />
 
                             <RelativeLayout
@@ -997,49 +997,49 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
-                                android:text="MYnance will calculate the date that a savings goal will be met, based on your entries."
+                                android:text="@string/savings_1"
                                 android:textSize="18sp" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
-                                android:text="You can use the SAVINGS screen to make a savings plan."
+                                android:text="@string/savings_2"
                                 android:textSize="18sp" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
-                                android:text="When adding or updating a savings item, the contribution amount that you enter will automatically be added to your budget and treated as a need, so the money will be reserved in your bank account."
+                                android:text="@string/savings_3"
                                 android:textSize="18sp" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
-                                android:text="If you make a withdrawal from a SAVINGS item, this transaction can be entered in the DAILY MONEY - MONEY IN tab. Your bank account balances will be adjusted accordingly. DON'T FORGET that only a percentage of the deposit will be 'available for spending'."
+                                android:text="@string/savings_4"
                                 android:textSize="18sp" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
-                                android:text="If you make frequent withdrawals from SAVINGS items, you should adjust your BUDGET to reflect this income."
+                                android:text="@string/savings_5"
                                 android:textSize="18sp" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
-                                android:text="NOTE: If you create an INCOME from a SAVINGS item, the amount of the contributions to it will be adjusted accordingly, as will the 'goal achieved' date for it. These changes will be reflected in the SAVINGS screen."
+                                android:text="@string/savings_6"
                                 android:textSize="18sp" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
-                                android:text="Payments towards and withdrawals from your savings items in the DAILY MONEY tabs will be automatically added to or subtracted from the balances in the SAVINGS screen."
+                                android:text="@string/savings_7"
                                 android:textSize="18sp" />
 
                         </LinearLayout>
@@ -1066,7 +1066,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
-                                android:text="Spending Report"
+                                android:text="@string/spending_report"
                                 android:textSize="18sp" />
 
                             <RelativeLayout
@@ -1106,21 +1106,21 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
-                                android:text="MYnance will show you your spending in each expense category of your budget by month or for the year to date."
+                                android:text="@string/spending_report_1"
                                 android:textSize="18sp" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
-                                android:text="Simply use the pull-down menus to choose the period of time that you'd like to see."
+                                android:text="@string/spending_report_2"
                                 android:textSize="18sp" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
-                                android:text="When updating your budget, you can use the year to date spending report to see what your actual spending was in each category and use those numbers as the new budget amounts."
+                                android:text="@string/spending_report_3"
                                 android:textSize="18sp" />
 
                         </LinearLayout>
@@ -1147,7 +1147,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
-                                android:text="Contact Us"
+                                android:text="@string/contact_us"
                                 android:textSize="18sp" />
 
                             <RelativeLayout
@@ -1187,7 +1187,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
-                                android:text="Contact us, we'd love to hear from you!"
+                                android:text="@string/contact_us_1"
                                 android:textSize="18sp" />
 
                             <TextView
@@ -1195,7 +1195,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
-                                android:text="Send us an email:"
+                                android:text="@string/contact_us_2"
                                 android:textSize="18sp" />
 
                             <TextView
@@ -1203,7 +1203,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
-                                android:text="gotchasomething.ca@gmail.com"
+                                android:text="@string/email_address"
                                 android:textSize="18sp"
                                 android:textColor="@color/colorAccent"/>
 
@@ -1212,7 +1212,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
-                                android:text="or visit our website:"
+                                android:text="@string/contact_us_3"
                                 android:textSize="18sp" />
 
                             <TextView
@@ -1220,7 +1220,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
-                                android:text="www.gotchasomething.ca"
+                                android:text="@string/website"
                                 android:textSize="18sp"
                                 android:textColor="@color/colorAccent"/>
 
@@ -1247,7 +1247,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
-                                android:text="Rate this app"
+                                android:text="@string/rate_this_app"
                                 android:textSize="18sp" />
 
                             <LinearLayout

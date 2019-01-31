@@ -9,7 +9,6 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 import java.text.NumberFormat;
@@ -22,16 +21,15 @@ import ca.gotchasomething.mynance.tabFragments.DailyWeeklyLimits;
 
 public class LayoutDailyMoney extends MainNavigation {
 
-    Button moneyInButton, moneyOutButton;
     DbManager dbManager;
     Double newAccountBalance = 0.0, newAvailableBalance = 0.0;
     FragmentManager fm;
     FragmentTransaction transaction;
     FrameLayout container;
     NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
-    String availableBalance2 = null, accountBalance2 = null;
+    String accountBalance2 = null, availableBalance2 = null;
     TabLayout tl;
-    TextView totalAccountText, availableAccountText, budgetWarningText;
+    TextView availableAccountText, budgetWarningText, totalAccountText;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -61,11 +59,11 @@ public class LayoutDailyMoney extends MainNavigation {
         tl = findViewById(R.id.daily_tab_layout);
         container = findViewById(R.id.daily_fragment_container);
 
-        tl.addTab(tl.newTab().setText("Money In"));
-        tl.addTab(tl.newTab().setText("Money Out"));
-        tl.addTab(tl.newTab().setText("Credit card"));
-        tl.addTab(tl.newTab().setText("Pay cc"));
-        tl.addTab(tl.newTab().setText("Weekly Limits"));
+        tl.addTab(tl.newTab().setText(getString(R.string.money_in)));
+        tl.addTab(tl.newTab().setText(getString(R.string.money_out)));
+        tl.addTab(tl.newTab().setText(getString(R.string.credit_card)));
+        tl.addTab(tl.newTab().setText(getString(R.string.pay_cc)));
+        tl.addTab(tl.newTab().setText(getString(R.string.weekly_limits)));
 
         tl.addOnTabSelectedListener(onTabSelectedListener);
 

@@ -20,7 +20,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
-                android:text="What are you saving for?"
+                android:text="@string/enter_savings_cat"
                 android:textSize="16sp" />
 
             <EditText
@@ -38,7 +38,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:text="What is the current balance?"
+                android:text="@string/enter_savings_amount"
                 android:textSize="16sp" />
 
             <EditText
@@ -55,7 +55,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:text="What is the total amount you want to save?"
+                android:text="@string/enter_savings_goal"
                 android:textSize="16sp" />
 
             <EditText
@@ -72,7 +72,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:text="How much are you contributing?"
+                android:text="@string/enter_savings_payments"
                 android:textSize="16sp" />
 
 
@@ -92,7 +92,7 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="10dp"
-                android:text="How often?"
+                android:text="@string/how_often"
                 android:textSize="16sp" />
 
             <RadioGroup
@@ -105,28 +105,28 @@
                     android:id="@+id/savingsWeeklyRadioButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Weekly"
+                    android:text="@string/weekly"
                     android:textSize="15sp" />
 
                 <RadioButton
                     android:id="@+id/savingsBiWeeklyRadioButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Every 2 weeks"
+                    android:text="@string/bi_weekly"
                     android:textSize="15sp" />
 
                 <RadioButton
                     android:id="@+id/savingsMonthlyRadioButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Once a month"
+                    android:text="@string/monthly"
                     android:textSize="15sp" />
 
                 <RadioButton
                     android:id="@+id/savingsAnnuallyRadioButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Once a year"
+                    android:text="@string/yearly"
                     android:textSize="15sp" />
 
             </RadioGroup>
@@ -136,7 +136,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:text="What is the annual interest rate being earned?"
+                android:text="@string/enter_savings_rate"
                 android:textSize="16sp" />
 
 
@@ -156,7 +156,7 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="10dp"
-                android:text="How often is the interest compounded?"
+                android:text="@string/enter_int_frequency"
                 android:textSize="16sp" />
 
             <RadioGroup
@@ -169,14 +169,14 @@
                     android:id="@+id/savingsIntMonthlyRadioButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Once a month"
+                    android:text="@string/monthly"
                     android:textSize="15sp" />
 
                 <RadioButton
                     android:id="@+id/savingsIntAnnuallyRadioButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Once a year"
+                    android:text="@string/yearly"
                     android:textSize="15sp" />
 
             </RadioGroup>
@@ -189,7 +189,7 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="10dp"
-                android:text="Date"
+                android:text="@string/date"
                 android:textSize="18sp" />
 
             <RelativeLayout
@@ -204,7 +204,7 @@
                     android:layout_gravity="end"
                     android:layout_margin="10dp"
                     android:gravity="center"
-                    android:text="Cancel" />
+                    android:text="@string/cancel" />
 
                 <Button
                     android:id="@+id/saveSavingsButton"
@@ -214,7 +214,7 @@
                     android:layout_gravity="end"
                     android:layout_margin="10dp"
                     android:gravity="center"
-                    android:text="Save" />
+                    android:text="@string/save" />
 
                 <Button
                     android:id="@+id/updateSavingsButton"
@@ -224,7 +224,7 @@
                     android:layout_gravity="end"
                     android:layout_margin="10dp"
                     android:gravity="center"
-                    android:text="update" />
+                    android:text="@string/update" />
 
             </RelativeLayout>
 

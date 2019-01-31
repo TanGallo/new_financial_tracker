@@ -46,7 +46,7 @@
                         android:layout_marginTop="10dp"
                         android:layout_marginEnd="10dp"
                         android:layout_marginBottom="5dp"
-                        android:text="Total Income:"
+                        android:text="@string/total_income"
                         android:textSize="22sp" />
 
                     <TextView
@@ -57,7 +57,6 @@
                         android:layout_marginTop="10dp"
                         android:layout_marginEnd="10dp"
                         android:layout_marginBottom="5dp"
-                        android:text="$1.00"
                         android:textSize="22sp" />
 
                 </LinearLayout>
@@ -75,7 +74,7 @@
                         android:layout_marginTop="5dp"
                         android:layout_marginEnd="10dp"
                         android:layout_marginBottom="10dp"
-                        android:text="Total Expenses:"
+                        android:text="@string/total_expenses"
                         android:textSize="22sp" />
 
                     <TextView
@@ -86,7 +85,6 @@
                         android:layout_marginTop="5dp"
                         android:layout_marginEnd="10dp"
                         android:layout_marginBottom="10dp"
-                        android:text="$1.00"
                         android:textSize="22sp" />
 
                 </LinearLayout>
@@ -96,7 +94,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:text="Income still available for budgeting:"
+                    android:text="@string/income_available"
                     android:textSize="16sp" />
 
                 <TextView
@@ -104,7 +102,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:text="$1.00"
                     android:textSize="16sp" />
 
                 <TextView
@@ -113,7 +110,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="10dp"
-                android:text="Oops, you are spending more than you make!"
+                android:text="@string/oops"
                 android:textColor="@android:color/holo_red_light"
                 android:textSize="16sp" />
 
@@ -122,7 +119,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:text="$-1.00"
                     android:textColor="@android:color/holo_red_light"
                     android:textSize="16sp" />
 
@@ -132,8 +128,36 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:layout_gravity="end"
-                    android:text="done entering budget"
+                    android:background="@drawable/entry_box"
+                    android:text="@string/done_budget"
                     />
+
+                <TextView
+                    android:id="@+id/deleteExpText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:text="@string/cannot_delete_budget"
+                    android:textSize="16sp" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <Button
+                        android:id="@+id/okButton"
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginStart="5dp"
+                        android:text="@string/ok"
+                        android:textSize="12sp"
+                        android:layout_alignParentEnd="true"
+                        android:background="@drawable/entry_box"/>
+
+                </RelativeLayout>
 
 
                 <View
@@ -173,7 +197,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="start"
                                 android:layout_margin="10dp"
-                                android:text="Income:"
+                                android:text="@string/income"
                                 android:textSize="18sp" />
 
                             <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -212,7 +236,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="start"
                                 android:layout_margin="10dp"
-                                android:text="Expenses:"
+                                android:text="@string/expenses"
                                 android:textSize="18sp" />
 
                             <com.google.android.material.floatingactionbutton.FloatingActionButton

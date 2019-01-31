@@ -48,7 +48,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"
-                        android:text="Total Saved:"
+                        android:text="@string/total_saved"
                         android:textSize="22sp" />
 
                     <TextView
@@ -56,7 +56,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"
-                        android:text="Amount"
+                        android:text="@string/amount"
                         android:textSize="22sp" />
 
                 </LinearLayout>
@@ -76,7 +76,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:layout_gravity="end"
-                    android:text="done entering savings"
+                    android:text="@string/done_savings"
                     />
 
                 <View
@@ -95,7 +95,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
-                    android:text="You haven't entered any savings yet."
+                    android:text="@string/no_savings"
                     android:layout_gravity="center_horizontal"
                     android:gravity="center_horizontal"
                     android:textColor="@color/colorGreen"
@@ -106,7 +106,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
-                    android:text="Press the PLUS button above to add savings."
+                    android:text="@string/plus_button_savings"
                     android:layout_gravity="center_horizontal"
                     android:gravity="center_horizontal"
                     android:textColor="@color/colorGreen"

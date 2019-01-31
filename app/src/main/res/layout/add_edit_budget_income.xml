@@ -25,7 +25,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="10dp"
-                    android:text="Enter an income category"
+                    android:text="@string/enter_income_cat"
                     android:textSize="16sp" />
 
                 <EditText
@@ -41,7 +41,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
-                    android:text="Amount"
+                    android:text="@string/amount"
                     android:textSize="16sp" />
 
                 <EditText
@@ -59,7 +59,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:text="How often?"
+                android:text="@string/how_often"
                 android:textSize="16sp" />
 
             <RadioGroup
@@ -72,42 +72,42 @@
                     android:id="@+id/budgetIncomeWeeklyRadioButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Weekly (52 times/yr)"
+                    android:text="@string/weekly"
                     android:textSize="15sp" />
 
                 <RadioButton
                     android:id="@+id/budgetIncomeBiWeeklyRadioButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Every 2 weeks (26 times/yr)"
+                    android:text="@string/bi_weekly"
                     android:textSize="15sp" />
 
                 <RadioButton
                     android:id="@+id/budgetIncomeBiMonthlyRadioButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Twice a month (24 times/yr)"
+                    android:text="@string/bi_monthly"
                     android:textSize="15sp" />
 
                 <RadioButton
                     android:id="@+id/budgetIncomeMonthlyRadioButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Once a month (12 times/yr)"
+                    android:text="@string/monthly"
                     android:textSize="15sp" />
 
                 <RadioButton
                     android:id="@+id/budgetIncomeBiAnnuallyRadioButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Twice a year"
+                    android:text="@string/bi_annually"
                     android:textSize="15sp" />
 
                 <RadioButton
                     android:id="@+id/budgetIncomeAnnuallyRadioButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Once a year"
+                    android:text="@string/yearly"
                     android:textSize="15sp" />
 
             </RadioGroup>
@@ -123,7 +123,7 @@
                     android:layout_alignParentStart="true"
                     android:layout_margin="10dp"
                     android:gravity="center"
-                    android:text="cancel" />
+                    android:text="@string/cancel" />
 
                 <Button
                     android:id="@+id/budgetAddIncomeButton"
@@ -132,7 +132,7 @@
                     android:layout_alignParentEnd="true"
                     android:layout_margin="10dp"
                     android:gravity="center"
-                    android:text="add" />
+                    android:text="@string/add" />
 
                 <Button
                     android:id="@+id/budgetUpdateIncomeButton"
@@ -141,7 +141,7 @@
                     android:layout_alignParentEnd="true"
                     android:layout_margin="10dp"
                     android:gravity="center"
-                    android:text="update" />
+                    android:text="@string/update" />
 
             </RelativeLayout>
 

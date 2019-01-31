@@ -9,7 +9,6 @@ public class PreferenceManager {
     private Context context;
     private SharedPreferences sharedPreferences;
 
-
     public PreferenceManager(Context context) {
         this.context = context;
         getSharedPreferences();

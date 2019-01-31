@@ -2,18 +2,18 @@ package ca.gotchasomething.mynance.data;
 //Db description
 
 public class MoneyOutDb {
-    private String moneyOutCat; //1
-    private String moneyOutPriority; //2
-    private String moneyOutWeekly; //3
-    private Double moneyOutAmount; //4
-    private String moneyOutCreatedOn; //5
-    private String moneyOutCC; //6
+    private String moneyOutCat;
+    private String moneyOutPriority;
+    private String moneyOutWeekly;
+    private Double moneyOutAmount;
+    private String moneyOutCreatedOn;
+    private String moneyOutCC;
     private String moneyOutDebtCat;
     private long moneyOutChargingDebtId;
-    private int moneyOutToPay; //7
-    private int moneyOutPaid; //8
-    private long expRefKeyMO; //9
-    private long id; //0
+    private int moneyOutToPay;
+    private int moneyOutPaid;
+    private long expRefKeyMO;
+    private long id;
 
     public MoneyOutDb(
             String moneyOutCat,

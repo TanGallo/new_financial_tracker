@@ -20,6 +20,165 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
+                <TextView
+                    android:id="@+id/ratingsLabel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:gravity="center_horizontal"
+                    android:text="@string/enjoying_question"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="18sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/enjoyNoButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:layout_margin="10dp"
+                        android:gravity="center"
+                        android:text="@string/no"
+                        android:background="@drawable/entry_box"
+                        android:textColor="@color/colorPrimaryDark"
+                        tools:ignore="UnusedAttribute"/>
+
+
+                    <Button
+                        android:id="@+id/enjoyNotSureButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:layout_margin="10dp"
+                        android:gravity="center"
+                        android:text="@string/not_sure_yet"
+                        android:background="@drawable/entry_box"
+                        android:textColor="@color/colorPrimaryDark"
+                        tools:ignore="UnusedAttribute"/>
+
+                    <Button
+                        android:id="@+id/enjoyYesButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:layout_margin="10dp"
+                        android:gravity="center"
+                        android:text="@string/yes"
+                        android:background="@drawable/entry_box"
+                        android:textColor="@color/colorPrimaryDark"
+                        tools:ignore="UnusedAttribute"/>
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/ratingsYesLabel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:gravity="center_horizontal"
+                    android:text="@string/rate_it_question"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="18sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/rateNoButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:layout_margin="10dp"
+                        android:gravity="center"
+                        android:text="@string/not_now"
+                        android:background="@drawable/entry_box"
+                        android:textColor="@color/colorPrimaryDark"
+                        tools:ignore="UnusedAttribute"/>
+
+
+                    <Button
+                        android:id="@+id/rateYesButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:layout_margin="10dp"
+                        android:gravity="center"
+                        android:text="@string/sure"
+                        android:background="@drawable/entry_box"
+                        android:textColor="@color/colorPrimaryDark"
+                        tools:ignore="UnusedAttribute"/>
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/ratingsNoLabel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:gravity="center_horizontal"
+                    android:text="@string/email_question"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="18sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/emailNoButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:layout_margin="10dp"
+                        android:gravity="center"
+                        android:text="@string/not_now"
+                        android:background="@drawable/entry_box"
+                        android:textColor="@color/colorPrimaryDark"
+                        tools:ignore="UnusedAttribute"/>
+
+
+                    <Button
+                        android:id="@+id/emailYesButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:layout_margin="10dp"
+                        android:gravity="center"
+                        android:text="@string/sure"
+                        android:background="@drawable/entry_box"
+                        android:textColor="@color/colorPrimaryDark"
+                        tools:ignore="UnusedAttribute" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/temp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="18sp"
+                    />
+
+                <TextView
+                    android:id="@+id/tempE"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="18sp"
+                    />
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -59,7 +218,7 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"
                         android:layout_toStartOf="@id/noMoneyOutButton"
-                        android:text="yes"
+                        android:text="@string/yes"
                         android:textSize="12sp"
                         android:background="@drawable/entry_box"/>
 
@@ -68,7 +227,7 @@
                         android:layout_width="60dp"
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"
-                        android:text="no"
+                        android:text="@string/no"
                         android:textSize="12sp"
                         android:layout_alignParentEnd="true"
                         android:background="@drawable/entry_box"/>
@@ -94,7 +253,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
-                        android:text="Category"
+                        android:text="@string/category"
                         android:textSize="16sp" />
 
                     <EditText
@@ -103,7 +262,7 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
                         android:inputType="numberDecimal"
-                        android:text="Amount"
+                        android:text="@string/amount"
                         android:textSize="16sp" />
 
                 </LinearLayout>
@@ -121,7 +280,7 @@
                         android:layout_margin="5dp"
                         android:gravity="center"
                         android:background="@drawable/entry_box"
-                        android:text="Cancel"
+                        android:text="@string/cancel"
                         android:textSize="12sp"/>
 
                     <Button
@@ -133,7 +292,7 @@
                         android:layout_margin="5dp"
                         android:gravity="center"
                         android:background="@drawable/entry_box"
-                        android:text="Update"
+                        android:text="@string/update"
                         android:textSize="12sp"/>
 
                     <Button
@@ -145,7 +304,7 @@
                         android:layout_margin="5dp"
                         android:gravity="center"
                         android:background="@drawable/entry_box"
-                        android:text="continue"
+                        android:text="@string/continue1"
                         android:textSize="12sp"/>
 
                 </RelativeLayout>
@@ -180,7 +339,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
-                android:hint="Amount"
+                android:hint="@string/amount"
+                android:inputType="numberDecimal"
                 android:textSize="16sp" />
 
             <Spinner
@@ -201,7 +361,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_margin="5dp"
-                android:text="enter"
+                android:text="@string/enter"
                 android:background="@drawable/entry_box"
                 android:textSize="12sp" />
 
@@ -227,7 +387,7 @@
             android:layout_marginTop="10dp"
             android:layout_marginEnd="70dp"
             android:layout_marginBottom="10dp"
-            android:text="Use this tab to record all the transactions when money leaves your bank account."
+            android:text="@string/empty_money_out"
             android:textAlignment="center"
             android:textColor="@color/colorGreen"
             android:textSize="18sp" />

@@ -109,8 +109,7 @@ public class DbHelper extends SQLiteOpenHelper {
             " expenseWeekly TEXT," +
             " expenseAnnualAmount REAL NOT NULL," +
             " expenseAAnnualAmount REAL NOT NULL," +
-            " expenseBAnnualAmount REAL NOT NULL)";// +
-    //" CONSTRAINT unique_name UNIQUE (expenseName))";
+            " expenseBAnnualAmount REAL NOT NULL)";
 
     private static final String createIncomesQuery = "CREATE TABLE " + INCOME_TABLE_NAME +
             " (_id INTEGER PRIMARY KEY," +

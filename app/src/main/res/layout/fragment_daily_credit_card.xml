@@ -19,7 +19,7 @@
             android:layout_marginTop="10dp"
             android:layout_marginEnd="70dp"
             android:layout_marginBottom="10dp"
-            android:text="You have no outstanding credit card purchases!"
+            android:text="@string/no_debts_message"
             android:textAlignment="center"
             android:textColor="@color/colorGreen"
             android:textSize="18sp" />
@@ -78,7 +78,7 @@
                         android:gravity="center"
                         android:textSize="12sp"
                         android:background="@drawable/entry_box"
-                        android:text="Cancel" />
+                        android:text="@string/cancel" />
 
                     <Button
                         android:id="@+id/ccTransContinueButton"
@@ -90,7 +90,7 @@
                         android:gravity="center"
                         android:textSize="12sp"
                         android:background="@drawable/entry_box"
-                        android:text="continue" />
+                        android:text="@string/continue1" />
 
                 </RelativeLayout>
 
@@ -111,7 +111,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"
-                        android:text="Check the boxes below of the credit card purchases that you want to pay today."
+                        android:text="@string/check_boxes_below"
                         android:textAlignment="center"
                         android:textSize="16sp" />
 
@@ -127,7 +127,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"
-                        android:text="Pay this amount to your credit card:"
+                        android:text="@string/pay_this_amount"
                         android:textSize="16sp" />
 
                     <TextView
@@ -136,7 +136,6 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"
                         android:layout_gravity="center_horizontal"
-                        android:text="$1.00"
                         android:textSize="16sp" />
 
                 </LinearLayout>
@@ -152,7 +151,7 @@
                         android:layout_centerVertical="true"
                         android:layout_margin="5dp"
                         android:layout_toStartOf="@id/ccPaidCheckbox"
-                        android:text="Check box once payment made" />
+                        android:text="@string/check_box_prompt" />
 
                     <CheckBox
                         android:id="@+id/ccPaidCheckbox"
@@ -193,7 +192,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:text="Outstanding credit card purchases"
+                android:text="@string/outstanding_cc_purchases"
                 android:textSize="16sp" />
 
             <TextView
@@ -202,7 +201,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_margin="10dp"
-                android:text="Pay"
+                android:text="@string/pay"
                 android:textSize="16sp" />
 
         </RelativeLayout>
