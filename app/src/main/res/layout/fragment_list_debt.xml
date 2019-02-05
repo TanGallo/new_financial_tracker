@@ -57,10 +57,21 @@
             android:textSize="15sp" />
 
         <TextView
+            android:id="@+id/debtListFreeDateLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="10dp"
+            android:text="@string/debt_will"
+            android:labelFor="@id/debtListFreeDate"
+            android:textSize="15sp" />
+
+        <TextView
             android:id="@+id/debtListFreeDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="10dp"
             android:text="@string/date"
             android:textSize="15sp" />
 

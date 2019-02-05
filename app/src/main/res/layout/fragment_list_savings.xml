@@ -59,10 +59,21 @@
             android:textSize="15sp" />
 
         <TextView
-            android:id="@+id/savingsListDate"
+            android:id="@+id/savingsListDateLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:labelFor="@id/savingsListDate"
+            android:text="@string/goal_will"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/savingsListDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             android:text="@string/date"

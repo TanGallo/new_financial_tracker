@@ -133,6 +133,17 @@
                     android:text="@string/done_budget" />
 
                 <TextView
+                    android:id="@+id/emptyBudgetText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:text="@string/empty_budget"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center_horizontal"
+                    android:textColor="@color/colorGreen"
+                    android:textSize="18sp"/>
+
+                <TextView
                     android:id="@+id/deleteExpText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

@@ -79,6 +79,7 @@
                     android:layout_gravity="end"
                     android:text="@string/done_savings"
                     android:contentDescription="@string/done_savings"
+                    android:background="@drawable/entry_box"
                     />
 
                 <View
@@ -109,6 +110,17 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:text="@string/plus_button_savings"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center_horizontal"
+                    android:textColor="@color/colorGreen"
+                    android:textSize="18sp"/>
+
+                <TextView
+                    android:id="@+id/emptySavingsText3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:text="@string/empty_savings_3"
                     android:layout_gravity="center_horizontal"
                     android:gravity="center_horizontal"
                     android:textColor="@color/colorGreen"

@@ -4,10 +4,10 @@
     <string name="amount">Amount</string>
     <string name="app_name">MYnance</string>
     <string name="apr">April</string>
-    <string name="apr1">Apr</string>
+    <string name="apr1" translatable="false">Apr</string>
     <string name="ask_later">Okay, we\'ll ask you again later.</string>
     <string name="aug">August</string>
-    <string name="aug1">Aug</string>
+    <string name="aug1" translatable="false">Aug</string>
     <string name="available_to_spend">Available to spend:</string>
     <string name="bi_annually">Twice a year (2 times/yr)</string>
     <string name="bi_monthly">Twice a month (24 times/yr)</string>
@@ -81,7 +81,7 @@
     <string name="debt_saved">This debt has been saved to your BUDGET</string>
     <string name="debt_will">Will be paid by </string>
     <string name="dec">December</string>
-    <string name="dec1">Dec</string>
+    <string name="dec1" translatable="false">Dec</string>
     <string name="delete">Delete this item</string>
     <string name="done">DONE</string>
     <string name="done_budget">done entering budget</string>
@@ -113,7 +113,7 @@
     <string name="enter_savings_rate">What is the annual interest rate being earned?</string>
     <string name="expenses">Expenses:</string>
     <string name="feb">February</string>
-    <string name="feb1">Feb</string>
+    <string name="feb1" translatable="false">Feb</string>
     <string name="finish_budget">Finish budget</string>
     <string name="get_started">Let\'s get started!</string>
     <string name="goal_achieved">Goal achieved!</string>
@@ -129,19 +129,19 @@
     <string name="income">Income:</string>
     <string name="income_available">Income still available for budgeting:</string>
     <string name="jan">January</string>
-    <string name="jan1">Jan</string>
+    <string name="jan1" translatable="false">Jan</string>
     <string name="jul">July</string>
-    <string name="jul1">Jul</string>
+    <string name="jul1" translatable="false">Jul</string>
     <string name="jun">June</string>
-    <string name="jun1">Jun</string>
+    <string name="jun1" translatable="false">Jun</string>
     <string name="left_this_week">left this week</string>
     <string name="limit_warning">Making this purchase will put this DEBTS item over its limit.</string>
     <string name="logo" translatable="false">Logo</string>
     <string name="manage_money">Now you can manage your money in just a few minutes a day!</string>
     <string name="mar">March</string>
-    <string name="mar1">Mar</string>
+    <string name="mar1" translatable="false">Mar</string>
     <string name="may">May</string>
-    <string name="may1">May</string>
+    <string name="may1" translatable="false">May</string>
     <string name="money_in">Money In</string>
     <string name="money_in_1">Use this tab to record any money that goes into your bank account.</string>
     <string name="money_in_2">Each entry will map to an income item in your BUDGET.</string>
@@ -180,9 +180,9 @@
     <string name="not_now">not now</string>
     <string name="not_sure_yet">not sure yet</string>
     <string name="nov">November</string>
-    <string name="nov1">Nov</string>
+    <string name="nov1" translatable="false">Nov</string>
     <string name="oct">October</string>
-    <string name="oct1">Oct</string>
+    <string name="oct1" translatable="false">Oct</string>
     <string name="ok">ok</string>
     <string name="oops">Oops, you are spending more than you make!</string>
     <string name="optional">This expense is optional (i.e. entertainment, gifts, clothing, etc)</string>
@@ -212,7 +212,7 @@
     <string name="savings_7">Payments towards and withdrawals from your savings items in the DAILY MONEY tabs will be automatically added to or subtracted from the balances in the SAVINGS screen.</string>
     <string name="savings_saved">This savings info has been saved to your BUDGET</string>
     <string name="sep">September</string>
-    <string name="sep1">Sep</string>
+    <string name="sep1" translatable="false">Sep</string>
     <string name="set_up">Set Up</string>
     <string name="set_up_1">The automatic set up process walked you through setting up your debts, savings, and budget.</string>
     <string name="set_up_2">All of these items can be changed manually by using the MENU to access their screens.</string>
@@ -264,5 +264,7 @@
     <string name="year_to_date1">all</string>
     <string name="yes">yes</string>
     <string name="add">add</string>
-    <string name="help">Help</string>
+    <string name="empty_debts_3">After you have clicked the \'Done Entering Debts\' button, you will still be able to edit these items by using the menu to access the DEBTS screen.</string>
+    <string name="empty_savings_3">After you have clicked the \'Done Entering Savings\' button, you will still be able to edit these items by using the menu to access the SAVINGS screen.</string>
+    <string name="empty_budget">After you have clicked the \'Done Entering Budget\' button, you will still be able to edit these items by using the menu to access the BUDGET screen.</string>
 </resources>

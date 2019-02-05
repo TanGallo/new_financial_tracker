@@ -147,16 +147,32 @@
 
             </RadioGroup>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_horizontal">
+
+            <TextView
+                android:id="@+id/debtDateResultLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/debt_will"
+                android:textSize="18sp" />
+
             <TextView
                 android:id="@+id/debtDateResult"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginStart="10dp"
+                android:layout_marginStart="5dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="10dp"
                 android:text="@string/date"
                 android:textSize="18sp" />
+
+            </LinearLayout>
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -171,6 +187,7 @@
                     android:layout_margin="10dp"
                     android:gravity="center"
                     android:contentDescription="@string/cancel"
+                    android:background="@drawable/entry_box"
                     android:text="@string/cancel" />
 
                 <Button
@@ -183,6 +200,7 @@
                     android:gravity="center"
                     android:contentDescription="@string/save"
                     android:text="@string/save"
+                    android:background="@drawable/entry_box"
                     tools:ignore="RelativeOverlap" />
 
                 <Button
@@ -195,6 +213,7 @@
                     android:gravity="center"
                     android:contentDescription="@string/update"
                     android:text="@string/update"
+                    android:background="@drawable/entry_box"
                     tools:ignore="RelativeOverlap" />
 
             </RelativeLayout>

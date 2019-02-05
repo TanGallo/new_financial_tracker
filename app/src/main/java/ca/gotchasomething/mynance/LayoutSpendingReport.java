@@ -14,7 +14,10 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -30,15 +33,16 @@ public class LayoutSpendingReport extends MainNavigation {
     DbManager dbManager;
     Double totalSpent = 0.0;
     General general;
+    int startIndex, endIndex;
     LinearLayout debtHeaderLayout, spendingReportLayout;
     ListView spendingListView;
     long expenseId;
     NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
     SpendingReportAdapter spendingReportAdapter;
     Spinner monthSpinner, yearSpinner;
-    String month = null, monthSelected = null, spentDate = null, totalSpentS = null, year = null;
+    String month = null, spentDate = null, totalSpentS = null, year = null, newMonth = null, newMonth2 = null;
     String[] months, years;
-    TextView emptyListText, emptySpinnersText, emptySpinnersText2;
+    TextView emptyListText, emptySpinnersText, emptySpinnersText2, test;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -124,53 +128,15 @@ public class LayoutSpendingReport extends MainNavigation {
     Spinner.OnItemSelectedListener onMonthSelected = new AdapterView.OnItemSelectedListener() {
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-            monthSelected = String.valueOf(monthSpinner.getSelectedItem());
-            switch (position) {
-                case 0:
-                    month = getString(R.string.jan1);
-                    break;
-                case 1:
-                    month = getString(R.string.feb1);
-                    break;
-                case 2:
-                    month = getString(R.string.mar1);
-                    break;
-                case 3:
-                    month = getString(R.string.apr1);
-                    break;
-                case 4:
-                    month = getString(R.string.may1);
-                    break;
-                case 5:
-                    month = getString(R.string.jun1);
-                    break;
-                case 6:
-                    month = getString(R.string.jul1);
-                    break;
-                case 7:
-                    month = getString(R.string.aug1);
-                    break;
-                case 8:
-                    month = getString(R.string.sep1);
-                    break;
-                case 9:
-                    month = getString(R.string.oct1);
-                    break;
-                case 10:
-                    month = getString(R.string.nov1);
-                    break;
-                case 11:
-                    month = getString(R.string.dec1);
-                    break;
-                case 12:
-                    month = getString(R.string.year_to_date1);
-                    break;
+            if (position == 12) {
+                month = getString(R.string.year_to_date1);
+            } else {
+                month = String.valueOf(monthSpinner.getSelectedItem());
             }
         }
 
         @Override
         public void onNothingSelected(AdapterView<?> parent) {
-
         }
     };
 
@@ -182,7 +148,6 @@ public class LayoutSpendingReport extends MainNavigation {
 
         @Override
         public void onNothingSelected(AdapterView<?> parent) {
-
         }
     };
 
@@ -259,7 +224,15 @@ public class LayoutSpendingReport extends MainNavigation {
                         spentPerCategory.add(m.getMoneyOutAmount());
                     }
                 } else {
-                    if (String.valueOf(m.getExpRefKeyMO()).equals(String.valueOf(expenseId)) && spentDate.contains(month) && spentDate.contains(year)) {
+                    startIndex = spentDate.indexOf("-") + 1;
+                    endIndex = spentDate.length() - 5;
+                    newMonth = spentDate.substring(startIndex, endIndex);
+                    try {
+                        newMonth2 = newMonth.replace(".", "");
+                    } catch(Exception e) {
+                        newMonth2 = newMonth;
+                    }
+                    if (String.valueOf(m.getExpRefKeyMO()).equals(String.valueOf(expenseId)) && month.contains(newMonth2) && spentDate.contains(year)) {
                         spentPerCategory.add(m.getMoneyOutAmount());
                     }
                 }

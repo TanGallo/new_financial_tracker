@@ -6,9 +6,7 @@
     <string name="already_spent">Dépenser</string>
     <string name="amount">Montant</string>
     <string name="apr">avril</string>
-    <string name="apr1">avr</string>
     <string name="aug">août</string>
-    <string name="aug1">aoû</string>
     <string name="available_to_spend">Pour dépenser</string>
     <string name="ask_later">Correct. Nous demanderons à nouveau plus tard.</string>
     <string name="bi_annually">2 fois par année</string>
@@ -37,7 +35,6 @@
     <string name="debt_paid">Dette payée!</string>
     <string name="debt_will">Sera payée par le</string>
     <string name="dec">décembre</string>
-    <string name="dec1">déc</string>
     <string name="done">TERMINÉ</string>
     <string name="email_question">SVP, laissez-nous savoir comment nous pouvons l\'améliorer</string>
     <string name="email_warning">Il ne y\'a pas de courriels installer</string>
@@ -49,21 +46,15 @@
     <string name="expenses">Dépenses:</string>
     <string name="income">Revenus:</string>
     <string name="feb">février</string>
-    <string name="feb1">fév</string>
     <string name="get_started">Allons y!</string>
     <string name="goal_will">Seront épargnés par le</string>
     <string name="how_often">À quelle fréquence?</string>
     <string name="jan">janvier</string>
-    <string name="jan1">jan</string>
     <string name="jul">juillet</string>
-    <string name="jul1">jui</string>
     <string name="jun">juin</string>
-    <string name="jun1">jui</string>
     <string name="left_this_week">"disponible cette semaine "</string>
     <string name="mar">mars</string>
-    <string name="mar1">mar</string>
     <string name="may">mai</string>
-    <string name="may1">mai</string>
     <string name="money_in">Revenus</string>
     <string name="money_out">Dépenses</string>
     <string name="monthly">1 fois par mois (12 fois par année)</string>
@@ -73,9 +64,7 @@
     <string name="not_now">pas maintenant</string>
     <string name="not_sure_yet">pas encore sûr</string>
     <string name="nov">novembre</string>
-    <string name="nov1">nov</string>
     <string name="oct">octobre</string>
-    <string name="oct1">oct</string>
     <string name="ok">d\'accord</string>
     <string name="pay">Payer</string>
     <string name="pay_cc">Payer les cartes</string>
@@ -86,7 +75,6 @@
     <string name="saved">Enregistré</string>
     <string name="savings">"Comptes d'épargne "</string>
     <string name="sep">septembre</string>
-    <string name="sep1">sep</string>
     <string name="set_up">Configuration</string>
     <string name="skip_button">Sauter l\'intro</string>
     <string name="slide1Title">Bienvenue  à MYnance</string>
@@ -255,4 +243,8 @@
     <string name="weekly_no">Non: il s\'agit d\'une dépense occasionnelle et je n\'ai pas besoin de conseils hebdomadaires</string>
     <string name="weekly_yes">Oui: j\'y dépense fréquemment et j\'aimerais me rappeler mes limites</string>
     <string name="weekly_yes_or_no">Voulez-vous que cette catégorie soit ajoutée à l\'onglet LIMITES DE DÉPENSES pour vous aider à rester dans les limites hebdomadaires?</string>
+    <string name="help">Information</string>
+    <string name="empty_debts_3">Après avoir cliqué sur le bouton \"dettes terminées\", vous pourrez toujours modifier ces éléments en utilisant le menu pour accéder à l\'écran DETTES.</string>
+    <string name="empty_savings_3">Après avoir cliqué sur le bouton \"comptes d\'épargnes terminés\", vous pourrez toujours modifier ces éléments en utilisant le menu pour accéder à l\'écran COMPTES D\'ÉPARGNE .</string>
+    <string name="empty_budget">Après avoir cliqué sur le bouton \"budget terminé\", vous pourrez toujours modifier ces éléments en utilisant le menu pour accéder à l\'écran BUDGET .</string>
 </resources>

@@ -45,7 +45,7 @@ public class AddSavings extends LayoutSavings {
     SimpleDateFormat savingsDateS;
     String expenseName = null, expensePriority = null, expenseWeekly = null, incomeName = null, savingsDate = null, savingsFrequencyS = null, savingsName = null,
             savingsIntFrequencyS = null;
-    TextView savingsDateResult, savingsFrequencyLabel, savingsIntFrequencyLabel;
+    TextView savingsDateResult, savingsDateResultLabel, savingsFrequencyLabel, savingsIntFrequencyLabel;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -73,6 +73,7 @@ public class AddSavings extends LayoutSavings {
         savingsIntMonthlyRadioButton.setChecked(true);
         savingsGoalAmountEntry = findViewById(R.id.savingsGoalAmountEntry);
         savingsDateResult = findViewById(R.id.savingsDateResult);
+        savingsDateResultLabel = findViewById(R.id.savingsDateResultLabel);
         saveSavingsButton = findViewById(R.id.saveSavingsButton);
         updateSavingsButton = findViewById(R.id.updateSavingsButton);
         updateSavingsButton.setVisibility(View.GONE);
@@ -263,16 +264,19 @@ public class AddSavings extends LayoutSavings {
 
         if ((numberOfDaysToSavingsGoal) <= 0) {
             savingsDate = getString(R.string.goal_achieved);
+            savingsDateResultLabel.setVisibility(View.GONE);
 
         } else if (numberOfDaysToSavingsGoal > Integer.MAX_VALUE) {
             savingsDate = getString(R.string.too_far);
+            savingsDateResultLabel.setVisibility(View.GONE);
 
         } else {
 
             savingsCal.add(Calendar.DATE, numberOfDaysToSavingsGoal);
             savingsDateD = savingsCal.getTime();
             savingsDateS = new SimpleDateFormat("dd-MMM-yyyy");
-            savingsDate = getString(R.string.goal_will) + " " + savingsDateS.format(savingsDateD);
+            savingsDate = savingsDateS.format(savingsDateD);
+            savingsDateResultLabel.setVisibility(View.VISIBLE);
         }
 
         return savingsDate;
@@ -298,39 +302,39 @@ public class AddSavings extends LayoutSavings {
             if (savingsNameEntry.getText().toString().equals("")) {
                 Toast.makeText(getBaseContext(), R.string.no_blanks_warning, Toast.LENGTH_LONG).show();
             } else {
-                nameEntry = savingsNameEntry.getText().toString();
+                savingsNameEntryS = savingsNameEntry.getText().toString();
                 if (savingsAmountEntry.getText().toString().equals("")) {
-                    amountEntry = 0.0;
+                    savingsAmountEntryD = 0.0;
                 } else {
-                    amountEntry = Double.valueOf(savingsAmountEntry.getText().toString());
+                    savingsAmountEntryD = Double.valueOf(savingsAmountEntry.getText().toString());
                 }
                 if (savingsGoalAmountEntry.getText().toString().equals("")) {
-                    goalEntry = 0.0;
+                    savingsGoalEntryD = 0.0;
                 } else {
-                    goalEntry = Double.valueOf(savingsGoalAmountEntry.getText().toString());
+                    savingsGoalEntryD = Double.valueOf(savingsGoalAmountEntry.getText().toString());
                 }
                 if (savingsPaymentsEntry.getText().toString().equals("")) {
-                    paymentsEntry = 0.0;
+                    savingsPaymentsEntryD = 0.0;
                 } else {
-                    paymentsEntry = Double.valueOf(savingsPaymentsEntry.getText().toString());
+                    savingsPaymentsEntryD = Double.valueOf(savingsPaymentsEntry.getText().toString());
                 }
                 try {
-                    frequencyEntry = Double.valueOf(savingsFrequencyS);
+                    savingsFrequencyEntryD = Double.valueOf(savingsFrequencyS);
                 } catch (NullPointerException e7) {
-                    savingsFrequencyS = "1";
+                    savingsFrequencyEntryD = 1.0;
                 }
                 if (savingsPercentEntry.getText().toString().equals("")) {
-                    rateEntry = 0.0;
+                    savingsRateEntryD = 0.0;
                 } else {
-                    rateEntry = Double.valueOf(savingsPercentEntry.getText().toString());
+                    savingsRateEntryD = Double.valueOf(savingsPercentEntry.getText().toString());
                 }
                 try {
-                    intFrequencyEntry = Double.valueOf(savingsIntFrequencyS);
+                    savingsIntFrequencyEntryD = Double.valueOf(savingsIntFrequencyS);
                 } catch (NullPointerException e7) {
-                    savingsIntFrequencyS = "12";
+                    savingsIntFrequencyEntryD = 12.0;
                 }
 
-                incomeName = nameEntry;
+                incomeName = savingsNameEntryS;
                 incomeAmount = 0.0;
                 incomeFrequency = 1.0;
                 incomeAnnualAmount = 0.0;
@@ -345,9 +349,9 @@ public class AddSavings extends LayoutSavings {
 
                 dbManager.addIncome(incomeBudgetDb);
 
-                expenseName = nameEntry;
-                expenseAmount = paymentsEntry;
-                expenseFrequency = frequencyEntry;
+                expenseName = savingsNameEntryS;
+                expenseAmount = savingsPaymentsEntryD;
+                expenseFrequency = savingsFrequencyEntryD;
                 expensePriority = "A";
                 expenseWeekly = "N";
                 expenseAnnualAmount = expenseAmount * expenseFrequency;
@@ -367,13 +371,13 @@ public class AddSavings extends LayoutSavings {
 
                 dbManager.addExpense(expenseBudgetDb);
 
-                savingsName = nameEntry;
-                savingsAmount = amountEntry;
-                savingsGoal = goalEntry;
-                savingsPayments = paymentsEntry;
-                savingsFrequency = frequencyEntry;
-                savingsRate = rateEntry;
-                savingsIntFrequency = intFrequencyEntry;
+                savingsName = savingsNameEntryS;
+                savingsAmount = savingsAmountEntryD;
+                savingsGoal = savingsGoalEntryD;
+                savingsPayments = savingsPaymentsEntryD;
+                savingsFrequency = savingsFrequencyEntryD;
+                savingsRate = savingsRateEntryD;
+                savingsIntFrequency = savingsIntFrequencyEntryD;
                 savingsAnnualIncome = 0.0;
                 savingsDate = calcSavingsDate();
                 expRefKeyS = dbManager.findLatestExpenseId();

@@ -422,7 +422,7 @@ public class DailyMoneyOut extends Fragment {
                 debtCal.add(Calendar.DATE, numberOfDaysToPayDebt);
                 debtEndD = debtCal.getTime();
                 debtEndS = new SimpleDateFormat("dd-MMM-yyyy");
-                debtEnd = getString(R.string.debt_will) + " " + debtEndS.format(debtEndD);
+                debtEnd = debtEndS.format(debtEndD);
             }
         }
         return debtEnd;
@@ -503,7 +503,7 @@ public class DailyMoneyOut extends Fragment {
             savingsCal.add(Calendar.DATE, numberOfDaysToSavingsGoal);
             savingsDateD = savingsCal.getTime();
             savingsDateS = new SimpleDateFormat("dd-MMM-yyyy");
-            savingsDate = getString(R.string.goal_will) + " " + savingsDateS.format(savingsDateD);
+            savingsDate = savingsDateS.format(savingsDateD);
         }
         return savingsDate;
     }
@@ -631,7 +631,7 @@ public class DailyMoneyOut extends Fragment {
                 id = cursor.getLong(0);
                 cursor.close();
 
-                if (id % 10 == 0) {
+                if (id != 0 && id % 10 == 0) {
                     ratingsLabel.setVisibility(View.VISIBLE);
                     enjoyNoButton.setVisibility(View.VISIBLE);
                     enjoyNotSureButton.setVisibility(View.VISIBLE);

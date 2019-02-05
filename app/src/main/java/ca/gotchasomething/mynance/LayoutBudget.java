@@ -84,7 +84,7 @@ public class LayoutBudget extends MainNavigation {
             expenseFrequencyS = null, expensePriorityS = null, expenseWeeklyS = null, incomeAnnualAmount2 = null, incomeAnnualAmountS = null, incomeAvailable2 = null,
             incomeAvailableN2 = null, incomeFrequencyS = null, incomeId = null, nameEntry = null, priorityEntry = null, savingsDate = null, savingsDate2 = null,
             totalExpenses2 = null, totalExpensesS = null, totalIncome2 = null, totalIncomeS = null, weeklyEntry = null;
-    TextView budgetExpensesTotalText, budgetIncomeTotalText, budgetOopsAmountText, budgetOopsText, deleteExpText, headerLabel2, incomeAvailable, weeklyGuidanceLabel;
+    TextView emptyBudgetText, budgetExpensesTotalText, budgetIncomeTotalText, budgetOopsAmountText, budgetOopsText, deleteExpText, headerLabel2, incomeAvailable, weeklyGuidanceLabel;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -111,6 +111,7 @@ public class LayoutBudget extends MainNavigation {
         budgetOopsText.setVisibility(View.GONE);
         budgetOopsAmountText = findViewById(R.id.budgetOopsAmountText);
         budgetOopsAmountText.setVisibility(View.GONE);
+        emptyBudgetText = findViewById(R.id.emptyBudgetText);
         deleteExpText = findViewById(R.id.deleteExpText);
         deleteExpText.setVisibility(View.GONE);
         okButton = findViewById(R.id.okButton);
@@ -128,6 +129,7 @@ public class LayoutBudget extends MainNavigation {
 
         if (dbManager.budgetSetUpCheck() > 0) {
             doneBudgetSetUpButton.setVisibility(View.GONE);
+            emptyBudgetText.setVisibility(View.GONE);
         }
 
         incomeAdapter = new IncomeDbAdapter(this, dbManager.getIncomes());
@@ -247,9 +249,13 @@ public class LayoutBudget extends MainNavigation {
 
     public long findMatchingDebtIdExp() {
         for (DebtDb d : dbManager.getDebts()) {
-            if (d.getExpRefKeyD() == expenseBudgetDb.getId()) {
-                id = d.getId();
-                foundDebtIdExp = true;
+            try {
+                if (d.getExpRefKeyD() == expenseBudgetDb.getId()) {
+                    id = d.getId();
+                    foundDebtIdExp = true;
+                }
+            } catch (Exception e) {
+                foundDebtIdExp = false;
             }
         }
         return id;
@@ -281,7 +287,7 @@ public class LayoutBudget extends MainNavigation {
             debtCal.add(Calendar.DATE, numberOfDaysToPayDebt);
             debtEndD = debtCal.getTime();
             debtEndS = new SimpleDateFormat("dd-MMM-yyyy");
-            debtEnd = getString(R.string.debt_will) + " " + debtEndS.format(debtEndD);
+            debtEnd = debtEndS.format(debtEndD);
         }
 
         return debtEnd;
@@ -289,9 +295,13 @@ public class LayoutBudget extends MainNavigation {
 
     public long findMatchingDebtIdInc() {
         for (DebtDb d2 : dbManager.getDebts()) {
-            if (d2.getIncRefKeyD() == incomeBudgetDb.getId()) {
-                id = d2.getId();
-                foundDebtIdInc = true;
+            try {
+                if (d2.getIncRefKeyD() == incomeBudgetDb.getId()) {
+                    id = d2.getId();
+                    foundDebtIdInc = true;
+                }
+            } catch (Exception e) {
+                foundDebtIdInc = false;
             }
         }
         return id;
@@ -323,7 +333,7 @@ public class LayoutBudget extends MainNavigation {
             debtCal2.add(Calendar.DATE, numberOfDaysToPayDebt2);
             debtEndD2 = debtCal2.getTime();
             debtEndS2 = new SimpleDateFormat("dd-MMM-yyyy");
-            debtEnd2 = getString(R.string.debt_will) + " " + debtEndS2.format(debtEndD2);
+            debtEnd2 = debtEndS2.format(debtEndD2);
         }
 
         return debtEnd2;
@@ -331,9 +341,13 @@ public class LayoutBudget extends MainNavigation {
 
     public long findMatchingSavingsIdExp() {
         for (SavingsDb s : dbManager.getSavings()) {
-            if (s.getExpRefKeyS() == expenseBudgetDb.getId()) {
-                id = s.getId();
-                foundSavingsIdExp = true;
+            try {
+                if (s.getExpRefKeyS() == expenseBudgetDb.getId()) {
+                    id = s.getId();
+                    foundSavingsIdExp = true;
+                }
+            } catch (Exception e2) {
+                foundSavingsIdExp = false;
             }
         }
         return id;
@@ -392,16 +406,20 @@ public class LayoutBudget extends MainNavigation {
             savingsCal.add(Calendar.DATE, numberOfDaysToSavingsGoal);
             savingsDateD = savingsCal.getTime();
             savingsDateS = new SimpleDateFormat("dd-MMM-yyyy");
-            savingsDate = getString(R.string.goal_will) + " " + savingsDateS.format(savingsDateD);
+            savingsDate = savingsDateS.format(savingsDateD);
         }
         return savingsDate;
     }
 
     public long findMatchingSavingsIdInc() {
         for (SavingsDb s2 : dbManager.getSavings()) {
-            if (s2.getIncRefKeyS() == incomeBudgetDb.getId()) {
-                id = s2.getId();
-                foundSavingsIdInc = true;
+            try {
+                if (s2.getIncRefKeyS() == incomeBudgetDb.getId()) {
+                    id = s2.getId();
+                    foundSavingsIdInc = true;
+                }
+            } catch (Exception e2) {
+                foundSavingsIdInc = false;
             }
         }
         return id;
@@ -460,7 +478,7 @@ public class LayoutBudget extends MainNavigation {
             savingsCal2.add(Calendar.DATE, numberOfDaysToSavingsGoal2);
             savingsDateD2 = savingsCal2.getTime();
             savingsDateS2 = new SimpleDateFormat("dd-MMM-yyyy");
-            savingsDate2 = getString(R.string.goal_will) + " " + savingsDateS2.format(savingsDateD2);
+            savingsDate2 = savingsDateS2.format(savingsDateD2);
         }
         return savingsDate2;
     }
@@ -624,7 +642,7 @@ public class LayoutBudget extends MainNavigation {
 
                             incomeId = String.valueOf(incomeBudgetDb.getId());
 
-                            if(budgetIncomeCategory.getText().toString().equals("")) {
+                            if (budgetIncomeCategory.getText().toString().equals("")) {
                                 Toast.makeText(getBaseContext(), R.string.no_blanks_warning, Toast.LENGTH_LONG).show();
                             } else {
                                 nameEntry = budgetIncomeCategory.getText().toString();
@@ -633,7 +651,7 @@ public class LayoutBudget extends MainNavigation {
                                 } catch (NumberFormatException e4) {
                                     amountEntry = general.extractingDollars(budgetIncomeAmount);
                                 }
-                                if(String.valueOf(amountEntry).equals("")) {
+                                if (String.valueOf(amountEntry).equals("")) {
                                     amountEntry = 0.0;
                                 }
                                 frequencyEntry = Double.valueOf(incomeFrequencyS);
@@ -716,7 +734,7 @@ public class LayoutBudget extends MainNavigation {
 
                     findMatchingDebtIdInc();
                     findMatchingSavingsIdInc();
-                    if(foundDebtIdInc || foundSavingsIdInc) {
+                    if (foundDebtIdInc || foundSavingsIdInc) {
                         deleteExpText.setVisibility(View.VISIBLE);
                         okButton.setVisibility(View.VISIBLE);
 
@@ -1005,7 +1023,7 @@ public class LayoutBudget extends MainNavigation {
                         @Override
                         public void onClick(View v) {
 
-                            if(budgetExpenseCategory.getText().toString().equals("")) {
+                            if (budgetExpenseCategory.getText().toString().equals("")) {
                                 Toast.makeText(getBaseContext(), R.string.no_blanks_warning, Toast.LENGTH_LONG).show();
                             } else {
                                 nameEntry = budgetExpenseCategory.getText().toString();
@@ -1014,7 +1032,7 @@ public class LayoutBudget extends MainNavigation {
                                 } catch (NumberFormatException e6) {
                                     amountEntry = general.extractingDollars(budgetExpenseAmount);
                                 }
-                                if(String.valueOf(amountEntry).equals("")) {
+                                if (String.valueOf(amountEntry).equals("")) {
                                     amountEntry = 0.0;
                                 }
                                 frequencyEntry = Double.valueOf(expenseFrequencyS);
@@ -1112,7 +1130,7 @@ public class LayoutBudget extends MainNavigation {
 
                     findMatchingDebtIdExp();
                     findMatchingSavingsIdExp();
-                    if(foundDebtIdExp || foundSavingsIdExp) {
+                    if (foundDebtIdExp || foundSavingsIdExp) {
                         deleteExpText.setVisibility(View.VISIBLE);
                         okButton.setVisibility(View.VISIBLE);
 
