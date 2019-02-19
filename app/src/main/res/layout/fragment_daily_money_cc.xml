@@ -95,6 +95,52 @@
 
                     </RelativeLayout>
 
+                    <TextView
+                        android:id="@+id/ccBalancesWarningText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:text="@string/already_paid_warning"
+                        android:textSize="16sp" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/ccContinueText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:text="@string/continue1"
+                            android:textSize="16sp"
+                            tools:ignore="RelativeOverlap" />
+
+                        <Button
+                            android:id="@+id/yesContinueButton"
+                            android:layout_width="60dp"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:layout_toStartOf="@id/noContinueButton"
+                            android:text="@string/yes"
+                            android:textSize="12sp"
+                            android:contentDescription="@string/yes"
+                            android:background="@drawable/entry_box"/>
+
+                        <Button
+                            android:id="@+id/noContinueButton"
+                            android:layout_width="60dp"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:text="@string/no"
+                            android:textSize="12sp"
+                            android:layout_alignParentEnd="true"
+                            android:contentDescription="@string/no"
+                            android:background="@drawable/entry_box"/>
+
+                    </RelativeLayout>
+
                 </LinearLayout>
 
                 <LinearLayout

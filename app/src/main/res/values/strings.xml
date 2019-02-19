@@ -267,4 +267,5 @@
     <string name="empty_debts_3">After you have clicked the \'Done Entering Debts\' button, you will still be able to edit these items by using the menu to access the DEBTS screen.</string>
     <string name="empty_savings_3">After you have clicked the \'Done Entering Savings\' button, you will still be able to edit these items by using the menu to access the SAVINGS screen.</string>
     <string name="empty_budget">After you have clicked the \'Done Entering Budget\' button, you will still be able to edit these items by using the menu to access the BUDGET screen.</string>
+    <string name="already_paid_warning">This purchase was already paid to the credit card. If you continue, your Total and Available balances will be adjusted to reflect this change.</string>
 </resources>

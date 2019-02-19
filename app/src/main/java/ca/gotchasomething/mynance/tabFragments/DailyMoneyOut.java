@@ -636,6 +636,17 @@ public class DailyMoneyOut extends Fragment {
                     enjoyNoButton.setVisibility(View.VISIBLE);
                     enjoyNotSureButton.setVisibility(View.VISIBLE);
                     enjoyYesButton.setVisibility(View.VISIBLE);
+                    paymentNotPossibleBText.setVisibility(View.GONE);
+                    paymentNotPossibleAText.setVisibility(View.GONE);
+                    continueAnywayText.setVisibility(View.GONE);
+                    noMoneyOutButton.setVisibility(View.GONE);
+                    yesMoneyOutButton.setVisibility(View.GONE);
+                    updateMoneyOutLayout.setVisibility(View.GONE);
+                    moneyOutLine.setVisibility(View.GONE);
+                    addMoneyOutLayout.setVisibility(View.GONE);
+                    moneyOutLine2.setVisibility(View.GONE);
+                    newMoneyOutLabel.setVisibility(View.GONE);
+                    moneyOutList.setVisibility(View.GONE);
 
                     enjoyNoButton.setOnClickListener(new View.OnClickListener() {
                         @Override
