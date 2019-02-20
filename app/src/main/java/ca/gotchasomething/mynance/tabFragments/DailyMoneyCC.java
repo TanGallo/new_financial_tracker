@@ -580,7 +580,13 @@ public class DailyMoneyCC extends Fragment {
         moneyOutTimestamp = new Timestamp(moneyOutDate.getTime());
         moneyOutSDF = new SimpleDateFormat("dd-MMM-yyyy");
         moneyOutCreatedOn = moneyOutSDF.format(moneyOutTimestamp);
-        moneyOutCC = "Y";
+        findMatchingSavingsId();
+        findMatchingDebtId();
+        if(foundMatchingDebtId || foundMatchingSavingsId) {
+            moneyOutCC = "N";
+        } else {
+            moneyOutCC = "Y";
+        }
         moneyOutDebtCat = ccTransDebtCatS;
         moneyOutChargingDebtId = chargingDebtIdS;
         moneyOutToPay = 0;

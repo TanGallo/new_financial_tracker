@@ -31,7 +31,7 @@ public class LayoutSpendingReport extends MainNavigation {
     ArrayAdapter monthSpinnerAdapter, yearSpinnerAdapter;
     Button spendingReportButton;
     DbManager dbManager;
-    Double totalSpent = 0.0;
+    Double totalSpent = 0.0, totalSpentAll = 0.0;
     General general;
     int startIndex, endIndex;
     LinearLayout debtHeaderLayout, spendingReportLayout;
@@ -40,9 +40,9 @@ public class LayoutSpendingReport extends MainNavigation {
     NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
     SpendingReportAdapter spendingReportAdapter;
     Spinner monthSpinner, yearSpinner;
-    String month = null, spentDate = null, totalSpentS = null, year = null, newMonth = null, newMonth2 = null;
+    String month = null, spentDate = null, totalSpentS = null, totalSpentAllS = null, year = null, newMonth = null, newMonth2 = null;
     String[] months, years;
-    TextView emptyListText, emptySpinnersText, emptySpinnersText2, test;
+    TextView emptySpinnersText, emptySpinnersText2, totalSpentLabel, totalSpentText;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -64,10 +64,12 @@ public class LayoutSpendingReport extends MainNavigation {
         spendingReportLayout = findViewById(R.id.spendingReportLayout);
         debtHeaderLayout = findViewById(R.id.debtHeaderLayout);
         spendingReportButton = findViewById(R.id.spendingReportButton);
-        emptyListText = findViewById(R.id.emptyListText);
-        emptyListText.setVisibility(View.GONE);
         emptySpinnersText = findViewById(R.id.emptySpinnersText);
         emptySpinnersText2 = findViewById(R.id.emptySpinnersText2);
+        totalSpentLabel = findViewById(R.id.totalSpentLabel);
+        totalSpentLabel.setVisibility(View.GONE);
+        totalSpentText = findViewById(R.id.totalSpentText);
+        totalSpentText.setVisibility(View.GONE);
 
         spendingListView = findViewById(R.id.spendingListView);
         spendingListView.setVisibility(View.GONE);
@@ -114,14 +116,14 @@ public class LayoutSpendingReport extends MainNavigation {
             monthSpinner.setVisibility(View.GONE);
             yearSpinner.setVisibility(View.GONE);
             spendingReportButton.setVisibility(View.GONE);
-            emptyListText.setVisibility(View.GONE);
+            totalSpentLabel.setVisibility(View.GONE);
+            totalSpentText.setVisibility(View.GONE);
         } else {
             emptySpinnersText.setVisibility(View.GONE);
             emptySpinnersText2.setVisibility(View.GONE);
             monthSpinner.setVisibility(View.VISIBLE);
             yearSpinner.setVisibility(View.VISIBLE);
             spendingReportButton.setVisibility(View.VISIBLE);
-            emptyListText.setVisibility(View.GONE);
         }
     }
 
@@ -157,10 +159,45 @@ public class LayoutSpendingReport extends MainNavigation {
 
             emptySpinnersText.setVisibility(View.GONE);
             emptySpinnersText2.setVisibility(View.GONE);
+            totalSpentLabel.setVisibility(View.VISIBLE);
+            totalSpentText.setVisibility(View.VISIBLE);
 
             spendingReportAdapter = new SpendingReportAdapter(getApplicationContext(), dbManager.getExpense());
             spendingListView.setAdapter(spendingReportAdapter);
             spendingListView.setVisibility(View.VISIBLE);
+
+            //retrieve total spent for report
+            List<Double> totalSpentList = new ArrayList<>();
+            for (MoneyOutDb m : dbManager.getMoneyOuts()) {
+                spentDate = m.getMoneyOutCreatedOn();
+                if (month == getString(R.string.year_to_date1)) {
+                    if (spentDate.contains(year)) {
+                        totalSpentList.add(m.getMoneyOutAmount());
+                    }
+                } else {
+                    startIndex = spentDate.indexOf("-") + 1;
+                    endIndex = spentDate.length() - 5;
+                    newMonth = spentDate.substring(startIndex, endIndex);
+                    try {
+                        newMonth2 = newMonth.replace(".", "");
+                    } catch (Exception e) {
+                        newMonth2 = newMonth;
+                    }
+                    if (month.contains(newMonth2) && spentDate.contains(year)) {
+                        totalSpentList.add(m.getMoneyOutAmount());
+                    }
+                }
+            }
+            //totalSpentAll = 0.0;
+            if (totalSpentList.size() == 0) {
+                totalSpentAll = 0.0;
+            } else {
+                for (Double dbl : totalSpentList) {
+                    totalSpentAll += dbl;
+                }
+            }
+                totalSpentAllS = currencyFormat.format(totalSpentAll);
+                totalSpentText.setText(totalSpentAllS);
         }
     };
 
@@ -248,6 +285,40 @@ public class LayoutSpendingReport extends MainNavigation {
             }
             totalSpentS = currencyFormat.format(totalSpent);
             holder.spendingReportAmount.setText(totalSpentS);
+
+            //retrieve total spent for report
+            /*List<Double> totalSpentList = new ArrayList<>();
+            for (MoneyOutDb m : dbManager.getMoneyOuts()) {
+                spentDate = m.getMoneyOutCreatedOn();
+                if (month == getString(R.string.year_to_date1)) {
+                    if (String.valueOf(m.getExpRefKeyMO()).equals(String.valueOf(expenseId)) && spentDate.contains(year)) {
+                        totalSpentList.add(m.getMoneyOutAmount());
+                    }
+                } else {
+                    startIndex = spentDate.indexOf("-") + 1;
+                    endIndex = spentDate.length() - 5;
+                    newMonth = spentDate.substring(startIndex, endIndex);
+                    try {
+                        newMonth2 = newMonth.replace(".", "");
+                    } catch (Exception e) {
+                        newMonth2 = newMonth;
+                    }
+                    if (String.valueOf(m.getExpRefKeyMO()).equals(String.valueOf(expenseId)) && month.contains(newMonth2) && spentDate.contains(year)) {
+                        totalSpentList.add(m.getMoneyOutAmount());
+                    }
+                }
+            }
+
+            totalSpentAll = 0.0;
+            if (totalSpentList.size() == 0) {
+                totalSpentAll = 0.0;
+            } else {
+                for (Double dbl : totalSpentList) {
+                    totalSpentAll += dbl;
+                }
+            }
+
+            totalSpentAllS = currencyFormat.format(totalSpentAll);*/
 
             return convertView;
         }

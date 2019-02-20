@@ -842,7 +842,7 @@ public class DbManager extends AppCompatActivity {
     public List<MoneyOutDb> getCashTrans() {
         List<MoneyOutDb> cashTrans = new ArrayList<>();
         for (MoneyOutDb m : getMoneyOuts()) {
-            if (m.getMoneyOutCC().equals("N")) {
+            if (m.getMoneyOutChargingDebtId() == 0) {
                 cashTrans.add(m);
             }
         }
@@ -852,7 +852,7 @@ public class DbManager extends AppCompatActivity {
     public List<MoneyOutDb> getCCTrans() {
         List<MoneyOutDb> ccTrans = new ArrayList<>();
         for (MoneyOutDb m2 : getMoneyOuts()) {
-            if (m2.getMoneyOutCC().equals("Y")) {
+            if (m2.getMoneyOutChargingDebtId() > 0) {
                 ccTrans.add(m2);
             }
         }

@@ -345,6 +345,7 @@ public class DailyCreditCard extends Fragment {
                 holder = new CCViewHolder();
                 holder.ccCat = convertView.findViewById(R.id.ccCat);
                 holder.ccAmount = convertView.findViewById(R.id.ccAmount);
+                holder.ccChargedOn = convertView.findViewById(R.id.ccChargedOn);
                 holder.ccCheck = convertView.findViewById(R.id.ccCheck);
                 convertView.setTag(holder);
 
@@ -370,6 +371,9 @@ public class DailyCreditCard extends Fragment {
             } catch (NumberFormatException e) {
                 holder.ccAmount.setText(ccAmount2);
             }
+
+            //retrieve chargingDebt
+            holder.ccChargedOn.setText(ccTransToPay.get(position).getMoneyOutDebtCat());
 
             chargingDebtId = ccTransToPay.get(position).getMoneyOutChargingDebtId();
 
@@ -443,6 +447,7 @@ public class DailyCreditCard extends Fragment {
     private static class CCViewHolder {
         public TextView ccCat;
         public TextView ccAmount;
+        public TextView ccChargedOn;
         public CheckBox ccCheck;
     }
 }
