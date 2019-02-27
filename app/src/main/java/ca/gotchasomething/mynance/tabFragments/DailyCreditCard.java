@@ -176,6 +176,7 @@ public class DailyCreditCard extends Fragment {
         dbManager.updatePaid();
 
         //update balance owing on appropriate DEBTS
+
         dbHelper = new DbHelper(getContext());
         db = dbHelper.getWritableDatabase();
 

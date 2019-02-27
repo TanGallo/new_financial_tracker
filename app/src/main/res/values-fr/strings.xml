@@ -113,7 +113,7 @@
     <string name="budget_13">Vous pouvez utiliser le RAPPORT DE DÉPENSES comme guide lors de la mise à jour de votre budget. L\'exécution d\'un rapport de dépenses pour une année entière vous montrera combien vous avez réellement dépensé dans chaque catégorie.</string>
     <string name="budget_14">La mise à jour de votre budget ne modifiera pas les soldes de vos comptes bancaires de manière rétroactive. L\'application ajustera simplement le pourcentage d\'entrées futures à «réserver» aux besoins en fonction des modifications apportées au budget.</string>
     <string name="budget_does_not_balance">AVERTISSEMENT: Votre budget n’est pas équilibré. S\'il vous plaît aller à l\'écran BUDGET pour y remédier.</string>
-    <string name="cannot_delete_budget">Vous ne pouvez pas supprimer ce poste budgétaire, il est lié à des postes DETTES et/ou COMPTES D\'ÉPARGNE. Vous pouvez entrer 0 $ comme montant pour que cela n’affecte pas votre budget.</string>
+    <string name="cannot_delete_budget">Vous ne pouvez pas supprimer ce poste budgétaire, il est lié à des postes DETTES et COMPTES D\'ÉPARGNE. Vous pouvez entrer 0 $ comme montant pour que cela n’affecte pas votre budget.</string>
     <string name="check_boxes_below">Cochez les cases ci-dessous des achats par carte de crédit que vous souhaitez payer aujourd\'hui.</string>
     <string name="check_box_prompt">Case à cocher une fois le paiement est effectué</string>
     <string name="check_box_starting_balance">(Cochez la case une fois que vous avez entré un montant ci-dessous)</string>

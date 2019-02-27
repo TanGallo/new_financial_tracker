@@ -44,8 +44,8 @@ import ca.gotchasomething.mynance.data.SetUpDb;
 public class LayoutBudget extends MainNavigation {
 
     boolean foundDebtIdExp = false, foundDebtIdInc = false, foundSavingsIdExp = false, foundSavingsIdInc = false;
-    Button budgetAddExpenseButton, budgetAddIncomeButton, budgetCancelExpenseButton, budgetCancelIncomeButton, budgetUpdateExpenseButton, budgetUpdateIncomeButton,
-            doneBudgetSetUpButton, okButton;
+    Button budgetAddExpenseButton, budgetAddIncomeButton, budgetCancelExpenseButton, budgetCancelIncomeButton, budgetUpdateExpenseButton,
+            budgetUpdateIncomeButton, cancelButton, doneBudgetSetUpButton, okButton, ok2Button;
     Calendar debtCal, debtCal2, savingsCal, savingsCal2;
     ContentValues debtValues, debtValues2, debtValues3, debtValues4, expValues, incValues, moneyInValues, moneyOutValues, savingsValues, savingsValues2,
             savingsValues3, savingsValues4;
@@ -87,7 +87,8 @@ public class LayoutBudget extends MainNavigation {
             incDebtId = null, incSavingsId = null, incomeAvailable2 = null, incomeAvailableN2 = null, incomeFrequencyS = null, incomeId = null,
             nameEntryInc = null, nameEntryExp = null, priorityEntryExp = null, savingsDate = null, savingsDate2 = null, totalExpenses2 = null,
             totalExpensesS = null, totalIncome2 = null, totalIncomeS = null, weeklyEntry = null;
-    TextView emptyBudgetText, budgetExpensesTotalText, budgetIncomeTotalText, budgetOopsAmountText, budgetOopsText, deleteExpText, headerLabel2, incomeAvailable, weeklyGuidanceLabel;
+    TextView budgetExpensesTotalText, budgetIncomeTotalText, budgetOopsAmountText, budgetOopsText, deleteExpText, emptyBudgetText, headerLabel2,
+            incomeAvailable, noSpendingReportText, weeklyGuidanceLabel;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -117,8 +118,14 @@ public class LayoutBudget extends MainNavigation {
         emptyBudgetText = findViewById(R.id.emptyBudgetText);
         deleteExpText = findViewById(R.id.deleteExpText);
         deleteExpText.setVisibility(View.GONE);
+        noSpendingReportText = findViewById(R.id.noSpendingReportText);
+        noSpendingReportText.setVisibility(View.GONE);
         okButton = findViewById(R.id.okButton);
         okButton.setVisibility(View.GONE);
+        ok2Button = findViewById(R.id.ok2Button);
+        ok2Button.setVisibility(View.GONE);
+        cancelButton = findViewById(R.id.cancelButton);
+        cancelButton.setVisibility(View.GONE);
         budgetIncomePlusButton = findViewById(R.id.budgetIncomePlusButton);
         budgetExpensePlusButton = findViewById(R.id.budgetExpensePlusButton);
         budgetIncomeDetails = findViewById(R.id.budgetIncomeDetails);
@@ -251,60 +258,60 @@ public class LayoutBudget extends MainNavigation {
     }
 
     public void findAllMatchingIncIds() {
-        for(IncomeBudgetDb i : dbManager.getIncomes()) {
-            if(i.getId() == incomeBudgetDb.getId()) {
+        for (IncomeBudgetDb i : dbManager.getIncomes()) {
+            if (i.getId() == incomeBudgetDb.getId()) {
                 incomeId = String.valueOf(i.getId());
             }
         }
 
-        for(DebtDb d : dbManager.getDebts()) {
-            if(String.valueOf(d.getIncRefKeyD()).equals(incomeId)) {
+        for (DebtDb d : dbManager.getDebts()) {
+            if (String.valueOf(d.getIncRefKeyD()).equals(incomeId)) {
                 incDebtId = String.valueOf(d.getId());
                 expRefKeyD = String.valueOf(d.getExpRefKeyD());
                 foundDebtIdInc = true;
             }
         }
 
-        for(SavingsDb s : dbManager.getSavings()) {
-            if(String.valueOf(s.getIncRefKeyS()).equals(incomeId)) {
+        for (SavingsDb s : dbManager.getSavings()) {
+            if (String.valueOf(s.getIncRefKeyS()).equals(incomeId)) {
                 incSavingsId = String.valueOf(s.getId());
                 foundSavingsIdInc = true;
                 //expRefKeyS = String.valueOf(s.getExpRefKeyS());
             }
         }
 
-        for(ExpenseBudgetDb e : dbManager.getExpense()) {
-            if(String.valueOf(e.getId()).equals(expRefKeyD)) {
+        for (ExpenseBudgetDb e : dbManager.getExpense()) {
+            if (String.valueOf(e.getId()).equals(expRefKeyD)) {
                 expenseId = String.valueOf(e.getId());
             }
         }
     }
 
     public void findAllMatchingExpIds() {
-        for(ExpenseBudgetDb e : dbManager.getExpense()) {
-            if(e.getId() == expenseBudgetDb.getId()) {
+        for (ExpenseBudgetDb e : dbManager.getExpense()) {
+            if (e.getId() == expenseBudgetDb.getId()) {
                 expenseId = String.valueOf(e.getId());
             }
         }
 
-        for(DebtDb d : dbManager.getDebts()) {
-            if(String.valueOf(d.getExpRefKeyD()).equals(expenseId)) {
+        for (DebtDb d : dbManager.getDebts()) {
+            if (String.valueOf(d.getExpRefKeyD()).equals(expenseId)) {
                 expDebtId = String.valueOf(d.getId());
                 incRefKeyD = String.valueOf(d.getIncRefKeyD());
                 foundDebtIdExp = true;
             }
         }
 
-        for(SavingsDb s : dbManager.getSavings()) {
-            if(String.valueOf(s.getExpRefKeyS()).equals(expenseId)) {
+        for (SavingsDb s : dbManager.getSavings()) {
+            if (String.valueOf(s.getExpRefKeyS()).equals(expenseId)) {
                 expSavingsId = String.valueOf(s.getId());
                 foundSavingsIdExp = true;
                 //incRefKeyS = String.valueOf(s.getIncRefKeyS());
             }
         }
 
-        for(IncomeBudgetDb i : dbManager.getIncomes()) {
-            if(String.valueOf(i.getId()).equals(incRefKeyD)) {
+        for (IncomeBudgetDb i : dbManager.getIncomes()) {
+            if (String.valueOf(i.getId()).equals(incRefKeyD)) {
                 incomeId = String.valueOf(i.getId());
             }
         }
@@ -1225,31 +1232,48 @@ public class LayoutBudget extends MainNavigation {
                 @Override
                 public void onClick(View v) {
 
-                    findAllMatchingExpIds();
+                    noSpendingReportText.setVisibility(View.VISIBLE);
+                    okButton.setVisibility(View.VISIBLE);
+                    cancelButton.setVisibility(View.VISIBLE);
 
-                    //findMatchingDebtIdExp();
-                    //findMatchingSavingsIdExp();
-                    if (foundDebtIdExp || foundSavingsIdExp) {
-                        deleteExpText.setVisibility(View.VISIBLE);
-                        okButton.setVisibility(View.VISIBLE);
+                    cancelButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            backToBudget();
+                        }
+                    });
 
-                        okButton.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                backToBudget();
+                    okButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+                            findAllMatchingExpIds();
+
+                            //findMatchingDebtIdExp();
+                            //findMatchingSavingsIdExp();
+                            if (foundDebtIdExp || foundSavingsIdExp) {
+                                deleteExpText.setVisibility(View.VISIBLE);
+                                ok2Button.setVisibility(View.VISIBLE);
+
+                                ok2Button.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        backToBudget();
+                                    }
+                                });
+                            } else {
+                                deleteExpText.setVisibility(View.GONE);
+                                ok2Button.setVisibility(View.GONE);
+
+                                expenseBudgetDb = (ExpenseBudgetDb) expenseHolder.expenseDeleted.getTag();
+
+                                dbManager.deleteExpense(expenseBudgetDb);
+                                expenseAdapter.updateExpenses(dbManager.getExpense());
+                                budgetHeaderText();
+                                notifyDataSetChanged();
                             }
-                        });
-                    } else {
-                        deleteExpText.setVisibility(View.GONE);
-                        okButton.setVisibility(View.GONE);
-
-                        expenseBudgetDb = (ExpenseBudgetDb) expenseHolder.expenseDeleted.getTag();
-
-                        dbManager.deleteExpense(expenseBudgetDb);
-                        expenseAdapter.updateExpenses(dbManager.getExpense());
-                        budgetHeaderText();
-                        notifyDataSetChanged();
-                    }
+                        }
+                    });
                 }
             });
             return convertView;

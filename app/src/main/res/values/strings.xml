@@ -30,7 +30,7 @@
     <string name="budget_does_not_balance">WARNING: Your budget doesn\'t balance. Please go to the BUDGET screen to fix it.</string>
     <string name="by">by</string>
     <string name="cancel">Cancel</string>
-    <string name="cannot_delete_budget">You cannot delete this budget item, it is linked to DEBTS and/or SAVINGS items. You can enter $0 as the amount so it will have no effect on your budget.</string>
+    <string name="cannot_delete_budget">You cannot delete this budget item, it is linked to DEBTS and SAVINGS items. You can enter $0 as the amount so it will have no effect on your budget.</string>
     <string name="cannot_delete_warning">You cannot delete this entry.</string>
     <string name="category">Category</string>
     <string name="changes_saved">Your changes have been saved</string>
@@ -271,4 +271,6 @@
     <string name="on">charged on</string>
     <string name="pay_cc_5">TO UNDO A PAYMENT TO A CREDIT CARD, delete the transaction from the DAILY MONEY - CREDIT CARD tab.</string>
     <string name="total">Total:</string>
+    <string name="cat_warning">Note: Only existing expense categories will be reflected in this report. If you have deleted an expense category from your budget, money spent in the defunct category will no longer show on this report.</string>
+    <string name="no_spending_report">Warning: Once you delete this category, money already spent against it will no longer appear in the spending report</string>
 </resources>
