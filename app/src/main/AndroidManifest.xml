@@ -33,6 +33,8 @@
         <activity android:name="ca.gotchasomething.mynance.LayoutBudget"/>
         <activity android:name="ca.gotchasomething.mynance.LayoutSavings"/>
         <activity android:name="ca.gotchasomething.mynance.LayoutSpendingReport"/>
+        <activity android:name="ca.gotchasomething.mynance.LayoutBudgetReport"/>
+        <activity android:name="ca.gotchasomething.mynance.LayoutBudgetReport2"/>
         <activity android:name="ca.gotchasomething.mynance.LayoutHelp"/>
         <activity android:name="ca.gotchasomething.mynance.AddBudgetIncome"/>
         <activity android:name="ca.gotchasomething.mynance.AddBudgetExpense"/>

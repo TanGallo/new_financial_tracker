@@ -1,9 +1,10 @@
 /*
 
-WARNINGS RE: BUDGET ITEMS OVERSPENT?
+ISSUES:
 NAME CHANGED WHEN UPDATING SAVINGS - CHANGED TO A DEBTS NAME
 IN PAYCC TAB, MULTIPLE ITEMS GETTING CHECKED AT A TIME, THE WRONG ITEMS THAT GOT CHECKED DO NOT GET REMOVED FROM PAGE WHEN CLICK ON THE PAID BUTTON, AND TOTAL NOT GOING BACK TO ZERO WHEN UNCHECKING BOX
 
+TO DO:
 CHANGE URL FOR RATINGS ONCLICKLISTENER IN LayoutHelp & DailyMoneyOut
 CLEAN UP CODE
 DOUBLE CHECK THAT ALL STRINGS ARE TRANSLATED
@@ -136,7 +137,7 @@ update expense:
         expenseBAnnualAmount = expenseAnnualAmount }
 
 update income:
-    if(expRefKeyS = incomeId)
+    if(incRefKeyS = incomeId)
         incomeName = new savingsName
 
 savingsName = captured
@@ -175,6 +176,13 @@ if(expensePriority = "A"):
 if(expensePriority = "B"):
     expenseBAnnualAmount = expenseAnnualAmount
 expenseId = generated
+
+WHEN CREATING AN INCOME:
+incomeName = captured
+incomeAmount = captured
+incomeFrequency = captured
+incomeAnnualAmount = incomeAmount * incomeFrequency
+incomeId = generated
 
 WHEN UPDATING AN EXPENSE:
 expenseName = captured
@@ -218,16 +226,9 @@ if(expenseId = expRefKeyD):
 if(expenseId = expRefKeyS):
     warning re: linked to a savings, can change to zero instead
 
-DONE - warning re: money spent in this category will no longer be reflected in the spending report
+warning re: entries made against this category will no longer be reflected in the reports
 
 delete expense
-
-WHEN CREATING AN INCOME:
-incomeName = captured
-incomeAmount = captured
-incomeFrequency = captured
-incomeAnnualAmount = incomeAmount * incomeFrequency
-incomeId = generated
 
 WHEN UPDATING AN INCOME:
 incomeName = captured
@@ -316,7 +317,7 @@ if(incRefKeyMI = indRefKeyS):
     savingsDate = calculated
 
 delete money in
-
+-----------------------------------------------------------------------------------------------
 WHEN CREATING A MONEY OUT FROM MONEY OUT TAB:
 moneyOutCat = expenseName (many-to-one) - get from DB/spinner
 moneyOutPriority = expensePriority (many-to-one) - get from DB/spinner

@@ -27,7 +27,7 @@ public class MainNavigation extends AppCompatActivity implements NavigationView.
     public DbManager dbManager;
     protected DrawerLayout drawer;
     int tourDoneYes;
-    Intent i, i2, i4, i5, i6, i7;
+    Intent i, i2, i4, i5, i6, i7, i8, i9;
     Menu menu;
     NavigationView navigationView;
     SQLiteDatabase setUpDbDb;
@@ -59,12 +59,16 @@ public class MainNavigation extends AppCompatActivity implements NavigationView.
             menu.findItem(R.id.menu_debt).setVisible(false);
             menu.findItem(R.id.menu_savings).setVisible(false);
             menu.findItem(R.id.menu_spending_report).setVisible(false);
+            menu.findItem(R.id.menu_budget_report_exp).setVisible(false);
+            menu.findItem(R.id.menu_budget_report_inc).setVisible(false);
             menu.findItem(R.id.menu_help).setVisible(false);
             menu.findItem(R.id.menu_daily_money).setEnabled(false);
             menu.findItem(R.id.menu_budget).setEnabled(false);
             menu.findItem(R.id.menu_debt).setEnabled(false);
             menu.findItem(R.id.menu_savings).setEnabled(false);
             menu.findItem(R.id.menu_spending_report).setEnabled(false);
+            menu.findItem(R.id.menu_budget_report_exp).setEnabled(false);
+            menu.findItem(R.id.menu_budget_report_inc).setEnabled(false);
             menu.findItem(R.id.menu_help).setEnabled(false);
         } else {
             menu.findItem(R.id.menu_daily_money).setVisible(true);
@@ -72,12 +76,16 @@ public class MainNavigation extends AppCompatActivity implements NavigationView.
             menu.findItem(R.id.menu_debt).setVisible(true);
             menu.findItem(R.id.menu_savings).setVisible(true);
             menu.findItem(R.id.menu_spending_report).setVisible(true);
+            menu.findItem(R.id.menu_budget_report_exp).setVisible(true);
+            menu.findItem(R.id.menu_budget_report_inc).setVisible(true);
             menu.findItem(R.id.menu_help).setVisible(true);
             menu.findItem(R.id.menu_daily_money).setEnabled(true);
             menu.findItem(R.id.menu_budget).setEnabled(true);
             menu.findItem(R.id.menu_debt).setEnabled(true);
             menu.findItem(R.id.menu_savings).setEnabled(true);
             menu.findItem(R.id.menu_spending_report).setEnabled(true);
+            menu.findItem(R.id.menu_budget_report_exp).setEnabled(true);
+            menu.findItem(R.id.menu_budget_report_inc).setEnabled(true);
             menu.findItem(R.id.menu_help).setEnabled(true);
         }
         navigationView.setNavigationItemSelectedListener(this);
@@ -130,6 +138,16 @@ public class MainNavigation extends AppCompatActivity implements NavigationView.
                 i7 = new Intent(MainNavigation.this, LayoutSpendingReport.class);
                 i7.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
                 startActivity(i7);
+                break;
+            case R.id.menu_budget_report_exp:
+                i8 = new Intent(MainNavigation.this, LayoutBudgetReport.class);
+                i8.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+                startActivity(i8);
+                break;
+            case R.id.menu_budget_report_inc:
+                i9 = new Intent(MainNavigation.this, LayoutBudgetReport2.class);
+                i9.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+                startActivity(i9);
                 break;
             case R.id.menu_help:
                 i6 = new Intent(MainNavigation.this, LayoutHelp.class);

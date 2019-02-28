@@ -47,16 +47,15 @@ public class DailyMoneyIn extends Fragment {
     Boolean foundMatchingDebtId = false, foundMatchingSavingsId = false;
     Button cancelMoneyInEntryButton, moneyInButton, noMoneyInButton, updateMoneyInEntryButton, yesMoneyInButton;
     Calendar debtCal, savingsCal;
-    ContentValues currentValue, moneyInValue, moneyInValue2, moneyInValue3, moneyInValue4, moneyInValue5, moneyInValue6, moneyInValue7, moneyInValue8, moneyInValue9,
-            moneyInValue10;
+    ContentValues currentValue, moneyInValue, moneyInValue2, moneyInValue3, moneyInValue4, moneyInValue5, moneyInValue6;
     Cursor cursor2;
     Date debtEndD, moneyInDate, savingsDateD;
-    DbHelper dbHelper, dbHelper2, dbHelper3, dbHelper4, dbHelper5, dbHelper6, dbHelper7;
+    DbHelper dbHelper, dbHelper2, dbHelper3, dbHelper4, dbHelper5, dbHelper6;
     DbManager dbManager;
     Double amountEntry = 0.0, currentDebtAmount = 0.0, currentDebtFrequency = 0.0, currentDebtPayments = 0.0, currentDebtRate = 0.0, currentSavingsAmount = 0.0,
             currentSavingsFrequency = 0.0, currentSavingsPayments = 0.0, currentSavingsRate = 0.0, debtAmount = 0.0, debtAnnualIncome = 0.0, debtLimit = 0.0,
-            moneyInAmount = 0.0, moneyInAmount1 = 0.0, moneyInAmountD = 0.0, moneyInD = 0.0, newAccountBalance = 0.0, newAvailableBalance = 0.0, newDebtAmount = 0.0, newDebtAmount2 = 0.0,
-            newSavingsAmount = 0.0, newSavingsAmount2 = 0.0, numberOfYearsToPayDebt = 0.0, oldMoneyInAmount = 0.0, percentB = 0.0, rate = 0.0, savingsAmount = 0.0,
+            moneyInAmount = 0.0, moneyInAmount1 = 0.0, moneyInAmountD = 0.0, moneyInD = 0.0, newAccountBalance = 0.0, newAvailableBalance = 0.0, newDebtAmount = 0.0,
+            newSavingsAmount = 0.0, numberOfYearsToPayDebt = 0.0, oldMoneyInAmount = 0.0, percentB = 0.0, rate = 0.0, savingsAmount = 0.0,
             savingsAnnualIncome = 0.0, savingsGoal = 0.0, savingsIntFrequency = 0.0, years = 0.0;
     EditText moneyInAmountText, moneyInAmountEditText;
     General general;
@@ -72,7 +71,7 @@ public class DailyMoneyIn extends Fragment {
     RelativeLayout addMoneyInLayout;
     SimpleDateFormat debtEndS, moneyInSDF, savingsDateS;
     Spinner moneyInCatSpinner;
-    SQLiteDatabase db, db2, db3, db4, db5, db6, db7, db8;
+    SQLiteDatabase db, db2, db3, db4, db5, db6;
     String debtEnd = null, moneyInAmountS = null, moneyInCatS = null, moneyInCat = null, moneyInCreatedOn = null, moneyIn2 = null, moneyInS = null, savingsDate = null;
     TextView debtContinueAnywayText, debtNotPossibleText, moneyInCatText, savingsNotPossibleText;
     Timestamp moneyInTimestamp;
@@ -412,7 +411,7 @@ public class DailyMoneyIn extends Fragment {
 
             findMatchingSavingsId();
             if (foundMatchingSavingsId) {
-                if (findCurrentSavingsAmount() - moneyInAmount <= 0) {
+                if (findCurrentSavingsAmount() - moneyInAmount < 0) {
                     savingsNotPossibleText.setVisibility(View.VISIBLE);
                     debtContinueAnywayText.setVisibility(View.VISIBLE);
                     noMoneyInButton.setVisibility(View.VISIBLE);
@@ -621,7 +620,7 @@ public class DailyMoneyIn extends Fragment {
 
                             findMatchingSavingsId();
                             if (foundMatchingSavingsId) {
-                                if (findCurrentSavingsAmount() - moneyInAmount <= 0) {
+                                if (findCurrentSavingsAmount() - moneyInAmount < 0) {
                                     savingsNotPossibleText.setVisibility(View.VISIBLE);
                                     debtContinueAnywayText.setVisibility(View.VISIBLE);
                                     noMoneyInButton.setVisibility(View.VISIBLE);

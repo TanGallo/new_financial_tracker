@@ -126,6 +126,50 @@
                     android:textColor="@color/colorGreen"
                     android:textSize="18sp"/>
 
+                <TextView
+                    android:id="@+id/deleteSavingsWarningText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:text="@string/delete_debt_warning"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center_horizontal"
+                    android:textColor="@android:color/holo_red_light"
+                    android:textSize="18sp"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <Button
+                        android:id="@+id/cancelDeleteSavingsButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_gravity="end"
+                        android:layout_margin="5dp"
+                        android:gravity="center"
+                        android:background="@drawable/entry_box"
+                        android:text="@string/cancel"
+                        android:contentDescription="@string/cancel"
+                        android:textSize="12sp"/>
+
+                    <Button
+                        android:id="@+id/continueDeleteSavingsButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_gravity="end"
+                        android:layout_margin="5dp"
+                        android:gravity="center"
+                        android:background="@drawable/entry_box"
+                        android:text="@string/continue1"
+                        android:contentDescription="@string/continue1"
+                        android:textSize="12sp"
+                        />
+
+                </RelativeLayout>
+
                 <ListView
                     android:id="@+id/savingsListView"
                     android:layout_width="match_parent"

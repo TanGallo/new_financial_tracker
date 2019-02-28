@@ -47,7 +47,7 @@ import ca.gotchasomething.mynance.data.SetUpDb;
 
 public class LayoutDebt extends MainNavigation {
 
-    Button cancelDebtButton, doneDebtsSetUpButton, saveDebtButton, updateDebtButton;
+    Button cancelDebtButton, cancelDeleteDebtButton, continueDeleteDebtButton, doneDebtsSetUpButton, saveDebtButton, updateDebtButton;
     Calendar debtCal;
     ContentValues values, values2, values3, values4, values5;
     Date debtEndD, latestDateD;
@@ -75,7 +75,7 @@ public class LayoutDebt extends MainNavigation {
     SimpleDateFormat debtEndS, latestDateS;
     String debtAmount2 = null, debtAmountS = null, debtAmountS2 = null, debtEnd = null, debtFrequencyS = null, debtLimitS2 = null, debtPaymentsS = null,
             debtPercentS = null, expRefKeyD = null, latestDate = null, debtNameEntryD = null, priority = null, totalDebt2 = null, totalDebtS = null;
-    TextView debtDateResult, debtDateResultLabel, emptyDebtsText, emptyDebtsText2, emptyDebtsText3, totalDebtOwing, totalDebtPaidByDate, totalDebtPaidLabel;
+    TextView debtDateResult, debtDateResultLabel, deleteDebtWarningText, emptyDebtsText, emptyDebtsText2, emptyDebtsText3, totalDebtOwing, totalDebtPaidByDate, totalDebtPaidLabel;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -100,6 +100,12 @@ public class LayoutDebt extends MainNavigation {
         emptyDebtsText = findViewById(R.id.emptyDebtsText);
         emptyDebtsText2 = findViewById(R.id.emptyDebtsText2);
         emptyDebtsText3 = findViewById(R.id.emptyDebtsText3);
+        deleteDebtWarningText = findViewById(R.id.deleteDebtWarningText);
+        deleteDebtWarningText.setVisibility(View.GONE);
+        cancelDeleteDebtButton = findViewById(R.id.cancelDeleteDebtButton);
+        cancelDeleteDebtButton.setVisibility(View.GONE);
+        continueDeleteDebtButton = findViewById(R.id.continueDeleteDebtButton);
+        continueDeleteDebtButton.setVisibility(View.GONE);
 
         debtListView = findViewById(R.id.debtListView);
         addDebtButton = findViewById(R.id.addDebtButton);
@@ -402,7 +408,7 @@ public class LayoutDebt extends MainNavigation {
 
             //retrieve debtEnd
             debtEnd = debts.get(position).getDebtEnd();
-            if(debtEnd.contains("2")) {
+            if (debtEnd.contains("2")) {
                 holder.debtListFreeDateLabel.setVisibility(View.VISIBLE);
             } else {
                 holder.debtListFreeDateLabel.setVisibility(View.GONE);
@@ -517,7 +523,7 @@ public class LayoutDebt extends MainNavigation {
                                 } catch (NumberFormatException e11) {
                                     debtLimitEntryD = general.extractingDollars(debtLimitEntry);
                                 }
-                                if(debtLimitEntry.getText().toString().equals("")) {
+                                if (debtLimitEntry.getText().toString().equals("")) {
                                     Toast.makeText(getBaseContext(), R.string.no_limit_warning, Toast.LENGTH_LONG).show();
                                 } else {
                                     try {
@@ -525,7 +531,7 @@ public class LayoutDebt extends MainNavigation {
                                     } catch (NumberFormatException e8) {
                                         debtAmountEntryD = general.extractingDollars(debtAmountEntry);
                                     }
-                                    if(debtAmountEntry.getText().toString().equals("")) {
+                                    if (debtAmountEntry.getText().toString().equals("")) {
                                         debtAmountEntryD = 0.0;
                                     }
                                     try {
@@ -533,7 +539,7 @@ public class LayoutDebt extends MainNavigation {
                                     } catch (NumberFormatException e10) {
                                         debtRateEntryD = general.extractingPercents(debtPercentEntry);
                                     }
-                                    if(debtPercentEntry.getText().toString().equals("")) {
+                                    if (debtPercentEntry.getText().toString().equals("")) {
                                         debtRateEntryD = 0.0;
                                     }
                                     try {
@@ -541,7 +547,7 @@ public class LayoutDebt extends MainNavigation {
                                     } catch (NumberFormatException e9) {
                                         debtPaymentsEntryD = (general.extractingDollars(debtPaymentsEntry));
                                     }
-                                    if(debtPaymentsEntry.getText().toString().equals("")) {
+                                    if (debtPaymentsEntry.getText().toString().equals("")) {
                                         debtPaymentsEntryD = 0.0;
                                     }
                                     debtFrequencyEntryD = Double.valueOf(debtFrequencyS);
@@ -618,37 +624,63 @@ public class LayoutDebt extends MainNavigation {
 
                     debtDb = (DebtDb) holder.debtDeleted.getTag();
 
-                    dbHelper = new DbHelper(getContext());
-                    expenseDb = dbHelper.getWritableDatabase();
+                    deleteDebtWarningText.setVisibility(View.VISIBLE);
+                    cancelDeleteDebtButton.setVisibility(View.VISIBLE);
+                    continueDeleteDebtButton.setVisibility(View.VISIBLE);
+                    debtListView.setVisibility(View.GONE);
 
-                    try {
-                        String[] args = new String[]{String.valueOf(debtDb.getExpRefKeyD())};
-                        expenseDb.delete(DbHelper.EXPENSES_TABLE_NAME, DbHelper.ID + "=?", args);
-                    } catch (CursorIndexOutOfBoundsException e) {
-                        e.printStackTrace();
-                    }
-                    try {
-                        String[] args2 = new String[]{String.valueOf(debtDb.getIncRefKeyD())};
-                        expenseDb.delete(DbHelper.INCOME_TABLE_NAME, DbHelper.ID + "=?", args2);
-                    } catch (CursorIndexOutOfBoundsException e) {
-                        e.printStackTrace();
-                    }
-                    expenseDb.close();
+                    cancelDeleteDebtButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            backToDebt();
+                        }
+                    });
 
-                    dbManager.deleteDebt(debtDb);
-                    debtAdapter.updateDebts(dbManager.getDebts());
-                    notifyDataSetChanged();
-                    if (debtAdapter.getCount() == 0) {
-                        totalDebtPaidLabel.setVisibility(View.GONE);
-                        emptyDebtsText.setVisibility(View.VISIBLE);
-                        emptyDebtsText2.setVisibility(View.VISIBLE);
-                    } else {
-                        totalDebtPaidLabel.setVisibility(View.VISIBLE);
-                        emptyDebtsText.setVisibility(View.GONE);
-                        emptyDebtsText2.setVisibility(View.GONE);
-                    }
+                    continueDeleteDebtButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
 
-                    debtHeaderText();
+                            deleteDebtWarningText.setVisibility(View.GONE);
+                            cancelDeleteDebtButton.setVisibility(View.GONE);
+                            continueDeleteDebtButton.setVisibility(View.GONE);
+
+                            dbHelper = new DbHelper(getContext());
+                            expenseDb = dbHelper.getWritableDatabase();
+
+
+                            try {
+                                String[] args = new String[]{String.valueOf(debtDb.getExpRefKeyD())};
+                                expenseDb.delete(DbHelper.EXPENSES_TABLE_NAME, DbHelper.ID + "=?", args);
+                            } catch (CursorIndexOutOfBoundsException e) {
+                                e.printStackTrace();
+                            }
+
+                            try {
+                                String[] args2 = new String[]{String.valueOf(debtDb.getIncRefKeyD())};
+                                expenseDb.delete(DbHelper.INCOME_TABLE_NAME, DbHelper.ID + "=?", args2);
+                            } catch (CursorIndexOutOfBoundsException e) {
+                                e.printStackTrace();
+                            }
+
+                            expenseDb.close();
+
+                            dbManager.deleteDebt(debtDb);
+                            debtAdapter.updateDebts(dbManager.getDebts());
+                            notifyDataSetChanged();
+                            if (debtAdapter.getCount() == 0) {
+                                totalDebtPaidLabel.setVisibility(View.GONE);
+                                emptyDebtsText.setVisibility(View.VISIBLE);
+                                emptyDebtsText2.setVisibility(View.VISIBLE);
+                            } else {
+                                totalDebtPaidLabel.setVisibility(View.VISIBLE);
+                                emptyDebtsText.setVisibility(View.GONE);
+                                emptyDebtsText2.setVisibility(View.GONE);
+                            }
+
+                            debtHeaderText();
+                            backToDebt();
+                        }
+                    });
                 }
             });
 

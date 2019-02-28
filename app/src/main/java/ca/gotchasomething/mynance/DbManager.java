@@ -692,6 +692,9 @@ public class DbManager extends AppCompatActivity {
             for (MoneyOutDb m : getMoneyOuts()) {
                 allYears.add(m.getMoneyOutCreatedOn());
             }
+            for(MoneyInDb m2 : getMoneyIns()) {
+                allYears.add(m2.getMoneyInCreatedOn());
+            }
             List<Date> allDates = new ArrayList<>(allYears.size());
             general.extractingDates(allYears, allDates);
 

@@ -272,5 +272,14 @@
     <string name="pay_cc_5">TO UNDO A PAYMENT TO A CREDIT CARD, delete the transaction from the DAILY MONEY - CREDIT CARD tab.</string>
     <string name="total">Total:</string>
     <string name="cat_warning">Note: Only existing expense categories will be reflected in this report. If you have deleted an expense category from your budget, money spent in the defunct category will no longer show on this report.</string>
-    <string name="no_spending_report">Warning: Once you delete this category, money already spent against it will no longer appear in the spending report</string>
+    <string name="no_spending_report">Warning: Once you delete this category, entries already made against it will no longer appear in the reports</string>
+    <string name="budget_report">Budget Report</string>
+    <string name="percent">%</string>
+    <string name="percent_spent">Percent Used</string>
+    <string name="total_budget">Total Budget</string>
+    <string name="budget_report_exp">Budget Report - Expenses</string>
+    <string name="budget_report_inc">Budget Report - Income</string>
+    <string name="no_entries_yet">You haven\'t made any entries yet.</string>
+    <string name="go_to_daily_money_3">Go to DAILY MONEY to record your income in the MONEY IN tab and your spending in the MONEY OUT tab.</string>
+    <string name="delete_debt_warning">Warning: When you delete this item, the corresponding income and expense categories will also be deleted from your BUDGET</string>
 </resources>

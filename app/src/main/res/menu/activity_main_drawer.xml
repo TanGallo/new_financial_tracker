@@ -23,6 +23,14 @@
         android:icon="@drawable/ic_trending_up_black_24dp"
         android:title="@string/spending_report" />
     <item
+        android:id="@+id/menu_budget_report_exp"
+        android:icon="@drawable/ic_trending_up_black_24dp"
+        android:title="@string/budget_report_exp" />
+    <item
+        android:id="@+id/menu_budget_report_inc"
+        android:icon="@drawable/ic_trending_up_black_24dp"
+        android:title="@string/budget_report_inc" />
+    <item
         android:id="@+id/menu_help"
         android:icon="@drawable/ic_help_outline_black_24dp"
         android:title="@string/help" />

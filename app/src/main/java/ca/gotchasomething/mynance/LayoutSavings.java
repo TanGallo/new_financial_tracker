@@ -12,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.webkit.WebView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -42,7 +41,7 @@ import ca.gotchasomething.mynance.data.SetUpDb;
 
 public class LayoutSavings extends MainNavigation {
 
-    Button cancelSavingsButton, doneSavingsSetUpButton, saveSavingsButton, updateSavingsButton;
+    Button cancelDeleteSavingsButton, continueDeleteSavingsButton, cancelSavingsButton, doneSavingsSetUpButton, saveSavingsButton, updateSavingsButton;
     Calendar savingsCal;
     ContentValues values, values2, values3, values4;
     Date savingsDateD;
@@ -72,12 +71,12 @@ public class LayoutSavings extends MainNavigation {
     String expRefKeyS = null, savingsNameEntryS = null, priority = null, savingsAmountS = null, savingsCurrent2 = null, savingsCurrentS = null, savingsDate = null,
             savingsFrequencyS = null, savingsGoal2 = null, savingsGoalS = null, savingsGoalS2 = null, savingsIntFrequencyS = null, savingsPaymentsS = null,
             savingsPercentS = null, totalSavings2 = null, totalSavingsS = null;
-    TextView emptysavingsText, emptysavingsText2, emptySavingsText3, savingsDateResult, savingsDateResultLabel, savingsFrequencyLabel, savingsIntFrequencyLabel, totalSavedText;
+    TextView deleteSavingsWarningText, emptysavingsText, emptysavingsText2, emptySavingsText3, savingsDateResult, savingsDateResultLabel, savingsFrequencyLabel, savingsIntFrequencyLabel, totalSavedText;
 
     @Override
-        protected void onCreate(@Nullable Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            setContentView(R.layout.layout_savings);
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.layout_savings);
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         drawer = findViewById(R.id.drawer_layout);
@@ -95,6 +94,12 @@ public class LayoutSavings extends MainNavigation {
         emptysavingsText = findViewById(R.id.emptySavingsText);
         emptysavingsText2 = findViewById(R.id.emptySavingsText2);
         emptySavingsText3 = findViewById(R.id.emptySavingsText3);
+        deleteSavingsWarningText = findViewById(R.id.deleteSavingsWarningText);
+        deleteSavingsWarningText.setVisibility(View.GONE);
+        cancelDeleteSavingsButton = findViewById(R.id.cancelDeleteSavingsButton);
+        cancelDeleteSavingsButton.setVisibility(View.GONE);
+        continueDeleteSavingsButton = findViewById(R.id.continueDeleteSavingsButton);
+        continueDeleteSavingsButton.setVisibility(View.GONE);
 
         savingsListView = findViewById(R.id.savingsListView);
         addSavingsButton = findViewById(R.id.addSavingsButton);
@@ -413,7 +418,7 @@ public class LayoutSavings extends MainNavigation {
             //retrieve savingsDate
             savingsDate = savings.get(position).getSavingsDate();
             holder.savingsListDate.setText(savingsDate);
-            if(savingsDate.contains("2")) {
+            if (savingsDate.contains("2")) {
                 holder.savingsListDateLabel.setVisibility(View.VISIBLE);
             } else {
                 holder.savingsListDateLabel.setVisibility(View.GONE);
@@ -585,7 +590,7 @@ public class LayoutSavings extends MainNavigation {
 
                             expRefKeyS = String.valueOf(savingsDb.getExpRefKeyS());
 
-                            if(savingsNameEntry.getText().toString().equals("")) {
+                            if (savingsNameEntry.getText().toString().equals("")) {
                                 Toast.makeText(getBaseContext(), R.string.no_blanks_warning, Toast.LENGTH_LONG).show();
                             } else {
                                 savingsNameEntryS = savingsNameEntry.getText().toString();
@@ -594,7 +599,7 @@ public class LayoutSavings extends MainNavigation {
                                 } catch (NumberFormatException e10) {
                                     savingsAmountEntryD = general.extractingDollars(savingsAmountEntry);
                                 }
-                                if(savingsAmountEntry.getText().toString().equals("")) {
+                                if (savingsAmountEntry.getText().toString().equals("")) {
                                     savingsAmountEntryD = 0.0;
                                 }
                                 try {
@@ -602,7 +607,7 @@ public class LayoutSavings extends MainNavigation {
                                 } catch (NumberFormatException e12) {
                                     savingsGoalEntryD = general.extractingDollars(savingsGoalAmountEntry);
                                 }
-                                if(savingsGoalAmountEntry.getText().toString().equals("")) {
+                                if (savingsGoalAmountEntry.getText().toString().equals("")) {
                                     savingsGoalEntryD = 0.0;
                                 }
                                 try {
@@ -610,7 +615,7 @@ public class LayoutSavings extends MainNavigation {
                                 } catch (NumberFormatException e11) {
                                     savingsPaymentsEntryD = general.extractingDollars(savingsPaymentsEntry);
                                 }
-                                if(savingsPaymentsEntry.getText().toString().equals("")) {
+                                if (savingsPaymentsEntry.getText().toString().equals("")) {
                                     savingsPaymentsEntryD = 0.0;
                                 }
                                 if (savingsPaymentsEntryD == 0) {
@@ -626,7 +631,7 @@ public class LayoutSavings extends MainNavigation {
                                 } catch (NumberFormatException e13) {
                                     savingsRateEntryD = general.extractingPercents(savingsPercentEntry);
                                 }
-                                if(savingsPercentEntry.getText().toString().equals("")) {
+                                if (savingsPercentEntry.getText().toString().equals("")) {
                                     savingsRateEntryD = 0.0;
                                 }
                                 if (savingsRateEntryD == 0) {
@@ -707,37 +712,61 @@ public class LayoutSavings extends MainNavigation {
 
                     savingsDb = (SavingsDb) holder.savingsDeleted.getTag();
 
-                    dbHelper = new DbHelper(getContext());
-                    expenseDb = dbHelper.getWritableDatabase();
+                    deleteSavingsWarningText.setVisibility(View.VISIBLE);
+                    cancelDeleteSavingsButton.setVisibility(View.VISIBLE);
+                    continueDeleteSavingsButton.setVisibility(View.VISIBLE);
+                    savingsListView.setVisibility(View.GONE);
 
-                    try {
-                        String[] args = new String[]{String.valueOf(savingsDb.getExpRefKeyS())};
-                        expenseDb.delete(DbHelper.EXPENSES_TABLE_NAME, DbHelper.ID + "=?", args);
-                    } catch (CursorIndexOutOfBoundsException e) {
-                        e.printStackTrace();
-                    }
-                    try {
-                        String[] args2 = new String[]{String.valueOf(savingsDb.getIncRefKeyS())};
-                        expenseDb.delete(DbHelper.INCOME_TABLE_NAME, DbHelper.ID + "=?", args2);
-                    } catch (CursorIndexOutOfBoundsException e) {
-                        e.printStackTrace();
-                    }
-                    expenseDb.close();
+                    cancelDeleteSavingsButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            backToSavings();
+                        }
+                    });
 
-                    dbManager.deleteSavings(savingsDb);
-                    savingsAdapter.updateSavings(dbManager.getSavings());
-                    notifyDataSetChanged();
-                    if (savingsAdapter.getCount() == 0) {
-                        emptysavingsText.setVisibility(View.VISIBLE);
-                        emptysavingsText2.setVisibility(View.VISIBLE);
-                    } else {
-                        emptysavingsText.setVisibility(View.GONE);
-                        emptysavingsText2.setVisibility(View.GONE);
-                    }
+                    continueDeleteSavingsButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
 
-                    savingsHeaderText();
+                            deleteSavingsWarningText.setVisibility(View.GONE);
+                            cancelDeleteSavingsButton.setVisibility(View.GONE);
+                            continueDeleteSavingsButton.setVisibility(View.GONE);
+
+                            dbHelper = new DbHelper(getContext());
+                            expenseDb = dbHelper.getWritableDatabase();
+
+                            try {
+                                String[] args = new String[]{String.valueOf(savingsDb.getExpRefKeyS())};
+                                expenseDb.delete(DbHelper.EXPENSES_TABLE_NAME, DbHelper.ID + "=?", args);
+                            } catch (CursorIndexOutOfBoundsException e) {
+                                e.printStackTrace();
+                            }
+                            try {
+                                String[] args2 = new String[]{String.valueOf(savingsDb.getIncRefKeyS())};
+                                expenseDb.delete(DbHelper.INCOME_TABLE_NAME, DbHelper.ID + "=?", args2);
+                            } catch (CursorIndexOutOfBoundsException e) {
+                                e.printStackTrace();
+                            }
+                            expenseDb.close();
+
+                            dbManager.deleteSavings(savingsDb);
+                            savingsAdapter.updateSavings(dbManager.getSavings());
+                            notifyDataSetChanged();
+                            if (savingsAdapter.getCount() == 0) {
+                                emptysavingsText.setVisibility(View.VISIBLE);
+                                emptysavingsText2.setVisibility(View.VISIBLE);
+                            } else {
+                                emptysavingsText.setVisibility(View.GONE);
+                                emptysavingsText2.setVisibility(View.GONE);
+                            }
+
+                            savingsHeaderText();
+                            backToSavings();
+                        }
+                    });
                 }
             });
+
 
             return convertView;
         }
