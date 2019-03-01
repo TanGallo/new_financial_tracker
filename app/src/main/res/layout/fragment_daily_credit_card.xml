@@ -104,26 +104,24 @@
                     android:orientation="vertical"
                     android:background="@drawable/entry_box">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
+                    <TextView
+                    android:id="@+id/checkBelowLabel"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:layout_margin="10dp"
+                    android:text="@string/check_boxes_below"
+                    android:textAlignment="center"
+                    android:textSize="16sp" />
 
                     <TextView
-                        android:id="@+id/checkBelowLabel"
+                        android:id="@+id/checkBelowLabel2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
-                        android:text="@string/check_boxes_below"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:text="@string/check_boxes_below2"
                         android:textAlignment="center"
-                        android:textSize="16sp" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                        android:textSize="12sp" />
 
                     <TextView
                         android:id="@+id/totalCCPaymentDueLabel"
@@ -133,15 +131,10 @@
                         android:text="@string/pay_this_amount"
                         android:textSize="16sp" />
 
-                    <TextView
-                        android:id="@+id/totalCCPaymentDueAmount"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
-                        android:layout_gravity="center_horizontal"
-                        android:textSize="16sp" />
-
-                </LinearLayout>
+                    <ListView
+                        android:id="@+id/ccPaymentsList"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"></ListView>
 
                 <RelativeLayout
                     android:layout_width="match_parent"

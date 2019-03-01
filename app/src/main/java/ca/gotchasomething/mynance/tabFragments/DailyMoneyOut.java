@@ -52,16 +52,15 @@ public class DailyMoneyOut extends Fragment {
     Button cancelMoneyOutEntryButton, emailNoButton, emailYesButton, enjoyNoButton, enjoyNotSureButton, enjoyYesButton, moneyOutButton, noMoneyOutButton,
             paymentNotPossibleContinueButton, rateNoButton, rateYesButton, updateMoneyOutEntryButton, yesMoneyOutButton;
     Calendar debtCal, savingsCal;
-    ContentValues currentValue, moneyOutValue, moneyOutValue2, moneyOutValue3, moneyOutValue4, moneyOutValue5, moneyOutValue6, moneyOutValue7,
-            moneyOutValue8, moneyOutValue9, moneyOutValue10, moneyOutValue11, moneyOutValue12, moneyOutValue13, moneyOutValue14, moneyOutValue15,
-            moneyOutValue17, moneyOutValue18;
+    ContentValues currentValue, moneyOutValue, moneyOutValue2, moneyOutValue3, moneyOutValue4, moneyOutValue5, moneyOutValue6, moneyOutValue7, moneyOutValue8,
+            moneyOutValue9, moneyOutValue10, moneyOutValue11, moneyOutValue12;
     Cursor cursor, moneyOutCursor;
     Date debtEndD, moneyOutDate, savingsDateD;
-    DbHelper dbHelper2, dbHelper3, dbHelper4, dbHelper5, dbHelper7, dbHelper8, helper;
+    DbHelper dbHelper2, dbHelper3, dbHelper4, dbHelper5, dbHelper7, helper;
     DbManager dbManager;
     Double amountEntry = 0.0, currentDebtAmount = 0.0, currentDebtFrequency = 0.0, currentDebtRate = 0.0, currentDebtPayments = 0.0, currentSavingsAmount = 0.0,
             currentSavingsFrequency = 0.0, currentSavingsPayments = 0.0, currentSavingsRate = 0.0, debtAmount = 0.0, debtAnnualIncome = 0.0, moneyOutAmount = 0.0,
-            moneyOutAmountD = 0.0, moneyOutD = 0.0, newCurrentAccountBalance2 = 0.0, newCurrentAccountBalance3 = 0.0, newCurrentAccountBalance4 = 0.0,
+            moneyOutAmountD = 0.0, moneyOutD = 0.0, newCurrentAccountBalance3 = 0.0, newCurrentAccountBalance4 = 0.0,
             newCurrentAvailableBalance = 0.0, newCurrentAvailableBalance3 = 0.0, newDebtAmount = 0.0, newSavingsAmount = 0.0, numberOfYearsToPayDebt = 0.0,
             oldMoneyOutAmount = 0.0, savingsAmount = 0.0, savingsAnnualIncome = 0.0, savingsGoal = 0.0, savingsIntFrequency = 0.0, rate = 0.0, years = 0.0;
     EditText moneyOutAmountEditText, moneyOutAmountText;
@@ -78,7 +77,7 @@ public class DailyMoneyOut extends Fragment {
     RelativeLayout addMoneyOutLayout;
     SimpleDateFormat debtEndS, moneyOutSDF, savingsDateS;
     Spinner moneyOutCatSpinner;
-    SQLiteDatabase db, db2, db3, db4, db5, db7, db8;
+    SQLiteDatabase db, db2, db3, db4, db5, db7;
     String clicksES = null, clicksS = null, debtEnd = null, moneyOut2 = null, moneyOutAmountS = null, moneyOutCat = null, moneyOutCatS = null, moneyOutCC = null,
             moneyOutCreatedOn = null, moneyOutDebtCat = null, moneyOutPriority = null, moneyOutPriorityS = null, moneyOutS = null, moneyOutWeekly = null,
             moneyOutWeeklyS = null, savingsDate = null;
@@ -286,10 +285,17 @@ public class DailyMoneyOut extends Fragment {
         db4.close();
     }
 
-    public void makePaymentA() {
+    public void createMoneyOut() {
         moneyOutDb = new MoneyOutDb(moneyOutCat, moneyOutPriority, moneyOutWeekly, moneyOutAmount, moneyOutCreatedOn,
                 moneyOutCC, moneyOutDebtCat, moneyOutChargingDebtId, moneyOutToPay, moneyOutPaid, expRefKeyMO, 0);
         dbManager.addMoneyOut(moneyOutDb);
+    }
+
+    public void updateMoneyOut() {
+        dbManager.updateMoneyOut(moneyOutDb);
+    }
+
+    public void makePaymentA() {
 
         newCurrentAccountBalance3 = dbManager.retrieveCurrentAccountBalance() - moneyOutAmount;
         dbHelper3 = new DbHelper(getContext());
@@ -323,40 +329,6 @@ public class DailyMoneyOut extends Fragment {
         Toast.makeText(getActivity(), R.string.saved, Toast.LENGTH_LONG).show();
         moneyOutAmountText.setText("");
         moneyOutCatSpinner.setSelection(0, false);
-    }
-
-    public void updateA() {
-        dbManager.updateMoneyOut(moneyOutDb);
-
-        newCurrentAccountBalance2 = dbManager.retrieveCurrentAccountBalance() - moneyOutAmount;
-        dbHelper8 = new DbHelper(getContext());
-        db8 = dbHelper8.getWritableDatabase();
-        moneyOutValue15 = new ContentValues();
-        moneyOutValue15.put(DbHelper.CURRENTACCOUNTBALANCE, newCurrentAccountBalance2);
-        db8.update(DbHelper.CURRENT_TABLE_NAME, moneyOutValue15, DbHelper.ID + "= '1'", null);
-
-        findMatchingDebtId();
-        if (foundMatchingDebtId) {
-            newDebtAmount = findCurrentDebtAmount() - moneyOutAmount;
-            moneyOutValue7 = new ContentValues();
-            moneyOutValue7.put(DbHelper.DEBTAMOUNT, newDebtAmount);
-            db8.update(DbHelper.DEBTS_TABLE_NAME, moneyOutValue7, DbHelper.ID + "=" + findMatchingDebtId(), null);
-            moneyOutValue8 = new ContentValues();
-            moneyOutValue8.put(DbHelper.DEBTEND, calcDebtDate());
-            db8.update(DbHelper.DEBTS_TABLE_NAME, moneyOutValue8, DbHelper.ID + "=" + findMatchingDebtId(), null);
-        }
-        findMatchingSavingsId();
-        if (foundMatchingSavingsId) {
-            newSavingsAmount = findCurrentSavingsAmount() + moneyOutAmount;
-            moneyOutValue9 = new ContentValues();
-            moneyOutValue9.put(DbHelper.SAVINGSAMOUNT, newSavingsAmount);
-            db8.update(DbHelper.SAVINGS_TABLE_NAME, moneyOutValue9, DbHelper.ID + "=" + findMatchingSavingsId(), null);
-            moneyOutValue10 = new ContentValues();
-            moneyOutValue10.put(DbHelper.SAVINGSDATE, calcSavingsDate());
-            db8.update(DbHelper.SAVINGS_TABLE_NAME, moneyOutValue10, DbHelper.ID + "=" + findMatchingSavingsId(), null);
-        }
-        db8.close();
-
     }
 
     AdapterView.OnItemSelectedListener moneyOutSpinnerSelection = new AdapterView.OnItemSelectedListener() {
@@ -508,6 +480,38 @@ public class DailyMoneyOut extends Fragment {
         return savingsDate;
     }
 
+    public boolean checkIfAPossible() {
+        if (dbManager.retrieveCurrentAccountBalance() - moneyOutAmount < 0) {
+            paymentAPossible = false;
+        } else {
+            paymentAPossible = true;
+        }
+        return paymentAPossible;
+    }
+
+    public boolean checkIfBPossible() {
+        if (dbManager.retrieveCurrentAvailableBalance() - moneyOutAmount < 0) {
+            paymentBPossible = false;
+        } else {
+            paymentBPossible = true;
+        }
+        return paymentBPossible;
+    }
+
+    public void refundA() {
+        newCurrentAccountBalance4 = dbManager.retrieveCurrentAccountBalance() + moneyOutAmount;
+        moneyOutValue12 = new ContentValues();
+        moneyOutValue12.put(DbHelper.CURRENTACCOUNTBALANCE, newCurrentAccountBalance4);
+        db7.update(DbHelper.CURRENT_TABLE_NAME, moneyOutValue12, DbHelper.ID + "= '1'", null);
+    }
+
+    public void refundB() {
+        newCurrentAvailableBalance = dbManager.retrieveCurrentAvailableBalance() + moneyOutAmount;
+        moneyOutValue11 = new ContentValues();
+        moneyOutValue11.put(DbHelper.CURRENTAVAILABLEBALANCE, newCurrentAvailableBalance);
+        db7.update(DbHelper.CURRENT_TABLE_NAME, moneyOutValue11, DbHelper.ID + "= '1'", null);
+    }
+
     View.OnClickListener onClickMoneyOutButton = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -534,19 +538,12 @@ public class DailyMoneyOut extends Fragment {
                 moneyOutPaid = 0;
                 expRefKeyMO = moneyOutRefKeyMO;
 
-                paymentAPossible = true;
-                paymentBPossible = true;
-
-                if (dbManager.retrieveCurrentAccountBalance() - moneyOutAmount < 0) {
-                    paymentAPossible = false;
-                }
-
-                if (dbManager.retrieveCurrentAvailableBalance() - moneyOutAmount < 0) {
-                    paymentBPossible = false;
-                }
+                checkIfAPossible();
+                checkIfBPossible();
 
                 if (moneyOutPriority.equals("A")) {
                     if (paymentAPossible) {
+                        createMoneyOut();
                         makePaymentA();
                         backToLayoutDailyMoney();
                     } else if (!paymentAPossible) {
@@ -565,6 +562,7 @@ public class DailyMoneyOut extends Fragment {
                         yesMoneyOutButton.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
+                                createMoneyOut();
                                 makePaymentA();
                                 backToLayoutDailyMoney();
                             }
@@ -572,6 +570,7 @@ public class DailyMoneyOut extends Fragment {
                     }
                 } else if (moneyOutPriority.equals("B")) {
                     if (paymentBPossible && paymentAPossible) {
+                        createMoneyOut();
                         makePaymentA();
                         makePaymentB();
                         backToLayoutDailyMoney();
@@ -591,6 +590,7 @@ public class DailyMoneyOut extends Fragment {
                         yesMoneyOutButton.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
+                                createMoneyOut();
                                 makePaymentA();
                                 makePaymentB();
                                 backToLayoutDailyMoney();
@@ -613,12 +613,12 @@ public class DailyMoneyOut extends Fragment {
                         yesMoneyOutButton.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
+                                createMoneyOut();
                                 makePaymentA();
                                 makePaymentB();
                                 backToLayoutDailyMoney();
                             }
                         });
-
                     }
                 }
                 moneyOutAdapter.updateCashTrans(dbManager.getCashTrans());
@@ -860,20 +860,13 @@ public class DailyMoneyOut extends Fragment {
 
                             moneyOutAmount = amountEntry - oldMoneyOutAmount;
 
-                            paymentAPossible = true;
-                            paymentBPossible = true;
-
-                            if (dbManager.retrieveCurrentAccountBalance() - moneyOutAmount < 0) {
-                                paymentAPossible = false;
-                            }
-
-                            if (dbManager.retrieveCurrentAvailableBalance() - moneyOutAmount < 0) {
-                                paymentBPossible = false;
-                            }
+                            checkIfAPossible();
+                            checkIfBPossible();
 
                             if (moneyOutDb.getMoneyOutPriority().equals("A")) {
                                 if (paymentAPossible) {
-                                    updateA();
+                                    updateMoneyOut();
+                                    makePaymentA();
                                     backToLayoutDailyMoney();
                                 } else if (!paymentAPossible) {
                                     paymentNotPossibleAText.setVisibility(View.VISIBLE);
@@ -890,14 +883,16 @@ public class DailyMoneyOut extends Fragment {
                                     yesMoneyOutButton.setOnClickListener(new View.OnClickListener() {
                                         @Override
                                         public void onClick(View v) {
-                                            updateA();
+                                            updateMoneyOut();
+                                            makePaymentA();
                                             backToLayoutDailyMoney();
                                         }
                                     });
                                 }
                             } else if (moneyOutDb.getMoneyOutPriority().equals("B")) {
                                 if (paymentBPossible && paymentAPossible) {
-                                    updateA();
+                                    updateMoneyOut();
+                                    makePaymentA();
                                     makePaymentB();
                                     backToLayoutDailyMoney();
                                 } else if (!paymentBPossible && paymentAPossible) {
@@ -915,7 +910,8 @@ public class DailyMoneyOut extends Fragment {
                                     yesMoneyOutButton.setOnClickListener(new View.OnClickListener() {
                                         @Override
                                         public void onClick(View v) {
-                                            updateA();
+                                            updateMoneyOut();
+                                            makePaymentA();
                                             makePaymentB();
                                             backToLayoutDailyMoney();
                                         }
@@ -936,7 +932,8 @@ public class DailyMoneyOut extends Fragment {
                                     yesMoneyOutButton.setOnClickListener(new View.OnClickListener() {
                                         @Override
                                         public void onClick(View v) {
-                                            updateA();
+                                            updateMoneyOut();
+                                            makePaymentA();
                                             makePaymentB();
                                             backToLayoutDailyMoney();
                                         }
@@ -975,41 +972,31 @@ public class DailyMoneyOut extends Fragment {
                     db7 = dbHelper7.getWritableDatabase();
 
                     if (moneyOutPriority.equals("B")) {
-                        newCurrentAvailableBalance = dbManager.retrieveCurrentAvailableBalance() + moneyOutAmount;
-                        moneyOutValue17 = new ContentValues();
-                        moneyOutValue17.put(DbHelper.CURRENTAVAILABLEBALANCE, newCurrentAvailableBalance);
-                        db7.update(DbHelper.CURRENT_TABLE_NAME, moneyOutValue17, DbHelper.ID + "= '1'", null);
-
-                        newCurrentAccountBalance4 = dbManager.retrieveCurrentAccountBalance() + moneyOutAmount;
-                        moneyOutValue18 = new ContentValues();
-                        moneyOutValue18.put(DbHelper.CURRENTACCOUNTBALANCE, newCurrentAccountBalance4);
-                        db7.update(DbHelper.CURRENT_TABLE_NAME, moneyOutValue18, DbHelper.ID + "= '1'", null);
+                        refundB();
+                        refundA();
                     } else if (moneyOutPriority.equals("A")) {
-                        newCurrentAccountBalance4 = dbManager.retrieveCurrentAccountBalance() + moneyOutAmount;
-                        moneyOutValue18 = new ContentValues();
-                        moneyOutValue18.put(DbHelper.CURRENTACCOUNTBALANCE, newCurrentAccountBalance4);
-                        db7.update(DbHelper.CURRENT_TABLE_NAME, moneyOutValue18, DbHelper.ID + "= '1'", null);
+                        refundA();
                     }
 
                     findMatchingDebtId();
                     if (foundMatchingDebtId) {
                         newDebtAmount = findCurrentDebtAmount() + moneyOutAmount;
-                        moneyOutValue11 = new ContentValues();
-                        moneyOutValue11.put(DbHelper.DEBTAMOUNT, newDebtAmount);
-                        db7.update(DbHelper.DEBTS_TABLE_NAME, moneyOutValue11, DbHelper.ID + "=" + findMatchingDebtId(), null);
-                        moneyOutValue12 = new ContentValues();
-                        moneyOutValue12.put(DbHelper.DEBTEND, calcDebtDate());
-                        db7.update(DbHelper.DEBTS_TABLE_NAME, moneyOutValue12, DbHelper.ID + "=" + findMatchingDebtId(), null);
+                        moneyOutValue7 = new ContentValues();
+                        moneyOutValue7.put(DbHelper.DEBTAMOUNT, newDebtAmount);
+                        db7.update(DbHelper.DEBTS_TABLE_NAME, moneyOutValue7, DbHelper.ID + "=" + findMatchingDebtId(), null);
+                        moneyOutValue8 = new ContentValues();
+                        moneyOutValue8.put(DbHelper.DEBTEND, calcDebtDate());
+                        db7.update(DbHelper.DEBTS_TABLE_NAME, moneyOutValue8, DbHelper.ID + "=" + findMatchingDebtId(), null);
                     }
                     findMatchingSavingsId();
                     if (foundMatchingSavingsId) {
                         newSavingsAmount = findCurrentSavingsAmount() - moneyOutAmount;
-                        moneyOutValue13 = new ContentValues();
-                        moneyOutValue13.put(DbHelper.SAVINGSAMOUNT, newSavingsAmount);
-                        db7.update(DbHelper.SAVINGS_TABLE_NAME, moneyOutValue13, DbHelper.ID + "=" + findMatchingSavingsId(), null);
-                        moneyOutValue14 = new ContentValues();
-                        moneyOutValue14.put(DbHelper.SAVINGSDATE, calcSavingsDate());
-                        db7.update(DbHelper.SAVINGS_TABLE_NAME, moneyOutValue14, DbHelper.ID + "=" + findMatchingSavingsId(), null);
+                        moneyOutValue9 = new ContentValues();
+                        moneyOutValue9.put(DbHelper.SAVINGSAMOUNT, newSavingsAmount);
+                        db7.update(DbHelper.SAVINGS_TABLE_NAME, moneyOutValue9, DbHelper.ID + "=" + findMatchingSavingsId(), null);
+                        moneyOutValue10 = new ContentValues();
+                        moneyOutValue10.put(DbHelper.SAVINGSDATE, calcSavingsDate());
+                        db7.update(DbHelper.SAVINGS_TABLE_NAME, moneyOutValue10, DbHelper.ID + "=" + findMatchingSavingsId(), null);
                     }
                     db7.close();
 

@@ -2,13 +2,10 @@ package ca.gotchasomething.mynance;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -25,19 +22,18 @@ import ca.gotchasomething.mynance.data.SetUpDb;
 
 public class DbManager extends AppCompatActivity {
 
-    public Calendar cal;
     public Cursor cursor;
-    public Date debtEndD;
+    public ContentValues newCurrent, newDebt, newExpense, newIncome, newMoneyIn, newMoneyOut, newSavings, newSetUp, updateCurrent, updateDebt, updateExpense,
+            updateIncome, updateMoneyIn, updateMoneyOut, updateMoneyOutPaid, updateSaving, updateSetUp, zero;
     public DbHelper dbHelper;
-    public Double currentAccountBalance = 0.0, currentAvailableBalance = 0.0, numberOfYearsToPayDebt = 0.0, percentB = 0.0, startingBalanceResult = 0.0,
-            totalBudgetAExpenses = 0.0, totalCCPaymentDue = 0.0, totalCCPaymentBDue = 0.0, totalDebt = 0.0, totalExpenses = 0.0, totalIncome = 0.0, totalSavings = 0.0;
+    public Double currentAccountBalance = 0.0, currentAvailableBalance = 0.0, percentB = 0.0, startingBalanceResult = 0.0, totalBudgetAExpenses = 0.0,
+            totalCCPaymentDue = 0.0, totalCCPaymentBDue = 0.0, totalDebt = 0.0, totalExpenses = 0.0, totalIncome = 0.0, totalSavings = 0.0;
     public General general = new General();
     public int balanceDoneCheck = 0, budgetDoneCheck = 0, currentPageId = 0, debtCount = 0, debtsDoneCheck = 0, earliestYear = 0, endIndex = 0, latestYear = 0,
-            numberOfDaysToPayDebt = 0, savingsDoneCheck = 0, startIndex = 0, tourDoneCheck = 0;
+            savingsDoneCheck = 0, startIndex = 0, tourDoneCheck = 0;
     public Long expenseId, incomeId;
-    public SimpleDateFormat debtEndS;
     public SQLiteDatabase db;
-    public String category = null, debtEnd = null, startingString = null, subStringResult = null;
+    public String category = null, startingString = null, subStringResult = null;
 
     public DbManager(Context context) {
         dbHelper = DbHelper.getInstance(context);
@@ -67,7 +63,7 @@ public class DbManager extends AppCompatActivity {
     }
 
     public void addSetUp(SetUpDb setUp) {
-        ContentValues newSetUp = new ContentValues();
+        newSetUp = new ContentValues();
         newSetUp.put(DbHelper.DEBTSDONE, setUp.getDebtsDone());
         newSetUp.put(DbHelper.SAVINGSDONE, setUp.getSavingsDone());
         newSetUp.put(DbHelper.BUDGETDONE, setUp.getBudgetDone());
@@ -79,7 +75,7 @@ public class DbManager extends AppCompatActivity {
     }
 
     public void updateSetUp(SetUpDb setUp) {
-        ContentValues updateSetUp = new ContentValues();
+        updateSetUp = new ContentValues();
         updateSetUp.put(DbHelper.DEBTSDONE, setUp.getDebtsDone());
         updateSetUp.put(DbHelper.SAVINGSDONE, setUp.getSavingsDone());
         updateSetUp.put(DbHelper.BUDGETDONE, setUp.getBudgetDone());
@@ -214,7 +210,7 @@ public class DbManager extends AppCompatActivity {
     }
 
     public void addDebt(DebtDb debt) {
-        ContentValues newDebt = new ContentValues();
+        newDebt = new ContentValues();
         newDebt.put(DbHelper.DEBTNAME, debt.getDebtName());
         newDebt.put(DbHelper.DEBTLIMIT, debt.getDebtLimit());
         newDebt.put(DbHelper.DEBTAMOUNT, debt.getDebtAmount());
@@ -222,7 +218,6 @@ public class DbManager extends AppCompatActivity {
         newDebt.put(DbHelper.DEBTPAYMENTS, debt.getDebtPayments());
         newDebt.put(DbHelper.DEBTFREQUENCY, debt.getDebtFrequency());
         newDebt.put(DbHelper.DEBTANNUALINCOME, debt.getDebtAnnualIncome());
-        //newDebt.put(DbHelper.DEBTEND, debtEndDate(debt));
         newDebt.put(DbHelper.DEBTEND, debt.getDebtEnd());
         newDebt.put(DbHelper.EXPREFKEYD, debt.getExpRefKeyD());
         newDebt.put(DbHelper.INCREFKEYD, debt.getIncRefKeyD());
@@ -231,7 +226,7 @@ public class DbManager extends AppCompatActivity {
     }
 
     public void updateDebt(DebtDb debt) {
-        ContentValues updateDebt = new ContentValues();
+        updateDebt = new ContentValues();
         updateDebt.put(DbHelper.DEBTNAME, debt.getDebtName());
         updateDebt.put(DbHelper.DEBTLIMIT, debt.getDebtLimit());
         updateDebt.put(DbHelper.DEBTAMOUNT, debt.getDebtAmount());
@@ -239,7 +234,6 @@ public class DbManager extends AppCompatActivity {
         updateDebt.put(DbHelper.DEBTPAYMENTS, debt.getDebtPayments());
         updateDebt.put(DbHelper.DEBTFREQUENCY, debt.getDebtFrequency());
         updateDebt.put(DbHelper.DEBTANNUALINCOME, debt.getDebtAnnualIncome());
-        //updateDebt.put(DbHelper.DEBTEND, debtEndDate(debt));
         updateDebt.put(DbHelper.DEBTEND, debt.getDebtEnd());
         updateDebt.put(DbHelper.EXPREFKEYD, debt.getExpRefKeyD());
         updateDebt.put(DbHelper.INCREFKEYD, debt.getIncRefKeyD());
@@ -253,26 +247,6 @@ public class DbManager extends AppCompatActivity {
         String[] args = new String[]{String.valueOf(debt.getId())};
         db.delete(DbHelper.DEBTS_TABLE_NAME, DbHelper.ID + "=?", args);
     }
-
-    /*public String debtEndDate(DebtDb debt) {
-        cal = Calendar.getInstance();
-        //years = -(Math.log(1 - (amount * (rate / 100) / ((payments * frequency) - annualIncome))) / (frequency * Math.log(1 + ((rate / 100) / frequency))))
-        numberOfYearsToPayDebt = -(Math.log(1 - (debt.getDebtAmount() * (debt.getDebtRate() / 100) /
-                ((debt.getDebtPayments() * debt.getDebtFrequency()) - debt.getDebtAnnualIncome()))) / (debt.getDebtFrequency() *
-                Math.log(1 + ((debt.getDebtRate() / 100) / debt.getDebtFrequency()))));
-        numberOfDaysToPayDebt = (int) Math.round(numberOfYearsToPayDebt * 365);
-        if (debt.getDebtAmount() <= 0) {
-            debtEnd = getString(R.string.debt_paid);
-        } else if (numberOfDaysToPayDebt > Integer.MAX_VALUE || numberOfDaysToPayDebt <= 0) {
-            debtEnd = getString(R.string.too_far);
-        } else {
-            cal.add(Calendar.DATE, numberOfDaysToPayDebt);
-            debtEndD = cal.getTime();
-            debtEndS = new SimpleDateFormat("dd-MMM-yyyy");
-            debtEnd = getString(R.string.debt_will) + " " + debtEndS.format(debtEndD);
-        }
-        return debtEnd;
-    }*/
 
     public Double sumTotalDebt() {
         List<Double> debtAmountList = new ArrayList<>(getDebts().size());
@@ -325,7 +299,7 @@ public class DbManager extends AppCompatActivity {
     }
 
     public void addSavings(SavingsDb saving) {
-        ContentValues newSavings = new ContentValues();
+        newSavings = new ContentValues();
         newSavings.put(DbHelper.SAVINGSNAME, saving.getSavingsName());
         newSavings.put(DbHelper.SAVINGSAMOUNT, saving.getSavingsAmount());
         newSavings.put(DbHelper.SAVINGSGOAL, saving.getSavingsGoal());
@@ -342,7 +316,7 @@ public class DbManager extends AppCompatActivity {
     }
 
     public void updateSavings(SavingsDb saving) {
-        ContentValues updateSaving = new ContentValues();
+        updateSaving = new ContentValues();
         updateSaving.put(DbHelper.SAVINGSNAME, saving.getSavingsName());
         updateSaving.put(DbHelper.SAVINGSAMOUNT, saving.getSavingsAmount());
         updateSaving.put(DbHelper.SAVINGSGOAL, saving.getSavingsGoal());
@@ -408,7 +382,7 @@ public class DbManager extends AppCompatActivity {
     }
 
     public void addExpense(ExpenseBudgetDb expense) {
-        ContentValues newExpense = new ContentValues();
+        newExpense = new ContentValues();
         newExpense.put(DbHelper.EXPENSENAME, expense.getExpenseName());
         newExpense.put(DbHelper.EXPENSEAMOUNT, expense.getExpenseAmount());
         newExpense.put(DbHelper.EXPENSEFREQUENCY, expense.getExpenseFrequency());
@@ -422,7 +396,7 @@ public class DbManager extends AppCompatActivity {
     }
 
     public void updateExpense(ExpenseBudgetDb expense) {
-        ContentValues updateExpense = new ContentValues();
+        updateExpense = new ContentValues();
         updateExpense.put(DbHelper.EXPENSENAME, expense.getExpenseName());
         updateExpense.put(DbHelper.EXPENSEAMOUNT, expense.getExpenseAmount());
         updateExpense.put(DbHelper.EXPENSEFREQUENCY, expense.getExpenseFrequency());
@@ -506,7 +480,7 @@ public class DbManager extends AppCompatActivity {
     }
 
     public void addIncome(IncomeBudgetDb income) {
-        ContentValues newIncome = new ContentValues();
+        newIncome = new ContentValues();
         newIncome.put(DbHelper.INCOMENAME, income.getIncomeName());
         newIncome.put(DbHelper.INCOMEAMOUNT, income.getIncomeAmount());
         newIncome.put(DbHelper.INCOMEFREQUENCY, income.getIncomeFrequency());
@@ -516,7 +490,7 @@ public class DbManager extends AppCompatActivity {
     }
 
     public void updateIncome(IncomeBudgetDb income) {
-        ContentValues updateIncome = new ContentValues();
+        updateIncome = new ContentValues();
         updateIncome.put(DbHelper.INCOMENAME, income.getIncomeName());
         updateIncome.put(DbHelper.INCOMEAMOUNT, income.getIncomeAmount());
         updateIncome.put(DbHelper.INCOMEFREQUENCY, income.getIncomeFrequency());
@@ -585,7 +559,7 @@ public class DbManager extends AppCompatActivity {
     }
 
     public void addMoneyIn(MoneyInDb moneyIn) {
-        ContentValues newMoneyIn = new ContentValues();
+        newMoneyIn = new ContentValues();
         newMoneyIn.put(DbHelper.MONEYINCAT, moneyIn.getMoneyInCat());
         newMoneyIn.put(DbHelper.MONEYINAMOUNT, moneyIn.getMoneyInAmount());
         newMoneyIn.put(DbHelper.MONEYINCREATEDON, moneyIn.getMoneyInCreatedOn());
@@ -595,7 +569,7 @@ public class DbManager extends AppCompatActivity {
     }
 
     public void updateMoneyIn(MoneyInDb moneyIn) {
-        ContentValues updateMoneyIn = new ContentValues();
+        updateMoneyIn = new ContentValues();
         updateMoneyIn.put(DbHelper.MONEYINCAT, moneyIn.getMoneyInCat());
         updateMoneyIn.put(DbHelper.MONEYINAMOUNT, moneyIn.getMoneyInAmount());
         updateMoneyIn.put(DbHelper.MONEYINCREATEDON, moneyIn.getMoneyInCreatedOn());
@@ -644,7 +618,7 @@ public class DbManager extends AppCompatActivity {
     }
 
     public void addMoneyOut(MoneyOutDb moneyOut) {
-        ContentValues newMoneyOut = new ContentValues();
+        newMoneyOut = new ContentValues();
         newMoneyOut.put(DbHelper.MONEYOUTCAT, moneyOut.getMoneyOutCat());
         newMoneyOut.put(DbHelper.MONEYOUTPRIORITY, moneyOut.getMoneyOutPriority());
         newMoneyOut.put(DbHelper.MONEYOUTWEEKLY, moneyOut.getMoneyOutWeekly());
@@ -661,7 +635,7 @@ public class DbManager extends AppCompatActivity {
     }
 
     public void updateMoneyOut(MoneyOutDb moneyOut) {
-        ContentValues updateMoneyOut = new ContentValues();
+        updateMoneyOut = new ContentValues();
         updateMoneyOut.put(DbHelper.MONEYOUTCAT, moneyOut.getMoneyOutCat());
         updateMoneyOut.put(DbHelper.MONEYOUTPRIORITY, moneyOut.getMoneyOutPriority());
         updateMoneyOut.put(DbHelper.MONEYOUTWEEKLY, moneyOut.getMoneyOutWeekly());
@@ -761,7 +735,7 @@ public class DbManager extends AppCompatActivity {
     }
 
     public void addCurrent(CurrentDb current) {
-        ContentValues newCurrent = new ContentValues();
+        newCurrent = new ContentValues();
         newCurrent.put(DbHelper.CURRENTACCOUNTBALANCE, current.getCurrentAccountBalance());
         newCurrent.put(DbHelper.CURRENTAVAILABLEBALANCE, current.getCurrentAvailableBalance());
         newCurrent.put(DbHelper.CURRENTPAGEID, current.getCurrentPageId());
@@ -770,7 +744,7 @@ public class DbManager extends AppCompatActivity {
     }
 
     public void updateCurrent(CurrentDb current) {
-        ContentValues updateCurrent = new ContentValues();
+        updateCurrent = new ContentValues();
         updateCurrent.put(DbHelper.CURRENTACCOUNTBALANCE, current.getCurrentAccountBalance());
         updateCurrent.put(DbHelper.CURRENTAVAILABLEBALANCE, current.getCurrentAvailableBalance());
         updateCurrent.put(DbHelper.CURRENTPAGEID, current.getCurrentPageId());
@@ -823,7 +797,7 @@ public class DbManager extends AppCompatActivity {
             }
         }
         if (currentAvailableBalance <= 0 || retrieveCurrentAccountBalance() < currentAvailableBalance || retrieveCurrentAccountBalance() == 0.0) {
-            ContentValues zero = new ContentValues();
+            zero = new ContentValues();
             zero.put(DbHelper.CURRENTAVAILABLEBALANCE, 0.0);
             db.update(DbHelper.CURRENT_TABLE_NAME, zero, DbHelper.ID + "= '1'", null);
             currentAvailableBalance = 0.0;
@@ -872,6 +846,16 @@ public class DbManager extends AppCompatActivity {
         return ccTransToPay;
     }
 
+    public List<MoneyOutDb> getCCToPayDebts() {
+        List<MoneyOutDb> ccToPayDebts = new ArrayList<>();
+        for(MoneyOutDb m4 : getMoneyOuts()) {
+            if(m4.getMoneyOutToPay() > 0) {
+                ccToPayDebts.add(m4);
+            }
+        }
+        return ccToPayDebts;
+    }
+
     public Double retrieveToPayTotal() {
         List<Double> toPayList = new ArrayList<>();
         for (MoneyOutDb m : getMoneyOuts()) {
@@ -910,7 +894,7 @@ public class DbManager extends AppCompatActivity {
 
     public void updatePaid() {
         db = dbHelper.getWritableDatabase();
-        ContentValues updateMoneyOutPaid = new ContentValues();
+        updateMoneyOutPaid = new ContentValues();
         updateMoneyOutPaid.put(DbHelper.MONEYOUTPAID, 1);
         db.update(DbHelper.MONEY_OUT_TABLE_NAME, updateMoneyOutPaid, DbHelper.MONEYOUTTOPAY + "= '1' AND " + DbHelper.MONEYOUTPAID + " = '0'", null);
     }

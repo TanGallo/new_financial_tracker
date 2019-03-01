@@ -282,4 +282,5 @@
     <string name="no_entries_yet">You haven\'t made any entries yet.</string>
     <string name="go_to_daily_money_3">Go to DAILY MONEY to record your income in the MONEY IN tab and your spending in the MONEY OUT tab.</string>
     <string name="delete_debt_warning">Warning: When you delete this item, the corresponding income and expense categories will also be deleted from your BUDGET</string>
+    <string name="check_boxes_below2">Note: Once an item has been marked as paid, it can no longer be edited or deleted in the CREDIT CARD tab.</string>
 </resources>

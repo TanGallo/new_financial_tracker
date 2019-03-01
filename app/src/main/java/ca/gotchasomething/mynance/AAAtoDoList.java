@@ -1,6 +1,7 @@
 /*
 
 ISSUES:
+REWORK THE DAILYCREDITCARD TAB ENTIRELY
 NAME CHANGED WHEN UPDATING SAVINGS - CHANGED TO A DEBTS NAME
 IN PAYCC TAB, MULTIPLE ITEMS GETTING CHECKED AT A TIME, THE WRONG ITEMS THAT GOT CHECKED DO NOT GET REMOVED FROM PAGE WHEN CLICK ON THE PAID BUTTON, AND TOTAL NOT GOING BACK TO ZERO WHEN UNCHECKING BOX
 
@@ -317,7 +318,7 @@ if(incRefKeyMI = indRefKeyS):
     savingsDate = calculated
 
 delete money in
------------------------------------------------------------------------------------------------
+
 WHEN CREATING A MONEY OUT FROM MONEY OUT TAB:
 moneyOutCat = expenseName (many-to-one) - get from DB/spinner
 moneyOutPriority = expensePriority (many-to-one) - get from DB/spinner

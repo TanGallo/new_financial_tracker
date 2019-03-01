@@ -5,9 +5,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,11 +20,14 @@ import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+
 import ca.gotchasomething.mynance.DbHelper;
 import ca.gotchasomething.mynance.DbManager;
 import ca.gotchasomething.mynance.LayoutDailyMoney;
@@ -36,27 +41,28 @@ public class DailyCreditCard extends Fragment {
     Button ccTransCancelButton, ccTransContinueButton;
     Calendar debtCal3;
     CCAdapter ccAdapter;
+    CCPaymentsAdapter ccPaymentsAdapter;
     CheckBox ccPaidCheckbox;
     ContentValues currentValue, moneyOutValue, moneyOutValue2;
     Date debtEndD3;
     DbHelper dbHelper, dbHelper2, dbHelper3, dbHelper4, dbHelper5;
     DbManager dbManager;
-    Double ccAmountD = 0.0, currentAccountBalance = 0.0, currentAccountBalance2 = 0.0, currentAvailableBalance = 0.0, currentAvailableBalance2 = 0.0,
+    Double amountDue = 0.0, ccAmountD = 0.0, currentAccountBalance = 0.0, currentAccountBalance2 = 0.0, currentAvailableBalance = 0.0, currentAvailableBalance2 = 0.0,
             currentChargingDebtAmount = 0.0, currentDebtAnnualIncome = 0.0, currentDebtFrequency3 = 0.0, currentDebtPayments3 = 0.0, currentDebtRate3 = 0.0,
             debtAmount3 = 0.0, newCurrentAccountBalance = 0.0, newCurrentAvailableBalance = 0.0, newDebtAmount = 0.0, numberOfYearsToPayDebt3 = 0.0,
             totalCCPaymentDue = 0.0, totalCCPaymentDue2 = 0.0, totalCCPaymentDue3 = 0.0, totalCCPaymentBDue = 0.0, totalCCPaymentBDue2 = 0.0;
     int numberOfDaysToPayDebt3 = 0;
     Intent refresh;
     LinearLayout initialCCLayout;
-    ListView ccListView;
+    ListView ccListView, ccPaymentsList;
     long chargingDebtId;
     MoneyOutDb moneyOutDb;
     NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
     SimpleDateFormat debtEndS3;
     SQLiteDatabase db, db2, db3, db4, db5;
-    String ccAmountS = null, ccAmount2 = null, chargingDebtEnd = null, totalCCPaymentDueS = null;
+    String amountDueS = null, ccAmountS = null, ccAmount2 = null, chargingDebtCat = null, chargingDebtEnd = null, debtCat = null, totalCCPaymentDueS = null;
     TextView ccHeaderLabel, ccPaidLabel, ccPayLabel, ccTransContinueAnywayText, ccTransPaymentNotPossibleAText, ccTransPaymentNotPossibleBText, checkBelowLabel,
-            noCCTransLabel, totalCCPaymentDueLabel, totalCCPaymentDueAmount;
+            checkBelowLabel2, noCCTransLabel, totalCCPaymentDueLabel, totalCCPaymentDueAmount;
     View ccLine, v;
 
     public DailyCreditCard() {
@@ -77,11 +83,13 @@ public class DailyCreditCard extends Fragment {
 
         dbManager = new DbManager(getContext());
 
+        checkBelowLabel = v.findViewById(R.id.checkBelowLabel);
+        checkBelowLabel2 = v.findViewById(R.id.checkBelowLabel2);
         initialCCLayout = v.findViewById(R.id.initalCCLayout);
-        noCCTransLabel = v.findViewById(R.id.noCCTransLabel);
-        noCCTransLabel.setVisibility(View.GONE);
         ccHeaderLabel = v.findViewById(R.id.ccHeaderLabel);
         ccPayLabel = v.findViewById(R.id.ccPayLabel);
+        noCCTransLabel = v.findViewById(R.id.noCCTransLabel);
+        noCCTransLabel.setVisibility(View.GONE);
         ccLine = v.findViewById(R.id.ccLine);
         ccTransPaymentNotPossibleAText = v.findViewById(R.id.ccTransPaymentNotPossibleAText);
         ccTransPaymentNotPossibleAText.setVisibility(View.GONE);
@@ -93,20 +101,19 @@ public class DailyCreditCard extends Fragment {
         ccTransCancelButton.setVisibility(View.GONE);
         ccTransContinueButton = v.findViewById(R.id.ccTransContinueButton);
         ccTransContinueButton.setVisibility(View.GONE);
-        checkBelowLabel = v.findViewById(R.id.checkBelowLabel);
         totalCCPaymentDueLabel = v.findViewById(R.id.totalCCPaymentDueLabel);
         totalCCPaymentDueLabel.setVisibility(View.GONE);
-        totalCCPaymentDueAmount = v.findViewById(R.id.totalCCPaymentDueAmount);
-        totalCCPaymentDueAmount.setVisibility(View.GONE);
         ccPaidLabel = v.findViewById(R.id.ccPaidLabel);
         ccPaidLabel.setVisibility(View.GONE);
         ccPaidCheckbox = v.findViewById(R.id.ccPaidCheckbox);
         ccPaidCheckbox.setVisibility(View.GONE);
 
         ccListView = v.findViewById(R.id.ccListView);
-
         ccAdapter = new CCAdapter(getContext(), dbManager.getCCTransToPay());
         ccListView.setAdapter(ccAdapter);
+
+        ccPaymentsList = v.findViewById(R.id.ccPaymentsList);
+        ccPaymentsList.setVisibility(View.GONE);
 
         ccPaidCheckbox.setOnCheckedChangeListener(onCheckCCPaid);
 
@@ -119,6 +126,12 @@ public class DailyCreditCard extends Fragment {
         db5 = dbHelper5.getWritableDatabase();
         db5.update(DbHelper.CURRENT_TABLE_NAME, currentValue, DbHelper.ID + "= '1'", null);
         db5.close();
+    }
+
+    public void backToCCLayout() {
+        refresh = new Intent(getContext(), LayoutDailyMoney.class);
+        refresh.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+        startActivity(refresh);
     }
 
     public String calcChargingDebtDate() {
@@ -162,7 +175,7 @@ public class DailyCreditCard extends Fragment {
         return currentChargingDebtAmount;
     }
 
-    public void cancelTransaction() {
+    public void hideWarnings() {
         ccTransPaymentNotPossibleAText.setVisibility(View.GONE);
         ccTransPaymentNotPossibleBText.setVisibility(View.GONE);
         ccTransContinueAnywayText.setVisibility(View.GONE);
@@ -176,7 +189,6 @@ public class DailyCreditCard extends Fragment {
         dbManager.updatePaid();
 
         //update balance owing on appropriate DEBTS
-
         dbHelper = new DbHelper(getContext());
         db = dbHelper.getWritableDatabase();
 
@@ -188,11 +200,9 @@ public class DailyCreditCard extends Fragment {
         moneyOutValue2.put(DbHelper.DEBTEND, calcChargingDebtDate());
         db.update(DbHelper.DEBTS_TABLE_NAME, moneyOutValue2, DbHelper.ID + "=" + chargingDebtId, null);
 
-        resetToPay();
+        //resetToPay();
 
-        refresh = new Intent(getContext(), LayoutDailyMoney.class);
-        refresh.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-        startActivity(refresh);
+        backToCCLayout();
     }
 
     public void updateCurrentAvailableBalance() {
@@ -243,11 +253,7 @@ public class DailyCreditCard extends Fragment {
         } else if (totalCCPaymentDue2 > currentAccountBalance2) {
             possibleA = false;
         } else {
-            ccTransPaymentNotPossibleAText.setVisibility(View.GONE);
-            ccTransPaymentNotPossibleBText.setVisibility(View.GONE);
-            ccTransContinueAnywayText.setVisibility(View.GONE);
-            ccTransCancelButton.setVisibility(View.GONE);
-            ccTransContinueButton.setVisibility(View.GONE);
+            hideWarnings();
         }
     }
 
@@ -263,21 +269,20 @@ public class DailyCreditCard extends Fragment {
         if (ccAdapter.getCount() == 0) {
             noCCTransLabel.setVisibility(View.VISIBLE);
             checkBelowLabel.setVisibility(View.GONE);
+            checkBelowLabel2.setVisibility(View.GONE);
             ccHeaderLabel.setVisibility(View.GONE);
             ccPayLabel.setVisibility(View.GONE);
             ccLine.setVisibility(View.GONE);
-            initialCCLayout.setVisibility(View.GONE);
         } else {
             noCCTransLabel.setVisibility(View.GONE);
             checkBelowLabel.setVisibility(View.VISIBLE);
+            checkBelowLabel2.setVisibility(View.VISIBLE);
             ccHeaderLabel.setVisibility(View.VISIBLE);
             ccPayLabel.setVisibility(View.VISIBLE);
             ccLine.setVisibility(View.VISIBLE);
-            initialCCLayout.setVisibility(View.VISIBLE);
         }
 
         totalCCPaymentDueLabel.setVisibility(View.GONE);
-        totalCCPaymentDueAmount.setVisibility(View.GONE);
         ccPaidLabel.setVisibility(View.GONE);
         ccPaidCheckbox.setVisibility(View.GONE);
         ccTransPaymentNotPossibleAText.setVisibility(View.GONE);
@@ -289,12 +294,31 @@ public class DailyCreditCard extends Fragment {
 
     public void updateCCPaymentDue() {
 
+        if (ccPaymentsList.getCount() == 0) {
+            ccPaymentsList.setVisibility(View.GONE);
+            resetToPay();
+        } else {
+            ccPaymentsList.setVisibility(View.VISIBLE);
+            ccPaymentsAdapter = new CCPaymentsAdapter(getContext(), dbManager.getCCToPayDebts());
+            ccPaymentsList.setAdapter(ccPaymentsAdapter);
+            checkBelowLabel.setVisibility(View.GONE);
+            checkBelowLabel2.setVisibility(View.GONE);
+            totalCCPaymentDueLabel.setVisibility(View.VISIBLE);
+            ccPaidLabel.setVisibility(View.VISIBLE);
+            ccPaidCheckbox.setVisibility(View.VISIBLE);
+        }
+        checkIfPaymentPossible();
+    }
+
+    /*public void updateCCPaymentDue() {
+
         totalCCPaymentDue = dbManager.retrieveToPayTotal();
 
         if (totalCCPaymentDue.equals(0.0)) {
             resetToPay();
         } else {
             checkBelowLabel.setVisibility(View.GONE);
+            checkBelowLabel2.setVisibility(View.GONE);
             totalCCPaymentDueLabel.setVisibility(View.VISIBLE);
             totalCCPaymentDueAmount.setVisibility(View.VISIBLE);
             ccPaidLabel.setVisibility(View.VISIBLE);
@@ -304,7 +328,7 @@ public class DailyCreditCard extends Fragment {
             totalCCPaymentDueAmount.setText(totalCCPaymentDueS);
         }
         checkIfPaymentPossible();
-    }
+    }*/
 
     public class CCAdapter extends ArrayAdapter<MoneyOutDb> {
 
@@ -394,7 +418,10 @@ public class DailyCreditCard extends Fragment {
 
                     updateCCPaymentDue();
 
-                    if(!possibleB) {
+                    if (!possibleB) {
+                        checkBelowLabel.setVisibility(View.GONE);
+                        checkBelowLabel2.setVisibility(View.GONE);
+                        initialCCLayout.setVisibility(View.GONE);
                         ccPaidLabel.setVisibility(View.GONE);
                         ccPaidCheckbox.setVisibility(View.GONE);
                         ccTransPaymentNotPossibleBText.setVisibility(View.VISIBLE);
@@ -406,7 +433,8 @@ public class DailyCreditCard extends Fragment {
                             @Override
                             public void onClick(View v) {
                                 holder.ccCheck.setChecked(false);
-                                cancelTransaction();
+                                backToCCLayout();
+                                //hideWarnings();
                             }
                         });
 
@@ -416,7 +444,10 @@ public class DailyCreditCard extends Fragment {
                                 continueTransaction();
                             }
                         });
-                    } else if(!possibleA) {
+                    } else if (!possibleA) {
+                        checkBelowLabel.setVisibility(View.GONE);
+                        checkBelowLabel2.setVisibility(View.GONE);
+                        initialCCLayout.setVisibility(View.GONE);
                         ccPaidLabel.setVisibility(View.GONE);
                         ccPaidCheckbox.setVisibility(View.GONE);
                         ccTransPaymentNotPossibleAText.setVisibility(View.VISIBLE);
@@ -428,7 +459,8 @@ public class DailyCreditCard extends Fragment {
                             @Override
                             public void onClick(View v) {
                                 holder.ccCheck.setChecked(false);
-                                cancelTransaction();
+                                backToCCLayout();
+                                //hideWarnings();
                             }
                         });
 
@@ -450,5 +482,83 @@ public class DailyCreditCard extends Fragment {
         public TextView ccAmount;
         public TextView ccChargedOn;
         public CheckBox ccCheck;
+    }
+
+    public class CCPaymentsAdapter extends ArrayAdapter<MoneyOutDb> {
+
+        private Context context;
+        private List<MoneyOutDb> ccToPayDebts;
+
+        private CCPaymentsAdapter(
+                Context context,
+                List<MoneyOutDb> ccToPayDebts) {
+
+            super(context, -1, ccToPayDebts);
+
+            this.context = context;
+            this.ccToPayDebts = ccToPayDebts;
+        }
+
+        public void updateCCtoPayDebts(List<MoneyOutDb> ccToPayDebts) {
+            this.ccToPayDebts = ccToPayDebts;
+            notifyDataSetChanged();
+        }
+
+        @Override
+        public int getCount() {
+            return ccToPayDebts.size();
+        }
+
+        @NonNull
+        @Override
+        public View getView(final int position,
+                            View convertView, @NonNull ViewGroup parent) {
+
+            final CCPaymentsViewHolder holder2;
+
+            if (convertView == null) {
+                convertView = LayoutInflater.from(context).inflate(
+                        R.layout.fragment_list_cc_payments,
+                        parent, false);
+
+                holder2 = new CCPaymentsViewHolder();
+                holder2.chargingDebt = convertView.findViewById(R.id.chargingDebt);
+                holder2.paymentDue = convertView.findViewById(R.id.paymentDue);
+                convertView.setTag(holder2);
+
+            } else {
+                holder2 = (CCPaymentsViewHolder) convertView.getTag();
+            }
+
+            //retrieve chargingDebtCat
+            chargingDebtCat = ccToPayDebts.get(position).getMoneyOutDebtCat();
+            holder2.chargingDebt.setText(chargingDebtCat);
+
+            //retrieve amount due in each category and format as currency
+            List<Double> totalsDueList = new ArrayList<>();
+            for (MoneyOutDb mm : dbManager.getCCToPayDebts()) {
+                debtCat = mm.getMoneyOutDebtCat();
+                if (debtCat == chargingDebtCat) {
+                    totalsDueList.add(mm.getMoneyOutAmount());
+                }
+            }
+            //totalSpentAll = 0.0;
+            if (totalsDueList.size() == 0) {
+                amountDue = 0.0;
+            } else {
+                for (Double dbl : totalsDueList) {
+                    amountDue += dbl;
+                }
+            }
+            amountDueS = currencyFormat.format(amountDue);
+            holder2.paymentDue.setText(amountDueS);
+
+            return convertView;
+        }
+    }
+
+    private static class CCPaymentsViewHolder {
+        public TextView chargingDebt;
+        public TextView paymentDue;
     }
 }

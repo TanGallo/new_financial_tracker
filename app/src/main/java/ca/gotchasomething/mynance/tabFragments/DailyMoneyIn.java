@@ -361,7 +361,7 @@ public class DailyMoneyIn extends Fragment {
         public void onClick(View v) {
 
             moneyInCat = moneyInCatS;
-            if(moneyInAmountText.getText().toString().equals("")) {
+            if (moneyInAmountText.getText().toString().equals("")) {
                 moneyInAmount = 0.0;
             } else {
                 moneyInAmount = Double.valueOf(moneyInAmountText.getText().toString());
@@ -503,6 +503,9 @@ public class DailyMoneyIn extends Fragment {
                 holder = new MoneyInViewHolder();
                 holder.moneyInEdit = convertView.findViewById(R.id.editMoneyInOutButton);
                 holder.moneyInDelete = convertView.findViewById(R.id.deleteMoneyInOutButton);
+                if (String.valueOf(moneyIn.get(position).getId()).equals("1")) {
+                    holder.moneyInDelete.setVisibility(View.INVISIBLE);
+                }
                 holder.moneyInAmount = convertView.findViewById(R.id.moneyInOutAmount);
                 holder.moneyInCat = convertView.findViewById(R.id.moneyInOutCat);
                 holder.moneyInDate = convertView.findViewById(R.id.moneyInOutDate);
@@ -575,7 +578,7 @@ public class DailyMoneyIn extends Fragment {
                             } catch (NumberFormatException e) {
                                 amountEntry = general.extractingDollars(moneyInAmountEditText);
                             }
-                            if(moneyInAmountEditText.getText().toString().equals("")) {
+                            if (moneyInAmountEditText.getText().toString().equals("")) {
                                 amountEntry = 0.0;
                             }
 
@@ -704,28 +707,24 @@ public class DailyMoneyIn extends Fragment {
                     moneyInAmount1 = moneyIn.get(position).getMoneyInAmount();
                     moneyInAmount = -moneyInAmount1;
 
-                    if (moneyInDb.getId() == 1) {
-                        Toast.makeText(getContext(), R.string.cannot_delete_warning, Toast.LENGTH_LONG).show();
-                    } else {
-                        findMatchingDebtId();
-                        if (foundMatchingDebtId) {
-                            updateDebtsRecord();
-                        }
-
-                        findMatchingSavingsId();
-                        if (foundMatchingSavingsId) {
-                            updateSavingsRecord();
-                        }
-
-                        dbManager.deleteMoneyIn(moneyInDb);
-                        moneyInAdapter.updateMoneyIn(dbManager.getMoneyIns());
-                        notifyDataSetChanged();
-
-                        updateCurrentAccountBalanceMoneyIn();
-                        updateCurrentAvailableBalanceMoneyIn();
-
-                        backToDaily();
+                    findMatchingDebtId();
+                    if (foundMatchingDebtId) {
+                        updateDebtsRecord();
                     }
+
+                    findMatchingSavingsId();
+                    if (foundMatchingSavingsId) {
+                        updateSavingsRecord();
+                    }
+
+                    dbManager.deleteMoneyIn(moneyInDb);
+                    moneyInAdapter.updateMoneyIn(dbManager.getMoneyIns());
+                    notifyDataSetChanged();
+
+                    updateCurrentAccountBalanceMoneyIn();
+                    updateCurrentAvailableBalanceMoneyIn();
+
+                    backToDaily();
                 }
             });
             return convertView;
