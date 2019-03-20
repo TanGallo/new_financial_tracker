@@ -6,14 +6,6 @@ import android.content.Intent;
 import android.database.CursorIndexOutOfBoundsException;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
-import androidx.appcompat.app.ActionBarDrawerToggle;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,15 +21,20 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import ca.gotchasomething.mynance.data.DebtDb;
 import ca.gotchasomething.mynance.data.ExpenseBudgetDb;
 import ca.gotchasomething.mynance.data.IncomeBudgetDb;
-import ca.gotchasomething.mynance.data.DebtDb;
 import ca.gotchasomething.mynance.data.SavingsDb;
 import ca.gotchasomething.mynance.data.SetUpDb;
 
@@ -49,7 +46,7 @@ public class LayoutBudget extends MainNavigation {
     Calendar debtCal, debtCal2, savingsCal;
     ContentValues debtValues, debtValues2, debtValues3, debtValues4, expValues, incValues, moneyInValues, moneyOutValues, moneyOutValues2, savingsValues, savingsValues2,
             savingsValues3, savingsValues4;
-    Date debtEndD, debtEndD2, savingsDateD, savingsDateD2;
+    Date debtEndD, debtEndD2, savingsDateD;
     DbHelper dbHelper, dbHelper2;
     DbManager dbManager;
     Double amountEntry = 0.0, annualAmount = 0.0, annualIncome = 0.0, balanceAmount = 0.0, budgetExpenseAmountD = 0.0, budgetIncomeAmountD = 0.0,
@@ -77,7 +74,7 @@ public class LayoutBudget extends MainNavigation {
             budgetIncomeBiMonthlyRadioButton, budgetIncomeBiWeeklyRadioButton, budgetIncomeMonthlyRadioButton, budgetIncomeWeeklyRadioButton;
     RadioGroup budgetExpenseABRadioGroup, budgetExpenseFrequencyRadioGroup, budgetIncomeFrequencyRadioGroup, budgetExpenseReminderRadioGroup;
     SetUpDb setUpDb;
-    SimpleDateFormat debtEndS, debtEndS2, savingsDateS, savingsDateS2;
+    SimpleDateFormat debtEndS, debtEndS2, savingsDateS;
     SQLiteDatabase db, db2;
     String budgetExpenseAmountS = null, budgetIncomeAmountS = null, debtEnd = null, debtEnd2 = null, expDebtId = null, expSavingsId = null,
             expRefKeyD = null, expenseAnnualAmount2 = null, expenseAnnualAmountS = null, expenseFrequencyS = null, expenseId = null,

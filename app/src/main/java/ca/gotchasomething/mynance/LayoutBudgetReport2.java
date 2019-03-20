@@ -216,9 +216,10 @@ public class LayoutBudgetReport2 extends MainNavigation {
                 }
             }
             percentSpent = totalBudgetSpent / incomeAnnualAmount;
-            if(percentSpent.isInfinite() || percentSpent.isNaN()) {
+            if (percentSpent.isInfinite() || percentSpent.isNaN()) {
                 percentSpent = 0.0;
             }
+
             percentFormat.setMinimumFractionDigits(2);
             percentSpentP = percentFormat.format(percentSpent);
             holder.budgetReportPercentSpent.setText(percentSpentP);

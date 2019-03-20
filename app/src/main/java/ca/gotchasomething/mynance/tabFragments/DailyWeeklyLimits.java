@@ -4,18 +4,20 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import ca.gotchasomething.mynance.DbHelper;
 import ca.gotchasomething.mynance.DbManager;
 import ca.gotchasomething.mynance.General;
@@ -122,7 +124,6 @@ public class DailyWeeklyLimits extends Fragment {
                         parent, false);
 
                 holder = new ViewHolderWeeklyLimits();
-                //put visual elements here and list them in ViewHolder class below
                 holder.spendingCategory = convertView.findViewById(R.id.spendingCategory);
                 holder.amountLeftText = convertView.findViewById(R.id.amountLeftText);
                 holder.spentAmount = convertView.findViewById(R.id.spentAmount);

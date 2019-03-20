@@ -14,10 +14,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.text.NumberFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -188,7 +185,6 @@ public class LayoutSpendingReport extends MainNavigation {
                     }
                 }
             }
-            //totalSpentAll = 0.0;
             if (totalSpentList.size() == 0) {
                 totalSpentAll = 0.0;
             } else {
@@ -285,40 +281,6 @@ public class LayoutSpendingReport extends MainNavigation {
             }
             totalSpentS = currencyFormat.format(totalSpent);
             holder.spendingReportAmount.setText(totalSpentS);
-
-            //retrieve total spent for report
-            /*List<Double> totalSpentList = new ArrayList<>();
-            for (MoneyOutDb m : dbManager.getMoneyOuts()) {
-                spentDate = m.getMoneyOutCreatedOn();
-                if (month == getString(R.string.year_to_date1)) {
-                    if (String.valueOf(m.getExpRefKeyMO()).equals(String.valueOf(expenseId)) && spentDate.contains(year)) {
-                        totalSpentList.add(m.getMoneyOutAmount());
-                    }
-                } else {
-                    startIndex = spentDate.indexOf("-") + 1;
-                    endIndex = spentDate.length() - 5;
-                    newMonth = spentDate.substring(startIndex, endIndex);
-                    try {
-                        newMonth2 = newMonth.replace(".", "");
-                    } catch (Exception e) {
-                        newMonth2 = newMonth;
-                    }
-                    if (String.valueOf(m.getExpRefKeyMO()).equals(String.valueOf(expenseId)) && month.contains(newMonth2) && spentDate.contains(year)) {
-                        totalSpentList.add(m.getMoneyOutAmount());
-                    }
-                }
-            }
-
-            totalSpentAll = 0.0;
-            if (totalSpentList.size() == 0) {
-                totalSpentAll = 0.0;
-            } else {
-                for (Double dbl : totalSpentList) {
-                    totalSpentAll += dbl;
-                }
-            }
-
-            totalSpentAllS = currencyFormat.format(totalSpentAll);*/
 
             return convertView;
         }

@@ -2,9 +2,6 @@ package ca.gotchasomething.mynance;
 
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.annotation.Nullable;
-
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -14,6 +11,7 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import ca.gotchasomething.mynance.data.ExpenseBudgetDb;
 
 public class AddBudgetExpense extends LayoutBudget {
@@ -165,7 +163,7 @@ public class AddBudgetExpense extends LayoutBudget {
                 Toast.makeText(getBaseContext(), R.string.no_blanks_warning, Toast.LENGTH_LONG).show();
             } else {
                 expenseName = budgetExpenseCategory.getText().toString();
-                if((budgetExpenseAmount.getText().toString().equals(""))) {
+                if ((budgetExpenseAmount.getText().toString().equals(""))) {
                     expenseAmount = 0.0;
                 } else {
                     expenseAmount = Double.valueOf(budgetExpenseAmount.getText().toString());

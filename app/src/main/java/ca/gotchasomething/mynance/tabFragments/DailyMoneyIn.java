@@ -75,7 +75,7 @@ public class DailyMoneyIn extends Fragment {
     String debtEnd = null, moneyInAmountS = null, moneyInCatS = null, moneyInCat = null, moneyInCreatedOn = null, moneyIn2 = null, moneyInS = null, savingsDate = null;
     TextView debtContinueAnywayText, debtNotPossibleText, moneyInCatText, savingsNotPossibleText;
     Timestamp moneyInTimestamp;
-    View moneyInLine, moneyInLine2, v;
+    View v;
 
     public DailyMoneyIn() {
         // Required empty public constructor
@@ -87,7 +87,6 @@ public class DailyMoneyIn extends Fragment {
         // Inflate the layout for this fragment
         v = inflater.inflate(R.layout.fragment_daily_money_in, container, false);
         return v;
-
     }
 
     @Override
@@ -121,9 +120,6 @@ public class DailyMoneyIn extends Fragment {
         cancelMoneyInEntryButton.setVisibility(View.GONE);
         updateMoneyInEntryButton = v.findViewById(R.id.updateMoneyInEntryButton);
         updateMoneyInEntryButton.setVisibility(View.GONE);
-        moneyInLine = v.findViewById(R.id.moneyInLine);
-        moneyInLine.setVisibility(View.GONE);
-        moneyInLine2 = v.findViewById(R.id.moneyInLine2);
 
         moneyInButton.setOnClickListener(onClickMoneyInButton);
 
@@ -554,12 +550,10 @@ public class DailyMoneyIn extends Fragment {
                     moneyInAmountText.setVisibility(View.GONE);
                     moneyInCatSpinner.setVisibility(View.GONE);
                     moneyInButton.setVisibility(View.GONE);
-                    moneyInLine2.setVisibility(View.GONE);
                     moneyInCatText.setVisibility(View.VISIBLE);
                     moneyInAmountEditText.setVisibility(View.VISIBLE);
                     cancelMoneyInEntryButton.setVisibility(View.VISIBLE);
                     updateMoneyInEntryButton.setVisibility(View.VISIBLE);
-                    moneyInLine.setVisibility(View.VISIBLE);
 
                     moneyInCatText.setText(moneyInDb.getMoneyInCat());
 
@@ -671,7 +665,6 @@ public class DailyMoneyIn extends Fragment {
                             moneyInAmountEditText.setVisibility(View.GONE);
                             cancelMoneyInEntryButton.setVisibility(View.GONE);
                             updateMoneyInEntryButton.setVisibility(View.GONE);
-                            moneyInLine.setVisibility(View.GONE);
 
                             updateCurrentAccountBalanceMoneyIn();
                             updateCurrentAvailableBalanceMoneyIn();
@@ -689,7 +682,6 @@ public class DailyMoneyIn extends Fragment {
                             moneyInAmountEditText.setVisibility(View.GONE);
                             cancelMoneyInEntryButton.setVisibility(View.GONE);
                             updateMoneyInEntryButton.setVisibility(View.GONE);
-                            moneyInLine.setVisibility(View.GONE);
 
                             backToDaily();
                         }

@@ -151,6 +151,52 @@
                     android:textSize="18sp"/>
 
                 <TextView
+                    android:id="@+id/debtsSetUpNoTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:text="@string/no_time"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center_horizontal"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="16sp"
+                    android:clickable="true"/>
+
+                <TextView
+                    android:id="@+id/debtsSetUpNoTime2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:text="@string/no_time2"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center_horizontal"
+                    android:textColor="@color/colorGreen"
+                    android:textSize="16sp"/>
+
+                <TextView
+                    android:id="@+id/debtsSetUpNeedHelp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:text="@string/need_help"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center_horizontal"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="16sp"
+                    android:clickable="true"/>
+
+                <TextView
+                    android:id="@+id/debtsSetUpNeedHelp2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:text="@string/need_help2"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center_horizontal"
+                    android:textColor="@color/colorGreen"
+                    android:textSize="16sp"/>
+
+                <TextView
                     android:id="@+id/deleteDebtWarningText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

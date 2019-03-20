@@ -846,16 +846,6 @@ public class DbManager extends AppCompatActivity {
         return ccTransToPay;
     }
 
-    public List<MoneyOutDb> getCCToPayDebts() {
-        List<MoneyOutDb> ccToPayDebts = new ArrayList<>();
-        for(MoneyOutDb m4 : getMoneyOuts()) {
-            if(m4.getMoneyOutToPay() > 0) {
-                ccToPayDebts.add(m4);
-            }
-        }
-        return ccToPayDebts;
-    }
-
     public Double retrieveToPayTotal() {
         List<Double> toPayList = new ArrayList<>();
         for (MoneyOutDb m : getMoneyOuts()) {

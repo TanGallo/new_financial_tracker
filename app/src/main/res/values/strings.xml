@@ -35,7 +35,7 @@
     <string name="category">Category</string>
     <string name="changes_saved">Your changes have been saved</string>
     <string name="check_boxes_below">Check the boxes below of the credit card purchases that you want to pay today.</string>
-    <string name="check_box_prompt">Check box once payment made</string>
+    <string name="check_box_prompt">Check box once payments made</string>
     <string name="check_box_starting_balance">(Check the box once you\'ve entered an amount below)</string>
     <string name="check_box_to_start">Check the box when you\'re ready to start!</string>
     <string name="choose_email">Choose an Email client</string>
@@ -193,7 +193,7 @@
     <string name="pay_cc_2">Enter any purchases you make on credit cards or lines of credit in the CREDIT CARD tab and make frequent payments to them using the PAY CC tab.</string>
     <string name="pay_cc_3">If you want to make additional payments to your DEBTS items that don\'t map to particular purchases, you can enter those transactions in the DAILY MONEY - MONEY OUT tab.</string>
     <string name="pay_cc_4">MYnance will alert you if you are trying to make a payment when you don\'t have the funds available in your \'total\' or \'available to spend\' balances.</string>
-    <string name="pay_this_amount">Pay this amount to your credit card:</string>
+    <string name="pay_this_amount">Pay these amounts to your credit cards:</string>
     <string name="payment_not_possible_A">You don\'t have enough money in your account to make this purchase. You will put your balance into the negative.</string>
     <string name="payment_not_possible_B">You don\'t have enough spending money left in your account to make this purchase. You will be spending money that is reserved for other expenses.</string>
     <string name="plus_button_debts">Press the PLUS button above to add a debt.</string>
@@ -231,7 +231,7 @@
     <string name="slide4Title">MYnance will let you know how much money in your bank account is actually available for spending at any given time</string>
     <string name="slide5Title">MYnance will help you keep on top of your credit card spending so you avoid getting into consumer debt</string>
     <string name="slide6Title">Visit the \'Help\' section if you need more guidance</string>
-    <string name="spending_report">Spending Report</string>
+    <string name="spending_report">Reports</string>
     <string name="spending_report_1">MYnance will show you your spending in each expense category of your budget by month or for the year to date.</string>
     <string name="spending_report_2">Simply use the pull-down menus to choose the period of time that you\'d like to see.</string>
     <string name="spending_report_3">When updating your budget, you can use the year to date spending report to see what your actual spending was in each category and use those numbers as the new budget amounts.</string>
@@ -246,7 +246,7 @@
     <string name="total_owing">Total Owing:</string>
     <string name="total_saved">Total Saved:</string>
     <string name="update">update</string>
-    <string name="website" translatable="false">www.gotchasomething.ca</string>
+    <string name="website" translatable="false">http://www.gotchasomething.ca</string>
     <string name="weekly">Weekly (52 times/yr)</string>
     <string name="weekly_limits">Weekly Limits</string>
     <string name="weekly_limits_1">When you create expense items in your BUDGET and identify them as \'optional\', you will be given the choice whether or not to manage their weekly spending limits.</string>
@@ -282,5 +282,12 @@
     <string name="no_entries_yet">You haven\'t made any entries yet.</string>
     <string name="go_to_daily_money_3">Go to DAILY MONEY to record your income in the MONEY IN tab and your spending in the MONEY OUT tab.</string>
     <string name="delete_debt_warning">Warning: When you delete this item, the corresponding income and expense categories will also be deleted from your BUDGET</string>
-    <string name="check_boxes_below2">Note: Once an item has been marked as paid, it can no longer be edited or deleted in the CREDIT CARD tab.</string>
+    <string name="check_boxes_below2">Note: Once a purchase has been marked as paid, it can no longer be edited or deleted in the CREDIT CARD tab.</string>
+    <string name="set_up_q1">How do I change the starting balance I entered during the set up process?</string>
+    <string name="set_up_a1">Go to the DAILY MONEY - MONEY IN tab and click on the pencil icon next to the starting balance.</string>
+    <string name="help_instructions">Choose a topic and then click on a question to see its answer.</string>
+    <string name="no_time">Click here if you don\'t have time to finish this right now.</string>
+    <string name="no_time2">That\'s okay, just close the app and it will bring you right back here the next time you open it, or click on \"Done Entering Debts\" and you can finish this step later by going to DEBTS.</string>
+    <string name="need_help">Click here if you need more help with this step.</string>
+    <string name="need_help2">Just click on \"Done Entering Debts\" and visit the HELP section once you\'re done with the set up process. You can get the information you need there and finish this later.</string>
 </resources>

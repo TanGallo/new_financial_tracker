@@ -219,6 +219,7 @@ public class LayoutBudgetReport extends MainNavigation {
             if(percentSpent.isInfinite() || percentSpent.isNaN()) {
                 percentSpent = 0.0;
             }
+
             percentFormat.setMinimumFractionDigits(2);
             percentSpentP = percentFormat.format(percentSpent);
             holder.budgetReportPercentSpent.setText(percentSpentP);

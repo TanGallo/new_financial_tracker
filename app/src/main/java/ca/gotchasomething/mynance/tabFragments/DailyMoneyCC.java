@@ -76,10 +76,10 @@ public class DailyMoneyCC extends Fragment {
     String ccTransAmount2 = null, ccTransAmountS = null, ccTransAmountS2 = null, ccTransCatS = null, ccTransDebtCatS = null, ccTransPriorityS = null,
             chargingDebtEnd = null, debtEnd = null, moneyOutCat = null, moneyOutCC = null, moneyOutCreatedOn = null, moneyOutDebtCat = null, moneyOutPriority = null,
             moneyOutWeekly = null, moneyOutWeeklyS = null, savingsDate = null;
-    TextView ccBalancesWarningText, ccContinueText, ccContinueAnywayText, ccContinueWarningText, ccLimitWarningText, ccPaymentNotPossibleAText,
-            ccPaymentNotPossibleBText, ccTransCatText, ccTransDebtCatLabel, newMoneyCCLabel, newMoneyCCLabel2, noContinueButton, yesContinueButton;
+    TextView ccContinueAnywayText, ccContinueWarningText, ccLimitWarningText, ccPaymentNotPossibleAText, ccPaymentNotPossibleBText, ccTransCatText,
+            ccTransDebtCatLabel, newMoneyCCLabel, newMoneyCCLabel2;
     Timestamp moneyOutTimestamp;
-    View ccTransLine, ccTransLine2, v;
+    View v;
 
     public DailyMoneyCC() {
         // Required empty public constructor
@@ -128,9 +128,6 @@ public class DailyMoneyCC extends Fragment {
         cancelCCTransEntryButton.setVisibility(View.GONE);
         updateCCTransEntryButton = v.findViewById(R.id.updateCCTransEntryButton);
         updateCCTransEntryButton.setVisibility(View.GONE);
-        ccTransLine = v.findViewById(R.id.ccTransLine);
-        ccTransLine.setVisibility(View.GONE);
-        ccTransLine2 = v.findViewById(R.id.ccTransLine2);
         newMoneyCCLabel = v.findViewById(R.id.newMoneyCCLabel);
         newMoneyCCLabel.setVisibility(View.GONE);
         newMoneyCCLabel2 = v.findViewById(R.id.newMoneyCCLabel2);
@@ -216,23 +213,17 @@ public class DailyMoneyCC extends Fragment {
         ccLimitWarningText.setVisibility(View.GONE);
         noCCButton.setVisibility(View.GONE);
         yesCCButton.setVisibility(View.GONE);
-        ccBalancesWarningText.setVisibility(View.GONE);
-        ccContinueText.setVisibility(View.GONE);
-        noContinueButton.setVisibility(View.GONE);
-        yesContinueButton.setVisibility(View.GONE);
 
         ccTransCatText.setVisibility(View.GONE);
         ccTransAmountEditText.setVisibility(View.GONE);
         cancelCCTransEntryButton.setVisibility(View.GONE);
         updateCCTransEntryButton.setVisibility(View.GONE);
-        ccTransLine.setVisibility(View.GONE);
 
         ccTransAmountText.setVisibility(View.VISIBLE);
         ccTransCatSpinner.setVisibility(View.VISIBLE);
         ccTransDebtCatSpinner.setVisibility(View.VISIBLE);
         ccTransDebtCatLabel.setVisibility(View.VISIBLE);
         ccTransButton.setVisibility(View.VISIBLE);
-        ccTransLine2.setVisibility(View.VISIBLE);
     }
 
     public void createMoneyOutCC() {
@@ -757,12 +748,10 @@ public class DailyMoneyCC extends Fragment {
                     ccTransDebtCatSpinner.setVisibility(View.GONE);
                     ccTransDebtCatLabel.setVisibility(View.GONE);
                     ccTransButton.setVisibility(View.GONE);
-                    ccTransLine2.setVisibility(View.GONE);
                     ccTransCatText.setVisibility(View.VISIBLE);
                     ccTransAmountEditText.setVisibility(View.VISIBLE);
                     cancelCCTransEntryButton.setVisibility(View.VISIBLE);
                     updateCCTransEntryButton.setVisibility(View.VISIBLE);
-                    ccTransLine.setVisibility(View.VISIBLE);
 
                     ccTransCatText.setText(moneyOutDb.getMoneyOutCat());
 

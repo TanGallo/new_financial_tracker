@@ -42,6 +42,16 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
 
+                        <TextView
+                            android:id="@+id/helpInstructions"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:text="@string/help_instructions"
+                            android:textSize="16sp"
+                            android:textColor="@color/colorGreen"
+                            />
+
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -53,7 +63,8 @@
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
                                 android:text="@string/set_up"
-                                android:textSize="18sp" />
+                                android:textSize="18sp"
+                                android:textColor="@color/colorPrimaryDark"/>
 
                             <RelativeLayout
                                 android:layout_width="wrap_content"
@@ -67,7 +78,8 @@
                                     android:layout_marginEnd="120dp"
                                     android:contentDescription="@string/show"
                                     android:scaleType="fitCenter"
-                                    android:src="@drawable/ic_arrow_drop_down_blue_24dp" />
+                                    android:src="@drawable/ic_arrow_drop_down_blue_24dp"
+                                    android:background="@drawable/entry_box"/>
 
                                 <ImageButton
                                     android:id="@+id/upSetUpButton"
@@ -77,11 +89,32 @@
                                     android:layout_marginEnd="120dp"
                                     android:contentDescription="@string/hide"
                                     android:scaleType="fitCenter"
-                                    android:src="@drawable/ic_arrow_drop_up_blue_24dp" />
+                                    android:src="@drawable/ic_arrow_drop_up_blue_24dp"
+                                    android:background="@drawable/entry_box"/>
 
                             </RelativeLayout>
 
                         </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/setUpQ1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:text="@string/set_up_q1"
+                            android:textSize="18sp"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:clickable="true"/>
+
+                        <TextView
+                            android:id="@+id/setUpA1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:text="@string/set_up_a1"
+                            android:textSize="18sp"
+                            android:textColor="@color/colorGreen"
+                            />
 
                         <LinearLayout
                             android:id="@+id/setUpText"
@@ -95,28 +128,32 @@
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
                                 android:text="@string/set_up_1"
-                                android:textSize="18sp" />
+                                android:textSize="18sp"
+                                android:textColor="@color/colorPrimaryDark"/>
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
                                 android:text="@string/set_up_2"
-                                android:textSize="18sp" />
+                                android:textSize="18sp"
+                                android:textColor="@color/colorPrimaryDark"/>
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
                                 android:text="@string/set_up_3"
-                                android:textSize="18sp" />
+                                android:textSize="18sp"
+                                android:textColor="@color/colorPrimaryDark"/>
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
                                 android:text="@string/set_up_4"
-                                android:textSize="18sp" />
+                                android:textSize="18sp"
+                                android:textColor="@color/colorPrimaryDark"/>
 
                         </LinearLayout>
 
@@ -143,7 +180,8 @@
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
                                 android:text="@string/daily_money"
-                                android:textSize="18sp" />
+                                android:textSize="18sp"
+                                android:textColor="@color/colorPrimaryDark"/>
 
                             <RelativeLayout
                                 android:layout_width="wrap_content"
@@ -157,7 +195,8 @@
                                     android:layout_marginEnd="120dp"
                                     android:contentDescription="@string/show"
                                     android:scaleType="fitCenter"
-                                    android:src="@drawable/ic_arrow_drop_down_blue_24dp" />
+                                    android:src="@drawable/ic_arrow_drop_down_blue_24dp"
+                                    android:background="@drawable/entry_box"/>
 
                                 <ImageButton
                                     android:id="@+id/upDailyMoneyButton"
@@ -167,7 +206,8 @@
                                     android:layout_marginEnd="120dp"
                                     android:contentDescription="@string/hide"
                                     android:scaleType="fitCenter"
-                                    android:src="@drawable/ic_arrow_drop_up_blue_24dp" />
+                                    android:src="@drawable/ic_arrow_drop_up_blue_24dp"
+                                    android:background="@drawable/entry_box"/>
 
                             </RelativeLayout>
 
@@ -205,7 +245,8 @@
                                     android:layout_height="wrap_content"
                                     android:layout_margin="10dp"
                                     android:text="@string/money_in"
-                                    android:textSize="18sp" />
+                                    android:textSize="18sp"
+                                    android:textColor="@color/colorPrimaryDark"/>
 
                                 <RelativeLayout
                                     android:layout_width="wrap_content"
@@ -294,7 +335,8 @@
                                     android:layout_height="wrap_content"
                                     android:layout_margin="10dp"
                                     android:text="@string/money_out"
-                                    android:textSize="18sp" />
+                                    android:textSize="18sp"
+                                    android:textColor="@color/colorPrimaryDark"/>
 
                                 <RelativeLayout
                                     android:layout_width="wrap_content"
@@ -699,7 +741,8 @@
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
                                 android:text="@string/budget"
-                                android:textSize="18sp" />
+                                android:textSize="18sp"
+                                android:textColor="@color/colorPrimaryDark"/>
 
                             <RelativeLayout
                                 android:layout_width="wrap_content"
@@ -713,7 +756,8 @@
                                     android:layout_marginEnd="120dp"
                                     android:contentDescription="@string/show"
                                     android:scaleType="fitCenter"
-                                    android:src="@drawable/ic_arrow_drop_down_blue_24dp" />
+                                    android:src="@drawable/ic_arrow_drop_down_blue_24dp"
+                                    android:background="@drawable/entry_box"/>
 
                                 <ImageButton
                                     android:id="@+id/upBudgetButton"
@@ -723,7 +767,8 @@
                                     android:layout_marginEnd="120dp"
                                     android:contentDescription="@string/hide"
                                     android:scaleType="fitCenter"
-                                    android:src="@drawable/ic_arrow_drop_up_blue_24dp" />
+                                    android:src="@drawable/ic_arrow_drop_up_blue_24dp"
+                                    android:background="@drawable/entry_box"/>
 
                             </RelativeLayout>
 
@@ -859,7 +904,8 @@
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
                                 android:text="@string/debts"
-                                android:textSize="18sp" />
+                                android:textSize="18sp"
+                                android:textColor="@color/colorPrimaryDark"/>
 
                             <RelativeLayout
                                 android:layout_width="wrap_content"
@@ -873,7 +919,8 @@
                                     android:layout_marginEnd="120dp"
                                     android:contentDescription="@string/show"
                                     android:scaleType="fitCenter"
-                                    android:src="@drawable/ic_arrow_drop_down_blue_24dp" />
+                                    android:src="@drawable/ic_arrow_drop_down_blue_24dp"
+                                    android:background="@drawable/entry_box"/>
 
                                 <ImageButton
                                     android:id="@+id/upDebtsButton"
@@ -883,7 +930,8 @@
                                     android:layout_marginEnd="120dp"
                                     android:contentDescription="@string/hide"
                                     android:scaleType="fitCenter"
-                                    android:src="@drawable/ic_arrow_drop_up_blue_24dp" />
+                                    android:src="@drawable/ic_arrow_drop_up_blue_24dp"
+                                    android:background="@drawable/entry_box"/>
 
                             </RelativeLayout>
 
@@ -984,7 +1032,8 @@
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
                                 android:text="@string/savings"
-                                android:textSize="18sp" />
+                                android:textSize="18sp"
+                                android:textColor="@color/colorPrimaryDark"/>
 
                             <RelativeLayout
                                 android:layout_width="wrap_content"
@@ -998,7 +1047,8 @@
                                     android:layout_marginEnd="120dp"
                                     android:contentDescription="@string/show"
                                     android:scaleType="fitCenter"
-                                    android:src="@drawable/ic_arrow_drop_down_blue_24dp" />
+                                    android:src="@drawable/ic_arrow_drop_down_blue_24dp"
+                                    android:background="@drawable/entry_box"/>
 
                                 <ImageButton
                                     android:id="@+id/upSavingsButton"
@@ -1008,7 +1058,8 @@
                                     android:layout_marginEnd="120dp"
                                     android:contentDescription="@string/hide"
                                     android:scaleType="fitCenter"
-                                    android:src="@drawable/ic_arrow_drop_up_blue_24dp" />
+                                    android:src="@drawable/ic_arrow_drop_up_blue_24dp"
+                                    android:background="@drawable/entry_box"/>
 
                             </RelativeLayout>
 
@@ -1095,7 +1146,8 @@
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
                                 android:text="@string/spending_report"
-                                android:textSize="18sp" />
+                                android:textSize="18sp"
+                                android:textColor="@color/colorPrimaryDark"/>
 
                             <RelativeLayout
                                 android:layout_width="wrap_content"
@@ -1109,7 +1161,8 @@
                                     android:layout_marginEnd="120dp"
                                     android:contentDescription="@string/show"
                                     android:scaleType="fitCenter"
-                                    android:src="@drawable/ic_arrow_drop_down_blue_24dp" />
+                                    android:src="@drawable/ic_arrow_drop_down_blue_24dp"
+                                    android:background="@drawable/entry_box"/>
 
                                 <ImageButton
                                     android:id="@+id/upSpendingReportButton"
@@ -1119,7 +1172,8 @@
                                     android:layout_marginEnd="120dp"
                                     android:contentDescription="@string/hide"
                                     android:scaleType="fitCenter"
-                                    android:src="@drawable/ic_arrow_drop_up_blue_24dp" />
+                                    android:src="@drawable/ic_arrow_drop_up_blue_24dp"
+                                    android:background="@drawable/entry_box"/>
 
                             </RelativeLayout>
 
@@ -1178,6 +1232,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
                                 android:text="@string/contact_us"
+                                android:textColor="@color/colorPrimaryDark"
                                 android:textSize="18sp" />
 
                             <RelativeLayout
@@ -1192,7 +1247,8 @@
                                     android:layout_marginEnd="120dp"
                                     android:contentDescription="@string/show"
                                     android:scaleType="fitCenter"
-                                    android:src="@drawable/ic_arrow_drop_down_blue_24dp" />
+                                    android:src="@drawable/ic_arrow_drop_down_blue_24dp"
+                                    android:background="@drawable/entry_box"/>
 
                                 <ImageButton
                                     android:id="@+id/upContactUsButton"
@@ -1202,7 +1258,8 @@
                                     android:layout_marginEnd="120dp"
                                     android:contentDescription="@string/hide"
                                     android:scaleType="fitCenter"
-                                    android:src="@drawable/ic_arrow_drop_up_blue_24dp" />
+                                    android:src="@drawable/ic_arrow_drop_up_blue_24dp"
+                                    android:background="@drawable/entry_box"/>
 
                             </RelativeLayout>
 
@@ -1219,8 +1276,11 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
+                                android:gravity="center_horizontal"
                                 android:text="@string/contact_us_1"
-                                android:textSize="18sp" />
+                                android:textColor="@color/colorGreen"
+                                android:textSize="20sp"
+                                />
 
                             <TextView
                                 android:id="@+id/emailTextLabel"
@@ -1228,7 +1288,8 @@
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
                                 android:text="@string/contact_us_2"
-                                android:textSize="18sp" />
+                                android:textColor="@color/colorPrimaryDark"
+                                android:textSize="20sp" />
 
                             <TextView
                                 android:id="@+id/emailText"
@@ -1236,7 +1297,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
                                 android:text="@string/email_address"
-                                android:textColor="@color/colorAccent"
+                                android:textColor="@color/blue4"
                                 android:textSize="18sp" />
 
                             <TextView
@@ -1245,7 +1306,8 @@
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
                                 android:text="@string/contact_us_3"
-                                android:textSize="18sp" />
+                                android:textColor="@color/colorPrimaryDark"
+                                android:textSize="20sp" />
 
                             <TextView
                                 android:id="@+id/urlText"
@@ -1253,7 +1315,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
                                 android:text="@string/website"
-                                android:textColor="@color/colorAccent"
+                                android:textColor="@color/blue4"
                                 android:textSize="18sp" />
 
                         </LinearLayout>
@@ -1280,6 +1342,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
                                 android:text="@string/rate_this_app"
+                                android:textColor="@color/colorPrimaryDark"
                                 android:textSize="18sp" />
 
                             <LinearLayout
@@ -1294,7 +1357,8 @@
                                     android:layout_height="wrap_content"
                                     android:contentDescription="@string/rate_this_app"
                                     android:scaleType="fitCenter"
-                                    android:src="@drawable/ic_star_border_blue_24dp" />
+                                    android:src="@drawable/ic_star_border_blue_24dp"
+                                    android:background="@drawable/entry_box"/>
 
                                 <ImageButton
                                     android:id="@+id/starButton2"
@@ -1302,7 +1366,8 @@
                                     android:layout_height="wrap_content"
                                     android:contentDescription="@string/rate_this_app"
                                     android:scaleType="fitCenter"
-                                    android:src="@drawable/ic_star_border_blue_24dp" />
+                                    android:src="@drawable/ic_star_border_blue_24dp"
+                                    android:background="@drawable/entry_box"/>
 
                                 <ImageButton
                                     android:id="@+id/starButton3"
@@ -1310,7 +1375,8 @@
                                     android:layout_height="wrap_content"
                                     android:contentDescription="@string/rate_this_app"
                                     android:scaleType="fitCenter"
-                                    android:src="@drawable/ic_star_border_blue_24dp" />
+                                    android:src="@drawable/ic_star_border_blue_24dp"
+                                    android:background="@drawable/entry_box"/>
 
                                 <ImageButton
                                     android:id="@+id/starButton4"
@@ -1318,7 +1384,8 @@
                                     android:layout_height="wrap_content"
                                     android:contentDescription="@string/rate_this_app"
                                     android:scaleType="fitCenter"
-                                    android:src="@drawable/ic_star_border_blue_24dp" />
+                                    android:src="@drawable/ic_star_border_blue_24dp"
+                                    android:background="@drawable/entry_box"/>
 
                                 <ImageButton
                                     android:id="@+id/starButton5"
@@ -1326,7 +1393,8 @@
                                     android:layout_height="wrap_content"
                                     android:contentDescription="@string/rate_this_app"
                                     android:scaleType="fitCenter"
-                                    android:src="@drawable/ic_star_border_blue_24dp" />
+                                    android:src="@drawable/ic_star_border_blue_24dp"
+                                    android:background="@drawable/entry_box"/>
 
                             </LinearLayout>
 

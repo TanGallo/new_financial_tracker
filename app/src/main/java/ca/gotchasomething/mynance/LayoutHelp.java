@@ -4,16 +4,14 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-
-import androidx.annotation.Nullable;
-
-import androidx.appcompat.app.ActionBarDrawerToggle;
-
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 
 public class LayoutHelp extends MainNavigation {
 
@@ -24,7 +22,7 @@ public class LayoutHelp extends MainNavigation {
     Intent email, goToRatings, web;
     LinearLayout budgetText, contactUsText, creditCardText, dailyMoneyText, debtsText, moneyInText, moneyOutText, payCCText, savingsText, setUpText,
             spendingReportText, ratingsLayout, weeklyLimitsText;
-    TextView emailText, urlText;
+    TextView helpInstructions, setUpQ1, setUpA1, emailText, urlText;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -40,8 +38,14 @@ public class LayoutHelp extends MainNavigation {
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
+        helpInstructions = findViewById(R.id.helpInstructions);
         upSetUpButton = findViewById(R.id.upSetUpButton);
         downSetUpButton = findViewById(R.id.downSetUpButton);
+        setUpQ1 = findViewById(R.id.setUpQ1);
+        setUpQ1.setVisibility(View.GONE);
+        setUpQ1.setOnClickListener(onClickSetUpQ1);
+        setUpA1 = findViewById(R.id.setUpA1);
+        setUpA1.setVisibility(View.GONE);
         setUpText = findViewById(R.id.setUpText);
         setUpText.setVisibility(View.GONE);
         upDailyMoneyButton = findViewById(R.id.upDailyMoneyButton);
@@ -133,16 +137,27 @@ public class LayoutHelp extends MainNavigation {
         public void onClick(View v) {
             upSetUpButton.setVisibility(View.GONE);
             downSetUpButton.setVisibility(View.VISIBLE);
-            setUpText.setVisibility(View.GONE);
+            setUpQ1.setVisibility(View.GONE);
+            setUpA1.setVisibility(View.GONE);
+            //setUpText.setVisibility(View.GONE);
         }
     };
 
     View.OnClickListener onClickDownSetUp = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            helpInstructions.setVisibility(View.GONE);
             downSetUpButton.setVisibility(View.GONE);
             upSetUpButton.setVisibility(View.VISIBLE);
-            setUpText.setVisibility(View.VISIBLE);
+            setUpQ1.setVisibility(View.VISIBLE);
+            //setUpText.setVisibility(View.VISIBLE);
+        }
+    };
+
+    View.OnClickListener onClickSetUpQ1 = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            setUpA1.setVisibility(View.VISIBLE);
         }
     };
 
@@ -168,6 +183,7 @@ public class LayoutHelp extends MainNavigation {
     View.OnClickListener onClickDownDailyMoney = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            helpInstructions.setVisibility(View.GONE);
             downDailyMoneyButton.setVisibility(View.GONE);
             upDailyMoneyButton.setVisibility(View.VISIBLE);
             dailyMoneyText.setVisibility(View.VISIBLE);
@@ -286,6 +302,7 @@ public class LayoutHelp extends MainNavigation {
     View.OnClickListener onClickDownBudget = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            helpInstructions.setVisibility(View.GONE);
             downBudgetButton.setVisibility(View.GONE);
             upBudgetButton.setVisibility(View.VISIBLE);
             budgetText.setVisibility(View.VISIBLE);
@@ -304,6 +321,7 @@ public class LayoutHelp extends MainNavigation {
     View.OnClickListener onClickDownDebts = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            helpInstructions.setVisibility(View.GONE);
             downDebtsButton.setVisibility(View.GONE);
             upDebtsButton.setVisibility(View.VISIBLE);
             debtsText.setVisibility(View.VISIBLE);
@@ -322,6 +340,7 @@ public class LayoutHelp extends MainNavigation {
     View.OnClickListener onClickDownSavings = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            helpInstructions.setVisibility(View.GONE);
             downSavingsButton.setVisibility(View.GONE);
             upSavingsButton.setVisibility(View.VISIBLE);
             savingsText.setVisibility(View.VISIBLE);
@@ -340,6 +359,7 @@ public class LayoutHelp extends MainNavigation {
     View.OnClickListener onClickDownSpendingReport = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            helpInstructions.setVisibility(View.GONE);
             downSpendingReportButton.setVisibility(View.GONE);
             upSpendingReportButton.setVisibility(View.VISIBLE);
             spendingReportText.setVisibility(View.VISIBLE);
@@ -382,7 +402,7 @@ public class LayoutHelp extends MainNavigation {
             urlText.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    String url = getString(R.string.google_play_url);
+                    String url = getString(R.string.website);
 
                     web = new Intent(Intent.ACTION_VIEW);
                     web.setData(Uri.parse(url));

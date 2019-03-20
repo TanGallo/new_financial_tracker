@@ -6,14 +6,6 @@ import android.content.Intent;
 import android.database.CursorIndexOutOfBoundsException;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
-import androidx.appcompat.app.ActionBarDrawerToggle;
-
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -31,6 +23,8 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -40,6 +34,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import ca.gotchasomething.mynance.data.DebtDb;
 import ca.gotchasomething.mynance.data.ExpenseBudgetDb;
 import ca.gotchasomething.mynance.data.IncomeBudgetDb;
@@ -75,7 +72,8 @@ public class LayoutDebt extends MainNavigation {
     SimpleDateFormat debtEndS, latestDateS;
     String debtAmount2 = null, debtAmountS = null, debtAmountS2 = null, debtEnd = null, debtFrequencyS = null, debtLimitS2 = null, debtPaymentsS = null,
             debtPercentS = null, expRefKeyD = null, latestDate = null, debtNameEntryD = null, priority = null, totalDebt2 = null, totalDebtS = null;
-    TextView debtDateResult, debtDateResultLabel, deleteDebtWarningText, emptyDebtsText, emptyDebtsText2, emptyDebtsText3, totalDebtOwing, totalDebtPaidByDate, totalDebtPaidLabel;
+    TextView debtDateResult, debtDateResultLabel, debtsSetUpNoTime, debtsSetUpNoTime2, debtsSetUpNeedHelp, debtsSetUpNeedHelp2, deleteDebtWarningText,
+            emptyDebtsText, emptyDebtsText2, emptyDebtsText3, totalDebtOwing, totalDebtPaidByDate, totalDebtPaidLabel;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -100,6 +98,14 @@ public class LayoutDebt extends MainNavigation {
         emptyDebtsText = findViewById(R.id.emptyDebtsText);
         emptyDebtsText2 = findViewById(R.id.emptyDebtsText2);
         emptyDebtsText3 = findViewById(R.id.emptyDebtsText3);
+        debtsSetUpNoTime = findViewById(R.id.debtsSetUpNoTime);
+        debtsSetUpNoTime.setOnClickListener(onClickNoTime);
+        debtsSetUpNoTime2 = findViewById(R.id.debtsSetUpNoTime2);
+        debtsSetUpNoTime2.setVisibility(View.GONE);
+        debtsSetUpNeedHelp = findViewById(R.id.debtsSetUpNeedHelp);
+        debtsSetUpNeedHelp.setOnClickListener(onClickNeedHelp);
+        debtsSetUpNeedHelp2 = findViewById(R.id.debtsSetUpNeedHelp2);
+        debtsSetUpNeedHelp2.setVisibility(View.GONE);
         deleteDebtWarningText = findViewById(R.id.deleteDebtWarningText);
         deleteDebtWarningText.setVisibility(View.GONE);
         cancelDeleteDebtButton = findViewById(R.id.cancelDeleteDebtButton);
@@ -117,6 +123,10 @@ public class LayoutDebt extends MainNavigation {
         if (dbManager.debtSetUpCheck() > 0) {
             doneDebtsSetUpButton.setVisibility(View.GONE);
             emptyDebtsText3.setVisibility(View.GONE);
+            debtsSetUpNoTime.setVisibility(View.GONE);
+            debtsSetUpNoTime2.setVisibility(View.GONE);
+            debtsSetUpNeedHelp.setVisibility(View.GONE);
+            debtsSetUpNeedHelp2.setVisibility(View.GONE);
         }
 
         debtAdapter = new DebtDbAdapter(this, dbManager.getDebts());
@@ -158,6 +168,20 @@ public class LayoutDebt extends MainNavigation {
             backToSetUp.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
             startActivity(backToSetUp);
 
+        }
+    };
+
+    View.OnClickListener onClickNoTime = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            debtsSetUpNoTime2.setVisibility(View.VISIBLE);
+        }
+    };
+
+    View.OnClickListener onClickNeedHelp = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            debtsSetUpNeedHelp2.setVisibility(View.VISIBLE);
         }
     };
 
