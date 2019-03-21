@@ -52,7 +52,8 @@
                             android:layout_gravity="center_horizontal"
                             android:layout_margin="10dp"
                             android:text="@string/get_started"
-                            android:textSize="22sp" />
+                            android:textSize="22sp"
+                            android:textColor="@color/colorPrimaryDark"/>
 
 
                         <View
@@ -76,7 +77,8 @@
                                 android:layout_alignParentEnd="true"
                                 android:layout_margin="10dp"
                                 android:text="@string/done"
-                                android:textSize="16sp" />
+                                android:textSize="16sp"
+                                android:textColor="@color/colorPrimaryDark"/>
 
                         </RelativeLayout>
 
@@ -99,7 +101,8 @@
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
                                 android:text="@string/enter_debts"
-                                android:textSize="16sp" />
+                                android:textSize="16sp"
+                                android:textColor="@color/colorPrimaryDark"/>
 
                             <CheckBox
                                 android:id="@+id/setUpDebtsCheckbox"
@@ -129,7 +132,8 @@
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
                                 android:text="@string/enter_savings"
-                                android:textSize="16sp" />
+                                android:textSize="16sp"
+                                android:textColor="@color/colorPrimaryDark"/>
 
                             <CheckBox
                                 android:id="@+id/setUpSavingsCheckbox"
@@ -159,7 +163,8 @@
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
                                 android:text="@string/finish_budget"
-                                android:textSize="16sp" />
+                                android:textSize="16sp"
+                                android:textColor="@color/colorPrimaryDark"/>
 
                             <CheckBox
                                 android:id="@+id/setUpBudgetCheckbox"
@@ -180,25 +185,38 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="10dp"
                                 android:text="@string/starting_balance"
-                                android:textSize="16sp" />
+                                android:textSize="16sp"
+                                android:textColor="@color/colorPrimaryDark"/>
 
                             <TextView
-                                android:id="@+id/setUpAccountAmountLabel"
+                            android:id="@+id/setUpAccountAmountLabel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:text="@string/starting_balance_amount"
+                            android:labelFor="@id/setUpAccountAmount"
+                            android:textSize="16sp"
+                            android:textColor="@color/colorPrimaryDark"/>
+
+                            <TextView
+                                android:id="@+id/setUpAccountAmountLabel4"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginStart="10dp"
-                                android:text="@string/starting_balance_amount"
-                                android:labelFor="@id/setUpAccountAmount"
-                                android:textSize="16sp" />
+                                android:layout_margin="10dp"
+                                android:layout_below="@id/setUpAccountAmountLabel"
+                                android:text="@string/starting_balance_warning"
+                                android:textSize="14sp"
+                                android:textColor="@color/colorPrimaryDark"/>
 
                             <TextView
                                 android:id="@+id/setUpAccountAmountLabel2"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_below="@id/setUpAccountAmountLabel"
+                                android:layout_below="@id/setUpAccountAmountLabel4"
                                 android:layout_marginStart="10dp"
                                 android:text="@string/check_box_starting_balance"
-                                android:textSize="16sp" />
+                                android:textSize="16sp"
+                                android:textColor="@color/colorPrimaryDark"/>
 
                             <EditText
                                 android:id="@+id/setUpAccountAmount"
@@ -208,18 +226,10 @@
                                 android:layout_marginStart="10dp"
                                 android:layout_toStartOf="@id/setUpAccountCheckbox"
                                 android:gravity="fill_horizontal"
-                                android:inputType="numberDecimal"
-                                android:textSize="16sp" />
-
-                            <TextView
-                                android:id="@+id/setUpAccountAmountResult"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_below="@id/setUpAccountAmountLabel3"
-                                android:layout_marginStart="10dp"
-                                android:layout_toStartOf="@id/setUpAccountCheckbox"
-                                android:gravity="fill_horizontal"
-                                android:textSize="16sp" />
+                                android:inputType="numberSigned|numberDecimal"
+                                android:digits="0123456789.-"
+                                android:textSize="16sp"
+                                android:textColor="@color/colorPrimaryDark"/>
 
                             <CheckBox
                                 android:id="@+id/setUpAccountCheckbox"
@@ -237,7 +247,8 @@
                             android:layout_height="match_parent"
                             android:layout_margin="10dp"
                             android:text="@string/almost_done"
-                            android:textSize="22sp" />
+                            android:textSize="22sp"
+                            android:textColor="@color/colorPrimaryDark"/>
 
                         <RelativeLayout
                             android:layout_width="match_parent"
@@ -249,7 +260,8 @@
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
                                 android:text="@string/manage_money"
-                                android:textSize="16sp" />
+                                android:textSize="16sp"
+                                android:textColor="@color/colorPrimaryDark"/>
 
                             <TextView
                                 android:id="@+id/setUpTourLabel2"
@@ -258,7 +270,8 @@
                                 android:layout_below="@id/setUpTourLabel"
                                 android:layout_margin="10dp"
                                 android:text="@string/go_to_daily_money"
-                                android:textSize="16sp" />
+                                android:textSize="16sp"
+                                android:textColor="@color/colorPrimaryDark"/>
 
                             <TextView
                                 android:id="@+id/setUpTourLabel3"
@@ -267,7 +280,8 @@
                                 android:layout_below="@id/setUpTourLabel2"
                                 android:layout_margin="10dp"
                                 android:text="@string/mynance_will_show_you"
-                                android:textSize="16sp" />
+                                android:textSize="16sp"
+                                android:textColor="@color/colorPrimaryDark"/>
 
                             <TextView
                                 android:id="@+id/setUpTourLabel4"
@@ -276,7 +290,8 @@
                                 android:layout_below="@id/setUpTourLabel3"
                                 android:layout_margin="10dp"
                                 android:text="@string/go_to_help"
-                                android:textSize="16sp" />
+                                android:textSize="16sp"
+                                android:textColor="@color/colorPrimaryDark"/>
 
                             <TextView
                                 android:id="@+id/setUpGotItLabel"
@@ -285,7 +300,8 @@
                                 android:layout_below="@id/setUpTourLabel4"
                                 android:layout_margin="10dp"
                                 android:text="@string/check_box_to_start"
-                                android:textSize="16sp" />
+                                android:textSize="16sp"
+                                android:textColor="@color/colorPrimaryDark"/>
 
                             <CheckBox
                                 android:id="@+id/setUpTourCheckbox"

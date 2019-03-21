@@ -27,7 +27,8 @@
                     android:layout_marginTop="10dp"
                     android:text="@string/enter_exp_cat"
                     android:labelFor="@id/budgetExpenseCategory"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    android:textColor="@color/colorPrimaryDark"/>
 
                 <EditText
                     android:id="@+id/budgetExpenseCategory"
@@ -35,7 +36,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:inputType="text"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    android:textColor="@color/colorPrimaryDark"/>
 
                 <TextView
                     android:id="@+id/budgetExpenseAmountLabel"
@@ -44,7 +46,8 @@
                     android:layout_marginStart="10dp"
                     android:text="@string/amount"
                     android:labelFor="@id/budgetExpenseAmount"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    android:textColor="@color/colorPrimaryDark"/>
 
                 <EditText
                     android:id="@+id/budgetExpenseAmount"
@@ -52,7 +55,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:inputType="numberDecimal"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    android:textColor="@color/colorPrimaryDark"/>
 
             </LinearLayout>
 
@@ -63,55 +67,63 @@
                 android:layout_margin="10dp"
                 android:text="@string/how_often"
                 android:labelFor="@id/budgetExpenseFrequencyRadioGroup"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:textColor="@color/colorPrimaryDark"/>
 
             <RadioGroup
                 android:id="@+id/budgetExpenseFrequencyRadioGroup"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp">
+                android:layout_margin="10dp"
+                >
 
                 <RadioButton
                     android:id="@+id/budgetExpenseWeeklyRadioButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/weekly"
-                    android:textSize="15sp" />
+                    android:textSize="15sp"
+                    android:textColor="@color/colorPrimaryDark"/>
 
                 <RadioButton
                     android:id="@+id/budgetExpenseBiWeeklyRadioButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/bi_weekly"
-                    android:textSize="15sp" />
+                    android:textSize="15sp"
+                    android:textColor="@color/colorPrimaryDark"/>
 
                 <RadioButton
                     android:id="@+id/budgetExpenseBiMonthlyRadioButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/bi_monthly"
-                    android:textSize="15sp" />
+                    android:textSize="15sp"
+                    android:textColor="@color/colorPrimaryDark"/>
 
                 <RadioButton
                     android:id="@+id/budgetExpenseMonthlyRadioButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/monthly"
-                    android:textSize="15sp" />
+                    android:textSize="15sp"
+                    android:textColor="@color/colorPrimaryDark"/>
 
                 <RadioButton
                     android:id="@+id/budgetExpenseBiAnnuallyRadioButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/bi_annually"
-                    android:textSize="15sp" />
+                    android:textSize="15sp"
+                    android:textColor="@color/colorPrimaryDark"/>
 
                 <RadioButton
                     android:id="@+id/budgetExpenseAnnuallyRadioButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/yearly"
-                    android:textSize="15sp" />
+                    android:textSize="15sp"
+                    android:textColor="@color/colorPrimaryDark"/>
 
             </RadioGroup>
 
@@ -138,14 +150,16 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
                     android:text="@string/needs"
-                    android:textSize="15sp" />
+                    android:textSize="15sp"
+                    android:textColor="@color/colorPrimaryDark"/>
 
                 <RadioButton
                     android:id="@+id/budgetExpenseBRadioButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/optional"
-                    android:textSize="15sp" />
+                    android:textSize="15sp"
+                    android:textColor="@color/colorPrimaryDark"/>
 
             </RadioGroup>
 
@@ -166,6 +180,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:textSize="16sp"
+                android:textColor="@color/colorPrimaryDark"
                 android:text="@string/weekly_yes_or_no"
                 android:labelFor="@id/budgetExpenseReminderRadioGroup"
                 />
@@ -182,14 +197,16 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
                     android:text="@string/weekly_yes"
-                    android:textSize="15sp" />
+                    android:textSize="15sp"
+                    android:textColor="@color/colorPrimaryDark"/>
 
                 <RadioButton
                     android:id="@+id/budgetExpenseNoRadioButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/weekly_no"
-                    android:textSize="15sp" />
+                    android:textSize="15sp"
+                    android:textColor="@color/colorPrimaryDark"/>
 
             </RadioGroup>
 
@@ -205,7 +222,9 @@
                     android:layout_margin="10dp"
                     android:gravity="center"
                     android:contentDescription="@string/cancel"
-                    android:text="@string/cancel" />
+                    android:text="@string/cancel"
+                    android:background="@drawable/entry_box"
+                    android:textColor="@color/colorPrimaryDark"/>
 
                 <Button
                     android:id="@+id/budgetAddExpenseButton"
@@ -216,6 +235,8 @@
                     android:gravity="center"
                     android:contentDescription="@string/add"
                     android:text="@string/add"
+                    android:background="@drawable/entry_box"
+                    android:textColor="@color/colorPrimaryDark"
                     tools:ignore="RelativeOverlap" />
 
                 <Button
@@ -227,6 +248,8 @@
                     android:gravity="center"
                     android:contentDescription="@string/update"
                     android:text="@string/update"
+                    android:background="@drawable/entry_box"
+                    android:textColor="@color/colorPrimaryDark"
                     tools:ignore="RelativeOverlap" />
 
             </RelativeLayout>

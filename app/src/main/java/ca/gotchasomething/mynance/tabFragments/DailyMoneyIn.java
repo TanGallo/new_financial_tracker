@@ -357,105 +357,110 @@ public class DailyMoneyIn extends Fragment {
         public void onClick(View v) {
 
             moneyInCat = moneyInCatS;
-            if (moneyInAmountText.getText().toString().equals("")) {
-                moneyInAmount = 0.0;
+            if (moneyInCat == null || moneyInCat.equals("")) {
+                Toast.makeText(getContext(), R.string.no_inc_warning, Toast.LENGTH_LONG).show();
             } else {
-                moneyInAmount = Double.valueOf(moneyInAmountText.getText().toString());
-            }
-            moneyInDate = new Date();
-            moneyInTimestamp = new Timestamp(moneyInDate.getTime());
-            moneyInSDF = new SimpleDateFormat("dd-MMM-yyyy");
-            moneyInCreatedOn = moneyInSDF.format(moneyInTimestamp);
-            incRefKeyMI = moneyInRefKeyMI;
-
-            findMatchingDebtId();
-            if (foundMatchingDebtId) {
-                if (findCurrentDebtAmount() + moneyInAmount > debtLimit) {
-                    debtNotPossibleText.setVisibility(View.VISIBLE);
-                    debtContinueAnywayText.setVisibility(View.VISIBLE);
-                    noMoneyInButton.setVisibility(View.VISIBLE);
-                    yesMoneyInButton.setVisibility(View.VISIBLE);
-
-                    noMoneyInButton.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            debtNotPossibleText.setVisibility(View.GONE);
-                            savingsNotPossibleText.setVisibility(View.GONE);
-                            debtContinueAnywayText.setVisibility(View.GONE);
-                            noMoneyInButton.setVisibility(View.GONE);
-                            yesMoneyInButton.setVisibility(View.GONE);
-
-                            backToDaily();
-                        }
-                    });
-                    yesMoneyInButton.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            updateDebtsRecord();
-                        }
-                    });
+                if (moneyInAmountText.getText().toString().equals("")) {
+                    moneyInAmount = 0.0;
                 } else {
-                    updateDebtsRecord();
+                    moneyInAmount = Double.valueOf(moneyInAmountText.getText().toString());
                 }
-            } else {
-                debtNotPossibleText.setVisibility(View.GONE);
-                savingsNotPossibleText.setVisibility(View.GONE);
-                debtContinueAnywayText.setVisibility(View.GONE);
-                noMoneyInButton.setVisibility(View.GONE);
-                yesMoneyInButton.setVisibility(View.GONE);
-            }
 
-            findMatchingSavingsId();
-            if (foundMatchingSavingsId) {
-                if (findCurrentSavingsAmount() - moneyInAmount < 0) {
-                    savingsNotPossibleText.setVisibility(View.VISIBLE);
-                    debtContinueAnywayText.setVisibility(View.VISIBLE);
-                    noMoneyInButton.setVisibility(View.VISIBLE);
-                    yesMoneyInButton.setVisibility(View.VISIBLE);
+                moneyInDate = new Date();
+                moneyInTimestamp = new Timestamp(moneyInDate.getTime());
+                moneyInSDF = new SimpleDateFormat("dd-MMM-yyyy");
+                moneyInCreatedOn = moneyInSDF.format(moneyInTimestamp);
+                incRefKeyMI = moneyInRefKeyMI;
 
-                    noMoneyInButton.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            debtNotPossibleText.setVisibility(View.GONE);
-                            savingsNotPossibleText.setVisibility(View.GONE);
-                            debtContinueAnywayText.setVisibility(View.GONE);
-                            noMoneyInButton.setVisibility(View.GONE);
-                            yesMoneyInButton.setVisibility(View.GONE);
+                findMatchingDebtId();
+                if (foundMatchingDebtId) {
+                    if (findCurrentDebtAmount() + moneyInAmount > debtLimit) {
+                        debtNotPossibleText.setVisibility(View.VISIBLE);
+                        debtContinueAnywayText.setVisibility(View.VISIBLE);
+                        noMoneyInButton.setVisibility(View.VISIBLE);
+                        yesMoneyInButton.setVisibility(View.VISIBLE);
 
-                            backToDaily();
-                        }
-                    });
-                    yesMoneyInButton.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            updateSavingsRecord();
-                        }
-                    });
+                        noMoneyInButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                debtNotPossibleText.setVisibility(View.GONE);
+                                savingsNotPossibleText.setVisibility(View.GONE);
+                                debtContinueAnywayText.setVisibility(View.GONE);
+                                noMoneyInButton.setVisibility(View.GONE);
+                                yesMoneyInButton.setVisibility(View.GONE);
+
+                                backToDaily();
+                            }
+                        });
+                        yesMoneyInButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                updateDebtsRecord();
+                            }
+                        });
+                    } else {
+                        updateDebtsRecord();
+                    }
                 } else {
-                    updateSavingsRecord();
+                    debtNotPossibleText.setVisibility(View.GONE);
+                    savingsNotPossibleText.setVisibility(View.GONE);
+                    debtContinueAnywayText.setVisibility(View.GONE);
+                    noMoneyInButton.setVisibility(View.GONE);
+                    yesMoneyInButton.setVisibility(View.GONE);
                 }
-            } else {
-                debtNotPossibleText.setVisibility(View.GONE);
-                savingsNotPossibleText.setVisibility(View.GONE);
-                debtContinueAnywayText.setVisibility(View.GONE);
-                noMoneyInButton.setVisibility(View.GONE);
-                yesMoneyInButton.setVisibility(View.GONE);
+
+                findMatchingSavingsId();
+                if (foundMatchingSavingsId) {
+                    if (findCurrentSavingsAmount() - moneyInAmount < 0) {
+                        savingsNotPossibleText.setVisibility(View.VISIBLE);
+                        debtContinueAnywayText.setVisibility(View.VISIBLE);
+                        noMoneyInButton.setVisibility(View.VISIBLE);
+                        yesMoneyInButton.setVisibility(View.VISIBLE);
+
+                        noMoneyInButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                debtNotPossibleText.setVisibility(View.GONE);
+                                savingsNotPossibleText.setVisibility(View.GONE);
+                                debtContinueAnywayText.setVisibility(View.GONE);
+                                noMoneyInButton.setVisibility(View.GONE);
+                                yesMoneyInButton.setVisibility(View.GONE);
+
+                                backToDaily();
+                            }
+                        });
+                        yesMoneyInButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                updateSavingsRecord();
+                            }
+                        });
+                    } else {
+                        updateSavingsRecord();
+                    }
+                } else {
+                    debtNotPossibleText.setVisibility(View.GONE);
+                    savingsNotPossibleText.setVisibility(View.GONE);
+                    debtContinueAnywayText.setVisibility(View.GONE);
+                    noMoneyInButton.setVisibility(View.GONE);
+                    yesMoneyInButton.setVisibility(View.GONE);
+                }
+
+                moneyInDb = new MoneyInDb(moneyInCat, moneyInAmount, moneyInCreatedOn, incRefKeyMI, 0);
+
+                dbManager.addMoneyIn(moneyInDb);
+                Toast.makeText(getActivity(), R.string.saved, Toast.LENGTH_LONG).show();
+                moneyInAmountText.setText("");
+                moneyInCatSpinner.setSelection(0, false);
+
+                moneyInAdapter.updateMoneyIn(dbManager.getMoneyIns());
+                moneyInAdapter.notifyDataSetChanged();
+
+                updateCurrentAccountBalanceMoneyIn();
+                updateCurrentAvailableBalanceMoneyIn();
+
+                backToDaily();
             }
-
-            moneyInDb = new MoneyInDb(moneyInCat, moneyInAmount, moneyInCreatedOn, incRefKeyMI, 0);
-
-            dbManager.addMoneyIn(moneyInDb);
-            Toast.makeText(getActivity(), R.string.saved, Toast.LENGTH_LONG).show();
-            moneyInAmountText.setText("");
-            moneyInCatSpinner.setSelection(0, false);
-
-            moneyInAdapter.updateMoneyIn(dbManager.getMoneyIns());
-            moneyInAdapter.notifyDataSetChanged();
-
-            updateCurrentAccountBalanceMoneyIn();
-            updateCurrentAvailableBalanceMoneyIn();
-
-            backToDaily();
         }
     };
 

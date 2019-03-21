@@ -22,7 +22,8 @@
             android:layout_marginTop="10dp"
             android:text="@string/name_debt"
             android:labelFor="@id/debtNameEntry"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+                android:textColor="@color/colorPrimaryDark"/>
 
             <EditText
                 android:id="@+id/debtNameEntry"
@@ -32,7 +33,8 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="10dp"
                 android:inputType="text"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:textColor="@color/colorPrimaryDark"/>
 
             <TextView
                 android:id="@+id/debtLimitEntryLabel"
@@ -42,7 +44,8 @@
                 android:layout_marginEnd="10dp"
                 android:text="@string/enter_limit"
                 android:labelFor="@id/debtLimitEntry"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:textColor="@color/colorPrimaryDark"/>
 
             <EditText
                 android:id="@+id/debtLimitEntry"
@@ -52,7 +55,8 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="10dp"
                 android:inputType="numberDecimal"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:textColor="@color/colorPrimaryDark"/>
 
             <TextView
                 android:id="@+id/debtAmountEntryLabel"
@@ -61,7 +65,8 @@
                 android:layout_marginStart="10dp"
                 android:text="@string/enter_debt_amount"
                 android:labelFor="@id/debtAmountEntry"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:textColor="@color/colorPrimaryDark"/>
 
             <EditText
                 android:id="@+id/debtAmountEntry"
@@ -70,7 +75,8 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
                 android:inputType="numberDecimal"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:textColor="@color/colorPrimaryDark"/>
 
             <TextView
                 android:id="@+id/debtPercentEntryLabel"
@@ -79,7 +85,8 @@
                 android:layout_marginStart="10dp"
                 android:text="@string/enter_rate"
                 android:labelFor="@id/debtPercentEntry"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:textColor="@color/colorPrimaryDark"/>
 
             <EditText
                 android:id="@+id/debtPercentEntry"
@@ -87,7 +94,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:inputType="numberDecimal"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:textColor="@color/colorPrimaryDark"/>
 
             <TextView
                 android:id="@+id/debtPaymentsEntryLabel"
@@ -97,7 +105,8 @@
                 android:layout_marginEnd="10dp"
                 android:text="@string/enter_payments"
                 android:labelFor="@id/debtPaymentsEntry"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:textColor="@color/colorPrimaryDark"/>
 
             <EditText
                 android:id="@+id/debtPaymentsEntry"
@@ -105,7 +114,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:inputType="numberDecimal"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:textColor="@color/colorPrimaryDark"/>
 
             <TextView
                 android:id="@+id/debtFrequencyLabel"
@@ -116,7 +126,8 @@
                 android:layout_marginEnd="10dp"
                 android:text="@string/how_often"
                 android:labelFor="@id/debtFrequencyRadioGroup"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:textColor="@color/colorPrimaryDark"/>
 
             <RadioGroup
                 android:id="@+id/debtFrequencyRadioGroup"
@@ -129,21 +140,24 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/weekly"
-                    android:textSize="15sp" />
+                    android:textSize="15sp"
+                    android:textColor="@color/colorPrimaryDark"/>
 
                 <RadioButton
                     android:id="@+id/debtBiWeeklyRadioButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/bi_weekly"
-                    android:textSize="15sp" />
+                    android:textSize="15sp"
+                    android:textColor="@color/colorPrimaryDark"/>
 
                 <RadioButton
                     android:id="@+id/debtMonthlyRadioButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/monthly"
-                    android:textSize="15sp" />
+                    android:textSize="15sp"
+                    android:textColor="@color/colorPrimaryDark"/>
 
             </RadioGroup>
 
@@ -160,7 +174,8 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
                 android:text="@string/debt_will"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:textColor="@color/colorPrimaryDark"/>
 
             <TextView
                 android:id="@+id/debtDateResult"
@@ -170,7 +185,8 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="10dp"
                 android:text="@string/date"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:textColor="@color/colorPrimaryDark"/>
 
             </LinearLayout>
 
@@ -188,7 +204,8 @@
                     android:gravity="center"
                     android:contentDescription="@string/cancel"
                     android:background="@drawable/entry_box"
-                    android:text="@string/cancel" />
+                    android:text="@string/cancel"
+                    android:textColor="@color/colorPrimaryDark"/>
 
                 <Button
                     android:id="@+id/saveDebtButton"
@@ -200,6 +217,7 @@
                     android:gravity="center"
                     android:contentDescription="@string/save"
                     android:text="@string/save"
+                    android:textColor="@color/colorPrimaryDark"
                     android:background="@drawable/entry_box"
                     tools:ignore="RelativeOverlap" />
 
@@ -213,6 +231,7 @@
                     android:gravity="center"
                     android:contentDescription="@string/update"
                     android:text="@string/update"
+                    android:textColor="@color/colorPrimaryDark"
                     android:background="@drawable/entry_box"
                     tools:ignore="RelativeOverlap" />
 

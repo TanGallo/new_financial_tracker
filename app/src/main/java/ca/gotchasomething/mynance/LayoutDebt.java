@@ -44,7 +44,8 @@ import ca.gotchasomething.mynance.data.SetUpDb;
 
 public class LayoutDebt extends MainNavigation {
 
-    Button cancelDebtButton, cancelDeleteDebtButton, continueDeleteDebtButton, doneDebtsSetUpButton, saveDebtButton, updateDebtButton;
+    Button cancelDebtButton, cancelDeleteDebtButton, continueDeleteDebtButton, debtsSetUpTimeButton, debtsSetUpHelpButton, doneDebtsSetUpButton,
+            saveDebtButton, updateDebtButton;
     Calendar debtCal;
     ContentValues values, values2, values3, values4, values5;
     Date debtEndD, latestDateD;
@@ -102,10 +103,14 @@ public class LayoutDebt extends MainNavigation {
         debtsSetUpNoTime.setOnClickListener(onClickNoTime);
         debtsSetUpNoTime2 = findViewById(R.id.debtsSetUpNoTime2);
         debtsSetUpNoTime2.setVisibility(View.GONE);
+        debtsSetUpTimeButton = findViewById(R.id.debtsSetUpTimeButton);
+        debtsSetUpTimeButton.setVisibility(View.GONE);
         debtsSetUpNeedHelp = findViewById(R.id.debtsSetUpNeedHelp);
         debtsSetUpNeedHelp.setOnClickListener(onClickNeedHelp);
         debtsSetUpNeedHelp2 = findViewById(R.id.debtsSetUpNeedHelp2);
         debtsSetUpNeedHelp2.setVisibility(View.GONE);
+        debtsSetUpHelpButton = findViewById(R.id.debtsSetUpHelpButton);
+        debtsSetUpHelpButton.setVisibility(View.GONE);
         deleteDebtWarningText = findViewById(R.id.deleteDebtWarningText);
         deleteDebtWarningText.setVisibility(View.GONE);
         cancelDeleteDebtButton = findViewById(R.id.cancelDeleteDebtButton);
@@ -125,8 +130,10 @@ public class LayoutDebt extends MainNavigation {
             emptyDebtsText3.setVisibility(View.GONE);
             debtsSetUpNoTime.setVisibility(View.GONE);
             debtsSetUpNoTime2.setVisibility(View.GONE);
+            debtsSetUpTimeButton.setVisibility(View.GONE);
             debtsSetUpNeedHelp.setVisibility(View.GONE);
             debtsSetUpNeedHelp2.setVisibility(View.GONE);
+            debtsSetUpHelpButton.setVisibility(View.GONE);
         }
 
         debtAdapter = new DebtDbAdapter(this, dbManager.getDebts());
@@ -175,6 +182,14 @@ public class LayoutDebt extends MainNavigation {
         @Override
         public void onClick(View v) {
             debtsSetUpNoTime2.setVisibility(View.VISIBLE);
+            debtsSetUpTimeButton.setVisibility(View.VISIBLE);
+            debtsSetUpTimeButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    debtsSetUpNoTime2.setVisibility(View.GONE);
+                    debtsSetUpTimeButton.setVisibility(View.GONE);
+                }
+            });
         }
     };
 
@@ -182,6 +197,14 @@ public class LayoutDebt extends MainNavigation {
         @Override
         public void onClick(View v) {
             debtsSetUpNeedHelp2.setVisibility(View.VISIBLE);
+            debtsSetUpHelpButton.setVisibility(View.VISIBLE);
+            debtsSetUpHelpButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    debtsSetUpNeedHelp2.setVisibility(View.GONE);
+                    debtsSetUpHelpButton.setVisibility(View.GONE);
+                }
+            });
         }
     };
 

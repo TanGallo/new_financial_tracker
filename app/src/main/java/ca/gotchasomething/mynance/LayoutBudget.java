@@ -41,8 +41,8 @@ import ca.gotchasomething.mynance.data.SetUpDb;
 public class LayoutBudget extends MainNavigation {
 
     boolean foundDebtIdExp = false, foundDebtIdInc = false, foundSavingsIdExp = false, foundSavingsIdInc = false;
-    Button budgetAddExpenseButton, budgetAddIncomeButton, budgetCancelExpenseButton, budgetCancelIncomeButton, budgetUpdateExpenseButton,
-            budgetUpdateIncomeButton, cancelButton, doneBudgetSetUpButton, okButton, ok2Button;
+    Button budgetAddExpenseButton, budgetAddIncomeButton, budgetCancelExpenseButton, budgetCancelIncomeButton, budgetSetUpTimeButton,
+            budgetSetUpHelpButton, budgetUpdateExpenseButton, budgetUpdateIncomeButton, cancelButton, doneBudgetSetUpButton, okButton, ok2Button;
     Calendar debtCal, debtCal2, savingsCal;
     ContentValues debtValues, debtValues2, debtValues3, debtValues4, expValues, incValues, moneyInValues, moneyOutValues, moneyOutValues2, savingsValues, savingsValues2,
             savingsValues3, savingsValues4;
@@ -82,8 +82,9 @@ public class LayoutBudget extends MainNavigation {
             incDebtId = null, incSavingsId = null, incomeAvailable2 = null, incomeAvailableN2 = null, incomeFrequencyS = null, incomeId = null,
             nameEntryInc = null, nameEntryExp = null, priorityEntryExp = null, savingsDate = null, totalExpenses2 = null,
             totalExpensesS = null, totalIncome2 = null, totalIncomeS = null, weeklyEntry = null;
-    TextView budgetExpensesTotalText, budgetIncomeTotalText, budgetOopsAmountText, budgetOopsText, deleteExpText, emptyBudgetText, headerLabel2,
-            incomeAvailable, noSpendingReportText, weeklyGuidanceLabel;
+    TextView budgetExpensesTotalText, budgetIncomeTotalText, budgetOopsAmountText, budgetOopsText, budgetSetUpNoTime, budgetSetUpNoTime2,
+            budgetSetUpNeedHelp, budgetSetUpNeedHelp2, deleteExpText, emptyBudgetText, headerLabel2, incomeAvailable, noSpendingReportText,
+            weeklyGuidanceLabel;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -111,6 +112,18 @@ public class LayoutBudget extends MainNavigation {
         budgetOopsAmountText = findViewById(R.id.budgetOopsAmountText);
         budgetOopsAmountText.setVisibility(View.GONE);
         emptyBudgetText = findViewById(R.id.emptyBudgetText);
+        budgetSetUpNoTime = findViewById(R.id.budgetSetUpNoTime);
+        budgetSetUpNoTime.setOnClickListener(onClickNoTimeBudget);
+        budgetSetUpNoTime2 = findViewById(R.id.budgetSetUpNoTime2);
+        budgetSetUpNoTime2.setVisibility(View.GONE);
+        budgetSetUpTimeButton = findViewById(R.id.budgetSetUpTimeButton);
+        budgetSetUpTimeButton.setVisibility(View.GONE);
+        budgetSetUpNeedHelp = findViewById(R.id.budgetSetUpNeedHelp);
+        budgetSetUpNeedHelp.setOnClickListener(onClickNeedHelpBudget);
+        budgetSetUpNeedHelp2 = findViewById(R.id.budgetSetUpNeedHelp2);
+        budgetSetUpNeedHelp2.setVisibility(View.GONE);
+        budgetSetUpHelpButton = findViewById(R.id.budgetSetUpHelpButton);
+        budgetSetUpHelpButton.setVisibility(View.GONE);
         deleteExpText = findViewById(R.id.deleteExpText);
         deleteExpText.setVisibility(View.GONE);
         noSpendingReportText = findViewById(R.id.noSpendingReportText);
@@ -135,6 +148,12 @@ public class LayoutBudget extends MainNavigation {
         if (dbManager.budgetSetUpCheck() > 0) {
             doneBudgetSetUpButton.setVisibility(View.GONE);
             emptyBudgetText.setVisibility(View.GONE);
+            budgetSetUpNoTime.setVisibility(View.GONE);
+            budgetSetUpNoTime2.setVisibility(View.GONE);
+            budgetSetUpTimeButton.setVisibility(View.GONE);
+            budgetSetUpNeedHelp.setVisibility(View.GONE);
+            budgetSetUpNeedHelp2.setVisibility(View.GONE);
+            budgetSetUpHelpButton.setVisibility(View.GONE);
         }
 
         incomeAdapter = new IncomeDbAdapter(this, dbManager.getIncomes());
@@ -165,6 +184,36 @@ public class LayoutBudget extends MainNavigation {
             backToSetUp.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
             startActivity(backToSetUp);
 
+        }
+    };
+
+    View.OnClickListener onClickNoTimeBudget = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            budgetSetUpNoTime2.setVisibility(View.VISIBLE);
+            budgetSetUpTimeButton.setVisibility(View.VISIBLE);
+            budgetSetUpTimeButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    budgetSetUpNoTime2.setVisibility(View.GONE);
+                    budgetSetUpTimeButton.setVisibility(View.GONE);
+                }
+            });
+        }
+    };
+
+    View.OnClickListener onClickNeedHelpBudget = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            budgetSetUpNeedHelp2.setVisibility(View.VISIBLE);
+            budgetSetUpHelpButton.setVisibility(View.VISIBLE);
+            budgetSetUpHelpButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    budgetSetUpNeedHelp2.setVisibility(View.GONE);
+                    budgetSetUpHelpButton.setVisibility(View.GONE);
+                }
+            });
         }
     };
 

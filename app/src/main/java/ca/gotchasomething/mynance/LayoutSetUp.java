@@ -35,8 +35,8 @@ public class LayoutSetUp extends MainNavigation {
     SetUpDb setUpDb;
     SimpleDateFormat moneyInSDF;
     String startingBalance2 = null, startingBalanceS = null, moneyInCat = null, moneyInCreatedOn = null;
-    TextView almostDone, setUpAccountAmountLabel, setUpAccountAmountLabel2, setUpAccountAmountLabel3, setUpAccountAmountResult, setUpBudgetLabel, setUpDebtsLabel,
-            setUpGotItLabel, setUpSavingsLabel, setUpTourLabel, setUpTourLabel2, setUpTourLabel3, setUpTourLabel4;
+    TextView almostDone, setUpAccountAmountLabel, setUpAccountAmountLabel2, setUpAccountAmountLabel3, setUpAccountAmountLabel4, setUpBudgetLabel,
+            setUpDebtsLabel, setUpGotItLabel, setUpSavingsLabel, setUpTourLabel, setUpTourLabel2, setUpTourLabel3, setUpTourLabel4;
     Timestamp moneyInTimestamp;
 
     @Override
@@ -79,9 +79,11 @@ public class LayoutSetUp extends MainNavigation {
         setUpAccountAmountLabel2 = findViewById(R.id.setUpAccountAmountLabel2);
         setUpAccountAmountLabel2.setVisibility(View.GONE);
         setUpAccountAmountLabel3 = findViewById(R.id.setUpAccountAmountLabel3);
+        setUpAccountAmountLabel3.setVisibility(View.GONE);
+        setUpAccountAmountLabel4 = findViewById(R.id.setUpAccountAmountLabel4);
+        setUpAccountAmountLabel4.setVisibility(View.GONE);
         setUpAccountCheckbox = findViewById(R.id.setUpAccountCheckbox);
-        setUpAccountAmountResult = findViewById(R.id.setUpAccountAmountResult);
-        setUpAccountAmountResult.setVisibility(View.GONE);
+        setUpAccountCheckbox.setVisibility(View.GONE);
 
         almostDone = findViewById(R.id.almostDone);
         almostDone.setVisibility(View.GONE);
@@ -124,20 +126,19 @@ public class LayoutSetUp extends MainNavigation {
             setUpBudgetLabel.setVisibility(View.VISIBLE);
             setUpBudgetButton.setVisibility(View.GONE);
             setUpBudgetCheckbox.setChecked(true);
+            setUpAccountAmount.setVisibility(View.VISIBLE);
             setUpAccountAmountLabel.setVisibility(View.VISIBLE);
             setUpAccountAmountLabel2.setVisibility(View.VISIBLE);
-            setUpAccountAmountLabel3.setVisibility(View.GONE);
-            setUpAccountAmount.setVisibility(View.VISIBLE);
+            setUpAccountAmountLabel4.setVisibility(View.VISIBLE);
+            setUpAccountCheckbox.setVisibility(View.VISIBLE);
         }
 
         if (dbManager.balanceSetUpCheck() > 0) {
             setUpAccountAmountLabel.setVisibility(View.GONE);
             setUpAccountAmountLabel2.setVisibility(View.GONE);
             setUpAccountAmountLabel3.setVisibility(View.VISIBLE);
+            setUpAccountAmountLabel4.setVisibility(View.GONE);
             setUpAccountAmount.setVisibility(View.GONE);
-            setUpAccountAmountResult.setVisibility(View.VISIBLE);
-            startingBalance2 = currencyFormat.format(dbManager.retrieveStartingBalance());
-            setUpAccountAmountResult.setText(startingBalance2);
             setUpAccountCheckbox.setChecked(true);
             almostDone.setVisibility(View.VISIBLE);
             setUpTourLabel.setVisibility(View.VISIBLE);
@@ -201,7 +202,7 @@ public class LayoutSetUp extends MainNavigation {
 
             dbManager.addCurrent(currentDb);
 
-            moneyInCat = "start";
+            moneyInCat = getString(R.string.starting_balance);
             moneyInAmount = balanceAmount;
             moneyInDate = new Date();
             moneyInTimestamp = new Timestamp(moneyInDate.getTime());
@@ -216,10 +217,8 @@ public class LayoutSetUp extends MainNavigation {
             setUpAccountAmountLabel.setVisibility(View.GONE);
             setUpAccountAmountLabel2.setVisibility(View.GONE);
             setUpAccountAmountLabel3.setVisibility(View.VISIBLE);
+            setUpAccountAmountLabel4.setVisibility(View.GONE);
             setUpAccountAmount.setVisibility(View.GONE);
-            setUpAccountAmountResult.setVisibility(View.VISIBLE);
-            startingBalance2 = currencyFormat.format(dbManager.retrieveStartingBalance());
-            setUpAccountAmountResult.setText(startingBalance2);
             setUpAccountCheckbox.setChecked(true);
             almostDone.setVisibility(View.VISIBLE);
             setUpTourLabel.setVisibility(View.VISIBLE);

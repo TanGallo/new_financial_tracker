@@ -41,7 +41,8 @@ import ca.gotchasomething.mynance.data.SetUpDb;
 
 public class LayoutSavings extends MainNavigation {
 
-    Button cancelDeleteSavingsButton, continueDeleteSavingsButton, cancelSavingsButton, doneSavingsSetUpButton, saveSavingsButton, updateSavingsButton;
+    Button cancelDeleteSavingsButton, continueDeleteSavingsButton, cancelSavingsButton, doneSavingsSetUpButton, saveSavingsButton, savingsSetUpTimeButton,
+            savingsSetUpHelpButton, updateSavingsButton;
     Calendar savingsCal;
     ContentValues values, values2, values3, values4;
     Date savingsDateD;
@@ -71,7 +72,8 @@ public class LayoutSavings extends MainNavigation {
     String expRefKeyS = null, savingsNameEntryS = null, priority = null, savingsAmountS = null, savingsCurrent2 = null, savingsCurrentS = null, savingsDate = null,
             savingsFrequencyS = null, savingsGoal2 = null, savingsGoalS = null, savingsGoalS2 = null, savingsIntFrequencyS = null, savingsPaymentsS = null,
             savingsPercentS = null, totalSavings2 = null, totalSavingsS = null;
-    TextView deleteSavingsWarningText, emptysavingsText, emptysavingsText2, emptySavingsText3, savingsDateResult, savingsDateResultLabel, savingsFrequencyLabel, savingsIntFrequencyLabel, totalSavedText;
+    TextView deleteSavingsWarningText, emptysavingsText, emptysavingsText2, emptySavingsText3, savingsDateResult, savingsDateResultLabel, savingsFrequencyLabel,
+            savingsSetUpNoTime, savingsSetUpNoTime2, savingsSetUpNeedHelp, savingsSetUpNeedHelp2, savingsIntFrequencyLabel, totalSavedText;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -94,6 +96,18 @@ public class LayoutSavings extends MainNavigation {
         emptysavingsText = findViewById(R.id.emptySavingsText);
         emptysavingsText2 = findViewById(R.id.emptySavingsText2);
         emptySavingsText3 = findViewById(R.id.emptySavingsText3);
+        savingsSetUpNoTime = findViewById(R.id.savingsSetUpNoTime);
+        savingsSetUpNoTime.setOnClickListener(onClickNoTimeSavings);
+        savingsSetUpNoTime2 = findViewById(R.id.savingsSetUpNoTime2);
+        savingsSetUpNoTime2.setVisibility(View.GONE);
+        savingsSetUpTimeButton = findViewById(R.id.savingsSetUpTimeButton);
+        savingsSetUpTimeButton.setVisibility(View.GONE);
+        savingsSetUpNeedHelp = findViewById(R.id.savingsSetUpNeedHelp);
+        savingsSetUpNeedHelp.setOnClickListener(onClickNeedHelpSavings);
+        savingsSetUpNeedHelp2 = findViewById(R.id.savingsSetUpNeedHelp2);
+        savingsSetUpNeedHelp2.setVisibility(View.GONE);
+        savingsSetUpHelpButton = findViewById(R.id.savingsSetUpHelpButton);
+        savingsSetUpHelpButton.setVisibility(View.GONE);
         deleteSavingsWarningText = findViewById(R.id.deleteSavingsWarningText);
         deleteSavingsWarningText.setVisibility(View.GONE);
         cancelDeleteSavingsButton = findViewById(R.id.cancelDeleteSavingsButton);
@@ -111,6 +125,12 @@ public class LayoutSavings extends MainNavigation {
         if (dbManager.savingsSetUpCheck() > 0) {
             doneSavingsSetUpButton.setVisibility(View.GONE);
             emptySavingsText3.setVisibility(View.GONE);
+            savingsSetUpNoTime.setVisibility(View.GONE);
+            savingsSetUpNoTime2.setVisibility(View.GONE);
+            savingsSetUpTimeButton.setVisibility(View.GONE);
+            savingsSetUpNeedHelp.setVisibility(View.GONE);
+            savingsSetUpNeedHelp2.setVisibility(View.GONE);
+            savingsSetUpHelpButton.setVisibility(View.GONE);
         }
 
         savingsAdapter = new SavingsDbAdapter(this, dbManager.getSavings());
@@ -145,6 +165,36 @@ public class LayoutSavings extends MainNavigation {
             backToSetUp.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
             startActivity(backToSetUp);
 
+        }
+    };
+
+    View.OnClickListener onClickNoTimeSavings = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            savingsSetUpNoTime2.setVisibility(View.VISIBLE);
+            savingsSetUpTimeButton.setVisibility(View.VISIBLE);
+            savingsSetUpTimeButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    savingsSetUpNoTime2.setVisibility(View.GONE);
+                    savingsSetUpTimeButton.setVisibility(View.GONE);
+                }
+            });
+        }
+    };
+
+    View.OnClickListener onClickNeedHelpSavings = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            savingsSetUpNeedHelp2.setVisibility(View.VISIBLE);
+            savingsSetUpHelpButton.setVisibility(View.VISIBLE);
+            savingsSetUpHelpButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    savingsSetUpNeedHelp2.setVisibility(View.GONE);
+                    savingsSetUpHelpButton.setVisibility(View.GONE);
+                }
+            });
         }
     };
 

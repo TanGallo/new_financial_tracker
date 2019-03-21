@@ -107,6 +107,10 @@ public class DailyCreditCard extends Fragment {
         ccAdapter = new CCAdapter(getContext(), dbManager.getCCTransToPay());
         ccListView.setAdapter(ccAdapter);
 
+        ccPaymentsList = v.findViewById(R.id.ccPaymentsList);
+        ccPaymentsAdapter = new CCPaymentsAdapter(getContext(), dbManager.getDebts());
+        ccPaymentsList.setAdapter(ccPaymentsAdapter);
+
         if (ccAdapter.getCount() == 0) {
             noCCTransLabel.setVisibility(View.VISIBLE);
             checkBelowLabel.setVisibility(View.GONE);
@@ -115,32 +119,25 @@ public class DailyCreditCard extends Fragment {
             ccPayLabel.setVisibility(View.GONE);
             ccListView.setVisibility(View.GONE);
         } else {
+            if (dbManager.retrieveToPayTotal() == 0) {
+                checkBelowLabel.setVisibility(View.VISIBLE);
+                totalCCPaymentDueLabel.setVisibility(View.GONE);
+                ccPaymentsList.setVisibility(View.GONE);
+                initialCCLayout.setVisibility(View.GONE);
+                ccPaidLabel.setVisibility(View.GONE);
+                ccPaidCheckbox.setVisibility(View.GONE);
+            } else {
+                checkBelowLabel.setVisibility(View.GONE);
+                totalCCPaymentDueLabel.setVisibility(View.VISIBLE);
+                ccPaymentsList.setVisibility(View.VISIBLE);
+                initialCCLayout.setVisibility(View.VISIBLE);
+                ccPaidLabel.setVisibility(View.VISIBLE);
+                ccPaidCheckbox.setVisibility(View.VISIBLE);
+            }
             noCCTransLabel.setVisibility(View.GONE);
-            checkBelowLabel.setVisibility(View.VISIBLE);
-            initialCCLayout.setVisibility(View.VISIBLE);
             ccHeaderLabel.setVisibility(View.VISIBLE);
             ccPayLabel.setVisibility(View.VISIBLE);
             ccListView.setVisibility(View.VISIBLE);
-        }
-
-        ccPaymentsList = v.findViewById(R.id.ccPaymentsList);
-        ccPaymentsAdapter = new CCPaymentsAdapter(getContext(), dbManager.getDebts());
-        ccPaymentsList.setAdapter(ccPaymentsAdapter);
-
-        if (dbManager.retrieveToPayTotal() == 0) {
-            checkBelowLabel.setVisibility(View.VISIBLE);
-            totalCCPaymentDueLabel.setVisibility(View.GONE);
-            ccPaymentsList.setVisibility(View.GONE);
-            initialCCLayout.setVisibility(View.GONE);
-            ccPaidLabel.setVisibility(View.GONE);
-            ccPaidCheckbox.setVisibility(View.GONE);
-        } else {
-            checkBelowLabel.setVisibility(View.GONE);
-            totalCCPaymentDueLabel.setVisibility(View.VISIBLE);
-            ccPaymentsList.setVisibility(View.VISIBLE);
-            initialCCLayout.setVisibility(View.VISIBLE);
-            ccPaidLabel.setVisibility(View.VISIBLE);
-            ccPaidCheckbox.setVisibility(View.VISIBLE);
         }
 
         ccPaidCheckbox.setOnCheckedChangeListener(onCheckCCPaid);

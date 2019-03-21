@@ -16,7 +16,8 @@
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:text="@string/amount"
-        android:textSize="14sp" />
+        android:textSize="14sp"
+        android:textColor="@color/colorPrimaryDark"/>
 
     <TextView
         android:id="@+id/ccCat"
@@ -26,6 +27,7 @@
         android:layout_marginTop="10dp"
         android:text="@string/category"
         android:textSize="14sp"
+        android:textColor="@color/colorPrimaryDark"
         android:layout_toEndOf="@id/ccAmount"/>
 
     <CheckBox
@@ -42,6 +44,7 @@
             android:layout_marginStart="10dp"
             android:text="@string/on"
             android:textSize="12sp"
+            android:textColor="@color/colorPrimaryDark"
             android:layout_toEndOf="@id/ccAmount"
             android:layout_below="@id/ccCat"/>
 

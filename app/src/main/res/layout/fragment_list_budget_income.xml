@@ -22,7 +22,8 @@
                 android:layout_marginTop="5dp"
                 android:gravity="fill_horizontal"
                 android:text="@string/category"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:textColor="@color/colorPrimaryDark"/>
 
             <TextView
                 android:id="@+id/budgetIncomeAmountText"
@@ -30,7 +31,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:text="@string/amount"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:textColor="@color/colorPrimaryDark"/>
 
         </LinearLayout>
 

@@ -31,7 +31,8 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"
                         android:text="@string/payment_not_possible_B"
-                        android:textSize="16sp" />
+                        android:textSize="16sp"
+                        android:textColor="@color/colorPrimaryDark"/>
 
                     <TextView
                         android:id="@+id/ccPaymentNotPossibleAText"
@@ -39,7 +40,8 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"
                         android:text="@string/payment_not_possible_A"
-                        android:textSize="16sp" />
+                        android:textSize="16sp"
+                        android:textColor="@color/colorPrimaryDark"/>
 
                     <TextView
                         android:id="@+id/ccContinueWarningText"
@@ -47,7 +49,8 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"
                         android:text="@string/continue_warning"
-                        android:textSize="16sp" />
+                        android:textSize="16sp"
+                        android:textColor="@color/colorPrimaryDark"/>
 
                     <TextView
                         android:id="@+id/ccLimitWarningText"
@@ -55,7 +58,8 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"
                         android:text="@string/limit_warning"
-                        android:textSize="16sp" />
+                        android:textSize="16sp"
+                        android:textColor="@color/colorPrimaryDark"/>
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -69,6 +73,7 @@
                         android:layout_margin="10dp"
                         android:text="@string/continue_anyway"
                         android:textSize="16sp"
+                        android:textColor="@color/colorPrimaryDark"
                         tools:ignore="RelativeOverlap" />
 
                     <Button
@@ -79,6 +84,7 @@
                         android:layout_toStartOf="@id/noCCButton"
                         android:text="@string/yes"
                         android:textSize="12sp"
+                        android:textColor="@color/colorPrimaryDark"
                         android:contentDescription="@string/yes"
                         android:background="@drawable/entry_box"/>
 
@@ -89,6 +95,7 @@
                         android:layout_margin="10dp"
                         android:text="@string/no"
                         android:textSize="12sp"
+                        android:textColor="@color/colorPrimaryDark"
                         android:layout_alignParentEnd="true"
                         android:contentDescription="@string/no"
                         android:background="@drawable/entry_box"/>
@@ -115,17 +122,20 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
                         android:text="@string/category"
-                        android:textSize="16sp" />
+                        android:textSize="16sp"
+                        android:textColor="@color/colorPrimaryDark"/>
 
                     <EditText
                         android:id="@+id/ccTransAmountEditText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
-                        android:inputType="numberDecimal"
+                        android:inputType="numberDecimal|numberSigned"
+                        android:digits="0123456789.-"
                         android:text="@string/amount"
                         android:contentDescription="@string/amount"
-                        android:textSize="16sp" />
+                        android:textSize="16sp"
+                        android:textColor="@color/colorPrimaryDark"/>
 
                 </LinearLayout>
 
@@ -144,7 +154,8 @@
                         android:background="@drawable/entry_box"
                         android:text="@string/cancel"
                         android:contentDescription="@string/cancel"
-                        android:textSize="12sp"/>
+                        android:textSize="12sp"
+                        android:textColor="@color/colorPrimaryDark"/>
 
                     <Button
                         android:id="@+id/updateCCTransEntryButton"
@@ -158,6 +169,7 @@
                         android:text="@string/update"
                         android:contentDescription="@string/update"
                         android:textSize="12sp"
+                        android:textColor="@color/colorPrimaryDark"
                         tools:ignore="RelativeOverlap" />
 
                 </RelativeLayout>
@@ -177,8 +189,10 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
                         android:hint="@string/amount"
-                        android:inputType="numberDecimal"
-                        android:textSize="16sp" />
+                        android:inputType="numberDecimal|numberSigned"
+                        android:digits="0123456789.-"
+                        android:textSize="16sp"
+                        android:textColor="@color/colorPrimaryDark"/>
 
                     <Spinner
                         android:id="@+id/ccTransCatSpinner"
@@ -199,7 +213,9 @@
                         android:layout_below="@id/ccTransAmount"
                         android:layout_margin="5dp"
                         android:hint="@string/which_debt"
-                        android:textSize="16sp" />
+                        android:textColorHint="@color/colorPrimaryDark"
+                        android:textSize="16sp"
+                        android:textColor="@color/colorPrimaryDark"/>
 
                     <Spinner
                         android:id="@+id/ccTransDebtCatSpinner"
@@ -223,7 +239,8 @@
                         android:text="@string/enter"
                         android:contentDescription="@string/enter"
                         android:background="@drawable/entry_box"
-                        android:textSize="12sp" />
+                        android:textSize="12sp"
+                        android:textColor="@color/colorPrimaryDark"/>
 
                 </RelativeLayout>
 

@@ -56,14 +56,16 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"
                         android:text="@string/available_to_spend"
-                        android:textSize="22sp" />
+                        android:textSize="22sp"
+                        android:textColor="@color/colorPrimaryDark"/>
 
                     <TextView
                         android:id="@+id/availableAccountText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"
-                        android:textSize="22sp" />
+                        android:textSize="22sp"
+                        android:textColor="@color/colorPrimaryDark"/>
 
                 </LinearLayout>
 
@@ -78,14 +80,16 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"
                         android:text="@string/total_in_account"
-                        android:textSize="22sp" />
+                        android:textSize="22sp"
+                        android:textColor="@color/colorPrimaryDark"/>
 
                     <TextView
                         android:id="@+id/totalAccountText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"
-                        android:textSize="22sp" />
+                        android:textSize="22sp"
+                        android:textColor="@color/colorPrimaryDark"/>
 
                 </LinearLayout>
 
@@ -106,6 +110,7 @@
                     android:layout_height="wrap_content"
                     android:minHeight="?attr/actionBarSize"
                     app:tabBackground="@drawable/tab_view"
+                    app:tabTextColor="@color/colorPrimaryDark"
                     app:tabSelectedTextColor="@color/colorAccent"
                     app:tabTextAppearance="@style/Base.TextAppearance.AppCompat.Medium"
                     app:tabGravity="fill"

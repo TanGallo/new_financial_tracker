@@ -55,16 +55,19 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal">
+                            android:orientation="horizontal"
+                            android:layout_marginBottom="5dp"
+                            android:layout_marginTop="5dp">
 
                             <TextView
                                 android:id="@+id/helpSetUp"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_margin="10dp"
+                                android:layout_marginStart="10dp"
                                 android:text="@string/set_up"
                                 android:textSize="18sp"
-                                android:textColor="@color/colorPrimaryDark"/>
+                                android:textColor="@color/colorPrimaryDark"
+                                android:background="@drawable/entry_box"/>
 
                             <RelativeLayout
                                 android:layout_width="wrap_content"
@@ -116,48 +119,6 @@
                             android:textColor="@color/colorGreen"
                             />
 
-                        <LinearLayout
-                            android:id="@+id/setUpText"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="10dp"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_margin="10dp"
-                                android:text="@string/set_up_1"
-                                android:textSize="18sp"
-                                android:textColor="@color/colorPrimaryDark"/>
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_margin="10dp"
-                                android:text="@string/set_up_2"
-                                android:textSize="18sp"
-                                android:textColor="@color/colorPrimaryDark"/>
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_margin="10dp"
-                                android:text="@string/set_up_3"
-                                android:textSize="18sp"
-                                android:textColor="@color/colorPrimaryDark"/>
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_margin="10dp"
-                                android:text="@string/set_up_4"
-                                android:textSize="18sp"
-                                android:textColor="@color/colorPrimaryDark"/>
-
-                        </LinearLayout>
-
-
                         <View
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
@@ -166,22 +127,24 @@
                             android:layout_marginEnd="10dp"
                             android:layout_marginBottom="10dp"
                             android:alpha=".5"
-                            android:background="@color/colorPrimary"></View>
-
+                            android:background="@color/colorPrimaryDark"></View>
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal">
+                            android:orientation="horizontal"
+                            android:layout_marginBottom="5dp"
+                            android:layout_marginTop="5dp">
 
                             <TextView
                                 android:id="@+id/helpDailyMoney"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_margin="10dp"
+                                android:layout_marginStart="10dp"
                                 android:text="@string/daily_money"
                                 android:textSize="18sp"
-                                android:textColor="@color/colorPrimaryDark"/>
+                                android:textColor="@color/colorPrimaryDark"
+                                android:background="@drawable/entry_box"/>
 
                             <RelativeLayout
                                 android:layout_width="wrap_content"
@@ -213,511 +176,275 @@
 
                         </LinearLayout>
 
-                        <LinearLayout
-                            android:id="@+id/dailyMoneyText"
-                            android:layout_width="match_parent"
+                        <TextView
+                            android:id="@+id/dailyMoneyQ1"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_margin="10dp"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_margin="10dp"
-                                android:text="@string/daily_money_1"
-                                android:textSize="18sp" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_margin="10dp"
-                                android:text="@string/daily_money_2"
-                                android:textSize="18sp" />
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal">
-
-                                <TextView
-                                    android:id="@+id/helpMoneyIn"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_margin="10dp"
-                                    android:text="@string/money_in"
-                                    android:textSize="18sp"
-                                    android:textColor="@color/colorPrimaryDark"/>
-
-                                <RelativeLayout
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content">
-
-                                    <ImageButton
-                                        android:id="@+id/downMoneyInButton"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_alignParentEnd="true"
-                                        android:layout_marginEnd="120dp"
-                                        android:contentDescription="@string/show"
-                                        android:scaleType="fitCenter"
-                                        android:src="@drawable/ic_arrow_drop_down_pink_24dp"
-                                        tools:ignore="TooDeepLayout" />
-
-                                    <ImageButton
-                                        android:id="@+id/upMoneyInButton"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_alignParentEnd="true"
-                                        android:layout_marginEnd="120dp"
-                                        android:contentDescription="@string/hide"
-                                        android:scaleType="fitCenter"
-                                        android:src="@drawable/ic_arrow_drop_up_pink_24dp" />
-
-                                </RelativeLayout>
-
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:id="@+id/moneyInText"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_margin="10dp"
-                                android:orientation="vertical">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_margin="10dp"
-                                    android:text="@string/money_in_1"
-                                    android:textSize="18sp" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_margin="10dp"
-                                    android:text="@string/money_in_2"
-                                    android:textSize="18sp" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_margin="10dp"
-                                    android:text="@string/money_in_3"
-                                    android:textSize="18sp" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_margin="10dp"
-                                    android:text="@string/money_in_4"
-                                    android:textSize="18sp" />
-
-                            </LinearLayout>
-
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="1dp"
-                                android:layout_marginStart="10dp"
-                                android:layout_marginTop="10dp"
-                                android:layout_marginEnd="10dp"
-                                android:layout_marginBottom="10dp"
-                                android:alpha=".5"
-                                android:background="@color/colorAccent"></View>
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal">
-
-                                <TextView
-                                    android:id="@+id/helpMoneyOut"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_margin="10dp"
-                                    android:text="@string/money_out"
-                                    android:textSize="18sp"
-                                    android:textColor="@color/colorPrimaryDark"/>
-
-                                <RelativeLayout
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content">
-
-                                    <ImageButton
-                                        android:id="@+id/downMoneyOutButton"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_alignParentEnd="true"
-                                        android:layout_marginEnd="120dp"
-                                        android:contentDescription="@string/show"
-                                        android:scaleType="fitCenter"
-                                        android:src="@drawable/ic_arrow_drop_down_pink_24dp" />
-
-                                    <ImageButton
-                                        android:id="@+id/upMoneyOutButton"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_alignParentEnd="true"
-                                        android:layout_marginEnd="120dp"
-                                        android:contentDescription="@string/hide"
-                                        android:scaleType="fitCenter"
-                                        android:src="@drawable/ic_arrow_drop_up_pink_24dp" />
-
-                                </RelativeLayout>
-
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:id="@+id/moneyOutText"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_margin="10dp"
-                                android:orientation="vertical">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_margin="10dp"
-                                    android:text="@string/money_out_1"
-                                    android:textSize="18sp" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_margin="10dp"
-                                    android:text="@string/money_out_2"
-                                    android:textSize="18sp" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_margin="10dp"
-                                    android:text="@string/money_out_3"
-                                    android:textSize="18sp" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_margin="10dp"
-                                    android:text="@string/money_out_4"
-                                    android:textSize="18sp" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_margin="10dp"
-                                    android:text="@string/money_out_5"
-                                    android:textSize="18sp" />
-
-                            </LinearLayout>
-
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="1dp"
-                                android:layout_marginStart="10dp"
-                                android:layout_marginTop="10dp"
-                                android:layout_marginEnd="10dp"
-                                android:layout_marginBottom="10dp"
-                                android:alpha=".5"
-                                android:background="@color/colorAccent"></View>
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal">
-
-                                <TextView
-                                    android:id="@+id/helpCreditCard"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_margin="10dp"
-                                    android:text="@string/credit_card"
-                                    android:textSize="18sp" />
-
-                                <RelativeLayout
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content">
-
-                                    <ImageButton
-                                        android:id="@+id/downCreditCardButton"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_alignParentEnd="true"
-                                        android:layout_marginEnd="120dp"
-                                        android:contentDescription="@string/show"
-                                        android:scaleType="fitCenter"
-                                        android:src="@drawable/ic_arrow_drop_down_pink_24dp" />
-
-                                    <ImageButton
-                                        android:id="@+id/upCreditCardButton"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_alignParentEnd="true"
-                                        android:layout_marginEnd="120dp"
-                                        android:contentDescription="@string/hide"
-                                        android:scaleType="fitCenter"
-                                        android:src="@drawable/ic_arrow_drop_up_pink_24dp" />
-
-                                </RelativeLayout>
-
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:id="@+id/creditCardText"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_margin="10dp"
-                                android:orientation="vertical">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_margin="10dp"
-                                    android:text="@string/credit_card_1"
-                                    android:textSize="18sp" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_margin="10dp"
-                                    android:text="@string/credit_card_2"
-                                    android:textSize="18sp" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_margin="10dp"
-                                    android:text="@string/credit_card_3"
-                                    android:textSize="18sp" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_margin="10dp"
-                                    android:text="@string/credit_card_4"
-                                    android:textSize="18sp" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_margin="10dp"
-                                    android:text="@string/credit_card_5"
-                                    android:textSize="18sp" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_margin="10dp"
-                                    android:text="@string/credit_card_6"
-                                    android:textSize="18sp" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_margin="10dp"
-                                    android:text="@string/credit_card_7"
-                                    android:textSize="18sp" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_margin="10dp"
-                                    android:text="@string/credit_card_8"
-                                    android:textSize="18sp" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_margin="10dp"
-                                    android:text="@string/credit_card_9"
-                                    android:textSize="18sp" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_margin="10dp"
-                                    android:text="@string/credit_card_10"
-                                    android:textSize="18sp" />
-
-                            </LinearLayout>
-
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="1dp"
-                                android:layout_marginStart="10dp"
-                                android:layout_marginTop="10dp"
-                                android:layout_marginEnd="10dp"
-                                android:layout_marginBottom="10dp"
-                                android:alpha=".5"
-                                android:background="@color/colorAccent"></View>
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal">
-
-                                <TextView
-                                    android:id="@+id/helpPayCC"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_margin="10dp"
-                                    android:text="@string/pay_cc"
-                                    android:textSize="18sp" />
-
-                                <RelativeLayout
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content">
-
-                                    <ImageButton
-                                        android:id="@+id/downPayCCButton"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_alignParentEnd="true"
-                                        android:layout_marginEnd="120dp"
-                                        android:contentDescription="@string/show"
-                                        android:scaleType="fitCenter"
-                                        android:src="@drawable/ic_arrow_drop_down_pink_24dp" />
-
-                                    <ImageButton
-                                        android:id="@+id/upPayCCButton"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_alignParentEnd="true"
-                                        android:layout_marginEnd="120dp"
-                                        android:contentDescription="@string/hide"
-                                        android:scaleType="fitCenter"
-                                        android:src="@drawable/ic_arrow_drop_up_pink_24dp" />
-
-                                </RelativeLayout>
-
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:id="@+id/payCCText"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_margin="10dp"
-                                android:orientation="vertical">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_margin="10dp"
-                                    android:text="@string/pay_cc_1"
-                                    android:textSize="18sp" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_margin="10dp"
-                                    android:text="@string/pay_cc_2"
-                                    android:textSize="18sp" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_margin="10dp"
-                                    android:text="@string/pay_cc_3"
-                                    android:textSize="18sp" />
-
-                                <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_margin="10dp"
-                                android:text="@string/pay_cc_4"
-                                android:textSize="18sp" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_margin="10dp"
-                                    android:text="@string/pay_cc_5"
-                                    android:textSize="18sp" />
-
-                            </LinearLayout>
-
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="1dp"
-                                android:layout_marginStart="10dp"
-                                android:layout_marginTop="10dp"
-                                android:layout_marginEnd="10dp"
-                                android:layout_marginBottom="10dp"
-                                android:alpha=".5"
-                                android:background="@color/colorAccent"></View>
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal">
-
-                                <TextView
-                                    android:id="@+id/helpWeeklyLimits"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_margin="10dp"
-                                    android:text="@string/weekly_limits"
-                                    android:textSize="18sp" />
-
-                                <RelativeLayout
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content">
-
-                                    <ImageButton
-                                        android:id="@+id/downWeeklyLimitsButton"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_alignParentEnd="true"
-                                        android:layout_marginEnd="120dp"
-                                        android:contentDescription="@string/show"
-                                        android:scaleType="fitCenter"
-                                        android:src="@drawable/ic_arrow_drop_down_pink_24dp" />
-
-                                    <ImageButton
-                                        android:id="@+id/upWeeklyLimitsButton"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_alignParentEnd="true"
-                                        android:layout_marginEnd="120dp"
-                                        android:contentDescription="@string/hide"
-                                        android:scaleType="fitCenter"
-                                        android:src="@drawable/ic_arrow_drop_up_pink_24dp" />
-
-                                </RelativeLayout>
-
-                            </LinearLayout>
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:id="@+id/weeklyLimitsText"
-                            android:layout_width="match_parent"
+                            android:text="@string/daily_money_q1"
+                            android:textSize="18sp"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:clickable="true"/>
+
+                        <TextView
+                            android:id="@+id/dailyMoneyA1"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_margin="10dp"
-                            android:orientation="vertical">
+                            android:text="@string/daily_money_1"
+                            android:textSize="18sp"
+                            android:textColor="@color/colorGreen"
+                            />
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_margin="10dp"
-                                android:text="@string/weekly_limits_1"
-                                android:textSize="18sp" />
+                        <TextView
+                            android:id="@+id/dailyMoneyQ2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:text="@string/daily_money_q2"
+                            android:textSize="18sp"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:clickable="true"/>
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_margin="10dp"
-                                android:text="@string/weekly_limits_2"
-                                android:textSize="18sp" />
+                        <TextView
+                            android:id="@+id/dailyMoneyA2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:text="@string/daily_money_2"
+                            android:textSize="18sp"
+                            android:textColor="@color/colorGreen"
+                            />
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_margin="10dp"
-                                android:text="@string/weekly_limits_3"
-                                android:textSize="18sp" />
+                        <TextView
+                            android:id="@+id/dailyMoneyQ3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:text="@string/daily_money_q3"
+                            android:textSize="18sp"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:clickable="true"/>
 
-                        </LinearLayout>
+                        <TextView
+                            android:id="@+id/dailyMoneyA3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:text="@string/daily_money_3"
+                            android:textSize="18sp"
+                            android:textColor="@color/colorGreen"
+                            />
 
+                        <TextView
+                            android:id="@+id/dailyMoneyQ4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:text="@string/daily_money_q4"
+                            android:textSize="18sp"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:clickable="true"/>
+
+                        <TextView
+                            android:id="@+id/dailyMoneyA4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:text="@string/daily_money_4"
+                            android:textSize="18sp"
+                            android:textColor="@color/colorGreen"
+                            />
+
+                        <TextView
+                            android:id="@+id/dailyMoneyQ5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:text="@string/daily_money_q5"
+                            android:textSize="18sp"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:clickable="true"/>
+
+                        <TextView
+                        android:id="@+id/dailyMoneyA5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:text="@string/daily_money_5"
+                        android:textSize="18sp"
+                        android:textColor="@color/colorGreen"
+                        />
+
+                        <TextView
+                            android:id="@+id/dailyMoneyA5A"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:text="@string/daily_money_5A"
+                            android:textSize="18sp"
+                            android:textColor="@color/colorGreen"
+                            />
+
+                        <TextView
+                            android:id="@+id/dailyMoneyA5B"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:text="@string/daily_money_5B"
+                            android:textSize="18sp"
+                            android:textColor="@color/colorGreen"
+                            />
+
+                        <TextView
+                            android:id="@+id/dailyMoneyA5C"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:text="@string/daily_money_5C"
+                            android:textSize="18sp"
+                            android:textColor="@color/colorGreen"
+                            />
+
+                        <TextView
+                            android:id="@+id/dailyMoneyQ6"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:text="@string/daily_money_q6"
+                            android:textSize="18sp"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:clickable="true"/>
+
+                        <TextView
+                        android:id="@+id/dailyMoneyA6"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:text="@string/daily_money_6"
+                        android:textSize="18sp"
+                        android:textColor="@color/colorGreen"
+                        />
+
+                        <TextView
+                            android:id="@+id/dailyMoneyA6A"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:text="@string/daily_money_6A"
+                            android:textSize="18sp"
+                            android:textColor="@color/colorGreen"
+                            />
+
+                        <TextView
+                            android:id="@+id/dailyMoneyA6B"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:text="@string/daily_money_6B"
+                            android:textSize="18sp"
+                            android:textColor="@color/colorGreen"
+                            />
+
+                        <TextView
+                            android:id="@+id/dailyMoneyQ7"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:text="@string/daily_money_q7"
+                            android:textSize="18sp"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:clickable="true"/>
+
+                        <TextView
+                            android:id="@+id/dailyMoneyA7"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:text="@string/daily_money_7"
+                            android:textSize="18sp"
+                            android:textColor="@color/colorGreen"
+                            />
+
+                        <TextView
+                            android:id="@+id/dailyMoneyA7A"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:text="@string/daily_money_7A"
+                            android:textSize="18sp"
+                            android:textColor="@color/colorGreen"
+                            />
+
+                        <TextView
+                            android:id="@+id/dailyMoneyA7B"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:text="@string/daily_money_7B"
+                            android:textSize="18sp"
+                            android:textColor="@color/colorGreen"
+                            />
+
+                        <TextView
+                            android:id="@+id/dailyMoneyQ8"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:text="@string/daily_money_q8"
+                            android:textSize="18sp"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:clickable="true"/>
+
+                        <TextView
+                            android:id="@+id/dailyMoneyA8"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:text="@string/daily_money_8"
+                            android:textSize="18sp"
+                            android:textColor="@color/colorGreen"
+                            />
+
+                        <TextView
+                            android:id="@+id/dailyMoneyQ10"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:text="@string/daily_money_q10"
+                            android:textSize="18sp"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:clickable="true"/>
+
+                        <TextView
+                            android:id="@+id/dailyMoneyA10"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:text="@string/daily_money_10"
+                            android:textSize="18sp"
+                            android:textColor="@color/colorGreen"
+                            />
+
+                        <TextView
+                            android:id="@+id/dailyMoneyQ9"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:text="@string/daily_money_q9"
+                            android:textSize="18sp"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:clickable="true"/>
+
+                        <TextView
+                            android:id="@+id/dailyMoneyA9"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:text="@string/daily_money_9"
+                            android:textSize="18sp"
+                            android:textColor="@color/colorGreen"
+                            />
 
                         <View
                             android:layout_width="match_parent"
@@ -733,16 +460,19 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal">
+                            android:orientation="horizontal"
+                            android:layout_marginBottom="5dp"
+                            android:layout_marginTop="5dp">
 
                             <TextView
                                 android:id="@+id/helpBudget"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_margin="10dp"
+                                android:layout_marginStart="10dp"
                                 android:text="@string/budget"
                                 android:textSize="18sp"
-                                android:textColor="@color/colorPrimaryDark"/>
+                                android:textColor="@color/colorPrimaryDark"
+                                android:background="@drawable/entry_box"/>
 
                             <RelativeLayout
                                 android:layout_width="wrap_content"
@@ -774,113 +504,165 @@
 
                         </LinearLayout>
 
-                        <LinearLayout
-                            android:id="@+id/budgetText"
-                            android:layout_width="match_parent"
+                        <TextView
+                            android:id="@+id/budgetQ2"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_margin="10dp"
-                            android:orientation="vertical">
+                            android:text="@string/budget_q2"
+                            android:textSize="18sp"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:clickable="true"/>
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_margin="10dp"
-                                android:text="@string/budget_1"
-                                android:textSize="18sp" />
+                        <TextView
+                            android:id="@+id/budgetA2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:text="@string/budget_3"
+                            android:textSize="18sp"
+                            android:textColor="@color/colorGreen"
+                            />
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_margin="10dp"
-                                android:text="@string/budget_2"
-                                android:textSize="18sp" />
+                        <TextView
+                            android:id="@+id/budgetA2A"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:text="@string/budget_4"
+                            android:textSize="18sp"
+                            android:textColor="@color/colorGreen"
+                            />
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_margin="10dp"
-                                android:text="@string/budget_3"
-                                android:textSize="18sp" />
+                        <TextView
+                            android:id="@+id/budgetA2B"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:text="@string/budget_5"
+                            android:textSize="18sp"
+                            android:textColor="@color/colorGreen"
+                            />
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_margin="10dp"
-                                android:text="@string/budget_4"
-                                android:textSize="18sp" />
+                        <TextView
+                            android:id="@+id/budgetA2C"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:text="@string/budget_2"
+                            android:textSize="18sp"
+                            android:textColor="@color/colorGreen"
+                            />
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_margin="10dp"
-                                android:text="@string/budget_5"
-                                android:textSize="18sp" />
+                        <TextView
+                            android:id="@+id/budgetA2D"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:text="@string/budget_7"
+                            android:textSize="18sp"
+                            android:textColor="@color/colorGreen"
+                            />
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_margin="10dp"
-                                android:text="@string/budget_6"
-                                android:textSize="18sp" />
+                        <TextView
+                            android:id="@+id/budgetA2E"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:text="@string/budget_8"
+                            android:textSize="18sp"
+                            android:textColor="@color/colorGreen"
+                            />
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_margin="10dp"
-                                android:text="@string/budget_7"
-                                android:textSize="18sp" />
+                        <TextView
+                            android:id="@+id/budgetA2F"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:text="@string/budget_9"
+                            android:textSize="18sp"
+                            android:textColor="@color/colorGreen"
+                            />
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_margin="10dp"
-                                android:text="@string/budget_8"
-                                android:textSize="18sp" />
+                        <TextView
+                            android:id="@+id/budgetA2G"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:text="@string/budget_6"
+                            android:textSize="18sp"
+                            android:textColor="@color/colorGreen"
+                            />
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_margin="10dp"
-                                android:text="@string/budget_9"
-                                android:textSize="18sp" />
+                        <TextView
+                            android:id="@+id/budgetQ1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:text="@string/budget_q1"
+                            android:textSize="18sp"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:clickable="true"/>
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_margin="10dp"
-                                android:text="@string/budget_10"
-                                android:textSize="18sp" />
+                        <TextView
+                            android:id="@+id/budgetA1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:text="@string/budget_1"
+                            android:textSize="18sp"
+                            android:textColor="@color/colorGreen"
+                            />
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_margin="10dp"
-                                android:text="@string/budget_11"
-                                android:textSize="18sp" />
+                        <TextView
+                            android:id="@+id/budgetQ3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:text="@string/budget_q3"
+                            android:textSize="18sp"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:clickable="true"/>
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_margin="10dp"
-                                android:text="@string/budget_12"
-                                android:textSize="18sp" />
+                        <TextView
+                            android:id="@+id/budgetA3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:text="@string/budget_12"
+                            android:textSize="18sp"
+                            android:textColor="@color/colorGreen"
+                            />
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_margin="10dp"
-                                android:text="@string/budget_13"
-                                android:textSize="18sp" />
+                        <TextView
+                            android:id="@+id/budgetA3A"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:text="@string/budget_11"
+                            android:textSize="18sp"
+                            android:textColor="@color/colorGreen"
+                            />
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_margin="10dp"
-                                android:text="@string/budget_14"
-                                android:textSize="18sp" />
+                        <TextView
+                            android:id="@+id/budgetA3B"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:text="@string/budget_13"
+                            android:textSize="18sp"
+                            android:textColor="@color/colorGreen"
+                            />
 
-                        </LinearLayout>
-
+                        <TextView
+                            android:id="@+id/budgetA3C"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:text="@string/budget_14"
+                            android:textSize="18sp"
+                            android:textColor="@color/colorGreen"
+                            />
 
                         <View
                             android:layout_width="match_parent"
@@ -896,16 +678,19 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal">
+                            android:orientation="horizontal"
+                            android:layout_marginBottom="5dp"
+                            android:layout_marginTop="5dp">
 
                             <TextView
                                 android:id="@+id/helpDebts"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_margin="10dp"
+                                android:layout_marginStart="10dp"
                                 android:text="@string/debts"
                                 android:textSize="18sp"
-                                android:textColor="@color/colorPrimaryDark"/>
+                                android:textColor="@color/colorPrimaryDark"
+                                android:background="@drawable/entry_box"/>
 
                             <RelativeLayout
                                 android:layout_width="wrap_content"
@@ -937,78 +722,105 @@
 
                         </LinearLayout>
 
-                        <LinearLayout
-                            android:id="@+id/debtsText"
-                            android:layout_width="match_parent"
+                        <TextView
+                            android:id="@+id/debtsQ1"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_margin="10dp"
-                            android:orientation="vertical">
+                            android:text="@string/debts_q1"
+                            android:textSize="18sp"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:clickable="true"/>
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_margin="10dp"
-                                android:text="@string/debts_1"
-                                android:textSize="18sp" />
+                        <TextView
+                            android:id="@+id/debtsA1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:text="@string/debts_1"
+                            android:textSize="18sp"
+                            android:textColor="@color/colorGreen"
+                            />
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_margin="10dp"
-                                android:text="@string/debts_2"
-                                android:textSize="18sp" />
+                        <TextView
+                            android:id="@+id/debtsQ2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:text="@string/debts_q2"
+                            android:textSize="18sp"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:clickable="true"/>
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_margin="10dp"
-                                android:text="@string/debts_3"
-                                android:textSize="18sp" />
+                        <TextView
+                            android:id="@+id/debtsA2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:text="@string/debts_2"
+                            android:textSize="18sp"
+                            android:textColor="@color/colorGreen"
+                            />
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_margin="10dp"
-                                android:text="@string/debts_4"
-                                android:textSize="18sp" />
+                        <TextView
+                            android:id="@+id/debtsQ3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:text="@string/debts_q3"
+                            android:textSize="18sp"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:clickable="true"/>
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_margin="10dp"
-                                android:text="@string/debts_5"
-                                android:textSize="18sp" />
+                        <TextView
+                            android:id="@+id/debtsA3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:text="@string/debts_3"
+                            android:textSize="18sp"
+                            android:textColor="@color/colorGreen"
+                            />
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_margin="10dp"
-                                android:text="@string/debts_6"
-                                android:textSize="18sp" />
+                        <TextView
+                            android:id="@+id/debtsQ4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:text="@string/debts_q4"
+                            android:textSize="18sp"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:clickable="true"/>
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_margin="10dp"
-                                android:text="@string/debts_7"
-                                android:textSize="18sp" />
+                        <TextView
+                            android:id="@+id/debtsA4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:text="@string/debts_4"
+                            android:textSize="18sp"
+                            android:textColor="@color/colorGreen"
+                            />
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_margin="10dp"
-                                android:text="@string/debts_8"
-                                android:textSize="18sp" />
+                        <TextView
+                            android:id="@+id/debtsQ5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:text="@string/debts_q5"
+                            android:textSize="18sp"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:clickable="true"/>
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_margin="10dp"
-                                android:text="@string/debts_9"
-                                android:textSize="18sp" />
-
-                        </LinearLayout>
-
+                        <TextView
+                            android:id="@+id/debtsA5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:text="@string/debts_5"
+                            android:textSize="18sp"
+                            android:textColor="@color/colorGreen"
+                            />
 
                         <View
                             android:layout_width="match_parent"
@@ -1024,16 +836,19 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal">
+                            android:orientation="horizontal"
+                            android:layout_marginBottom="5dp"
+                            android:layout_marginTop="5dp">
 
                             <TextView
                                 android:id="@+id/helpSavings"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_margin="10dp"
+                                android:layout_marginStart="10dp"
                                 android:text="@string/savings"
                                 android:textSize="18sp"
-                                android:textColor="@color/colorPrimaryDark"/>
+                                android:textColor="@color/colorPrimaryDark"
+                                android:background="@drawable/entry_box"/>
 
                             <RelativeLayout
                                 android:layout_width="wrap_content"
@@ -1065,63 +880,105 @@
 
                         </LinearLayout>
 
-                        <LinearLayout
-                            android:id="@+id/savingsText"
-                            android:layout_width="match_parent"
+                        <TextView
+                            android:id="@+id/savingsQ1"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_margin="10dp"
-                            android:orientation="vertical">
+                            android:text="@string/savings_q1"
+                            android:textSize="18sp"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:clickable="true"/>
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_margin="10dp"
-                                android:text="@string/savings_1"
-                                android:textSize="18sp" />
+                        <TextView
+                            android:id="@+id/savingsA1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:text="@string/savings_1"
+                            android:textSize="18sp"
+                            android:textColor="@color/colorGreen"
+                            />
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_margin="10dp"
-                                android:text="@string/savings_2"
-                                android:textSize="18sp" />
+                        <TextView
+                            android:id="@+id/savingsQ2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:text="@string/debts_q2"
+                            android:textSize="18sp"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:clickable="true"/>
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_margin="10dp"
-                                android:text="@string/savings_3"
-                                android:textSize="18sp" />
+                        <TextView
+                            android:id="@+id/savingsA2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:text="@string/savings_2"
+                            android:textSize="18sp"
+                            android:textColor="@color/colorGreen"
+                            />
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_margin="10dp"
-                                android:text="@string/savings_4"
-                                android:textSize="18sp" />
+                        <TextView
+                            android:id="@+id/savingsQ3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:text="@string/savings_q3"
+                            android:textSize="18sp"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:clickable="true"/>
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_margin="10dp"
-                                android:text="@string/savings_5"
-                                android:textSize="18sp" />
+                        <TextView
+                            android:id="@+id/savingsA3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:text="@string/savings_3"
+                            android:textSize="18sp"
+                            android:textColor="@color/colorGreen"
+                            />
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_margin="10dp"
-                                android:text="@string/savings_6"
-                                android:textSize="18sp" />
+                        <TextView
+                        android:id="@+id/savingsQ4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:text="@string/savings_q4"
+                        android:textSize="18sp"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:clickable="true"/>
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_margin="10dp"
-                                android:text="@string/savings_7"
-                                android:textSize="18sp" />
+                        <TextView
+                            android:id="@+id/savingsA4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:text="@string/savings_4"
+                            android:textSize="18sp"
+                            android:textColor="@color/colorGreen"
+                            />
 
-                        </LinearLayout>
+                        <TextView
+                            android:id="@+id/savingsQ5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:text="@string/savings_q5"
+                            android:textSize="18sp"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:clickable="true"/>
+
+                        <TextView
+                            android:id="@+id/savingsA5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:text="@string/savings_5"
+                            android:textSize="18sp"
+                            android:textColor="@color/colorGreen"
+                            />
 
 
                         <View
@@ -1138,102 +995,19 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:id="@+id/helpSpendingReport"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_margin="10dp"
-                                android:text="@string/spending_report"
-                                android:textSize="18sp"
-                                android:textColor="@color/colorPrimaryDark"/>
-
-                            <RelativeLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content">
-
-                                <ImageButton
-                                    android:id="@+id/downSpendingReportButton"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_alignParentEnd="true"
-                                    android:layout_marginEnd="120dp"
-                                    android:contentDescription="@string/show"
-                                    android:scaleType="fitCenter"
-                                    android:src="@drawable/ic_arrow_drop_down_blue_24dp"
-                                    android:background="@drawable/entry_box"/>
-
-                                <ImageButton
-                                    android:id="@+id/upSpendingReportButton"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_alignParentEnd="true"
-                                    android:layout_marginEnd="120dp"
-                                    android:contentDescription="@string/hide"
-                                    android:scaleType="fitCenter"
-                                    android:src="@drawable/ic_arrow_drop_up_blue_24dp"
-                                    android:background="@drawable/entry_box"/>
-
-                            </RelativeLayout>
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:id="@+id/spendingReportText"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="10dp"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_margin="10dp"
-                                android:text="@string/spending_report_1"
-                                android:textSize="18sp" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_margin="10dp"
-                                android:text="@string/spending_report_2"
-                                android:textSize="18sp" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_margin="10dp"
-                                android:text="@string/spending_report_3"
-                                android:textSize="18sp" />
-
-                        </LinearLayout>
-
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:layout_marginStart="10dp"
-                            android:layout_marginTop="10dp"
-                            android:layout_marginEnd="10dp"
-                            android:layout_marginBottom="10dp"
-                            android:alpha=".5"
-                            android:background="@color/colorPrimary"></View>
-
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
+                            android:orientation="horizontal"
+                            android:layout_marginBottom="5dp"
+                            android:layout_marginTop="5dp">
 
                             <TextView
                                 android:id="@+id/helpContactUs"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_margin="10dp"
+                                android:layout_marginStart="10dp"
                                 android:text="@string/contact_us"
                                 android:textColor="@color/colorPrimaryDark"
-                                android:textSize="18sp" />
+                                android:textSize="18sp"
+                                android:background="@drawable/entry_box"/>
 
                             <RelativeLayout
                                 android:layout_width="wrap_content"
@@ -1340,7 +1114,8 @@
                                 android:id="@+id/helpRate"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_margin="10dp"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginEnd="10dp"
                                 android:text="@string/rate_this_app"
                                 android:textColor="@color/colorPrimaryDark"
                                 android:textSize="18sp" />
