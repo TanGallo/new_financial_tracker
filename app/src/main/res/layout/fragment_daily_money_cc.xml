@@ -9,7 +9,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        tools:ignore="UselessParent">
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
@@ -122,6 +123,7 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
                         android:text="@string/category"
+                        android:labelFor="@id/ccTransAmountEditText"
                         android:textSize="16sp"
                         android:textColor="@color/colorPrimaryDark"/>
 
@@ -135,7 +137,8 @@
                         android:text="@string/amount"
                         android:contentDescription="@string/amount"
                         android:textSize="16sp"
-                        android:textColor="@color/colorPrimaryDark"/>
+                        android:textColor="@color/colorPrimaryDark"
+                        tools:ignore="Autofill" />
 
                 </LinearLayout>
 
@@ -192,7 +195,8 @@
                         android:inputType="numberDecimal|numberSigned"
                         android:digits="0123456789.-"
                         android:textSize="16sp"
-                        android:textColor="@color/colorPrimaryDark"/>
+                        android:textColor="@color/colorPrimaryDark"
+                        tools:ignore="Autofill" />
 
                     <Spinner
                         android:id="@+id/ccTransCatSpinner"

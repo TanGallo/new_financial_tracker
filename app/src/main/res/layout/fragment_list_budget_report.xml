@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
@@ -8,7 +9,8 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        tools:ignore="UselessParent">
 
         <TextView
             android:id="@+id/budgetReportCat"
@@ -28,7 +30,8 @@
             android:layout_marginEnd="80dp"
             android:text="@string/amount"
             android:textSize="16sp"
-            android:textColor="@color/colorPrimaryDark"/>
+            android:textColor="@color/colorPrimaryDark"
+            tools:ignore="RelativeOverlap" />
 
         <TextView
             android:id="@+id/budgetReportPercentSpent"
@@ -39,7 +42,8 @@
             android:layout_marginEnd="10dp"
             android:text="@string/percent"
             android:textSize="16sp"
-            android:textColor="@color/colorPrimaryDark"/>
+            android:textColor="@color/colorPrimaryDark"
+            tools:ignore="RelativeOverlap" />
 
     </RelativeLayout>
 

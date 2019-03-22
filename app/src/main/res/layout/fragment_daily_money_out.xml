@@ -220,7 +220,8 @@
                         android:layout_margin="10dp"
                         android:text="@string/continue_anyway"
                         android:textSize="16sp"
-                        android:textColor="@color/colorPrimaryDark"/>
+                        android:textColor="@color/colorPrimaryDark"
+                        tools:ignore="RelativeOverlap" />
 
                     <Button
                         android:id="@+id/yesMoneyOutButton"
@@ -269,6 +270,7 @@
                         android:layout_margin="5dp"
                         android:text="@string/category"
                         android:textSize="16sp"
+                        android:labelFor="@id/moneyOutAmountEditText"
                         android:textColor="@color/colorPrimaryDark"/>
 
                     <EditText
@@ -281,7 +283,8 @@
                         android:text="@string/amount"
                         android:contentDescription="@string/amount"
                         android:textSize="16sp"
-                        android:textColor="@color/colorPrimaryDark"/>
+                        android:textColor="@color/colorPrimaryDark"
+                        tools:ignore="Autofill" />
 
                 </LinearLayout>
 
@@ -357,7 +360,8 @@
                 android:inputType="numberDecimal|numberSigned"
                 android:digits="0123456789.-"
                 android:textSize="16sp"
-                android:textColor="@color/colorPrimaryDark"/>
+                android:textColor="@color/colorPrimaryDark"
+                tools:ignore="Autofill" />
 
             <Spinner
                 android:id="@+id/moneyOutCatSpinner"

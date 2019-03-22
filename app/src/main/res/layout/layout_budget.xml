@@ -31,7 +31,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                tools:ignore="UselessParent">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -160,7 +161,8 @@
                     android:gravity="center_horizontal"
                     android:textColor="@color/colorPrimaryDark"
                     android:textSize="16sp"
-                    android:clickable="true"/>
+                    android:clickable="true"
+                    android:focusable="true" />
 
                 <TextView
                     android:id="@+id/budgetSetUpNoTime2"
@@ -195,7 +197,8 @@
                     android:gravity="center_horizontal"
                     android:textColor="@color/colorPrimaryDark"
                     android:textSize="16sp"
-                    android:clickable="true"/>
+                    android:clickable="true"
+                    android:focusable="true" />
 
                 <TextView
                     android:id="@+id/budgetSetUpNeedHelp2"
@@ -299,7 +302,6 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:layout_below="@id/debt_header_layout"
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginEnd="10dp"
@@ -316,7 +318,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:weightSum="2">
+                        android:weightSum="2"
+                        tools:ignore="DisableBaselineAlignment">
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -335,7 +338,8 @@
                                     android:layout_margin="10dp"
                                     android:text="@string/income"
                                     android:textSize="18sp"
-                                    android:textColor="@color/colorPrimaryDark"/>
+                                    android:textColor="@color/colorPrimaryDark"
+                                    tools:ignore="RelativeOverlap" />
 
                                 <com.google.android.material.floatingactionbutton.FloatingActionButton
                                     android:id="@+id/budgetIncomePlusButton"
@@ -345,7 +349,8 @@
                                     android:layout_margin="10dp"
                                     android:foreground="@drawable/ic_add_white_24dp"
                                     android:contentDescription="@string/add"
-                                    android:scaleType="fitCenter" />
+                                    android:scaleType="fitCenter"
+                                    tools:ignore="UnusedAttribute" />
 
                             </RelativeLayout>
 
@@ -376,7 +381,8 @@
                                     android:layout_margin="10dp"
                                     android:text="@string/expenses"
                                     android:textSize="18sp"
-                                    android:textColor="@color/colorPrimaryDark"/>
+                                    android:textColor="@color/colorPrimaryDark"
+                                    tools:ignore="RelativeOverlap" />
 
                                 <com.google.android.material.floatingactionbutton.FloatingActionButton
                                     android:id="@+id/budgetExpensePlusButton"
@@ -386,7 +392,8 @@
                                     android:layout_margin="10dp"
                                     android:foreground="@drawable/ic_add_white_24dp"
                                     android:contentDescription="@string/add"
-                                    android:scaleType="fitCenter" />
+                                    android:scaleType="fitCenter"
+                                    tools:ignore="UnusedAttribute" />
 
                             </RelativeLayout>
 

@@ -59,7 +59,8 @@
             android:text="@string/next_button"
             android:contentDescription="@string/next_button"
             android:textColor="@color/colorWhite"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            tools:ignore="RelativeOverlap" />
 
     </RelativeLayout>
 

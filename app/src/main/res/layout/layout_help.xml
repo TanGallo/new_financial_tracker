@@ -107,7 +107,8 @@
                             android:text="@string/set_up_q1"
                             android:textSize="18sp"
                             android:textColor="@color/colorPrimaryDark"
-                            android:clickable="true"/>
+                            android:clickable="true"
+                            android:focusable="true" />
 
                         <TextView
                             android:id="@+id/setUpA1"
@@ -184,7 +185,8 @@
                             android:text="@string/daily_money_q1"
                             android:textSize="18sp"
                             android:textColor="@color/colorPrimaryDark"
-                            android:clickable="true"/>
+                            android:clickable="true"
+                            android:focusable="true" />
 
                         <TextView
                             android:id="@+id/dailyMoneyA1"
@@ -204,7 +206,8 @@
                             android:text="@string/daily_money_q2"
                             android:textSize="18sp"
                             android:textColor="@color/colorPrimaryDark"
-                            android:clickable="true"/>
+                            android:clickable="true"
+                            android:focusable="true" />
 
                         <TextView
                             android:id="@+id/dailyMoneyA2"
@@ -224,7 +227,8 @@
                             android:text="@string/daily_money_q3"
                             android:textSize="18sp"
                             android:textColor="@color/colorPrimaryDark"
-                            android:clickable="true"/>
+                            android:clickable="true"
+                            android:focusable="true" />
 
                         <TextView
                             android:id="@+id/dailyMoneyA3"
@@ -244,7 +248,8 @@
                             android:text="@string/daily_money_q4"
                             android:textSize="18sp"
                             android:textColor="@color/colorPrimaryDark"
-                            android:clickable="true"/>
+                            android:clickable="true"
+                            android:focusable="true" />
 
                         <TextView
                             android:id="@+id/dailyMoneyA4"
@@ -264,7 +269,8 @@
                             android:text="@string/daily_money_q5"
                             android:textSize="18sp"
                             android:textColor="@color/colorPrimaryDark"
-                            android:clickable="true"/>
+                            android:clickable="true"
+                            android:focusable="true" />
 
                         <TextView
                         android:id="@+id/dailyMoneyA5"
@@ -314,7 +320,8 @@
                             android:text="@string/daily_money_q6"
                             android:textSize="18sp"
                             android:textColor="@color/colorPrimaryDark"
-                            android:clickable="true"/>
+                            android:clickable="true"
+                            android:focusable="true" />
 
                         <TextView
                         android:id="@+id/dailyMoneyA6"
@@ -354,7 +361,8 @@
                             android:text="@string/daily_money_q7"
                             android:textSize="18sp"
                             android:textColor="@color/colorPrimaryDark"
-                            android:clickable="true"/>
+                            android:clickable="true"
+                            android:focusable="true" />
 
                         <TextView
                             android:id="@+id/dailyMoneyA7"
@@ -394,7 +402,8 @@
                             android:text="@string/daily_money_q8"
                             android:textSize="18sp"
                             android:textColor="@color/colorPrimaryDark"
-                            android:clickable="true"/>
+                            android:clickable="true"
+                            android:focusable="true" />
 
                         <TextView
                             android:id="@+id/dailyMoneyA8"
@@ -414,7 +423,8 @@
                             android:text="@string/daily_money_q10"
                             android:textSize="18sp"
                             android:textColor="@color/colorPrimaryDark"
-                            android:clickable="true"/>
+                            android:clickable="true"
+                            android:focusable="true" />
 
                         <TextView
                             android:id="@+id/dailyMoneyA10"
@@ -434,7 +444,8 @@
                             android:text="@string/daily_money_q9"
                             android:textSize="18sp"
                             android:textColor="@color/colorPrimaryDark"
-                            android:clickable="true"/>
+                            android:clickable="true"
+                            android:focusable="true" />
 
                         <TextView
                             android:id="@+id/dailyMoneyA9"
@@ -512,7 +523,8 @@
                             android:text="@string/budget_q2"
                             android:textSize="18sp"
                             android:textColor="@color/colorPrimaryDark"
-                            android:clickable="true"/>
+                            android:clickable="true"
+                            android:focusable="true" />
 
                         <TextView
                             android:id="@+id/budgetA2"
@@ -602,7 +614,8 @@
                             android:text="@string/budget_q1"
                             android:textSize="18sp"
                             android:textColor="@color/colorPrimaryDark"
-                            android:clickable="true"/>
+                            android:clickable="true"
+                            android:focusable="true" />
 
                         <TextView
                             android:id="@+id/budgetA1"
@@ -622,7 +635,8 @@
                             android:text="@string/budget_q3"
                             android:textSize="18sp"
                             android:textColor="@color/colorPrimaryDark"
-                            android:clickable="true"/>
+                            android:clickable="true"
+                            android:focusable="true" />
 
                         <TextView
                             android:id="@+id/budgetA3"
@@ -730,7 +744,8 @@
                             android:text="@string/debts_q1"
                             android:textSize="18sp"
                             android:textColor="@color/colorPrimaryDark"
-                            android:clickable="true"/>
+                            android:clickable="true"
+                            android:focusable="true" />
 
                         <TextView
                             android:id="@+id/debtsA1"
@@ -750,7 +765,8 @@
                             android:text="@string/debts_q2"
                             android:textSize="18sp"
                             android:textColor="@color/colorPrimaryDark"
-                            android:clickable="true"/>
+                            android:clickable="true"
+                            android:focusable="true" />
 
                         <TextView
                             android:id="@+id/debtsA2"
@@ -760,7 +776,7 @@
                             android:text="@string/debts_2"
                             android:textSize="18sp"
                             android:textColor="@color/colorGreen"
-                            />
+                            tools:ignore="TooManyViews" />
 
                         <TextView
                             android:id="@+id/debtsQ3"
@@ -770,7 +786,8 @@
                             android:text="@string/debts_q3"
                             android:textSize="18sp"
                             android:textColor="@color/colorPrimaryDark"
-                            android:clickable="true"/>
+                            android:clickable="true"
+                            android:focusable="true" />
 
                         <TextView
                             android:id="@+id/debtsA3"
@@ -790,7 +807,8 @@
                             android:text="@string/debts_q4"
                             android:textSize="18sp"
                             android:textColor="@color/colorPrimaryDark"
-                            android:clickable="true"/>
+                            android:clickable="true"
+                            android:focusable="true" />
 
                         <TextView
                             android:id="@+id/debtsA4"
@@ -810,7 +828,8 @@
                             android:text="@string/debts_q5"
                             android:textSize="18sp"
                             android:textColor="@color/colorPrimaryDark"
-                            android:clickable="true"/>
+                            android:clickable="true"
+                            android:focusable="true" />
 
                         <TextView
                             android:id="@+id/debtsA5"
@@ -888,7 +907,8 @@
                             android:text="@string/savings_q1"
                             android:textSize="18sp"
                             android:textColor="@color/colorPrimaryDark"
-                            android:clickable="true"/>
+                            android:clickable="true"
+                            android:focusable="true" />
 
                         <TextView
                             android:id="@+id/savingsA1"
@@ -908,7 +928,8 @@
                             android:text="@string/debts_q2"
                             android:textSize="18sp"
                             android:textColor="@color/colorPrimaryDark"
-                            android:clickable="true"/>
+                            android:clickable="true"
+                            android:focusable="true" />
 
                         <TextView
                             android:id="@+id/savingsA2"
@@ -928,7 +949,8 @@
                             android:text="@string/savings_q3"
                             android:textSize="18sp"
                             android:textColor="@color/colorPrimaryDark"
-                            android:clickable="true"/>
+                            android:clickable="true"
+                            android:focusable="true" />
 
                         <TextView
                             android:id="@+id/savingsA3"
@@ -948,7 +970,8 @@
                         android:text="@string/savings_q4"
                         android:textSize="18sp"
                         android:textColor="@color/colorPrimaryDark"
-                        android:clickable="true"/>
+                        android:clickable="true"
+                            android:focusable="true" />
 
                         <TextView
                             android:id="@+id/savingsA4"
@@ -968,7 +991,8 @@
                             android:text="@string/savings_q5"
                             android:textSize="18sp"
                             android:textColor="@color/colorPrimaryDark"
-                            android:clickable="true"/>
+                            android:clickable="true"
+                            android:focusable="true" />
 
                         <TextView
                             android:id="@+id/savingsA5"

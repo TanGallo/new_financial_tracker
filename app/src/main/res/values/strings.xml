@@ -1,13 +1,12 @@
 <resources>
+    <string name="add">add</string>
     <string name="almost_done">Almost done!</string>
     <string name="already_spent">already spent</string>
     <string name="amount">Amount</string>
     <string name="app_name">MYnance</string>
     <string name="apr">April</string>
-    <string name="apr1" translatable="false">Apr</string>
     <string name="ask_later">Okay, we\'ll ask you again later.</string>
     <string name="aug">August</string>
-    <string name="aug1" translatable="false">Aug</string>
     <string name="available_to_spend">Available to spend:</string>
     <string name="bi_annually">Twice a year (2 times/yr)</string>
     <string name="bi_monthly">Twice a month (24 times/yr)</string>
@@ -22,16 +21,18 @@
     <string name="budget_7">A realistic budget captures all the major areas of your spending, without getting too bogged down in details.</string>
     <string name="budget_8">For example, you could create a category for \"kids\' lessons\", as opposed to 3 separate categories for \"Tommy\'s hockey\", \"Trina\'s dance\", and \"swimming lessons\".</string>
     <string name="budget_9">\"Optional\" expenses categories are not necessary in order to use this app, however including them in your BUDGET will give you valuable spending guidelines in your daily life. For example, you will learn how often you can afford to spend money on entertainment or how much money you can afford to spend on gifts.</string>
-    <string name="budget_10">Payments made to DEBTS and SAVINGS will be added to your budget automatically and treated as needs, so that the money will be \'reserved\' in your bank account.</string>
     <string name="budget_11">You should also adjust your budget any time a major change occurs (i.e. you get a raise at work or the amount of a payment changes).</string>
     <string name="budget_12">You should review and update your budget at least once a year.</string>
     <string name="budget_13">You can use the SPENDING REPORT as a guideline when updating your budget. Running a spending report for an entire year will show you how much you actually spent in each category.</string>
     <string name="budget_14">Updating your budget will not adjust your bank account balances retroactively. The app will simply adjust the percentage of future entries to \'reserve\' for needs in accordance with the changes made to the budget.</string>
     <string name="budget_does_not_balance">WARNING: Your budget doesn\'t balance. Please go to the BUDGET screen to fix it.</string>
-    <string name="by">by</string>
+    <string name="budget_q1">Why can\'t I delete certain income or expenses categories?</string>
+    <string name="budget_q2">I need guidance to make a budget.</string>
+    <string name="budget_q3">How often should I make changes to my budget?</string>
+    <string name="budget_report_exp">Budget Report - Expenses</string>
+    <string name="budget_report_inc">Budget Report - Income</string>
     <string name="cancel">Cancel</string>
     <string name="cannot_delete_budget">You cannot delete this budget item, it is linked to DEBTS and SAVINGS items. You can enter $0 as the amount so it will have no effect on your budget.</string>
-    <string name="cannot_delete_warning">You cannot delete this entry.</string>
     <string name="category">Category</string>
     <string name="changes_saved">Your changes have been saved</string>
     <string name="check_boxes_below">Check the boxes below of the credit card purchases that you want to pay today.</string>
@@ -50,20 +51,35 @@
     <string name="continue_anyway">Continue anyway?</string>
     <string name="continue_warning">NOTE: Your account balances will not be affected until you pay this item in the \'Pay CC\' tab.</string>
     <string name="credit_card">Credit card</string>
-    <string name="credit_card_1">Use this tab to record any purchases made against credit cards or lines of credit.</string>
-    <string name="credit_card_2">For each purchase, you will select an expense item in your BUDGET, such as \'insurance\' or \'entertainment. You will also select which DEBTS item to map the purchase against.</string>
-    <string name="credit_card_3">The DEBTS item\'s balance owing will be updated accordingly.</string>
-    <string name="credit_card_4">NOTE: Be careful about mapping a purchase to the same BUDGET and DEBTS item.</string>
-    <string name="credit_card_5">It is possible to use a DEBTS item as the selected budget item. For example, if you took money from a credit card to pay down a line of credit.</string>
-    <string name="credit_card_6">In that case, the amount of the payment would be added to the balance owing on the credit card and subtracted from the balance owing on the line of credit. If you mapped to the same item twice, the balance owing on the DEBTS item would not update correctly.</string>
-    <string name="credit_card_7">MYnance wants to help you develop healthy spending habits. It will alert you if you are making purchases against your DEBTS items when you don\'t have the funds in your account to cover them.</string>
-    <string name="credit_card_8">Although purchases entered in this tab will have no effect on your \'total\' and \'available to spend\' balances, you should still avoid accumulating consumer debt.</string>
-    <string name="credit_card_9">Payments to your DEBTS items should be made in the PAY CC tab. Your \'total\' and \'available to spend\' balances will change when payments are made in the PAY CC tab and the DEBTS item\'s balance owing will be updated accordingly.</string>
-    <string name="credit_card_10">However, purchases recorded in this tab will show up in your SPENDING REPORT as having been spent on the date the entry was made.</string>
     <string name="current_balance">Current balance:</string>
     <string name="daily_money">Daily Money</string>
     <string name="daily_money_1">\"Total in Account\" is the total amount of money in your bank account. A percentage of this money is reserved for paying \"needs\", as identified by you in your BUDGET.</string>
     <string name="daily_money_2">\"Available to Spend\" is the amount of money that you can spend on \"optional\" expenses, as identified by you in your BUDGET.</string>
+    <string name="daily_money_3">This app is smart! When you overspend, it won\'t make money \"Available to Spend\" until you\'ve caught up on having enough money reserved for paying the \"needs\" you\'ve identified in your BUDGET.</string>
+    <string name="daily_money_4">The app will reserve the percentage of any money you put into your bank account that you identified in your BUDGET as being needed to pay for \"needs\". Only the balance of your income will be \"Available to Spend\".</string>
+    <string name="daily_money_5">Any other accounts you have can be set up as DEBTS or SAVINGS.</string>
+    <string name="daily_money_5A">To transfer money from your bank account to another account, use the DAILY MONEY - MONEY OUT tab. Use the pull-down menu to choose the account where you want the money to go.</string>
+    <string name="daily_money_5B">To transfer funds from a DEBTS account to another account, use the DAILY MONEY - CREDIT CARD tab. Use the pull-down menu to choose the account where you want the money to go and use the 2nd pull-down menu to choose which DEBTS account the money should come from.</string>
+    <string name="daily_money_5C">To transfer funds from a SAVINGS account to another account, use the DAILY MONEY - MONEY IN tab to transfer the money from the SAVINGS account to your bank account. Then, use the DAILY MONEY - MONEY OUT tab to transfer the same amount into the appropriate account.</string>
+    <string name="daily_money_6">How you handle cash withdrawals is a personal choice.</string>
+    <string name="daily_money_6A">You can create a \"cash withdrawal\" expenses category in your BUDGET and record the transaction once against it, or you can choose to record where every dollar of the cash withdrawal was spent against several expenses categories.</string>
+    <string name="daily_money_6B">MYnance believes the 2nd method will become tedious and is an unrealistic way to manage your money. It should suffice to record the cash withdrawal as a whole. You can use the SPENDING REPORT to identify if frequent cash withdrawals are a problem area for you.</string>
+    <string name="daily_money_7">MYnance believes strongly in avoiding consumer debt on credit cards. The DAILY MONEY - PAY CC tab is built specifically for this purpose.</string>
+    <string name="daily_money_7A">Using this tab once a week or more to make frequent payments to your credit card will ensure that you never pay interest on those purchases, but you will still earn the rewards that your credit card offers! </string>
+    <string name="daily_money_7B">You can also make additional payments that don\'t map to specific purchases by using the DAILY MONEY - MONEY OUT tab.</string>
+    <string name="daily_money_8">MYnance believes that blind spending on credit cards leads to consumer debt. That is why we will alert you if you don\'t have the funds to cover your credit card purchases.</string>
+    <string name="daily_money_9">When you identify an expense category in your BUDGET as \"optional\", the app will ask you if you\'d like to track your spending on a weekly basis. If yes, you can use the DAILY MONEY - WEEKLY LIMITS tab to see how much has been spent between Monday and Sunday of this week against that category.</string>
+    <string name="daily_money_10">Once you\'ve made a payment to a credit card against a particular purchase, that purchase can no longer be deleted.</string>
+    <string name="daily_money_q1">What does \"Total in Account\" mean?</string>
+    <string name="daily_money_q2">What does \"Available to Spend\" mean?</string>
+    <string name="daily_money_q3">I put money into my account, but the \"Available to Spend\" amount is still zero.</string>
+    <string name="daily_money_q4">It seems like the wrong amount is going into the \"Available to Spend\" amount.</string>
+    <string name="daily_money_q5">The DAILY MONEY - MONEY IN tab only allows me to put money into my bank account. Where do I go to put money into my other accounts?</string>
+    <string name="daily_money_q6">When I take a cash withdrawal from my bank account, how can I record what I spend the money on?</string>
+    <string name="daily_money_q7">What is the difference between using the DAILY MONEY - PAY CC tab or the DAILY MONEY - MONEY OUT tab to record a payment to my credit card?</string>
+    <string name="daily_money_q8">Why does MYnance give me spending warnings when I\'m using my credit card?</string>
+    <string name="daily_money_q9">What are weekly limits and how can I set them up?</string>
+    <string name="daily_money_q10">Why am I unable to delete some of the items in the DAILY MONEY - CREDIT CARD tab?</string>
     <string name="date">Date</string>
     <string name="debt">Debt</string>
     <string name="debts">Debts</string>
@@ -72,17 +88,18 @@
     <string name="debts_3">Simply click on the pencil icon next to the account in the DEBTS screen and enter the new interest rate. A new debt-free date will calculated.</string>
     <string name="debts_4">When you created the DEBTS account, a linked income category was created for you in your BUDGET. Simply click on the pencil icon next to it on the BUDGET screen and enter the amount of income that you plan on taking from the DEBTS account. A new debt-free date will be calculated accordingly.</string>
     <string name="debts_5">Create an expenses category in your BUDGET called \"interest\" (or something similar). Use the DAILY MONEY - CREDIT CARD tab to create entries against that category (in the 1st pull-down menu), charged against the DEBTS account (in the 2nd pull-down menu).</string>
-    <string name="debts_6">If you take a cash advance off a DEBTS item, you can enter the transaction in the DAILY MONEY - MONEY IN tab. You bank account balances will be adjusted accordingly. DON\'T FORGET that only a percentage of that deposit will be \'available to spend\'.</string>
-    <string name="debts_7">If you take frequent cash advances off DEBTS items, you should adjust your BUDGET to reflect this income.</string>
-    <string name="debts_8">NOTE: If you create an INCOME from a DEBT, the \'debt-free\' date for it will be adjusted accordingly. This change will be reflected in the DEBTS screen.</string>
-    <string name="debts_9">Purchases against and payments to your debts in the DAILY MONEY tabs will be automatically added or subtracted to the balances owing in the DEBTS screen.</string>
+    <string name="debts_q1">I need guidance to enter debts accounts.</string>
+    <string name="debts_q2">Why does the date come up as \"Too far in the future\"?</string>
+    <string name="debts_q3">What if the interest rate changes on my DEBTS account?</string>
+    <string name="debts_q4">I frequently take cash advances off a DEBTS account, how should I get the app to handle this?</string>
+    <string name="debts_q5">How can I record the interest I get charged on my DEBTS accounts?</string>
     <string name="debt_free_by">Debt-free by</string>
     <string name="debt_paid">Debt paid!</string>
     <string name="debt_saved">This debt has been saved to your BUDGET</string>
     <string name="debt_will">Will be paid by </string>
     <string name="dec">December</string>
-    <string name="dec1" translatable="false">Dec</string>
     <string name="delete">Delete this item</string>
+    <string name="delete_debt_warning">Warning: When you delete this item, the corresponding income and expense categories will also be deleted from your BUDGET</string>
     <string name="done">DONE</string>
     <string name="done_budget">done entering budget</string>
     <string name="done_debts">done entering debts</string>
@@ -94,7 +111,10 @@
     <string name="email_address" translatable="false">gotchasomething.ca@gmail.com</string>
     <string name="email_question">Will you please let us know what we need to change to make it better?</string>
     <string name="email_warning">There are no email clients installed</string>
+    <string name="empty_budget">After you have clicked the \'Done Entering Budget\' button, you will still be able to edit these items by using the menu to access the BUDGET screen.</string>
+    <string name="empty_debts_3">After you have clicked the \'Done Entering Debts\' button, you will still be able to edit these items by using the menu to access the DEBTS screen.</string>
     <string name="empty_money_out">Use this tab to record all the transactions when money leaves your bank account.</string>
+    <string name="empty_savings_3">After you have clicked the \'Done Entering Savings\' button, you will still be able to edit these items by using the menu to access the SAVINGS screen.</string>
     <string name="enjoying_question">Are you enjoying using this app?</string>
     <string name="enter">enter</string>
     <string name="enter_debt_amount">How much do you owe?</string>
@@ -113,46 +133,32 @@
     <string name="enter_savings_rate">What is the annual interest rate being earned?</string>
     <string name="expenses">Expenses:</string>
     <string name="feb">February</string>
-    <string name="feb1" translatable="false">Feb</string>
     <string name="finish_budget">Finish budget</string>
     <string name="get_started">Let\'s get started!</string>
     <string name="goal_achieved">Goal achieved!</string>
-    <string name="goal_never">There is no money here.</string>
     <string name="goal_will">Will be saved by </string>
     <string name="google_play_url" translatable="false">market://details?id=ca.gotchasomething.mynance</string>
     <string name="go_to_daily_money">Go to \'Daily Money\' to make income and spending entries, to track your credit card transactions, and to watch your weekly spending limits</string>
     <string name="go_to_daily_money_2">Go to DAILY MONEY to record your spending in the MONEY OUT tab.</string>
+    <string name="go_to_daily_money_3">Go to DAILY MONEY to record your income in the MONEY IN tab and your spending in the MONEY OUT tab.</string>
     <string name="go_to_help">Go to \'Help\' if you need more guidance</string>
     <string name="help">Help</string>
+    <string name="help_instructions">Choose a topic and then click on a question to see its answer.</string>
     <string name="hide">hide</string>
     <string name="how_often">How often?</string>
     <string name="income">Income:</string>
     <string name="income_available">Income still available for budgeting:</string>
     <string name="jan">January</string>
-    <string name="jan1" translatable="false">Jan</string>
     <string name="jul">July</string>
-    <string name="jul1" translatable="false">Jul</string>
     <string name="jun">June</string>
-    <string name="jun1" translatable="false">Jun</string>
     <string name="left_this_week">left this week</string>
     <string name="limit_warning">Making this purchase will put this DEBTS item over its limit.</string>
     <string name="logo" translatable="false">Logo</string>
     <string name="manage_money">Now you can manage your money in just a few minutes a day!</string>
     <string name="mar">March</string>
-    <string name="mar1" translatable="false">Mar</string>
     <string name="may">May</string>
-    <string name="may1" translatable="false">May</string>
     <string name="money_in">Money In</string>
-    <string name="daily_money_3">This app is smart! When you overspend, it won\'t make money \"Available to Spend\" until you\'ve caught up on having enough money reserved for paying the \"needs\" you\'ve identified in your BUDGET.</string>
-    <string name="money_in_2">Each entry will map to an income item in your BUDGET.</string>
-    <string name="money_in_3">When you created your budget, you identified which expense items were for needs and which were for optional spending.</string>
-    <string name="money_in_4">The appropriate percentage of each MONEY IN entry will be reserved for needs according to these BUDGET entries. The remainder will be allotted to the \'available to spend\' amount.</string>
     <string name="money_out">Money Out</string>
-    <string name="money_out_1">Use this tab to record any CASH that comes out of your bank account, either as a cheque, cash withdrawal, or debit card purchase.</string>
-    <string name="money_out_2">NOTE: It is up to you whether you create \'cash withdrawal\' as an expense item in your budget and track withdrawals as one item or whether you account for cash withdrawals as a breakdown of what the money was used for (i.e. $20 withdrawal entered as $10 towards \'entertainment\' and $10 towards \'miscellaneous\').</string>
-    <string name="money_out_3">JUST BE SURE that each cash withdrawal is only entered once in MONEY OUT, otherwise too much money will be taken out of your \'total\' and \'available to spend\' balances.</string>
-    <string name="money_out_4">Purchases made on a credit card must be entered in the CREDIT CARD tab so that the credit card\'s DEBTS record will be updated accordingly.</string>
-    <string name="money_out_5">You can view a summary of your MONEY OUT items in the SPENDING REPORT screen.</string>
     <string name="money_out_cc_prompt">Use this tab to record all the transactions when you use your credit cards.</string>
     <string name="monthly">Once a month (12 times/yr)</string>
     <string name="mynance_will_show_you">MYnance will show you how much money in your bank account is actually available to spend at any given time</string>
@@ -162,6 +168,10 @@
     <string name="name_debt">Name this debt</string>
     <string name="navigation_drawer_open" translatable="false">Open navigation drawer</string>
     <string name="navigation_drawer_close" translatable="false">Close navigation drawer</string>
+    <string name="need_help">Click here if you need more help with this step.</string>
+    <string name="need_help2">Just click on \"Done Entering Debts\" and visit the HELP section once you\'re done with the set up process. You can get the information you need there and finish this later.</string>
+    <string name="need_help3">Just click on \"Done Entering Savings\" and visit the HELP section once you\'re done with the set up process. You can get the information you need there and finish this later.</string>
+    <string name="need_help4">Just click on \"Done Entering Budget\" and visit the HELP section once you\'re done with the set up process. You can get the information you need there and finish this later.</string>
     <string name="needs">This expense is for needs (i.e. food, rent, insurance, etc)</string>
     <string name="next_button">next</string>
     <string name="no">no</string>
@@ -170,33 +180,35 @@
     <string name="no_debts_message">You have no outstanding credit card purchases!</string>
     <string name="no_debts_yet">You haven\'t entered any debts yet.</string>
     <string name="no_debt_warning">NOTE: There must be a DEBT item created for each credit card.</string>
+    <string name="no_entries_yet">You haven\'t made any entries yet.</string>
     <string name="no_exp_warning">You must create expense items in your BUDGET to spend against</string>
-    <string name="no_inc_warning">You must create income items in your BUDGET to make entries against</string>
+    <string name="no_inc_warning" translatable="false">You must create income items in your BUDGET to make entries against</string>
     <string name="no_limit_warning">You must enter a maximum debt limit</string>
     <string name="no_savings">You haven\'t entered any savings yet.</string>
-    <string name="no_spending_during_period">There was no spending during that period.</string>
+    <string name="no_spending_report">Warning: Once you delete this category, entries already made against it will no longer appear in the reports</string>
     <string name="no_spending_yet">You haven\'t entered any spending yet.</string>
+    <string name="no_time">Click here if you don\'t have time to finish this right now.</string>
+    <string name="no_time2">That\'s okay, just close the app and it will bring you right back here the next time you open it, or click on \"Done Entering Debts\" and you can finish this step later by going to DEBTS.</string>
+    <string name="no_time3">That\'s okay, just close the app and it will bring you right back here the next time you open it, or click on \"Done Entering Savings\" and you can finish this step later by going to SAVINGS.</string>
+    <string name="no_time4">That\'s okay, just close the app and it will bring you right back here the next time you open it, or click on \"Done Entering Budget\" and you can finish this step later by going to BUDGET.</string>
     <string name="not_enough_credit_warning">There is not enough credit available on this DEBTS item to make this deposit. You will be putting the debt over its limit.</string>
     <string name="not_enough_savings_warning">There is not enough in this SAVINGS item to make this deposit. You will be putting the savings balance into the negative.</string>
     <string name="not_now">not now</string>
     <string name="not_sure_yet">not sure yet</string>
     <string name="nov">November</string>
-    <string name="nov1" translatable="false">Nov</string>
     <string name="oct">October</string>
-    <string name="oct1" translatable="false">Oct</string>
     <string name="ok">ok</string>
     <string name="oops">Oops, you are spending more than you make!</string>
+    <string name="on" translatable="false">charged on</string>
     <string name="optional">This expense is optional (i.e. entertainment, gifts, clothing, etc)</string>
     <string name="outstanding_cc_purchases">Outstanding credit card purchases</string>
     <string name="pay">Pay</string>
     <string name="pay_cc">Pay cc</string>
-    <string name="pay_cc_1">MYnance is a great tool to help you make sure you avoid consumer debt. Use this tab to manage money owing on DEBTS items resulting from purchases.</string>
-    <string name="pay_cc_2">Enter any purchases you make on credit cards or lines of credit in the CREDIT CARD tab and make frequent payments to them using the PAY CC tab.</string>
-    <string name="pay_cc_3">If you want to make additional payments to your DEBTS items that don\'t map to particular purchases, you can enter those transactions in the DAILY MONEY - MONEY OUT tab.</string>
-    <string name="pay_cc_4">MYnance will alert you if you are trying to make a payment when you don\'t have the funds available in your \'total\' or \'available to spend\' balances.</string>
     <string name="pay_this_amount">Pay these amounts to your credit cards:</string>
     <string name="payment_not_possible_A">You don\'t have enough money in your account to make this purchase. You will put your balance into the negative.</string>
     <string name="payment_not_possible_B">You don\'t have enough spending money left in your account to make this purchase. You will be spending money that is reserved for other expenses.</string>
+    <string name="percent" translatable="false">%</string>
+    <string name="percent_spent">Percent Used</string>
     <string name="plus_button_debts">Press the PLUS button above to add a debt.</string>
     <string name="plus_button_savings">Press the PLUS button above to add savings.</string>
     <string name="rate_it_question">Will you please take a moment to rate it?</string>
@@ -209,19 +221,17 @@
     <string name="savings_3">Simply click on the pencil icon next to the account in the SAVINGS screen and enter the new interest rate. A new \"goal achieved\" date will calculated.</string>
     <string name="savings_4">When you created the SAVINGS account, a linked income category was created for you in your BUDGET. Simply click on the pencil icon next to it on the BUDGET screen and enter the amount of income that you plan on taking from the SAVINGS account. A new \"goal achieved\" date will be calculated accordingly.</string>
     <string name="savings_5">Simply change the \"goal\" amount and a new \"goal achieved\" date will be calculated. Change the amount accordingly until the date is closest to your certain date.</string>
-    <string name="savings_6">NOTE: If you create an INCOME from a SAVINGS item, the amount of the contributions to it will be adjusted accordingly, as will the \'goal achieved\' date for it. These changes will be reflected in the SAVINGS screen.</string>
-    <string name="savings_7">Payments towards and withdrawals from your savings items in the DAILY MONEY tabs will be automatically added to or subtracted from the balances in the SAVINGS screen.</string>
+    <string name="savings_q1">I need guidance to enter savings accounts.</string>
+    <string name="savings_q3">What if the interest rate changes in my SAVINGS account?</string>
+    <string name="savings_q4">I frequently take cash withdrawals from a SAVINGS account, how should I get the app to handle this?</string>
+    <string name="savings_q5">I don\'t have a particular financial goal I\'m trying to achieve, I want to know how much I\'ll accumulate by a certain date.</string>
     <string name="savings_saved">This savings info has been saved to your BUDGET</string>
     <string name="sep">September</string>
-    <string name="sep1" translatable="false">Sep</string>
     <string name="set_up">Set Up</string>
-    <string name="set_up_1">The automatic set up process walked you through setting up your debts, savings, and budget.</string>
-    <string name="set_up_2">All of these items can be changed manually by using the MENU to access their screens.</string>
-    <string name="set_up_3">You also entered a starting balance for your bank account. This amount can be changed by clicking on the pencil icon next to it in the DAILY MONEY - MONEY IN tab.</string>
-    <string name="set_up_4">You can adjust the amount in your bank account by making entries in the DAILY MONEY screen.</string>
+    <string name="set_up_a1">Go to the DAILY MONEY - MONEY IN tab and click on the pencil icon next to the starting balance.</string>
+    <string name="set_up_q1">How do I change the starting balance I entered during the set up process?</string>
     <string name="show">show</string>
     <string name="show_report">show report</string>
-    <string name="simple_date_format" translatable="false">dd-MMM-yyyy</string>
     <string name="skip_button">skip intro</string>
     <string name="slide1Description">Manage your money and keep on top of your debt in just a few steps</string>
     <string name="slide1Title">Welcome to MYnance!</string>
@@ -233,14 +243,14 @@
     <string name="slide5Title">MYnance will help you keep on top of your credit card spending so you avoid getting into consumer debt</string>
     <string name="slide6Title">Visit the \'Help\' section if you need more guidance</string>
     <string name="spending_report">Spending Report</string>
-    <string name="spending_report_1">MYnance will show you your spending in each expense category of your budget by month or for the year to date.</string>
-    <string name="spending_report_2">Simply use the pull-down menus to choose the period of time that you\'d like to see.</string>
-    <string name="spending_report_3">When updating your budget, you can use the year to date spending report to see what your actual spending was in each category and use those numbers as the new budget amounts.</string>
     <string name="start_button">Got it!</string>
     <string name="starting_balance">Starting Balance</string>
     <string name="starting_balance_amount">How much money is in your bank account today?</string>
+    <string name="starting_balance_warning">*if you need to enter a negative number, some keyboards require you to push the decimal button twice in order to get a minus sign in front of your number</string>
     <string name="sure">sure!</string>
     <string name="too_far">Too far in the future</string>
+    <string name="total">Total:</string>
+    <string name="total_budget">Total Budget</string>
     <string name="total_expenses">Total Expenses:</string>
     <string name="total_in_account">Total in account:</string>
     <string name="total_income">Total Income:</string>
@@ -250,9 +260,6 @@
     <string name="website" translatable="false">http://www.gotchasomething.ca</string>
     <string name="weekly">Weekly (52 times/yr)</string>
     <string name="weekly_limits">Weekly Limits</string>
-    <string name="weekly_limits_1">When you create expense items in your BUDGET and identify them as \'optional\', you will be given the choice whether or not to manage their weekly spending limits.</string>
-    <string name="weekly_limits_2">You can change this setting for any expense item at any time in the BUDGET screen by clicking on the pencil icon next to the item.</string>
-    <string name="weekly_limits_3">MYnance will break the yearly amount for the item down to a weekly limit and track how much is left each week to spend on the item.</string>
     <string name="weekly_limits_details">Mark budget expense items as \'optional\' and you will then be asked whether or not you would like to track their spending on a weekly basis.</string>
     <string name="weekly_limit_exceeded">WEEKLY LIMIT EXCEEDED</string>
     <string name="weekly_limits_prompt">Weekly limits are set up in the BUDGET screen.</string>
@@ -264,77 +271,4 @@
     <string name="year_to_date">Entire year to date</string>
     <string name="year_to_date1">all</string>
     <string name="yes">yes</string>
-    <string name="add">add</string>
-    <string name="empty_debts_3">After you have clicked the \'Done Entering Debts\' button, you will still be able to edit these items by using the menu to access the DEBTS screen.</string>
-    <string name="empty_savings_3">After you have clicked the \'Done Entering Savings\' button, you will still be able to edit these items by using the menu to access the SAVINGS screen.</string>
-    <string name="empty_budget">After you have clicked the \'Done Entering Budget\' button, you will still be able to edit these items by using the menu to access the BUDGET screen.</string>
-    <string name="already_paid_warning">This purchase was already paid to the credit card. If you continue, your Total and Available balances will be adjusted to reflect this change.</string>
-    <string name="on">charged on</string>
-    <string name="pay_cc_5">TO UNDO A PAYMENT TO A CREDIT CARD, delete the transaction from the DAILY MONEY - CREDIT CARD tab.</string>
-    <string name="total">Total:</string>
-    <string name="cat_warning">Note: Only existing expense categories will be reflected in this report. If you have deleted an expense category from your budget, money spent in the defunct category will no longer show on this report.</string>
-    <string name="no_spending_report">Warning: Once you delete this category, entries already made against it will no longer appear in the reports</string>
-    <string name="budget_report">Budget Report</string>
-    <string name="percent">%</string>
-    <string name="percent_spent">Percent Used</string>
-    <string name="total_budget">Total Budget</string>
-    <string name="budget_report_exp">Budget Report - Expenses</string>
-    <string name="budget_report_inc">Budget Report - Income</string>
-    <string name="no_entries_yet">You haven\'t made any entries yet.</string>
-    <string name="go_to_daily_money_3">Go to DAILY MONEY to record your income in the MONEY IN tab and your spending in the MONEY OUT tab.</string>
-    <string name="delete_debt_warning">Warning: When you delete this item, the corresponding income and expense categories will also be deleted from your BUDGET</string>
-    <string name="check_boxes_below2">Note: Once a purchase has been marked as paid, it can no longer be edited or deleted in the CREDIT CARD tab.</string>
-    <string name="set_up_q1">How do I change the starting balance I entered during the set up process?</string>
-    <string name="set_up_a1">Go to the DAILY MONEY - MONEY IN tab and click on the pencil icon next to the starting balance.</string>
-    <string name="help_instructions">Choose a topic and then click on a question to see its answer.</string>
-    <string name="no_time">Click here if you don\'t have time to finish this right now.</string>
-    <string name="no_time2">That\'s okay, just close the app and it will bring you right back here the next time you open it, or click on \"Done Entering Debts\" and you can finish this step later by going to DEBTS.</string>
-    <string name="need_help">Click here if you need more help with this step.</string>
-    <string name="need_help2">Just click on \"Done Entering Debts\" and visit the HELP section once you\'re done with the set up process. You can get the information you need there and finish this later.</string>
-    <string name="no_time3">That\'s okay, just close the app and it will bring you right back here the next time you open it, or click on \"Done Entering Savings\" and you can finish this step later by going to SAVINGS.</string>
-    <string name="need_help3">Just click on \"Done Entering Savings\" and visit the HELP section once you\'re done with the set up process. You can get the information you need there and finish this later.</string>
-    <string name="no_time4">That\'s okay, just close the app and it will bring you right back here the next time you open it, or click on \"Done Entering Budget\" and you can finish this step later by going to BUDGET.</string>
-    <string name="need_help4">Just click on \"Done Entering Budget\" and visit the HELP section once you\'re done with the set up process. You can get the information you need there and finish this later.</string>
-    <string name="starting_balance_warning">*if you need to enter a negative number, some keyboards require you to push the decimal button twice in order to get a minus sign in front of your number</string>
-    <string name="daily_money_q1">What does \"Total in Account\" mean?</string>
-    <string name="daily_money_q2">What does \"Available to Spend\" mean?</string>
-    <string name="money_in_tab">Money In Tab</string>
-    <string name="money_out_tab">Money Out Tab</string>
-    <string name="credit_card_tab">Credit Card Tab</string>
-    <string name="pay_cc_tab">Pay CC Tab</string>
-    <string name="weekly_limits_tab">Weekly Limits Tab</string>
-    <string name="daily_money_q3">I put money into my account, but the \"Available to Spend\" amount is still zero.</string>
-    <string name="daily_money_q4">It seems like the wrong amount is going into the \"Available to Spend\" amount.</string>
-    <string name="daily_money_4">The app will reserve the percentage of any money you put into your bank account that you identified in your BUDGET as being needed to pay for \"needs\". Only the balance of your income will be \"Available to Spend\".</string>
-    <string name="daily_money_q5">The DAILY MONEY - MONEY IN tab only allows me to put money into my bank account. Where do I go to put money into my other accounts?</string>
-    <string name="daily_money_5">Any other accounts you have can be set up as DEBTS or SAVINGS.</string>
-    <string name="daily_money_5A">To transfer money from your bank account to another account, use the DAILY MONEY - MONEY OUT tab. Use the pull-down menu to choose the account where you want the money to go.</string>
-    <string name="daily_money_5B">To transfer funds from a DEBTS account to another account, use the DAILY MONEY - CREDIT CARD tab. Use the pull-down menu to choose the account where you want the money to go and use the 2nd pull-down menu to choose which DEBTS account the money should come from.</string>
-    <string name="daily_money_5C">To transfer funds from a SAVINGS account to another account, use the DAILY MONEY - MONEY IN tab to transfer the money from the SAVINGS account to your bank account. Then, use the DAILY MONEY - MONEY OUT tab to transfer the same amount into the appropriate account.</string>
-    <string name="daily_money_q6">When I take a cash withdrawal from my bank account, how can I record what I spend the money on?</string>
-    <string name="daily_money_6">How you handle cash withdrawals is a personal choice.</string>
-    <string name="daily_money_6A">You can create a \"cash withdrawal\" expenses category in your BUDGET and record the transaction once against it, or you can choose to record where every dollar of the cash withdrawal was spent against several expenses categories.</string>
-    <string name="daily_money_6B">MYnance believes the 2nd method will become tedious and is an unrealistic way to manage your money. It should suffice to record the cash withdrawal as a whole. You can use the SPENDING REPORT to identify if frequent cash withdrawals are a problem area for you.</string>
-    <string name="daily_money_q7">What is the difference between using the DAILY MONEY - PAY CC tab or the DAILY MONEY - MONEY OUT tab to record a payment to my credit card?</string>
-    <string name="daily_money_7">MYnance believes strongly in avoiding consumer debt on credit cards. The DAILY MONEY - PAY CC tab is built specifically for this purpose.</string>
-    <string name="daily_money_7A">Using this tab once a week or more to make frequent payments to your credit card will ensure that you never pay interest on those purchases, but you will still earn the rewards that your credit card offers! </string>
-    <string name="daily_money_7B">You can also make additional payments that don\'t map to specific purchases by using the DAILY MONEY - MONEY OUT tab.</string>
-    <string name="daily_money_q8">Why does MYnance give me spending warnings when I\'m using my credit card?</string>
-    <string name="daily_money_8">MYnance believes that blind spending on credit cards leads to consumer debt. That is why we will alert you if you don\'t have the funds to cover your credit card purchases.</string>
-    <string name="daily_money_q9">What are weekly limits and how can I set them up?</string>
-    <string name="daily_money_9">When you identify an expense category in your BUDGET as \"optional\", the app will ask you if you\'d like to track your spending on a weekly basis. If yes, you can use the DAILY MONEY - WEEKLY LIMITS tab to see how much has been spent between Monday and Sunday of this week against that category.</string>
-    <string name="daily_money_q10">Why am I unable to delete some of the items in the DAILY MONEY - CREDIT CARD tab?</string>
-    <string name="daily_money_10">Once you\'ve made a payment to a credit card against a particular purchase, that purchase can no longer be deleted.</string>
-    <string name="budget_q1">Why can\'t I delete certain income or expenses categories?</string>
-    <string name="budget_q2">I need guidance to make a budget.</string>
-    <string name="budget_q3">How often should I make changes to my budget?</string>
-    <string name="debts_q1">I need guidance to enter debts accounts.</string>
-    <string name="debts_q2">Why does the date come up as \"Too far in the future\"?</string>
-    <string name="debts_q3">What if the interest rate changes on my DEBTS account?</string>
-    <string name="debts_q4">I frequently take cash advances off a DEBTS account, how should I get the app to handle this?</string>
-    <string name="debts_q5">How can I record the interest I get charged on my DEBTS accounts?</string>
-    <string name="savings_q1">I need guidance to enter savings accounts.</string>
-    <string name="savings_q3">What if the interest rate changes in my SAVINGS account?</string>
-    <string name="savings_q4">I frequently take cash withdrawals from a SAVINGS account, how should I get the app to handle this?</string>
-    <string name="savings_q5">I don\'t have a particular financial goal I\'m trying to achieve, I want to know how much I\'ll accumulate by a certain date.</string>
 </resources>

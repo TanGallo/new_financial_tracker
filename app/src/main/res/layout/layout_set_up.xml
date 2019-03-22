@@ -42,7 +42,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="20dp"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        tools:ignore="UselessParent">
 
 
                         <TextView
@@ -59,7 +60,6 @@
                         <View
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
-                            android:layout_below="@id/debt_header_layout"
                             android:layout_marginStart="10dp"
                             android:layout_marginTop="10dp"
                             android:layout_marginEnd="10dp"
@@ -93,7 +93,8 @@
                                 android:layout_margin="10dp"
                                 android:background="@drawable/entry_box"
                                 android:contentDescription="@string/click_here_debts"
-                                android:text="@string/click_here_debts" />
+                                android:text="@string/click_here_debts"
+                                tools:ignore="RelativeOverlap" />
 
                             <TextView
                                 android:id="@+id/setUpDebtsLabel"
@@ -102,7 +103,8 @@
                                 android:layout_margin="10dp"
                                 android:text="@string/enter_debts"
                                 android:textSize="16sp"
-                                android:textColor="@color/colorPrimaryDark"/>
+                                android:textColor="@color/colorPrimaryDark"
+                                tools:ignore="RelativeOverlap" />
 
                             <CheckBox
                                 android:id="@+id/setUpDebtsCheckbox"
@@ -124,7 +126,8 @@
                                 android:layout_margin="10dp"
                                 android:background="@drawable/entry_box"
                                 android:contentDescription="@string/click_here_savings"
-                                android:text="@string/click_here_savings" />
+                                android:text="@string/click_here_savings"
+                                tools:ignore="RelativeOverlap" />
 
                             <TextView
                                 android:id="@+id/setUpSavingsLabel"
@@ -133,7 +136,8 @@
                                 android:layout_margin="10dp"
                                 android:text="@string/enter_savings"
                                 android:textSize="16sp"
-                                android:textColor="@color/colorPrimaryDark"/>
+                                android:textColor="@color/colorPrimaryDark"
+                                tools:ignore="RelativeOverlap" />
 
                             <CheckBox
                                 android:id="@+id/setUpSavingsCheckbox"
@@ -155,7 +159,8 @@
                                 android:layout_margin="10dp"
                                 android:background="@drawable/entry_box"
                                 android:contentDescription="@string/click_here_budget"
-                                android:text="@string/click_here_budget" />
+                                android:text="@string/click_here_budget"
+                                tools:ignore="RelativeOverlap" />
 
                             <TextView
                                 android:id="@+id/setUpBudgetLabel"
@@ -164,7 +169,8 @@
                                 android:layout_margin="10dp"
                                 android:text="@string/finish_budget"
                                 android:textSize="16sp"
-                                android:textColor="@color/colorPrimaryDark"/>
+                                android:textColor="@color/colorPrimaryDark"
+                                tools:ignore="RelativeOverlap" />
 
                             <CheckBox
                                 android:id="@+id/setUpBudgetCheckbox"
@@ -229,7 +235,8 @@
                                 android:inputType="numberSigned|numberDecimal"
                                 android:digits="0123456789.-"
                                 android:textSize="16sp"
-                                android:textColor="@color/colorPrimaryDark"/>
+                                android:textColor="@color/colorPrimaryDark"
+                                tools:ignore="Autofill" />
 
                             <CheckBox
                                 android:id="@+id/setUpAccountCheckbox"

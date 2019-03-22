@@ -35,7 +35,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                tools:ignore="UselessParent">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -97,7 +98,8 @@
                     android:layout_marginEnd="10dp"
                     android:foreground="@drawable/ic_add_white_24dp"
                     android:contentDescription="@string/add"
-                    android:scaleType="fitCenter" />
+                    android:scaleType="fitCenter"
+                    tools:ignore="UnusedAttribute" />
 
                 <Button
                     android:id="@+id/doneDebtsSetUpButton"
@@ -114,7 +116,6 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:layout_below="@id/debt_header_layout"
                     android:layout_marginBottom="10dp"
                     android:layout_marginEnd="10dp"
                     android:layout_marginStart="10dp"
@@ -165,7 +166,8 @@
                     android:gravity="center_horizontal"
                     android:textColor="@color/colorPrimaryDark"
                     android:textSize="16sp"
-                    android:clickable="true"/>
+                    android:clickable="true"
+                    android:focusable="true" />
 
                 <TextView
                     android:id="@+id/debtsSetUpNoTime2"
@@ -200,7 +202,8 @@
                     android:gravity="center_horizontal"
                     android:textColor="@color/colorPrimaryDark"
                     android:textSize="16sp"
-                    android:clickable="true"/>
+                    android:clickable="true"
+                    android:focusable="true" />
 
                 <TextView
                     android:id="@+id/debtsSetUpNeedHelp2"
@@ -267,7 +270,7 @@
                         android:contentDescription="@string/continue1"
                         android:textSize="12sp"
                         android:textColor="@color/colorPrimaryDark"
-                        />
+                        tools:ignore="RelativeOverlap" />
 
                 </RelativeLayout>
 
