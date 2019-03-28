@@ -58,7 +58,7 @@ public class DailyMoneyCC extends Fragment {
             currentDebtRate = 0.0, currentDebtRate3 = 0.0, currentSavingsAmount = 0.0, currentSavingsFrequency = 0.0, currentSavingsPayments = 0.0,
             currentSavingsRate = 0.0, debtAmount = 0.0, debtAmount3 = 0.0, debtAnnualIncome = 0.0, moneyOutAmount = 0.0, newDebtAmount = 0.0, newDebtAmount2 = 0.0,
             newDebtAmount4 = 0.0, newSavingsAmount = 0.0, numberOfYearsToPayDebt = 0.0, numberOfYearsToPayDebt3 = 0.0, oldMoneyOutAmount = 0.0, rate = 0.0,
-            savingsAmount = 0.0, savingsAnnualIncome = 0.0, savingsGoal = 0.0, savingsIntFrequency = 0.0, years = 0.0;
+            savingsAmount = 0.0, savingsAnnualIncome = 0.0, savingsGoal = 0.0, years = 0.0;
     EditText ccTransAmountText, ccTransAmountEditText;
     General general;
     int moneyOutPaid = 0, moneyOutToPay = 0, numberOfDaysToPayDebt = 0, numberOfDaysToPayDebt3 = 0, numberOfDaysToSavingsGoal = 0;
@@ -415,7 +415,6 @@ public class DailyMoneyCC extends Fragment {
                 currentSavingsRate = s2.getSavingsRate();
                 currentSavingsPayments = s2.getSavingsPayments();
                 currentSavingsFrequency = s2.getSavingsFrequency();
-                savingsIntFrequency = s2.getSavingsIntFrequency();
                 savingsAnnualIncome = s2.getSavingsAnnualIncome();
             }
         }
@@ -438,7 +437,7 @@ public class DailyMoneyCC extends Fragment {
             do {
                 years = years + .00274;
             }
-            while (savingsGoal >= (savingsAmount * (Math.pow((1 + rate / savingsIntFrequency), savingsIntFrequency * years))) + ((((currentSavingsPayments * currentSavingsFrequency) - savingsAnnualIncome) / 12) * (((Math.pow((1 + rate / savingsIntFrequency), savingsIntFrequency * years)) - 1) / (rate / savingsIntFrequency)) * (1 + rate / savingsIntFrequency)));
+            while (savingsGoal >= (savingsAmount * (Math.pow((1 + rate / 12), 12 * years))) + ((((currentSavingsPayments * currentSavingsFrequency) - savingsAnnualIncome) / 12) * (((Math.pow((1 + rate / 12), 12 * years)) - 1) / (rate / 12)) * (1 + rate / 12)));
         }
 
         return years;

@@ -40,6 +40,8 @@ public class LayoutHelp extends MainNavigation {
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
+        menuConfig();
+
         helpInstructions = findViewById(R.id.helpInstructions);
 
         upSetUpButton = findViewById(R.id.upSetUpButton);

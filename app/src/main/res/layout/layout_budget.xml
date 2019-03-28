@@ -48,8 +48,8 @@
                         android:layout_marginEnd="10dp"
                         android:layout_marginBottom="5dp"
                         android:text="@string/total_income"
-                        android:textSize="22sp"
-                        android:textColor="@color/colorPrimaryDark"/>
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="22sp" />
 
                     <TextView
                         android:id="@+id/budgetIncomeTotalText"
@@ -59,8 +59,8 @@
                         android:layout_marginTop="10dp"
                         android:layout_marginEnd="10dp"
                         android:layout_marginBottom="5dp"
-                        android:textSize="22sp"
-                        android:textColor="@color/colorPrimaryDark"/>
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="22sp" />
 
                 </LinearLayout>
 
@@ -78,8 +78,8 @@
                         android:layout_marginEnd="10dp"
                         android:layout_marginBottom="10dp"
                         android:text="@string/total_expenses"
-                        android:textSize="22sp"
-                        android:textColor="@color/colorPrimaryDark"/>
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="22sp" />
 
                     <TextView
                         android:id="@+id/budgetExpensesTotalText"
@@ -89,8 +89,8 @@
                         android:layout_marginTop="5dp"
                         android:layout_marginEnd="10dp"
                         android:layout_marginBottom="10dp"
-                        android:textSize="22sp"
-                        android:textColor="@color/colorPrimaryDark"/>
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="22sp" />
 
                 </LinearLayout>
 
@@ -100,16 +100,16 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:text="@string/income_available"
-                    android:textSize="16sp"
-                    android:textColor="@color/colorPrimaryDark"/>
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/incomeAvailable"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:textSize="16sp"
-                    android:textColor="@color/colorPrimaryDark"/>
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/budgetOopsText"
@@ -138,165 +138,180 @@
                     android:background="@drawable/entry_box"
                     android:contentDescription="@string/done_budget"
                     android:text="@string/done_budget"
-                    android:textColor="@color/colorPrimaryDark"/>
+                    android:textColor="@color/colorPrimaryDark" />
 
-                <TextView
-                    android:id="@+id/emptyBudgetText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:text="@string/empty_budget"
-                    android:layout_gravity="center_horizontal"
-                    android:gravity="center_horizontal"
-                    android:textColor="@color/colorGreen"
-                    android:textSize="18sp"/>
 
-                <TextView
-                    android:id="@+id/budgetSetUpNoTime"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:text="@string/no_time"
-                    android:layout_gravity="center_horizontal"
-                    android:gravity="center_horizontal"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:textSize="16sp"
-                    android:clickable="true"
-                    android:focusable="true" />
 
-                <TextView
-                    android:id="@+id/budgetSetUpNoTime2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:text="@string/no_time4"
-                    android:layout_gravity="center_horizontal"
-                    android:gravity="center_horizontal"
-                    android:textColor="@color/colorGreen"
-                    android:textSize="16sp"/>
-
-                <Button
-                    android:id="@+id/budgetSetUpTimeButton"
-                    android:layout_width="50dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:layout_gravity="end"
-                    android:text="@string/ok"
-                    android:contentDescription="@string/ok"
-                    android:background="@drawable/entry_box"
-                    android:textColor="@color/colorPrimaryDark"
-                    />
-
-                <TextView
-                    android:id="@+id/budgetSetUpNeedHelp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:text="@string/need_help"
-                    android:layout_gravity="center_horizontal"
-                    android:gravity="center_horizontal"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:textSize="16sp"
-                    android:clickable="true"
-                    android:focusable="true" />
-
-                <TextView
-                    android:id="@+id/budgetSetUpNeedHelp2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:text="@string/need_help4"
-                    android:layout_gravity="center_horizontal"
-                    android:gravity="center_horizontal"
-                    android:textColor="@color/colorGreen"
-                    android:textSize="16sp"/>
-
-                <Button
-                    android:id="@+id/budgetSetUpHelpButton"
-                    android:layout_width="50dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:layout_gravity="end"
-                    android:text="@string/ok"
-                    android:contentDescription="@string/ok"
-                    android:background="@drawable/entry_box"
-                    android:textColor="@color/colorPrimaryDark"
-                    />
-
-                <TextView
-                android:id="@+id/deleteExpText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:text="@string/cannot_delete_budget"
-                android:textColor="@android:color/holo_red_light"
-                android:textSize="16sp" />
-
-                <RelativeLayout
+                <ScrollView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
-                    <Button
-                        android:id="@+id/ok2Button"
-                        android:layout_width="60dp"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:layout_marginStart="5dp"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginEnd="10dp"
-                        android:layout_marginBottom="5dp"
+                        android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/emptyBudgetText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_margin="10dp"
+                        android:gravity="center_horizontal"
+                        android:text="@string/empty_budget"
+                        android:textColor="@color/colorGreen"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:id="@+id/budgetSetUpNoTime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_margin="10dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:gravity="center_horizontal"
+                        android:text="@string/no_time"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/budgetSetUpNoTime2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_margin="10dp"
+                        android:gravity="center_horizontal"
+                        android:text="@string/no_time4"
+                        android:textColor="@color/colorGreen"
+                        android:textSize="16sp" />
+
+                    <Button
+                        android:id="@+id/budgetSetUpTimeButton"
+                        android:layout_width="50dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:layout_margin="10dp"
                         android:background="@drawable/entry_box"
+                        android:contentDescription="@string/ok"
                         android:text="@string/ok"
-                        android:contentDescription="@string/ok"
-                        android:textSize="12sp"
-                        android:textColor="@color/colorPrimaryDark"/>
+                        android:textColor="@color/colorPrimaryDark" />
 
-                </RelativeLayout>
+                    <TextView
+                        android:id="@+id/budgetSetUpNeedHelp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_margin="10dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:gravity="center_horizontal"
+                        android:text="@string/need_help"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="16sp" />
 
-                <TextView
-                    android:id="@+id/noSpendingReportText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:text="@string/no_spending_report"
-                    android:textColor="@android:color/holo_red_light"
-                    android:textSize="16sp" />
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/budgetSetUpNeedHelp2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_margin="10dp"
+                        android:gravity="center_horizontal"
+                        android:text="@string/need_help4"
+                        android:textColor="@color/colorGreen"
+                        android:textSize="16sp" />
 
                     <Button
-                        android:id="@+id/cancelButton"
-                        android:layout_width="70dp"
+                        android:id="@+id/budgetSetUpHelpButton"
+                        android:layout_width="50dp"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentStart="true"
-                        android:layout_marginStart="5dp"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginEnd="10dp"
-                        android:layout_marginBottom="5dp"
+                        android:layout_gravity="end"
+                        android:layout_margin="10dp"
                         android:background="@drawable/entry_box"
-                        android:text="@string/cancel"
                         android:contentDescription="@string/ok"
-                        android:textSize="12sp"
-                        android:textColor="@color/colorPrimaryDark"/>
-
-                    <Button
-                        android:id="@+id/okButton"
-                        android:layout_width="60dp"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:layout_marginStart="5dp"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginEnd="10dp"
-                        android:layout_marginBottom="5dp"
-                        android:background="@drawable/entry_box"
                         android:text="@string/ok"
-                        android:contentDescription="@string/ok"
-                        android:textSize="12sp"
-                        android:textColor="@color/colorPrimaryDark"/>
+                        android:textColor="@color/colorPrimaryDark" />
 
-                </RelativeLayout>
+                    <TextView
+                        android:id="@+id/deleteExpText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:text="@string/cannot_delete_budget"
+                        android:textColor="@android:color/holo_red_light"
+                        android:textSize="16sp" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <Button
+                            android:id="@+id/ok2Button"
+                            android:layout_width="60dp"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginStart="5dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginEnd="10dp"
+                            android:layout_marginBottom="5dp"
+                            android:background="@drawable/entry_box"
+                            android:contentDescription="@string/ok"
+                            android:text="@string/ok"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textSize="12sp" />
+
+                    </RelativeLayout>
+
+                    <TextView
+                        android:id="@+id/noSpendingReportText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:text="@string/no_spending_report"
+                        android:textColor="@android:color/holo_red_light"
+                        android:textSize="16sp" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <Button
+                            android:id="@+id/cancelButton"
+                            android:layout_width="70dp"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentStart="true"
+                            android:layout_marginStart="5dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginEnd="10dp"
+                            android:layout_marginBottom="5dp"
+                            android:background="@drawable/entry_box"
+                            android:contentDescription="@string/ok"
+                            android:text="@string/cancel"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textSize="12sp" />
+
+                        <Button
+                            android:id="@+id/okButton"
+                            android:layout_width="60dp"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginStart="5dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginEnd="10dp"
+                            android:layout_marginBottom="5dp"
+                            android:background="@drawable/entry_box"
+                            android:contentDescription="@string/ok"
+                            android:text="@string/ok"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textSize="12sp" />
+
+                    </RelativeLayout>
+
+                    </LinearLayout>
+
+                </ScrollView>
+
+
 
 
                 <View
@@ -337,8 +352,8 @@
                                     android:layout_gravity="start"
                                     android:layout_margin="10dp"
                                     android:text="@string/income"
-                                    android:textSize="18sp"
                                     android:textColor="@color/colorPrimaryDark"
+                                    android:textSize="18sp"
                                     tools:ignore="RelativeOverlap" />
 
                                 <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -347,8 +362,8 @@
                                     android:layout_height="30dp"
                                     android:layout_alignParentEnd="true"
                                     android:layout_margin="10dp"
-                                    android:foreground="@drawable/ic_add_white_24dp"
                                     android:contentDescription="@string/add"
+                                    android:foreground="@drawable/ic_add_white_24dp"
                                     android:scaleType="fitCenter"
                                     tools:ignore="UnusedAttribute" />
 
@@ -380,8 +395,8 @@
                                     android:layout_gravity="start"
                                     android:layout_margin="10dp"
                                     android:text="@string/expenses"
-                                    android:textSize="18sp"
                                     android:textColor="@color/colorPrimaryDark"
+                                    android:textSize="18sp"
                                     tools:ignore="RelativeOverlap" />
 
                                 <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -390,8 +405,8 @@
                                     android:layout_height="30dp"
                                     android:layout_alignParentEnd="true"
                                     android:layout_margin="10dp"
-                                    android:foreground="@drawable/ic_add_white_24dp"
                                     android:contentDescription="@string/add"
+                                    android:foreground="@drawable/ic_add_white_24dp"
                                     android:scaleType="fitCenter"
                                     tools:ignore="UnusedAttribute" />
 

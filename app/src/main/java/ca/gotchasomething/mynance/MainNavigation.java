@@ -4,19 +4,17 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import com.google.android.material.navigation.NavigationView;
 
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-
-import android.view.Menu;
-import android.view.MenuItem;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 public class MainNavigation extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -54,6 +52,7 @@ public class MainNavigation extends AppCompatActivity implements NavigationView.
         beforeSetUpOrAfter();
         menu = navigationView.getMenu();
         if (before) {
+            menu.findItem(R.id.menu_before).setVisible(true);
             menu.findItem(R.id.menu_daily_money).setVisible(false);
             menu.findItem(R.id.menu_budget).setVisible(false);
             menu.findItem(R.id.menu_debt).setVisible(false);
@@ -71,6 +70,7 @@ public class MainNavigation extends AppCompatActivity implements NavigationView.
             menu.findItem(R.id.menu_budget_report_inc).setEnabled(false);
             menu.findItem(R.id.menu_help).setEnabled(false);
         } else {
+            menu.findItem(R.id.menu_before).setVisible(false);
             menu.findItem(R.id.menu_daily_money).setVisible(true);
             menu.findItem(R.id.menu_budget).setVisible(true);
             menu.findItem(R.id.menu_debt).setVisible(true);

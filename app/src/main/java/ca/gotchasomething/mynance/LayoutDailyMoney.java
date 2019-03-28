@@ -1,21 +1,23 @@
 package ca.gotchasomething.mynance;
 
 import android.os.Bundle;
-import androidx.annotation.Nullable;
-import com.google.android.material.tabs.TabLayout;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+
+import com.google.android.material.tabs.TabLayout;
+
 import java.text.NumberFormat;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import ca.gotchasomething.mynance.tabFragments.DailyCreditCard;
 import ca.gotchasomething.mynance.tabFragments.DailyMoneyCC;
 import ca.gotchasomething.mynance.tabFragments.DailyMoneyIn;
-import ca.gotchasomething.mynance.tabFragments.DailyCreditCard;
 import ca.gotchasomething.mynance.tabFragments.DailyMoneyOut;
 import ca.gotchasomething.mynance.tabFragments.DailyWeeklyLimits;
 
@@ -44,6 +46,8 @@ public class LayoutDailyMoney extends MainNavigation {
         toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
+
+        menuConfig();
 
         dbManager = new DbManager(this);
 

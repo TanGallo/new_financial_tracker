@@ -48,7 +48,6 @@ public class DbHelper extends SQLiteOpenHelper {
     public static final String SAVINGSPAYMENTS = "savingsPayments";
     public static final String SAVINGSFREQUENCY = "savingsFrequency";
     public static final String SAVINGSRATE = "savingsRate";
-    public static final String SAVINGSINTFREQUENCY = "savingsIntFrequency";
     public static final String SAVINGSANNUALINCOME = "savingsAnnualIncome";
     public static final String SAVINGSDATE = "savingsDate";
     public static final String EXPREFKEYS = "expRefKeyS";
@@ -139,7 +138,6 @@ public class DbHelper extends SQLiteOpenHelper {
             " savingsPayments REAL," +
             " savingsFrequency REAL," +
             " savingsRate REAL," +
-            " savingsIntFrequency REAL," +
             " savingsAnnualIncome REAL," +
             " savingsDate TEXT," +
             " expRefKeyS INTEGER," +

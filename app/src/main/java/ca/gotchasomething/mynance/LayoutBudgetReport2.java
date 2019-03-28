@@ -55,6 +55,8 @@ public class LayoutBudgetReport2 extends MainNavigation {
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
+        menuConfig();
+
         general = new General();
         dbManager = new DbManager(getApplicationContext());
 

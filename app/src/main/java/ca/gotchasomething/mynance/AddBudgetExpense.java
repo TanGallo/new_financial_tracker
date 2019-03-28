@@ -18,15 +18,18 @@ public class AddBudgetExpense extends LayoutBudget {
 
     Button budgetAddExpenseButton, budgetCancelExpenseButton, budgetUpdateExpenseButton;
     DbManager dbManager;
-    Double expenseAmount = 0.0, expenseAnnualAmount = 0.0, expenseAAnnualAmount = 0.0, expenseBAnnualAmount = 0.0, expenseFrequency = 0.0;
+    Double expenseAmount = 0.0, expenseAmountD = 0.0, expenseAnnualAmount = 0.0, expenseAnnualAmountD = 0.0, expenseAAnnualAmount = 0.0,
+            expenseAAnnualAmountD = 0.0, expenseBAnnualAmount = 0.0, expenseBAnnualAmountD = 0.0, expenseFrequency = 0.0, expenseFrequencyD = 0.0;
     EditText budgetExpenseAmount, budgetExpenseCategory;
     ExpenseBudgetDb expenseBudgetDb;
     Intent backToBudget;
     long id = 0;
     RadioButton budgetExpenseARadioButton, budgetExpenseBRadioButton, budgetExpenseBiWeeklyRadioButton, budgetExpenseBiAnnuallyRadioButton,
-            budgetExpenseBiMonthlyRadioButton, budgetExpenseMonthlyRadioButton, budgetExpenseNoRadioButton, budgetExpenseWeeklyRadioButton, budgetExpenseYesRadioButton;
+            budgetExpenseBiMonthlyRadioButton, budgetExpenseMonthlyRadioButton, budgetExpenseNoRadioButton, budgetExpenseWeeklyRadioButton,
+            budgetExpenseYesRadioButton;
     RadioGroup budgetExpenseABRadioGroup, budgetExpenseFrequencyRadioGroup, budgetExpenseReminderRadioGroup;
-    String expenseFrequencyS = null, expenseName = null, expensePriority = null, expensePriorityS = null, expenseWeekly = null, expenseWeeklyS = null;
+    String expenseFrequencyS = null, expenseName = null, expenseNameS = null, expensePriority = null, expensePriorityE = null, expensePriorityS = null,
+            expenseWeekly = null, expenseWeeklyE = null, expenseWeeklyS = null;
     TextView weeklyGuidanceLabel;
 
     @Override
@@ -162,25 +165,52 @@ public class AddBudgetExpense extends LayoutBudget {
             if (budgetExpenseCategory.getText().toString().equals("")) {
                 Toast.makeText(getBaseContext(), R.string.no_blanks_warning, Toast.LENGTH_LONG).show();
             } else {
-                expenseName = budgetExpenseCategory.getText().toString();
+                expenseNameS = budgetExpenseCategory.getText().toString();
                 if ((budgetExpenseAmount.getText().toString().equals(""))) {
-                    expenseAmount = 0.0;
+                    expenseAmountD = 0.0;
                 } else {
-                    expenseAmount = Double.valueOf(budgetExpenseAmount.getText().toString());
+                    expenseAmountD = Double.valueOf(budgetExpenseAmount.getText().toString());
                 }
-                expenseFrequency = Double.valueOf(expenseFrequencyS);
-                expensePriority = String.valueOf(expensePriorityS);
-                expenseWeekly = String.valueOf(expenseWeeklyS);
-
-                expenseAnnualAmount = expenseAmount * expenseFrequency;
-
-                if (expensePriorityS.equals("A")) {
-                    expenseAAnnualAmount = expenseAnnualAmount;
-                    expenseBAnnualAmount = 0.0;
-                } else if (expensePriorityS.equals("B")) {
-                    expenseBAnnualAmount = expenseAnnualAmount;
-                    expenseAAnnualAmount = 0.0;
+                try {
+                    expenseFrequencyD = Double.valueOf(expenseFrequencyS);
+                } catch(NullPointerException e) {
+                    expenseFrequencyD = 1.0;
                 }
+                try {
+                    expensePriorityE = String.valueOf(expensePriorityS);
+                } catch(NullPointerException e2) {
+                    expensePriorityE = "A";
+                }
+                if(expensePriorityE.equals("null")) {
+                    expensePriorityE = "A";
+                }
+                try {
+                    expenseWeeklyE = String.valueOf(expenseWeeklyS);
+                } catch(NullPointerException e3) {
+                    expenseWeeklyE = "N";
+                }
+                if(expenseWeeklyE.equals("null")) {
+                    expenseWeeklyE = "N";
+                }
+
+                expenseAnnualAmountD = expenseAmountD * expenseFrequencyD;
+
+                if (expensePriorityE.equals("A")) {
+                    expenseAAnnualAmountD = expenseAnnualAmountD;
+                    expenseBAnnualAmountD = 0.0;
+                } else if (expensePriorityE.equals("B")) {
+                    expenseBAnnualAmountD = expenseAnnualAmountD;
+                    expenseAAnnualAmountD = 0.0;
+                }
+
+                expenseName = expenseNameS;
+                expenseAmount = expenseAmountD;
+                expenseFrequency = expenseFrequencyD;
+                expensePriority = expensePriorityE;
+                expenseWeekly = expenseWeeklyE;
+                expenseAnnualAmount = expenseAnnualAmountD;
+                expenseAAnnualAmount = expenseAAnnualAmountD;
+                expenseBAnnualAmount = expenseBAnnualAmountD;
 
                 expenseBudgetDb = new ExpenseBudgetDb(
                         expenseName,

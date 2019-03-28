@@ -283,7 +283,6 @@ public class DbManager extends AppCompatActivity {
                         cursor.getDouble(cursor.getColumnIndex(DbHelper.SAVINGSPAYMENTS)),
                         cursor.getDouble(cursor.getColumnIndex(DbHelper.SAVINGSFREQUENCY)),
                         cursor.getDouble(cursor.getColumnIndex(DbHelper.SAVINGSRATE)),
-                        cursor.getDouble(cursor.getColumnIndex(DbHelper.SAVINGSINTFREQUENCY)),
                         cursor.getDouble(cursor.getColumnIndex(DbHelper.SAVINGSANNUALINCOME)),
                         cursor.getString(cursor.getColumnIndex(DbHelper.SAVINGSDATE)),
                         cursor.getLong(cursor.getColumnIndex(DbHelper.EXPREFKEYS)),
@@ -306,7 +305,6 @@ public class DbManager extends AppCompatActivity {
         newSavings.put(DbHelper.SAVINGSPAYMENTS, saving.getSavingsPayments());
         newSavings.put(DbHelper.SAVINGSFREQUENCY, saving.getSavingsFrequency());
         newSavings.put(DbHelper.SAVINGSRATE, saving.getSavingsRate());
-        newSavings.put(DbHelper.SAVINGSINTFREQUENCY, saving.getSavingsIntFrequency());
         newSavings.put(DbHelper.SAVINGSANNUALINCOME, saving.getSavingsAnnualIncome());
         newSavings.put(DbHelper.SAVINGSDATE, saving.getSavingsDate());
         newSavings.put(DbHelper.EXPREFKEYS, saving.getExpRefKeyS());
@@ -323,7 +321,6 @@ public class DbManager extends AppCompatActivity {
         updateSaving.put(DbHelper.SAVINGSPAYMENTS, saving.getSavingsPayments());
         updateSaving.put(DbHelper.SAVINGSFREQUENCY, saving.getSavingsFrequency());
         updateSaving.put(DbHelper.SAVINGSRATE, saving.getSavingsRate());
-        updateSaving.put(DbHelper.SAVINGSINTFREQUENCY, saving.getSavingsIntFrequency());
         updateSaving.put(DbHelper.SAVINGSANNUALINCOME, saving.getSavingsAnnualIncome());
         updateSaving.put(DbHelper.SAVINGSDATE, saving.getSavingsDate());
         updateSaving.put(DbHelper.EXPREFKEYS, saving.getExpRefKeyS());

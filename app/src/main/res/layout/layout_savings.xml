@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<androidx.drawerlayout.widget.DrawerLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawer_layout"
@@ -9,8 +8,7 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     tools:context=".LayoutSavings"
-    tools:openDrawer="end"
-    >
+    tools:openDrawer="end">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -50,8 +48,8 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"
                         android:text="@string/total_saved"
-                        android:textSize="22sp"
-                        android:textColor="@color/colorPrimaryDark"/>
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="22sp" />
 
                     <TextView
                         android:id="@+id/totalSavedText"
@@ -59,8 +57,8 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"
                         android:text="@string/amount"
-                        android:textSize="22sp"
-                        android:textColor="@color/colorPrimaryDark"/>
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="22sp" />
 
                 </LinearLayout>
 
@@ -70,8 +68,8 @@
                     android:layout_height="30dp"
                     android:layout_gravity="end"
                     android:layout_marginEnd="10dp"
-                    android:foreground="@drawable/ic_add_white_24dp"
                     android:contentDescription="@string/add"
+                    android:foreground="@drawable/ic_add_white_24dp"
                     android:scaleType="fitCenter"
                     tools:ignore="UnusedAttribute" />
 
@@ -79,174 +77,185 @@
                     android:id="@+id/doneSavingsSetUpButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
                     android:layout_gravity="end"
-                    android:text="@string/done_savings"
-                    android:contentDescription="@string/done_savings"
+                    android:layout_margin="10dp"
                     android:background="@drawable/entry_box"
-                    android:textColor="@color/colorPrimaryDark"
-                    />
+                    android:contentDescription="@string/done_savings"
+                    android:text="@string/done_savings"
+                    android:textColor="@color/colorPrimaryDark" />
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginEnd="10dp"
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="10dp"
                     android:alpha=".5"
                     android:background="@color/colorPrimary"></View>
 
-                <TextView
-                    android:id="@+id/emptySavingsText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:text="@string/no_savings"
-                    android:layout_gravity="center_horizontal"
-                    android:gravity="center_horizontal"
-                    android:textColor="@color/colorGreen"
-                    android:textSize="18sp"/>
-
-                <TextView
-                    android:id="@+id/emptySavingsText2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:text="@string/plus_button_savings"
-                    android:layout_gravity="center_horizontal"
-                    android:gravity="center_horizontal"
-                    android:textColor="@color/colorGreen"
-                    android:textSize="18sp"/>
-
-                <TextView
-                    android:id="@+id/emptySavingsText3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:text="@string/empty_savings_3"
-                    android:layout_gravity="center_horizontal"
-                    android:gravity="center_horizontal"
-                    android:textColor="@color/colorGreen"
-                    android:textSize="18sp"/>
-
-                <TextView
-                    android:id="@+id/savingsSetUpNoTime"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:text="@string/no_time"
-                    android:layout_gravity="center_horizontal"
-                    android:gravity="center_horizontal"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:textSize="16sp"
-                    android:clickable="true"
-                    android:focusable="true" />
-
-                <TextView
-                    android:id="@+id/savingsSetUpNoTime2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:text="@string/no_time3"
-                    android:layout_gravity="center_horizontal"
-                    android:gravity="center_horizontal"
-                    android:textColor="@color/colorGreen"
-                    android:textSize="16sp"/>
-
-                <Button
-                    android:id="@+id/savingsSetUpTimeButton"
-                    android:layout_width="50dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:layout_gravity="end"
-                    android:text="@string/ok"
-                    android:contentDescription="@string/ok"
-                    android:background="@drawable/entry_box"
-                    android:textColor="@color/colorPrimaryDark"
-                    />
-
-                <TextView
-                    android:id="@+id/savingsSetUpNeedHelp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:text="@string/need_help"
-                    android:layout_gravity="center_horizontal"
-                    android:gravity="center_horizontal"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:textSize="16sp"
-                    android:clickable="true"
-                    android:focusable="true" />
-
-                <TextView
-                    android:id="@+id/savingsSetUpNeedHelp2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:text="@string/need_help3"
-                    android:layout_gravity="center_horizontal"
-                    android:gravity="center_horizontal"
-                    android:textColor="@color/colorGreen"
-                    android:textSize="16sp"/>
-
-                <Button
-                    android:id="@+id/savingsSetUpHelpButton"
-                    android:layout_width="50dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:layout_gravity="end"
-                    android:text="@string/ok"
-                    android:contentDescription="@string/ok"
-                    android:background="@drawable/entry_box"
-                    android:textColor="@color/colorPrimaryDark"
-                    />
-
-                <TextView
-                    android:id="@+id/deleteSavingsWarningText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:text="@string/delete_debt_warning"
-                    android:layout_gravity="center_horizontal"
-                    android:gravity="center_horizontal"
-                    android:textColor="@android:color/holo_red_light"
-                    android:textSize="18sp"/>
-
-                <RelativeLayout
+                <ScrollView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
-                    <Button
-                        android:id="@+id/cancelDeleteSavingsButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentStart="true"
-                        android:layout_gravity="end"
-                        android:layout_margin="5dp"
-                        android:gravity="center"
-                        android:background="@drawable/entry_box"
-                        android:text="@string/cancel"
-                        android:contentDescription="@string/cancel"
-                        android:textSize="12sp"
-                        android:textColor="@color/colorPrimaryDark"/>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="10dp"
+                        android:orientation="vertical">
 
-                    <Button
-                        android:id="@+id/continueDeleteSavingsButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:layout_gravity="end"
-                        android:layout_margin="5dp"
-                        android:gravity="center"
-                        android:background="@drawable/entry_box"
-                        android:text="@string/continue1"
-                        android:contentDescription="@string/continue1"
-                        android:textSize="12sp"
-                        android:textColor="@color/colorPrimaryDark"
-                        tools:ignore="RelativeOverlap" />
+                        <TextView
+                            android:id="@+id/emptySavingsText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_margin="10dp"
+                            android:gravity="center_horizontal"
+                            android:text="@string/no_savings"
+                            android:textColor="@color/colorGreen"
+                            android:textSize="18sp" />
 
-                </RelativeLayout>
+                        <TextView
+                            android:id="@+id/emptySavingsText2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_margin="10dp"
+                            android:gravity="center_horizontal"
+                            android:text="@string/plus_button_savings"
+                            android:textColor="@color/colorGreen"
+                            android:textSize="18sp" />
+
+                        <TextView
+                            android:id="@+id/emptySavingsText3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_margin="10dp"
+                            android:gravity="center_horizontal"
+                            android:text="@string/empty_savings_3"
+                            android:textColor="@color/colorGreen"
+                            android:textSize="18sp" />
+
+                        <TextView
+                            android:id="@+id/savingsSetUpNoTime"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_margin="10dp"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:gravity="center_horizontal"
+                            android:text="@string/no_time"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textSize="16sp" />
+
+                        <TextView
+                            android:id="@+id/savingsSetUpNoTime2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_margin="10dp"
+                            android:gravity="center_horizontal"
+                            android:text="@string/no_time3"
+                            android:textColor="@color/colorGreen"
+                            android:textSize="16sp" />
+
+                        <Button
+                            android:id="@+id/savingsSetUpTimeButton"
+                            android:layout_width="50dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="end"
+                            android:layout_margin="10dp"
+                            android:background="@drawable/entry_box"
+                            android:contentDescription="@string/ok"
+                            android:text="@string/ok"
+                            android:textColor="@color/colorPrimaryDark" />
+
+                        <TextView
+                            android:id="@+id/savingsSetUpNeedHelp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_margin="10dp"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:gravity="center_horizontal"
+                            android:text="@string/need_help"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textSize="16sp" />
+
+                        <TextView
+                            android:id="@+id/savingsSetUpNeedHelp2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_margin="10dp"
+                            android:gravity="center_horizontal"
+                            android:text="@string/need_help3"
+                            android:textColor="@color/colorGreen"
+                            android:textSize="16sp" />
+
+                        <Button
+                            android:id="@+id/savingsSetUpHelpButton"
+                            android:layout_width="50dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="end"
+                            android:layout_margin="10dp"
+                            android:background="@drawable/entry_box"
+                            android:contentDescription="@string/ok"
+                            android:text="@string/ok"
+                            android:textColor="@color/colorPrimaryDark" />
+
+                        <TextView
+                            android:id="@+id/deleteSavingsWarningText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_margin="10dp"
+                            android:gravity="center_horizontal"
+                            android:text="@string/delete_debt_warning"
+                            android:textColor="@android:color/holo_red_light"
+                            android:textSize="18sp" />
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <Button
+                                android:id="@+id/cancelDeleteSavingsButton"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentStart="true"
+                                android:layout_gravity="end"
+                                android:layout_margin="5dp"
+                                android:background="@drawable/entry_box"
+                                android:contentDescription="@string/cancel"
+                                android:gravity="center"
+                                android:text="@string/cancel"
+                                android:textColor="@color/colorPrimaryDark"
+                                android:textSize="12sp" />
+
+                            <Button
+                                android:id="@+id/continueDeleteSavingsButton"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:layout_gravity="end"
+                                android:layout_margin="5dp"
+                                android:background="@drawable/entry_box"
+                                android:contentDescription="@string/continue1"
+                                android:gravity="center"
+                                android:text="@string/continue1"
+                                android:textColor="@color/colorPrimaryDark"
+                                android:textSize="12sp"
+                                tools:ignore="RelativeOverlap" />
+
+                        </RelativeLayout>
+
+                    </LinearLayout>
+
+                </ScrollView>
 
                 <ListView
                     android:id="@+id/savingsListView"

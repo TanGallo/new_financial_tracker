@@ -55,6 +55,8 @@ public class LayoutSpendingReport extends MainNavigation {
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
+        menuConfig();
+
         general = new General();
         dbManager = new DbManager(getApplicationContext());
 
@@ -115,12 +117,14 @@ public class LayoutSpendingReport extends MainNavigation {
             spendingReportButton.setVisibility(View.GONE);
             totalSpentLabel.setVisibility(View.GONE);
             totalSpentText.setVisibility(View.GONE);
+            spendingReportLayout.setVisibility(View.GONE);
         } else {
             emptySpinnersText.setVisibility(View.GONE);
             emptySpinnersText2.setVisibility(View.GONE);
             monthSpinner.setVisibility(View.VISIBLE);
             yearSpinner.setVisibility(View.VISIBLE);
             spendingReportButton.setVisibility(View.VISIBLE);
+            spendingReportLayout.setVisibility(View.VISIBLE);
         }
     }
 

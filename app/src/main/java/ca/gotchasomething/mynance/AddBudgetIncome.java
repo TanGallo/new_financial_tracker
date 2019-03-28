@@ -2,9 +2,6 @@ package ca.gotchasomething.mynance;
 
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.annotation.Nullable;
-
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -12,13 +9,14 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import ca.gotchasomething.mynance.data.IncomeBudgetDb;
 
 public class AddBudgetIncome extends LayoutBudget {
 
     Button budgetAddIncomeButton, budgetUpdateIncomeButton;
     DbManager dbManager;
-    Double incomeAmount = 0.0, incomeAnnualAmount = 0.0, incomeFrequency = 0.0;
+    Double incomeAmount = 0.0, incomeAmountD = 0.0, incomeAnnualAmount = 0.0, incomeAnnualAmountD = 0.0, incomeFrequency = 0.0, incomeFrequencyD = 0.0;
     EditText budgetIncomeAmount, budgetIncomeCategory;
     IncomeBudgetDb incomeBudgetDb;
     Intent backToBudget;
@@ -26,7 +24,7 @@ public class AddBudgetIncome extends LayoutBudget {
     RadioButton budgetIncomeAnnuallyRadioButton, budgetIncomeBiAnnuallyRadioButton, budgetIncomeBiMonthlyRadioButton, budgetIncomeBiWeeklyRadioButton,
             budgetIncomeMonthlyRadioButton, budgetIncomeWeeklyRadioButton;
     RadioGroup budgetIncomeFrequencyRadioGroup;
-    String incomeFrequencyS = null, incomeName = null;
+    String incomeFrequencyS = null, incomeName = null, incomeNameS = null;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -105,14 +103,23 @@ public class AddBudgetIncome extends LayoutBudget {
             if(budgetIncomeCategory.getText().toString().equals("")) {
                 Toast.makeText(getBaseContext(), R.string.no_blanks_warning, Toast.LENGTH_LONG).show();
             } else {
-                incomeName = budgetIncomeCategory.getText().toString();
+                incomeNameS = budgetIncomeCategory.getText().toString();
                 if(budgetIncomeAmount.getText().toString().equals("")) {
-                    incomeAmount = 0.0;
+                    incomeAmountD = 0.0;
                 } else {
-                    incomeAmount = Double.valueOf(budgetIncomeAmount.getText().toString());
+                    incomeAmountD = Double.valueOf(budgetIncomeAmount.getText().toString());
                 }
-                incomeFrequency = Double.valueOf(incomeFrequencyS);
-                incomeAnnualAmount = incomeAmount * incomeFrequency;
+                try {
+                    incomeFrequencyD = Double.valueOf(incomeFrequencyS);
+                } catch(NullPointerException e) {
+                    incomeFrequencyD = 1.0;
+                }
+                incomeAnnualAmountD = incomeAmountD * incomeFrequencyD;
+
+                incomeName = incomeNameS;
+                incomeAmount = incomeAmountD;
+                incomeFrequency = incomeFrequencyD;
+                incomeAnnualAmount = incomeAnnualAmountD;
 
                 incomeBudgetDb = new IncomeBudgetDb(
                         incomeName,

@@ -56,7 +56,7 @@ public class DailyMoneyIn extends Fragment {
             currentSavingsFrequency = 0.0, currentSavingsPayments = 0.0, currentSavingsRate = 0.0, debtAmount = 0.0, debtAnnualIncome = 0.0, debtLimit = 0.0,
             moneyInAmount = 0.0, moneyInAmount1 = 0.0, moneyInAmountD = 0.0, moneyInD = 0.0, newAccountBalance = 0.0, newAvailableBalance = 0.0, newDebtAmount = 0.0,
             newSavingsAmount = 0.0, numberOfYearsToPayDebt = 0.0, oldMoneyInAmount = 0.0, percentB = 0.0, rate = 0.0, savingsAmount = 0.0,
-            savingsAnnualIncome = 0.0, savingsGoal = 0.0, savingsIntFrequency = 0.0, years = 0.0;
+            savingsAnnualIncome = 0.0, savingsGoal = 0.0, years = 0.0;
     EditText moneyInAmountText, moneyInAmountEditText;
     General general;
     int numberOfDaysToPayDebt = 0, numberOfDaysToSavingsGoal = 0;
@@ -250,7 +250,6 @@ public class DailyMoneyIn extends Fragment {
                 currentSavingsRate = s2.getSavingsRate();
                 currentSavingsPayments = s2.getSavingsPayments();
                 currentSavingsFrequency = s2.getSavingsFrequency();
-                savingsIntFrequency = s2.getSavingsIntFrequency();
                 savingsAnnualIncome = s2.getSavingsAnnualIncome();
             }
         }
@@ -273,7 +272,7 @@ public class DailyMoneyIn extends Fragment {
             do {
                 years = years + .00274;
             }
-            while (savingsGoal >= (savingsAmount * (Math.pow((1 + rate / savingsIntFrequency), savingsIntFrequency * years))) + ((((currentSavingsPayments * currentSavingsFrequency) - savingsAnnualIncome) / 12) * (((Math.pow((1 + rate / savingsIntFrequency), savingsIntFrequency * years)) - 1) / (rate / savingsIntFrequency)) * (1 + rate / savingsIntFrequency)));
+            while (savingsGoal >= (savingsAmount * (Math.pow((1 + rate / 12), 12 * years))) + ((((currentSavingsPayments * currentSavingsFrequency) - savingsAnnualIncome) / 12) * (((Math.pow((1 + rate / 12), 12 * years)) - 1) / (rate / 12)) * (1 + rate / 12)));
         }
 
         return years;

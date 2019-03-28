@@ -28,7 +28,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -46,35 +45,36 @@ public class LayoutDebt extends MainNavigation {
 
     Button cancelDebtButton, cancelDeleteDebtButton, continueDeleteDebtButton, debtsSetUpTimeButton, debtsSetUpHelpButton, doneDebtsSetUpButton,
             saveDebtButton, updateDebtButton;
-    Calendar debtCal;
     ContentValues values, values2, values3, values4, values5;
-    Date debtEndD, latestDateD;
+    Date latestDateD;
     DbHelper dbHelper;
     DbManager dbManager;
     DebtDb debtDb;
     DebtDbAdapter debtAdapter;
-    Double amount = 0.0, debtAmountEntryD = 0.0, annualIncome = 0.0, balanceAmount = 0.0, debtAmountD = 0.0, debtPercentD2 = 0.0, expenseAnnualAmount = 0.0,
-            frequency = 0.0, debtFrequencyEntryD = 0.0, debtLimitEntryD = 0.0, numberOfYearsToPayDebt = 0.0, payments = 0.0, debtPaymentsEntryD = 0.0, rate = 0.0, debtRateEntryD = 0.0,
-            totalDebt = 0.0, totalDebtD = 0.0;
+    Double debtAmount = 0.0, debtAmountb = 0.0, debtAnnualIncome = 0.0, debtAnnualIncomeb = 0.0, balanceAmount = 0.0, debtAmountD = 0.0, debtPercentD2 = 0.0,
+            expenseAnnualAmount = 0.0, debtFrequency = 0.0, debtFrequencyb = 0.0, debtLimit = 0.0, debtLimitb = 0.0, debtPayments = 0.0, debtPaymentsb = 0.0,
+            debtRate = 0.0, debtRateb = 0.0, totalDebt = 0.0, totalDebtD = 0.0;
     EditText debtAmountEntry, debtLimitEntry, debtNameEntry, debtPaymentsEntry, debtPercentEntry;
     FloatingActionButton addDebtButton;
     General general;
     int balanceDone = 0, budgetDone = 0, debtsDone = 0, savingsDone = 0, tourDone = 0;
-    Integer numberOfDaysToPayDebt = 0;
     Intent addNewDebt, backToDebtScreen, backToSetUp;
+    LinearLayout toastLayout;
     ListView debtListView;
-    long id;
+    long id, incRefKeyD;
     NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
     NumberFormat percentFormat = NumberFormat.getPercentInstance();
     RadioButton debtBiWeeklyRadioButton, debtMonthlyRadioButton, debtWeeklyRadioButton;
     RadioGroup debtFrequencyRadioGroup;
     SQLiteDatabase expenseDb;
     SetUpDb setUpDb;
-    SimpleDateFormat debtEndS, latestDateS;
-    String debtAmount2 = null, debtAmountS = null, debtAmountS2 = null, debtEnd = null, debtFrequencyS = null, debtLimitS2 = null, debtPaymentsS = null,
-            debtPercentS = null, expRefKeyD = null, latestDate = null, debtNameEntryD = null, priority = null, totalDebt2 = null, totalDebtS = null;
+    SimpleDateFormat latestDateS;
+    String debtAmount2 = null, debtAmountS = null, debtAmountS2 = null, debtEnd = null, debtEnd2 = null, debtFrequencyS = null, debtLimitS2 = null, debtPaymentsS = null,
+            debtPercentS = null, expRefKeyD = null, latestDate = null, debtName = null, debtNameb = null, priority = null, totalDebt2 = null, totalDebtS = null,
+            weekly = null;
     TextView debtDateResult, debtDateResultLabel, debtsSetUpNoTime, debtsSetUpNoTime2, debtsSetUpNeedHelp, debtsSetUpNeedHelp2, deleteDebtWarningText,
-            emptyDebtsText, emptyDebtsText2, emptyDebtsText3, totalDebtOwing, totalDebtPaidByDate, totalDebtPaidLabel;
+            emptyDebtsText, emptyDebtsText2, emptyDebtsText3, totalDebtOwing, totalDebtPaidByDate, totalDebtPaidLabel, tv;
+    Toast toast;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -89,6 +89,8 @@ public class LayoutDebt extends MainNavigation {
         toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
+
+        menuConfig();
 
         general = new General();
         dbManager = new DbManager(this);
@@ -165,9 +167,9 @@ public class LayoutDebt extends MainNavigation {
             setUpDb = new SetUpDb(debtsDone, savingsDone, budgetDone, balanceDone, balanceAmount, tourDone, 0);
             dbManager.addSetUp(setUpDb);
 
-            Toast toast = Toast.makeText(getApplicationContext(), R.string.edit_debts_message, Toast.LENGTH_LONG);
-            LinearLayout toastLayout = (LinearLayout) toast.getView();
-            TextView tv = (TextView) toastLayout.getChildAt(0);
+            toast = Toast.makeText(getApplicationContext(), R.string.edit_debts_message, Toast.LENGTH_LONG);
+            toastLayout = (LinearLayout) toast.getView();
+            tv = (TextView) toastLayout.getChildAt(0);
             tv.setTextSize(20);
             toast.show();
 
@@ -274,73 +276,6 @@ public class LayoutDebt extends MainNavigation {
         return priority;
     }
 
-    public Double incomeData() {
-        for (IncomeBudgetDb i : dbManager.getIncomes()) {
-            if (String.valueOf(i.getId()).equals(String.valueOf(debtDb.getIncRefKeyD()))) {
-                annualIncome = i.getIncomeAnnualAmount();
-            }
-        }
-        return annualIncome;
-    }
-
-    public String calcDebtDate() {
-
-        if (debtAmountEntry.getText().toString().equals("")) {
-            amount = 0.0;
-        } else {
-            try {
-                amount = Double.valueOf(debtAmountEntry.getText().toString());
-            } catch (NumberFormatException e2) {
-                amount = general.extractingDollars(debtAmountEntry);
-            }
-        }
-
-        if (debtPercentEntry.getText().toString().equals("")) {
-            rate = 0.0;
-        } else {
-            try {
-                rate = Double.valueOf(debtPercentEntry.getText().toString());
-            } catch (NumberFormatException e3) {
-                rate = general.extractingPercents(debtPercentEntry);
-            }
-        }
-
-        if (debtPaymentsEntry.getText().toString().equals("")) {
-            payments = 0.0;
-        } else {
-            try {
-                payments = Double.valueOf(debtPaymentsEntry.getText().toString());
-            } catch (NumberFormatException e4) {
-                payments = general.extractingDollars(debtPaymentsEntry);
-            }
-        }
-
-        frequency = Double.valueOf(debtFrequencyS);
-
-        debtCal = Calendar.getInstance();
-        numberOfYearsToPayDebt = -(Math.log(1 - (amount * (rate / 100) / ((payments * frequency) - incomeData()))) / (frequency * Math.log(1 + ((rate / 100) / frequency))));
-        numberOfDaysToPayDebt = (int) Math.round(numberOfYearsToPayDebt * 365);
-
-        if (amount <= 0) {
-            debtEnd = getString(R.string.debt_paid);
-            debtDateResultLabel.setVisibility(View.GONE);
-
-        } else if (numberOfDaysToPayDebt > Integer.MAX_VALUE || numberOfDaysToPayDebt <= 0) {
-            debtEnd = getString(R.string.too_far);
-            debtDateResultLabel.setVisibility(View.GONE);
-
-        } else {
-            debtCal = Calendar.getInstance();
-            debtCal.add(Calendar.DATE, numberOfDaysToPayDebt);
-            debtEndD = debtCal.getTime();
-            debtEndS = new SimpleDateFormat("dd-MMM-yyyy");
-            debtEnd = debtEndS.format(debtEndD);
-            debtDateResultLabel.setVisibility(View.VISIBLE);
-        }
-
-        return debtEnd;
-    }
-
     TextWatcher onChangeDebtAmount = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -348,7 +283,18 @@ public class LayoutDebt extends MainNavigation {
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-            debtDateResult.setText(calcDebtDate());
+            /*allDebtData();
+            debtDateResult.setText(general.calcDebtDate(
+                    debtAmount,
+                    debtRate,
+                    debtPayments,
+                    debtFrequency,
+                    debtAnnualIncome,
+                    getString(R.string.debt_paid),
+                    getString(R.string.too_far)));
+            general.whatToShowDebt(getString(R.string.debt_paid), getString(R.string.too_far), debtDateResultLabel, debtDateResult);*/
+            debtEndResult();
+            debtDateResult.setText(debtEnd2);
         }
 
         @Override
@@ -363,7 +309,18 @@ public class LayoutDebt extends MainNavigation {
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-            debtDateResult.setText(calcDebtDate());
+            /*allDebtData();
+            debtDateResult.setText(general.calcDebtDate(
+                    debtAmount,
+                    debtRate,
+                    debtPayments,
+                    debtFrequency,
+                    debtAnnualIncome,
+                    getString(R.string.debt_paid),
+                    getString(R.string.too_far)));
+            general.whatToShowDebt(getString(R.string.debt_paid), getString(R.string.too_far), debtDateResultLabel, debtDateResult);*/
+            debtEndResult();
+            debtDateResult.setText(debtEnd2);
         }
 
         @Override
@@ -378,13 +335,56 @@ public class LayoutDebt extends MainNavigation {
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-            debtDateResult.setText(calcDebtDate());
+            /*allDebtData();
+            debtDateResult.setText(general.calcDebtDate(
+                    debtAmount,
+                    debtRate,
+                    debtPayments,
+                    debtFrequency,
+                    debtAnnualIncome,
+                    getString(R.string.debt_paid),
+                    getString(R.string.too_far)));
+            general.whatToShowDebt(getString(R.string.debt_paid), getString(R.string.too_far), debtDateResultLabel, debtDateResult);*/
+            debtEndResult();
+            debtDateResult.setText(debtEnd2);
         }
 
         @Override
         public void afterTextChanged(Editable s) {
         }
     };
+
+    public void debtEndResult() {
+        allDebtData();
+        debtEnd2 = general.calcDebtDate(
+                debtAmount,
+                debtRate,
+                debtPayments,
+                debtFrequency,
+                debtAnnualIncome,
+                getString(R.string.debt_paid),
+                getString(R.string.too_far));
+        general.whatToShowDebt(getString(R.string.debt_paid), getString(R.string.too_far), debtDateResultLabel, debtDateResult);
+    }
+
+    public void allDebtData() {
+        if (debtNameEntry.getText().toString().equals("")) {
+            debtName = "null";
+        } else {
+            debtName = debtNameEntry.getText().toString();
+        }
+        debtLimit = general.extractingDouble(debtLimitEntry);
+        debtAmount = general.extractingDouble(debtAmountEntry);
+        debtRate = general.extractingPercent(debtPercentEntry);
+        debtPayments = general.extractingDouble(debtPaymentsEntry);
+        try {
+            debtFrequency = Double.valueOf(debtFrequencyS);
+        } catch (NullPointerException e) {
+            debtFrequency = 12.0;
+        }
+        debtAnnualIncome = debtAnnualIncomeb;
+
+    }
 
     public class DebtDbAdapter extends ArrayAdapter<DebtDb> {
 
@@ -462,6 +462,14 @@ public class LayoutDebt extends MainNavigation {
             }
             holder.debtListFreeDate.setText(debtEnd);
 
+            incRefKeyD = debts.get(position).getIncRefKeyD();
+
+            for (IncomeBudgetDb i : dbManager.getIncomes()) {
+                if (String.valueOf(i.getId()).equals(String.valueOf(incRefKeyD))) {
+                    debtAnnualIncomeb = i.getIncomeAnnualAmount();
+                }
+            }
+
             holder.debtDeleted.setTag(debts.get(position));
             holder.debtEdit.setTag(debts.get(position));
 
@@ -496,29 +504,42 @@ public class LayoutDebt extends MainNavigation {
 
                     debtDb = (DebtDb) holder.debtEdit.getTag();
 
-                    debtNameEntryD = debtDb.getDebtName();
-                    debtNameEntry.setText(debtNameEntryD);
+                    debtNameb = debtDb.getDebtName();
+                    debtNameEntry.setText(debtNameb);
 
-                    debtLimitEntryD = debtDb.getDebtLimit();
-                    debtLimitS2 = currencyFormat.format(debtLimitEntryD);
+                    debtLimitb = debtDb.getDebtLimit();
+                    debtLimitS2 = currencyFormat.format(debtLimitb);
                     debtLimitEntry.setText(debtLimitS2);
 
-                    debtAmountEntryD = debtDb.getDebtAmount();
-                    debtAmountS2 = currencyFormat.format(debtAmountEntryD);
+                    debtAmount = debtDb.getDebtAmount();
+                    debtAmountS2 = currencyFormat.format(debtAmount);
                     debtAmountEntry.setText(debtAmountS2);
                     debtAmountEntry.addTextChangedListener(onChangeDebtAmount);
 
-                    debtRateEntryD = debtDb.getDebtRate();
-                    debtPercentD2 = debtRateEntryD / 100;
+                    debtRate = debtDb.getDebtRate();
+                    debtPercentD2 = debtRate / 100;
                     percentFormat.setMinimumFractionDigits(2);
                     debtPercentS = percentFormat.format(debtPercentD2);
                     debtPercentEntry.setText(debtPercentS);
                     debtPercentEntry.addTextChangedListener(onChangeDebtPercent);
 
-                    debtPaymentsEntryD = debtDb.getDebtPayments();
-                    debtPaymentsS = currencyFormat.format(debtPaymentsEntryD);
+                    debtPayments = debtDb.getDebtPayments();
+                    debtPaymentsS = currencyFormat.format(debtPayments);
                     debtPaymentsEntry.setText(debtPaymentsS);
                     debtPaymentsEntry.addTextChangedListener(onChangeDebtPayments);
+
+                    debtFrequency = debtDb.getDebtFrequency();
+
+                    debtAnnualIncome = debtDb.getDebtAnnualIncome();
+
+                    debtEnd = debtDb.getDebtEnd();
+                    debtDateResult.setText(debtEnd);
+                    //general.whatToShowDebt(getString(R.string.debt_paid), getString(R.string.too_far), debtDateResultLabel, debtDateResult);
+                    if (debtEnd.equals(getString(R.string.debt_paid)) || debtEnd.equals(getString(R.string.too_far))) {
+                        debtDateResultLabel.setVisibility(View.GONE);
+                    } else {
+                        debtDateResultLabel.setVisibility(View.VISIBLE);
+                    }
 
                     //set radio button selections from data
                     if (debtDb.getDebtFrequency() == 52) {
@@ -539,21 +560,52 @@ public class LayoutDebt extends MainNavigation {
                             switch (checkedId) {
                                 case R.id.debtWeeklyRadioButton:
                                     debtFrequencyS = "52";
-                                    debtDateResult.setText(calcDebtDate());
+                                    /*allDebtData();
+            debtDateResult.setText(general.calcDebtDate(
+                    debtAmount,
+                    debtRate,
+                    debtPayments,
+                    debtFrequency,
+                    debtAnnualIncome,
+                    getString(R.string.debt_paid),
+                    getString(R.string.too_far)));
+            general.whatToShowDebt(getString(R.string.debt_paid), getString(R.string.too_far), debtDateResultLabel, debtDateResult);*/
+                                    debtEndResult();
+                                    debtDateResult.setText(debtEnd2);
                                     break;
                                 case R.id.debtBiWeeklyRadioButton:
                                     debtFrequencyS = "26";
-                                    debtDateResult.setText(calcDebtDate());
+                                    /*allDebtData();
+            debtDateResult.setText(general.calcDebtDate(
+                    debtAmount,
+                    debtRate,
+                    debtPayments,
+                    debtFrequency,
+                    debtAnnualIncome,
+                    getString(R.string.debt_paid),
+                    getString(R.string.too_far)));
+            general.whatToShowDebt(getString(R.string.debt_paid), getString(R.string.too_far), debtDateResultLabel, debtDateResult);*/
+                                    debtEndResult();
+                                    debtDateResult.setText(debtEnd2);
                                     break;
                                 case R.id.debtMonthlyRadioButton:
                                     debtFrequencyS = "12";
-                                    debtDateResult.setText(calcDebtDate());
+                                    /*allDebtData();
+            debtDateResult.setText(general.calcDebtDate(
+                    debtAmount,
+                    debtRate,
+                    debtPayments,
+                    debtFrequency,
+                    debtAnnualIncome,
+                    getString(R.string.debt_paid),
+                    getString(R.string.too_far)));
+            general.whatToShowDebt(getString(R.string.debt_paid), getString(R.string.too_far), debtDateResultLabel, debtDateResult);*/
+                                    debtEndResult();
+                                    debtDateResult.setText(debtEnd2);
                                     break;
                             }
                         }
                     });
-
-                    debtDateResult.setText(calcDebtDate());
 
                     updateDebtButton.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -561,96 +613,71 @@ public class LayoutDebt extends MainNavigation {
 
                             expRefKeyD = String.valueOf(debtDb.getExpRefKeyD());
 
-                            if (debtNameEntry.getText().toString().equals("")) {
-                                Toast.makeText(getBaseContext(), R.string.no_blanks_warning, Toast.LENGTH_LONG).show();
-                            } else {
-                                debtNameEntryD = debtNameEntry.getText().toString();
-                                try {
-                                    debtLimitEntryD = Double.valueOf(debtLimitEntry.getText().toString());
-                                } catch (NumberFormatException e11) {
-                                    debtLimitEntryD = general.extractingDollars(debtLimitEntry);
+                            //allDebtData();
+                            debtEndResult();
+
+                            if (debtName != null && debtLimit != 0.0) {
+
+                                debtDb.setDebtName(debtName);
+                                debtDb.setDebtLimit(debtLimit);
+                                debtDb.setDebtAmount(debtAmount);
+                                debtDb.setDebtRate(debtRate);
+                                debtDb.setDebtPayments(debtPayments);
+                                debtDb.setDebtFrequency(debtFrequency);
+
+                                /*debtDb.setDebtEnd(general.calcDebtDate(
+                                        debtAmount,
+                                        debtRate,
+                                        debtPayments,
+                                        debtFrequency,
+                                        debtAnnualIncome,
+                                        getString(R.string.debt_paid),
+                                        getString(R.string.too_far)));*/
+                                debtDb.setDebtEnd(debtEnd2);
+
+                                dbHelper = new DbHelper(getContext());
+                                expenseDb = dbHelper.getWritableDatabase();
+
+                                String[] args = new String[]{expRefKeyD};
+                                String[] args2 = new String[]{String.valueOf(debtDb.getId())};
+                                String[] args3 = new String[]{String.valueOf(debtDb.getIncRefKeyD())};
+                                values = new ContentValues();
+                                values2 = new ContentValues();
+                                values3 = new ContentValues();
+                                values4 = new ContentValues();
+                                values5 = new ContentValues();
+                                values.put(DbHelper.EXPENSENAME, debtName);
+                                values2.put(DbHelper.INCOMENAME, debtName);
+                                values3.put(DbHelper.MONEYOUTCAT, debtName);
+                                values4.put(DbHelper.MONEYOUTDEBTCAT, debtName);
+                                values5.put(DbHelper.MONEYINCAT, debtName);
+
+                                values.put(DbHelper.EXPENSEAMOUNT, debtPayments);
+                                values.put(DbHelper.EXPENSEFREQUENCY, debtFrequency);
+                                expenseAnnualAmount = debtPayments * debtFrequency;
+                                values.put(DbHelper.EXPENSEANNUALAMOUNT, expenseAnnualAmount);
+                                if (priorityData().equals("A")) {
+                                    values.put(DbHelper.EXPENSEAANNUALAMOUNT, expenseAnnualAmount);
+                                } else if (priorityData().equals("B")) {
+                                    values.put(DbHelper.EXPENSEBANNUALAMOUNT, expenseAnnualAmount);
                                 }
-                                if (debtLimitEntry.getText().toString().equals("")) {
-                                    Toast.makeText(getBaseContext(), R.string.no_limit_warning, Toast.LENGTH_LONG).show();
-                                } else {
-                                    try {
-                                        debtAmountEntryD = Double.valueOf(debtAmountEntry.getText().toString());
-                                    } catch (NumberFormatException e8) {
-                                        debtAmountEntryD = general.extractingDollars(debtAmountEntry);
-                                    }
-                                    if (debtAmountEntry.getText().toString().equals("")) {
-                                        debtAmountEntryD = 0.0;
-                                    }
-                                    try {
-                                        debtRateEntryD = (Double.valueOf(debtPercentEntry.getText().toString()));
-                                    } catch (NumberFormatException e10) {
-                                        debtRateEntryD = general.extractingPercents(debtPercentEntry);
-                                    }
-                                    if (debtPercentEntry.getText().toString().equals("")) {
-                                        debtRateEntryD = 0.0;
-                                    }
-                                    try {
-                                        debtPaymentsEntryD = (Double.valueOf(debtPaymentsEntry.getText().toString()));
-                                    } catch (NumberFormatException e9) {
-                                        debtPaymentsEntryD = (general.extractingDollars(debtPaymentsEntry));
-                                    }
-                                    if (debtPaymentsEntry.getText().toString().equals("")) {
-                                        debtPaymentsEntryD = 0.0;
-                                    }
-                                    debtFrequencyEntryD = Double.valueOf(debtFrequencyS);
 
-                                    debtDb.setDebtName(debtNameEntryD);
-                                    debtDb.setDebtLimit(debtLimitEntryD);
-                                    debtDb.setDebtAmount(debtAmountEntryD);
-                                    debtDb.setDebtRate(debtRateEntryD);
-                                    debtDb.setDebtPayments(debtPaymentsEntryD);
-                                    debtDb.setDebtFrequency(debtFrequencyEntryD);
-                                    debtDb.setDebtEnd(calcDebtDate());
+                                expenseDb.update(DbHelper.EXPENSES_TABLE_NAME, values, DbHelper.ID + "=?", args);
+                                expenseDb.update(DbHelper.INCOME_TABLE_NAME, values2, DbHelper.ID + "=?", args3);
+                                expenseDb.update(DbHelper.MONEY_OUT_TABLE_NAME, values3, DbHelper.EXPREFKEYMO + "=?", args);
+                                expenseDb.update(DbHelper.MONEY_OUT_TABLE_NAME, values4, DbHelper.MONEYOUTCHARGINGDEBTID + "=?", args2);
+                                expenseDb.update(DbHelper.MONEY_IN_TABLE_NAME, values5, DbHelper.INCREFKEYMI + "=?", args3);
 
-                                    dbHelper = new DbHelper(getContext());
-                                    expenseDb = dbHelper.getWritableDatabase();
+                                expenseDb.close();
 
-                                    String[] args = new String[]{expRefKeyD};
-                                    String[] args2 = new String[]{String.valueOf(debtDb.getId())};
-                                    String[] args3 = new String[]{String.valueOf(debtDb.getIncRefKeyD())};
-                                    values = new ContentValues();
-                                    values2 = new ContentValues();
-                                    values3 = new ContentValues();
-                                    values4 = new ContentValues();
-                                    values5 = new ContentValues();
-                                    values.put(DbHelper.EXPENSENAME, debtNameEntryD);
-                                    values2.put(DbHelper.INCOMENAME, debtNameEntryD);
-                                    values3.put(DbHelper.MONEYOUTCAT, debtNameEntryD);
-                                    values4.put(DbHelper.MONEYOUTDEBTCAT, debtNameEntryD);
-                                    values5.put(DbHelper.MONEYINCAT, debtNameEntryD);
+                                dbManager.updateDebt(debtDb);
+                                debtAdapter.updateDebts(dbManager.getDebts());
+                                notifyDataSetChanged();
 
-                                    values.put(DbHelper.EXPENSEAMOUNT, debtPaymentsEntryD);
-                                    values.put(DbHelper.EXPENSEFREQUENCY, debtFrequencyEntryD);
-                                    expenseAnnualAmount = debtPaymentsEntryD * debtFrequencyEntryD;
-                                    values.put(DbHelper.EXPENSEANNUALAMOUNT, expenseAnnualAmount);
-                                    if (priorityData().equals("A")) {
-                                        values.put(DbHelper.EXPENSEAANNUALAMOUNT, expenseAnnualAmount);
-                                    } else if (priorityData().equals("B")) {
-                                        values.put(DbHelper.EXPENSEBANNUALAMOUNT, expenseAnnualAmount);
-                                    }
+                                Toast.makeText(getBaseContext(), getString(R.string.changes_saved), Toast.LENGTH_LONG).show();
 
-                                    expenseDb.update(DbHelper.EXPENSES_TABLE_NAME, values, DbHelper.ID + "=?", args);
-                                    expenseDb.update(DbHelper.INCOME_TABLE_NAME, values2, DbHelper.ID + "=?", args3);
-                                    expenseDb.update(DbHelper.MONEY_OUT_TABLE_NAME, values3, DbHelper.EXPREFKEYMO + "=?", args);
-                                    expenseDb.update(DbHelper.MONEY_OUT_TABLE_NAME, values4, DbHelper.MONEYOUTCHARGINGDEBTID + "=?", args2);
-                                    expenseDb.update(DbHelper.MONEY_IN_TABLE_NAME, values5, DbHelper.INCREFKEYMI + "=?", args3);
-
-                                    expenseDb.close();
-
-                                    dbManager.updateDebt(debtDb);
-                                    debtAdapter.updateDebts(dbManager.getDebts());
-                                    notifyDataSetChanged();
-
-                                    Toast.makeText(getBaseContext(), getString(R.string.changes_saved), Toast.LENGTH_LONG).show();
-
-                                    backToDebt();
-                                    debtHeaderText();
-                                }
+                                backToDebt();
+                                debtHeaderText();
                             }
                         }
                     });
@@ -693,7 +720,6 @@ public class LayoutDebt extends MainNavigation {
 
                             dbHelper = new DbHelper(getContext());
                             expenseDb = dbHelper.getWritableDatabase();
-
 
                             try {
                                 String[] args = new String[]{String.valueOf(debtDb.getExpRefKeyD())};
