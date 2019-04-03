@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.CursorIndexOutOfBoundsException;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.text.Editable;
@@ -237,16 +238,6 @@ public class LayoutSavings extends MainNavigation {
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-            /*allSavingsData();
-            general.findSavingsYears(
-                    savingsGoal,
-                    savingsAmount,
-                    savingsRate,
-                    savingsPayments,
-                    savingsIntFrequency,
-                    savingsFrequency,
-                    savingsAnnualIncome
-            );*/
             savingsDateResult();
             savingsDateResult.setText(savingsDate2);
         }
@@ -263,16 +254,6 @@ public class LayoutSavings extends MainNavigation {
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-            /*allSavingsData();
-            general.findSavingsYears(
-                    savingsGoal,
-                    savingsAmount,
-                    savingsRate,
-                    savingsPayments,
-                    savingsIntFrequency,
-                    savingsFrequency,
-                    savingsAnnualIncome
-            );*/
             savingsDateResult();
             savingsDateResult.setText(savingsDate2);
         }
@@ -289,16 +270,6 @@ public class LayoutSavings extends MainNavigation {
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-            /*allSavingsData();
-            general.findSavingsYears(
-                    savingsGoal,
-                    savingsAmount,
-                    savingsRate,
-                    savingsPayments,
-                    savingsIntFrequency,
-                    savingsFrequency,
-                    savingsAnnualIncome
-            );*/
             savingsDateResult();
             savingsDateResult.setText(savingsDate2);
         }
@@ -315,16 +286,6 @@ public class LayoutSavings extends MainNavigation {
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-            /*allSavingsData();
-            general.findSavingsYears(
-                    savingsGoal,
-                    savingsAmount,
-                    savingsRate,
-                    savingsPayments,
-                    savingsIntFrequency,
-                    savingsFrequency,
-                    savingsAnnualIncome
-            );*/
             savingsDateResult();
             savingsDateResult.setText(savingsDate2);
         }
@@ -336,20 +297,6 @@ public class LayoutSavings extends MainNavigation {
 
     public void savingsDateResult() {
         allSavingsData();
-        /*years2 = general.findSavingsYears(savingsGoal,
-                savingsAmount,
-                savingsRate,
-                savingsPayments,
-                savingsIntFrequency,
-                savingsFrequency,
-                savingsAnnualIncome);
-        if(savingsGoal <= savingsAmount) {
-            savingsDate2 = getString(R.string.goal_achieved);
-        } else if(savingsAmount == 0 && savingsPayments == 0) {
-            savingsDate2 = getString(R.string.too_far);
-        } else if(savingsPayments == 0 && savingsRate == 0) {
-            savingsDate2 = getString(R.string.too_far);
-        } else {*/
         savingsDate2 = general.calcSavingsDate(
                 savingsGoal,
                 savingsAmount,
@@ -359,7 +306,6 @@ public class LayoutSavings extends MainNavigation {
                 savingsAnnualIncome,
                 getString(R.string.goal_achieved),
                 getString(R.string.too_far));
-        //}
         if (savingsDate2.equals(getString(R.string.goal_achieved)) || savingsDate2.equals(getString(R.string.too_far))) {
             savingsDateResultLabel.setVisibility(View.GONE);
         } else {
@@ -381,7 +327,6 @@ public class LayoutSavings extends MainNavigation {
         savingsAnnualIncome = savingsAnnualIncomeb;
 
         if (savingsPayments == 0) {
-            //savingsPayments = .01;
             savingsFrequency = 1.0;
             savingsAnnuallyRadioButton.setChecked(true);
         } else {
@@ -392,14 +337,6 @@ public class LayoutSavings extends MainNavigation {
             }
         }
     }
-
-    /*public void showTextViews() {
-        if(savingsDate.equals(getString(R.string.goal_achieved)) || savingsDate.equals(getString(R.string.too_far))) {
-            savingsDateResultLabel.setVisibility(View.GONE);
-        } else {
-            savingsDateResultLabel.setVisibility(View.VISIBLE);
-        }
-    }*/
 
     public class SavingsDbAdapter extends ArrayAdapter<SavingsDb> {
 
@@ -595,61 +532,21 @@ public class LayoutSavings extends MainNavigation {
                             switch (checkedId) {
                                 case R.id.savingsWeeklyRadioButton:
                                     savingsFrequencyS = "52";
-                                    /*allSavingsData();
-            general.findSavingsYears(
-                    savingsGoal,
-                    savingsAmount,
-                    savingsRate,
-                    savingsPayments,
-                    savingsIntFrequency,
-                    savingsFrequency,
-                    savingsAnnualIncome
-            );*/
                                     savingsDateResult();
                                     savingsDateResult.setText(savingsDate2);
                                     break;
                                 case R.id.savingsBiWeeklyRadioButton:
                                     savingsFrequencyS = "26";
-                                    /*allSavingsData();
-            general.findSavingsYears(
-                    savingsGoal,
-                    savingsAmount,
-                    savingsRate,
-                    savingsPayments,
-                    savingsIntFrequency,
-                    savingsFrequency,
-                    savingsAnnualIncome
-            );*/
                                     savingsDateResult();
                                     savingsDateResult.setText(savingsDate2);
                                     break;
                                 case R.id.savingsMonthlyRadioButton:
                                     savingsFrequencyS = "12";
-                                    /*allSavingsData();
-            general.findSavingsYears(
-                    savingsGoal,
-                    savingsAmount,
-                    savingsRate,
-                    savingsPayments,
-                    savingsIntFrequency,
-                    savingsFrequency,
-                    savingsAnnualIncome
-            );*/
                                     savingsDateResult();
                                     savingsDateResult.setText(savingsDate2);
                                     break;
                                 case R.id.savingsAnnuallyRadioButton:
                                     savingsFrequencyS = "1";
-                                    /*allSavingsData();
-            general.findSavingsYears(
-                    savingsGoal,
-                    savingsAmount,
-                    savingsRate,
-                    savingsPayments,
-                    savingsIntFrequency,
-                    savingsFrequency,
-                    savingsAnnualIncome
-            );*/
                                     savingsDateResult();
                                     savingsDateResult.setText(savingsDate2);
                                     break;
@@ -663,18 +560,7 @@ public class LayoutSavings extends MainNavigation {
 
                             expRefKeyS = String.valueOf(savingsDb.getExpRefKeyS());
 
-                            /*allSavingsData();
-            general.findSavingsYears(
-                    savingsGoal,
-                    savingsAmount,
-                    savingsRate,
-                    savingsPayments,
-                    savingsIntFrequency,
-                    savingsFrequency,
-                    savingsAnnualIncome
-            );*/
                             savingsDateResult();
-                            //savingsDateResult.setText(savingsDate2);
 
                             if (savingsName != "null") {
 
@@ -684,7 +570,6 @@ public class LayoutSavings extends MainNavigation {
                                 savingsDb.setSavingsPayments(savingsPayments);
                                 savingsDb.setSavingsFrequency(savingsFrequency);
                                 savingsDb.setSavingsRate(savingsRate);
-                                //savingsDate = savingsDate2;
                                 savingsDb.setSavingsDate(savingsDate2);
 
                                 dbHelper = new DbHelper(getContext());
@@ -698,10 +583,6 @@ public class LayoutSavings extends MainNavigation {
                                 values4 = new ContentValues();
 
                                 values.put(DbHelper.EXPENSENAME, savingsName);
-                                values2.put(DbHelper.INCOMENAME, savingsName);
-                                values3.put(DbHelper.MONEYOUTCAT, savingsName);
-                                values4.put(DbHelper.MONEYINCAT, savingsName);
-
                                 values.put(DbHelper.EXPENSEAMOUNT, savingsPayments);
                                 values.put(DbHelper.EXPENSEFREQUENCY, savingsFrequency);
                                 expenseAnnualAmount = savingsPayments * savingsFrequency;
@@ -711,11 +592,18 @@ public class LayoutSavings extends MainNavigation {
                                 } else if (priorityData().equals("B")) {
                                     values.put(DbHelper.EXPENSEBANNUALAMOUNT, expenseAnnualAmount);
                                 }
+                                values2.put(DbHelper.INCOMENAME, savingsName);
+                                values3.put(DbHelper.MONEYOUTCAT, savingsName);
+                                values4.put(DbHelper.MONEYINCAT, savingsName);
 
-                                expenseDb.update(DbHelper.EXPENSES_TABLE_NAME, values, DbHelper.ID + "=?", args);
-                                expenseDb.update(DbHelper.INCOME_TABLE_NAME, values2, DbHelper.ID + "=?", args2);
-                                expenseDb.update(DbHelper.MONEY_OUT_TABLE_NAME, values3, DbHelper.EXPREFKEYMO + "=?", args);
-                                expenseDb.update(DbHelper.MONEY_IN_TABLE_NAME, values4, DbHelper.INCREFKEYMI + "=?", args2);
+                                try {
+                                    expenseDb.update(DbHelper.EXPENSES_TABLE_NAME, values, DbHelper.ID + "=?", args);
+                                    expenseDb.update(DbHelper.INCOME_TABLE_NAME, values2, DbHelper.ID + "=?", args2);
+                                    expenseDb.update(DbHelper.MONEY_OUT_TABLE_NAME, values3, DbHelper.EXPREFKEYMO + "=?", args);
+                                    expenseDb.update(DbHelper.MONEY_IN_TABLE_NAME, values4, DbHelper.INCREFKEYMI + "=?", args2);
+                                } catch (CursorIndexOutOfBoundsException| SQLException e) {
+                                    e.printStackTrace();
+                                }
 
                                 expenseDb.close();
 

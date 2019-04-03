@@ -84,16 +84,6 @@ public class AddSavings extends LayoutSavings {
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-            /*allSavingsData();
-            general.findSavingsYears(
-                    savingsGoal,
-                    savingsAmount,
-                    savingsRate,
-                    savingsPayments,
-                    savingsIntFrequency,
-                    savingsFrequency,
-                    savingsAnnualIncome
-            );*/
             savingsDateResult();
             savingsDateResult.setText(savingsDate2);
         }
@@ -110,16 +100,6 @@ public class AddSavings extends LayoutSavings {
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-            /*allSavingsData();
-            general.findSavingsYears(
-                    savingsGoal,
-                    savingsAmount,
-                    savingsRate,
-                    savingsPayments,
-                    savingsIntFrequency,
-                    savingsFrequency,
-                    savingsAnnualIncome
-            );*/
             savingsDateResult();
             savingsDateResult.setText(savingsDate2);
         }
@@ -136,16 +116,6 @@ public class AddSavings extends LayoutSavings {
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-            /*allSavingsData();
-            general.findSavingsYears(
-                    savingsGoal,
-                    savingsAmount,
-                    savingsRate,
-                    savingsPayments,
-                    savingsIntFrequency,
-                    savingsFrequency,
-                    savingsAnnualIncome
-            );*/
             savingsDateResult();
             savingsDateResult.setText(savingsDate2);
         }
@@ -162,16 +132,6 @@ public class AddSavings extends LayoutSavings {
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-            /*allSavingsData();
-            general.findSavingsYears(
-                    savingsGoal,
-                    savingsAmount,
-                    savingsRate,
-                    savingsPayments,
-                    savingsIntFrequency,
-                    savingsFrequency,
-                    savingsAnnualIncome
-            );*/
             savingsDateResult();
             savingsDateResult.setText(savingsDate2);
         }
@@ -187,61 +147,21 @@ public class AddSavings extends LayoutSavings {
             switch (checkedId) {
                 case R.id.savingsWeeklyRadioButton:
                     savingsFrequencyS = "52";
-                    /*allSavingsData();
-                    general.findSavingsYears(
-                            savingsGoal,
-                            savingsAmount,
-                            savingsRate,
-                            savingsPayments,
-                            savingsIntFrequency,
-                            savingsFrequency,
-                            savingsAnnualIncome
-                    );*/
                     savingsDateResult();
                     savingsDateResult.setText(savingsDate2);
                     break;
                 case R.id.savingsBiWeeklyRadioButton:
                     savingsFrequencyS = "26";
-                    /*allSavingsData();
-                    general.findSavingsYears(
-                            savingsGoal,
-                            savingsAmount,
-                            savingsRate,
-                            savingsPayments,
-                            savingsIntFrequency,
-                            savingsFrequency,
-                            savingsAnnualIncome
-                    );*/
                     savingsDateResult();
                     savingsDateResult.setText(savingsDate2);
                     break;
                 case R.id.savingsMonthlyRadioButton:
                     savingsFrequencyS = "12";
-                    /*allSavingsData();
-                    general.findSavingsYears(
-                            savingsGoal,
-                            savingsAmount,
-                            savingsRate,
-                            savingsPayments,
-                            savingsIntFrequency,
-                            savingsFrequency,
-                            savingsAnnualIncome
-                    );*/
                     savingsDateResult();
                     savingsDateResult.setText(savingsDate2);
                     break;
                 case R.id.savingsAnnuallyRadioButton:
                     savingsFrequencyS = "1";
-                    /*allSavingsData();
-                    general.findSavingsYears(
-                            savingsGoal,
-                            savingsAmount,
-                            savingsRate,
-                            savingsPayments,
-                            savingsIntFrequency,
-                            savingsFrequency,
-                            savingsAnnualIncome
-                    );*/
                     savingsDateResult();
                     savingsDateResult.setText(savingsDate2);
                     break;
@@ -257,31 +177,8 @@ public class AddSavings extends LayoutSavings {
         startActivity(backToSavingsLayout);
     }
 
-    /*public void showTextViews() {
-        if(savingsDate.equals(getString(R.string.goal_achieved)) || savingsDate.equals(getString(R.string.too_far))) {
-            savingsDateResultLabel.setVisibility(View.GONE);
-        } else {
-            savingsDateResultLabel.setVisibility(View.VISIBLE);
-        }
-    }*/
-
     public void savingsDateResult() {
         allSavingsData();
-        /*years2 = general.findSavingsYears(
-        savingsGoal,
-                savingsAmount,
-                savingsRate,
-                savingsPayments,
-                savingsIntFrequency,
-                savingsFrequency,
-                savingsAnnualIncome);*/
-        /*if (savingsGoal <= savingsAmount) {
-            savingsDate2 = getString(R.string.goal_achieved);
-        } else if (savingsAmount == 0 && savingsPayments == 0) {
-            savingsDate2 = getString(R.string.too_far);
-        } else if (savingsPayments == 0 && savingsRate == 0) {
-            savingsDate2 = getString(R.string.too_far);
-        } else {*/
         savingsDate2 = general.calcSavingsDate(
                 savingsGoal,
                 savingsAmount,
@@ -291,7 +188,6 @@ public class AddSavings extends LayoutSavings {
                 savingsAnnualIncome,
                 getString(R.string.goal_achieved),
                 getString(R.string.too_far));
-        //}
         if (savingsDate2.equals(getString(R.string.goal_achieved)) || savingsDate2.equals(getString(R.string.too_far))) {
             savingsDateResultLabel.setVisibility(View.GONE);
         } else {
@@ -335,17 +231,6 @@ public class AddSavings extends LayoutSavings {
         @Override
         public void onClick(View v) {
 
-            /*allSavingsData();
-            general.findSavingsYears(
-                    savingsGoal,
-                    savingsAmount,
-                    savingsRate,
-                    savingsPayments,
-                    savingsIntFrequency,
-                    savingsFrequency,
-                    savingsAnnualIncome
-            );*/
-
             savingsDateResult();
             savingsDate = savingsDate2;
 
@@ -387,8 +272,6 @@ public class AddSavings extends LayoutSavings {
                         0);
 
                 dbManager.addExpense(expenseBudgetDb);
-
-                //savingsDate = savingsDateResult();
 
                 expRefKeyS = dbManager.findLatestExpenseId();
                 incRefKeyS = dbManager.findLatestIncomeId();

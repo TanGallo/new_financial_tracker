@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.CursorIndexOutOfBoundsException;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.text.Editable;
@@ -283,16 +284,6 @@ public class LayoutDebt extends MainNavigation {
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-            /*allDebtData();
-            debtDateResult.setText(general.calcDebtDate(
-                    debtAmount,
-                    debtRate,
-                    debtPayments,
-                    debtFrequency,
-                    debtAnnualIncome,
-                    getString(R.string.debt_paid),
-                    getString(R.string.too_far)));
-            general.whatToShowDebt(getString(R.string.debt_paid), getString(R.string.too_far), debtDateResultLabel, debtDateResult);*/
             debtEndResult();
             debtDateResult.setText(debtEnd2);
         }
@@ -309,16 +300,6 @@ public class LayoutDebt extends MainNavigation {
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-            /*allDebtData();
-            debtDateResult.setText(general.calcDebtDate(
-                    debtAmount,
-                    debtRate,
-                    debtPayments,
-                    debtFrequency,
-                    debtAnnualIncome,
-                    getString(R.string.debt_paid),
-                    getString(R.string.too_far)));
-            general.whatToShowDebt(getString(R.string.debt_paid), getString(R.string.too_far), debtDateResultLabel, debtDateResult);*/
             debtEndResult();
             debtDateResult.setText(debtEnd2);
         }
@@ -335,16 +316,6 @@ public class LayoutDebt extends MainNavigation {
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-            /*allDebtData();
-            debtDateResult.setText(general.calcDebtDate(
-                    debtAmount,
-                    debtRate,
-                    debtPayments,
-                    debtFrequency,
-                    debtAnnualIncome,
-                    getString(R.string.debt_paid),
-                    getString(R.string.too_far)));
-            general.whatToShowDebt(getString(R.string.debt_paid), getString(R.string.too_far), debtDateResultLabel, debtDateResult);*/
             debtEndResult();
             debtDateResult.setText(debtEnd2);
         }
@@ -534,7 +505,6 @@ public class LayoutDebt extends MainNavigation {
 
                     debtEnd = debtDb.getDebtEnd();
                     debtDateResult.setText(debtEnd);
-                    //general.whatToShowDebt(getString(R.string.debt_paid), getString(R.string.too_far), debtDateResultLabel, debtDateResult);
                     if (debtEnd.equals(getString(R.string.debt_paid)) || debtEnd.equals(getString(R.string.too_far))) {
                         debtDateResultLabel.setVisibility(View.GONE);
                     } else {
@@ -560,46 +530,16 @@ public class LayoutDebt extends MainNavigation {
                             switch (checkedId) {
                                 case R.id.debtWeeklyRadioButton:
                                     debtFrequencyS = "52";
-                                    /*allDebtData();
-            debtDateResult.setText(general.calcDebtDate(
-                    debtAmount,
-                    debtRate,
-                    debtPayments,
-                    debtFrequency,
-                    debtAnnualIncome,
-                    getString(R.string.debt_paid),
-                    getString(R.string.too_far)));
-            general.whatToShowDebt(getString(R.string.debt_paid), getString(R.string.too_far), debtDateResultLabel, debtDateResult);*/
                                     debtEndResult();
                                     debtDateResult.setText(debtEnd2);
                                     break;
                                 case R.id.debtBiWeeklyRadioButton:
                                     debtFrequencyS = "26";
-                                    /*allDebtData();
-            debtDateResult.setText(general.calcDebtDate(
-                    debtAmount,
-                    debtRate,
-                    debtPayments,
-                    debtFrequency,
-                    debtAnnualIncome,
-                    getString(R.string.debt_paid),
-                    getString(R.string.too_far)));
-            general.whatToShowDebt(getString(R.string.debt_paid), getString(R.string.too_far), debtDateResultLabel, debtDateResult);*/
                                     debtEndResult();
                                     debtDateResult.setText(debtEnd2);
                                     break;
                                 case R.id.debtMonthlyRadioButton:
                                     debtFrequencyS = "12";
-                                    /*allDebtData();
-            debtDateResult.setText(general.calcDebtDate(
-                    debtAmount,
-                    debtRate,
-                    debtPayments,
-                    debtFrequency,
-                    debtAnnualIncome,
-                    getString(R.string.debt_paid),
-                    getString(R.string.too_far)));
-            general.whatToShowDebt(getString(R.string.debt_paid), getString(R.string.too_far), debtDateResultLabel, debtDateResult);*/
                                     debtEndResult();
                                     debtDateResult.setText(debtEnd2);
                                     break;
@@ -613,7 +553,6 @@ public class LayoutDebt extends MainNavigation {
 
                             expRefKeyD = String.valueOf(debtDb.getExpRefKeyD());
 
-                            //allDebtData();
                             debtEndResult();
 
                             if (debtName != null && debtLimit != 0.0) {
@@ -624,15 +563,6 @@ public class LayoutDebt extends MainNavigation {
                                 debtDb.setDebtRate(debtRate);
                                 debtDb.setDebtPayments(debtPayments);
                                 debtDb.setDebtFrequency(debtFrequency);
-
-                                /*debtDb.setDebtEnd(general.calcDebtDate(
-                                        debtAmount,
-                                        debtRate,
-                                        debtPayments,
-                                        debtFrequency,
-                                        debtAnnualIncome,
-                                        getString(R.string.debt_paid),
-                                        getString(R.string.too_far)));*/
                                 debtDb.setDebtEnd(debtEnd2);
 
                                 dbHelper = new DbHelper(getContext());
@@ -641,17 +571,14 @@ public class LayoutDebt extends MainNavigation {
                                 String[] args = new String[]{expRefKeyD};
                                 String[] args2 = new String[]{String.valueOf(debtDb.getId())};
                                 String[] args3 = new String[]{String.valueOf(debtDb.getIncRefKeyD())};
+
                                 values = new ContentValues();
                                 values2 = new ContentValues();
                                 values3 = new ContentValues();
                                 values4 = new ContentValues();
                                 values5 = new ContentValues();
-                                values.put(DbHelper.EXPENSENAME, debtName);
-                                values2.put(DbHelper.INCOMENAME, debtName);
-                                values3.put(DbHelper.MONEYOUTCAT, debtName);
-                                values4.put(DbHelper.MONEYOUTDEBTCAT, debtName);
-                                values5.put(DbHelper.MONEYINCAT, debtName);
 
+                                values.put(DbHelper.EXPENSENAME, debtName);
                                 values.put(DbHelper.EXPENSEAMOUNT, debtPayments);
                                 values.put(DbHelper.EXPENSEFREQUENCY, debtFrequency);
                                 expenseAnnualAmount = debtPayments * debtFrequency;
@@ -661,12 +588,20 @@ public class LayoutDebt extends MainNavigation {
                                 } else if (priorityData().equals("B")) {
                                     values.put(DbHelper.EXPENSEBANNUALAMOUNT, expenseAnnualAmount);
                                 }
+                                values2.put(DbHelper.INCOMENAME, debtName);
+                                values3.put(DbHelper.MONEYOUTCAT, debtName);
+                                values4.put(DbHelper.MONEYOUTDEBTCAT, debtName);
+                                values5.put(DbHelper.MONEYINCAT, debtName);
 
-                                expenseDb.update(DbHelper.EXPENSES_TABLE_NAME, values, DbHelper.ID + "=?", args);
-                                expenseDb.update(DbHelper.INCOME_TABLE_NAME, values2, DbHelper.ID + "=?", args3);
-                                expenseDb.update(DbHelper.MONEY_OUT_TABLE_NAME, values3, DbHelper.EXPREFKEYMO + "=?", args);
-                                expenseDb.update(DbHelper.MONEY_OUT_TABLE_NAME, values4, DbHelper.MONEYOUTCHARGINGDEBTID + "=?", args2);
-                                expenseDb.update(DbHelper.MONEY_IN_TABLE_NAME, values5, DbHelper.INCREFKEYMI + "=?", args3);
+                                try {
+                                    expenseDb.update(DbHelper.EXPENSES_TABLE_NAME, values, DbHelper.ID + "=?", args);
+                                    expenseDb.update(DbHelper.INCOME_TABLE_NAME, values2, DbHelper.ID + "=?", args3);
+                                    expenseDb.update(DbHelper.MONEY_OUT_TABLE_NAME, values3, DbHelper.EXPREFKEYMO + "=?", args);
+                                    expenseDb.update(DbHelper.MONEY_OUT_TABLE_NAME, values4, DbHelper.MONEYOUTCHARGINGDEBTID + "=?", args2);
+                                    expenseDb.update(DbHelper.MONEY_IN_TABLE_NAME, values5, DbHelper.INCREFKEYMI + "=?", args3);
+                                } catch (CursorIndexOutOfBoundsException| SQLException e) {
+                                    e.printStackTrace();
+                                }
 
                                 expenseDb.close();
 

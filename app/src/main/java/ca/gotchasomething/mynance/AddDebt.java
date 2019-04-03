@@ -77,16 +77,8 @@ public class AddDebt extends LayoutDebt {
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-            allDebtData();
-            debtDateResult.setText(general.calcDebtDate(
-                    debtAmount,
-                    debtRate,
-                    debtPayments,
-                    debtFrequency,
-                    debtAnnualIncome,
-                    getString(R.string.debt_paid),
-                    getString(R.string.too_far)));
-            general.whatToShowDebt(getString(R.string.debt_paid), getString(R.string.too_far), debtDateResultLabel, debtDateResult);
+            debtEndResult();
+            debtDateResult.setText(debtEnd2);
         }
 
         @Override
@@ -101,16 +93,8 @@ public class AddDebt extends LayoutDebt {
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-            allDebtData();
-            debtDateResult.setText(general.calcDebtDate(
-                    debtAmount,
-                    debtRate,
-                    debtPayments,
-                    debtFrequency,
-                    debtAnnualIncome,
-                    getString(R.string.debt_paid),
-                    getString(R.string.too_far)));
-            general.whatToShowDebt(getString(R.string.debt_paid), getString(R.string.too_far), debtDateResultLabel, debtDateResult);
+            debtEndResult();
+            debtDateResult.setText(debtEnd2);
         }
 
         @Override
@@ -125,16 +109,8 @@ public class AddDebt extends LayoutDebt {
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-            allDebtData();
-            debtDateResult.setText(general.calcDebtDate(
-                    debtAmount,
-                    debtRate,
-                    debtPayments,
-                    debtFrequency,
-                    debtAnnualIncome,
-                    getString(R.string.debt_paid),
-                    getString(R.string.too_far)));
-            general.whatToShowDebt(getString(R.string.debt_paid), getString(R.string.too_far), debtDateResultLabel, debtDateResult);
+            debtEndResult();
+            debtDateResult.setText(debtEnd2);
         }
 
         @Override
@@ -148,46 +124,16 @@ public class AddDebt extends LayoutDebt {
             switch (checkedId) {
                 case R.id.debtWeeklyRadioButton:
                     debtFrequencyS = "52";
-                    /*allDebtData();
-                    debtDateResult.setText(general.calcDebtDate(
-                            debtAmount,
-                            debtRate,
-                            debtPayments,
-                            debtFrequency,
-                            debtAnnualIncome,
-                            getString(R.string.debt_paid),
-                            getString(R.string.too_far)));
-                    general.whatToShowDebt(getString(R.string.debt_paid), getString(R.string.too_far), debtDateResultLabel, debtDateResult);*/
                     debtEndResult();
                     debtDateResult.setText(debtEnd2);
                     break;
                 case R.id.debtBiWeeklyRadioButton:
                     debtFrequencyS = "26";
-                    /*allDebtData();
-                    debtDateResult.setText(general.calcDebtDate(
-                            debtAmount,
-                            debtRate,
-                            debtPayments,
-                            debtFrequency,
-                            debtAnnualIncome,
-                            getString(R.string.debt_paid),
-                            getString(R.string.too_far)));
-                    general.whatToShowDebt(getString(R.string.debt_paid), getString(R.string.too_far), debtDateResultLabel, debtDateResult);*/
                     debtEndResult();
                     debtDateResult.setText(debtEnd2);
                     break;
                 case R.id.debtMonthlyRadioButton:
                     debtFrequencyS = "12";
-                    /*allDebtData();
-                    debtDateResult.setText(general.calcDebtDate(
-                            debtAmount,
-                            debtRate,
-                            debtPayments,
-                            debtFrequency,
-                            debtAnnualIncome,
-                            getString(R.string.debt_paid),
-                            getString(R.string.too_far)));
-                    general.whatToShowDebt(getString(R.string.debt_paid), getString(R.string.too_far), debtDateResultLabel, debtDateResult);*/
                     debtEndResult();
                     debtDateResult.setText(debtEnd2);
                     break;
@@ -244,7 +190,6 @@ public class AddDebt extends LayoutDebt {
         @Override
         public void onClick(View v) {
 
-            //allDebtData();
             debtEndResult();
 
             if (debtName != null && debtLimit != 0.0) {
@@ -286,15 +231,6 @@ public class AddDebt extends LayoutDebt {
                 dbManager.addExpense(expenseBudgetDb);
 
                 debtEnd = debtEnd2;
-
-                /*debtEnd = general.calcDebtDate(
-                        debtAmount,
-                        debtRate,
-                        debtPayments,
-                        debtFrequency,
-                        debtAnnualIncome,
-                        getString(R.string.debt_paid),
-                        getString(R.string.too_far));*/
 
                 expRefKeyD = dbManager.findLatestExpenseId();
                 incRefKeyD = dbManager.findLatestIncomeId();

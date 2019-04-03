@@ -12,13 +12,14 @@ import java.util.List;
 
 public class General {
 
+    public boolean alreadyDetermined;
     public Calendar debtCal, savingsCal;
     public Date dateObj, debtEndD, savingsDateD;
-    public Double dbl = 0.0, dollars = 0.0, percent = 0.0, numberOfYearsToPayDebt = 0.0, years = 0.0, savingsPayments = 0.0, savingsRate = 0.0;
+    public Double dbl = 0.0, dollars = 0.0, percent = 0.0, numberOfYearsToPayDebt = 0.0, years = 0.0, years2 = 0.0, savingsPayments = 0.0, savingsRate = 0.0;
     public int startIndex = 0, endIndex = 0, numberOfDaysToPayDebt = 0, numberOfDaysToSavingsGoal = 0;
     public List<String> thisWeek;
     SimpleDateFormat debtEndS, savingsDateS;
-    public String startingString = null, startingString2 = null, subStringResult = null, subStringResult2 = null, percentS = null, debtEnd = null, savingsDate = null;
+    public String startingString = null, startingString2 = null, subStringResult = null, subStringResult2 = null, percentS = null, debtEnd = null, savingsDate = null, savingsDateB = null;
 
     public Double extractingDollars(TextView tv) {
 
@@ -170,19 +171,22 @@ public class General {
     ) {
 
         debtCal = Calendar.getInstance();
-        if (dbl2 == 0) {
-            numberOfYearsToPayDebt = dbl1 / ((dbl3 * dbl4) - dbl5);
-        } else {
+        if (dbl2 == 0) { //if rate is 0 then
+            numberOfYearsToPayDebt = dbl1 / ((dbl3 * dbl4) - dbl5); //years = amount owing / annual payments minus annual income
+        } else { //else calculate date
             numberOfYearsToPayDebt = -(Math.log(1 - (dbl1 * (dbl2 / 100) / ((dbl3 * dbl4) - dbl5))) / (dbl4 * Math.log(1 + ((dbl2 / 100) / dbl4))));
-        }
+        } //-(Math.log(1 - (dbl1 * .19 / ((dbl3 * dbl4) - 1200))) / (dbl4 * Math.log(1 + ((dbl2 / 100) / dbl4))))
+
         numberOfDaysToPayDebt = (int) Math.round(numberOfYearsToPayDebt * 365);
 
 
-        if (dbl1 <= 0) {
-            debtEnd = str1;
-        } else if (numberOfDaysToPayDebt > Integer.MAX_VALUE || numberOfDaysToPayDebt <= 0) {
+        if ((dbl3 * dbl4) == dbl5) { //if annual income = annual payments then too far
             debtEnd = str2;
-        } else {
+        } else if (dbl1 <= 0 || numberOfDaysToPayDebt == 0) { //if amount owing is <= 0 or number of days is 0 then debt paid
+            debtEnd = str1;
+        } else if (numberOfDaysToPayDebt > Integer.MAX_VALUE || numberOfDaysToPayDebt < 0) { //if number of days has too many digits or is < 0 then too far
+            debtEnd = str2;
+        } else { //else calculate date
             debtCal = Calendar.getInstance();
             debtCal.add(Calendar.DATE, numberOfDaysToPayDebt);
             debtEndD = debtCal.getTime();
@@ -221,30 +225,30 @@ public class General {
                 while (dbl1 >= (dbl2 * (Math.pow((1 + dbl4 / dbl6), dbl6 * years))) + ((((dbl5 * dbl7) - dbl8) / 12) * (((Math.pow((1 + dbl4 / dbl6), dbl6 * years)) - 1) / (dbl4 / dbl6)) * (1 + dbl4 / dbl6)));
             }
         return years;
+    }*/
+
+    /*years = 0.0;
+            do {
+        years = years + .00274;
     }
+            while (goal >= (amount * (Math.pow((1 + rate / intFrequency), intFrequency * years))) + ((((payments * frequency) - incomeData()) / 12) * (((Math.pow((1 + rate / intFrequency), intFrequency * years)) - 1) / (rate / intFrequency)) * (1 + rate / intFrequency)));
+}
+        return years;*/
 
-    public String calcSavingsDate(
-            Double dbl9,  //years
-            String str1,  //goal_achieved
-            String str2  //too_far
+    /*public Double findSavingsYears(
+            Double dbl1, //savingsGoal
+            Double dbl2, //savingsAmount
+            Double dbl4,  //savingsRate
+            Double dbl5,  //savingsPayments
+            Double dbl7,  //savingsFrequency
+            Double dbl8  //savingsAnnualIncome
     ) {
-
-        savingsCal = Calendar.getInstance();
-        numberOfDaysToSavingsGoal = (int) Math.round(dbl9) * 365;
-
-        if (dbl9 == 0) {
-            savingsDate = str1;
-        } else if (numberOfDaysToSavingsGoal <= 0) {
-            savingsDate = str1;
-        } else if (numberOfDaysToSavingsGoal > Integer.MAX_VALUE) {
-            savingsDate = str2;
-        } else {
-            savingsCal.add(Calendar.DATE, numberOfDaysToSavingsGoal);
-            savingsDateD = savingsCal.getTime();
-            savingsDateS = new SimpleDateFormat("dd-MMM-yyyy");
-            savingsDate = savingsDateS.format(savingsDateD);
+        years2 = 0.0;
+        do {
+            years2 = years2 + .00274;
         }
-        return savingsDate;
+        while (dbl1 >= (dbl2 * (Math.pow((1 + dbl4 / 12), 12 * years2))) + ((((dbl5 * dbl7) - dbl8) / 12) * (((Math.pow((1 + dbl4 / 12), 12 * years2)) - 1) / (dbl4 / 12)) * (1 + dbl4 / 12)));
+        return years2;
     }*/
 
     public String calcSavingsDate(
@@ -258,41 +262,51 @@ public class General {
             String str2  //too_far
     ) {
 
-        if (dbl1 <= dbl2) {
-            savingsDate = str1;
-        } else if (dbl2 == 0 && dbl5 == 0) {
-            savingsDate = str2;
-        } else if (dbl5 == 0 && dbl4 == 0) {
-            savingsDate = str2;
-        } else if ((dbl8 == (dbl5 * dbl7)) && (dbl4 == 0)) {
-            savingsDate = str2;
+        alreadyDetermined = false;
+
+        if (dbl1 == 0 || dbl1 <= dbl2) { //if goal is 0 or <= amount then goal achieved
+            savingsDateB = str1;
+            alreadyDetermined = true;
+        } else if (dbl2 == 0) { //if amount is 0
+            if (dbl5 == 0 || dbl4 == 0) { //if payments are 0 or rate is 0 then too far
+                savingsDateB = str2;
+                alreadyDetermined = true;
+            }
+        } else if (dbl4 == 0) { //if rate is 0
+            if (dbl8 == (dbl5 * dbl7)) { //if annual income = annual contribution then too far
+                savingsDateB = str2;
+                alreadyDetermined = true;
+            } else if (dbl8 != (dbl5 * dbl7)) { //if annual income != annual contribution then
+                years = ((dbl1 - dbl2) / ((dbl5 * dbl7) - dbl8)); //years = amount left until goal / annual contribution minus annual income
+                numberOfDaysToSavingsGoal = (int) Math.round(years * 365);
+                alreadyDetermined = false;
+            }
         } else {
-            if (dbl4 == 0 && (dbl8 != (dbl5 * dbl7))) {
-                years = ((dbl1 - dbl2) / ((dbl5 * dbl7) - dbl8));
-            } else {
-                years = 0.0;
-            }
-
+            years2 = 0.0;
             do {
-                years = years + .00274;
+                years2 = years2 + .00274;
             }
-            while (dbl1 >= (dbl2 * (Math.pow((1 + dbl4 / 12), 12 * years))) + ((((dbl5 * dbl7) - dbl8) / 12) * (((Math.pow((1 + dbl4 / 12), 12 * years)) - 1) / (dbl4 / 12)) * (1 + dbl4 / 12)));
+            while (dbl1 >= (dbl2 * (Math.pow((1 + dbl4 / 12), 12 * years2))) + ((((dbl5 * dbl7) - dbl8) / 12) * (((Math.pow((1 + dbl4 / 12), 12 * years2)) - 1) / (dbl4 / 12)) * (1 + dbl4 / 12)));
+            numberOfDaysToSavingsGoal = (int) Math.round(years2 * 365);
+            alreadyDetermined = false;
+        }
 
-            numberOfDaysToSavingsGoal = (int) Math.round(years * 365);
-
-            if (years < 0) {
+        if (!alreadyDetermined) {
+            if (years < 0 || years2 < 0) { //if years if a negative number then too far
                 savingsDate = str2;
-            } else if (numberOfDaysToSavingsGoal <= 0) {
+            } else if (numberOfDaysToSavingsGoal == 0) { //if number of days is 0 then goal achieved
                 savingsDate = str1;
-            } else if (numberOfDaysToSavingsGoal > Integer.MAX_VALUE) {
+            } else if (numberOfDaysToSavingsGoal > Integer.MAX_VALUE || numberOfDaysToSavingsGoal < 0) { //if number of days has too many digits or is < 0 then too far
                 savingsDate = str2;
-            } else {
+            } else {//else calculate date
                 savingsCal = Calendar.getInstance();
                 savingsCal.add(Calendar.DATE, numberOfDaysToSavingsGoal);
                 savingsDateD = savingsCal.getTime();
                 savingsDateS = new SimpleDateFormat("dd-MMM-yyyy");
                 savingsDate = savingsDateS.format(savingsDateD);
             }
+        } else {
+            savingsDate = savingsDateB;
         }
         return savingsDate;
     }

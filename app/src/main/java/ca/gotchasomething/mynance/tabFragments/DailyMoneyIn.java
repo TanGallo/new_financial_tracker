@@ -52,8 +52,8 @@ public class DailyMoneyIn extends Fragment {
     Date debtEndD, moneyInDate, savingsDateD;
     DbHelper dbHelper, dbHelper2, dbHelper3, dbHelper4, dbHelper5, dbHelper6;
     DbManager dbManager;
-    Double amountEntry = 0.0, currentDebtAmount = 0.0, currentDebtFrequency = 0.0, currentDebtPayments = 0.0, currentDebtRate = 0.0, currentSavingsAmount = 0.0,
-            currentSavingsFrequency = 0.0, currentSavingsPayments = 0.0, currentSavingsRate = 0.0, debtAmount = 0.0, debtAnnualIncome = 0.0, debtLimit = 0.0,
+    Double amountEntry = 0.0, currentDebtAmount = 0.0, debtFrequency = 0.0, debtPayments = 0.0, debtRate = 0.0, currentSavingsAmount = 0.0,
+            savingsFrequency = 0.0, savingsPayments = 0.0, savingsRate = 0.0, debtAmount = 0.0, debtAnnualIncome = 0.0, debtLimit = 0.0,
             moneyInAmount = 0.0, moneyInAmount1 = 0.0, moneyInAmountD = 0.0, moneyInD = 0.0, newAccountBalance = 0.0, newAvailableBalance = 0.0, newDebtAmount = 0.0,
             newSavingsAmount = 0.0, numberOfYearsToPayDebt = 0.0, oldMoneyInAmount = 0.0, percentB = 0.0, rate = 0.0, savingsAmount = 0.0,
             savingsAnnualIncome = 0.0, savingsGoal = 0.0, years = 0.0;
@@ -151,6 +151,7 @@ public class DailyMoneyIn extends Fragment {
     }
 
     public long findMatchingDebtId() {
+        foundMatchingDebtId = false;
         for (DebtDb d : dbManager.getDebts()) {
             try {
                 if (d.getIncRefKeyD() == moneyInRefKeyMI) {
@@ -174,7 +175,19 @@ public class DailyMoneyIn extends Fragment {
         return currentDebtAmount;
     }
 
-    public String calcDebtDate() {
+    public void allDebtData() {
+        for (DebtDb d2 : dbManager.getDebts()) {
+            if (d2.getId() == findMatchingDebtId()) {
+                debtAmount = d2.getDebtAmount();
+                debtRate = d2.getDebtRate();
+                debtPayments = d2.getDebtPayments();
+                debtFrequency = d2.getDebtFrequency();
+                debtAnnualIncome = d2.getDebtAnnualIncome();
+            }
+        }
+    }
+
+    /*public String calcDebtDate() {
         for (DebtDb d2 : dbManager.getDebts()) {
             if (d2.getId() == findMatchingDebtId()) {
                 debtAmount = d2.getDebtAmount();
@@ -204,22 +217,34 @@ public class DailyMoneyIn extends Fragment {
         }
 
         return debtEnd;
-    }
+    }*/
 
     public void updateDebtsRecord() {
         dbHelper = new DbHelper(getContext());
         db = dbHelper.getWritableDatabase();
+
         newDebtAmount = findCurrentDebtAmount() + moneyInAmount;
         moneyInValue3 = new ContentValues();
         moneyInValue3.put(DbHelper.DEBTAMOUNT, newDebtAmount);
         db.update(DbHelper.DEBTS_TABLE_NAME, moneyInValue3, DbHelper.ID + "=" + findMatchingDebtId(), null);
+
+        allDebtData();
+
         moneyInValue4 = new ContentValues();
-        moneyInValue4.put(DbHelper.DEBTEND, calcDebtDate());
+        moneyInValue4.put(DbHelper.DEBTEND, general.calcDebtDate(
+                debtAmount,
+                debtRate,
+                debtPayments,
+                debtFrequency,
+                debtAnnualIncome,
+                getString(R.string.debt_paid),
+                getString(R.string.too_far)));
         db.update(DbHelper.DEBTS_TABLE_NAME, moneyInValue4, DbHelper.ID + "=" + findMatchingDebtId(), null);
         db.close();
     }
 
     public long findMatchingSavingsId() {
+        foundMatchingSavingsId = false;
         for (SavingsDb s : dbManager.getSavings()) {
             try {
                 if (s.getIncRefKeyS() == moneyInRefKeyMI) {
@@ -242,7 +267,20 @@ public class DailyMoneyIn extends Fragment {
         return currentSavingsAmount;
     }
 
-    public Double findSavingsYears() {
+    public void allSavingsData() {
+        for (SavingsDb s2 : dbManager.getSavings()) {
+            if (s2.getId() == findMatchingSavingsId()) {
+                savingsAmount = s2.getSavingsAmount();
+                savingsGoal = s2.getSavingsGoal();
+                savingsRate = s2.getSavingsRate();
+                savingsPayments = s2.getSavingsPayments();
+                savingsFrequency = s2.getSavingsFrequency();
+                savingsAnnualIncome = s2.getSavingsAnnualIncome();
+            }
+        }
+    }
+
+    /*public Double findSavingsYears() {
         for (SavingsDb s2 : dbManager.getSavings()) {
             if (s2.getId() == findMatchingSavingsId()) {
                 savingsAmount = s2.getSavingsAmount();
@@ -297,17 +335,29 @@ public class DailyMoneyIn extends Fragment {
             savingsDate = savingsDateS.format(savingsDateD);
         }
         return savingsDate;
-    }
+    }*/
 
     public void updateSavingsRecord() {
         dbHelper6 = new DbHelper(getContext());
         db6 = dbHelper6.getWritableDatabase();
+
         newSavingsAmount = findCurrentSavingsAmount() - moneyInAmount;
         moneyInValue5 = new ContentValues();
         moneyInValue5.put(DbHelper.SAVINGSAMOUNT, newSavingsAmount);
         db6.update(DbHelper.SAVINGS_TABLE_NAME, moneyInValue5, DbHelper.ID + "=" + findMatchingSavingsId(), null);
+
+        allSavingsData();
+
         moneyInValue6 = new ContentValues();
-        moneyInValue6.put(DbHelper.SAVINGSDATE, calcSavingsDate());
+        moneyInValue6.put(DbHelper.SAVINGSDATE, general.calcSavingsDate(
+                savingsGoal,
+                savingsAmount,
+                savingsRate,
+                savingsPayments,
+                savingsFrequency,
+                savingsAnnualIncome,
+                getString(R.string.goal_achieved),
+                getString(R.string.too_far)));
         db6.update(DbHelper.SAVINGS_TABLE_NAME, moneyInValue6, DbHelper.ID + "=" + findMatchingSavingsId(), null);
         db6.close();
     }
@@ -359,12 +409,7 @@ public class DailyMoneyIn extends Fragment {
             if (moneyInCat == null || moneyInCat.equals("")) {
                 Toast.makeText(getContext(), R.string.no_inc_warning, Toast.LENGTH_LONG).show();
             } else {
-                if (moneyInAmountText.getText().toString().equals("")) {
-                    moneyInAmount = 0.0;
-                } else {
-                    moneyInAmount = Double.valueOf(moneyInAmountText.getText().toString());
-                }
-
+                moneyInAmount = general.extractingDouble(moneyInAmountText);
                 moneyInDate = new Date();
                 moneyInTimestamp = new Timestamp(moneyInDate.getTime());
                 moneyInSDF = new SimpleDateFormat("dd-MMM-yyyy");
@@ -571,14 +616,15 @@ public class DailyMoneyIn extends Fragment {
                         @Override
                         public void onClick(View v) {
 
-                            try {
+                            amountEntry = general.extractingDouble(moneyInAmountEditText);
+                            /*try {
                                 amountEntry = Double.valueOf(moneyInAmountEditText.getText().toString());
                             } catch (NumberFormatException e) {
                                 amountEntry = general.extractingDollars(moneyInAmountEditText);
                             }
                             if (moneyInAmountEditText.getText().toString().equals("")) {
                                 amountEntry = 0.0;
-                            }
+                            }*/
 
                             moneyInAmount = amountEntry - oldMoneyInAmount;
 

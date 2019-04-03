@@ -51,12 +51,12 @@ public class DailyMoneyCC extends Fragment {
             moneyOutValue9, moneyOutValue10, moneyOutValue11, moneyOutValue12;
     Cursor cursor2, cursor6;
     Date debtEndD, debtEndD3, moneyOutDate, savingsDateD;
-    DbHelper dbHelper, dbHelper2, dbHelper3, dbHelper5, dbHelper6;
+    DbHelper dbHelper, dbHelper2, dbHelper3, dbHelper5, dbHelper6, dbHelper7, dbHelper8;
     DbManager dbManager;
     Double amountEntry = 0.0, ccTransAmountD = 0.0, ccTransAmountD2 = 0.0, chargingDebtAnnualIncome = 0.0, currentChargingDebtAmount = 0.0, currentChargingDebtLimit = 0.0,
-            currentDebtAmount = 0.0, currentDebtFrequency = 0.0, currentDebtFrequency3 = 0.0, currentDebtPayments = 0.0, currentDebtPayments3 = 0.0,
-            currentDebtRate = 0.0, currentDebtRate3 = 0.0, currentSavingsAmount = 0.0, currentSavingsFrequency = 0.0, currentSavingsPayments = 0.0,
-            currentSavingsRate = 0.0, debtAmount = 0.0, debtAmount3 = 0.0, debtAnnualIncome = 0.0, moneyOutAmount = 0.0, newDebtAmount = 0.0, newDebtAmount2 = 0.0,
+            currentDebtAmount = 0.0, debtFrequency = 0.0, currentDebtFrequency3 = 0.0, debtPayments = 0.0, currentDebtPayments3 = 0.0,
+            debtRate = 0.0, currentDebtRate3 = 0.0, currentSavingsAmount = 0.0, savingsFrequency = 0.0, savingsPayments = 0.0,
+            savingsRate = 0.0, debtAmount = 0.0, debtAmount3 = 0.0, debtAnnualIncome = 0.0, moneyOutAmount = 0.0, moneyOutAmount1 = 0.0, newDebtAmount = 0.0, newDebtAmount2 = 0.0,
             newDebtAmount4 = 0.0, newSavingsAmount = 0.0, numberOfYearsToPayDebt = 0.0, numberOfYearsToPayDebt3 = 0.0, oldMoneyOutAmount = 0.0, rate = 0.0,
             savingsAmount = 0.0, savingsAnnualIncome = 0.0, savingsGoal = 0.0, years = 0.0;
     EditText ccTransAmountText, ccTransAmountEditText;
@@ -72,7 +72,7 @@ public class DailyMoneyCC extends Fragment {
     RelativeLayout addCreditCardLayout;
     SimpleDateFormat debtEndS, debtEndS3, moneyOutSDF, savingsDateS;
     Spinner ccTransCatSpinner, ccTransDebtCatSpinner;
-    SQLiteDatabase db, db2, db3, db5, db6;
+    SQLiteDatabase db, db2, db3, db5, db6, db7, db8;
     String ccTransAmount2 = null, ccTransAmountS = null, ccTransAmountS2 = null, ccTransCatS = null, ccTransDebtCatS = null, ccTransPriorityS = null,
             chargingDebtEnd = null, debtEnd = null, moneyOutCat = null, moneyOutCC = null, moneyOutCreatedOn = null, moneyOutDebtCat = null, moneyOutPriority = null,
             moneyOutWeekly = null, moneyOutWeeklyS = null, savingsDate = null;
@@ -238,7 +238,8 @@ public class DailyMoneyCC extends Fragment {
     }
 
     public void continueTransaction() {
-        dbHelper = new DbHelper(getContext());
+        updateChargingDebtRecord();
+        /*dbHelper = new DbHelper(getContext());
         db = dbHelper.getWritableDatabase();
 
         newDebtAmount = findCurrentChargingDebtAmount() + moneyOutAmount;
@@ -248,28 +249,31 @@ public class DailyMoneyCC extends Fragment {
         moneyOutValue2 = new ContentValues();
         moneyOutValue2.put(DbHelper.DEBTEND, calcChargingDebtDate());
         db.update(DbHelper.DEBTS_TABLE_NAME, moneyOutValue2, DbHelper.ID + "=" + moneyOutChargingDebtId, null);
+        db.close();*/
 
         findMatchingDebtId();
         if (foundMatchingDebtId) {
-            newDebtAmount2 = findCurrentDebtAmount() - moneyOutAmount;
+            updateDebtsRecord();
+            /*newDebtAmount2 = findCurrentDebtAmount() - moneyOutAmount;
             moneyOutValue9 = new ContentValues();
             moneyOutValue9.put(DbHelper.DEBTAMOUNT, newDebtAmount2);
             db.update(DbHelper.DEBTS_TABLE_NAME, moneyOutValue9, DbHelper.ID + "=" + findMatchingDebtId(), null);
             moneyOutValue10 = new ContentValues();
             moneyOutValue10.put(DbHelper.DEBTEND, calcDebtDate());
-            db.update(DbHelper.DEBTS_TABLE_NAME, moneyOutValue10, DbHelper.ID + "=" + findMatchingDebtId(), null);
+            db.update(DbHelper.DEBTS_TABLE_NAME, moneyOutValue10, DbHelper.ID + "=" + findMatchingDebtId(), null);*/
         }
         findMatchingSavingsId();
         if (foundMatchingSavingsId) {
-            newSavingsAmount = findCurrentSavingsAmount() + moneyOutAmount;
+            updateSavingsRecord();
+            /*newSavingsAmount = findCurrentSavingsAmount() + moneyOutAmount;
             moneyOutValue3 = new ContentValues();
             moneyOutValue3.put(DbHelper.SAVINGSAMOUNT, newSavingsAmount);
             db.update(DbHelper.SAVINGS_TABLE_NAME, moneyOutValue3, DbHelper.ID + "=" + findMatchingSavingsId(), null);
             moneyOutValue4 = new ContentValues();
             moneyOutValue4.put(DbHelper.SAVINGSDATE, calcSavingsDate());
-            db.update(DbHelper.SAVINGS_TABLE_NAME, moneyOutValue4, DbHelper.ID + "=" + findMatchingSavingsId(), null);
+            db.update(DbHelper.SAVINGS_TABLE_NAME, moneyOutValue4, DbHelper.ID + "=" + findMatchingSavingsId(), null);*/
         }
-        db.close();
+        //db.close();
 
         Toast.makeText(getActivity(), R.string.saved, Toast.LENGTH_LONG).show();
         ccTransAmountText.setText("");
@@ -302,7 +306,43 @@ public class DailyMoneyCC extends Fragment {
         return currentDebtAmount;
     }
 
-    public String calcDebtDate() {
+    public void allDebtData() {
+        for (DebtDb d2 : dbManager.getDebts()) {
+            if (d2.getId() == findMatchingDebtId()) {
+                debtAmount = d2.getDebtAmount();
+                debtRate = d2.getDebtRate();
+                debtPayments = d2.getDebtPayments();
+                debtFrequency = d2.getDebtFrequency();
+                debtAnnualIncome = d2.getDebtAnnualIncome();
+            }
+        }
+    }
+
+    public void updateDebtsRecord() {
+        dbHelper7 = new DbHelper(getContext());
+        db7 = dbHelper7.getWritableDatabase();
+
+        newDebtAmount2 = findCurrentDebtAmount() - moneyOutAmount;
+        moneyOutValue9 = new ContentValues();
+        moneyOutValue9.put(DbHelper.DEBTAMOUNT, newDebtAmount2);
+        db7.update(DbHelper.DEBTS_TABLE_NAME, moneyOutValue9, DbHelper.ID + "=" + findMatchingDebtId(), null);
+
+        allDebtData();
+
+        moneyOutValue10 = new ContentValues();
+        moneyOutValue10.put(DbHelper.DEBTEND, general.calcDebtDate(
+                debtAmount,
+                debtRate,
+                debtPayments,
+                debtFrequency,
+                debtAnnualIncome,
+                getString(R.string.debt_paid),
+                getString(R.string.too_far)));
+        db7.update(DbHelper.DEBTS_TABLE_NAME, moneyOutValue10, DbHelper.ID + "=" + findMatchingDebtId(), null);
+        db7.close();
+    }
+
+    /*public String calcDebtDate() {
         for (DebtDb d2 : dbManager.getDebts()) {
             if (d2.getId() == findMatchingDebtId()) {
                 debtAmount = d2.getDebtAmount();
@@ -332,7 +372,7 @@ public class DailyMoneyCC extends Fragment {
         }
 
         return debtEnd;
-    }
+    }*/
 
     public Double findCurrentChargingDebtAmount() {
         for (DebtDb d3 : dbManager.getDebts()) {
@@ -352,7 +392,43 @@ public class DailyMoneyCC extends Fragment {
         return currentChargingDebtLimit;
     }
 
-    public String calcChargingDebtDate() {
+    public void allChargingDebtData() {
+        for (DebtDb d2 : dbManager.getDebts()) {
+            if (d2.getId() == moneyOutChargingDebtId) {
+                debtAmount = d2.getDebtAmount();
+                debtRate = d2.getDebtRate();
+                debtPayments = d2.getDebtPayments();
+                debtFrequency = d2.getDebtFrequency();
+                debtAnnualIncome = d2.getDebtAnnualIncome();
+            }
+        }
+    }
+
+    public void updateChargingDebtRecord() {
+        dbHelper = new DbHelper(getContext());
+        db = dbHelper.getWritableDatabase();
+
+        newDebtAmount = findCurrentChargingDebtAmount() + moneyOutAmount;
+        moneyOutValue = new ContentValues();
+        moneyOutValue.put(DbHelper.DEBTAMOUNT, newDebtAmount);
+        db.update(DbHelper.DEBTS_TABLE_NAME, moneyOutValue, DbHelper.ID + "=" + moneyOutChargingDebtId, null);
+
+        allChargingDebtData();
+
+        moneyOutValue2 = new ContentValues();
+        moneyOutValue2.put(DbHelper.DEBTEND, general.calcDebtDate(
+                debtAmount,
+                debtRate,
+                debtPayments,
+                debtFrequency,
+                debtAnnualIncome,
+                getString(R.string.debt_paid),
+                getString(R.string.too_far)));
+        db.update(DbHelper.DEBTS_TABLE_NAME, moneyOutValue2, DbHelper.ID + "=" + moneyOutChargingDebtId, null);
+        db.close();
+    }
+
+    /*public String calcChargingDebtDate() {
         for (DebtDb d2 : dbManager.getDebts()) {
             if (d2.getId() == moneyOutChargingDebtId) {
                 debtAmount3 = d2.getDebtAmount();
@@ -381,7 +457,7 @@ public class DailyMoneyCC extends Fragment {
             }
         }
         return chargingDebtEnd;
-    }
+    }*/
 
     public long findMatchingSavingsId() {
         foundMatchingSavingsId = false;
@@ -407,7 +483,45 @@ public class DailyMoneyCC extends Fragment {
         return currentSavingsAmount;
     }
 
-    public Double findSavingsYears() {
+    public void allSavingsData() {
+        for (SavingsDb s2 : dbManager.getSavings()) {
+            if (s2.getId() == findMatchingSavingsId()) {
+                savingsAmount = s2.getSavingsAmount();
+                savingsGoal = s2.getSavingsGoal();
+                savingsRate = s2.getSavingsRate();
+                savingsPayments = s2.getSavingsPayments();
+                savingsFrequency = s2.getSavingsFrequency();
+                savingsAnnualIncome = s2.getSavingsAnnualIncome();
+            }
+        }
+    }
+
+    public void updateSavingsRecord() {
+        dbHelper8 = new DbHelper(getContext());
+        db8 = dbHelper8.getWritableDatabase();
+
+        newSavingsAmount = findCurrentSavingsAmount() + moneyOutAmount;
+        moneyOutValue3 = new ContentValues();
+        moneyOutValue3.put(DbHelper.SAVINGSAMOUNT, newSavingsAmount);
+        db8.update(DbHelper.SAVINGS_TABLE_NAME, moneyOutValue3, DbHelper.ID + "=" + findMatchingSavingsId(), null);
+
+        allSavingsData();
+
+        moneyOutValue4 = new ContentValues();
+        moneyOutValue4.put(DbHelper.SAVINGSDATE, general.calcSavingsDate(
+                savingsGoal,
+                savingsAmount,
+                savingsRate,
+                savingsPayments,
+                savingsFrequency,
+                savingsAnnualIncome,
+                getString(R.string.goal_achieved),
+                getString(R.string.too_far)));
+        db8.update(DbHelper.SAVINGS_TABLE_NAME, moneyOutValue4, DbHelper.ID + "=" + findMatchingSavingsId(), null);
+        db8.close();
+    }
+
+    /*public Double findSavingsYears() {
         for (SavingsDb s2 : dbManager.getSavings()) {
             if (s2.getId() == findMatchingSavingsId()) {
                 savingsAmount = s2.getSavingsAmount();
@@ -462,7 +576,7 @@ public class DailyMoneyCC extends Fragment {
             savingsDate = savingsDateS.format(savingsDateD);
         }
         return savingsDate;
-    }
+    }*/
 
     public boolean checkIfAPossible() {
         if (dbManager.retrieveCurrentAccountBalance() - moneyOutAmount < 0) {
@@ -493,11 +607,12 @@ public class DailyMoneyCC extends Fragment {
         moneyOutCat = ccTransCatS;
         moneyOutPriority = ccTransPriorityS;
         moneyOutWeekly = moneyOutWeeklyS;
-        if (ccTransAmountText.getText().toString().equals("")) {
+        moneyOutAmount = general.extractingDouble(ccTransAmountText);
+        /*if (ccTransAmountText.getText().toString().equals("")) {
             moneyOutAmount = 0.0;
         } else {
             moneyOutAmount = Double.valueOf(ccTransAmountText.getText().toString());
-        }
+        }*/
         moneyOutDate = new Date();
         moneyOutTimestamp = new Timestamp(moneyOutDate.getTime());
         moneyOutSDF = new SimpleDateFormat("dd-MMM-yyyy");
@@ -773,14 +888,15 @@ public class DailyMoneyCC extends Fragment {
                     updateCreditCardLayout.setVisibility(View.GONE);
                     addCreditCardLayout.setVisibility(View.VISIBLE);
 
-                    try {
+                    amountEntry = general.extractingDouble(ccTransAmountEditText);
+                    /*try {
                         amountEntry = Double.valueOf(ccTransAmountEditText.getText().toString());
                     } catch (NumberFormatException e) {
                         amountEntry = general.extractingDollars(ccTransAmountEditText);
                     }
                     if (ccTransAmountEditText.getText().toString().equals("")) {
                         amountEntry = 0.0;
-                    }
+                    }*/
 
                     moneyOutAmount = amountEntry - oldMoneyOutAmount;
 
@@ -815,11 +931,14 @@ public class DailyMoneyCC extends Fragment {
 
                     moneyOutDb = (MoneyOutDb) holder.ccTransDelete.getTag();
 
-                    moneyOutAmount = ccTrans.get(position).getMoneyOutAmount();
+                    moneyOutAmount1 = ccTrans.get(position).getMoneyOutAmount();
+                    moneyOutAmount = -moneyOutAmount1;
                     moneyOutRefKeyMO = ccTrans.get(position).getExpRefKeyMO();
                     moneyOutChargingDebtId = ccTrans.get(position).getMoneyOutChargingDebtId();
 
-                    dbHelper5 = new DbHelper(getContext());
+                    continueTransaction();
+
+                    /*dbHelper5 = new DbHelper(getContext());
                     db5 = dbHelper5.getWritableDatabase();
 
                     newDebtAmount = findCurrentChargingDebtAmount() - moneyOutAmount;
@@ -850,7 +969,7 @@ public class DailyMoneyCC extends Fragment {
                         moneyOutValue8.put(DbHelper.SAVINGSDATE, calcSavingsDate());
                         db5.update(DbHelper.SAVINGS_TABLE_NAME, moneyOutValue8, DbHelper.ID + "=" + findMatchingSavingsId(), null);
                     }
-                    db5.close();
+                    db5.close();*/
 
                     dbManager.deleteMoneyOut(moneyOutDb);
                     ccTransAdapter.updateCCTrans(dbManager.getCCTrans());

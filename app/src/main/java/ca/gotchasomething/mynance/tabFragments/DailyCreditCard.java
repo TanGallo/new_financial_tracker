@@ -28,6 +28,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import ca.gotchasomething.mynance.DbHelper;
 import ca.gotchasomething.mynance.DbManager;
+import ca.gotchasomething.mynance.General;
 import ca.gotchasomething.mynance.LayoutDailyMoney;
 import ca.gotchasomething.mynance.R;
 import ca.gotchasomething.mynance.data.DebtDb;
@@ -45,9 +46,10 @@ public class DailyCreditCard extends Fragment {
     Date debtEndD3;
     DbHelper dbHelper, dbHelper2, dbHelper3, dbHelper4, dbHelper5;
     DbManager dbManager;
-    Double amountDue = 0.0, ccAmountD = 0.0, currentChargingDebtAmount = 0.0, currentDebtAnnualIncome = 0.0, currentDebtFrequency3 = 0.0, currentDebtPayments3 = 0.0,
-            currentDebtRate3 = 0.0, debtAmount3 = 0.0, newCurrentAccountBalance = 0.0, newCurrentAvailableBalance = 0.0, newDebtAmount = 0.0,
+    Double amountDue = 0.0, ccAmountD = 0.0, currentChargingDebtAmount = 0.0, debtAnnualIncome = 0.0, debtFrequency = 0.0, debtPayments = 0.0,
+            debtRate = 0.0, debtAmount = 0.0, newCurrentAccountBalance = 0.0, newCurrentAvailableBalance = 0.0, newDebtAmount = 0.0,
             numberOfYearsToPayDebt3 = 0.0;
+    General general;
     int numberOfDaysToPayDebt3 = 0;
     Intent refresh;
     LinearLayout initialCCLayout;
@@ -79,6 +81,7 @@ public class DailyCreditCard extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         dbManager = new DbManager(getContext());
+        general = new General();
 
         checkBelowLabel = v.findViewById(R.id.checkBelowLabel);
         initialCCLayout = v.findViewById(R.id.initalCCLayout);
@@ -158,7 +161,52 @@ public class DailyCreditCard extends Fragment {
         startActivity(refresh);
     }
 
-    public String calcChargingDebtDate() {
+    public Double findCurrentChargingDebtAmount() {
+        for (DebtDb d : dbManager.getDebts()) {
+            if (d.getId() == chargingDebtId) {
+                currentChargingDebtAmount = d.getDebtAmount();
+            }
+        }
+        return currentChargingDebtAmount;
+    }
+
+    public void allChargingDebtData() {
+        for (DebtDb d2 : dbManager.getDebts()) {
+            if (d2.getId() == chargingDebtId) {
+                debtAmount = d2.getDebtAmount();
+                debtRate = d2.getDebtRate();
+                debtPayments = d2.getDebtPayments();
+                debtFrequency = d2.getDebtFrequency();
+                debtAnnualIncome = d2.getDebtAnnualIncome();
+            }
+        }
+    }
+
+    public void updateChargingDebtRecord() {
+        dbHelper = new DbHelper(getContext());
+        db = dbHelper.getWritableDatabase();
+
+        newDebtAmount = findCurrentChargingDebtAmount() - ccAmountD;
+        moneyOutValue = new ContentValues();
+        moneyOutValue.put(DbHelper.DEBTAMOUNT, newDebtAmount);
+        db.update(DbHelper.DEBTS_TABLE_NAME, moneyOutValue, DbHelper.ID + "=" + chargingDebtId, null);
+
+        allChargingDebtData();
+
+        moneyOutValue2 = new ContentValues();
+        moneyOutValue2.put(DbHelper.DEBTEND, general.calcDebtDate(
+                debtAmount,
+                debtRate,
+                debtPayments,
+                debtFrequency,
+                debtAnnualIncome,
+                getString(R.string.debt_paid),
+                getString(R.string.too_far)));
+        db.update(DbHelper.DEBTS_TABLE_NAME, moneyOutValue2, DbHelper.ID + "=" + chargingDebtId, null);
+        db.close();
+    }
+
+    /*public String calcChargingDebtDate() {
         for (DebtDb d2 : dbManager.getDebts()) {
             if (d2.getId() == chargingDebtId) {
                 debtAmount3 = d2.getDebtAmount();
@@ -187,17 +235,8 @@ public class DailyCreditCard extends Fragment {
             }
         }
         return chargingDebtEnd;
-    }
+    }*/
 
-
-    public Double findCurrentChargingDebtAmount() {
-        for (DebtDb d : dbManager.getDebts()) {
-            if (d.getId() == chargingDebtId) {
-                currentChargingDebtAmount = d.getDebtAmount();
-            }
-        }
-        return currentChargingDebtAmount;
-    }
 
     public void finishTransaction() {
         updateCurrentAccountBalance();
@@ -205,8 +244,9 @@ public class DailyCreditCard extends Fragment {
         dbManager.updatePaid();
         ccAdapter.notifyDataSetChanged();
 
-        //update balance owing on appropriate DEBTS
-        dbHelper = new DbHelper(getContext());
+        updateChargingDebtRecord();
+
+        /*dbHelper = new DbHelper(getContext());
         db = dbHelper.getWritableDatabase();
 
         newDebtAmount = findCurrentChargingDebtAmount() - ccAmountD;
@@ -215,7 +255,7 @@ public class DailyCreditCard extends Fragment {
         db.update(DbHelper.DEBTS_TABLE_NAME, moneyOutValue, DbHelper.ID + "=" + chargingDebtId, null);
         moneyOutValue2 = new ContentValues();
         moneyOutValue2.put(DbHelper.DEBTEND, calcChargingDebtDate());
-        db.update(DbHelper.DEBTS_TABLE_NAME, moneyOutValue2, DbHelper.ID + "=" + chargingDebtId, null);
+        db.update(DbHelper.DEBTS_TABLE_NAME, moneyOutValue2, DbHelper.ID + "=" + chargingDebtId, null);*/
 
         backToCCLayout();
     }
