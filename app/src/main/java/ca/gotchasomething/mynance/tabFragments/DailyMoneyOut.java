@@ -56,12 +56,14 @@ public class DailyMoneyOut extends Fragment {
             moneyOutValue9, moneyOutValue10, moneyOutValue11, moneyOutValue12;
     Cursor cursor, moneyOutCursor;
     Date debtEndD, moneyOutDate, savingsDateD;
-    DbHelper dbHelper2, dbHelper3, dbHelper4, dbHelper5, dbHelper7, helper, dbHelper8;
+    DbHelper dbHelper2, dbHelper3, dbHelper4, dbHelper5, dbHelper7, helper, dbHelper8, dbHelper9;
     DbManager dbManager;
     Double amountEntry = 0.0, currentDebtAmount = 0.0, debtFrequency = 0.0, debtRate = 0.0, debtPayments = 0.0, currentSavingsAmount = 0.0,
             savingsFrequency = 0.0, savingsPayments = 0.0, savingsRate = 0.0, debtAmount = 0.0, debtAnnualIncome = 0.0, moneyOutAmount = 0.0,
-            moneyOutAmountD = 0.0, moneyOutD = 0.0, newCurrentAccountBalance3 = 0.0, newCurrentAccountBalance4 = 0.0,
-            moneyOutAmount1 = 0.0, newCurrentAvailableBalance = 0.0, newCurrentAvailableBalance3 = 0.0, newDebtAmount = 0.0, newSavingsAmount = 0.0, numberOfYearsToPayDebt = 0.0,
+            moneyOutAmountD = 0.0, moneyOutD = 0.0, neededFromB = 0.0, newCurrentAccountBalance3 = 0.0, newCurrentAccountBalance4 = 0.0,
+            newNeededForABalance = 0.0, newNeededForABalanceMinus = 0.0,
+            newCurrentAvailableBalance2 = 0.0, newCurrentAvailableBalance = 0.0, newCurrentAvailableBalance3 = 0.0, newDebtAmount = 0.0, newSavingsAmount = 0.0,
+            numberOfYearsToPayDebt = 0.0,
             oldMoneyOutAmount = 0.0, savingsAmount = 0.0, savingsAnnualIncome = 0.0, savingsGoal = 0.0, rate = 0.0, years = 0.0;
     EditText moneyOutAmountEditText, moneyOutAmountText;
     General general;
@@ -77,7 +79,7 @@ public class DailyMoneyOut extends Fragment {
     RelativeLayout addMoneyOutLayout;
     SimpleDateFormat debtEndS, moneyOutSDF, savingsDateS;
     Spinner moneyOutCatSpinner;
-    SQLiteDatabase db, db2, db3, db4, db5, db7, db8;
+    SQLiteDatabase db, db2, db3, db4, db5, db7, db8, db9;
     String clicksES = null, clicksS = null, debtEnd = null, moneyOut2 = null, moneyOutAmountS = null, moneyOutCat = null, moneyOutCatS = null, moneyOutCC = null,
             moneyOutCreatedOn = null, moneyOutDebtCat = null, moneyOutPriority = null, moneyOutPriorityS = null, moneyOutS = null, moneyOutWeekly = null,
             moneyOutWeeklyS = null, savingsDate = null;
@@ -294,11 +296,42 @@ public class DailyMoneyOut extends Fragment {
         moneyOutAdapter.notifyDataSetChanged();
     }
 
+    public void makePaymentA2() {
+        newNeededForABalance = dbManager.retrieveCurrentNeededForA() - moneyOutAmount;
+        neededFromB = -newNeededForABalance;
+        newCurrentAvailableBalance2 = dbManager.retrieveCurrentAvailableBalance() - neededFromB;
+
+        dbHelper9 = new DbHelper(getContext());
+        db9 = dbHelper9.getWritableDatabase();
+
+        moneyOutValue3 = new ContentValues();
+        if (newNeededForABalance > 0) {
+            moneyOutValue3.put(DbHelper.NEEDEDFORA, newNeededForABalance);
+        } else {
+            /*if (dbManager.retrieveCurrentAvailableBalance() < neededFromB) {
+                moneyOutValue3.put(DbHelper.CURRENTAVAILABLEBALANCE, 0);
+                moneyOutValue3.put(DbHelper.NEEDEDFORA, 0);*/
+            //} else {
+                moneyOutValue3.put(DbHelper.CURRENTAVAILABLEBALANCE, newCurrentAvailableBalance2);
+                moneyOutValue3.put(DbHelper.NEEDEDFORA, 0);
+            //}
+        }
+
+        db9.update(DbHelper.CURRENT_TABLE_NAME, moneyOutValue3, DbHelper.ID + "= '1'", null);
+        db9.close();
+    }
+
     public void makePaymentA() {
 
         newCurrentAccountBalance3 = dbManager.retrieveCurrentAccountBalance() - moneyOutAmount;
+        /*newNeededForABalance = dbManager.retrieveCurrentNeededForA() - moneyOutAmount;
+        neededFromB = -newNeededForABalance;
+        newCurrentAvailableBalance2 = dbManager.retrieveCurrentAvailableBalance() - neededFromB;*/
+        //newNeededForABalanceMinus = newNeededForABalance + neededFromB;
+
         dbHelper3 = new DbHelper(getContext());
         db3 = dbHelper3.getWritableDatabase();
+
         moneyOutValue = new ContentValues();
         moneyOutValue.put(DbHelper.CURRENTACCOUNTBALANCE, newCurrentAccountBalance3);
         db3.update(DbHelper.CURRENT_TABLE_NAME, moneyOutValue, DbHelper.ID + "= '1'", null);
@@ -483,6 +516,8 @@ public class DailyMoneyOut extends Fragment {
         moneyOutValue9 = new ContentValues();
         moneyOutValue9.put(DbHelper.SAVINGSAMOUNT, newSavingsAmount);
         db8.update(DbHelper.SAVINGS_TABLE_NAME, moneyOutValue9, DbHelper.ID + "=" + findMatchingSavingsId(), null);
+
+        //general.allSavingsDataFromDb(dbManager, String.valueOf(findMatchingSavingsId()));
 
         allSavingsData();
 
@@ -747,6 +782,7 @@ public class DailyMoneyOut extends Fragment {
             if (paymentAPossible) {
                 createMoneyOut();
                 makePaymentA();
+                makePaymentA2();
                 backToLayoutDailyMoney();
             } else if (!paymentAPossible) {
                 paymentNotPossibleAText.setVisibility(View.VISIBLE);
@@ -766,6 +802,7 @@ public class DailyMoneyOut extends Fragment {
                     public void onClick(View v) {
                         createMoneyOut();
                         makePaymentA();
+                        makePaymentA2();
                         backToLayoutDailyMoney();
                     }
                 });
@@ -1070,13 +1107,12 @@ public class DailyMoneyOut extends Fragment {
 
                     moneyOutDb = (MoneyOutDb) holder.moneyOutDelete.getTag();
 
-                    moneyOutAmount1 = cashTrans.get(position).getMoneyOutAmount();
-                    moneyOutAmount = -moneyOutAmount1;
+                    moneyOutAmount = cashTrans.get(position).getMoneyOutAmount();
                     moneyOutRefKeyMO = cashTrans.get(position).getExpRefKeyMO();
                     moneyOutPriority = cashTrans.get(position).getMoneyOutPriority();
 
-                    //dbHelper7 = new DbHelper(getContext());
-                    //db7 = dbHelper7.getWritableDatabase();
+                    dbHelper7 = new DbHelper(getContext());
+                    db7 = dbHelper7.getWritableDatabase();
 
                     if (moneyOutPriority.equals("B")) {
                         refundB();
@@ -1128,8 +1164,8 @@ public class DailyMoneyOut extends Fragment {
                                 getString(R.string.goal_achieved),
                                 getString(R.string.too_far)));
                         db7.update(DbHelper.SAVINGS_TABLE_NAME, moneyOutValue10, DbHelper.ID + "=" + findMatchingSavingsId(), null);
-                    }
-                    db7.close();*/
+                    }*/
+                    db7.close();
 
                     dbManager.deleteMoneyOut(moneyOutDb);
                     moneyOutAdapter.updateCashTrans(dbManager.getCashTrans());

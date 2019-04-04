@@ -107,7 +107,11 @@ public class LayoutDailyMoney extends MainNavigation {
         newAvailableBalance = dbManager.retrieveCurrentAvailableBalance();
 
         accountBalance2 = currencyFormat.format(newAccountBalance);
-        availableBalance2 = currencyFormat.format(newAvailableBalance);
+        if(newAvailableBalance < 0) {
+            availableBalance2 = currencyFormat.format(0);
+        } else {
+            availableBalance2 = currencyFormat.format(newAvailableBalance);
+        }
 
         totalAccountText.setText(accountBalance2);
         availableAccountText.setText(availableBalance2);

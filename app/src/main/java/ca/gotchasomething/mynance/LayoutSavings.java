@@ -33,7 +33,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import ca.gotchasomething.mynance.data.ExpenseBudgetDb;
-import ca.gotchasomething.mynance.data.IncomeBudgetDb;
 import ca.gotchasomething.mynance.data.SavingsDb;
 import ca.gotchasomething.mynance.data.SetUpDb;
 
@@ -432,11 +431,11 @@ public class LayoutSavings extends MainNavigation {
 
             incRefKeyS = savings.get(position).getIncRefKeyS();
 
-            for (IncomeBudgetDb i : dbManager.getIncomes()) {
+            /*for (IncomeBudgetDb i : dbManager.getIncomes()) {
                 if (String.valueOf(incRefKeyS).equals(String.valueOf(i.getId()))) {
                     savingsAnnualIncomeb = i.getIncomeAnnualAmount();
                 }
-            }
+            }*/
 
             holder.savingsDeleted.setTag(savings.get(position));
             holder.savingsEdit.setTag(savings.get(position));
@@ -500,7 +499,7 @@ public class LayoutSavings extends MainNavigation {
 
                     savingsFrequency = savingsDb.getSavingsFrequency();
 
-                    savingsAnnualIncome = savingsDb.getSavingsAnnualIncome();
+                    savingsAnnualIncomeb = savingsDb.getSavingsAnnualIncome();
 
                     savingsDate = savingsDb.getSavingsDate();
                     savingsDateResult.setText(savingsDate);

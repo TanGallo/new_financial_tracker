@@ -47,16 +47,16 @@ public class DailyMoneyIn extends Fragment {
     Boolean foundMatchingDebtId = false, foundMatchingSavingsId = false;
     Button cancelMoneyInEntryButton, moneyInButton, noMoneyInButton, updateMoneyInEntryButton, yesMoneyInButton;
     Calendar debtCal, savingsCal;
-    ContentValues currentValue, moneyInValue, moneyInValue2, moneyInValue3, moneyInValue4, moneyInValue5, moneyInValue6;
+    ContentValues currentValue, moneyInValue, moneyInValue2, moneyInValue3, moneyInValue4, moneyInValue5, moneyInValue6, moneyInValue7;
     Cursor cursor2;
     Date debtEndD, moneyInDate, savingsDateD;
     DbHelper dbHelper, dbHelper2, dbHelper3, dbHelper4, dbHelper5, dbHelper6;
     DbManager dbManager;
-    Double amountEntry = 0.0, currentDebtAmount = 0.0, debtFrequency = 0.0, debtPayments = 0.0, debtRate = 0.0, currentSavingsAmount = 0.0,
+    Double amountEntry = 0.0, availableForB = 0.0, currentDebtAmount = 0.0, debtFrequency = 0.0, debtPayments = 0.0, debtRate = 0.0, currentSavingsAmount = 0.0, neededForA = 0.0,
             savingsFrequency = 0.0, savingsPayments = 0.0, savingsRate = 0.0, debtAmount = 0.0, debtAnnualIncome = 0.0, debtLimit = 0.0,
             moneyInAmount = 0.0, moneyInAmount1 = 0.0, moneyInAmountD = 0.0, moneyInD = 0.0, newAccountBalance = 0.0, newAvailableBalance = 0.0, newDebtAmount = 0.0,
-            newSavingsAmount = 0.0, numberOfYearsToPayDebt = 0.0, oldMoneyInAmount = 0.0, percentB = 0.0, rate = 0.0, savingsAmount = 0.0,
-            savingsAnnualIncome = 0.0, savingsGoal = 0.0, years = 0.0;
+            newSavingsAmount = 0.0, numberOfYearsToPayDebt = 0.0, oldMoneyInAmount = 0.0, percentA = 0.0, percentB = 0.0, rate = 0.0, savingsAmount = 0.0,
+            savingsAnnualIncome = 0.0, savingsGoal = 0.0, years = 0.0, restOfMoney = 0.0;
     EditText moneyInAmountText, moneyInAmountEditText;
     General general;
     int numberOfDaysToPayDebt = 0, numberOfDaysToSavingsGoal = 0;
@@ -346,6 +346,8 @@ public class DailyMoneyIn extends Fragment {
         moneyInValue5.put(DbHelper.SAVINGSAMOUNT, newSavingsAmount);
         db6.update(DbHelper.SAVINGS_TABLE_NAME, moneyInValue5, DbHelper.ID + "=" + findMatchingSavingsId(), null);
 
+        //general.allSavingsDataFromDb(dbManager, String.valueOf(findMatchingSavingsId()));
+
         allSavingsData();
 
         moneyInValue6 = new ContentValues();
@@ -366,16 +368,34 @@ public class DailyMoneyIn extends Fragment {
     public void updateCurrentAvailableBalanceMoneyIn() {
         dbHelper3 = new DbHelper(getContext());
         db3 = dbHelper3.getWritableDatabase();
-        percentB = dbManager.retrieveBPercentage();
-        if (dbManager.retrieveCurrentAccountBalance() < moneyInAmount) {
+
+        neededForA = dbManager.retrieveCurrentNeededForA() + (moneyInAmount * dbManager.retrieveAPercentage());
+        availableForB = dbManager.retrieveCurrentAvailableBalance() + (moneyInAmount * dbManager.retrieveBPercentage());
+
+        moneyInValue2 = new ContentValues();
+        moneyInValue2.put(DbHelper.NEEDEDFORA, neededForA);
+        moneyInValue2.put(DbHelper.CURRENTAVAILABLEBALANCE, availableForB);
+        db3.update(DbHelper.CURRENT_TABLE_NAME, moneyInValue2, DbHelper.ID + "= '1'", null);
+        //db3.close();
+
+        moneyInValue7 = new ContentValues();
+        if(dbManager.retrieveCurrentAccountBalance() > 0 && (dbManager.retrieveCurrentAvailableBalance() + dbManager.retrieveCurrentNeededForA() < dbManager.retrieveCurrentAccountBalance())) {
+            if(dbManager.retrieveCurrentNeededForA() + dbManager.retrieveCurrentAvailableBalance() > 0) {
+                restOfMoney = dbManager.retrieveCurrentAccountBalance() - dbManager.retrieveCurrentAvailableBalance();
+            } else {
+                restOfMoney = dbManager.retrieveCurrentAccountBalance();
+            }
+            moneyInValue7.put(DbHelper.NEEDEDFORA, restOfMoney);
+        }
+
+        /*if (dbManager.retrieveCurrentAccountBalance() < moneyInAmount) {
             newAvailableBalance = dbManager.retrieveCurrentAvailableBalance() + (dbManager.retrieveCurrentAccountBalance() * percentB);
         } else {
             newAvailableBalance = dbManager.retrieveCurrentAvailableBalance() + (moneyInAmount * percentB);
-        }
+        }*/
 
-        moneyInValue2 = new ContentValues();
-        moneyInValue2.put(DbHelper.CURRENTAVAILABLEBALANCE, newAvailableBalance);
-        db3.update(DbHelper.CURRENT_TABLE_NAME, moneyInValue2, DbHelper.ID + "= '1'", null);
+        //moneyInValue2.put(DbHelper.CURRENTAVAILABLEBALANCE, newAvailableBalance);
+        db3.update(DbHelper.CURRENT_TABLE_NAME, moneyInValue7, DbHelper.ID + "= '1'", null);
         db3.close();
     }
 

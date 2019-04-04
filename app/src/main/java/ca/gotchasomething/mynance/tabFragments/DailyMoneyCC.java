@@ -506,6 +506,7 @@ public class DailyMoneyCC extends Fragment {
         db8.update(DbHelper.SAVINGS_TABLE_NAME, moneyOutValue3, DbHelper.ID + "=" + findMatchingSavingsId(), null);
 
         allSavingsData();
+        //general.allSavingsDataFromDb(dbManager, String.valueOf(findMatchingSavingsId()));
 
         moneyOutValue4 = new ContentValues();
         moneyOutValue4.put(DbHelper.SAVINGSDATE, general.calcSavingsDate(

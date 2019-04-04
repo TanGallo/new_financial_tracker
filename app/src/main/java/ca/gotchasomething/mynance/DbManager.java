@@ -26,8 +26,8 @@ public class DbManager extends AppCompatActivity {
     public ContentValues newCurrent, newDebt, newExpense, newIncome, newMoneyIn, newMoneyOut, newSavings, newSetUp, updateCurrent, updateDebt, updateExpense,
             updateIncome, updateMoneyIn, updateMoneyOut, updateMoneyOutPaid, updateSaving, updateSetUp, zero;
     public DbHelper dbHelper;
-    public Double currentAccountBalance = 0.0, currentAvailableBalance = 0.0, percentB = 0.0, startingBalanceResult = 0.0, totalBudgetAExpenses = 0.0,
-            totalCCPaymentDue = 0.0, totalCCPaymentBDue = 0.0, totalDebt = 0.0, totalExpenses = 0.0, totalIncome = 0.0, totalSavings = 0.0;
+    public Double currentAccountBalance = 0.0, currentAvailableBalance = 0.0, percentA = 0.0, percentB = 0.0, startingBalanceResult = 0.0, totalBudgetAExpenses = 0.0,
+            totalCCPaymentDue = 0.0, totalCCPaymentBDue = 0.0, totalDebt = 0.0, totalExpenses = 0.0, totalIncome = 0.0, totalSavings = 0.0, currentNeededForA = 0.0;
     public General general = new General();
     public int balanceDoneCheck = 0, budgetDoneCheck = 0, currentPageId = 0, debtCount = 0, debtsDoneCheck = 0, earliestYear = 0, endIndex = 0, latestYear = 0,
             savingsDoneCheck = 0, startIndex = 0, tourDoneCheck = 0;
@@ -720,6 +720,7 @@ public class DbManager extends AppCompatActivity {
                 CurrentDb current = new CurrentDb(
                         cursor.getDouble(cursor.getColumnIndex(DbHelper.CURRENTACCOUNTBALANCE)),
                         cursor.getDouble(cursor.getColumnIndex(DbHelper.CURRENTAVAILABLEBALANCE)),
+                        cursor.getDouble(cursor.getColumnIndex(DbHelper.NEEDEDFORA)),
                         cursor.getInt(cursor.getColumnIndex(DbHelper.CURRENTPAGEID)),
                         cursor.getLong(cursor.getColumnIndex(DbHelper.ID))
                 );
@@ -735,6 +736,7 @@ public class DbManager extends AppCompatActivity {
         newCurrent = new ContentValues();
         newCurrent.put(DbHelper.CURRENTACCOUNTBALANCE, current.getCurrentAccountBalance());
         newCurrent.put(DbHelper.CURRENTAVAILABLEBALANCE, current.getCurrentAvailableBalance());
+        newCurrent.put(DbHelper.NEEDEDFORA, current.getNeededForA());
         newCurrent.put(DbHelper.CURRENTPAGEID, current.getCurrentPageId());
         db = dbHelper.getWritableDatabase();
         db.insert(DbHelper.CURRENT_TABLE_NAME, null, newCurrent);
@@ -744,6 +746,7 @@ public class DbManager extends AppCompatActivity {
         updateCurrent = new ContentValues();
         updateCurrent.put(DbHelper.CURRENTACCOUNTBALANCE, current.getCurrentAccountBalance());
         updateCurrent.put(DbHelper.CURRENTAVAILABLEBALANCE, current.getCurrentAvailableBalance());
+        updateCurrent.put(DbHelper.NEEDEDFORA, current.getNeededForA());
         updateCurrent.put(DbHelper.CURRENTPAGEID, current.getCurrentPageId());
         db = dbHelper.getWritableDatabase();
         String[] args = new String[]{String.valueOf(current.getId())};
@@ -785,21 +788,38 @@ public class DbManager extends AppCompatActivity {
         return percentB;
     }
 
+    public Double retrieveAPercentage() {
+        retrieveBPercentage();
+        percentA = 1 - percentB;
+
+        return percentA;
+    }
+
+    public Double retrieveCurrentNeededForA() {
+        currentNeededForA = 0.0;
+        for (CurrentDb c3 : getCurrent()) {
+            if (c3.getId() == 1) {
+                currentNeededForA = c3.getNeededForA();
+            }
+        }
+        return currentNeededForA;
+    }
+
     public Double retrieveCurrentAvailableBalance() {
         currentAvailableBalance = 0.0;
-        db = dbHelper.getWritableDatabase();
+        //db = dbHelper.getWritableDatabase();
         for (CurrentDb c2 : getCurrent()) {
             if (c2.getId() == 1) {
                 currentAvailableBalance = c2.getCurrentAvailableBalance();
             }
         }
-        if (currentAvailableBalance <= 0 || retrieveCurrentAccountBalance() < currentAvailableBalance || retrieveCurrentAccountBalance() == 0.0) {
+        /*if (currentAvailableBalance <= 0 || retrieveCurrentAccountBalance() < currentAvailableBalance || retrieveCurrentAccountBalance() == 0.0) {
             zero = new ContentValues();
             zero.put(DbHelper.CURRENTAVAILABLEBALANCE, 0.0);
             db.update(DbHelper.CURRENT_TABLE_NAME, zero, DbHelper.ID + "= '1'", null);
             currentAvailableBalance = 0.0;
         }
-        db.close();
+        db.close();*/
         return currentAvailableBalance;
     }
 

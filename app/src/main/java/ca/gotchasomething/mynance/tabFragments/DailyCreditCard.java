@@ -42,13 +42,13 @@ public class DailyCreditCard extends Fragment {
     CCAdapter ccAdapter;
     CCPaymentsAdapter ccPaymentsAdapter;
     CheckBox ccPaidCheckbox;
-    ContentValues currentValue, moneyOutValue, moneyOutValue2, updateMoneyOutToPay;
+    ContentValues currentValue, moneyOutValue, moneyOutValue2, moneyOutValue3, updateMoneyOutToPay;
     Date debtEndD3;
-    DbHelper dbHelper, dbHelper2, dbHelper3, dbHelper4, dbHelper5;
+    DbHelper dbHelper, dbHelper2, dbHelper3, dbHelper4, dbHelper5, dbHelper6;
     DbManager dbManager;
     Double amountDue = 0.0, ccAmountD = 0.0, currentChargingDebtAmount = 0.0, debtAnnualIncome = 0.0, debtFrequency = 0.0, debtPayments = 0.0,
-            debtRate = 0.0, debtAmount = 0.0, newCurrentAccountBalance = 0.0, newCurrentAvailableBalance = 0.0, newDebtAmount = 0.0,
-            numberOfYearsToPayDebt3 = 0.0;
+            debtRate = 0.0, debtAmount = 0.0, newCurrentAccountBalance = 0.0, newCurrentAvailableBalance = 0.0, newCurrentAvailableBalance2 = 0.0, newDebtAmount = 0.0,
+            numberOfYearsToPayDebt3 = 0.0, newNeededForABalance = 0.0, neededFromB = 0.0;
     General general;
     int numberOfDaysToPayDebt3 = 0;
     Intent refresh;
@@ -58,7 +58,7 @@ public class DailyCreditCard extends Fragment {
     MoneyOutDb moneyOutDb;
     NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
     SimpleDateFormat debtEndS3;
-    SQLiteDatabase db, db2, db3, db4, db5;
+    SQLiteDatabase db, db2, db3, db4, db5, db6;
     String amountDueS = null, ccAmountS = null, ccAmount2 = null, chargingDebtEnd = null;
     TextView ccHeaderLabel, ccPaidLabel, ccPayLabel, ccTransContinueAnywayText, ccTransPaymentNotPossibleAText, ccTransPaymentNotPossibleBText, checkBelowLabel,
             noCCTransLabel, totalCCPaymentDueLabel;
@@ -240,6 +240,7 @@ public class DailyCreditCard extends Fragment {
 
     public void finishTransaction() {
         updateCurrentAccountBalance();
+        updateCurrentNeededForABalance();
         updateCurrentAvailableBalance();
         dbManager.updatePaid();
         ccAdapter.notifyDataSetChanged();
@@ -273,13 +274,41 @@ public class DailyCreditCard extends Fragment {
 
     public void updateCurrentAccountBalance() {
         newCurrentAccountBalance = dbManager.retrieveCurrentAccountBalance() - dbManager.retrieveToPayTotal();
+        /*newNeededForABalance = dbManager.retrieveCurrentNeededForA() - (dbManager.retrieveToPayTotal() - dbManager.retrieveToPayBTotal());
+        neededFromB = -newNeededForABalance;
+        newCurrentAvailableBalance2 = dbManager.retrieveCurrentAvailableBalance() - neededFromB;*/
+
+        dbHelper4 = new DbHelper(getContext());
+        db4 = dbHelper4.getWritableDatabase();
 
         moneyOutValue2 = new ContentValues();
         moneyOutValue2.put(DbHelper.CURRENTACCOUNTBALANCE, newCurrentAccountBalance);
-        dbHelper4 = new DbHelper(getContext());
-        db4 = dbHelper4.getWritableDatabase();
         db4.update(DbHelper.CURRENT_TABLE_NAME, moneyOutValue2, DbHelper.ID + "= '1'", null);
         db4.close();
+    }
+
+    public void updateCurrentNeededForABalance() {
+        newNeededForABalance = dbManager.retrieveCurrentNeededForA() - (dbManager.retrieveToPayTotal() - dbManager.retrieveToPayBTotal());
+        neededFromB = -newNeededForABalance;
+        newCurrentAvailableBalance2 = dbManager.retrieveCurrentAvailableBalance() - neededFromB;
+
+        dbHelper6 = new DbHelper(getContext());
+        db6 = dbHelper6.getWritableDatabase();
+
+        moneyOutValue3 = new ContentValues();
+        if (newNeededForABalance > 0) {
+            moneyOutValue3.put(DbHelper.NEEDEDFORA, newNeededForABalance);
+        } else {
+            /*if (dbManager.retrieveCurrentAvailableBalance() < neededFromB) {
+                moneyOutValue3.put(DbHelper.CURRENTAVAILABLEBALANCE, 0);
+                moneyOutValue3.put(DbHelper.NEEDEDFORA, 0);
+            } else {*/
+                moneyOutValue3.put(DbHelper.CURRENTAVAILABLEBALANCE, newCurrentAvailableBalance2);
+                moneyOutValue3.put(DbHelper.NEEDEDFORA, 0);
+            //}
+        }
+        db6.update(DbHelper.CURRENT_TABLE_NAME, moneyOutValue3, DbHelper.ID + "= '1'", null);
+        db6.close();
     }
 
     CompoundButton.OnCheckedChangeListener onCheckCCPaid = new CompoundButton.OnCheckedChangeListener() {

@@ -41,7 +41,7 @@ public class LayoutBudget extends MainNavigation {
     boolean foundDebtId = false, foundSavingsId = false, foundDebtIdExp = false, foundDebtIdInc = false, foundSavingsIdExp = false, foundSavingsIdInc = false;
     Button budgetAddExpenseButton, budgetAddIncomeButton, budgetCancelExpenseButton, budgetCancelIncomeButton, budgetSetUpTimeButton,
             budgetSetUpHelpButton, budgetUpdateExpenseButton, budgetUpdateIncomeButton, cancelButton, doneBudgetSetUpButton, okButton, ok2Button;
-    ContentValues cv, cv2, cv3, cv4, cv5, cv6, cv7, cv8, cv9, cv10, cv11, cv12, debtValues, debtValues2, debtValues3, debtValues4, expValues, incValues, moneyInValues, moneyOutValues, moneyOutValues2, moneyOutValues3, savingsValues, savingsValues2,
+    ContentValues cv, cv2, cv3, cv4, cv5, cv6, cv7, cv8, cv9, cv10, cv11, cv12, cv13, cv14, debtValues, debtValues2, debtValues3, debtValues4, expValues, incValues, moneyInValues, moneyOutValues, moneyOutValues2, moneyOutValues3, savingsValues, savingsValues2,
             savingsValues3, savingsValues4;
     DbHelper dbHelper, dbHelper2;
     DbManager dbManager;
@@ -299,8 +299,8 @@ public class LayoutBudget extends MainNavigation {
 
     public void findMatchingDebtId() {
         foundDebtId = false;
-        for(DebtDb d : dbManager.getDebts()) {
-            if(String.valueOf(d.getIncRefKeyD()).equals(incomeId) || String.valueOf(d.getExpRefKeyD()).equals(expenseId)) {
+        for (DebtDb d : dbManager.getDebts()) {
+            if (String.valueOf(d.getIncRefKeyD()).equals(incomeId) || String.valueOf(d.getExpRefKeyD()).equals(expenseId)) {
                 foundDebtId = true;
                 debtId = String.valueOf(d.getId());
                 expRefKeyD = String.valueOf(d.getExpRefKeyD());
@@ -311,8 +311,8 @@ public class LayoutBudget extends MainNavigation {
 
     public void findMatchingSavingsId() {
         foundSavingsId = false;
-        for(SavingsDb s : dbManager.getSavings()) {
-            if(String.valueOf(s.getIncRefKeyS()).equals(incomeId) || String.valueOf(s.getExpRefKeyS()).equals(expenseId)) {
+        for (SavingsDb s : dbManager.getSavings()) {
+            if (String.valueOf(s.getIncRefKeyS()).equals(incomeId) || String.valueOf(s.getExpRefKeyS()).equals(expenseId)) {
                 foundSavingsId = true;
                 savingsId = String.valueOf(s.getId());
                 expRefKeyS = String.valueOf(s.getExpRefKeyS());
@@ -408,14 +408,27 @@ public class LayoutBudget extends MainNavigation {
             if (String.valueOf(s2.getId()).equals(savingsId)) {
                 savingsAmount = s2.getSavingsAmount();
                 savingsGoal = s2.getSavingsGoal();
-                currentSavingsRate = s2.getSavingsRate();
-                savingsRate = currentSavingsRate / 100;
+                savingsRate = s2.getSavingsRate();
+                //savingsRate = currentSavingsRate / 100;
                 savingsPayments = s2.getSavingsPayments();
                 savingsFrequency = s2.getSavingsFrequency();
                 savingsAnnualIncome = s2.getSavingsAnnualIncome();
             }
         }
     }
+
+    /*public void savingsDateResult() {
+        allSavingsData();
+        savingsDate2 = general.calcSavingsDate(
+                savingsGoal,
+                savingsAmount,
+                savingsRate,
+                savingsPayments,
+                savingsFrequency,
+                savingsAnnualIncome,
+                getString(R.string.goal_achieved),
+                getString(R.string.too_far));
+    }*/
 
     /*public void allDataSavingsInc() {
         for (SavingsDb s3 : dbManager.getSavings()) {
@@ -635,7 +648,7 @@ public class LayoutBudget extends MainNavigation {
                                 incomeBudgetDb.setIncomeAnnualAmount(annualIncome);
 
                                 for (ExpenseBudgetDb e : dbManager.getExpense()) {
-                                    if (String.valueOf(e.getId()).equals(incRefKeyD)  || String.valueOf(e.getId()).equals(incRefKeyS)) {
+                                    if (String.valueOf(e.getId()).equals(expRefKeyD) || String.valueOf(e.getId()).equals(expRefKeyS)) {
                                         expenseId = String.valueOf(e.getId());
                                     }
                                 }
@@ -649,64 +662,102 @@ public class LayoutBudget extends MainNavigation {
                                 String[] args7 = new String[]{incomeId};
 
                                 cv = new ContentValues();
-                                cv2 = new ContentValues();
-                                cv3 = new ContentValues();
-                                cv4 = new ContentValues();
-                                cv5 = new ContentValues();
-                                cv6 = new ContentValues();
-                                cv.put(DbHelper.DEBTNAME, nameEntryInc);
-                                cv.put(DbHelper.DEBTANNUALINCOME, annualIncome);
-                                cv3.put(DbHelper.SAVINGSNAME, nameEntryInc);
-                                cv3.put(DbHelper.SAVINGSANNUALINCOME, annualIncome);
-                                cv4.put(DbHelper.EXPENSENAME, nameEntryInc);
-                                cv5.put(DbHelper.MONEYINCAT, nameEntryInc);
-                                cv6.put(DbHelper.MONEYOUTCAT, nameEntryInc);
-                                cv2.put(DbHelper.MONEYOUTDEBTCAT, nameEntryInc);
-
                                 try {
+                                    cv.put(DbHelper.DEBTNAME, nameEntryInc);
+                                    cv.put(DbHelper.DEBTANNUALINCOME, annualIncome);
                                     db2.update(DbHelper.DEBTS_TABLE_NAME, cv, DbHelper.ID + "=?", args4);
-                                    db2.update(DbHelper.SAVINGS_TABLE_NAME, cv3, DbHelper.ID + "=?", args5);
-                                    db2.update(DbHelper.EXPENSES_TABLE_NAME, cv4, DbHelper.ID + "=?", args6);
-                                    db2.update(DbHelper.MONEY_IN_TABLE_NAME, cv5, DbHelper.INCREFKEYMI + "=?", args7);
-                                    db2.update(DbHelper.MONEY_OUT_TABLE_NAME, cv6, DbHelper.EXPREFKEYMO + "=?", args6);
-                                    db2.update(DbHelper.MONEY_OUT_TABLE_NAME, cv2, DbHelper.MONEYOUTCHARGINGDEBTID + "=?", args4);
-                                } catch (CursorIndexOutOfBoundsException|SQLException e) {
+                                } catch (CursorIndexOutOfBoundsException | SQLException e) {
                                     e.printStackTrace();
                                 }
 
                                 allDebtData();
 
-                                cv.put(DbHelper.DEBTEND, general.calcDebtDate(
-                                        debtAmount,
-                                        debtRate,
-                                        debtPayments,
-                                        debtFrequency,
-                                        debtAnnualIncome,
-                                        getString(R.string.debt_paid),
-                                        getString(R.string.too_far)));
-
+                                cv13 = new ContentValues();
                                 try {
-                                    db2.update(DbHelper.DEBTS_TABLE_NAME, cv, DbHelper.ID + "=?", args4);
-                                } catch (CursorIndexOutOfBoundsException|SQLException e2) {
+                                    cv13.put(DbHelper.DEBTEND, general.calcDebtDate(
+                                            debtAmount,
+                                            debtRate,
+                                            debtPayments,
+                                            debtFrequency,
+                                            debtAnnualIncome,
+                                            getString(R.string.debt_paid),
+                                            getString(R.string.too_far)));
+
+                                    db2.update(DbHelper.DEBTS_TABLE_NAME, cv13, DbHelper.ID + "=?", args4);
+                                } catch (CursorIndexOutOfBoundsException | SQLException e2) {
                                     e2.printStackTrace();
                                 }
 
+                                cv2 = new ContentValues();
+                                try {
+                                    cv2.put(DbHelper.MONEYOUTDEBTCAT, nameEntryInc);
+                                    db2.update(DbHelper.MONEY_OUT_TABLE_NAME, cv2, DbHelper.MONEYOUTCHARGINGDEBTID + "=?", args4);
+                                } catch (CursorIndexOutOfBoundsException | SQLException e3) {
+                                    e3.printStackTrace();
+                                }
+
+                                cv3 = new ContentValues();
+                                try {
+                                    cv3.put(DbHelper.SAVINGSNAME, nameEntryInc);
+                                    cv3.put(DbHelper.SAVINGSANNUALINCOME, annualIncome);
+                                    db2.update(DbHelper.SAVINGS_TABLE_NAME, cv3, DbHelper.ID + "=?", args5);
+                                } catch (CursorIndexOutOfBoundsException | SQLException e4) {
+                                    e4.printStackTrace();
+                                }
+
+                                /*savingsDateResult();
+                                cv14 = new ContentValues();
+                                try {
+                                    cv14.put(DbHelper.SAVINGSDATE, savingsDate2);
+                                    db2.update(DbHelper.SAVINGS_TABLE_NAME, cv14, DbHelper.ID + "=?", args5);
+                                } catch (CursorIndexOutOfBoundsException | SQLException e5) {
+                                    e5.printStackTrace();
+                                }*/
+
+                                //general.allSavingsDataFromDb(dbManager, savingsId);
+
                                 allSavingsData();
 
-                                cv3.put(DbHelper.SAVINGSDATE, general.calcSavingsDate(
-                                        savingsGoal,
-                                        savingsAmount,
-                                        savingsRate,
-                                        savingsPayments,
-                                        savingsFrequency,
-                                        savingsAnnualIncome,
-                                        getString(R.string.goal_achieved),
-                                        getString(R.string.too_far)));
-
+                                cv14 = new ContentValues();
                                 try {
-                                    db2.update(DbHelper.SAVINGS_TABLE_NAME, cv3, DbHelper.ID + "=?", args5);
-                                } catch(CursorIndexOutOfBoundsException|SQLException e3) {
-                                    e3.printStackTrace();
+                                    cv14.put(DbHelper.SAVINGSDATE, general.calcSavingsDate(
+                                            savingsGoal,
+                                            savingsAmount,
+                                            savingsRate,
+                                            savingsPayments,
+                                            savingsFrequency,
+                                            savingsAnnualIncome,
+                                            getString(R.string.goal_achieved),
+                                            getString(R.string.too_far)));
+
+                                    db2.update(DbHelper.SAVINGS_TABLE_NAME, cv14, DbHelper.ID + "=?", args5);
+                                } catch (CursorIndexOutOfBoundsException | SQLException e5) {
+                                    e5.printStackTrace();
+                                }
+
+
+                                cv4 = new ContentValues();
+                                try {
+                                    cv4.put(DbHelper.EXPENSENAME, nameEntryInc);
+                                    db2.update(DbHelper.EXPENSES_TABLE_NAME, cv4, DbHelper.ID + "=?", args6);
+                                } catch (CursorIndexOutOfBoundsException | SQLException e6) {
+                                    e6.printStackTrace();
+                                }
+
+                                cv5 = new ContentValues();
+                                try {
+                                    cv5.put(DbHelper.MONEYINCAT, nameEntryInc);
+                                    db2.update(DbHelper.MONEY_IN_TABLE_NAME, cv5, DbHelper.INCREFKEYMI + "=?", args7);
+                                } catch (CursorIndexOutOfBoundsException | SQLException e7) {
+                                    e7.printStackTrace();
+                                }
+
+                                cv6 = new ContentValues();
+                                try {
+                                    cv6.put(DbHelper.MONEYOUTCAT, nameEntryInc);
+                                    db2.update(DbHelper.MONEY_OUT_TABLE_NAME, cv6, DbHelper.EXPREFKEYMO + "=?", args6);
+                                } catch (CursorIndexOutOfBoundsException | SQLException e8) {
+                                    e8.printStackTrace();
                                 }
 
                                 /*try {
@@ -1177,7 +1228,7 @@ public class LayoutBudget extends MainNavigation {
                                 }
 
                                 for (IncomeBudgetDb i : dbManager.getIncomes()) {
-                                    if (String.valueOf(i.getId()).equals(expRefKeyD)  || String.valueOf(i.getId()).equals(expRefKeyS)) {
+                                    if (String.valueOf(i.getId()).equals(incRefKeyD) || String.valueOf(i.getId()).equals(incRefKeyS)) {
                                         incomeId = String.valueOf(i.getId());
                                     }
                                 }
@@ -1217,7 +1268,7 @@ public class LayoutBudget extends MainNavigation {
                                     db.update(DbHelper.MONEY_OUT_TABLE_NAME, cv10, DbHelper.EXPREFKEYMO + "=?", args4);
                                     db.update(DbHelper.MONEY_OUT_TABLE_NAME, cv11, DbHelper.MONEYOUTCHARGINGDEBTID + "=?", args);
                                     db.update(DbHelper.MONEY_IN_TABLE_NAME, cv12, DbHelper.INCREFKEYMI + "=?", args3);
-                                } catch (CursorIndexOutOfBoundsException|SQLException e4) {
+                                } catch (CursorIndexOutOfBoundsException | SQLException e4) {
                                     e4.printStackTrace();
                                 }
 
@@ -1233,10 +1284,11 @@ public class LayoutBudget extends MainNavigation {
                                         getString(R.string.too_far)));
                                 try {
                                     db.update(DbHelper.DEBTS_TABLE_NAME, cv7, DbHelper.ID + "=?", args);
-                                } catch (CursorIndexOutOfBoundsException|SQLException e5) {
+                                } catch (CursorIndexOutOfBoundsException | SQLException e5) {
                                     e5.printStackTrace();
                                 }
 
+                                //general.allSavingsDataFromDb(dbManager, savingsId);
                                 allSavingsData();
 
                                 cv8.put(DbHelper.SAVINGSDATE, general.calcSavingsDate(
@@ -1250,7 +1302,7 @@ public class LayoutBudget extends MainNavigation {
                                         getString(R.string.too_far)));
                                 try {
                                     db.update(DbHelper.SAVINGS_TABLE_NAME, cv8, DbHelper.ID + "=?", args2);
-                                } catch (CursorIndexOutOfBoundsException|SQLException e6) {
+                                } catch (CursorIndexOutOfBoundsException | SQLException e6) {
                                     e6.printStackTrace();
                                 }
 

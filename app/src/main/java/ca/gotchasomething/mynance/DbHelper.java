@@ -83,6 +83,7 @@ public class DbHelper extends SQLiteOpenHelper {
     public static final String CURRENT_TABLE_NAME = "current";
     public static final String CURRENTACCOUNTBALANCE = "currentAccountBalance";
     public static final String CURRENTAVAILABLEBALANCE = "currentAvailableBalance";
+    public static final String NEEDEDFORA = "neededForA";
     public static final String CURRENTPAGEID = "currentPageId";
 
     //singleton pattern
@@ -177,6 +178,7 @@ public class DbHelper extends SQLiteOpenHelper {
             " (_id INTEGER PRIMARY KEY," +
             " currentAccountBalance REAL," +
             " currentAvailableBalance REAL," +
+            " neededForA REAL," +
             " currentPageId INTEGER)";
 
     @Override

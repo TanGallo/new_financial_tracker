@@ -15,7 +15,9 @@ public class General {
     public boolean alreadyDetermined;
     public Calendar debtCal, savingsCal;
     public Date dateObj, debtEndD, savingsDateD;
-    public Double dbl = 0.0, dollars = 0.0, percent = 0.0, numberOfYearsToPayDebt = 0.0, years = 0.0, years2 = 0.0, savingsPayments = 0.0, savingsRate = 0.0;
+    public DbManager dbManager;
+    public Double dbl = 0.0, dollars = 0.0, percent = 0.0, numberOfYearsToPayDebt = 0.0, years = 0.0, years2 = 0.0, savingsAmount = 0.0, savingsGoal = 0.0,
+            savingsPayments = 0.0, savingsRate = 0.0, savingsFrequency = 0.0, savingsAnnualIncome = 0.0;
     public int startIndex = 0, endIndex = 0, numberOfDaysToPayDebt = 0, numberOfDaysToSavingsGoal = 0;
     public List<String> thisWeek;
     SimpleDateFormat debtEndS, savingsDateS;
@@ -175,10 +177,9 @@ public class General {
             numberOfYearsToPayDebt = dbl1 / ((dbl3 * dbl4) - dbl5); //years = amount owing / annual payments minus annual income
         } else { //else calculate date
             numberOfYearsToPayDebt = -(Math.log(1 - (dbl1 * (dbl2 / 100) / ((dbl3 * dbl4) - dbl5))) / (dbl4 * Math.log(1 + ((dbl2 / 100) / dbl4))));
-        } //-(Math.log(1 - (dbl1 * .19 / ((dbl3 * dbl4) - 1200))) / (dbl4 * Math.log(1 + ((dbl2 / 100) / dbl4))))
+        }
 
         numberOfDaysToPayDebt = (int) Math.round(numberOfYearsToPayDebt * 365);
-
 
         if ((dbl3 * dbl4) == dbl5) { //if annual income = annual payments then too far
             debtEnd = str2;
@@ -292,7 +293,7 @@ public class General {
         }
 
         if (!alreadyDetermined) {
-            if (years < 0 || years2 < 0) { //if years if a negative number then too far
+            if (years < 0 || years2 < 0 || years > 100 || years2 > 100) { //if years is a negative number then too far
                 savingsDate = str2;
             } else if (numberOfDaysToSavingsGoal == 0) { //if number of days is 0 then goal achieved
                 savingsDate = str1;

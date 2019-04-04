@@ -25,7 +25,7 @@ public class LayoutSetUp extends MainNavigation {
     CurrentDb currentDb;
     Date moneyInDate;
     DbManager dbManager;
-    Double balanceAmount = 0.0, currentAccountBalance = 0.0, currentAvailableBalance = 0.0, moneyInAmount = 0.0;
+    Double balanceAmount = 0.0, currentAccountBalance = 0.0, currentAvailableBalance = 0.0, neededForA = 0.0, moneyInAmount = 0.0;
     EditText setUpAccountAmount;
     int balanceDone = 0, budgetDone = 0, currentPageId = 0, debtsDone = 0, savingsDone = 0, tourDone = 0;
     Intent setUpBudget, setUpDebts, setUpSavings, toMainActivity;
@@ -196,9 +196,10 @@ public class LayoutSetUp extends MainNavigation {
 
             currentAccountBalance = balanceAmount;
             currentAvailableBalance = balanceAmount * dbManager.retrieveBPercentage();
+            neededForA = balanceAmount * dbManager.retrieveAPercentage();
             currentPageId = 1;
 
-            currentDb = new CurrentDb(currentAccountBalance, currentAvailableBalance, currentPageId, 0);
+            currentDb = new CurrentDb(currentAccountBalance, currentAvailableBalance, neededForA, currentPageId, 0);
 
             dbManager.addCurrent(currentDb);
 
