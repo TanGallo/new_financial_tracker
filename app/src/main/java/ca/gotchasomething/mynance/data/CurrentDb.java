@@ -2,33 +2,39 @@ package ca.gotchasomething.mynance.data;
 //Db description
 
 public class CurrentDb {
-    private Double currentAccountBalance;
-    private Double currentAvailableBalance;
-    private Double neededForA;
+    private Double currentAccount;
+    private Double currentB;
+    private Double currentA;
+    private Double currentOwingA;
     private int currentPageId;
     private long id;
 
     public CurrentDb(
-            Double currentAccountBalance,
-            Double currentAvailableBalance,
-            Double neededForA,
+            Double currentAccount,
+            Double currentB,
+            Double currentA,
+            Double currentOwingA,
             int currentPageId,
             long id) {
-        this.currentAccountBalance = currentAccountBalance;
-        this.currentAvailableBalance = currentAvailableBalance;
-        this.neededForA = neededForA;
+        this.currentAccount = currentAccount;
+        this.currentB = currentB;
+        this.currentA = currentA;
+        this.currentOwingA = currentOwingA;
         this.currentPageId = currentPageId;
         this.id = id;
     }
 
-    public Double getCurrentAccountBalance() { return currentAccountBalance; }
-    public void setCurrentAccountBalance(Double currentAccountBalance) { this.currentAccountBalance = currentAccountBalance; }
+    public Double getCurrentAccount() { return currentAccount; }
+    public void setCurrentAccount(Double currentAccountBalance) { this.currentAccount = currentAccount; }
 
-    public Double getCurrentAvailableBalance() { return currentAvailableBalance; }
-    public void setCurrentAvailableBalance(Double currentAvailableBalance) { this.currentAvailableBalance = currentAvailableBalance; }
+    public Double getCurrentB() { return currentB; }
+    public void setCurrentB(Double currentB) { this.currentB = currentB; }
 
-    public Double getNeededForA() { return neededForA; }
-    public void setNeededForA(Double neededForA) { this.neededForA = neededForA; }
+    public Double getCurrentA() { return currentA; }
+    public void setCurrentA(Double currentA) { this.currentA = currentA; }
+
+    public Double getCurrentOwingA() { return currentOwingA; }
+    public void setCurrentOwingA(Double currentOwingA) { this.currentOwingA = currentOwingA; }
 
     public int getCurrentPageId() { return currentPageId; }
     public void setCurrentPageId(int currentPageId) { this.currentPageId = currentPageId; }

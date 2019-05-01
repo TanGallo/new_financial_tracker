@@ -4,6 +4,9 @@ package ca.gotchasomething.mynance.data;
 public class MoneyInDb {
     private String moneyInCat;
     private Double moneyInAmount;
+    private Double moneyInA;
+    private Double moneyInOwing;
+    private Double moneyInB;
     private String moneyInCreatedOn;
     private long incRefKeyMI;
     private long id;
@@ -11,11 +14,17 @@ public class MoneyInDb {
     public MoneyInDb(
             String moneyInCat,
             Double moneyInAmount,
+            Double moneyInA,
+            Double moneyInOwing,
+            Double moneyInB,
             String moneyInCreatedOn,
             long incRefKeyMI,
             long id) {
         this.moneyInCat = moneyInCat;
         this.moneyInAmount = moneyInAmount;
+        this.moneyInA = moneyInA;
+        this.moneyInOwing = moneyInOwing;
+        this.moneyInB = moneyInB;
         this.moneyInCreatedOn = moneyInCreatedOn;
         this.incRefKeyMI = incRefKeyMI;
         this.id = id;
@@ -26,6 +35,15 @@ public class MoneyInDb {
 
     public Double getMoneyInAmount() { return moneyInAmount; }
     public void setMoneyInAmount(Double moneyInAmount) { this.moneyInAmount = moneyInAmount; }
+
+    public Double getMoneyInA() { return moneyInA; }
+    public void setMoneyInA(Double moneyInA) { this.moneyInA = moneyInA; }
+
+    public Double getMoneyInOwing() { return moneyInOwing; }
+    public void setMoneyInOwing(Double moneyInOwing) { this.moneyInOwing = moneyInOwing; }
+
+    public Double getMoneyInB() { return moneyInB; }
+    public void setMoneyInB(Double moneyInB) { this.moneyInB = moneyInB; }
 
     public String getMoneyInCreatedOn() { return moneyInCreatedOn; }
     public void setMoneyInCreatedOn(String moneyInCreatedOn) { this.moneyInCreatedOn = moneyInCreatedOn; }

@@ -23,7 +23,7 @@ public class AddDebt extends LayoutDebt {
     Button cancelDebtButton, saveDebtButton, updateDebtButton;
     DbManager dbManager;
     DebtDb debt;
-    Double debtAmount = 0.0, debtAnnualIncome = 0.0, debtFrequency = 0.0, debtLimit = 0.0, debtPayments = 0.0, debtRate = 0.0, expenseAmount = 0.0,
+    Double debtAmount = 0.0, debtAnnualIncome = 0.0, debtFrequency = 0.0, debtLimit = 0.0, debtPayments = 0.0, debtRate = 0.0, debtToPay = 0.0, expenseAmount = 0.0,
             expenseAAnnualAmount = 0.0, expenseBAnnualAmount = 0.0, expenseAnnualAmount = 0.0, expenseFrequency = 0.0, incomeAmount = 0.0,
             incomeAnnualAmount = 0.0, incomeFrequency = 0.0;
     EditText debtAmountEntry, debtLimitEntry, debtNameEntry, debtPaymentsEntry, debtPercentEntry;
@@ -177,6 +177,7 @@ public class AddDebt extends LayoutDebt {
             debtFrequency = 12.0;
         }
         debtAnnualIncome = 0.0;
+        debtToPay = 0.0;
     }
 
     View.OnClickListener onClickCancelDebtButton = new View.OnClickListener() {
@@ -244,6 +245,7 @@ public class AddDebt extends LayoutDebt {
                         debtFrequency,
                         debtAnnualIncome,
                         debtEnd,
+                        debtToPay,
                         expRefKeyD,
                         incRefKeyD,
                         0);

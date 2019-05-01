@@ -261,4 +261,5 @@
     <string name="savings_q4">Je prends fréquemment des retraits d\'un COMPTE D\'ÉPARGNE, comment que l\'application peut gérer cela?</string>
     <string name="savings_q5">Je ne cherche pas à atteindre un objectif financier particulier, je veux savoir combien je vais accumuler à une certaine date.</string>
     <string name="daily_money_3">Cette application est intelligente! Lorsque vous dépensez trop, vous ne gagnerez pas d\'argent \"Pour Dépenser\" jusqu\'à ce que vous ayez suffisamment d\'argent réservé pour répondre aux \"besoins\" que vous avez identifiés dans votre BUDGET.</string>
+    <string name="over_limit">SUR LA LIMITE</string>
 </resources>

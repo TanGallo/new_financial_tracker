@@ -31,7 +31,7 @@ public class LayoutDailyMoney extends MainNavigation {
     NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
     String accountBalance2 = null, availableBalance2 = null;
     TabLayout tl;
-    TextView availableAccountText, budgetWarningText, totalAccountText;
+    TextView availableAccountText, budgetWarningText, totalAccountText, aLabel, owingLabel, bLabel, a, owing, b;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -52,6 +52,17 @@ public class LayoutDailyMoney extends MainNavigation {
         dbManager = new DbManager(this);
 
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+
+        aLabel = findViewById(R.id.aLabel);
+        owingLabel = findViewById(R.id.owingLabel);
+        bLabel = findViewById(R.id.bLabel);
+        a = findViewById(R.id.a);
+        owing = findViewById(R.id.owing);
+        b = findViewById(R.id.b);
+        a.setText(String.valueOf(dbManager.retrieveCurrentA()));
+        owing.setText(String.valueOf(dbManager.retrieveCurrentOwingA()));
+        b.setText(String.valueOf(dbManager.retrieveCurrentB()));
+
 
         budgetWarningText = findViewById(R.id.budgetWarningText);
         budgetWarningText.setVisibility(View.GONE);
@@ -104,10 +115,10 @@ public class LayoutDailyMoney extends MainNavigation {
         }
 
         newAccountBalance = dbManager.retrieveCurrentAccountBalance();
-        newAvailableBalance = dbManager.retrieveCurrentAvailableBalance();
+        newAvailableBalance = dbManager.retrieveCurrentB();
 
         accountBalance2 = currencyFormat.format(newAccountBalance);
-        if(newAvailableBalance < 0) {
+        if(newAccountBalance < 0 || newAvailableBalance < 0 || newAccountBalance < newAvailableBalance) {
             availableBalance2 = currencyFormat.format(0);
         } else {
             availableBalance2 = currencyFormat.format(newAvailableBalance);

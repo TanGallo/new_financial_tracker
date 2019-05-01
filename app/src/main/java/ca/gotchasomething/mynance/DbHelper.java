@@ -38,6 +38,7 @@ public class DbHelper extends SQLiteOpenHelper {
     public static final String DEBTFREQUENCY = "debtFrequency";
     public static final String DEBTANNUALINCOME = "debtAnnualIncome";
     public static final String DEBTEND = "debtEnd";
+    public static final String DEBTTOPAY = "debtToPay";
     public static final String EXPREFKEYD = "expRefKeyD";
     public static final String INCREFKEYD = "incRefKeyD";
 
@@ -56,6 +57,9 @@ public class DbHelper extends SQLiteOpenHelper {
     public static final String MONEY_IN_TABLE_NAME = "moneyIn";
     public static final String MONEYINCAT = "moneyInCat";
     public static final String MONEYINAMOUNT = "moneyInAmount";
+    public static final String MONEYINA = "moneyInA";
+    public static final String MONEYINOWING = "moneyInOwing";
+    public static final String MONEYINB = "moneyInB";
     public static final String MONEYINCREATEDON = "moneyInCreatedOn";
     public static final String INCREFKEYMI = "incRefKeyMI";
 
@@ -64,6 +68,9 @@ public class DbHelper extends SQLiteOpenHelper {
     public static final String MONEYOUTPRIORITY = "moneyOutPriority";
     public static final String MONEYOUTWEEKLY = "moneyOutWeekly";
     public static final String MONEYOUTAMOUNT = "moneyOutAmount";
+    public static final String MONEYOUTA = "moneyOutA";
+    public static final String MONEYOUTOWING = "moneyOutOwing";
+    public static final String MONEYOUTB = "moneyOutB";
     public static final String MONEYOUTCREATEDON = "moneyOutCreatedOn";
     public static final String MONEYOUTCC = "moneyOutCC";
     public static final String MONEYOUTDEBTCAT = "moneyOutDebtCat";
@@ -81,9 +88,10 @@ public class DbHelper extends SQLiteOpenHelper {
     public static final String TOURDONE = "tourDone";
 
     public static final String CURRENT_TABLE_NAME = "current";
-    public static final String CURRENTACCOUNTBALANCE = "currentAccountBalance";
-    public static final String CURRENTAVAILABLEBALANCE = "currentAvailableBalance";
-    public static final String NEEDEDFORA = "neededForA";
+    public static final String CURRENTACCOUNT = "currentAccount";
+    public static final String CURRENTB = "currentB";
+    public static final String CURRENTA = "currentA";
+    public static final String CURRENTOWINGA = "currentOwingA";
     public static final String CURRENTPAGEID = "currentPageId";
 
     //singleton pattern
@@ -128,6 +136,7 @@ public class DbHelper extends SQLiteOpenHelper {
             " debtFrequency REAL," +
             " debtAnnualIncome REAL," +
             " debtEnd TEXT," +
+            " debtToPay REAL," +
             " expRefKeyD INTEGER," +
             " incRefKeyD INTEGER)";
 
@@ -148,6 +157,9 @@ public class DbHelper extends SQLiteOpenHelper {
             " (_id INTEGER PRIMARY KEY," +
             " moneyInCat TEXT," +
             " moneyInAmount REAL," +
+            " moneyInA REAL," +
+            " moneyInOwing REAL," +
+            " moneyInB REAL," +
             " moneyInCreatedOn TEXT," +
             " incRefKeyMI INTEGER)";
 
@@ -157,6 +169,9 @@ public class DbHelper extends SQLiteOpenHelper {
             " moneyOutPriority TEXT," +
             " moneyOutWeekly TEXT," +
             " moneyOutAmount REAL," +
+            " moneyOutA REAL," +
+            " moneyOutOwing REAL," +
+            " moneyOutB REAL," +
             " moneyOutCreatedOn TEXT," +
             " moneyOutCC TEXT," +
             " moneyOutDebtCat TEXT," +
@@ -176,9 +191,10 @@ public class DbHelper extends SQLiteOpenHelper {
 
     private static final String createCurrentQuery = "CREATE TABLE " + CURRENT_TABLE_NAME +
             " (_id INTEGER PRIMARY KEY," +
-            " currentAccountBalance REAL," +
-            " currentAvailableBalance REAL," +
-            " neededForA REAL," +
+            " currentAccount REAL," +
+            " currentB REAL," +
+            " currentA REAL," +
+            " currentOwingA REAL," +
             " currentPageId INTEGER)";
 
     @Override

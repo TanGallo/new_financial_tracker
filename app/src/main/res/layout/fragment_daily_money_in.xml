@@ -22,8 +22,8 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:text="@string/not_enough_credit_warning"
-                android:textSize="16sp"
-                android:textColor="@color/colorPrimaryDark"/>
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/savingsNotPossibleText"
@@ -31,8 +31,8 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:text="@string/not_enough_savings_warning"
-                android:textSize="16sp"
-                android:textColor="@color/colorPrimaryDark"/>
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="16sp" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -44,8 +44,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:text="@string/continue_anyway"
-                    android:textSize="16sp"
                     android:textColor="@color/colorPrimaryDark"
+                    android:textSize="16sp"
                     tools:ignore="RelativeOverlap" />
 
                 <Button
@@ -54,26 +54,26 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
                     android:layout_toStartOf="@id/noMoneyInButton"
-                    android:text="@string/yes"
+                    android:background="@drawable/entry_box"
                     android:contentDescription="@string/yes"
-                    android:textSize="12sp"
+                    android:text="@string/yes"
                     android:textColor="@color/colorPrimaryDark"
-                    android:background="@drawable/entry_box"/>
+                    android:textSize="12sp" />
 
                 <Button
                     android:id="@+id/noMoneyInButton"
                     android:layout_width="60dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="5dp"
-                    android:layout_marginStart="5dp"
-                    android:text="@string/no"
-                    android:contentDescription="@string/no"
-                    android:textSize="12sp"
-                    android:textColor="@color/colorPrimaryDark"
                     android:layout_alignParentEnd="true"
-                    android:background="@drawable/entry_box"/>
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="5dp"
+                    android:background="@drawable/entry_box"
+                    android:contentDescription="@string/no"
+                    android:text="@string/no"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="12sp" />
 
             </RelativeLayout>
 
@@ -86,70 +86,70 @@
             android:background="@drawable/entry_box"
             android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/moneyInCatText"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:text="@string/category"
-                android:textSize="16sp"
-                android:labelFor="@id/moneyInAmountEditText"
-                android:textColor="@color/colorPrimaryDark"/>
+                android:orientation="horizontal">
 
-            <EditText
-                android:id="@+id/moneyInAmountEditText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:inputType="numberDecimal|numberSigned"
-                android:digits="0123456789.-"
-                android:text="@string/amount"
-                android:contentDescription="@string/amount"
-                android:textSize="16sp"
-                android:textColor="@color/colorPrimaryDark"
-                tools:ignore="Autofill" />
+                <TextView
+                    android:id="@+id/moneyInCatText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:labelFor="@id/moneyInAmountEditText"
+                    android:text="@string/category"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="16sp" />
 
-        </LinearLayout>
+                <EditText
+                    android:id="@+id/moneyInAmountEditText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:contentDescription="@string/amount"
+                    android:digits="0123456789.-"
+                    android:inputType="numberDecimal|numberSigned"
+                    android:text="@string/amount"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="16sp"
+                    tools:ignore="Autofill" />
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            </LinearLayout>
 
-            <Button
-                android:id="@+id/cancelMoneyInEntryButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_gravity="end"
-                android:layout_margin="5dp"
-                android:gravity="center"
-                android:background="@drawable/entry_box"
-                android:text="@string/cancel"
-                android:contentDescription="@string/cancel"
-                android:textSize="12sp"
-                android:textColor="@color/colorPrimaryDark"/>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-            <Button
-                android:id="@+id/updateMoneyInEntryButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_gravity="end"
-                android:layout_margin="5dp"
-                android:gravity="center"
-                android:background="@drawable/entry_box"
-                android:text="@string/update"
-                android:contentDescription="@string/update"
-                android:textSize="12sp"
-                android:textColor="@color/colorPrimaryDark"
-                tools:ignore="RelativeOverlap" />
+                <Button
+                    android:id="@+id/cancelMoneyInEntryButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_gravity="end"
+                    android:layout_margin="5dp"
+                    android:background="@drawable/entry_box"
+                    android:contentDescription="@string/cancel"
+                    android:gravity="center"
+                    android:text="@string/cancel"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="12sp" />
 
-        </RelativeLayout>
+                <Button
+                    android:id="@+id/updateMoneyInEntryButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_gravity="end"
+                    android:layout_margin="5dp"
+                    android:background="@drawable/entry_box"
+                    android:contentDescription="@string/update"
+                    android:gravity="center"
+                    android:text="@string/update"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="12sp"
+                    tools:ignore="RelativeOverlap" />
+
+            </RelativeLayout>
 
         </LinearLayout>
 
@@ -165,11 +165,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
-                android:hint="@string/amount"
-                android:textSize="16sp"
-                android:textColor="@color/colorPrimaryDark"
-                android:inputType="numberDecimal|numberSigned"
                 android:digits="0123456789.-"
+                android:hint="@string/amount"
+                android:inputType="numberDecimal|numberSigned"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="16sp"
                 tools:ignore="Autofill" />
 
             <Spinner
@@ -190,11 +190,11 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_margin="5dp"
-                android:text="@string/enter"
-                android:contentDescription="@string/enter"
                 android:background="@drawable/entry_box"
-                android:textSize="12sp"
-                android:textColor="@color/colorPrimaryDark"/>
+                android:contentDescription="@string/enter"
+                android:text="@string/enter"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="12sp" />
 
         </RelativeLayout>
 

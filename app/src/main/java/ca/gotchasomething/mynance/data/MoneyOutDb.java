@@ -6,6 +6,9 @@ public class MoneyOutDb {
     private String moneyOutPriority;
     private String moneyOutWeekly;
     private Double moneyOutAmount;
+    private Double moneyOutA;
+    private Double moneyOutOwing;
+    private Double moneyOutB;
     private String moneyOutCreatedOn;
     private String moneyOutCC;
     private String moneyOutDebtCat;
@@ -20,6 +23,9 @@ public class MoneyOutDb {
             String moneyOutPriority,
             String moneyOutWeekly,
             Double moneyOutAmount,
+            Double moneyOutA,
+            Double moneyOutOwing,
+            Double moneyOutB,
             String moneyOutCreatedOn,
             String moneyOutCC,
             String moneyOutDebtCat,
@@ -32,6 +38,9 @@ public class MoneyOutDb {
         this.moneyOutPriority = moneyOutPriority;
         this.moneyOutWeekly = moneyOutWeekly;
         this.moneyOutAmount = moneyOutAmount;
+        this.moneyOutA = moneyOutA;
+        this.moneyOutOwing = moneyOutOwing;
+        this.moneyOutB = moneyOutB;
         this.moneyOutCreatedOn = moneyOutCreatedOn;
         this.moneyOutCC = moneyOutCC;
         this.moneyOutDebtCat = moneyOutDebtCat;
@@ -53,6 +62,15 @@ public class MoneyOutDb {
 
     public Double getMoneyOutAmount() { return moneyOutAmount; }
     public void setMoneyOutAmount(Double moneyOutAmount) { this.moneyOutAmount = moneyOutAmount; }
+
+    public Double getMoneyOutA() { return moneyOutA; }
+    public void setMoneyOutA(Double moneyOutA) { this.moneyOutA = moneyOutA; }
+
+    public Double getMoneyOutOwing() { return moneyOutOwing; }
+    public void setMoneyOutOwing(Double moneyOutOwing) { this.moneyOutOwing = moneyOutOwing; }
+
+    public Double getMoneyOutB() { return moneyOutB; }
+    public void setMoneyOutB(Double moneyOutB) { this.moneyOutB = moneyOutB; }
 
     public String getMoneyOutCreatedOn() { return moneyOutCreatedOn; }
     public void setMoneyOutCreatedOn(String moneyOutCreatedOn) { this.moneyOutCreatedOn = moneyOutCreatedOn; }

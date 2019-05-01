@@ -10,6 +10,7 @@ public class DebtDb {
     private Double debtFrequency;
     private Double debtAnnualIncome;
     private String debtEnd;
+    private Double debtToPay;
     private long expRefKeyD;
     private long incRefKeyD;
     private long id;
@@ -23,6 +24,7 @@ public class DebtDb {
             Double debtFrequency,
             Double debtAnnualIncome,
             String debtEnd,
+            Double debtToPay,
             long expRefKeyD,
             long incRefKeyD,
             long id) {
@@ -34,6 +36,7 @@ public class DebtDb {
         this.debtFrequency = debtFrequency;
         this.debtAnnualIncome = debtAnnualIncome;
         this.debtEnd = debtEnd;
+        this.debtToPay = debtToPay;
         this.expRefKeyD = expRefKeyD;
         this.incRefKeyD = incRefKeyD;
         this.id = id;
@@ -62,6 +65,9 @@ public class DebtDb {
 
     public String getDebtEnd() { return debtEnd; }
     public void setDebtEnd(String debtEnd) { this.debtEnd = debtEnd; }
+
+    public Double getDebtToPay() { return debtToPay; }
+    public void setDebtToPay(Double debtToPay) { this.debtToPay = debtToPay; }
 
     public long getExpRefKeyD() { return expRefKeyD; }
     public void setExpRefKeyD(long expRefKeyD) { this.expRefKeyD = expRefKeyD; }

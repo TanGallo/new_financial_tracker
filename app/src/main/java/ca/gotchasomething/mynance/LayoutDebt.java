@@ -24,6 +24,10 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.text.NumberFormat;
@@ -34,9 +38,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBarDrawerToggle;
 import ca.gotchasomething.mynance.data.DebtDb;
 import ca.gotchasomething.mynance.data.ExpenseBudgetDb;
 import ca.gotchasomething.mynance.data.IncomeBudgetDb;
@@ -401,6 +402,7 @@ public class LayoutDebt extends MainNavigation {
                 holder.debtListFreeDate = convertView.findViewById(R.id.debtListFreeDate);
                 holder.debtDeleted = convertView.findViewById(R.id.deleteDebtButton);
                 holder.debtEdit = convertView.findViewById(R.id.editDebtButton);
+                holder.debtOverLimit = convertView.findViewById(R.id.debtOverLimitWarning);
                 convertView.setTag(holder);
 
             } else {
@@ -443,6 +445,11 @@ public class LayoutDebt extends MainNavigation {
 
             holder.debtDeleted.setTag(debts.get(position));
             holder.debtEdit.setTag(debts.get(position));
+            if(debts.get(position).getDebtAmount() > debts.get(position).getDebtLimit()) {
+                holder.debtOverLimit.setVisibility(View.VISIBLE);
+            } else {
+                holder.debtOverLimit.setVisibility(View.GONE);
+            }
 
             //click on pencil icon
             holder.debtEdit.setOnClickListener(new View.OnClickListener() {
@@ -701,6 +708,7 @@ public class LayoutDebt extends MainNavigation {
         public TextView debtListAmount;
         public TextView debtListFreeDateLabel;
         public TextView debtListFreeDate;
+        public TextView debtOverLimit;
         ImageButton debtDeleted;
         ImageButton debtEdit;
     }

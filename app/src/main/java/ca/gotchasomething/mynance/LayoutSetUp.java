@@ -25,7 +25,8 @@ public class LayoutSetUp extends MainNavigation {
     CurrentDb currentDb;
     Date moneyInDate;
     DbManager dbManager;
-    Double balanceAmount = 0.0, currentAccountBalance = 0.0, currentAvailableBalance = 0.0, neededForA = 0.0, moneyInAmount = 0.0;
+    Double balanceAmount = 0.0, currentAccount = 0.0, currentB = 0.0, currentA = 0.0, currentOwingA = 0.0, moneyInAmount = 0.0,
+            moneyInA = 0.0, moneyInOwing = 0.0, moneyInB = 0.0;
     EditText setUpAccountAmount;
     int balanceDone = 0, budgetDone = 0, currentPageId = 0, debtsDone = 0, savingsDone = 0, tourDone = 0;
     Intent setUpBudget, setUpDebts, setUpSavings, toMainActivity;
@@ -194,26 +195,35 @@ public class LayoutSetUp extends MainNavigation {
             setUpDb = new SetUpDb(debtsDone, savingsDone, budgetDone, balanceDone, balanceAmount, tourDone, 0);
             dbManager.addSetUp(setUpDb);
 
-            currentAccountBalance = balanceAmount;
-            currentAvailableBalance = balanceAmount * dbManager.retrieveBPercentage();
-            neededForA = balanceAmount * dbManager.retrieveAPercentage();
-            currentPageId = 1;
-
-            currentDb = new CurrentDb(currentAccountBalance, currentAvailableBalance, neededForA, currentPageId, 0);
-
-            dbManager.addCurrent(currentDb);
-
             moneyInCat = getString(R.string.starting_balance);
             moneyInAmount = balanceAmount;
+            if(dbManager.getIncomes().size() == 0) {
+                moneyInA = moneyInAmount;
+                moneyInB = 0.0;
+            } else {
+                moneyInA = moneyInAmount * dbManager.retrieveAPercentage();
+                moneyInB = moneyInAmount * dbManager.retrieveBPercentage();
+            }
+            moneyInOwing = 0.0;
             moneyInDate = new Date();
             moneyInTimestamp = new Timestamp(moneyInDate.getTime());
             moneyInSDF = new SimpleDateFormat("dd-MMM-yyyy");
             moneyInCreatedOn = moneyInSDF.format(moneyInTimestamp);
             incRefKeyMI = 1;
 
-            moneyInDb = new MoneyInDb(moneyInCat, moneyInAmount, moneyInCreatedOn, incRefKeyMI, 0);
+            moneyInDb = new MoneyInDb(moneyInCat, moneyInAmount, moneyInA, moneyInOwing, moneyInB, moneyInCreatedOn, incRefKeyMI, 0);
 
             dbManager.addMoneyIn(moneyInDb);
+
+            currentAccount = balanceAmount;
+            currentB = moneyInB;
+            currentA = moneyInA;
+            currentOwingA = 0.0;
+            currentPageId = 1;
+
+            currentDb = new CurrentDb(currentAccount, currentB, currentA, currentOwingA, currentPageId, 0);
+
+            dbManager.addCurrent(currentDb);
 
             setUpAccountAmountLabel.setVisibility(View.GONE);
             setUpAccountAmountLabel2.setVisibility(View.GONE);

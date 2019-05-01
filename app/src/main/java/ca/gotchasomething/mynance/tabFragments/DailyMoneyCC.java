@@ -2,6 +2,7 @@ package ca.gotchasomething.mynance.tabFragments;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -34,6 +35,7 @@ import androidx.fragment.app.Fragment;
 import ca.gotchasomething.mynance.DbHelper;
 import ca.gotchasomething.mynance.DbManager;
 import ca.gotchasomething.mynance.General;
+import ca.gotchasomething.mynance.LayoutDailyMoney;
 import ca.gotchasomething.mynance.R;
 import ca.gotchasomething.mynance.data.DebtDb;
 import ca.gotchasomething.mynance.data.MoneyOutDb;
@@ -53,15 +55,16 @@ public class DailyMoneyCC extends Fragment {
     Date debtEndD, debtEndD3, moneyOutDate, savingsDateD;
     DbHelper dbHelper, dbHelper2, dbHelper3, dbHelper5, dbHelper6, dbHelper7, dbHelper8;
     DbManager dbManager;
-    Double amountEntry = 0.0, ccTransAmountD = 0.0, ccTransAmountD2 = 0.0, chargingDebtAnnualIncome = 0.0, currentChargingDebtAmount = 0.0, currentChargingDebtLimit = 0.0,
-            currentDebtAmount = 0.0, debtFrequency = 0.0, currentDebtFrequency3 = 0.0, debtPayments = 0.0, currentDebtPayments3 = 0.0,
-            debtRate = 0.0, currentDebtRate3 = 0.0, currentSavingsAmount = 0.0, savingsFrequency = 0.0, savingsPayments = 0.0,
-            savingsRate = 0.0, debtAmount = 0.0, debtAmount3 = 0.0, debtAnnualIncome = 0.0, moneyOutAmount = 0.0, moneyOutAmount1 = 0.0, newDebtAmount = 0.0, newDebtAmount2 = 0.0,
-            newDebtAmount4 = 0.0, newSavingsAmount = 0.0, numberOfYearsToPayDebt = 0.0, numberOfYearsToPayDebt3 = 0.0, oldMoneyOutAmount = 0.0, rate = 0.0,
+    Double amountEntry = 0.0, ccTransAmountD = 0.0, ccTransAmountD2 = 0.0, moneyOutA = 0.0, currentChargingDebtAmount = 0.0, currentChargingDebtLimit = 0.0,
+            currentDebtAmount = 0.0, debtFrequency = 0.0, moneyOutOwing = 0.0, debtPayments = 0.0, currentDebtPayments3 = 0.0,
+            debtRate = 0.0, moneyOutB = 0.0, currentSavingsAmount = 0.0, savingsFrequency = 0.0, savingsPayments = 0.0,
+            savingsRate = 0.0, debtAmount = 0.0, moneyOutAmountN = 0.0, debtAnnualIncome = 0.0, moneyOutAmount = 0.0, moneyOutAmount1 = 0.0, newDebtAmount = 0.0, newDebtAmount2 = 0.0,
+            newDebtAmount4 = 0.0, newSavingsAmount = 0.0, amountMissing = 0.0, numberOfYearsToPayDebt3 = 0.0, oldMoneyOutAmount = 0.0, rate = 0.0,
             savingsAmount = 0.0, savingsAnnualIncome = 0.0, savingsGoal = 0.0, years = 0.0;
     EditText ccTransAmountText, ccTransAmountEditText;
     General general;
     int moneyOutPaid = 0, moneyOutToPay = 0, numberOfDaysToPayDebt = 0, numberOfDaysToPayDebt3 = 0, numberOfDaysToSavingsGoal = 0;
+    Intent refresh;
     LinearLayout updateCreditCardLayout;
     ListView ccTransList;
     long chargingDebtIdS, debtId, expRefKeyMO, moneyOutChargingDebtId, moneyOutRefKeyMO, savingsId;
@@ -175,6 +178,12 @@ public class DailyMoneyCC extends Fragment {
 
     }
 
+    public void backToMainLayout() {
+        refresh = new Intent(getContext(), LayoutDailyMoney.class);
+        refresh.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+        startActivity(refresh);
+    }
+
     AdapterView.OnItemSelectedListener ccTransSpinnerSelection = new AdapterView.OnItemSelectedListener() {
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -208,11 +217,8 @@ public class DailyMoneyCC extends Fragment {
 
         ccPaymentNotPossibleAText.setVisibility(View.GONE);
         ccPaymentNotPossibleBText.setVisibility(View.GONE);
-        ccContinueAnywayText.setVisibility(View.GONE);
-        ccContinueWarningText.setVisibility(View.GONE);
         ccLimitWarningText.setVisibility(View.GONE);
-        noCCButton.setVisibility(View.GONE);
-        yesCCButton.setVisibility(View.GONE);
+        hideWarnings();
 
         ccTransCatText.setVisibility(View.GONE);
         ccTransAmountEditText.setVisibility(View.GONE);
@@ -224,12 +230,13 @@ public class DailyMoneyCC extends Fragment {
         ccTransDebtCatSpinner.setVisibility(View.VISIBLE);
         ccTransDebtCatLabel.setVisibility(View.VISIBLE);
         ccTransButton.setVisibility(View.VISIBLE);
+
+        backToMainLayout();
     }
 
     public void createMoneyOutCC() {
-        moneyOutDb = new MoneyOutDb(moneyOutCat, moneyOutPriority, moneyOutWeekly, moneyOutAmount, moneyOutCreatedOn,
+        moneyOutDb = new MoneyOutDb(moneyOutCat, moneyOutPriority, moneyOutWeekly, moneyOutAmount, moneyOutA, moneyOutOwing, moneyOutB, moneyOutCreatedOn,
                 moneyOutCC, moneyOutDebtCat, moneyOutChargingDebtId, moneyOutToPay, moneyOutPaid, expRefKeyMO, 0);
-
         dbManager.addMoneyOut(moneyOutDb);
     }
 
@@ -237,43 +244,17 @@ public class DailyMoneyCC extends Fragment {
         dbManager.updateMoneyOut(moneyOutDb);
     }
 
-    public void continueTransaction() {
+    public void updateDebtsandSavings() {
         updateChargingDebtRecord();
-        /*dbHelper = new DbHelper(getContext());
-        db = dbHelper.getWritableDatabase();
-
-        newDebtAmount = findCurrentChargingDebtAmount() + moneyOutAmount;
-        moneyOutValue = new ContentValues();
-        moneyOutValue.put(DbHelper.DEBTAMOUNT, newDebtAmount);
-        db.update(DbHelper.DEBTS_TABLE_NAME, moneyOutValue, DbHelper.ID + "=" + moneyOutChargingDebtId, null);
-        moneyOutValue2 = new ContentValues();
-        moneyOutValue2.put(DbHelper.DEBTEND, calcChargingDebtDate());
-        db.update(DbHelper.DEBTS_TABLE_NAME, moneyOutValue2, DbHelper.ID + "=" + moneyOutChargingDebtId, null);
-        db.close();*/
 
         findMatchingDebtId();
         if (foundMatchingDebtId) {
             updateDebtsRecord();
-            /*newDebtAmount2 = findCurrentDebtAmount() - moneyOutAmount;
-            moneyOutValue9 = new ContentValues();
-            moneyOutValue9.put(DbHelper.DEBTAMOUNT, newDebtAmount2);
-            db.update(DbHelper.DEBTS_TABLE_NAME, moneyOutValue9, DbHelper.ID + "=" + findMatchingDebtId(), null);
-            moneyOutValue10 = new ContentValues();
-            moneyOutValue10.put(DbHelper.DEBTEND, calcDebtDate());
-            db.update(DbHelper.DEBTS_TABLE_NAME, moneyOutValue10, DbHelper.ID + "=" + findMatchingDebtId(), null);*/
         }
         findMatchingSavingsId();
         if (foundMatchingSavingsId) {
             updateSavingsRecord();
-            /*newSavingsAmount = findCurrentSavingsAmount() + moneyOutAmount;
-            moneyOutValue3 = new ContentValues();
-            moneyOutValue3.put(DbHelper.SAVINGSAMOUNT, newSavingsAmount);
-            db.update(DbHelper.SAVINGS_TABLE_NAME, moneyOutValue3, DbHelper.ID + "=" + findMatchingSavingsId(), null);
-            moneyOutValue4 = new ContentValues();
-            moneyOutValue4.put(DbHelper.SAVINGSDATE, calcSavingsDate());
-            db.update(DbHelper.SAVINGS_TABLE_NAME, moneyOutValue4, DbHelper.ID + "=" + findMatchingSavingsId(), null);*/
         }
-        //db.close();
 
         Toast.makeText(getActivity(), R.string.saved, Toast.LENGTH_LONG).show();
         ccTransAmountText.setText("");
@@ -297,14 +278,14 @@ public class DailyMoneyCC extends Fragment {
         return debtId;
     }
 
-    public Double findCurrentDebtAmount() {
+    /*public Double findCurrentDebtAmount() {
         for (DebtDb d3 : dbManager.getDebts()) {
             if (d3.getExpRefKeyD() == moneyOutRefKeyMO) {
                 currentDebtAmount = d3.getDebtAmount();
             }
         }
         return currentDebtAmount;
-    }
+    }*/
 
     public void allDebtData() {
         for (DebtDb d2 : dbManager.getDebts()) {
@@ -322,7 +303,9 @@ public class DailyMoneyCC extends Fragment {
         dbHelper7 = new DbHelper(getContext());
         db7 = dbHelper7.getWritableDatabase();
 
-        newDebtAmount2 = findCurrentDebtAmount() - moneyOutAmount;
+        allDebtData();
+
+        newDebtAmount2 = debtAmount - moneyOutAmount;
         moneyOutValue9 = new ContentValues();
         moneyOutValue9.put(DbHelper.DEBTAMOUNT, newDebtAmount2);
         db7.update(DbHelper.DEBTS_TABLE_NAME, moneyOutValue9, DbHelper.ID + "=" + findMatchingDebtId(), null);
@@ -341,38 +324,6 @@ public class DailyMoneyCC extends Fragment {
         db7.update(DbHelper.DEBTS_TABLE_NAME, moneyOutValue10, DbHelper.ID + "=" + findMatchingDebtId(), null);
         db7.close();
     }
-
-    /*public String calcDebtDate() {
-        for (DebtDb d2 : dbManager.getDebts()) {
-            if (d2.getId() == findMatchingDebtId()) {
-                debtAmount = d2.getDebtAmount();
-                currentDebtRate = d2.getDebtRate();
-                currentDebtPayments = d2.getDebtPayments();
-                currentDebtFrequency = d2.getDebtFrequency();
-                debtAnnualIncome = d2.getDebtAnnualIncome();
-            }
-
-            debtCal = Calendar.getInstance();
-            numberOfYearsToPayDebt = -(Math.log(1 - (debtAmount * (currentDebtRate / 100) / ((currentDebtPayments * currentDebtFrequency) - debtAnnualIncome))) / (currentDebtFrequency * Math.log(1 + ((currentDebtRate / 100) / currentDebtFrequency))));
-            numberOfDaysToPayDebt = (int) Math.round(numberOfYearsToPayDebt * 365);
-
-            if (debtAmount <= 0) {
-                debtEnd = getString(R.string.debt_paid);
-
-            } else if (numberOfDaysToPayDebt > Integer.MAX_VALUE || numberOfDaysToPayDebt <= 0) {
-                debtEnd = getString(R.string.too_far);
-
-            } else {
-                debtCal = Calendar.getInstance();
-                debtCal.add(Calendar.DATE, numberOfDaysToPayDebt);
-                debtEndD = debtCal.getTime();
-                debtEndS = new SimpleDateFormat("dd-MMM-yyyy");
-                debtEnd = debtEndS.format(debtEndD);
-            }
-        }
-
-        return debtEnd;
-    }*/
 
     public Double findCurrentChargingDebtAmount() {
         for (DebtDb d3 : dbManager.getDebts()) {
@@ -408,7 +359,9 @@ public class DailyMoneyCC extends Fragment {
         dbHelper = new DbHelper(getContext());
         db = dbHelper.getWritableDatabase();
 
-        newDebtAmount = findCurrentChargingDebtAmount() + moneyOutAmount;
+        allChargingDebtData();
+
+        newDebtAmount = debtAmount + moneyOutAmount;
         moneyOutValue = new ContentValues();
         moneyOutValue.put(DbHelper.DEBTAMOUNT, newDebtAmount);
         db.update(DbHelper.DEBTS_TABLE_NAME, moneyOutValue, DbHelper.ID + "=" + moneyOutChargingDebtId, null);
@@ -428,37 +381,6 @@ public class DailyMoneyCC extends Fragment {
         db.close();
     }
 
-    /*public String calcChargingDebtDate() {
-        for (DebtDb d2 : dbManager.getDebts()) {
-            if (d2.getId() == moneyOutChargingDebtId) {
-                debtAmount3 = d2.getDebtAmount();
-                currentDebtRate3 = d2.getDebtRate();
-                currentDebtPayments3 = d2.getDebtPayments();
-                currentDebtFrequency3 = d2.getDebtFrequency();
-                chargingDebtAnnualIncome = d2.getDebtAnnualIncome();
-            }
-
-            debtCal3 = Calendar.getInstance();
-            numberOfYearsToPayDebt3 = -(Math.log(1 - (debtAmount3 * (currentDebtRate3 / 100) / ((currentDebtPayments3 * currentDebtFrequency3) - chargingDebtAnnualIncome))) / (currentDebtFrequency3 * Math.log(1 + ((currentDebtRate3 / 100) / currentDebtFrequency3))));
-            numberOfDaysToPayDebt3 = (int) Math.round(numberOfYearsToPayDebt3 * 365);
-
-            if (debtAmount3 <= 0) {
-                chargingDebtEnd = getString(R.string.debt_paid);
-
-            } else if (numberOfDaysToPayDebt3 > Integer.MAX_VALUE || numberOfDaysToPayDebt3 <= 0) {
-                chargingDebtEnd = getString(R.string.too_far);
-
-            } else {
-                debtCal3 = Calendar.getInstance();
-                debtCal3.add(Calendar.DATE, numberOfDaysToPayDebt3);
-                debtEndD3 = debtCal3.getTime();
-                debtEndS3 = new SimpleDateFormat("dd-MMM-yyyy");
-                chargingDebtEnd = debtEndS3.format(debtEndD3);
-            }
-        }
-        return chargingDebtEnd;
-    }*/
-
     public long findMatchingSavingsId() {
         foundMatchingSavingsId = false;
         for (SavingsDb s : dbManager.getSavings()) {
@@ -474,14 +396,14 @@ public class DailyMoneyCC extends Fragment {
         return savingsId;
     }
 
-    public Double findCurrentSavingsAmount() {
+    /*public Double findCurrentSavingsAmount() {
         for (SavingsDb s3 : dbManager.getSavings()) {
             if (s3.getExpRefKeyS() == moneyOutRefKeyMO) {
                 currentSavingsAmount = s3.getSavingsAmount();
             }
         }
         return currentSavingsAmount;
-    }
+    }*/
 
     public void allSavingsData() {
         for (SavingsDb s2 : dbManager.getSavings()) {
@@ -500,13 +422,14 @@ public class DailyMoneyCC extends Fragment {
         dbHelper8 = new DbHelper(getContext());
         db8 = dbHelper8.getWritableDatabase();
 
-        newSavingsAmount = findCurrentSavingsAmount() + moneyOutAmount;
+        allSavingsData();
+
+        newSavingsAmount = savingsAmount+ moneyOutAmount;
         moneyOutValue3 = new ContentValues();
         moneyOutValue3.put(DbHelper.SAVINGSAMOUNT, newSavingsAmount);
         db8.update(DbHelper.SAVINGS_TABLE_NAME, moneyOutValue3, DbHelper.ID + "=" + findMatchingSavingsId(), null);
 
         allSavingsData();
-        //general.allSavingsDataFromDb(dbManager, String.valueOf(findMatchingSavingsId()));
 
         moneyOutValue4 = new ContentValues();
         moneyOutValue4.put(DbHelper.SAVINGSDATE, general.calcSavingsDate(
@@ -522,63 +445,6 @@ public class DailyMoneyCC extends Fragment {
         db8.close();
     }
 
-    /*public Double findSavingsYears() {
-        for (SavingsDb s2 : dbManager.getSavings()) {
-            if (s2.getId() == findMatchingSavingsId()) {
-                savingsAmount = s2.getSavingsAmount();
-                savingsGoal = s2.getSavingsGoal();
-                currentSavingsRate = s2.getSavingsRate();
-                currentSavingsPayments = s2.getSavingsPayments();
-                currentSavingsFrequency = s2.getSavingsFrequency();
-                savingsAnnualIncome = s2.getSavingsAnnualIncome();
-            }
-        }
-        if (savingsGoal < savingsAmount) {
-            savingsGoal = savingsAmount;
-        }
-        rate = currentSavingsRate / 100;
-        if (rate == 0) {
-            rate = .01;
-        }
-        if (currentSavingsPayments == 0) {
-            currentSavingsPayments = 0.01;
-        }
-        if (savingsAmount == 0 && currentSavingsPayments == 0.01) {
-            years = 0.0;
-        } else if (savingsGoal.equals(savingsAmount)) {
-            years = 0.0;
-        } else {
-            years = 0.0;
-            do {
-                years = years + .00274;
-            }
-            while (savingsGoal >= (savingsAmount * (Math.pow((1 + rate / 12), 12 * years))) + ((((currentSavingsPayments * currentSavingsFrequency) - savingsAnnualIncome) / 12) * (((Math.pow((1 + rate / 12), 12 * years)) - 1) / (rate / 12)) * (1 + rate / 12)));
-        }
-
-        return years;
-    }
-
-    public String calcSavingsDate() {
-
-        savingsCal = Calendar.getInstance();
-        numberOfDaysToSavingsGoal = (int) Math.round(findSavingsYears() * 365);
-
-        if ((numberOfDaysToSavingsGoal) <= 0) {
-            savingsDate = getString(R.string.goal_achieved);
-
-        } else if (numberOfDaysToSavingsGoal > Integer.MAX_VALUE) {
-            savingsDate = getString(R.string.too_far);
-
-        } else {
-
-            savingsCal.add(Calendar.DATE, numberOfDaysToSavingsGoal);
-            savingsDateD = savingsCal.getTime();
-            savingsDateS = new SimpleDateFormat("dd-MMM-yyyy");
-            savingsDate = savingsDateS.format(savingsDateD);
-        }
-        return savingsDate;
-    }*/
-
     public boolean checkIfAPossible() {
         if (dbManager.retrieveCurrentAccountBalance() - moneyOutAmount < 0) {
             paymentAPossible = false;
@@ -589,13 +455,76 @@ public class DailyMoneyCC extends Fragment {
     }
 
     public boolean checkIfBPossible() {
-        if (dbManager.retrieveCurrentAvailableBalance() - moneyOutAmount < 0) {
+        if (dbManager.retrieveCurrentB() - moneyOutAmount < 0) {
             paymentBPossible = false;
         } else {
             paymentBPossible = true;
         }
         return paymentBPossible;
     }
+
+    /*public void determineAandBPortions() {
+
+        if (newTransaction) {
+            moneyOutAmountN = moneyOutAmount;
+        } else {
+            moneyOutAmountN = amountEntry;
+        }
+
+        if (moneyOutPriority.equals("A")) {
+            if (dbManager.retrieveCurrentA() >= moneyOutAmountN) { //if A can cover the purchase, it does
+                moneyOutA = moneyOutAmountN;
+                moneyOutOwing = 0.0;
+                moneyOutB = 0.0;
+            } else if (dbManager.retrieveCurrentA() <= 0) { //if A has no money
+                if (dbManager.retrieveCurrentB() >= moneyOutAmountN) { //if B can cover the purchase, it does
+                    moneyOutA = 0.0;
+                    moneyOutOwing = 0.0;
+                    moneyOutB = moneyOutAmountN;
+                } else if (dbManager.retrieveCurrentB() == 0) { //if B has no money, A goes negative by whole amount
+                    moneyOutA = moneyOutAmountN;
+                    moneyOutOwing = 0.0;
+                    moneyOutB = 0.0;
+                } else { //if B can cover part of the purchase, it pays what it can and A goes negative for rest
+                    amountMissing = moneyOutAmountN - dbManager.retrieveCurrentB();
+                    moneyOutA = amountMissing;
+                    moneyOutOwing = 0.0;
+                    moneyOutB = dbManager.retrieveCurrentB();
+                }
+            } else { //if A can cover part of the purchase
+                amountMissing = moneyOutAmountN - dbManager.retrieveCurrentA();
+                if (dbManager.retrieveCurrentB() >= amountMissing) { //if B can cover the rest, it does
+                    moneyOutA = dbManager.retrieveCurrentA();
+                    moneyOutOwing = 0.0;
+                    moneyOutB = amountMissing;
+                } else if (dbManager.retrieveCurrentB() == 0) { //if B has no money, A goes negative by the rest
+                    moneyOutA = moneyOutAmountN;
+                    moneyOutOwing = 0.0;
+                    moneyOutB = 0.0;
+                } else { //if B can cover part of the rest, it pays what it can and A goes negative for rest
+                    moneyOutA = moneyOutAmountN - dbManager.retrieveCurrentB();
+                    moneyOutOwing = 0.0;
+                    moneyOutB = dbManager.retrieveCurrentB();
+                }
+            }
+        } else if (moneyOutPriority.equals("B")) {
+            if (dbManager.retrieveCurrentB() >= moneyOutAmountN) { //if B can cover the purchase, it does
+                moneyOutA = 0.0;
+                moneyOutOwing = 0.0;
+                moneyOutB = moneyOutAmountN;
+            } else if (dbManager.retrieveCurrentB() == 0) { //if B has no money, A covers it but is owed for it
+                moneyOutA = moneyOutAmountN;
+                moneyOutOwing = moneyOutAmountN;
+                moneyOutB = 0.0;
+            } else { //if B can cover part of the purchase then A covers the rest and is owed for it
+                amountMissing = moneyOutAmountN - dbManager.retrieveCurrentB();
+                moneyOutA = amountMissing;
+                moneyOutOwing = amountMissing;
+                moneyOutB = dbManager.retrieveCurrentB();
+            }
+
+        }
+    }*/
 
     View.OnClickListener onClickNoCCButton = new View.OnClickListener() {
         @Override
@@ -604,22 +533,22 @@ public class DailyMoneyCC extends Fragment {
         }
     };
 
-    public void createMoneyOut() {
+    public void defineMoneyOut() {
         moneyOutCat = ccTransCatS;
         moneyOutPriority = ccTransPriorityS;
         moneyOutWeekly = moneyOutWeeklyS;
         moneyOutAmount = general.extractingDouble(ccTransAmountText);
-        /*if (ccTransAmountText.getText().toString().equals("")) {
-            moneyOutAmount = 0.0;
-        } else {
-            moneyOutAmount = Double.valueOf(ccTransAmountText.getText().toString());
-        }*/
+        moneyOutA = 0.0;
+        moneyOutB = 0.0;
+        moneyOutOwing = 0.0;
         moneyOutDate = new Date();
         moneyOutTimestamp = new Timestamp(moneyOutDate.getTime());
         moneyOutSDF = new SimpleDateFormat("dd-MMM-yyyy");
         moneyOutCreatedOn = moneyOutSDF.format(moneyOutTimestamp);
+
         findMatchingSavingsId();
         findMatchingDebtId();
+
         if (foundMatchingDebtId || foundMatchingSavingsId) {
             moneyOutCC = "N";
         } else {
@@ -630,6 +559,8 @@ public class DailyMoneyCC extends Fragment {
         moneyOutToPay = 0;
         moneyOutPaid = 0;
         expRefKeyMO = moneyOutRefKeyMO;
+
+        //determineAandBPortions();
     }
 
     public void checkAndContinue() {
@@ -637,100 +568,124 @@ public class DailyMoneyCC extends Fragment {
         checkIfBPossible();
 
         if (moneyOutPriority.equals("A")) {
-            if (paymentAPossible) {
-                if (newTransaction) {
-                    createMoneyOutCC();
-                    continueTransaction();
-                } else {
-                    updateMoneyOutCC();
-                    continueTransaction();
-                }
-                ccTransAdapter.updateCCTrans(dbManager.getCCTrans());
-                ccTransAdapter.notifyDataSetChanged();
-            } else if (!paymentAPossible) {
+            if (!paymentAPossible) {
                 ccPaymentNotPossibleAText.setVisibility(View.VISIBLE);
-                ccContinueWarningText.setVisibility(View.VISIBLE);
-                ccContinueAnywayText.setVisibility(View.VISIBLE);
-                noCCButton.setVisibility(View.VISIBLE);
-                yesCCButton.setVisibility(View.VISIBLE);
+                showWarnings();
 
                 noCCButton.setOnClickListener(onClickNoCCButton);
 
                 yesCCButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (newTransaction) {
+                        createOrUpdate();
+                        /*if (newTransaction) {
                             createMoneyOutCC();
-                            continueTransaction();
+                            updateDebtsandSavings();
                         } else {
                             updateMoneyOutCC();
-                            continueTransaction();
-                        }
+                            updateDebtsandSavings();
+                        }*/
                         ccTransAdapter.updateCCTrans(dbManager.getCCTrans());
                         ccTransAdapter.notifyDataSetChanged();
+                        backToMainLayout();
                     }
                 });
+            } else {
+                createOrUpdate();
+                /*if (newTransaction) {
+                    createMoneyOutCC();
+                    updateDebtsandSavings();
+                } else {
+                    updateMoneyOutCC();
+                    updateDebtsandSavings();
+                }*/
+                ccTransAdapter.updateCCTrans(dbManager.getCCTrans());
+                ccTransAdapter.notifyDataSetChanged();
+                backToMainLayout();
             }
         } else if (moneyOutPriority.equals("B")) {
-            if (paymentBPossible && paymentAPossible) {
-                if (newTransaction) {
-                    createMoneyOutCC();
-                    continueTransaction();
-                } else {
-                    updateMoneyOutCC();
-                    continueTransaction();
-                }
-                ccTransAdapter.updateCCTrans(dbManager.getCCTrans());
-                ccTransAdapter.notifyDataSetChanged();
-            } else if (!paymentBPossible && paymentAPossible) {
-                ccPaymentNotPossibleBText.setVisibility(View.VISIBLE);
-                ccContinueWarningText.setVisibility(View.VISIBLE);
-                ccContinueAnywayText.setVisibility(View.VISIBLE);
-                noCCButton.setVisibility(View.VISIBLE);
-                yesCCButton.setVisibility(View.VISIBLE);
-
-                noCCButton.setOnClickListener(onClickNoCCButton);
-
-                yesCCButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (newTransaction) {
-                            createMoneyOutCC();
-                            continueTransaction();
-                        } else {
-                            updateMoneyOutCC();
-                            continueTransaction();
-                        }
-                        ccTransAdapter.updateCCTrans(dbManager.getCCTrans());
-                        ccTransAdapter.notifyDataSetChanged();
-                    }
-                });
-            } else if (!paymentBPossible && !paymentAPossible) {
+            if (!paymentBPossible && !paymentAPossible) {
                 ccPaymentNotPossibleAText.setVisibility(View.VISIBLE);
                 ccPaymentNotPossibleBText.setVisibility(View.VISIBLE);
-                ccContinueWarningText.setVisibility(View.VISIBLE);
-                ccContinueAnywayText.setVisibility(View.VISIBLE);
-                noCCButton.setVisibility(View.VISIBLE);
-                yesCCButton.setVisibility(View.VISIBLE);
+                showWarnings();
 
                 noCCButton.setOnClickListener(onClickNoCCButton);
 
                 yesCCButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (newTransaction) {
+                        createOrUpdate();
+                        /*if (newTransaction) {
                             createMoneyOutCC();
-                            continueTransaction();
+                            updateDebtsandSavings();
                         } else {
                             updateMoneyOutCC();
-                            continueTransaction();
-                        }
+                            updateDebtsandSavings();
+                        }*/
                         ccTransAdapter.updateCCTrans(dbManager.getCCTrans());
                         ccTransAdapter.notifyDataSetChanged();
+                        backToMainLayout();
                     }
                 });
+            } else if (!paymentBPossible && paymentAPossible) {
+                ccPaymentNotPossibleBText.setVisibility(View.VISIBLE);
+                showWarnings();
+
+                noCCButton.setOnClickListener(onClickNoCCButton);
+
+                yesCCButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        createOrUpdate();
+                        /*if (newTransaction) {
+                            createMoneyOutCC();
+                            updateDebtsandSavings();
+                        } else {
+                            updateMoneyOutCC();
+                            updateDebtsandSavings();
+                        }*/
+                        ccTransAdapter.updateCCTrans(dbManager.getCCTrans());
+                        ccTransAdapter.notifyDataSetChanged();
+                        backToMainLayout();
+                    }
+                });
+            } else {
+                createOrUpdate();
+                /*if (newTransaction) {
+                    createMoneyOutCC();
+                    updateDebtsandSavings();
+                } else {
+                    updateMoneyOutCC();
+                    updateDebtsandSavings();
+                }*/
+                ccTransAdapter.updateCCTrans(dbManager.getCCTrans());
+                ccTransAdapter.notifyDataSetChanged();
+                backToMainLayout();
             }
         }
+    }
+
+    public void showWarnings() {
+        ccContinueWarningText.setVisibility(View.VISIBLE);
+        ccContinueAnywayText.setVisibility(View.VISIBLE);
+        noCCButton.setVisibility(View.VISIBLE);
+        yesCCButton.setVisibility(View.VISIBLE);
+    }
+
+    public void hideWarnings() {
+        ccContinueWarningText.setVisibility(View.GONE);
+        ccContinueAnywayText.setVisibility(View.GONE);
+        noCCButton.setVisibility(View.GONE);
+        yesCCButton.setVisibility(View.GONE);
+    }
+
+    public void createOrUpdate() {
+        if (newTransaction) {
+            createMoneyOutCC();
+        } else {
+            updateMoneyOutCC();
+        }
+        updateDebtsandSavings();
     }
 
     View.OnClickListener onClickCCTransButton = new View.OnClickListener() {
@@ -739,26 +694,27 @@ public class DailyMoneyCC extends Fragment {
 
             if (dbManager.getDebtCount() == 0) {
                 Toast.makeText(getContext(), R.string.no_debt_item_warning, Toast.LENGTH_LONG).show();
-            } else if (findCurrentChargingDebtAmount() + moneyOutAmount > findCurrentChargingDebtLimit()) {
-                ccLimitWarningText.setVisibility(View.VISIBLE);
-                ccContinueAnywayText.setVisibility(View.VISIBLE);
-                yesCCButton.setVisibility(View.VISIBLE);
-                noCCButton.setVisibility(View.VISIBLE);
-
-                noCCButton.setOnClickListener(onClickNoCCButton);
-
-                yesCCButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        createMoneyOut();
-                        newTransaction = true;
-                        checkAndContinue();
-                    }
-                });
             } else {
-                createMoneyOut();
-                newTransaction = true;
-                checkAndContinue();
+                defineMoneyOut();
+                if (findCurrentChargingDebtAmount() + moneyOutAmount > findCurrentChargingDebtLimit()) {
+                    ccLimitWarningText.setVisibility(View.VISIBLE);
+                    ccContinueAnywayText.setVisibility(View.VISIBLE);
+                    yesCCButton.setVisibility(View.VISIBLE);
+                    noCCButton.setVisibility(View.VISIBLE);
+
+                    noCCButton.setOnClickListener(onClickNoCCButton);
+
+                    yesCCButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            newTransaction = true;
+                            checkAndContinue();
+                        }
+                    });
+                } else {
+                    newTransaction = true;
+                    checkAndContinue();
+                }
             }
         }
     };
@@ -875,6 +831,9 @@ public class DailyMoneyCC extends Fragment {
                     ccTransAmountEditText.setText(ccTransAmountS2);
 
                     oldMoneyOutAmount = general.extractingDollars(ccTransAmountEditText);
+                    /*moneyOutA = -(moneyOutDb.getMoneyOutA());
+                    moneyOutOwing = -(moneyOutDb.getMoneyOutOwing());
+                    moneyOutB = -(moneyOutDb.getMoneyOutB());*/
                     moneyOutRefKeyMO = moneyOutDb.getExpRefKeyMO();
                     moneyOutPriority = moneyOutDb.getMoneyOutPriority();
                     moneyOutChargingDebtId = moneyOutDb.getMoneyOutChargingDebtId();
@@ -890,15 +849,6 @@ public class DailyMoneyCC extends Fragment {
                     addCreditCardLayout.setVisibility(View.VISIBLE);
 
                     amountEntry = general.extractingDouble(ccTransAmountEditText);
-                    /*try {
-                        amountEntry = Double.valueOf(ccTransAmountEditText.getText().toString());
-                    } catch (NumberFormatException e) {
-                        amountEntry = general.extractingDollars(ccTransAmountEditText);
-                    }
-                    if (ccTransAmountEditText.getText().toString().equals("")) {
-                        amountEntry = 0.0;
-                    }*/
-
                     moneyOutAmount = amountEntry - oldMoneyOutAmount;
 
                     if (findCurrentChargingDebtAmount() + moneyOutAmount > findCurrentChargingDebtLimit()) {
@@ -913,11 +863,13 @@ public class DailyMoneyCC extends Fragment {
                             @Override
                             public void onClick(View v) {
                                 newTransaction = false;
+                                //determineAandBPortions();
                                 checkAndContinue();
                             }
                         });
                     } else {
                         newTransaction = false;
+                        //determineAandBPortions();
                         checkAndContinue();
                     }
                 }
@@ -932,12 +884,11 @@ public class DailyMoneyCC extends Fragment {
 
                     moneyOutDb = (MoneyOutDb) holder.ccTransDelete.getTag();
 
-                    moneyOutAmount1 = ccTrans.get(position).getMoneyOutAmount();
-                    moneyOutAmount = -moneyOutAmount1;
+                    moneyOutAmount = -(ccTrans.get(position).getMoneyOutAmount());
                     moneyOutRefKeyMO = ccTrans.get(position).getExpRefKeyMO();
                     moneyOutChargingDebtId = ccTrans.get(position).getMoneyOutChargingDebtId();
 
-                    continueTransaction();
+                    updateDebtsandSavings();
 
                     /*dbHelper5 = new DbHelper(getContext());
                     db5 = dbHelper5.getWritableDatabase();
@@ -975,14 +926,15 @@ public class DailyMoneyCC extends Fragment {
                     dbManager.deleteMoneyOut(moneyOutDb);
                     ccTransAdapter.updateCCTrans(dbManager.getCCTrans());
                     notifyDataSetChanged();
-                    if (ccTransAdapter.getCount() == 0) {
+                    backToMainLayout();
+                    /*if (ccTransAdapter.getCount() == 0) {
                         newMoneyCCLabel.setVisibility(View.VISIBLE);
                         newMoneyCCLabel2.setVisibility(View.VISIBLE);
                         updateCreditCardLayout.setVisibility(View.GONE);
                     } else {
                         newMoneyCCLabel.setVisibility(View.GONE);
                         newMoneyCCLabel2.setVisibility(View.GONE);
-                    }
+                    }*/
                 }
             });
             return convertView;

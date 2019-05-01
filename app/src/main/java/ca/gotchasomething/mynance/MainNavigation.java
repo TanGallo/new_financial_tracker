@@ -7,14 +7,14 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.google.android.material.navigation.NavigationView;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+
+import com.google.android.material.navigation.NavigationView;
 
 public class MainNavigation extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -47,6 +47,18 @@ public class MainNavigation extends AppCompatActivity implements NavigationView.
         toggle.syncState();
     }
 
+    /*public void menuDisable() {
+        menu = navigationView.getMenu();
+        menu.findItem(R.id.menu_daily_money).setEnabled(false);
+        menu.findItem(R.id.menu_budget).setEnabled(false);
+        menu.findItem(R.id.menu_debt).setEnabled(false);
+        menu.findItem(R.id.menu_savings).setEnabled(false);
+        menu.findItem(R.id.menu_spending_report).setEnabled(false);
+        menu.findItem(R.id.menu_budget_report_exp).setEnabled(false);
+        menu.findItem(R.id.menu_budget_report_inc).setEnabled(false);
+        menu.findItem(R.id.menu_help).setEnabled(false);
+        navigationView.setNavigationItemSelectedListener(this);
+    }*/
 
     public void menuConfig() {
         beforeSetUpOrAfter();
