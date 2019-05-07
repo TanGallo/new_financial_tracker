@@ -100,15 +100,15 @@
                         </LinearLayout>
 
                         <TextView
-                            android:id="@+id/setUpQ1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="10dp"
-                            android:text="@string/set_up_q1"
-                            android:textSize="18sp"
-                            android:textColor="@color/colorPrimaryDark"
-                            android:clickable="true"
-                            android:focusable="true" />
+                        android:id="@+id/setUpQ1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:text="@string/set_up_q1"
+                        android:textSize="18sp"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:clickable="true"
+                        android:focusable="true" />
 
                         <TextView
                             android:id="@+id/setUpA1"
@@ -283,36 +283,6 @@
                         />
 
                         <TextView
-                            android:id="@+id/dailyMoneyA5A"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="10dp"
-                            android:text="@string/daily_money_5A"
-                            android:textSize="18sp"
-                            android:textColor="@color/colorGreen"
-                            />
-
-                        <TextView
-                            android:id="@+id/dailyMoneyA5B"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="10dp"
-                            android:text="@string/daily_money_5B"
-                            android:textSize="18sp"
-                            android:textColor="@color/colorGreen"
-                            />
-
-                        <TextView
-                            android:id="@+id/dailyMoneyA5C"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="10dp"
-                            android:text="@string/daily_money_5C"
-                            android:textSize="18sp"
-                            android:textColor="@color/colorGreen"
-                            />
-
-                        <TextView
                             android:id="@+id/dailyMoneyQ6"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -432,6 +402,27 @@
                             android:layout_height="wrap_content"
                             android:layout_margin="10dp"
                             android:text="@string/daily_money_10"
+                            android:textSize="18sp"
+                            android:textColor="@color/colorGreen"
+                            />
+
+                        <TextView
+                            android:id="@+id/dailyMoneyQ11"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:text="@string/daily_money_q11"
+                            android:textSize="18sp"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:clickable="true"
+                            android:focusable="true" />
+
+                        <TextView
+                            android:id="@+id/dailyMoneyA11"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:text="@string/daily_money_11"
                             android:textSize="18sp"
                             android:textColor="@color/colorGreen"
                             />

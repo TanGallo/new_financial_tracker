@@ -13,6 +13,10 @@
         android:title="@string/daily_money"
         android:textColor="@color/colorPrimaryDark"/>
     <item
+        android:id="@+id/menu_transfers"
+        android:icon="@drawable/ic_compare_arrows_black_24dp"
+        android:title="@string/transfer_funds" />
+    <item
         android:id="@+id/menu_budget"
         android:icon="@drawable/ic_equalizer_black_24dp"
         android:title="@string/budget" />

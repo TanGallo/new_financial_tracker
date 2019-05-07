@@ -25,7 +25,7 @@ public class MainNavigation extends AppCompatActivity implements NavigationView.
     public DbManager dbManager;
     protected DrawerLayout drawer;
     int tourDoneYes;
-    Intent i, i2, i4, i5, i6, i7, i8, i9;
+    Intent i, i2, i4, i5, i6, i7, i8, i9, i10;
     Menu menu;
     NavigationView navigationView;
     SQLiteDatabase setUpDbDb;
@@ -66,6 +66,7 @@ public class MainNavigation extends AppCompatActivity implements NavigationView.
         if (before) {
             menu.findItem(R.id.menu_before).setVisible(true);
             menu.findItem(R.id.menu_daily_money).setVisible(false);
+            menu.findItem(R.id.menu_transfers).setVisible(false);
             menu.findItem(R.id.menu_budget).setVisible(false);
             menu.findItem(R.id.menu_debt).setVisible(false);
             menu.findItem(R.id.menu_savings).setVisible(false);
@@ -74,6 +75,7 @@ public class MainNavigation extends AppCompatActivity implements NavigationView.
             menu.findItem(R.id.menu_budget_report_inc).setVisible(false);
             menu.findItem(R.id.menu_help).setVisible(false);
             menu.findItem(R.id.menu_daily_money).setEnabled(false);
+            menu.findItem(R.id.menu_transfers).setEnabled(false);
             menu.findItem(R.id.menu_budget).setEnabled(false);
             menu.findItem(R.id.menu_debt).setEnabled(false);
             menu.findItem(R.id.menu_savings).setEnabled(false);
@@ -84,6 +86,7 @@ public class MainNavigation extends AppCompatActivity implements NavigationView.
         } else {
             menu.findItem(R.id.menu_before).setVisible(false);
             menu.findItem(R.id.menu_daily_money).setVisible(true);
+            menu.findItem(R.id.menu_transfers).setVisible(true);
             menu.findItem(R.id.menu_budget).setVisible(true);
             menu.findItem(R.id.menu_debt).setVisible(true);
             menu.findItem(R.id.menu_savings).setVisible(true);
@@ -92,6 +95,7 @@ public class MainNavigation extends AppCompatActivity implements NavigationView.
             menu.findItem(R.id.menu_budget_report_inc).setVisible(true);
             menu.findItem(R.id.menu_help).setVisible(true);
             menu.findItem(R.id.menu_daily_money).setEnabled(true);
+            menu.findItem(R.id.menu_transfers).setEnabled(true);
             menu.findItem(R.id.menu_budget).setEnabled(true);
             menu.findItem(R.id.menu_debt).setEnabled(true);
             menu.findItem(R.id.menu_savings).setEnabled(true);
@@ -130,6 +134,11 @@ public class MainNavigation extends AppCompatActivity implements NavigationView.
                 i = new Intent(MainNavigation.this, LayoutDailyMoney.class);
                 i.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
                 startActivity(i);
+                break;
+            case R.id.menu_transfers:
+                i10 = new Intent(MainNavigation.this, LayoutTransfers.class);
+                i10.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+                startActivity(i10);
                 break;
             case R.id.menu_budget:
                 i2 = new Intent(MainNavigation.this, LayoutBudget.class);

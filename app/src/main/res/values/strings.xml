@@ -57,16 +57,13 @@
     <string name="daily_money_2">\"Available to Spend\" is the amount of money that you can spend on \"optional\" expenses, as identified by you in your BUDGET.</string>
     <string name="daily_money_3">This app is smart! When you overspend, it won\'t make money \"Available to Spend\" until you\'ve caught up on having enough money reserved for paying the \"needs\" you\'ve identified in your BUDGET.</string>
     <string name="daily_money_4">The app will reserve the percentage of any money you put into your bank account that you identified in your BUDGET as being needed to pay for \"needs\". Only the balance of your income will be \"Available to Spend\".</string>
-    <string name="daily_money_5">Any other accounts you have can be set up as DEBTS or SAVINGS.</string>
-    <string name="daily_money_5A">To transfer money from your bank account to another account, use the DAILY MONEY - MONEY OUT tab. Use the pull-down menu to choose the account where you want the money to go.</string>
-    <string name="daily_money_5B">To transfer funds from a DEBTS account to another account, use the DAILY MONEY - CREDIT CARD tab. Use the pull-down menu to choose the account where you want the money to go and use the 2nd pull-down menu to choose which DEBTS account the money should come from.</string>
-    <string name="daily_money_5C">To transfer funds from a SAVINGS account to another account, use the DAILY MONEY - MONEY IN tab to transfer the money from the SAVINGS account to your bank account. Then, use the DAILY MONEY - MONEY OUT tab to transfer the same amount into the appropriate account.</string>
+    <string name="daily_money_5">You can transfer money between any DEBTS and/or SAVINGS accounts in the TRANSFER FUNDS screen.</string>
     <string name="daily_money_6">How you handle cash withdrawals is a personal choice.</string>
     <string name="daily_money_6A">You can create a \"cash withdrawal\" expenses category in your BUDGET and record the transaction once against it, or you can choose to record where every dollar of the cash withdrawal was spent against several expenses categories.</string>
     <string name="daily_money_6B">MYnance believes the 2nd method will become tedious and is an unrealistic way to manage your money. It should suffice to record the cash withdrawal as a whole. You can use the SPENDING REPORT to identify if frequent cash withdrawals are a problem area for you.</string>
     <string name="daily_money_7">MYnance believes strongly in avoiding consumer debt on credit cards. The DAILY MONEY - PAY CC tab is built specifically for this purpose.</string>
     <string name="daily_money_7A">Using this tab once a week or more to make frequent payments to your credit card will ensure that you never pay interest on those purchases, but you will still earn the rewards that your credit card offers! </string>
-    <string name="daily_money_7B">You can also make additional payments that don\'t map to specific purchases by using the DAILY MONEY - MONEY OUT tab.</string>
+    <string name="daily_money_7B">You can also make additional payments that don\'t map to specific purchases by using the DAILY MONEY - MONEY OUT tab or use the TRANSFER FUNDS screen to pay your credit card from another DEBTS or SAVINGS account.</string>
     <string name="daily_money_8">MYnance believes that blind spending on credit cards leads to consumer debt. That is why we will alert you if you don\'t have the funds to cover your credit card purchases.</string>
     <string name="daily_money_9">When you identify an expense category in your BUDGET as \"optional\", the app will ask you if you\'d like to track your spending on a weekly basis. If yes, you can use the DAILY MONEY - WEEKLY LIMITS tab to see how much has been spent between Monday and Sunday of this week against that category.</string>
     <string name="daily_money_10">Once you\'ve made a payment to a credit card against a particular purchase, that purchase can no longer be deleted.</string>
@@ -182,7 +179,7 @@
     <string name="no_debt_warning">NOTE: There must be a DEBT item created for each credit card.</string>
     <string name="no_entries_yet">You haven\'t made any entries yet.</string>
     <string name="no_exp_warning">You must create expense items in your BUDGET to spend against</string>
-    <string name="no_inc_warning" translatable="false">You must create income items in your BUDGET to make entries against</string>
+    <string name="no_inc_warning">You must create income items in your BUDGET to make entries against</string>
     <string name="no_limit_warning">You must enter a maximum debt limit</string>
     <string name="no_savings">You haven\'t entered any savings yet.</string>
     <string name="no_spending_report">Warning: Once you delete this category, entries already made against it will no longer appear in the reports</string>
@@ -272,4 +269,12 @@
     <string name="year_to_date1">all</string>
     <string name="yes">yes</string>
     <string name="over_limit">OVER LIMIT</string>
+    <string name="daily_money_q11">Why don\'t all my credit card transactions appear in the PAY CC tab?</string>
+    <string name="daily_money_11">Only credit card purchases will appear in the PAY CC tab. Any transaction that is a transfer of funds to another DEBTS account or a SAVINGS account can be paid back by using the DAILY MONEY - MONEY OUT tab or the TRANSFER FUNDS screen.</string>
+    <string name="transfer_funds">Transfer Funds</string>
+    <string name="transfer_from">Transfer From:</string>
+    <string name="transfer_to">Transfer To:</string>
+    <string name="no_from_item_warning">You must choose an account to make the transfer from.</string>
+    <string name="no_to_item_warning">You must choose an account to make the transfer to.</string>
+    <string name="no_amount_warning">You must enter an amount to transfer.</string>
 </resources>

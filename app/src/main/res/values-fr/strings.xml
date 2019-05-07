@@ -230,10 +230,7 @@
     <string name="daily_money_q4">Il semble que le mauvais montant entre dans le montant \"Pour Dépenser\".</string>
     <string name="daily_money_4">L\'application réservera le pourcentage de l\'argent que vous avez mis dans votre compte bancaire et que vous avez identifié dans votre BUDGET comme étant nécessaire pour payer les besoins. Seul le solde de votre revenu sera \"Pour Dépenser\".</string>
     <string name="daily_money_q5">L\'onglet QUOTIDIEN - REVENUS me permet uniquement de placer de l\'argent dans mon compte bancaire. Où puis-je placer de l\'argent dans mes autres comptes?</string>
-    <string name="daily_money_5">Tout autre compte que vous possédez peut être configuré en tant que DETTES ou COMPTES D\'ÉPARGNE.</string>
-    <string name="daily_money_5A">Pour transférer de l\'argent de votre compte bancaire vers un autre compte, utilisez l\'onglet QUOTIDIEN - DÉPENSES. Utilisez le menu déroulant pour choisir le compte où vous voulez que l\'argent aille.</string>
-    <string name="daily_money_5B">Pour transférer des fonds d\'un compte DETTES vers un autre compte, utilisez l\'onglet QUOTIDIEN - CARTES DE CRÉDIT. Utilisez le menu déroulant pour choisir le compte sur lequel vous souhaitez que l\'argent soit transféré et utilisez le deuxième menu déroulant pour choisir le compte DETTES d\'où proviendra l\'argent.</string>
-    <string name="daily_money_5C">Pour transférer des fonds d\'un COMPTE D\'ÉPARGNE vers un autre compte, utilisez l\'onglet QUOTIDIEN - REVENUS pour transférer l\'argent du COMPTE D\'ÉPARGNE vers votre compte bancaire. Ensuite, utilisez l\'onglet QUOTIDIEN - DÉPENSES pour transférer le même montant sur le compte approprié.</string>
+    <string name="daily_money_5">Vous pouvez transférer de l\'argent entre tout compte DETTES et / ou ÉPARGNE dans l\'écran TRANSFERT DE FONDS</string>
     <string name="daily_money_q6">Lorsque je retrait de l\'argent de mon compte bancaire, comment puis-je enregistrer les transactions sur lesquelles j\'ai dépenser?</string>
     <string name="daily_money_6">Comment vous gérez les retraits d\'argent est un choix personnel.</string>
     <string name="daily_money_6A">Vous pouvez créer une catégorie de dépenses de \"Retrait\" dans votre BUDGET et enregistrer la transaction une fois contre celle-ci, ou vous pouvez choisir d\'indiquer où chaque dollar du retrait a été dépensé pour plusieurs catégories de dépenses.</string>
@@ -241,7 +238,7 @@
     <string name="daily_money_q7">Quelle est la différence entre l’onglet QUOTIDIEN - PAYER LES CARTES et l’onglet QUOTIDIEN - DÉPENSES pour enregistrer un paiement sur ma carte de crédit?</string>
     <string name="daily_money_7">MYnance croit fermement à l’évitement de l’endettement des consommateurs sur les cartes de crédit. L’onglet QUOTIDIEN - PAYER LES CARTES est spécialement conçu à cet effet.</string>
     <string name="daily_money_7A">Si vous utilisez cet onglet une fois par semaine ou plus pour effectuer des paiements fréquents sur votre carte de crédit, vous ne paierez jamais d\'intérêts sur ces achats, mais vous obtiendrez tout de même les récompenses offertes par votre carte de crédit!</string>
-    <string name="daily_money_7B">Vous pouvez également effectuer des paiements supplémentaires qui ne correspondent pas à des achats spécifiques en utilisant l\'onglet QUOTIDIEN - DÉPENSES.</string>
+    <string name="daily_money_7B">Vous pouvez également effectuer des paiements supplémentaires qui ne correspondent pas à des achats spécifiques en utilisant l\'onglet QUOTIDIEN - DÉPENSES ou en utilisant l’écran TRANSFERT DE FONDS pour payer votre carte de crédit d\'un autre compte DETTES ou ÉPARGNE.</string>
     <string name="daily_money_q8">Pourquoi MYnance me donne-t-il des avertissements concernant les dépenses lorsque j\'utilise ma carte de crédit?</string>
     <string name="daily_money_8">MYnance pense que les dépenses impulsives sur les cartes de crédit incitent une dette de consommation. C\'est pourquoi nous vous alerterons si vous ne disposez pas des fonds nécessaires pour couvrir vos achats par carte de crédit.</string>
     <string name="daily_money_q9">Quelles sont les limites de dépenses et comment puis-je les établir?</string>
@@ -262,4 +259,13 @@
     <string name="savings_q5">Je ne cherche pas à atteindre un objectif financier particulier, je veux savoir combien je vais accumuler à une certaine date.</string>
     <string name="daily_money_3">Cette application est intelligente! Lorsque vous dépensez trop, vous ne gagnerez pas d\'argent \"Pour Dépenser\" jusqu\'à ce que vous ayez suffisamment d\'argent réservé pour répondre aux \"besoins\" que vous avez identifiés dans votre BUDGET.</string>
     <string name="over_limit">SUR LA LIMITE</string>
+    <string name="daily_money_q11">Pourquoi toutes mes transactions par carte de crédit n\'apparaissent-elles pas dans l\'onglet PAYER LES CARTE?</string>
+    <string name="daily_money_11">Seuls les achats par carte de crédit apparaîtront dans l\'onglet PAY CC. Toutes transactions qui sont des transferts de fonds vers un autre compte DETTES ou ÉPARGNE peut être remboursée à l\'aide de l\'onglet QUOTIDIEN - DÉPENSES ou de l\'écran TRANSFERT DE FONDS.</string>
+    <string name="transfer_funds">Transfert de Fonds</string>
+    <string name="transfer_from">Transfer From</string>
+    <string name="transfer_to">Transfer To</string>
+    <string name="no_from_item_warning">You must choose an account to make the transfer from.</string>
+    <string name="no_to_item_warning">Vous devez choisir un compte pour effectuer le transfert.</string>
+    <string name="no_amount_warning">You must enter an amount to transfer.</string>
+    <string name="no_inc_warning" translatable="false">Vous devez créer des éléments de revenu dans votre BUDGET pour pouvoir effectuer des entrées.</string>
 </resources>

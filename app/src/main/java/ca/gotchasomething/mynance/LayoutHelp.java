@@ -21,9 +21,9 @@ public class LayoutHelp extends MainNavigation {
     LinearLayout contactUsText, ratingsLayout;
     TextView budgetQ1, budgetA1, budgetQ2, budgetA2, budgetA2A, budgetA2B, budgetA2C, budgetA2D, budgetA2E, budgetA2F, budgetA2G, budgetQ3, budgetA3,
             budgetA3A, budgetA3B, budgetA3C, dailyMoneyQ1, dailyMoneyA1, dailyMoneyQ2, dailyMoneyA2, dailyMoneyQ3, dailyMoneyA3, dailyMoneyQ4, dailyMoneyA4,
-            dailyMoneyQ5, dailyMoneyA5, dailyMoneyA5A, dailyMoneyA5B, dailyMoneyA5C, dailyMoneyQ6, dailyMoneyA6, dailyMoneyA6A, dailyMoneyA6B, dailyMoneyQ7,
+            dailyMoneyQ5, dailyMoneyA5, dailyMoneyQ6, dailyMoneyA6, dailyMoneyA6A, dailyMoneyA6B, dailyMoneyQ7,
             dailyMoneyA7, dailyMoneyA7A, dailyMoneyA7B, dailyMoneyQ8, dailyMoneyA8, dailyMoneyQ9, dailyMoneyA9, dailyMoneyQ10, dailyMoneyA10,
-            debtsQ1, debtsA1, debtsQ2, debtsA2, debtsQ3, debtsA3, debtsQ4, debtsA4, debtsQ5, debtsA5, helpInstructions, savingsQ1, savingsA1, savingsQ2,
+            dailyMoneyQ11, dailyMoneyA11, debtsQ1, debtsA1, debtsQ2, debtsA2, debtsQ3, debtsA3, debtsQ4, debtsA4, debtsQ5, debtsA5, helpInstructions, savingsQ1, savingsA1, savingsQ2,
             savingsA2, savingsQ3, savingsA3, savingsQ4, savingsA4, savingsQ5, savingsA5, setUpQ1, setUpA1, emailText, urlText;
 
     @Override
@@ -75,12 +75,6 @@ public class LayoutHelp extends MainNavigation {
         dailyMoneyQ5.setVisibility(View.GONE);
         dailyMoneyA5 = findViewById(R.id.dailyMoneyA5);
         dailyMoneyA5.setVisibility(View.GONE);
-        dailyMoneyA5A = findViewById(R.id.dailyMoneyA5A);
-        dailyMoneyA5A.setVisibility(View.GONE);
-        dailyMoneyA5B = findViewById(R.id.dailyMoneyA5B);
-        dailyMoneyA5B.setVisibility(View.GONE);
-        dailyMoneyA5C = findViewById(R.id.dailyMoneyA5C);
-        dailyMoneyA5C.setVisibility(View.GONE);
         dailyMoneyQ6 = findViewById(R.id.dailyMoneyQ6);
         dailyMoneyQ6.setVisibility(View.GONE);
         dailyMoneyA6 = findViewById(R.id.dailyMoneyA6);
@@ -109,6 +103,10 @@ public class LayoutHelp extends MainNavigation {
         dailyMoneyQ10.setVisibility(View.GONE);
         dailyMoneyA10 = findViewById(R.id.dailyMoneyA10);
         dailyMoneyA10.setVisibility(View.GONE);
+        dailyMoneyQ11 = findViewById(R.id.dailyMoneyQ11);
+        dailyMoneyQ11.setVisibility(View.GONE);
+        dailyMoneyA11 = findViewById(R.id.dailyMoneyA11);
+        dailyMoneyA11.setVisibility(View.GONE);
 
         upBudgetButton = findViewById(R.id.upBudgetButton);
         upBudgetButton.setVisibility(View.GONE);
@@ -292,9 +290,6 @@ public class LayoutHelp extends MainNavigation {
                 @Override
                 public void onClick(View v) {
                     dailyMoneyA5.setVisibility(View.VISIBLE);
-                    dailyMoneyA5A.setVisibility(View.VISIBLE);
-                    dailyMoneyA5B.setVisibility(View.VISIBLE);
-                    dailyMoneyA5C.setVisibility(View.VISIBLE);
                 }
             });
 
@@ -341,6 +336,14 @@ public class LayoutHelp extends MainNavigation {
                     dailyMoneyA10.setVisibility(View.VISIBLE);
                 }
             });
+
+            dailyMoneyQ11.setVisibility(View.VISIBLE);
+            dailyMoneyQ11.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dailyMoneyA11.setVisibility(View.VISIBLE);
+                }
+            });
         }
     };
 
@@ -360,9 +363,6 @@ public class LayoutHelp extends MainNavigation {
             dailyMoneyA4.setVisibility(View.GONE);
             dailyMoneyQ5.setVisibility(View.GONE);
             dailyMoneyA5.setVisibility(View.GONE);
-            dailyMoneyA5A.setVisibility(View.GONE);
-            dailyMoneyA5B.setVisibility(View.GONE);
-            dailyMoneyA5C.setVisibility(View.GONE);
             dailyMoneyQ6.setVisibility(View.GONE);
             dailyMoneyA6.setVisibility(View.GONE);
             dailyMoneyA6A.setVisibility(View.GONE);

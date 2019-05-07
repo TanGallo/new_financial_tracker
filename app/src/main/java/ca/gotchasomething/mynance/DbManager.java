@@ -33,7 +33,7 @@ public class DbManager extends AppCompatActivity {
     public General general = new General();
     public int balanceDoneCheck = 0, budgetDoneCheck = 0, currentPageId = 0, debtCount = 0, debtsDoneCheck = 0, earliestYear = 0, endIndex = 0, latestYear = 0,
             savingsDoneCheck = 0, startIndex = 0, tourDoneCheck = 0;
-    public Long expenseId, incomeId;
+    public Long debtId, expenseId, incomeId;
     public SQLiteDatabase db;
     public String category = null, startingString = null, subStringResult = null;
 
@@ -273,6 +273,20 @@ public class DbManager extends AppCompatActivity {
     public int getDebtCount() {
         debtCount = getDebts().size();
         return debtCount;
+    }
+
+    public Long findLatestDebtId() {
+        List<Long> debtIds = new ArrayList<>(getDebts().size());
+        for (DebtDb d2 : getDebts()) {
+            debtIds.add(d2.getId());
+        }
+        debtId = null;
+        if (debtIds.size() == 0) {
+            debtId = null;
+        } else {
+            debtId = Collections.max(debtIds);
+        }
+        return debtId;
     }
 
     public List<SavingsDb> getSavings() {

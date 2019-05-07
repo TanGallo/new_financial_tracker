@@ -6,15 +6,16 @@ import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
-import com.google.android.material.tabs.TabLayout;
-
-import java.text.NumberFormat;
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+
+import com.google.android.material.tabs.TabLayout;
+
+import java.text.NumberFormat;
+
 import ca.gotchasomething.mynance.tabFragments.DailyCreditCard;
 import ca.gotchasomething.mynance.tabFragments.DailyMoneyCC;
 import ca.gotchasomething.mynance.tabFragments.DailyMoneyIn;
@@ -31,7 +32,7 @@ public class LayoutDailyMoney extends MainNavigation {
     NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
     String accountBalance2 = null, availableBalance2 = null;
     TabLayout tl;
-    TextView availableAccountText, budgetWarningText, totalAccountText, aLabel, owingLabel, bLabel, a, owing, b;
+    TextView availableAccountText, budgetWarningText, totalAccountText;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -52,17 +53,6 @@ public class LayoutDailyMoney extends MainNavigation {
         dbManager = new DbManager(this);
 
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-
-        aLabel = findViewById(R.id.aLabel);
-        owingLabel = findViewById(R.id.owingLabel);
-        bLabel = findViewById(R.id.bLabel);
-        a = findViewById(R.id.a);
-        owing = findViewById(R.id.owing);
-        b = findViewById(R.id.b);
-        a.setText(String.valueOf(dbManager.retrieveCurrentA()));
-        owing.setText(String.valueOf(dbManager.retrieveCurrentOwingA()));
-        b.setText(String.valueOf(dbManager.retrieveCurrentB()));
-
 
         budgetWarningText = findViewById(R.id.budgetWarningText);
         budgetWarningText.setVisibility(View.GONE);

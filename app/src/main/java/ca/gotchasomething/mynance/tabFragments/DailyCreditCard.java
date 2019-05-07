@@ -3,6 +3,7 @@ package ca.gotchasomething.mynance.tabFragments;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -45,13 +46,14 @@ public class DailyCreditCard extends Fragment {
     CCPaymentsAdapter ccPaymentsAdapter;
     CheckBox ccPaidCheckbox;
     ContentValues currentValue, debtToPayValue, debtToPayValue2, debtToPayValue3, moneyOutValue, moneyOutValue2, moneyOutValue3, moneyOutValue4, updateMoneyOutToPay;
+    Cursor cursor, cursor2;
     Date debtEndD3;
     DbHelper dbHelper, dbHelper2, dbHelper3, dbHelper4, dbHelper5, dbHelper6, dbHelper7, dbHelper8, dbHelper9;
     DbManager dbManager;
     Double amountDue = 0.0, ccAmountD = 0.0, currentChargingDebtAmount = 0.0, currentDebtToPay = 0.0, debtAnnualIncome = 0.0, debtFrequency = 0.0, debtPayments = 0.0,
             debtRate = 0.0, debtAmount = 0.0, newCurrentAccountBalance = 0.0, amountToZero = 0.0, newChargingDebtAmount = 0.0,
             newDebtAmount = 0.0, newDebtToPay = 0.0, moneyOutOwing2 = 0.0, moneyOutB2 = 0.0, newOwingBalance = 0.0, newBBalance = 0.0,
-            debtAmountB = 0.0, newABalance = 0.0, moneyOutAmountN = 0.0, moneyOutA = 0.0, moneyOutOwing = 0.0, moneyOutB = 0.0, amountMissing = 0.0;
+            debtToPay = 0.0, newABalance = 0.0, moneyOutAmountN = 0.0, moneyOutA = 0.0, moneyOutOwing = 0.0, moneyOutB = 0.0, amountMissing = 0.0;
     General general;
     //HashMap debtAmounts;
     int numberOfDaysToPayDebt3 = 0;
@@ -59,7 +61,7 @@ public class DailyCreditCard extends Fragment {
     LinearLayout initialCCLayout;
     ListView ccListView, ccPaymentsList;
     List<Double> totalsDueList;
-    long chargingDebtId, chargingDebtId1, moneyOutId;
+    long chargingDebtId, debtId, number, chargingDebtId1, moneyOutId;
     //Map<Long, Double> pair;
     //MainNavigation main;
     MoneyOutDb moneyOutDb;
@@ -233,25 +235,30 @@ public class DailyCreditCard extends Fragment {
         db9.close();
     }
 
-    public void updateDebts() {
-        for (DebtDb d3 : dbManager.getDebts()) {
-            if (d3.getDebtToPay() > 0) {
-                currentDebtToPay = d3.getDebtToPay();
-                currentChargingDebtAmount = d3.getDebtAmount();
+    /*public void determineNewDebtAmount() {
+        for(DebtDb d : dbManager.getDebts()) {
+            if(d.getDebtToPay() > 0) {
+                debtId = d.getId();
+                currentChargingDebtAmount = d.getDebtAmount();
+                currentDebtToPay = d.getDebtToPay();
                 newDebtAmount = currentChargingDebtAmount - currentDebtToPay;
-
-                dbHelper = new DbHelper(getContext());
-                db = dbHelper.getWritableDatabase();
-                moneyOutValue = new ContentValues();
-                moneyOutValue.put(DbHelper.DEBTAMOUNT, newDebtAmount);
-                db.update(DbHelper.DEBTS_TABLE_NAME, moneyOutValue, DbHelper.DEBTTOPAY + "> 0", null);
-                db.close();
             }
         }
+    }*/
+
+    public void updateDebtRecords() {
+        dbHelper = new DbHelper(getContext());
+        db = dbHelper.getReadableDatabase();
+        db.beginTransaction();
+        cursor = db.rawQuery("SELECT " + DbHelper.DEBTAMOUNT + ", " + DbHelper.DEBTTOPAY + " FROM " + DbHelper.DEBTS_TABLE_NAME + " WHERE " + DbHelper.DEBTTOPAY + " > 0", null);
+            db.execSQL("UPDATE " + DbHelper.DEBTS_TABLE_NAME + " SET " + DbHelper.DEBTAMOUNT + " = " + DbHelper.DEBTAMOUNT + " - " + DbHelper.DEBTTOPAY);
+        cursor.close();
+        db.setTransactionSuccessful();
+        db.endTransaction();
     }
 
     public void updateDebtDates() {
-        for (DebtDb d4 : dbManager.getDebts()) {
+        /*for (DebtDb d4 : dbManager.getDebts()) {
             if (d4.getDebtToPay() > 0) {
                 debtAmount = d4.getDebtAmount();
                 debtRate = d4.getDebtRate();
@@ -273,7 +280,7 @@ public class DailyCreditCard extends Fragment {
                 db8.update(DbHelper.DEBTS_TABLE_NAME, moneyOutValue2, DbHelper.DEBTTOPAY + "> 0", null);
                 db8.close();
             }
-        }
+        }*/
     }
 
     /*public void refundChargingDebtRecord() {
@@ -379,8 +386,8 @@ public class DailyCreditCard extends Fragment {
 
     public void finishTransaction() {
         updateAllBalances();
-        updateDebts();
-        updateDebtDates();
+        updateDebtRecords();
+        //updateDebtDates();
         //chargeChargingDebtRecord();
         dbManager.updatePaid();
         ccAdapter.notifyDataSetChanged();

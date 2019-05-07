@@ -27,6 +27,7 @@
 
 
         <activity android:name="ca.gotchasomething.mynance.LayoutDebt"/>
+        <activity android:name="ca.gotchasomething.mynance.LayoutTransfers"/>
         <activity android:name="ca.gotchasomething.mynance.AddDebt"/>
         <activity android:name="ca.gotchasomething.mynance.AddSavings"/>
         <activity android:name="ca.gotchasomething.mynance.LayoutDailyMoney"/>
