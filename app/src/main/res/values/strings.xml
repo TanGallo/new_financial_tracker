@@ -119,15 +119,15 @@
     <string name="enter_exp_cat">Enter an expense category</string>
     <string name="enter_income_cat">Enter an income category</string>
     <string name="enter_int_frequency">How often is the interest compounded?</string>
-    <string name="enter_limit">What is the maximum you could borrow (or the starting amount of the loan)?</string>
+    <string name="enter_limit">If this is a credit card, what is the card\'s limit? (if it\'s not a credit card, enter 0)</string>
     <string name="enter_payments">How much are your payments?</string>
     <string name="enter_rate">What is the interest rate being charged?</string>
     <string name="enter_savings">Enter savings</string>
-    <string name="enter_savings_amount">What is the current balance?</string>
+    <string name="enter_savings_amount">How much do you already have saved for this?</string>
     <string name="enter_savings_cat">What are you saving for?</string>
     <string name="enter_savings_goal">What is the total amount you want to save?</string>
-    <string name="enter_savings_payments">How much are you contributing?</string>
-    <string name="enter_savings_rate">What is the annual interest rate being earned?</string>
+    <string name="enter_savings_payments">How much money will you regularly be putting towards this?</string>
+    <string name="enter_savings_rate">What is the annual interest rate being earned (if any)?</string>
     <string name="expenses">Expenses:</string>
     <string name="feb">February</string>
     <string name="finish_budget">Finish budget</string>
@@ -144,7 +144,7 @@
     <string name="hide">hide</string>
     <string name="how_often">How often?</string>
     <string name="income">Income:</string>
-    <string name="income_available">Income still available for budgeting:</string>
+    <string name="income_available">Income still available for budgeting for the year:</string>
     <string name="jan">January</string>
     <string name="jul">July</string>
     <string name="jun">June</string>
@@ -245,7 +245,7 @@
     <string name="starting_balance_amount">How much money is in your bank account today?</string>
     <string name="starting_balance_warning">*if you need to enter a negative number, some keyboards require you to push the decimal button twice in order to get a minus sign in front of your number</string>
     <string name="sure">sure!</string>
-    <string name="too_far">Too far in the future</string>
+    <string name="too_far">Goal will not be achieved within your lifetime</string>
     <string name="total">Total:</string>
     <string name="total_budget">Total Budget</string>
     <string name="total_expenses">Total Expenses:</string>
@@ -277,4 +277,18 @@
     <string name="no_from_item_warning">You must choose an account to make the transfer from.</string>
     <string name="no_to_item_warning">You must choose an account to make the transfer to.</string>
     <string name="no_amount_warning">You must enter an amount to transfer.</string>
+    <string name="percent_sign">%</string>
+    <string name="click_here_savings2">Click here to add a new savings item</string>
+    <string name="click_here_debts2">Click here to enter a new debts item</string>
+    <string name="save_add_income">Save and add another income category</string>
+    <string name="save_done_income">Save and Done adding income categories</string>
+    <string name="click_here_begin">Click here to begin</string>
+    <string name="enter_income">Enter income</string>
+    <string name="previous">previous</string>
+    <string name="income_categories">Income Categories:</string>
+    <string name="first_thing_first">First thing\'s first&#8230;</string>
+    <string name="bare_minimum">MYnance is a real-world app, so no tedious budgeting here, only the bare minimum needed to make sure you\'re not over-spending or racking up debt.</string>
+    <string name="lets_get_real">Let\'s get real!</string>
+    <string name="need_income">You\'ll need to know how much money you earn in a typical year, so set up each of your sources of income separately in the following screen.</string>
+    <string name="done_income_categories">Done entering income categories</string>
 </resources>

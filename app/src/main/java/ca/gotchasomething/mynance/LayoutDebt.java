@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.database.CursorIndexOutOfBoundsException;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -45,7 +46,7 @@ import ca.gotchasomething.mynance.data.SetUpDb;
 
 public class LayoutDebt extends MainNavigation {
 
-    Button cancelDebtButton, cancelDeleteDebtButton, continueDeleteDebtButton, debtsSetUpTimeButton, debtsSetUpHelpButton, doneDebtsSetUpButton,
+    Button addNewDebtButton, cancelDebtButton, cancelDeleteDebtButton, continueDeleteDebtButton, debtsSetUpTimeButton, debtsSetUpHelpButton, doneDebtsSetUpButton,
             saveDebtButton, updateDebtButton;
     ContentValues values, values2, values3, values4, values5;
     Date latestDateD;
@@ -59,7 +60,7 @@ public class LayoutDebt extends MainNavigation {
     EditText debtAmountEntry, debtLimitEntry, debtNameEntry, debtPaymentsEntry, debtPercentEntry;
     FloatingActionButton addDebtButton;
     General general;
-    int balanceDone = 0, budgetDone = 0, debtsDone = 0, savingsDone = 0, tourDone = 0;
+    int balanceDone = 0, budgetDone = 0, debtsDone = 0, incomeDone = 0, savingsDone = 0, tourDone = 0;
     Intent addNewDebt, backToDebtScreen, backToSetUp;
     LinearLayout toastLayout;
     ListView debtListView;
@@ -123,13 +124,18 @@ public class LayoutDebt extends MainNavigation {
         continueDeleteDebtButton.setVisibility(View.GONE);
 
         debtListView = findViewById(R.id.debtListView);
+        addNewDebtButton = findViewById(R.id.addNewDebtButton);
+        addNewDebtButton.setOnClickListener(onClickAddNewDebtButton);
         addDebtButton = findViewById(R.id.addDebtButton);
-        addDebtButton.setOnClickListener(onClickAddDebtButton);
+        addDebtButton.setVisibility(View.GONE);
 
         doneDebtsSetUpButton = findViewById(R.id.doneDebtsSetUpButton);
         doneDebtsSetUpButton.setOnClickListener(onClickDoneDebtsSetUpButton);
 
         if (dbManager.debtSetUpCheck() > 0) {
+            addNewDebtButton.setVisibility(View.GONE);
+            addDebtButton.setVisibility(View.VISIBLE);
+            addDebtButton.setOnClickListener(onClickAddDebtButton);
             doneDebtsSetUpButton.setVisibility(View.GONE);
             emptyDebtsText3.setVisibility(View.GONE);
             debtsSetUpNoTime.setVisibility(View.GONE);
@@ -166,7 +172,7 @@ public class LayoutDebt extends MainNavigation {
             balanceAmount = 0.0;
             tourDone = 0;
 
-            setUpDb = new SetUpDb(debtsDone, savingsDone, budgetDone, balanceDone, balanceAmount, tourDone, 0);
+            setUpDb = new SetUpDb(incomeDone, debtsDone, savingsDone, budgetDone, balanceDone, balanceAmount, tourDone, 0);
             dbManager.addSetUp(setUpDb);
 
             toast = Toast.makeText(getApplicationContext(), R.string.edit_debts_message, Toast.LENGTH_LONG);
@@ -434,6 +440,14 @@ public class LayoutDebt extends MainNavigation {
                 holder.debtListFreeDateLabel.setVisibility(View.GONE);
             }
             holder.debtListFreeDate.setText(debtEnd);
+            if (debtEnd.equals(getString(R.string.debt_paid))) {
+                holder.debtListFreeDate.setTextColor(Color.parseColor("#03ac13"));
+            } else if(debtEnd.equals(getString(R.string.too_far))) {
+                holder.debtListFreeDate.setTextColor(Color.parseColor("#ffff4444"));
+            } else {
+                holder.debtListFreeDate.setTextColor(Color.parseColor("#303F9F"));
+                holder.debtListFreeDateLabel.setTextColor(Color.parseColor("#303F9F"));
+            }
 
             incRefKeyD = debts.get(position).getIncRefKeyD();
 
@@ -512,10 +526,16 @@ public class LayoutDebt extends MainNavigation {
 
                     debtEnd = debtDb.getDebtEnd();
                     debtDateResult.setText(debtEnd);
-                    if (debtEnd.equals(getString(R.string.debt_paid)) || debtEnd.equals(getString(R.string.too_far))) {
+                    if (debtEnd.equals(getString(R.string.debt_paid))) {
                         debtDateResultLabel.setVisibility(View.GONE);
+                        debtDateResult.setTextColor(Color.parseColor("#03ac13"));
+                    } else if(debtEnd.equals(getString(R.string.too_far))) {
+                        debtDateResultLabel.setVisibility(View.GONE);
+                        debtDateResult.setTextColor(Color.parseColor("#ffff4444"));
                     } else {
                         debtDateResultLabel.setVisibility(View.VISIBLE);
+                        debtDateResult.setTextColor(Color.parseColor("#303F9F"));
+                        debtDateResultLabel.setTextColor(Color.parseColor("#303F9F"));
                     }
 
                     //set radio button selections from data
@@ -712,6 +732,16 @@ public class LayoutDebt extends MainNavigation {
         ImageButton debtDeleted;
         ImageButton debtEdit;
     }
+
+    View.OnClickListener onClickAddNewDebtButton = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+
+            addNewDebt = new Intent(LayoutDebt.this, AddDebt.class);
+            addNewDebt.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+            startActivity(addNewDebt);
+        }
+    };
 
     View.OnClickListener onClickAddDebtButton = new View.OnClickListener() {
         @Override

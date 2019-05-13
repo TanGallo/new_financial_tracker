@@ -1,6 +1,7 @@
 package ca.gotchasomething.mynance;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+
 import ca.gotchasomething.mynance.data.ExpenseBudgetDb;
 import ca.gotchasomething.mynance.data.IncomeBudgetDb;
 import ca.gotchasomething.mynance.data.SavingsDb;
@@ -188,10 +190,16 @@ public class AddSavings extends LayoutSavings {
                 savingsAnnualIncome,
                 getString(R.string.goal_achieved),
                 getString(R.string.too_far));
-        if (savingsDate2.equals(getString(R.string.goal_achieved)) || savingsDate2.equals(getString(R.string.too_far))) {
+        if (savingsDate2.equals(getString(R.string.goal_achieved))) {
             savingsDateResultLabel.setVisibility(View.GONE);
+            savingsDateResult.setTextColor(Color.parseColor("#03ac13"));
+        } else if(savingsDate2.equals(getString(R.string.too_far))) {
+            savingsDateResultLabel.setVisibility(View.GONE);
+            savingsDateResult.setTextColor(Color.parseColor("#ffff4444"));
         } else {
             savingsDateResultLabel.setVisibility(View.VISIBLE);
+            savingsDateResult.setTextColor(Color.parseColor("#303F9F"));
+            savingsDateResultLabel.setTextColor(Color.parseColor("#303F9F"));
         }
     }
 

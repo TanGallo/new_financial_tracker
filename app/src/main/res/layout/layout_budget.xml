@@ -100,7 +100,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:text="@string/income_available"
-                    android:textColor="@color/colorPrimaryDark"
+                    android:textColor="@color/colorGreen"
                     android:textSize="16sp" />
 
                 <TextView
@@ -108,7 +108,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:textColor="@color/colorPrimaryDark"
+                    android:textColor="@color/colorGreen"
                     android:textSize="16sp" />
 
                 <TextView

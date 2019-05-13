@@ -25,10 +25,10 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="10dp"
-                    android:text="@string/enter_income_cat"
                     android:labelFor="@id/budgetIncomeCategory"
-                    android:textSize="16sp"
-                    android:textColor="@color/colorPrimaryDark"/>
+                    android:text="@string/enter_income_cat"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="16sp" />
 
                 <EditText
                     android:id="@+id/budgetIncomeCategory"
@@ -36,8 +36,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:inputType="text"
-                    android:textSize="18sp"
                     android:textColor="@color/colorPrimaryDark"
+                    android:textSize="18sp"
                     tools:ignore="Autofill" />
 
                 <TextView
@@ -45,10 +45,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
-                    android:text="@string/amount"
                     android:labelFor="@id/budgetIncomeAmount"
-                    android:textSize="16sp"
-                    android:textColor="@color/colorPrimaryDark"/>
+                    android:text="@string/amount"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="16sp" />
 
                 <EditText
                     android:id="@+id/budgetIncomeAmount"
@@ -56,8 +56,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:inputType="numberDecimal"
-                    android:textSize="18sp"
                     android:textColor="@color/colorPrimaryDark"
+                    android:textSize="18sp"
                     tools:ignore="Autofill" />
 
             </LinearLayout>
@@ -67,10 +67,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:text="@string/how_often"
                 android:labelFor="@id/budgetIncomeFrequencyRadioGroup"
-                android:textSize="16sp"
-                android:textColor="@color/colorPrimaryDark"/>
+                android:text="@string/how_often"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="16sp" />
 
             <RadioGroup
                 android:id="@+id/budgetIncomeFrequencyRadioGroup"
@@ -83,77 +83,66 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/weekly"
-                    android:textSize="15sp"
-                    android:textColor="@color/colorPrimaryDark"/>
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="15sp" />
 
                 <RadioButton
                     android:id="@+id/budgetIncomeBiWeeklyRadioButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/bi_weekly"
-                    android:textSize="15sp"
-                    android:textColor="@color/colorPrimaryDark"/>
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="15sp" />
 
                 <RadioButton
                     android:id="@+id/budgetIncomeBiMonthlyRadioButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/bi_monthly"
-                    android:textSize="15sp"
-                    android:textColor="@color/colorPrimaryDark"/>
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="15sp" />
 
                 <RadioButton
                     android:id="@+id/budgetIncomeMonthlyRadioButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/monthly"
-                    android:textSize="15sp"
-                    android:textColor="@color/colorPrimaryDark"/>
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="15sp" />
 
                 <RadioButton
                     android:id="@+id/budgetIncomeBiAnnuallyRadioButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/bi_annually"
-                    android:textSize="15sp"
-                    android:textColor="@color/colorPrimaryDark"/>
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="15sp" />
 
                 <RadioButton
                     android:id="@+id/budgetIncomeAnnuallyRadioButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/yearly"
-                    android:textSize="15sp"
-                    android:textColor="@color/colorPrimaryDark"/>
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="15sp" />
 
             </RadioGroup>
 
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <Button
-                    android:id="@+id/budgetCancelIncomeButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:layout_margin="10dp"
-                    android:gravity="center"
-                    android:contentDescription="@string/cancel"
-                    android:text="@string/cancel"
-                    android:background="@drawable/entry_box"
-                    android:textColor="@color/colorPrimaryDark"/>
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
                 <Button
                     android:id="@+id/budgetAddIncomeButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
+                    android:layout_gravity="end"
                     android:layout_margin="10dp"
-                    android:gravity="center"
-                    android:contentDescription="@string/add"
-                    android:text="@string/add"
                     android:background="@drawable/entry_box"
+                    android:contentDescription="@string/save"
+                    android:gravity="center"
+                    android:text="@string/save"
                     android:textColor="@color/colorPrimaryDark"
                     tools:ignore="RelativeOverlap" />
 
@@ -161,16 +150,28 @@
                     android:id="@+id/budgetUpdateIncomeButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
+                    android:layout_gravity="end"
                     android:layout_margin="10dp"
-                    android:gravity="center"
-                    android:contentDescription="@string/update"
-                    android:text="@string/update"
                     android:background="@drawable/entry_box"
+                    android:contentDescription="@string/update"
+                    android:gravity="center"
+                    android:text="@string/update"
                     android:textColor="@color/colorPrimaryDark"
                     tools:ignore="RelativeOverlap" />
 
-            </RelativeLayout>
+                <Button
+                    android:id="@+id/budgetCancelIncomeButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/entry_box"
+                    android:contentDescription="@string/cancel"
+                    android:gravity="center"
+                    android:text="@string/cancel"
+                    android:textColor="@color/colorPrimaryDark" />
+
+            </LinearLayout>
 
         </LinearLayout>
 

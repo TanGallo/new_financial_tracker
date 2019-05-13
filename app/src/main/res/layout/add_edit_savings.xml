@@ -173,6 +173,7 @@
                 android:inputType="numberDecimal"
                 android:textSize="18sp"
                 android:textColor="@color/colorPrimaryDark"
+                android:hint="@string/percent_sign"
                 tools:ignore="Autofill" />
 
             <LinearLayout

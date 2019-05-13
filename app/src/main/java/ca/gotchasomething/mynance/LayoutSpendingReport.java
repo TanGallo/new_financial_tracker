@@ -13,13 +13,14 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBarDrawerToggle;
 import ca.gotchasomething.mynance.data.ExpenseBudgetDb;
 import ca.gotchasomething.mynance.data.MoneyOutDb;
 
@@ -189,6 +190,7 @@ public class LayoutSpendingReport extends MainNavigation {
                     }
                 }
             }
+            totalSpentAll = 0.0;
             if (totalSpentList.size() == 0) {
                 totalSpentAll = 0.0;
             } else {

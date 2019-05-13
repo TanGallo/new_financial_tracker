@@ -2,6 +2,7 @@ package ca.gotchasomething.mynance.data;
 //Db description
 
 public class SetUpDb {
+    private int incomeDone;
     private int debtsDone;
     private int savingsDone;
     private int budgetDone;
@@ -11,6 +12,7 @@ public class SetUpDb {
     private long id;
 
     public SetUpDb(
+            int incomeDone,
             int debtsDone,
             int savingsDone,
             int budgetDone,
@@ -18,6 +20,7 @@ public class SetUpDb {
             Double balanceAmount,
             int tourDone,
             long id) {
+        this.incomeDone = incomeDone;
         this.debtsDone = debtsDone;
         this.savingsDone = savingsDone;
         this.budgetDone = budgetDone;
@@ -26,6 +29,9 @@ public class SetUpDb {
         this.tourDone = tourDone;
         this.id = id;
     }
+
+    public int getIncomeDone() { return incomeDone; }
+    public void setIncomeDone(int incomeDone) { this.incomeDone = incomeDone; }
 
     public int getDebtsDone() { return debtsDone; }
     public void setDebtsDone(int debtsDone) { this.debtsDone = debtsDone; }

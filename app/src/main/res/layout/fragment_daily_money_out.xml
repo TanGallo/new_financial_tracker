@@ -198,7 +198,7 @@
                         android:layout_margin="10dp"
                         android:text="@string/payment_not_possible_B"
                         android:textSize="16sp"
-                        android:textColor="@color/colorPrimaryDark"/>
+                        android:textColor="@color/red"/>
 
                     <TextView
                         android:id="@+id/paymentNotPossibleAText"
@@ -207,7 +207,7 @@
                         android:layout_margin="10dp"
                         android:text="@string/payment_not_possible_A"
                         android:textSize="16sp"
-                        android:textColor="@color/colorPrimaryDark"/>
+                        android:textColor="@color/red"/>
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -220,7 +220,7 @@
                         android:layout_margin="10dp"
                         android:text="@string/continue_anyway"
                         android:textSize="16sp"
-                        android:textColor="@color/colorPrimaryDark"
+                        android:textColor="@color/red"
                         tools:ignore="RelativeOverlap" />
 
                     <Button

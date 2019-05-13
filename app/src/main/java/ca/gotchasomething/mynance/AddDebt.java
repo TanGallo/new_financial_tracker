@@ -1,6 +1,7 @@
 package ca.gotchasomething.mynance;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -158,6 +159,14 @@ public class AddDebt extends LayoutDebt {
                 debtAnnualIncome,
                 getString(R.string.debt_paid),
                 getString(R.string.too_far));
+        if (debtEnd2.equals(getString(R.string.debt_paid))) {
+            debtDateResult.setTextColor(Color.parseColor("#03ac13"));
+        } else if(debtEnd2.equals(getString(R.string.too_far))) {
+            debtDateResult.setTextColor(Color.parseColor("#ffff4444"));
+        } else {
+            debtDateResult.setTextColor(Color.parseColor("#303F9F"));
+            debtDateResultLabel.setTextColor(Color.parseColor("#303F9F"));
+        }
         general.whatToShowDebt(getString(R.string.debt_paid), getString(R.string.too_far), debtDateResultLabel, debtDateResult);
     }
 
@@ -193,7 +202,7 @@ public class AddDebt extends LayoutDebt {
 
             debtEndResult();
 
-            if (debtName != null && debtLimit != 0.0) {
+            if (debtName != null) {
 
                 incomeName = debtName;
                 incomeAmount = 0.0;

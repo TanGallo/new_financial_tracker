@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.database.CursorIndexOutOfBoundsException;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -24,22 +25,23 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.text.NumberFormat;
 import java.util.List;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBarDrawerToggle;
 import ca.gotchasomething.mynance.data.ExpenseBudgetDb;
 import ca.gotchasomething.mynance.data.SavingsDb;
 import ca.gotchasomething.mynance.data.SetUpDb;
 
 public class LayoutSavings extends MainNavigation {
 
-    Button cancelDeleteSavingsButton, continueDeleteSavingsButton, cancelSavingsButton, doneSavingsSetUpButton, saveSavingsButton, savingsSetUpTimeButton,
-            savingsSetUpHelpButton, updateSavingsButton;
+    Button addNewSavingsButton, cancelDeleteSavingsButton, continueDeleteSavingsButton, cancelSavingsButton, doneSavingsSetUpButton, saveSavingsButton,
+            savingsSetUpTimeButton, savingsSetUpHelpButton, updateSavingsButton;
     ContentValues values, values2, values3, values4;
     DbHelper dbHelper;
     DbManager dbManager;
@@ -50,7 +52,7 @@ public class LayoutSavings extends MainNavigation {
     EditText savingsAmountEntry, savingsGoalAmountEntry, savingsNameEntry, savingsPaymentsEntry, savingsPercentEntry;
     FloatingActionButton addSavingsButton;
     General general;
-    int balanceDone = 0, budgetDone = 0, debtsDone = 0, savingsDone = 0, tourDone = 0;
+    int balanceDone = 0, budgetDone = 0, debtsDone = 0, incomeDone = 0, savingsDone = 0, tourDone = 0;
     Intent addNewSavings, backToSavingsScreen, backToSetUp;
     LinearLayout toastLayout;
     ListView savingsListView;
@@ -113,13 +115,18 @@ public class LayoutSavings extends MainNavigation {
         continueDeleteSavingsButton.setVisibility(View.GONE);
 
         savingsListView = findViewById(R.id.savingsListView);
+        addNewSavingsButton = findViewById(R.id.addNewSavingsButton);
+        addNewSavingsButton.setOnClickListener(onClickAddNewSavingsButton);
         addSavingsButton = findViewById(R.id.addSavingsButton);
-        addSavingsButton.setOnClickListener(onClickAddSavingsButton);
+        addSavingsButton.setVisibility(View.GONE);
 
         doneSavingsSetUpButton = findViewById(R.id.doneSavingsSetUpButton);
         doneSavingsSetUpButton.setOnClickListener(onClickDoneSavingsSetUpButton);
 
         if (dbManager.savingsSetUpCheck() > 0) {
+            addNewSavingsButton.setVisibility(View.GONE);
+            addSavingsButton.setVisibility(View.VISIBLE);
+            addSavingsButton.setOnClickListener(onClickAddSavingsButton);
             doneSavingsSetUpButton.setVisibility(View.GONE);
             emptySavingsText3.setVisibility(View.GONE);
             savingsSetUpNoTime.setVisibility(View.GONE);
@@ -149,7 +156,7 @@ public class LayoutSavings extends MainNavigation {
         public void onClick(View v) {
             savingsDone = 1;
 
-            setUpDb = new SetUpDb(debtsDone, savingsDone, budgetDone, balanceDone, balanceAmount, tourDone, 0);
+            setUpDb = new SetUpDb(incomeDone, debtsDone, savingsDone, budgetDone, balanceDone, balanceAmount, tourDone, 0);
             dbManager.addSetUp(setUpDb);
 
             toast = Toast.makeText(getApplicationContext(), R.string.edit_savings_message, Toast.LENGTH_LONG);
@@ -305,10 +312,16 @@ public class LayoutSavings extends MainNavigation {
                 savingsAnnualIncome,
                 getString(R.string.goal_achieved),
                 getString(R.string.too_far));
-        if (savingsDate2.equals(getString(R.string.goal_achieved)) || savingsDate2.equals(getString(R.string.too_far))) {
+        if (savingsDate2.equals(getString(R.string.goal_achieved))) {
             savingsDateResultLabel.setVisibility(View.GONE);
+            savingsDateResult.setTextColor(Color.parseColor("#03ac13"));
+        } else if(savingsDate2.equals(getString(R.string.too_far))) {
+            savingsDateResultLabel.setVisibility(View.GONE);
+            savingsDateResult.setTextColor(Color.parseColor("#ffff4444"));
         } else {
             savingsDateResultLabel.setVisibility(View.VISIBLE);
+            savingsDateResult.setTextColor(Color.parseColor("#303F9F"));
+            savingsDateResultLabel.setTextColor(Color.parseColor("#303F9F"));
         }
     }
 
@@ -414,6 +427,14 @@ public class LayoutSavings extends MainNavigation {
             } else {
                 holder.savingsListDateLabel.setVisibility(View.GONE);
             }
+            if (savingsDate.equals(getString(R.string.goal_achieved))) {
+                holder.savingsListDate.setTextColor(Color.parseColor("#03ac13"));
+            } else if(savingsDate.equals(getString(R.string.too_far))) {
+                holder.savingsListDate.setTextColor(Color.parseColor("#ffff4444"));
+            } else {
+                holder.savingsListDate.setTextColor(Color.parseColor("#303F9F"));
+                holder.savingsListDateLabel.setTextColor(Color.parseColor("#303F9F"));
+            }
 
             //retrieve savingsAmount & format as currency
             try {
@@ -503,10 +524,16 @@ public class LayoutSavings extends MainNavigation {
 
                     savingsDate = savingsDb.getSavingsDate();
                     savingsDateResult.setText(savingsDate);
-                    if (savingsDate.equals(getString(R.string.goal_achieved)) || savingsDate.equals(getString(R.string.too_far))) {
+                    if (savingsDate2.equals(getString(R.string.goal_achieved))) {
                         savingsDateResultLabel.setVisibility(View.GONE);
+                        savingsDateResult.setTextColor(Color.parseColor("#03ac13"));
+                    } else if(savingsDate2.equals(getString(R.string.too_far))) {
+                        savingsDateResultLabel.setVisibility(View.GONE);
+                        savingsDateResult.setTextColor(Color.parseColor("#ffff4444"));
                     } else {
                         savingsDateResultLabel.setVisibility(View.VISIBLE);
+                        savingsDateResult.setTextColor(Color.parseColor("#303F9F"));
+                        savingsDateResultLabel.setTextColor(Color.parseColor("#303F9F"));
                     }
 
                     //set radio button selections from data
@@ -706,6 +733,16 @@ public class LayoutSavings extends MainNavigation {
         ImageButton savingsDeleted;
         ImageButton savingsEdit;
     }
+
+    View.OnClickListener onClickAddNewSavingsButton = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+
+            addNewSavings = new Intent(LayoutSavings.this, AddSavings.class);
+            addNewSavings.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+            startActivity(addNewSavings);
+        }
+    };
 
     View.OnClickListener onClickAddSavingsButton = new View.OnClickListener() {
         @Override

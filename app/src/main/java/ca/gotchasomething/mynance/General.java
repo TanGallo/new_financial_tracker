@@ -3,14 +3,14 @@ package ca.gotchasomething.mynance;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-
-import androidx.appcompat.app.AppCompatActivity;
 
 public class General extends AppCompatActivity {
 
@@ -187,7 +187,7 @@ public class General extends AppCompatActivity {
 
         if ((dbl3 * dbl4) == dbl5 || numberOfYearsToPayDebt.isNaN()) { //if annual income = annual payments then too far
             debtEnd = str2;
-        } else if (dbl1 <= 0 || numberOfDaysToPayDebt == 0) { //if amount owing is <= 0 or number of days is 0 then debt paid
+        } else if(dbl1 <= 0 || numberOfDaysToPayDebt == 0) { //if amount owing is <= 0 or number of days is 0 then debt paid
             debtEnd = str1;
         } else if (numberOfDaysToPayDebt > Integer.MAX_VALUE || numberOfDaysToPayDebt < 0) { //if number of days has too many digits or is < 0 then too far
             debtEnd = str2;

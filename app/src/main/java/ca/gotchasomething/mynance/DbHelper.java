@@ -80,6 +80,7 @@ public class DbHelper extends SQLiteOpenHelper {
     public static final String EXPREFKEYMO = "expRefKeyMO";
 
     public static final String SET_UP_TABLE_NAME = "setUp";
+    public static final String INCOMEDONE = "incomeDone";
     public static final String DEBTSDONE = "debtsDone";
     public static final String SAVINGSDONE = "savingsDone";
     public static final String BUDGETDONE = "budgetDone";
@@ -182,6 +183,7 @@ public class DbHelper extends SQLiteOpenHelper {
 
     private static final String createSetUpQuery = "CREATE TABLE " + SET_UP_TABLE_NAME +
             " (_id INTEGER PRIMARY KEY," +
+            " incomeDone INTEGER," +
             " debtsDone INTEGER," +
             " savingsDone INTEGER," +
             " budgetDone INTEGER," +

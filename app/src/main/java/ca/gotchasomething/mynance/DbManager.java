@@ -31,7 +31,8 @@ public class DbManager extends AppCompatActivity {
             totalCCPaymentDue = 0.0, totalCCPaymentBDue = 0.0, totalDebt = 0.0, totalExpenses = 0.0, totalIncome = 0.0, totalSavings = 0.0, currentA = 0.0,
             currentOwingA = 0.0, totalAPortion = 0.0, totalOwingPortion = 0.0, totalBPortion = 0.0;
     public General general = new General();
-    public int balanceDoneCheck = 0, budgetDoneCheck = 0, currentPageId = 0, debtCount = 0, debtsDoneCheck = 0, earliestYear = 0, endIndex = 0, latestYear = 0,
+    public int balanceDoneCheck = 0, budgetDoneCheck = 0, currentPageId = 0, debtCount = 0, debtsDoneCheck = 0, earliestYear = 0, endIndex = 0, incomeDoneCheck = 0,
+            latestYear = 0,
             savingsDoneCheck = 0, startIndex = 0, tourDoneCheck = 0;
     public Long debtId, expenseId, incomeId;
     public SQLiteDatabase db;
@@ -48,6 +49,7 @@ public class DbManager extends AppCompatActivity {
         if (cursor.moveToFirst()) {
             while (!cursor.isAfterLast()) {
                 SetUpDb setUps = new SetUpDb(
+                        cursor.getInt(cursor.getColumnIndex(DbHelper.INCOMEDONE)),
                         cursor.getInt(cursor.getColumnIndex(DbHelper.DEBTSDONE)),
                         cursor.getInt(cursor.getColumnIndex(DbHelper.SAVINGSDONE)),
                         cursor.getInt(cursor.getColumnIndex(DbHelper.BUDGETDONE)),
@@ -66,6 +68,7 @@ public class DbManager extends AppCompatActivity {
 
     public void addSetUp(SetUpDb setUp) {
         newSetUp = new ContentValues();
+        newSetUp.put(DbHelper.INCOMEDONE, setUp.getIncomeDone());
         newSetUp.put(DbHelper.DEBTSDONE, setUp.getDebtsDone());
         newSetUp.put(DbHelper.SAVINGSDONE, setUp.getSavingsDone());
         newSetUp.put(DbHelper.BUDGETDONE, setUp.getBudgetDone());
@@ -78,6 +81,7 @@ public class DbManager extends AppCompatActivity {
 
     public void updateSetUp(SetUpDb setUp) {
         updateSetUp = new ContentValues();
+        updateSetUp.put(DbHelper.INCOMEDONE, setUp.getIncomeDone());
         updateSetUp.put(DbHelper.DEBTSDONE, setUp.getDebtsDone());
         updateSetUp.put(DbHelper.SAVINGSDONE, setUp.getSavingsDone());
         updateSetUp.put(DbHelper.BUDGETDONE, setUp.getBudgetDone());
@@ -168,6 +172,20 @@ public class DbManager extends AppCompatActivity {
             savingsDoneCheck = Collections.max(savingsDoneList);
         }
         return savingsDoneCheck;
+    }
+
+    public int incomeSetUpCheck() {
+        List<Integer> incomeDoneList = new ArrayList<>(getSetUp().size());
+        for (SetUpDb s : getSetUp()) {
+            incomeDoneList.add(s.getIncomeDone());
+        }
+        incomeDoneCheck = 0;
+        if (incomeDoneList.size() == 0) {
+            incomeDoneCheck = 0;
+        } else {
+            incomeDoneCheck = Collections.max(incomeDoneList);
+        }
+        return incomeDoneCheck;
     }
 
     public int debtSetUpCheck() {

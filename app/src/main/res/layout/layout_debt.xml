@@ -88,12 +88,23 @@
 
                 </LinearLayout>
 
+                <Button
+                    android:id="@+id/addNewDebtButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/entry_box"
+                    android:contentDescription="@string/enter_debts"
+                    android:text="@string/click_here_debts2"
+                    android:textColor="@color/colorAccent" />
+
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
                     android:id="@+id/addDebtButton"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:layout_gravity="end"
-                    android:layout_marginEnd="10dp"
+                    android:layout_gravity="start"
+                    android:layout_marginStart="10dp"
                     android:contentDescription="@string/add"
                     android:foreground="@drawable/ic_add_white_24dp"
                     android:scaleType="fitCenter"
@@ -103,7 +114,7 @@
                     android:id="@+id/doneDebtsSetUpButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="end"
+                    android:layout_gravity="start"
                     android:layout_margin="10dp"
                     android:background="@drawable/entry_box"
                     android:contentDescription="@string/done_debts"

@@ -8,35 +8,38 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+
 import java.sql.Timestamp;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBarDrawerToggle;
+
 import ca.gotchasomething.mynance.data.CurrentDb;
 import ca.gotchasomething.mynance.data.MoneyInDb;
 import ca.gotchasomething.mynance.data.SetUpDb;
 
 public class LayoutSetUp extends MainNavigation {
 
-    Button setUpBudgetButton, setUpDebtsButton, setUpSavingsButton;
-    CheckBox setUpAccountCheckbox, setUpBudgetCheckbox, setUpDebtsCheckbox, setUpSavingsCheckbox, setUpTourCheckbox;
+    Button setUpIncomeButton, setUpBudgetButton, setUpDebtsButton, setUpSavingsButton;
+    CheckBox setUpIncomeCheckbox, setUpAccountCheckbox, setUpBudgetCheckbox, setUpDebtsCheckbox, setUpSavingsCheckbox, setUpTourCheckbox;
     CurrentDb currentDb;
     Date moneyInDate;
     DbManager dbManager;
     Double balanceAmount = 0.0, currentAccount = 0.0, currentB = 0.0, currentA = 0.0, currentOwingA = 0.0, moneyInAmount = 0.0,
             moneyInA = 0.0, moneyInOwing = 0.0, moneyInB = 0.0;
     EditText setUpAccountAmount;
-    int balanceDone = 0, budgetDone = 0, currentPageId = 0, debtsDone = 0, savingsDone = 0, tourDone = 0;
-    Intent setUpBudget, setUpDebts, setUpSavings, toMainActivity;
+    int balanceDone = 0, budgetDone = 0, currentPageId = 0, debtsDone = 0, incomeDone = 0, savingsDone = 0, tourDone = 0;
+    Intent setUpIncome, setUpBudget, setUpDebts, setUpSavings, toMainActivity;
     long incRefKeyMI;
     MoneyInDb moneyInDb;
     NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
     SetUpDb setUpDb;
     SimpleDateFormat moneyInSDF;
     String startingBalance2 = null, startingBalanceS = null, moneyInCat = null, moneyInCreatedOn = null;
-    TextView almostDone, setUpAccountAmountLabel, setUpAccountAmountLabel2, setUpAccountAmountLabel3, setUpAccountAmountLabel4, setUpBudgetLabel,
+    TextView almostDone, setUpIncomeLabel, setUpAccountAmountLabel, setUpAccountAmountLabel2, setUpAccountAmountLabel3, setUpAccountAmountLabel4, setUpBudgetLabel,
             setUpDebtsLabel, setUpGotItLabel, setUpSavingsLabel, setUpTourLabel, setUpTourLabel2, setUpTourLabel3, setUpTourLabel4;
     Timestamp moneyInTimestamp;
 
@@ -58,9 +61,14 @@ public class LayoutSetUp extends MainNavigation {
 
         dbManager = new DbManager(this);
 
+        setUpIncomeButton = findViewById(R.id.setUpIncomeButton);
+        setUpIncomeLabel = findViewById(R.id.setUpIncomeLabel);
+        setUpIncomeLabel.setVisibility(View.GONE);
+        setUpIncomeCheckbox = findViewById(R.id.setUpIncomeCheckbox);
+
         setUpDebtsButton = findViewById(R.id.setUpDebtsButton);
+        setUpDebtsButton.setVisibility(View.GONE);
         setUpDebtsLabel = findViewById(R.id.setUpDebtsLabel);
-        setUpDebtsLabel.setVisibility(View.GONE);
         setUpDebtsCheckbox = findViewById(R.id.setUpDebtsCheckbox);
 
         setUpSavingsButton = findViewById(R.id.setUpSavingsButton);
@@ -101,11 +109,20 @@ public class LayoutSetUp extends MainNavigation {
         setUpTourCheckbox = findViewById(R.id.setUpTourCheckbox);
         setUpTourCheckbox.setVisibility(View.GONE);
 
+        setUpIncomeButton.setOnClickListener(onClickSetUpIncomeButton);
         setUpDebtsButton.setOnClickListener(onClickSetUpDebtsButton);
         setUpSavingsButton.setOnClickListener(onClickSetUpSavingsButton);
         setUpBudgetButton.setOnClickListener(onClickSetUpBudgetButton);
         setUpAccountCheckbox.setOnCheckedChangeListener(onCheckBalanceDone);
         setUpTourCheckbox.setOnCheckedChangeListener(onCheckTourCheckbox);
+
+        if (dbManager.incomeSetUpCheck() > 0) {
+            setUpIncomeLabel.setVisibility(View.VISIBLE);
+            setUpIncomeButton.setVisibility(View.GONE);
+            setUpIncomeCheckbox.setChecked(true);
+            setUpDebtsButton.setVisibility(View.VISIBLE);
+            setUpDebtsLabel.setVisibility(View.GONE);
+        }
 
         if (dbManager.debtSetUpCheck() > 0) {
             setUpDebtsLabel.setVisibility(View.VISIBLE);
@@ -160,6 +177,7 @@ public class LayoutSetUp extends MainNavigation {
     CheckBox.OnCheckedChangeListener onCheckTourCheckbox = new CompoundButton.OnCheckedChangeListener() {
         @Override
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            incomeDone = 0;
             debtsDone = 0;
             savingsDone = 0;
             budgetDone = 0;
@@ -167,7 +185,7 @@ public class LayoutSetUp extends MainNavigation {
             balanceAmount = 0.0;
             tourDone = 1;
 
-            setUpDb = new SetUpDb(debtsDone, savingsDone, budgetDone, balanceDone, balanceAmount, tourDone, 0);
+            setUpDb = new SetUpDb(incomeDone, debtsDone, savingsDone, budgetDone, balanceDone, balanceAmount, tourDone, 0);
             dbManager.addSetUp(setUpDb);
 
             toMainActivity = new Intent(LayoutSetUp.this, MainActivity.class);
@@ -192,7 +210,7 @@ public class LayoutSetUp extends MainNavigation {
                 e.printStackTrace();
             }
 
-            setUpDb = new SetUpDb(debtsDone, savingsDone, budgetDone, balanceDone, balanceAmount, tourDone, 0);
+            setUpDb = new SetUpDb(incomeDone, debtsDone, savingsDone, budgetDone, balanceDone, balanceAmount, tourDone, 0);
             dbManager.addSetUp(setUpDb);
 
             moneyInCat = getString(R.string.starting_balance);
@@ -265,6 +283,15 @@ public class LayoutSetUp extends MainNavigation {
             setUpDebts = new Intent(LayoutSetUp.this, LayoutDebt.class);
             setUpDebts.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
             startActivity(setUpDebts);
+        }
+    };
+
+    View.OnClickListener onClickSetUpIncomeButton = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            setUpIncome = new Intent(LayoutSetUp.this, LayoutSetUpIncome.class);
+            setUpIncome.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+            startActivity(setUpIncome);
         }
     };
 
