@@ -7,7 +7,7 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-public class LayoutOnboarding extends AppCompatActivity {
+public class SlidesLayoutSetUpIncome extends AppCompatActivity {
 
     Intent portrait, landscape;
 
@@ -18,10 +18,10 @@ public class LayoutOnboarding extends AppCompatActivity {
         int orientation = getResources().getConfiguration().orientation;
 
         if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-            portrait = new Intent(this, LayoutOnboardingP.class);
+            portrait = new Intent(this, SlidesSetUpIncomeP.class);
             startActivity(portrait);
         } else if(orientation == Configuration.ORIENTATION_LANDSCAPE){
-            landscape = new Intent(this, LayoutOnboardingL.class);
+            landscape = new Intent(this, SlidesSetUpIncomeL.class);
             startActivity(landscape);
         }
     }

@@ -25,7 +25,7 @@ import java.util.List;
 import ca.gotchasomething.mynance.data.IncomeBudgetDb;
 import ca.gotchasomething.mynance.data.SetUpDb;
 
-public class AddBudgetIncome extends LayoutBudget {
+public class AddBillsSetUp extends LayoutBudget {
 
     Button saveIncomeButton, updateIncomeButton, cancelIncomeButton, doneIncomeButton;
     DbManager dbManager;
@@ -33,7 +33,7 @@ public class AddBudgetIncome extends LayoutBudget {
     EditText incomeAmountET, incomeCategory;
     IncomeBudgetDb incomeBudgetDb;
     IncomeListAdapter incomeListAdapter;
-    Intent backToBudget, backToIncomeSetUp, backToSetUp;
+    Intent backToIncomeSetUp, backToSetUp;
     ListView incomeListView;
     long id;
     RadioButton incomeAnnuallyRadioButton, incomeBiAnnuallyRadioButton, incomeBiMonthlyRadioButton, incomeBiWeeklyRadioButton,
@@ -46,63 +46,52 @@ public class AddBudgetIncome extends LayoutBudget {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.add_edit_income_list);
 
         dbManager = new DbManager(this);
 
-        if(dbManager.incomeDoneCheck > 0) {
-            setContentView(R.layout.add_edit_budget_income);
+        incomeListLabel = findViewById(R.id.incomeListLabel);
+        doneIncomeButton = findViewById(R.id.doneIncomeButton);
+        incomeLine = findViewById(R.id.incomeLine);
+        incomeCategory = findViewById(R.id.incomeCategory);
+        incomeAmountET = findViewById(R.id.incomeAmount);
+        incomeFrequencyRadioGroup = findViewById(R.id.incomeFrequencyRadioGroup);
+        saveIncomeButton = findViewById(R.id.saveIncomeButton);
+        updateIncomeButton = findViewById(R.id.updateIncomeButton);
+        updateIncomeButton.setVisibility(View.GONE);
+        cancelIncomeButton = findViewById(R.id.cancelIncomeButton);
+
+        incomeListView = findViewById(R.id.incomeListView);
+
+        incomeWeeklyRadioButton = findViewById(R.id.incomeWeeklyRadioButton);
+        incomeBiWeeklyRadioButton = findViewById(R.id.incomeBiWeeklyRadioButton);
+        incomeBiMonthlyRadioButton = findViewById(R.id.incomeBiMonthlyRadioButton);
+        incomeMonthlyRadioButton = findViewById(R.id.incomeMonthlyRadioButton);
+        incomeBiAnnuallyRadioButton = findViewById(R.id.incomeBiAnnuallyRadioButton);
+        incomeAnnuallyRadioButton = findViewById(R.id.incomeAnnuallyRadioButton);
+
+        cancelIncomeButton.setOnClickListener(onClickCancelIncomeButton);
+        saveIncomeButton.setOnClickListener(onClickSaveIncomeButton);
+        incomeFrequencyRadioGroup.setOnCheckedChangeListener(onCheckIncomeFrequency);
+        doneIncomeButton.setOnClickListener(onClickDoneIncomeButton);
+
+        incomeListAdapter = new IncomeListAdapter(this, dbManager.getIncomes());
+        incomeListView.setAdapter(incomeListAdapter);
+
+        incomeListView.setVisibility(View.VISIBLE);
+        if (incomeListAdapter.getCount() == 0) {
+            incomeListLabel.setVisibility(View.GONE);
+            incomeListView.setVisibility(View.GONE);
+            incomeListLabel.setVisibility(View.GONE);
+            doneIncomeButton.setVisibility(View.GONE);
+            incomeLine.setVisibility(View.GONE);
         } else {
-            setContentView(R.layout.add_edit_income_list);
-
-            incomeListLabel = findViewById(R.id.incomeListLabel);
-            doneIncomeButton = findViewById(R.id.doneIncomeButton);
-            incomeLine = findViewById(R.id.incomeLine);
-            incomeCategory = findViewById(R.id.incomeCategory);
-            incomeAmountET = findViewById(R.id.incomeAmount);
-            incomeFrequencyRadioGroup = findViewById(R.id.incomeFrequencyRadioGroup);
-            saveIncomeButton = findViewById(R.id.saveIncomeButton);
-            updateIncomeButton = findViewById(R.id.updateIncomeButton);
-            updateIncomeButton.setVisibility(View.GONE);
-            cancelIncomeButton = findViewById(R.id.cancelIncomeButton);
-
-            incomeListView = findViewById(R.id.incomeListView);
-
-            incomeWeeklyRadioButton = findViewById(R.id.incomeWeeklyRadioButton);
-            incomeBiWeeklyRadioButton = findViewById(R.id.incomeBiWeeklyRadioButton);
-            incomeBiMonthlyRadioButton = findViewById(R.id.incomeBiMonthlyRadioButton);
-            incomeMonthlyRadioButton = findViewById(R.id.incomeMonthlyRadioButton);
-            incomeBiAnnuallyRadioButton = findViewById(R.id.incomeBiAnnuallyRadioButton);
-            incomeAnnuallyRadioButton = findViewById(R.id.incomeAnnuallyRadioButton);
-
-            cancelIncomeButton.setOnClickListener(onClickCancelIncomeButton);
-            saveIncomeButton.setOnClickListener(onClickSaveIncomeButton);
-            incomeFrequencyRadioGroup.setOnCheckedChangeListener(onCheckIncomeFrequency);
-            doneIncomeButton.setOnClickListener(onClickDoneIncomeButton);
-
-            incomeListAdapter = new IncomeListAdapter(this, dbManager.getIncomes());
-            incomeListView.setAdapter(incomeListAdapter);
-
-            if (dbManager.incomeDoneCheck > 0) {
-                doneIncomeButton.setVisibility(View.GONE);
-                incomeListView.setVisibility(View.GONE);
-                incomeLine.setVisibility(View.GONE);
-            } else {
-                incomeListView.setVisibility(View.VISIBLE);
-                if (incomeListAdapter.getCount() == 0) {
-                    incomeListLabel.setVisibility(View.GONE);
-                    incomeListView.setVisibility(View.GONE);
-                    incomeListLabel.setVisibility(View.GONE);
-                    doneIncomeButton.setVisibility(View.GONE);
-                    incomeLine.setVisibility(View.GONE);
-                } else {
-                    doneIncomeButton.setVisibility(View.VISIBLE);
-                    incomeListLabel.setVisibility(View.VISIBLE);
-                    incomeListView.setVisibility(View.VISIBLE);
-                    incomeLine.setVisibility(View.VISIBLE);
-                }
-                updateIncomeButton.setVisibility(View.GONE);
-            }
+            doneIncomeButton.setVisibility(View.VISIBLE);
+            incomeListLabel.setVisibility(View.VISIBLE);
+            incomeListView.setVisibility(View.VISIBLE);
+            incomeLine.setVisibility(View.VISIBLE);
         }
+        updateIncomeButton.setVisibility(View.GONE);
     }
 
     //handle radioGroup for incomeFrequency
@@ -135,20 +124,14 @@ public class AddBudgetIncome extends LayoutBudget {
         }
     };
 
-    public void backToBudget() {
-        backToBudget = new Intent(AddBudgetIncome.this, LayoutBudget.class);
-        backToBudget.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-        startActivity(backToBudget);
-    }
-
     public void backToIncomeSetUp() {
-        backToIncomeSetUp = new Intent(AddBudgetIncome.this, AddBudgetIncome.class);
+        backToIncomeSetUp = new Intent(AddBillsSetUp.this, AddBillsSetUp.class);
         backToIncomeSetUp.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
         startActivity(backToIncomeSetUp);
     }
 
     public void backToSetUp() {
-        backToSetUp = new Intent(AddBudgetIncome.this, LayoutSetUp.class);
+        backToSetUp = new Intent(AddBillsSetUp.this, LayoutSetUp.class);
         backToSetUp.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
         startActivity(backToSetUp);
     }
@@ -158,7 +141,7 @@ public class AddBudgetIncome extends LayoutBudget {
         public void onClick(View v) {
             incomeDone = 1;
 
-            setUpDb = new SetUpDb(incomeDone, debtsDone, savingsDone, budgetDone, balanceDone, balanceAmount, tourDone, 0);
+            setUpDb = new SetUpDb(incomeDone, billsDone, debtsDone, savingsDone, budgetDone, balanceDone, balanceAmount, tourDone, 0);
             dbManager.addSetUp(setUpDb);
 
             backToSetUp();
@@ -168,11 +151,7 @@ public class AddBudgetIncome extends LayoutBudget {
     View.OnClickListener onClickCancelIncomeButton = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            if(dbManager.incomeDoneCheck > 0) {
-                backToBudget();
-            } else {
-                backToIncomeSetUp();
-            }
+            backToIncomeSetUp();
         }
     };
 
@@ -213,8 +192,6 @@ public class AddBudgetIncome extends LayoutBudget {
                 incomeAdapter.notifyDataSetChanged();
 
                 if (dbManager.incomeDoneCheck > 0) {
-                    backToBudget();
-                } else {
                     backToIncomeSetUp();
                 }
             }
@@ -285,8 +262,6 @@ public class AddBudgetIncome extends LayoutBudget {
                 incomeListHolder.incomeAmount.setText(incomeAnnualAmount2);
             }
 
-            //incomeId = String.valueOf(incomes.get(position).getId());
-
             incomeListHolder.incomeDeleted.setTag(incomes.get(position));
             incomeListHolder.incomeEdit.setTag(incomes.get(position));
 
@@ -297,7 +272,7 @@ public class AddBudgetIncome extends LayoutBudget {
                 public void onClick(View v) {
 
                     setContentView(R.layout.add_edit_income_list);
-                    AddBudgetIncome.this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+                    AddBillsSetUp.this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
                     incomeListLabel = findViewById(R.id.incomeListLabel);
                     incomeListLabel.setVisibility(View.GONE);
@@ -312,8 +287,6 @@ public class AddBudgetIncome extends LayoutBudget {
                     saveIncomeButton.setVisibility(View.GONE);
                     updateIncomeButton = findViewById(R.id.updateIncomeButton);
                     cancelIncomeButton = findViewById(R.id.cancelIncomeButton);
-
-                    //incomeListView = findViewById(R.id.incomeListView);
 
                     incomeWeeklyRadioButton = findViewById(R.id.incomeWeeklyRadioButton);
                     incomeBiWeeklyRadioButton = findViewById(R.id.incomeBiWeeklyRadioButton);
@@ -330,32 +303,6 @@ public class AddBudgetIncome extends LayoutBudget {
                     incomeAmountD = incomeBudgetDb.getIncomeAmount();
                     incomeAmountS = currencyFormat.format(incomeAmountD);
                     incomeAmountET.setText(incomeAmountS);
-
-                    /*findMatchingDebtId();
-                    findMatchingSavingsId();
-
-                    if (foundDebtId) {
-                        budgetIncomeWeeklyRadioButton.setVisibility(View.VISIBLE);
-                        budgetIncomeBiWeeklyRadioButton.setVisibility(View.VISIBLE);
-                        budgetIncomeBiMonthlyRadioButton.setVisibility(View.GONE);
-                        budgetIncomeMonthlyRadioButton.setVisibility(View.VISIBLE);
-                        budgetIncomeBiAnnuallyRadioButton.setVisibility(View.GONE);
-                        budgetIncomeAnnuallyRadioButton.setVisibility(View.GONE);
-                    } else if (foundSavingsId) {
-                        budgetIncomeWeeklyRadioButton.setVisibility(View.VISIBLE);
-                        budgetIncomeBiWeeklyRadioButton.setVisibility(View.VISIBLE);
-                        budgetIncomeBiMonthlyRadioButton.setVisibility(View.GONE);
-                        budgetIncomeMonthlyRadioButton.setVisibility(View.VISIBLE);
-                        budgetIncomeBiAnnuallyRadioButton.setVisibility(View.GONE);
-                        budgetIncomeAnnuallyRadioButton.setVisibility(View.VISIBLE);
-                    } else {
-                        budgetIncomeWeeklyRadioButton.setVisibility(View.VISIBLE);
-                        budgetIncomeBiWeeklyRadioButton.setVisibility(View.VISIBLE);
-                        budgetIncomeBiMonthlyRadioButton.setVisibility(View.VISIBLE);
-                        budgetIncomeMonthlyRadioButton.setVisibility(View.VISIBLE);
-                        budgetIncomeBiAnnuallyRadioButton.setVisibility(View.VISIBLE);
-                        budgetIncomeAnnuallyRadioButton.setVisibility(View.VISIBLE);
-                    }*/
 
                     if (incomeBudgetDb.getIncomeFrequency() == 52) {
                         incomeWeeklyRadioButton.setChecked(true);
@@ -416,9 +363,6 @@ public class AddBudgetIncome extends LayoutBudget {
                         @Override
                         public void onClick(View v) {
 
-                            /*findMatchingDebtId();
-                            findMatchingSavingsId();*/
-
                             if (incomeCategory.getText().toString().equals("")) {
                                 Toast.makeText(getBaseContext(), R.string.no_blanks_warning, Toast.LENGTH_LONG).show();
                             } else {
@@ -431,110 +375,6 @@ public class AddBudgetIncome extends LayoutBudget {
                                 incomeBudgetDb.setIncomeAmount(amountEntry);
                                 incomeBudgetDb.setIncomeFrequency(frequencyEntry);
                                 incomeBudgetDb.setIncomeAnnualAmount(annualIncome);
-
-                                /*for (ExpenseBudgetDb e : dbManager.getExpense()) {
-                                    if (String.valueOf(e.getId()).equals(expRefKeyD) || String.valueOf(e.getId()).equals(expRefKeyS)) {
-                                        expenseId = String.valueOf(e.getId());
-                                    }
-                                }*/
-
-                                /*dbHelper2 = new DbHelper(getContext());
-                                db2 = dbHelper2.getWritableDatabase();
-
-                                String[] args4 = new String[]{debtId};
-                                String[] args5 = new String[]{savingsId};
-                                String[] args6 = new String[]{expenseId};
-                                String[] args7 = new String[]{incomeId};
-
-                                cv = new ContentValues();
-                                try {
-                                    cv.put(DbHelper.DEBTNAME, nameEntryInc);
-                                    cv.put(DbHelper.DEBTANNUALINCOME, annualIncome);
-                                    db2.update(DbHelper.DEBTS_TABLE_NAME, cv, DbHelper.ID + "=?", args4);
-                                } catch (CursorIndexOutOfBoundsException | SQLException e) {
-                                    e.printStackTrace();
-                                }
-
-                                allDebtData();
-
-                                cv13 = new ContentValues();
-                                try {
-                                    cv13.put(DbHelper.DEBTEND, general.calcDebtDate(
-                                            debtAmount,
-                                            debtRate,
-                                            debtPayments,
-                                            debtFrequency,
-                                            debtAnnualIncome,
-                                            getString(R.string.debt_paid),
-                                            getString(R.string.too_far)));
-
-                                    db2.update(DbHelper.DEBTS_TABLE_NAME, cv13, DbHelper.ID + "=?", args4);
-                                } catch (CursorIndexOutOfBoundsException | SQLException e2) {
-                                    e2.printStackTrace();
-                                }
-
-                                cv2 = new ContentValues();
-                                try {
-                                    cv2.put(DbHelper.MONEYOUTDEBTCAT, nameEntryInc);
-                                    db2.update(DbHelper.MONEY_OUT_TABLE_NAME, cv2, DbHelper.MONEYOUTCHARGINGDEBTID + "=?", args4);
-                                } catch (CursorIndexOutOfBoundsException | SQLException e3) {
-                                    e3.printStackTrace();
-                                }
-
-                                cv3 = new ContentValues();
-                                try {
-                                    cv3.put(DbHelper.SAVINGSNAME, nameEntryInc);
-                                    cv3.put(DbHelper.SAVINGSANNUALINCOME, annualIncome);
-                                    db2.update(DbHelper.SAVINGS_TABLE_NAME, cv3, DbHelper.ID + "=?", args5);
-                                } catch (CursorIndexOutOfBoundsException | SQLException e4) {
-                                    e4.printStackTrace();
-                                }
-
-                                allSavingsData();
-
-                                cv14 = new ContentValues();
-                                try {
-                                    cv14.put(DbHelper.SAVINGSDATE, general.calcSavingsDate(
-                                            savingsGoal,
-                                            savingsAmount,
-                                            savingsRate,
-                                            savingsPayments,
-                                            savingsFrequency,
-                                            savingsAnnualIncome,
-                                            getString(R.string.goal_achieved),
-                                            getString(R.string.too_far)));
-
-                                    db2.update(DbHelper.SAVINGS_TABLE_NAME, cv14, DbHelper.ID + "=?", args5);
-                                } catch (CursorIndexOutOfBoundsException | SQLException e5) {
-                                    e5.printStackTrace();
-                                }
-
-
-                                cv4 = new ContentValues();
-                                try {
-                                    cv4.put(DbHelper.EXPENSENAME, nameEntryInc);
-                                    db2.update(DbHelper.EXPENSES_TABLE_NAME, cv4, DbHelper.ID + "=?", args6);
-                                } catch (CursorIndexOutOfBoundsException | SQLException e6) {
-                                    e6.printStackTrace();
-                                }
-
-                                cv5 = new ContentValues();
-                                try {
-                                    cv5.put(DbHelper.MONEYINCAT, nameEntryInc);
-                                    db2.update(DbHelper.MONEY_IN_TABLE_NAME, cv5, DbHelper.INCREFKEYMI + "=?", args7);
-                                } catch (CursorIndexOutOfBoundsException | SQLException e7) {
-                                    e7.printStackTrace();
-                                }
-
-                                cv6 = new ContentValues();
-                                try {
-                                    cv6.put(DbHelper.MONEYOUTCAT, nameEntryInc);
-                                    db2.update(DbHelper.MONEY_OUT_TABLE_NAME, cv6, DbHelper.EXPREFKEYMO + "=?", args6);
-                                } catch (CursorIndexOutOfBoundsException | SQLException e8) {
-                                    e8.printStackTrace();
-                                }
-
-                                db2.close();*/
 
                                 dbManager.updateIncome(incomeBudgetDb);
                                 incomeAdapter.updateIncomes(dbManager.getIncomes());
@@ -556,43 +396,6 @@ public class AddBudgetIncome extends LayoutBudget {
                 public void onClick(View v) {
 
                     incomeBudgetDb = (IncomeBudgetDb) incomeListHolder.incomeDeleted.getTag();
-                    //incomeId = String.valueOf(incomes.get(position).getId());
-
-                    /*noSpendingReportText.setVisibility(View.VISIBLE);
-                    okButton.setVisibility(View.VISIBLE);
-                    cancelButton.setVisibility(View.VISIBLE);*/
-
-                    /*cancelButton.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            backToIncomeSetUp();
-                        }
-                    });
-
-                    okButton.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-
-                            noSpendingReportText.setVisibility(View.GONE);
-                            okButton.setVisibility(View.GONE);
-                            cancelButton.setVisibility(View.GONE);
-
-                            findMatchingDebtId();
-                            findMatchingSavingsId();
-
-                            if (foundDebtId || foundSavingsId) {
-                                deleteExpText.setVisibility(View.VISIBLE);
-                                ok2Button.setVisibility(View.VISIBLE);
-
-                                ok2Button.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        backToBudget();
-                                    }
-                                });
-                            } else {
-                                deleteExpText.setVisibility(View.GONE);
-                                ok2Button.setVisibility(View.GONE);*/
 
                     dbManager.deleteIncome(incomeBudgetDb);
                     incomeAdapter.updateIncomes(dbManager.getIncomes());
@@ -600,7 +403,6 @@ public class AddBudgetIncome extends LayoutBudget {
 
                     backToIncomeSetUp();
                 }
-                //}
             });
 
             return convertView;

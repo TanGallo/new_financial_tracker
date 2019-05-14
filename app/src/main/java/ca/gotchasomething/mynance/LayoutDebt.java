@@ -60,7 +60,7 @@ public class LayoutDebt extends MainNavigation {
     EditText debtAmountEntry, debtLimitEntry, debtNameEntry, debtPaymentsEntry, debtPercentEntry;
     FloatingActionButton addDebtButton;
     General general;
-    int balanceDone = 0, budgetDone = 0, debtsDone = 0, incomeDone = 0, savingsDone = 0, tourDone = 0;
+    int balanceDone = 0, billsDone = 0, budgetDone = 0, debtsDone = 0, incomeDone = 0, savingsDone = 0, tourDone = 0;
     Intent addNewDebt, backToDebtScreen, backToSetUp;
     LinearLayout toastLayout;
     ListView debtListView;
@@ -172,7 +172,7 @@ public class LayoutDebt extends MainNavigation {
             balanceAmount = 0.0;
             tourDone = 0;
 
-            setUpDb = new SetUpDb(incomeDone, debtsDone, savingsDone, budgetDone, balanceDone, balanceAmount, tourDone, 0);
+            setUpDb = new SetUpDb(incomeDone, billsDone, debtsDone, savingsDone, budgetDone, balanceDone, balanceAmount, tourDone, 0);
             dbManager.addSetUp(setUpDb);
 
             toast = Toast.makeText(getApplicationContext(), R.string.edit_debts_message, Toast.LENGTH_LONG);

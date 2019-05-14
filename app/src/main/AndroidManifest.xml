@@ -17,7 +17,7 @@
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar"></activity>
 
-        <activity android:name=".LayoutOnboarding">
+        <activity android:name=".SlidesLayoutOnboarding">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -40,10 +40,12 @@
         <activity android:name="ca.gotchasomething.mynance.AddBudgetIncome"/>
         <activity android:name="ca.gotchasomething.mynance.AddBudgetExpense"/>
         <activity android:name="ca.gotchasomething.mynance.LayoutSetUp"/>
-        <activity android:name="ca.gotchasomething.mynance.LayoutOnboardingL"/>
-        <activity android:name="ca.gotchasomething.mynance.LayoutOnboardingP"/>
-        <activity android:name="ca.gotchasomething.mynance.LayoutSetUpIncome"/>
-        <activity android:name="ca.gotchasomething.mynance.LayoutSetUpIncomeP"/>
+        <activity android:name="ca.gotchasomething.mynance.SlidesOnboardingL"/>
+        <activity android:name="ca.gotchasomething.mynance.SlidesOnboardingP"/>
+        <activity android:name="ca.gotchasomething.mynance.SlidesLayoutSetUpIncome"/>
+        <activity android:name="ca.gotchasomething.mynance.SlidesSetUpIncomeP"/>
+        <activity android:name="ca.gotchasomething.mynance.AddIncomeSetUp"/>
+        <activity android:name="ca.gotchasomething.mynance.AddBillsSetUp"/>
 
     </application>
 

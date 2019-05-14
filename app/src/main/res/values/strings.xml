@@ -289,6 +289,12 @@
     <string name="first_thing_first">First thing\'s first&#8230;</string>
     <string name="bare_minimum">MYnance is a real-world app, so no tedious budgeting here, only the bare minimum needed to make sure you\'re not over-spending or racking up debt.</string>
     <string name="lets_get_real">Let\'s get real!</string>
-    <string name="need_income">You\'ll need to know how much money you earn in a typical year, so set up each of your sources of income separately in the following screen.</string>
+    <string name="need_income">First, you\'ll need to know how much money you earn in a typical year, so set up each of your sources of income separately in the following screen.</string>
     <string name="done_income_categories">Done entering income categories</string>
+    <string name="enter_bills">Enter bills</string>
+    <string name="enter_bills_1">Bills are payments you regularly make in any given year. Set up your bills in the following screen.</string>
+    <string name="enter_bills_2">Bills DO NOT include credit cards or other loans/lines of credit, mortgages, or money that you put into savings accounts or investments. You will set those up separately in another screen.</string>
+    <string name="enter_bills_3">For simplicity, add up amounts for bills that are similar and enter them as one bill. For example, if you pay for lessons for swimming and martial arts, enter them as one bill called \'lessons\'.</string>
+    <string name="click_here_next">Click here next</string>
+    <string name="expense_categories">Expense Categories:</string>
 </resources>

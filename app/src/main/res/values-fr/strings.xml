@@ -280,6 +280,12 @@
     <string name="first_thing_first">Première chose en premier&#8230;</string>
     <string name="bare_minimum">MYnance est une application du monde réel, il n\’ya donc pas de budget fastidieux, mais seulement le strict minimum pour vous assurer de ne pas trop dépenser ni d\’endetter.</string>
     <string name="lets_get_real">Pour le monde réel!</string>
-    <string name="need_income">Vous avez besoin de savoir combien d\’argent vous gagnez au cours d\’une année typique. Créez donc chacune de vos sources de revenu séparément dans l\'écrans suivants.</string>
+    <string name="need_income">Premièrement, vous avez besoin de savoir combien d\’argent vous gagnez au cours d\’une année typique. Créez donc chacune de vos sources de revenu séparément dans l\'écrans suivants.</string>
     <string name="done_income_categories">Fini de créer les revenus</string>
+    <string name="enter_bills">Entrer vos factures</string>
+    <string name="enter_bills_1">Les factures sont des paiements que vous effectuez régulièrement au cours d\'une année donnée. Configurez vos factures dans l\'écran suivant.</string>
+    <string name="enter_bills_2">Les factures NE COMPRENNENT PAS les cartes de crédit ou autres emprunts/lignes de crédit, les hypothèques ou l\'argent que vous mettez dans des comptes d\'épargne ou des comptes d\'investissement. Vous les configurerez séparément dans un autre écran.</string>
+    <string name="enter_bills_3">Pour plus de simplicité, additionnez les montants de factures semblables et entrez-les en une seule facture. Par exemple, si vous payez des leçons de natation et d\’arts martiaux, saisissez-les sous la forme d\’une facture appelée «leçons».</string>
+    <string name="click_here_next">Cliquez ici suivant</string>
+    <string name="expense_categories">Catégories de dépenses:</string>
 </resources>

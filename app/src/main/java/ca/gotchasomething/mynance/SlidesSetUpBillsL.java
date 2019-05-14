@@ -1,8 +1,6 @@
 package ca.gotchasomething.mynance;
 
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -17,33 +15,26 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.viewpager.widget.ViewPager;
 
-public class LayoutOnboardingP extends AppCompatActivity implements View.OnClickListener {
+public class SlidesSetUpBillsL extends AppCompatActivity implements View.OnClickListener {
 
-    private AdapterOnboarding adapter;
-    private Button skipButton, nextButton;
-    Cursor setUpCursor;
-    DbHelper setUpHelper;
+    private AdapterSetUpIncome adapter2;
+    private Button previousButton, nextButton;
+    DbManager dbManager;
     private ImageView[] dots;
-    int tourDoneYes;
-    private int[] onboardingSlides = {
-            R.layout.layout_onboarding_1,
-            R.layout.layout_onboarding_2,
-            R.layout.layout_onboarding_3,
-            R.layout.layout_onboarding_4,
-            R.layout.layout_onboarding_5,
-            R.layout.layout_onboarding_6
+    private int[] setUpBillsSlides = {
+            R.layout.slides_set_up_bills_1_L,
+            R.layout.slides_set_up_bills_2_L,
     };
     private LinearLayout dotsLayout;
-    SQLiteDatabase setUpDbDb;
     ViewPager viewPager;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (new PreferenceManager(this).checkPreferences()) {
+        /*if (new PreferenceManager(this).checkPreferences()) {
             loadHome();
-        }
+        }*/
 
         if (Build.VERSION.SDK_INT >= 19) {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
@@ -51,16 +42,16 @@ public class LayoutOnboardingP extends AppCompatActivity implements View.OnClick
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         }
 
-        setContentView(R.layout.layout_onboarding);
+        setContentView(R.layout.slides_set_up_background_L);
 
         viewPager = findViewById(R.id.viewPager);
-        adapter = new AdapterOnboarding(onboardingSlides, this);
-        viewPager.setAdapter(adapter);
+        adapter2 = new AdapterSetUpIncome(setUpBillsSlides, this);
+        viewPager.setAdapter(adapter2);
 
         dotsLayout = findViewById(R.id.dotsLayout);
-        skipButton = findViewById(R.id.skipButton);
+        previousButton = findViewById(R.id.previousButton);
         nextButton = findViewById(R.id.nextButton);
-        skipButton.setOnClickListener(this);
+        previousButton.setOnClickListener(this);
         nextButton.setOnClickListener(this);
         createDots(0);
 
@@ -73,12 +64,16 @@ public class LayoutOnboardingP extends AppCompatActivity implements View.OnClick
             public void onPageSelected(int position) {
                 createDots(position);
 
-                if (position == onboardingSlides.length - 1) {
+                if (position == 0) {
+                    previousButton.setVisibility(View.INVISIBLE);
+                } else {
+                    previousButton.setVisibility(View.VISIBLE);
+                }
+
+                if (position == setUpBillsSlides.length - 1) {
                     nextButton.setText(getResources().getString(R.string.start_button));
-                    skipButton.setVisibility(View.INVISIBLE);
                 } else {
                     nextButton.setText(getResources().getString(R.string.next_button));
-                    skipButton.setVisibility(View.VISIBLE);
                 }
             }
 
@@ -92,9 +87,9 @@ public class LayoutOnboardingP extends AppCompatActivity implements View.OnClick
         if (dotsLayout != null)
             dotsLayout.removeAllViews();
 
-        dots = new ImageView[onboardingSlides.length];
+        dots = new ImageView[setUpBillsSlides.length];
 
-        for (int i = 0; i < onboardingSlides.length; i++) {
+        for (int i = 0; i < setUpBillsSlides.length; i++) {
             dots[i] = new ImageView(this);
             if (i == current_position) {
                 dots[i].setImageDrawable(
@@ -123,38 +118,35 @@ public class LayoutOnboardingP extends AppCompatActivity implements View.OnClick
                 loadNextSlide();
                 break;
 
-            case R.id.skipButton:
-                loadHome();
-                new PreferenceManager(this).writePreferences();
+            case R.id.previousButton:
+                loadPreviousSlide();
                 break;
         }
     }
 
     private void loadHome() {
-        setUpHelper = new DbHelper(getApplicationContext());
-        setUpDbDb = setUpHelper.getReadableDatabase();
-        setUpCursor = setUpDbDb.rawQuery(" SELECT max(tourDone) FROM " + DbHelper.SET_UP_TABLE_NAME + "", null);
-        setUpCursor.moveToFirst();
-        tourDoneYes = setUpCursor.getInt(0);
-        setUpCursor.close();
-
-        if (tourDoneYes <= 0) {
-            startActivity(new Intent(this, LayoutSetUp.class));
+            startActivity(new Intent(this, AddBillsSetUp.class));
             finish();
-        } else {
-            startActivity(new Intent(this, MainActivity.class));
-            finish();
-        }
     }
 
     private void loadNextSlide() {
         int next = viewPager.getCurrentItem() + 1;
 
-        if (next < onboardingSlides.length) {
+        if (next < setUpBillsSlides.length) {
             viewPager.setCurrentItem(next);
         } else {
             loadHome();
-            new PreferenceManager(this).writePreferences();
+            //new PreferenceManager(this).writePreferences();
+        }
+    }
+
+    private void loadPreviousSlide() {
+        int previous = viewPager.getCurrentItem() - 1;
+
+        if (previous < 0) {
+            viewPager.setCurrentItem(0);
+        } else {
+            viewPager.setCurrentItem(previous);
         }
     }
 }

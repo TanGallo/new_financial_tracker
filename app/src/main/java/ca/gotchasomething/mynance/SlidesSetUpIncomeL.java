@@ -15,15 +15,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.viewpager.widget.ViewPager;
 
-public class LayoutSetUpIncomeP extends AppCompatActivity implements View.OnClickListener {
+public class SlidesSetUpIncomeL extends AppCompatActivity implements View.OnClickListener {
 
     private AdapterSetUpIncome adapter1;
     private Button previousButton, nextButton;
     DbManager dbManager;
     private ImageView[] dots;
     private int[] setUpIncomeSlides = {
-            R.layout.layout_set_up_income_1,
-            R.layout.layout_set_up_income_2,
+            R.layout.slides_set_up_income_1_L,
+            R.layout.slides_set_up_income_2_L,
     };
     private LinearLayout dotsLayout;
     ViewPager viewPager;
@@ -42,7 +42,7 @@ public class LayoutSetUpIncomeP extends AppCompatActivity implements View.OnClic
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         }
 
-        setContentView(R.layout.layout_set_up_income);
+        setContentView(R.layout.slides_set_up_background_L);
 
         viewPager = findViewById(R.id.viewPager);
         adapter1 = new AdapterSetUpIncome(setUpIncomeSlides, this);
@@ -125,7 +125,7 @@ public class LayoutSetUpIncomeP extends AppCompatActivity implements View.OnClic
     }
 
     private void loadHome() {
-            startActivity(new Intent(this, AddBudgetIncome.class));
+            startActivity(new Intent(this, AddIncomeSetUp.class));
             finish();
     }
 

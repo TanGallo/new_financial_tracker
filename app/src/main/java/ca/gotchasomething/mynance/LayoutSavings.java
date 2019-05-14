@@ -52,7 +52,7 @@ public class LayoutSavings extends MainNavigation {
     EditText savingsAmountEntry, savingsGoalAmountEntry, savingsNameEntry, savingsPaymentsEntry, savingsPercentEntry;
     FloatingActionButton addSavingsButton;
     General general;
-    int balanceDone = 0, budgetDone = 0, debtsDone = 0, incomeDone = 0, savingsDone = 0, tourDone = 0;
+    int balanceDone = 0, billsDone = 0, budgetDone = 0, debtsDone = 0, incomeDone = 0, savingsDone = 0, tourDone = 0;
     Intent addNewSavings, backToSavingsScreen, backToSetUp;
     LinearLayout toastLayout;
     ListView savingsListView;
@@ -156,7 +156,7 @@ public class LayoutSavings extends MainNavigation {
         public void onClick(View v) {
             savingsDone = 1;
 
-            setUpDb = new SetUpDb(incomeDone, debtsDone, savingsDone, budgetDone, balanceDone, balanceAmount, tourDone, 0);
+            setUpDb = new SetUpDb(incomeDone, billsDone, debtsDone, savingsDone, budgetDone, balanceDone, balanceAmount, tourDone, 0);
             dbManager.addSetUp(setUpDb);
 
             toast = Toast.makeText(getApplicationContext(), R.string.edit_savings_message, Toast.LENGTH_LONG);

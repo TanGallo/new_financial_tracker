@@ -58,7 +58,7 @@ public class LayoutBudget extends MainNavigation {
     FloatingActionButton budgetExpensePlusButton, budgetIncomePlusButton;
     IncomeBudgetDb incomeBudgetDb;
     IncomeDbAdapter incomeAdapter;
-    int balanceDone = 0, budgetDone = 0, debtsDone = 0, incomeDone = 0, savingsDone = 0, tourDone = 0;
+    int balanceDone = 0, billsDone = 0, budgetDone = 0, debtsDone = 0, incomeDone = 0, savingsDone = 0, tourDone = 0;
     Intent backToBudget, backToSetUp, expensePlusButton, incomePlusButton;
     LinearLayout toastLayout;
     ListView budgetExpensesDetails, budgetIncomeDetails;
@@ -168,7 +168,7 @@ public class LayoutBudget extends MainNavigation {
         public void onClick(View v) {
             budgetDone = 1;
 
-            setUpDb = new SetUpDb(incomeDone, debtsDone, savingsDone, budgetDone, balanceDone, balanceAmount, tourDone, 0);
+            setUpDb = new SetUpDb(incomeDone, billsDone, debtsDone, savingsDone, budgetDone, balanceDone, balanceAmount, tourDone, 0);
             dbManager.addSetUp(setUpDb);
 
             toast = Toast.makeText(getApplicationContext(), R.string.edit_budget_message, Toast.LENGTH_LONG);
