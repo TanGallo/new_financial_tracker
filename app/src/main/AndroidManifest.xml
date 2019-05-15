@@ -45,7 +45,7 @@
         <activity android:name="ca.gotchasomething.mynance.SlidesLayoutSetUpIncome"/>
         <activity android:name="ca.gotchasomething.mynance.SlidesSetUpIncomeP"/>
         <activity android:name="ca.gotchasomething.mynance.AddIncomeSetUp"/>
-        <activity android:name="ca.gotchasomething.mynance.AddBillsSetUp"/>
+        <activity android:name="ca.gotchasomething.mynance.AddIncomeSetUpList"/>
 
     </application>
 

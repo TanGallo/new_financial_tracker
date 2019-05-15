@@ -281,7 +281,6 @@
     <string name="click_here_savings2">Click here to add a new savings item</string>
     <string name="click_here_debts2">Click here to enter a new debts item</string>
     <string name="save_add_income">Save and add another income category</string>
-    <string name="save_done_income">Save and Done adding income categories</string>
     <string name="click_here_begin">Click here to begin</string>
     <string name="enter_income">Enter income</string>
     <string name="previous">previous</string>
@@ -293,8 +292,19 @@
     <string name="done_income_categories">Done entering income categories</string>
     <string name="enter_bills">Enter bills</string>
     <string name="enter_bills_1">Bills are payments you regularly make in any given year. Set up your bills in the following screen.</string>
-    <string name="enter_bills_2">Bills DO NOT include credit cards or other loans/lines of credit, mortgages, or money that you put into savings accounts or investments. You will set those up separately in another screen.</string>
-    <string name="enter_bills_3">For simplicity, add up amounts for bills that are similar and enter them as one bill. For example, if you pay for lessons for swimming and martial arts, enter them as one bill called \'lessons\'.</string>
+    <string name="enter_bills_2">Bills DO NOT include debts (credit cards, other loans/lines of credit, or mortgages) or savings (money that you put into savings accounts or investments). You will set those up separately in another screen.</string>
+    <string name="enter_bills_3">Bills also DO NOT include optional expenses or spending (entertainment, travel, clothing, gifts, etc.).</string>
+    <string name="enter_bills_4">For simplicity, add up amounts for bills that are similar and enter them as one bill. For example, if you pay for swimming lessons and martial arts, enter them as one bill called \'lessons\' or \'kids activities\'.</string>
     <string name="click_here_next">Click here next</string>
     <string name="expense_categories">Expense Categories:</string>
+    <string name="view_list">view list</string>
+    <string name="hide_list">hide list</string>
+    <string name="another_income">add another income category</string>
+    <string name="another_bill">add another bill</string>
+    <string name="done_bills">done entering bills</string>
+    <string name="bills">Regular Bills:</string>
+    <string name="name_bill">Name this bill</string>
+    <string name="bill_frequency">How often do you pay this bill?</string>
+    <string name="bill_amount">What is the usual amount of this bill?</string>
+    <string name="enter_bills_1a">Bills DO include items that are necessary living expenses (groceries, etc.) and obligations (memberships, etc.).</string>
 </resources>

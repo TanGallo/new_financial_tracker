@@ -1,6 +1,5 @@
 package ca.gotchasomething.mynance;
 
-import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -22,8 +21,11 @@ public class SlidesSetUpBillsL extends AppCompatActivity implements View.OnClick
     DbManager dbManager;
     private ImageView[] dots;
     private int[] setUpBillsSlides = {
-            R.layout.slides_set_up_bills_1_L,
-            R.layout.slides_set_up_bills_2_L,
+            R.layout.slides_set_up_bills_1_land,
+            R.layout.slides_set_up_bills_1a_land,
+            R.layout.slides_set_up_bills_2_land,
+            R.layout.slides_set_up_bills_3_land,
+            R.layout.slides_set_up_bills_4_land
     };
     private LinearLayout dotsLayout;
     ViewPager viewPager;
@@ -42,7 +44,7 @@ public class SlidesSetUpBillsL extends AppCompatActivity implements View.OnClick
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         }
 
-        setContentView(R.layout.slides_set_up_background_L);
+        setContentView(R.layout.slides_set_up_background_land);
 
         viewPager = findViewById(R.id.viewPager);
         adapter2 = new AdapterSetUpIncome(setUpBillsSlides, this);
@@ -124,20 +126,20 @@ public class SlidesSetUpBillsL extends AppCompatActivity implements View.OnClick
         }
     }
 
-    private void loadHome() {
+    /*private void loadHome() {
             startActivity(new Intent(this, AddBillsSetUp.class));
             finish();
-    }
+    }*/
 
     private void loadNextSlide() {
         int next = viewPager.getCurrentItem() + 1;
 
         if (next < setUpBillsSlides.length) {
             viewPager.setCurrentItem(next);
-        } else {
+        } /*else {
             loadHome();
             //new PreferenceManager(this).writePreferences();
-        }
+        }*/
     }
 
     private void loadPreviousSlide() {

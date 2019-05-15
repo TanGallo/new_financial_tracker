@@ -35,217 +35,69 @@
                 android:orientation="vertical"
                 tools:ignore="UselessParent">
 
-                <TextView android:id="@+id/incomeListLabel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:text="@string/income_categories"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:layout_gravity="center_horizontal"
-                    android:textSize="22sp" />
-
-                <ListView
-                    android:id="@+id/incomeListView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                </ListView>
-
-                <View
-                    android:id="@+id/incomeLine"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:alpha=".5"
-                    android:background="@color/colorPrimary"></View>
-
                 <ScrollView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="match_parent">
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="100dp"
                         android:layout_margin="10dp"
                         android:orientation="vertical">
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
+                        <TextView
+                            android:id="@+id/incomeListLabel"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:orientation="vertical">
+                            android:layout_gravity="center_horizontal"
+                            android:layout_margin="10dp"
+                            android:text="@string/income_categories"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textSize="22sp" />
 
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="vertical">
+                        <ScrollView
+                            android:layout_width="match_parent"
+                            android:layout_height="200dp"
+                            android:fillViewport="true">
 
-                                <TextView
-                                    android:id="@+id/incomeCategoryLabel"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginStart="10dp"
-                                    android:layout_marginTop="10dp"
-                                    android:labelFor="@id/incomeCategory"
-                                    android:text="@string/enter_income_cat"
-                                    android:textColor="@color/colorPrimaryDark"
-                                    android:textSize="16sp" />
-
-                                <EditText
-                                    android:id="@+id/incomeCategory"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_margin="10dp"
-                                    android:inputType="text"
-                                    android:textColor="@color/colorPrimaryDark"
-                                    android:textSize="18sp"
-                                    tools:ignore="Autofill" />
-
-                                <TextView
-                                    android:id="@+id/incomeAmountLabel"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginStart="10dp"
-                                    android:labelFor="@id/incomeAmount"
-                                    android:text="@string/amount"
-                                    android:textColor="@color/colorPrimaryDark"
-                                    android:textSize="16sp" />
-
-                                <EditText
-                                    android:id="@+id/incomeAmount"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_margin="10dp"
-                                    android:inputType="numberDecimal"
-                                    android:textColor="@color/colorPrimaryDark"
-                                    android:textSize="18sp"
-                                    tools:ignore="Autofill" />
-
-                            </LinearLayout>
-
-                            <TextView
-                                android:id="@+id/incomeFrequencyLabel"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_margin="10dp"
-                                android:labelFor="@id/incomeFrequencyRadioGroup"
-                                android:text="@string/how_often"
-                                android:textColor="@color/colorPrimaryDark"
-                                android:textSize="16sp" />
-
-                            <RadioGroup
-                                android:id="@+id/incomeFrequencyRadioGroup"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_margin="10dp">
-
-                                <RadioButton
-                                    android:id="@+id/incomeWeeklyRadioButton"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:text="@string/weekly"
-                                    android:textColor="@color/colorPrimaryDark"
-                                    android:textSize="15sp" />
-
-                                <RadioButton
-                                    android:id="@+id/incomeBiWeeklyRadioButton"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:text="@string/bi_weekly"
-                                    android:textColor="@color/colorPrimaryDark"
-                                    android:textSize="15sp" />
-
-                                <RadioButton
-                                    android:id="@+id/incomeBiMonthlyRadioButton"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:text="@string/bi_monthly"
-                                    android:textColor="@color/colorPrimaryDark"
-                                    android:textSize="15sp" />
-
-                                <RadioButton
-                                    android:id="@+id/incomeMonthlyRadioButton"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:text="@string/monthly"
-                                    android:textColor="@color/colorPrimaryDark"
-                                    android:textSize="15sp" />
-
-                                <RadioButton
-                                    android:id="@+id/incomeBiAnnuallyRadioButton"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:text="@string/bi_annually"
-                                    android:textColor="@color/colorPrimaryDark"
-                                    android:textSize="15sp" />
-
-                                <RadioButton
-                                    android:id="@+id/incomeAnnuallyRadioButton"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:text="@string/yearly"
-                                    android:textColor="@color/colorPrimaryDark"
-                                    android:textSize="15sp" />
-
-                            </RadioGroup>
-
-                            <RelativeLayout
+                            <ListView
+                                android:id="@+id/incomeListView"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content">
 
-                                <Button
-                                    android:id="@+id/saveIncomeButton"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_alignParentEnd="true"
-                                    android:layout_margin="10dp"
-                                    android:background="@drawable/entry_box"
-                                    android:contentDescription="@string/save"
-                                    android:gravity="center"
-                                    android:text="@string/save"
-                                    android:textColor="@color/colorPrimaryDark"
-                                    tools:ignore="RelativeOverlap" />
+                            </ListView>
 
-                                <Button
-                                    android:id="@+id/updateIncomeButton"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_alignParentEnd="true"
-                                    android:layout_margin="10dp"
-                                    android:background="@drawable/entry_box"
-                                    android:contentDescription="@string/update"
-                                    android:gravity="center"
-                                    android:text="@string/update"
-                                    android:textColor="@color/colorPrimaryDark"
-                                    tools:ignore="RelativeOverlap" />
+                        </ScrollView>
 
-                                <Button
-                                    android:id="@+id/cancelIncomeButton"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_alignParentStart="true"
-                                    android:layout_margin="10dp"
-                                    android:background="@drawable/entry_box"
-                                    android:contentDescription="@string/cancel"
-                                    android:gravity="center"
-                                    android:text="@string/cancel"
-                                    android:textColor="@color/colorPrimaryDark" />
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical">
 
-                                <Button android:id="@+id/doneIncomeButton"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_alignParentEnd="true"
-                                    android:layout_below="@id/saveIncomeButton"
-                                    android:layout_margin="10dp"
-                                    android:background="@drawable/entry_box"
-                                    android:contentDescription="@string/save_done_income"
-                                    android:text="@string/done_income_categories"
-                                    android:textColor="@color/colorPrimaryDark"
-                                    tools:ignore="RelativeOverlap" />
+                            <Button
+                                android:id="@+id/addMoreIncomeButton"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:layout_margin="10dp"
+                                android:background="@drawable/entry_box"
+                                android:contentDescription="@string/another_income"
+                                android:text="@string/another_income"
+                                android:textColor="@color/colorPrimaryDark"
+                                tools:ignore="RelativeOverlap" />
 
-                            </RelativeLayout>
+                            <Button
+                                android:id="@+id/doneIncomeButton"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:layout_margin="10dp"
+                                android:background="@drawable/entry_box"
+                                android:contentDescription="@string/done_income_categories"
+                                android:text="@string/done_income_categories"
+                                android:textColor="@color/colorPrimaryDark"
+                                tools:ignore="RelativeOverlap" />
+
 
                         </LinearLayout>
 

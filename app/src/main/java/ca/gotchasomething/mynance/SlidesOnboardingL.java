@@ -26,12 +26,12 @@ public class SlidesOnboardingL extends AppCompatActivity implements View.OnClick
     private ImageView[] dots;
     int tourDoneYes;
     private int[] onboardingSlides = {
-            R.layout.slides_onboarding_1_L,
-            R.layout.slides_onboarding_2_L,
-            R.layout.slides_onboarding_3_L,
-            R.layout.slides_onboarding_4_L,
-            R.layout.slides_onboarding_5_L,
-            R.layout.slides_onboarding_6_L
+            R.layout.slides_onboarding_1_land,
+            R.layout.slides_onboarding_2_land,
+            R.layout.slides_onboarding_3_land,
+            R.layout.slides_onboarding_4_land,
+            R.layout.slides_onboarding_5_land,
+            R.layout.slides_onboarding_6_land
     };
     private LinearLayout dotsLayout;
     SQLiteDatabase setUpDbDb;
@@ -51,7 +51,7 @@ public class SlidesOnboardingL extends AppCompatActivity implements View.OnClick
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         }
 
-        setContentView(R.layout.slides_onboarding_background_L);
+        setContentView(R.layout.slides_onboarding_background_land);
 
         viewPager = findViewById(R.id.viewPager);
         adapter = new AdapterOnboarding(onboardingSlides, this);

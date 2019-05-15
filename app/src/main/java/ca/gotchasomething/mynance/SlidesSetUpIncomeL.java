@@ -22,8 +22,8 @@ public class SlidesSetUpIncomeL extends AppCompatActivity implements View.OnClic
     DbManager dbManager;
     private ImageView[] dots;
     private int[] setUpIncomeSlides = {
-            R.layout.slides_set_up_income_1_L,
-            R.layout.slides_set_up_income_2_L,
+            R.layout.slides_set_up_income_1_land,
+            R.layout.slides_set_up_income_2_land,
     };
     private LinearLayout dotsLayout;
     ViewPager viewPager;
@@ -42,7 +42,7 @@ public class SlidesSetUpIncomeL extends AppCompatActivity implements View.OnClic
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         }
 
-        setContentView(R.layout.slides_set_up_background_L);
+        setContentView(R.layout.slides_set_up_background_land);
 
         viewPager = findViewById(R.id.viewPager);
         adapter1 = new AdapterSetUpIncome(setUpIncomeSlides, this);

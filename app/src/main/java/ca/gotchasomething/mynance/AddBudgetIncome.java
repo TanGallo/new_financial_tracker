@@ -56,7 +56,7 @@ public class AddBudgetIncome extends LayoutBudget {
 
             incomeListLabel = findViewById(R.id.incomeListLabel);
             doneIncomeButton = findViewById(R.id.doneIncomeButton);
-            incomeLine = findViewById(R.id.incomeLine);
+            //incomeLine = findViewById(R.id.incomeLine);
             incomeCategory = findViewById(R.id.incomeCategory);
             incomeAmountET = findViewById(R.id.incomeAmount);
             incomeFrequencyRadioGroup = findViewById(R.id.incomeFrequencyRadioGroup);
@@ -158,7 +158,7 @@ public class AddBudgetIncome extends LayoutBudget {
         public void onClick(View v) {
             incomeDone = 1;
 
-            setUpDb = new SetUpDb(incomeDone, debtsDone, savingsDone, budgetDone, balanceDone, balanceAmount, tourDone, 0);
+            setUpDb = new SetUpDb(incomeDone, billsDone, debtsDone, savingsDone, budgetDone, balanceDone, balanceAmount, tourDone, 0);
             dbManager.addSetUp(setUpDb);
 
             backToSetUp();
@@ -303,7 +303,7 @@ public class AddBudgetIncome extends LayoutBudget {
                     incomeListLabel.setVisibility(View.GONE);
                     doneIncomeButton = findViewById(R.id.doneIncomeButton);
                     doneIncomeButton.setVisibility(View.GONE);
-                    incomeLine = findViewById(R.id.incomeLine);
+                    //incomeLine = findViewById(R.id.incomeLine);
                     incomeLine.setVisibility(View.GONE);
                     incomeCategory = findViewById(R.id.incomeCategory);
                     incomeAmountET = findViewById(R.id.incomeAmount);

@@ -272,7 +272,6 @@
     <string name="click_here_savings2">Cliquez ici pour ajouter un nouvel item d\'épargne</string>
     <string name="click_here_debts2">Cliquez ici pour ajouter un nouvel item de dette</string>
     <string name="save_add_income">Enregistrer et ajouter une autre catégorie de revenu</string>
-    <string name="save_done_income">Enregistrer et Terminé d\'ajouter des catégories de revenus</string>
     <string name="click_here_begin">Cliquez ici pour commencer</string>
     <string name="enter_income">Créer les revenus</string>
     <string name="previous">précédente</string>
@@ -284,8 +283,19 @@
     <string name="done_income_categories">Fini de créer les revenus</string>
     <string name="enter_bills">Entrer vos factures</string>
     <string name="enter_bills_1">Les factures sont des paiements que vous effectuez régulièrement au cours d\'une année donnée. Configurez vos factures dans l\'écran suivant.</string>
-    <string name="enter_bills_2">Les factures NE COMPRENNENT PAS les cartes de crédit ou autres emprunts/lignes de crédit, les hypothèques ou l\'argent que vous mettez dans des comptes d\'épargne ou des comptes d\'investissement. Vous les configurerez séparément dans un autre écran.</string>
-    <string name="enter_bills_3">Pour plus de simplicité, additionnez les montants de factures semblables et entrez-les en une seule facture. Par exemple, si vous payez des leçons de natation et d\’arts martiaux, saisissez-les sous la forme d\’une facture appelée «leçons».</string>
+    <string name="enter_bills_2">Les factures NE COMPRENNENT PAS les dettes (cartes de crédit, autres emprunts/lignes de crédit, ou les hypothèques) ou des épargnes (l\'argent que vous mettez dans des comptes d\'épargne ou des comptes d\'investissement). Vous les configurerez séparément dans un autre écran.</string>
+    <string name="enter_bills_3">De plus, les factures NE COMPRENNENT PAS les dépenses optionnelles (dépenses de loisirs, voyages, vêtements, cadeaux, etc.).</string>
+    <string name="enter_bills_4">Pour plus de simplicité, additionnez les montants de factures semblables et entrez-les en une seule facture. Par exemple, si vous payez des leçons de natation et d\’arts martiaux, saisissez-les sous la forme d\’une facture appelée «leçons» ou «activités pour enfants».</string>
     <string name="click_here_next">Cliquez ici suivant</string>
     <string name="expense_categories">Catégories de dépenses:</string>
+    <string name="view_list">voir la liste</string>
+    <string name="hide_list">cacher la liste</string>
+    <string name="another_income">ajouter une autre catégorie de revenu</string>
+    <string name="another_bill">ajouter une autre facture</string>
+    <string name="done_bills">Fini de créer les factures</string>
+    <string name="bills">Factures Régulières:</string>
+    <string name="name_bill">Nommez cette facture</string>
+    <string name="bill_frequency">Comment souvent payez-vous cette facture?</string>
+    <string name="bill_amount">Quel est le montant habituel de cette facture?</string>
+    <string name="enter_bills_1a">Les factures INCLUENT les dépenses qui constituent les frais de subsistance nécessaires (épiceries, etc.) et les obligations (cotisations, etc.).</string>
 </resources>

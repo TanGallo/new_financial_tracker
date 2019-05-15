@@ -35,33 +35,6 @@
                 android:orientation="vertical"
                 tools:ignore="UselessParent">
 
-                <TextView android:id="@+id/billsListLabel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:text="@string/expense_categories"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:layout_gravity="center_horizontal"
-                    android:textSize="22sp" />
-
-                <ListView
-                    android:id="@+id/billsListView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                </ListView>
-
-                <View
-                    android:id="@+id/billsLine"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:alpha=".5"
-                    android:background="@color/colorPrimary"></View>
-
                 <ScrollView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
@@ -71,245 +44,61 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
 
+                        <TextView
+                            android:id="@+id/billsListLabel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_margin="10dp"
+                            android:text="@string/bills"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textSize="22sp" />
+
+                        <ScrollView
+                            android:layout_width="match_parent"
+                            android:layout_height="200dp"
+                            android:fillViewport="true">
+
+                            <ListView
+                                android:id="@+id/billsListView"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                            </ListView>
+
+                        </ScrollView>
+
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:orientation="vertical">
 
-                            <TextView
-                                android:id="@+id/billsCategoryLabel"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="10dp"
-                                android:layout_marginTop="10dp"
-                                android:text="@string/enter_exp_cat"
-                                android:labelFor="@id/budgetExpenseCategory"
-                                android:textSize="16sp"
-                                android:textColor="@color/colorPrimaryDark"/>
-
-                            <EditText
-                                android:id="@+id/billsCategory"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_margin="10dp"
-                                android:inputType="text"
-                                android:textSize="18sp"
-                                android:textColor="@color/colorPrimaryDark"
-                                tools:ignore="Autofill" />
-
-                            <TextView
-                                android:id="@+id/billsAmountLabel"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="10dp"
-                                android:text="@string/amount"
-                                android:labelFor="@id/budgetExpenseAmount"
-                                android:textSize="16sp"
-                                android:textColor="@color/colorPrimaryDark"/>
-
-                            <EditText
-                                android:id="@+id/billsAmount"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_margin="10dp"
-                                android:inputType="numberDecimal"
-                                android:textSize="18sp"
-                                android:textColor="@color/colorPrimaryDark"
-                                tools:ignore="Autofill" />
-
-                        </LinearLayout>
-
-                        <TextView
-                            android:id="@+id/billsFrequencyLabel"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="10dp"
-                            android:text="@string/how_often"
-                            android:labelFor="@id/budgetExpenseFrequencyRadioGroup"
-                            android:textSize="16sp"
-                            android:textColor="@color/colorPrimaryDark"/>
-
-                        <RadioGroup
-                            android:id="@+id/billsFrequencyRadioGroup"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="10dp"
-                            >
-
-                            <RadioButton
-                                android:id="@+id/billsWeeklyRadioButton"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:text="@string/weekly"
-                                android:textSize="15sp"
-                                android:textColor="@color/colorPrimaryDark"/>
-
-                            <RadioButton
-                                android:id="@+id/billsBiWeeklyRadioButton"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:text="@string/bi_weekly"
-                                android:textSize="15sp"
-                                android:textColor="@color/colorPrimaryDark"/>
-
-                            <RadioButton
-                                android:id="@+id/billsBiMonthlyRadioButton"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:text="@string/bi_monthly"
-                                android:textSize="15sp"
-                                android:textColor="@color/colorPrimaryDark"/>
-
-                            <RadioButton
-                                android:id="@+id/billsMonthlyRadioButton"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:text="@string/monthly"
-                                android:textSize="15sp"
-                                android:textColor="@color/colorPrimaryDark"/>
-
-                            <RadioButton
-                                android:id="@+id/billsBiAnnuallyRadioButton"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:text="@string/bi_annually"
-                                android:textSize="15sp"
-                                android:textColor="@color/colorPrimaryDark"/>
-
-                            <RadioButton
-                                android:id="@+id/billsAnnuallyRadioButton"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:text="@string/yearly"
-                                android:textSize="15sp"
-                                android:textColor="@color/colorPrimaryDark"/>
-
-                        </RadioGroup>
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:layout_marginBottom="15dp"
-                            android:layout_marginEnd="10dp"
-                            android:layout_marginStart="10dp"
-                            android:layout_marginTop="15dp"
-                            android:alpha=".5"
-                            android:background="@color/colorPrimary"></View>
-
-                        <RadioGroup
-                            android:id="@+id/billsABRadioGroup"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="10dp">
-
-                            <RadioButton
-                                android:id="@+id/billsARadioButton"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginBottom="8dp"
-                                android:text="@string/needs"
-                                android:textSize="15sp"
-                                android:textColor="@color/colorPrimaryDark"/>
-
-                            <RadioButton
-                                android:id="@+id/billsBRadioButton"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:text="@string/optional"
-                                android:textSize="15sp"
-                                android:textColor="@color/colorPrimaryDark"/>
-
-                        </RadioGroup>
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:layout_marginBottom="15dp"
-                            android:layout_marginEnd="10dp"
-                            android:layout_marginStart="10dp"
-                            android:layout_marginTop="15dp"
-                            android:alpha=".5"
-                            android:background="@color/colorPrimary"></View>
-
-                        <TextView
-                            android:id="@+id/billsWeeklyGuidanceLabel"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="10dp"
-                            android:textSize="16sp"
-                            android:textColor="@color/colorPrimaryDark"
-                            android:text="@string/weekly_yes_or_no"
-                            android:labelFor="@id/budgetExpenseReminderRadioGroup"
-                            />
-
-                        <RadioGroup
-                            android:id="@+id/billsReminderRadioGroup"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="10dp">
-
-                            <RadioButton
-                                android:id="@+id/billsYesRadioButton"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginBottom="8dp"
-                                android:text="@string/weekly_yes"
-                                android:textSize="15sp"
-                                android:textColor="@color/colorPrimaryDark"/>
-
-                            <RadioButton
-                                android:id="@+id/billsNoRadioButton"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:text="@string/weekly_no"
-                                android:textSize="15sp"
-                                android:textColor="@color/colorPrimaryDark"/>
-
-                        </RadioGroup>
-
-                        <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
-
                             <Button
-                                android:id="@+id/cancelBillsButton"
+                                android:id="@+id/addMoreBillsButton"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentStart="true"
                                 android:layout_margin="10dp"
-                                android:gravity="center"
-                                android:contentDescription="@string/cancel"
-                                android:text="@string/cancel"
                                 android:background="@drawable/entry_box"
-                                android:textColor="@color/colorPrimaryDark"/>
+                                android:contentDescription="@string/another_bill"
+                                android:gravity="center"
+                                android:text="@string/another_bill"
+                                android:textColor="@color/colorPrimaryDark" />
 
                             <Button
-                                android:id="@+id/saveBillsButton"
+                                android:id="@+id/doneBillsButton"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentEnd="true"
                                 android:layout_margin="10dp"
-                                android:gravity="center"
-                                android:contentDescription="@string/add"
-                                android:text="@string/add"
                                 android:background="@drawable/entry_box"
+                                android:contentDescription="@string/done_bills"
+                                android:gravity="center"
+                                android:text="@string/done_bills"
                                 android:textColor="@color/colorPrimaryDark"
                                 tools:ignore="RelativeOverlap" />
 
-                            <Button
-                                android:id="@+id/updateBillsButton"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentEnd="true"
-                                android:layout_margin="10dp"
-                                android:gravity="center"
-                                android:contentDescription="@string/update"
-                                android:text="@string/update"
-                                android:background="@drawable/entry_box"
-                                android:textColor="@color/colorPrimaryDark"
-                                tools:ignore="RelativeOverlap" />
-
-                        </RelativeLayout>
+                        </LinearLayout>
 
                     </LinearLayout>
 
