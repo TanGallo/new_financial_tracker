@@ -1,4 +1,4 @@
-package ca.gotchasomething.mynance;
+/*package ca.gotchasomething.mynance;
 
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -25,5 +25,5 @@ public class SlidesLayoutSetUpIncome extends AppCompatActivity {
             startActivity(landscape);
         }
     }
-}
+}*/
 

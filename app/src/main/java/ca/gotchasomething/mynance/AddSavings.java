@@ -30,15 +30,15 @@ public class AddSavings extends LayoutSavings {
     EditText savingsAmountEntry, savingsGoalAmountEntry, savingsNameEntry, savingsPaymentsEntry, savingsPercentEntry;
     ExpenseBudgetDb expenseBudgetDb;
     IncomeBudgetDb incomeBudgetDb;
-    Intent backToSavingsLayout;
+    Intent backToSavingsLayout, showList;
     LinearLayout toastLayout;
     long expRefKeyS, incRefKeyS;
     RadioButton savingsAnnuallyRadioButton, savingsBiWeeklyRadioButton, savingsMonthlyRadioButton,
-            savingsWeeklyRadioButton;
-    RadioGroup savingsFrequencyRadioGroup;
+            savingsWeeklyRadioButton, savingsSeparateYesRadioButton, savingsSeparateNoRadioButton;
+    RadioGroup savingsFrequencyRadioGroup, savingsSeparateRadioGroup;
     SavingsDb saving;
     String expenseName = null, expensePriority = null, expenseWeekly = null, incomeName = null, savingsDate = null, savingsDate2 = null,
-            savingsFrequencyS = null, savingsName = null;
+            savingsFrequencyS = null, savingsName = null, savingsSeparate = null, savingsSeparateS = null;
     TextView savingsDateResult, savingsDateResultLabel, savingsFrequencyLabel, tv;
     Toast toast;
 
@@ -50,6 +50,9 @@ public class AddSavings extends LayoutSavings {
         dbManager = new DbManager(this);
 
         savingsNameEntry = findViewById(R.id.savingsNameEntry);
+        savingsSeparateRadioGroup = findViewById(R.id.savingsSeparateRadioGroup);
+        savingsSeparateYesRadioButton = findViewById(R.id.savingsSeparateYesRadioButton);
+        savingsSeparateNoRadioButton = findViewById(R.id.savingsSeparateNoRadioButton);
         savingsAmountEntry = findViewById(R.id.savingsAmountEntry);
         savingsPercentEntry = findViewById(R.id.savingsPercentEntry);
         savingsPaymentsEntry = findViewById(R.id.savingsPaymentsEntry);
@@ -69,6 +72,7 @@ public class AddSavings extends LayoutSavings {
         updateSavingsButton.setVisibility(View.GONE);
         cancelSavingsButton = findViewById(R.id.cancelSavingsButton);
 
+        savingsSeparateRadioGroup.setOnCheckedChangeListener(onCheckSavingsSeparate);
         savingsFrequencyRadioGroup.setOnCheckedChangeListener(onCheckSavingsFrequency);
         cancelSavingsButton.setOnClickListener(onClickCancelSavingsButton);
         saveSavingsButton.setOnClickListener(onClickSaveSavingsButton);
@@ -78,6 +82,22 @@ public class AddSavings extends LayoutSavings {
         savingsPaymentsEntry.addTextChangedListener(onChangeSavingsPayments);
         savingsPercentEntry.addTextChangedListener(onChangeSavingsPercent);
     }
+
+    RadioGroup.OnCheckedChangeListener onCheckSavingsSeparate = new RadioGroup.OnCheckedChangeListener() {
+        @Override
+        public void onCheckedChanged(RadioGroup group, int checkedId) {
+            switch (checkedId) {
+                case R.id.savingsSeparateYesRadioButton:
+                    savingsSeparateS = "Y";
+                    break;
+                case R.id.savingsSeparateNoRadioButton:
+                    savingsSeparateS = "N";
+                    break;
+                default:
+                    savingsSeparateS = "Y";
+            }
+        }
+    };
 
     TextWatcher onChangeSavingsAmount = new TextWatcher() {
         @Override
@@ -179,6 +199,12 @@ public class AddSavings extends LayoutSavings {
         startActivity(backToSavingsLayout);
     }
 
+    public void showList() {
+        showList = new Intent(AddSavings.this, SetUpAddSavingsList.class);
+        showList.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+        startActivity(showList);
+    }
+
     public void savingsDateResult() {
         allSavingsData();
         savingsDate2 = general.calcSavingsDate(
@@ -193,7 +219,7 @@ public class AddSavings extends LayoutSavings {
         if (savingsDate2.equals(getString(R.string.goal_achieved))) {
             savingsDateResultLabel.setVisibility(View.GONE);
             savingsDateResult.setTextColor(Color.parseColor("#03ac13"));
-        } else if(savingsDate2.equals(getString(R.string.too_far))) {
+        } else if (savingsDate2.equals(getString(R.string.too_far))) {
             savingsDateResultLabel.setVisibility(View.GONE);
             savingsDateResult.setTextColor(Color.parseColor("#ffff4444"));
         } else {
@@ -209,6 +235,7 @@ public class AddSavings extends LayoutSavings {
         } else {
             savingsName = savingsNameEntry.getText().toString();
         }
+        savingsSeparate = savingsSeparateS;
         savingsAmount = general.extractingDouble(savingsAmountEntry);
         savingsGoal = general.extractingDouble(savingsGoalAmountEntry);
         currentSavingsRate = general.extractingPercent(savingsPercentEntry);
@@ -231,7 +258,11 @@ public class AddSavings extends LayoutSavings {
     View.OnClickListener onClickCancelSavingsButton = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            backToSavings();
+            if (dbManager.retrieveLatestDone() == "debts") {
+                showList();
+            } else {
+                backToSavings();
+            }
         }
     };
 
@@ -284,8 +315,11 @@ public class AddSavings extends LayoutSavings {
                 expRefKeyS = dbManager.findLatestExpenseId();
                 incRefKeyS = dbManager.findLatestIncomeId();
 
+                //savingsSeparate = savingsSeparateS;
+
                 saving = new SavingsDb(
                         savingsName,
+                        savingsSeparate,
                         savingsAmount,
                         savingsGoal,
                         savingsPayments,
@@ -299,15 +333,19 @@ public class AddSavings extends LayoutSavings {
 
                 dbManager.addSavings(saving);
 
-                toast = Toast.makeText(getBaseContext(), R.string.savings_saved,
+                /*toast = Toast.makeText(getBaseContext(), R.string.savings_saved,
                         Toast.LENGTH_LONG);
                 toastLayout = (LinearLayout) toast.getView();
                 tv = (TextView) toastLayout.getChildAt(0);
                 tv.setTextSize(20);
-                toast.show();
+                toast.show();*/
 
-                savingsHeaderText();
-                backToSavings();
+                if (dbManager.retrieveLatestDone() == "debts") {
+                    showList();
+                } else {
+                    savingsHeaderText();
+                    backToSavings();
+                }
             } else {
                 Toast.makeText(getBaseContext(), R.string.no_blanks_warning, Toast.LENGTH_LONG).show();
             }

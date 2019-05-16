@@ -36,7 +36,7 @@ public class MainActivity extends MainNavigation {
 
     public void loadSlides(View view) {
         new PreferenceManager(this).clearPreferences();
-        startActivity(new Intent(this, AdapterOnboarding.class));
+        startActivity(new Intent(this, AdapterSlides.class));
         finish();
     }
 }

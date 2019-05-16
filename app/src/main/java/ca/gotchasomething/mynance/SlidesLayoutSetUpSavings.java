@@ -7,7 +7,7 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-public class SlidesLayoutSetUpBills extends AppCompatActivity {
+public class SlidesLayoutSetUpSavings extends AppCompatActivity {
 
     Intent portrait, landscape;
 
@@ -18,10 +18,10 @@ public class SlidesLayoutSetUpBills extends AppCompatActivity {
         int orientation = getResources().getConfiguration().orientation;
 
         if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-            portrait = new Intent(this, SlidesSetUpBillsP.class);
+            portrait = new Intent(this, SlidesSetUpSavingsP.class);
             startActivity(portrait);
         } else if(orientation == Configuration.ORIENTATION_LANDSCAPE){
-            landscape = new Intent(this, SlidesSetUpBillsL.class);
+            landscape = new Intent(this, SlidesSetUpSavingsL.class);
             startActivity(landscape);
         }
     }

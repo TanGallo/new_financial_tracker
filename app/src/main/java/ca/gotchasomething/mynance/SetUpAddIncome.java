@@ -14,7 +14,7 @@ import androidx.annotation.Nullable;
 
 import ca.gotchasomething.mynance.data.IncomeBudgetDb;
 
-public class AddIncomeSetUp extends LayoutBudget {
+public class SetUpAddIncome extends LayoutBudget {
 
     Button saveIncomeButton, updateIncomeButton, cancelIncomeButton;
     DbManager dbManager;
@@ -31,7 +31,7 @@ public class AddIncomeSetUp extends LayoutBudget {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.add_edit_income);
+        setContentView(R.layout.set_up_add_income);
 
         dbManager = new DbManager(this);
 
@@ -89,13 +89,13 @@ public class AddIncomeSetUp extends LayoutBudget {
     };
 
     public void backToIncomeSetUp() {
-        backToIncomeSetUp = new Intent(AddIncomeSetUp.this, AddIncomeSetUp.class);
+        backToIncomeSetUp = new Intent(SetUpAddIncome.this, SetUpAddIncome.class);
         backToIncomeSetUp.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
         startActivity(backToIncomeSetUp);
     }
 
     public void showList() {
-        showList = new Intent(AddIncomeSetUp.this, AddIncomeSetUpList.class);
+        showList = new Intent(SetUpAddIncome.this, SetUpAddIncomeList.class);
         showList.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
         startActivity(showList);
     }
@@ -103,7 +103,7 @@ public class AddIncomeSetUp extends LayoutBudget {
     View.OnClickListener onClickCancelIncomeButton = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            backToIncomeSetUp();
+            showList();
         }
     };
 

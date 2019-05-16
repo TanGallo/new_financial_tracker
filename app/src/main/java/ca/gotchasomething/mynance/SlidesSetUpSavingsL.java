@@ -15,19 +15,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.viewpager.widget.ViewPager;
 
-public class SlidesSetUpBillsP extends AppCompatActivity implements View.OnClickListener {
+public class SlidesSetUpSavingsL extends AppCompatActivity implements View.OnClickListener {
 
-    private AdapterSlides adapter2;
+    private AdapterSlides adapter4;
     private Button previousButton, nextButton;
     DbManager dbManager;
     private ImageView[] dots;
     private int[] slides = {
-            R.layout.slides_set_up_bills_1,
-            R.layout.slides_set_up_bills_1a,
-            R.layout.slides_set_up_bills_2,
-            R.layout.slides_set_up_bills_3,
-            R.layout.slides_set_up_bills_4,
-            R.layout.slides_set_up_bills_5
+            R.layout.slides_set_up_savings_1_land,
+            R.layout.slides_set_up_savings_2_land
     };
     private LinearLayout dotsLayout;
     ViewPager viewPager;
@@ -46,11 +42,11 @@ public class SlidesSetUpBillsP extends AppCompatActivity implements View.OnClick
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         }
 
-        setContentView(R.layout.slides_set_up_background);
+        setContentView(R.layout.slides_set_up_background_land);
 
         viewPager = findViewById(R.id.viewPager);
-        adapter2 = new AdapterSlides(slides, this);
-        viewPager.setAdapter(adapter2);
+        adapter4 = new AdapterSlides(slides, this);
+        viewPager.setAdapter(adapter4);
 
         dotsLayout = findViewById(R.id.dotsLayout);
         previousButton = findViewById(R.id.previousButton);
@@ -129,7 +125,7 @@ public class SlidesSetUpBillsP extends AppCompatActivity implements View.OnClick
     }
 
     private void loadHome() {
-            startActivity(new Intent(this, SetUpAddBills.class));
+            startActivity(new Intent(this, AddSavings.class));
             finish();
     }
 

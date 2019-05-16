@@ -101,7 +101,7 @@ public class LayoutDebt extends MainNavigation {
         totalDebtOwing = findViewById(R.id.totalDebtOwing);
         totalDebtPaidLabel = findViewById(R.id.totalDebtPaidLabel);
         totalDebtPaidByDate = findViewById(R.id.totalDebtPaidByDate);
-        emptyDebtsText = findViewById(R.id.emptyDebtsText);
+        /*emptyDebtsText = findViewById(R.id.emptyDebtsText);
         emptyDebtsText2 = findViewById(R.id.emptyDebtsText2);
         emptyDebtsText3 = findViewById(R.id.emptyDebtsText3);
         debtsSetUpNoTime = findViewById(R.id.debtsSetUpNoTime);
@@ -115,7 +115,7 @@ public class LayoutDebt extends MainNavigation {
         debtsSetUpNeedHelp2 = findViewById(R.id.debtsSetUpNeedHelp2);
         debtsSetUpNeedHelp2.setVisibility(View.GONE);
         debtsSetUpHelpButton = findViewById(R.id.debtsSetUpHelpButton);
-        debtsSetUpHelpButton.setVisibility(View.GONE);
+        debtsSetUpHelpButton.setVisibility(View.GONE);*/
         deleteDebtWarningText = findViewById(R.id.deleteDebtWarningText);
         deleteDebtWarningText.setVisibility(View.GONE);
         cancelDeleteDebtButton = findViewById(R.id.cancelDeleteDebtButton);
@@ -130,9 +130,9 @@ public class LayoutDebt extends MainNavigation {
         addDebtButton.setVisibility(View.GONE);
 
         doneDebtsSetUpButton = findViewById(R.id.doneDebtsSetUpButton);
-        doneDebtsSetUpButton.setOnClickListener(onClickDoneDebtsSetUpButton);
+        //doneDebtsSetUpButton.setOnClickListener(onClickDoneDebtsSetUpButton);
 
-        if (dbManager.debtSetUpCheck() > 0) {
+        /*if (dbManager.debtSetUpCheck() > 0) {
             addNewDebtButton.setVisibility(View.GONE);
             addDebtButton.setVisibility(View.VISIBLE);
             addDebtButton.setOnClickListener(onClickAddDebtButton);
@@ -144,7 +144,7 @@ public class LayoutDebt extends MainNavigation {
             debtsSetUpNeedHelp.setVisibility(View.GONE);
             debtsSetUpNeedHelp2.setVisibility(View.GONE);
             debtsSetUpHelpButton.setVisibility(View.GONE);
-        }
+        }*/
 
         debtAdapter = new DebtDbAdapter(this, dbManager.getDebts());
         debtListView.setAdapter(debtAdapter);
@@ -162,7 +162,7 @@ public class LayoutDebt extends MainNavigation {
         debtHeaderText();
     }
 
-    View.OnClickListener onClickDoneDebtsSetUpButton = new View.OnClickListener() {
+    /*View.OnClickListener onClickDoneDebtsSetUpButton = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             debtsDone = 1;
@@ -186,9 +186,9 @@ public class LayoutDebt extends MainNavigation {
             startActivity(backToSetUp);
 
         }
-    };
+    };*/
 
-    View.OnClickListener onClickNoTime = new View.OnClickListener() {
+    /*View.OnClickListener onClickNoTime = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             debtsSetUpNoTime2.setVisibility(View.VISIBLE);
@@ -201,9 +201,9 @@ public class LayoutDebt extends MainNavigation {
                 }
             });
         }
-    };
+    };*/
 
-    View.OnClickListener onClickNeedHelp = new View.OnClickListener() {
+    /*View.OnClickListener onClickNeedHelp = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             debtsSetUpNeedHelp2.setVisibility(View.VISIBLE);
@@ -216,7 +216,7 @@ public class LayoutDebt extends MainNavigation {
                 }
             });
         }
-    };
+    };*/
 
     public void debtHeaderText() {
 
@@ -277,7 +277,7 @@ public class LayoutDebt extends MainNavigation {
 
     public String priorityData() {
         for (ExpenseBudgetDb e : dbManager.getExpense()) {
-            if (String.valueOf(debtDb.getExpRefKeyD()).equals(String.valueOf(e.getId()))) {
+            if (String.valueOf(expRefKeyD).equals(String.valueOf(e.getId()))) {
                 priority = e.getExpensePriority();
             }
         }
@@ -442,7 +442,7 @@ public class LayoutDebt extends MainNavigation {
             holder.debtListFreeDate.setText(debtEnd);
             if (debtEnd.equals(getString(R.string.debt_paid))) {
                 holder.debtListFreeDate.setTextColor(Color.parseColor("#03ac13"));
-            } else if(debtEnd.equals(getString(R.string.too_far))) {
+            } else if (debtEnd.equals(getString(R.string.too_far))) {
                 holder.debtListFreeDate.setTextColor(Color.parseColor("#ffff4444"));
             } else {
                 holder.debtListFreeDate.setTextColor(Color.parseColor("#303F9F"));
@@ -459,7 +459,10 @@ public class LayoutDebt extends MainNavigation {
 
             holder.debtDeleted.setTag(debts.get(position));
             holder.debtEdit.setTag(debts.get(position));
-            if(debts.get(position).getDebtAmount() > debts.get(position).getDebtLimit()) {
+
+            if (debts.get(position).getDebtLimit() == 0) {
+                holder.debtOverLimit.setVisibility(View.GONE);
+            } else if (debts.get(position).getDebtAmount() > debts.get(position).getDebtLimit()) {
                 holder.debtOverLimit.setVisibility(View.VISIBLE);
             } else {
                 holder.debtOverLimit.setVisibility(View.GONE);
@@ -529,7 +532,7 @@ public class LayoutDebt extends MainNavigation {
                     if (debtEnd.equals(getString(R.string.debt_paid))) {
                         debtDateResultLabel.setVisibility(View.GONE);
                         debtDateResult.setTextColor(Color.parseColor("#03ac13"));
-                    } else if(debtEnd.equals(getString(R.string.too_far))) {
+                    } else if (debtEnd.equals(getString(R.string.too_far))) {
                         debtDateResultLabel.setVisibility(View.GONE);
                         debtDateResult.setTextColor(Color.parseColor("#ffff4444"));
                     } else {
@@ -582,7 +585,7 @@ public class LayoutDebt extends MainNavigation {
 
                             debtEndResult();
 
-                            if (debtName != null && debtLimit != 0.0) {
+                            if (debtName != null) {
 
                                 debtDb.setDebtName(debtName);
                                 debtDb.setDebtLimit(debtLimit);
@@ -626,7 +629,7 @@ public class LayoutDebt extends MainNavigation {
                                     expenseDb.update(DbHelper.MONEY_OUT_TABLE_NAME, values3, DbHelper.EXPREFKEYMO + "=?", args);
                                     expenseDb.update(DbHelper.MONEY_OUT_TABLE_NAME, values4, DbHelper.MONEYOUTCHARGINGDEBTID + "=?", args2);
                                     expenseDb.update(DbHelper.MONEY_IN_TABLE_NAME, values5, DbHelper.INCREFKEYMI + "=?", args3);
-                                } catch (CursorIndexOutOfBoundsException| SQLException e) {
+                                } catch (CursorIndexOutOfBoundsException | SQLException e) {
                                     e.printStackTrace();
                                 }
 

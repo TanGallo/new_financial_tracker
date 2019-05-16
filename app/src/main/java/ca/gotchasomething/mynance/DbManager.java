@@ -35,7 +35,7 @@ public class DbManager extends AppCompatActivity {
             endIndex = 0, incomeDoneCheck = 0, latestYear = 0, savingsDoneCheck = 0, startIndex = 0, tourDoneCheck = 0;
     public Long debtId, expenseId, incomeId;
     public SQLiteDatabase db;
-    public String category = null, startingString = null, subStringResult = null;
+    public String category = null, startingString = null, subStringResult = null, latestDone = null;
 
     public DbManager(Context context) {
         dbHelper = DbHelper.getInstance(context);
@@ -48,14 +48,15 @@ public class DbManager extends AppCompatActivity {
         if (cursor.moveToFirst()) {
             while (!cursor.isAfterLast()) {
                 SetUpDb setUps = new SetUpDb(
-                        cursor.getInt(cursor.getColumnIndex(DbHelper.INCOMEDONE)),
+                        cursor.getString(cursor.getColumnIndex(DbHelper.LATESTDONE)),
+                        /*cursor.getInt(cursor.getColumnIndex(DbHelper.INCOMEDONE)),
                         cursor.getInt(cursor.getColumnIndex(DbHelper.BILLSDONE)),
                         cursor.getInt(cursor.getColumnIndex(DbHelper.DEBTSDONE)),
                         cursor.getInt(cursor.getColumnIndex(DbHelper.SAVINGSDONE)),
                         cursor.getInt(cursor.getColumnIndex(DbHelper.BUDGETDONE)),
                         cursor.getInt(cursor.getColumnIndex(DbHelper.BALANCEDONE)),
+                        cursor.getInt(cursor.getColumnIndex(DbHelper.TOURDONE)),*/
                         cursor.getDouble(cursor.getColumnIndex(DbHelper.BALANCEAMOUNT)),
-                        cursor.getInt(cursor.getColumnIndex(DbHelper.TOURDONE)),
                         cursor.getLong(cursor.getColumnIndex(DbHelper.ID))
                 );
                 setUp.add(setUps); //adds new items to end of list
@@ -68,28 +69,30 @@ public class DbManager extends AppCompatActivity {
 
     public void addSetUp(SetUpDb setUp) {
         newSetUp = new ContentValues();
-        newSetUp.put(DbHelper.INCOMEDONE, setUp.getIncomeDone());
+        newSetUp.put(DbHelper.LATESTDONE, setUp.getLatestDone());
+        /*newSetUp.put(DbHelper.INCOMEDONE, setUp.getIncomeDone());
         newSetUp.put(DbHelper.BILLSDONE, setUp.getBillsDone());
         newSetUp.put(DbHelper.DEBTSDONE, setUp.getDebtsDone());
         newSetUp.put(DbHelper.SAVINGSDONE, setUp.getSavingsDone());
         newSetUp.put(DbHelper.BUDGETDONE, setUp.getBudgetDone());
         newSetUp.put(DbHelper.BALANCEDONE, setUp.getBalanceDone());
+        newSetUp.put(DbHelper.TOURDONE, setUp.getTourDone());*/
         newSetUp.put(DbHelper.BALANCEAMOUNT, setUp.getBalanceAmount());
-        newSetUp.put(DbHelper.TOURDONE, setUp.getTourDone());
         db = dbHelper.getWritableDatabase();
         db.insert(DbHelper.SET_UP_TABLE_NAME, null, newSetUp);
     }
 
     public void updateSetUp(SetUpDb setUp) {
         updateSetUp = new ContentValues();
-        updateSetUp.put(DbHelper.INCOMEDONE, setUp.getIncomeDone());
+        updateSetUp.put(DbHelper.LATESTDONE, setUp.getLatestDone());
+        /*updateSetUp.put(DbHelper.INCOMEDONE, setUp.getIncomeDone());
         updateSetUp.put(DbHelper.BILLSDONE, setUp.getBillsDone());
         updateSetUp.put(DbHelper.DEBTSDONE, setUp.getDebtsDone());
         updateSetUp.put(DbHelper.SAVINGSDONE, setUp.getSavingsDone());
         updateSetUp.put(DbHelper.BUDGETDONE, setUp.getBudgetDone());
         updateSetUp.put(DbHelper.BALANCEDONE, setUp.getBalanceDone());
+        updateSetUp.put(DbHelper.TOURDONE, setUp.getTourDone());*/
         updateSetUp.put(DbHelper.BALANCEAMOUNT, setUp.getBalanceAmount());
-        updateSetUp.put(DbHelper.TOURDONE, setUp.getTourDone());
         db = dbHelper.getWritableDatabase();
         String[] args = new String[]{String.valueOf(setUp.getId())};
         db.update(
@@ -102,7 +105,17 @@ public class DbManager extends AppCompatActivity {
         db.delete(DbHelper.SET_UP_TABLE_NAME, DbHelper.ID + "=?", args);
     }
 
-    public int tourSetUpCheck() {
+    public String retrieveLatestDone() {
+        latestDone = null;
+        for (SetUpDb s : getSetUp()) {
+            if (s.getId() == 1) {
+                latestDone = s.getLatestDone();
+            }
+        }
+        return latestDone;
+    }
+
+    /*public int tourSetUpCheck() {
         List<Integer> tourDoneList = new ArrayList<>(getSetUp().size());
         for (SetUpDb s : getSetUp()) {
             try {
@@ -118,7 +131,7 @@ public class DbManager extends AppCompatActivity {
             tourDoneCheck = Collections.max(tourDoneList);
         }
         return tourDoneCheck;
-    }
+    }*/
 
     public Double retrieveStartingBalance() {
         List<Double> startingBalanceList = new ArrayList<>(getSetUp().size());
@@ -134,7 +147,7 @@ public class DbManager extends AppCompatActivity {
         return startingBalanceResult;
     }
 
-    public int balanceSetUpCheck() {
+    /*public int balanceSetUpCheck() {
         List<Integer> balanceDoneList = new ArrayList<>(getSetUp().size());
         for (SetUpDb s : getSetUp()) {
             balanceDoneList.add(s.getBalanceDone());
@@ -216,7 +229,7 @@ public class DbManager extends AppCompatActivity {
             debtsDoneCheck = Collections.max(debtsDoneList);
         }
         return debtsDoneCheck;
-    }
+    }*/
 
     public List<DebtDb> getDebts() {
         db = dbHelper.getReadableDatabase();
@@ -331,6 +344,7 @@ public class DbManager extends AppCompatActivity {
             while (!cursor.isAfterLast()) {
                 SavingsDb saving = new SavingsDb(
                         cursor.getString(cursor.getColumnIndex(DbHelper.SAVINGSNAME)),
+                        cursor.getString(cursor.getColumnIndex(DbHelper.SAVINGSSEPARATE)),
                         cursor.getDouble(cursor.getColumnIndex(DbHelper.SAVINGSAMOUNT)),
                         cursor.getDouble(cursor.getColumnIndex(DbHelper.SAVINGSGOAL)),
                         cursor.getDouble(cursor.getColumnIndex(DbHelper.SAVINGSPAYMENTS)),
@@ -353,6 +367,7 @@ public class DbManager extends AppCompatActivity {
     public void addSavings(SavingsDb saving) {
         newSavings = new ContentValues();
         newSavings.put(DbHelper.SAVINGSNAME, saving.getSavingsName());
+        newSavings.put(DbHelper.SAVINGSSEPARATE, saving.getSavingsSeparate());
         newSavings.put(DbHelper.SAVINGSAMOUNT, saving.getSavingsAmount());
         newSavings.put(DbHelper.SAVINGSGOAL, saving.getSavingsGoal());
         newSavings.put(DbHelper.SAVINGSPAYMENTS, saving.getSavingsPayments());
@@ -369,6 +384,7 @@ public class DbManager extends AppCompatActivity {
     public void updateSavings(SavingsDb saving) {
         updateSaving = new ContentValues();
         updateSaving.put(DbHelper.SAVINGSNAME, saving.getSavingsName());
+        updateSaving.put(DbHelper.SAVINGSSEPARATE, saving.getSavingsSeparate());
         updateSaving.put(DbHelper.SAVINGSAMOUNT, saving.getSavingsAmount());
         updateSaving.put(DbHelper.SAVINGSGOAL, saving.getSavingsGoal());
         updateSaving.put(DbHelper.SAVINGSPAYMENTS, saving.getSavingsPayments());

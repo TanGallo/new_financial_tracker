@@ -109,7 +109,7 @@ public class LayoutBudget extends MainNavigation {
         budgetOopsAmountText = findViewById(R.id.budgetOopsAmountText);
         budgetOopsAmountText.setVisibility(View.GONE);
         emptyBudgetText = findViewById(R.id.emptyBudgetText);
-        budgetSetUpNoTime = findViewById(R.id.budgetSetUpNoTime);
+        /*budgetSetUpNoTime = findViewById(R.id.budgetSetUpNoTime);
         budgetSetUpNoTime.setOnClickListener(onClickNoTimeBudget);
         budgetSetUpNoTime2 = findViewById(R.id.budgetSetUpNoTime2);
         budgetSetUpNoTime2.setVisibility(View.GONE);
@@ -120,7 +120,7 @@ public class LayoutBudget extends MainNavigation {
         budgetSetUpNeedHelp2 = findViewById(R.id.budgetSetUpNeedHelp2);
         budgetSetUpNeedHelp2.setVisibility(View.GONE);
         budgetSetUpHelpButton = findViewById(R.id.budgetSetUpHelpButton);
-        budgetSetUpHelpButton.setVisibility(View.GONE);
+        budgetSetUpHelpButton.setVisibility(View.GONE);*/
         deleteExpText = findViewById(R.id.deleteExpText);
         deleteExpText.setVisibility(View.GONE);
         noSpendingReportText = findViewById(R.id.noSpendingReportText);
@@ -139,7 +139,7 @@ public class LayoutBudget extends MainNavigation {
         budgetIncomePlusButton.setOnClickListener(onClickIncomePlusButton);
         budgetExpensePlusButton.setOnClickListener(onClickExpensePlusButton);
 
-        doneBudgetSetUpButton = findViewById(R.id.doneBudgetSetUpButton);
+        /*doneBudgetSetUpButton = findViewById(R.id.doneBudgetSetUpButton);
         doneBudgetSetUpButton.setOnClickListener(onClickDoneBudgetSetUpButton);
 
         if (dbManager.budgetSetUpCheck() > 0) {
@@ -151,7 +151,7 @@ public class LayoutBudget extends MainNavigation {
             budgetSetUpNeedHelp.setVisibility(View.GONE);
             budgetSetUpNeedHelp2.setVisibility(View.GONE);
             budgetSetUpHelpButton.setVisibility(View.GONE);
-        }
+        }*/
 
         incomeAdapter = new IncomeDbAdapter(this, dbManager.getIncomes());
         budgetIncomeDetails.setAdapter(incomeAdapter);
@@ -163,7 +163,7 @@ public class LayoutBudget extends MainNavigation {
 
     }
 
-    View.OnClickListener onClickDoneBudgetSetUpButton = new View.OnClickListener() {
+    /*View.OnClickListener onClickDoneBudgetSetUpButton = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             budgetDone = 1;
@@ -182,9 +182,9 @@ public class LayoutBudget extends MainNavigation {
             startActivity(backToSetUp);
 
         }
-    };
+    };*/
 
-    View.OnClickListener onClickNoTimeBudget = new View.OnClickListener() {
+    /*View.OnClickListener onClickNoTimeBudget = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             budgetSetUpNoTime2.setVisibility(View.VISIBLE);
@@ -197,9 +197,9 @@ public class LayoutBudget extends MainNavigation {
                 }
             });
         }
-    };
+    };*/
 
-    View.OnClickListener onClickNeedHelpBudget = new View.OnClickListener() {
+    /*View.OnClickListener onClickNeedHelpBudget = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             budgetSetUpNeedHelp2.setVisibility(View.VISIBLE);
@@ -212,7 +212,7 @@ public class LayoutBudget extends MainNavigation {
                 }
             });
         }
-    };
+    };*/
 
     public void budgetHeaderText() {
 

@@ -282,7 +282,7 @@
     <string name="need_income">Premièrement, vous avez besoin de savoir combien d\’argent vous gagnez au cours d\’une année typique. Créez donc chacune de vos sources de revenu séparément dans l\'écrans suivants.</string>
     <string name="done_income_categories">Fini de créer les revenus</string>
     <string name="enter_bills">Entrer vos factures</string>
-    <string name="enter_bills_1">Les factures sont des paiements que vous effectuez régulièrement au cours d\'une année donnée. Configurez vos factures dans l\'écran suivant.</string>
+    <string name="enter_bills_1">Les factures sont des paiements que vous effectuez régulièrement au cours d\'une année donnée. Configurez vos factures dans les écrans suivant.</string>
     <string name="enter_bills_2">Les factures NE COMPRENNENT PAS les dettes (cartes de crédit, autres emprunts/lignes de crédit, ou les hypothèques) ou des épargnes (l\'argent que vous mettez dans des comptes d\'épargne ou des comptes d\'investissement). Vous les configurerez séparément dans un autre écran.</string>
     <string name="enter_bills_3">De plus, les factures NE COMPRENNENT PAS les dépenses optionnelles (dépenses de loisirs, voyages, vêtements, cadeaux, etc.).</string>
     <string name="enter_bills_4">Pour plus de simplicité, additionnez les montants de factures semblables et entrez-les en une seule facture. Par exemple, si vous payez des leçons de natation et d\’arts martiaux, saisissez-les sous la forme d\’une facture appelée «leçons» ou «activités pour enfants».</string>
@@ -297,5 +297,23 @@
     <string name="name_bill">Nommez cette facture</string>
     <string name="bill_frequency">Comment souvent payez-vous cette facture?</string>
     <string name="bill_amount">Quel est le montant habituel de cette facture?</string>
-    <string name="enter_bills_1a">Les factures INCLUENT les dépenses qui constituent les frais de subsistance nécessaires (épiceries, etc.) et les obligations (cotisations, etc.).</string>
+    <string name="enter_bills_1a">Les factures INCLUENT les dépenses qui constituent les frais de subsistance nécessaires (épiceries, loyer, assurances, etc.) et les obligations (cotisations, frais annuels d\'immatriculation des véhicules, etc.).</string>
+    <string name="do_include">INCLUEZ:</string>
+    <string name="necessary_expenses">frais de subsistance nécessaires</string>
+    <string name="regular_payments">paiements de service régulier</string>
+    <string name="memberships">cotisations/obligations</string>
+    <string name="do_not_include">N\'INCLUEZ PAS:</string>
+    <string name="debts_loans">dettes/prêts</string>
+    <string name="credit_vehicles">cartes de crédit/lignes of crédit</string>
+    <string name="mortgages">hypothèques</string>
+    <string name="savings_investments">épargnes/investissements</string>
+    <string name="unnecessary_spending">dépenses supplémentaires</string>
+    <string name="debts_description">Les dettes sont toutes les sommes que vous devez, qu\’il s\’agisse d\’une carte de crédit, d\’une marge de crédit, d\’une hypothèque, d\’un prêt bancaire ou d\’un prêt personnel. Créez vos dettes dans les écrans suivants.</string>
+    <string name="debts_description_2">Créez chacune de vos cartes de crédit séparément, même si vous ne les utilisez pas ou si vous ne leur devez pas d\’argent.</string>
+    <string name="debts_description_3">Créez également chacune de vos autres dettes comme des éléments distincts, y compris les prêts hypothécaires et les prêts personnels.</string>
+    <string name="another_debt">ajouter une autre dette</string>
+    <string name="savings_description">Des épargnes sont n\'importe quel argent que vous avez mis de côté, que ce soit à court terme (pour acheter quelque chose en particulier) ou à long terme (en cas d’urgence, pour la retraite, ou pour investir).</string>
+    <string name="savings_description_2">Vous pouvez physiquement mettre l\'argent de côté dans un compte différent ou MYnance peut simplement réserver une partie de votre compte bancaire principal en tant qu\'épargne.</string>
+    <string name="another_savings">ajouter une autre épargne</string>
+    <string name="own_account">Cet argent sera-t-il gardé séparément, sur son propre compte?</string>
 </resources>

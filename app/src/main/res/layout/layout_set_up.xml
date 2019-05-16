@@ -161,7 +161,7 @@
                                 android:layout_margin="10dp"
                                 android:background="@drawable/entry_box"
                                 android:contentDescription="@string/click_here_debts"
-                                android:text="@string/click_here_debts"
+                                android:text="@string/click_here_next"
                                 android:textColor="@color/colorPrimaryDark"
                                 tools:ignore="RelativeOverlap" />
 
@@ -195,7 +195,7 @@
                                 android:layout_margin="10dp"
                                 android:background="@drawable/entry_box"
                                 android:contentDescription="@string/click_here_savings"
-                                android:text="@string/click_here_savings"
+                                android:text="@string/click_here_next"
                                 android:textColor="@color/colorPrimaryDark"
                                 tools:ignore="RelativeOverlap" />
 

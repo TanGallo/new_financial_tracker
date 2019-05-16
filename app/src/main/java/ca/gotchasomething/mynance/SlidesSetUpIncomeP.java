@@ -1,4 +1,4 @@
-package ca.gotchasomething.mynance;
+/*package ca.gotchasomething.mynance;
 
 import android.content.Intent;
 import android.os.Build;
@@ -17,13 +17,13 @@ import androidx.viewpager.widget.ViewPager;
 
 public class SlidesSetUpIncomeP extends AppCompatActivity implements View.OnClickListener {
 
-    private AdapterSetUpIncome adapter1;
+    private AdapterSlides adapter1;
     private Button previousButton, nextButton;
     DbManager dbManager;
     private ImageView[] dots;
-    private int[] setUpIncomeSlides = {
+    private int[] slides = {
             R.layout.slides_set_up_income_1,
-            R.layout.slides_set_up_income_2,
+            R.layout.slides_set_up_income_2
     };
     private LinearLayout dotsLayout;
     ViewPager viewPager;
@@ -31,10 +31,6 @@ public class SlidesSetUpIncomeP extends AppCompatActivity implements View.OnClic
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        /*if (new PreferenceManager(this).checkPreferences()) {
-            loadHome();
-        }*/
 
         if (Build.VERSION.SDK_INT >= 19) {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
@@ -45,7 +41,7 @@ public class SlidesSetUpIncomeP extends AppCompatActivity implements View.OnClic
         setContentView(R.layout.slides_set_up_background);
 
         viewPager = findViewById(R.id.viewPager);
-        adapter1 = new AdapterSetUpIncome(setUpIncomeSlides, this);
+        adapter1 = new AdapterSlides(slides, this);
         viewPager.setAdapter(adapter1);
 
         dotsLayout = findViewById(R.id.dotsLayout);
@@ -70,7 +66,7 @@ public class SlidesSetUpIncomeP extends AppCompatActivity implements View.OnClic
                     previousButton.setVisibility(View.VISIBLE);
                 }
 
-                if (position == setUpIncomeSlides.length - 1) {
+                if (position == slides.length - 1) {
                     nextButton.setText(getResources().getString(R.string.start_button));
                 } else {
                     nextButton.setText(getResources().getString(R.string.next_button));
@@ -87,9 +83,9 @@ public class SlidesSetUpIncomeP extends AppCompatActivity implements View.OnClic
         if (dotsLayout != null)
             dotsLayout.removeAllViews();
 
-        dots = new ImageView[setUpIncomeSlides.length];
+        dots = new ImageView[slides.length];
 
-        for (int i = 0; i < setUpIncomeSlides.length; i++) {
+        for (int i = 0; i < slides.length; i++) {
             dots[i] = new ImageView(this);
             if (i == current_position) {
                 dots[i].setImageDrawable(
@@ -125,14 +121,14 @@ public class SlidesSetUpIncomeP extends AppCompatActivity implements View.OnClic
     }
 
     private void loadHome() {
-            startActivity(new Intent(this, AddIncomeSetUp.class));
+            startActivity(new Intent(this, SetUpAddIncome.class));
             finish();
     }
 
     private void loadNextSlide() {
         int next = viewPager.getCurrentItem() + 1;
 
-        if (next < setUpIncomeSlides.length) {
+        if (next < slides.length) {
             viewPager.setCurrentItem(next);
         } else {
             loadHome();
@@ -149,4 +145,4 @@ public class SlidesSetUpIncomeP extends AppCompatActivity implements View.OnClic
             viewPager.setCurrentItem(previous);
         }
     }
-}
+}*/

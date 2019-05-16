@@ -1,5 +1,6 @@
-package ca.gotchasomething.mynance;
+/*package ca.gotchasomething.mynance;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -16,16 +17,17 @@ import androidx.viewpager.widget.ViewPager;
 
 public class SlidesSetUpBillsL extends AppCompatActivity implements View.OnClickListener {
 
-    private AdapterSetUpIncome adapter2;
+    private AdapterSlides adapter2;
     private Button previousButton, nextButton;
     DbManager dbManager;
     private ImageView[] dots;
-    private int[] setUpBillsSlides = {
+    private int[] slides = {
             R.layout.slides_set_up_bills_1_land,
             R.layout.slides_set_up_bills_1a_land,
             R.layout.slides_set_up_bills_2_land,
             R.layout.slides_set_up_bills_3_land,
-            R.layout.slides_set_up_bills_4_land
+            R.layout.slides_set_up_bills_4_land,
+            R.layout.slides_set_up_bills_5_land
     };
     private LinearLayout dotsLayout;
     ViewPager viewPager;
@@ -34,9 +36,9 @@ public class SlidesSetUpBillsL extends AppCompatActivity implements View.OnClick
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        /*if (new PreferenceManager(this).checkPreferences()) {
-            loadHome();
-        }*/
+        //if (new PreferenceManager(this).checkPreferences()) {
+            //loadHome();
+        //}
 
         if (Build.VERSION.SDK_INT >= 19) {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
@@ -47,7 +49,7 @@ public class SlidesSetUpBillsL extends AppCompatActivity implements View.OnClick
         setContentView(R.layout.slides_set_up_background_land);
 
         viewPager = findViewById(R.id.viewPager);
-        adapter2 = new AdapterSetUpIncome(setUpBillsSlides, this);
+        adapter2 = new AdapterSlides(slides, this);
         viewPager.setAdapter(adapter2);
 
         dotsLayout = findViewById(R.id.dotsLayout);
@@ -72,7 +74,7 @@ public class SlidesSetUpBillsL extends AppCompatActivity implements View.OnClick
                     previousButton.setVisibility(View.VISIBLE);
                 }
 
-                if (position == setUpBillsSlides.length - 1) {
+                if (position == slides.length - 1) {
                     nextButton.setText(getResources().getString(R.string.start_button));
                 } else {
                     nextButton.setText(getResources().getString(R.string.next_button));
@@ -89,9 +91,9 @@ public class SlidesSetUpBillsL extends AppCompatActivity implements View.OnClick
         if (dotsLayout != null)
             dotsLayout.removeAllViews();
 
-        dots = new ImageView[setUpBillsSlides.length];
+        dots = new ImageView[slides.length];
 
-        for (int i = 0; i < setUpBillsSlides.length; i++) {
+        for (int i = 0; i < slides.length; i++) {
             dots[i] = new ImageView(this);
             if (i == current_position) {
                 dots[i].setImageDrawable(
@@ -126,20 +128,20 @@ public class SlidesSetUpBillsL extends AppCompatActivity implements View.OnClick
         }
     }
 
-    /*private void loadHome() {
-            startActivity(new Intent(this, AddBillsSetUp.class));
+    private void loadHome() {
+            startActivity(new Intent(this, SetUpAddBills.class));
             finish();
-    }*/
+    }
 
     private void loadNextSlide() {
         int next = viewPager.getCurrentItem() + 1;
 
-        if (next < setUpBillsSlides.length) {
+        if (next < slides.length) {
             viewPager.setCurrentItem(next);
-        } /*else {
+        } else {
             loadHome();
             //new PreferenceManager(this).writePreferences();
-        }*/
+        }
     }
 
     private void loadPreviousSlide() {
@@ -151,4 +153,4 @@ public class SlidesSetUpBillsL extends AppCompatActivity implements View.OnClick
             viewPager.setCurrentItem(previous);
         }
     }
-}
+}*/

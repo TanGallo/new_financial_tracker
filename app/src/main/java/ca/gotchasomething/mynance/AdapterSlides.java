@@ -8,21 +8,21 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
 
-public class AdapterSetUpIncome extends PagerAdapter {
+public class AdapterSlides extends PagerAdapter {
 
-    private int[] setUpIncomeSlides;
+    private int[] slides;
     private LayoutInflater inflater;
     private Context context;
 
-    public AdapterSetUpIncome(int[] setUpIncomeSlides, Context context) {
-        this.setUpIncomeSlides = setUpIncomeSlides;
+    public AdapterSlides(int[] slides, Context context) {
+        this.slides = slides;
         this.context = context;
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override
     public int getCount() {
-        return setUpIncomeSlides.length;
+        return slides.length;
     }
 
     @Override
@@ -33,7 +33,7 @@ public class AdapterSetUpIncome extends PagerAdapter {
     @NonNull
     @Override
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
-        View view = inflater.inflate(setUpIncomeSlides[position], container, false);
+        View view = inflater.inflate(slides[position], container, false);
         container.addView(view);
         return view;
     }

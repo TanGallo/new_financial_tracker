@@ -3,6 +3,7 @@ package ca.gotchasomething.mynance.data;
 
 public class SavingsDb {
     private String savingsName;
+    private String savingsSeparate;
     private Double savingsAmount;
     private Double savingsGoal;
     private Double savingsPayments;
@@ -16,6 +17,7 @@ public class SavingsDb {
 
     public SavingsDb(
             String savingsName,
+            String savingsSeparate,
             Double savingsAmount,
             Double savingsGoal,
             Double savingsPayments,
@@ -27,6 +29,7 @@ public class SavingsDb {
             long incRefKeyS,
             long id) {
         this.savingsName = savingsName;
+        this.savingsSeparate = savingsSeparate;
         this.savingsAmount = savingsAmount;
         this.savingsGoal = savingsGoal;
         this.savingsPayments = savingsPayments;
@@ -41,6 +44,9 @@ public class SavingsDb {
 
     public String getSavingsName() { return savingsName; }
     public void setSavingsName(String savingsName) { this.savingsName = savingsName; }
+
+    public String getSavingsSeparate() { return savingsSeparate; }
+    public void setSavingsSeparate(String savingsSeparate) { this.savingsSeparate = savingsSeparate; }
 
     public Double getSavingsAmount() { return savingsAmount; }
     public void setSavingsAmount(Double savingsAmount) { this.savingsAmount = savingsAmount; }

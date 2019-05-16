@@ -19,13 +19,13 @@ import androidx.viewpager.widget.ViewPager;
 
 public class SlidesOnboardingL extends AppCompatActivity implements View.OnClickListener {
 
-    private AdapterOnboarding adapter;
+    private AdapterSlides adapter;
     private Button skipButton, nextButton;
     Cursor setUpCursor;
     DbHelper setUpHelper;
     private ImageView[] dots;
     int tourDoneYes;
-    private int[] onboardingSlides = {
+    private int[] slides = {
             R.layout.slides_onboarding_1_land,
             R.layout.slides_onboarding_2_land,
             R.layout.slides_onboarding_3_land,
@@ -54,7 +54,7 @@ public class SlidesOnboardingL extends AppCompatActivity implements View.OnClick
         setContentView(R.layout.slides_onboarding_background_land);
 
         viewPager = findViewById(R.id.viewPager);
-        adapter = new AdapterOnboarding(onboardingSlides, this);
+        adapter = new AdapterSlides(slides, this);
         viewPager.setAdapter(adapter);
 
         dotsLayout = findViewById(R.id.dotsLayout);
@@ -73,7 +73,7 @@ public class SlidesOnboardingL extends AppCompatActivity implements View.OnClick
             public void onPageSelected(int position) {
                 createDots(position);
 
-                if (position == onboardingSlides.length - 1) {
+                if (position == slides.length - 1) {
                     nextButton.setText(getResources().getString(R.string.start_button));
                     skipButton.setVisibility(View.INVISIBLE);
                 } else {
@@ -92,9 +92,9 @@ public class SlidesOnboardingL extends AppCompatActivity implements View.OnClick
         if (dotsLayout != null)
             dotsLayout.removeAllViews();
 
-        dots = new ImageView[onboardingSlides.length];
+        dots = new ImageView[slides.length];
 
-        for (int i = 0; i < onboardingSlides.length; i++) {
+        for (int i = 0; i < slides.length; i++) {
             dots[i] = new ImageView(this);
             if (i == current_position) {
                 dots[i].setImageDrawable(
@@ -150,7 +150,7 @@ public class SlidesOnboardingL extends AppCompatActivity implements View.OnClick
     private void loadNextSlide() {
         int next = viewPager.getCurrentItem() + 1;
 
-        if (next < onboardingSlides.length) {
+        if (next < slides.length) {
             viewPager.setCurrentItem(next);
         } else {
             loadHome();

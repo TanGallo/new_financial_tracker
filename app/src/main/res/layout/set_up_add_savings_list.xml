@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".AddBillsSetUp"
+    tools:context=".SetUpAddSavingsList"
     tools:openDrawer="end">
 
     <LinearLayout
@@ -28,7 +28,7 @@
             android:layout_height="match_parent">
 
             <LinearLayout
-                android:id="@+id/set_up_bills_list_layout"
+                android:id="@+id/set_up_savings_list_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
@@ -45,12 +45,12 @@
                         android:orientation="vertical">
 
                         <TextView
-                            android:id="@+id/billsListLabel"
+                            android:id="@+id/savingsListLabel"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
                             android:layout_margin="10dp"
-                            android:text="@string/bills"
+                            android:text="@string/savings"
                             android:textColor="@color/colorPrimaryDark"
                             android:textSize="22sp" />
 
@@ -60,7 +60,7 @@
                             android:fillViewport="true">
 
                             <ListView
-                                android:id="@+id/billsListView"
+                                android:id="@+id/savingsListView"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content">
 
@@ -74,27 +74,25 @@
                             android:orientation="vertical">
 
                             <Button
-                                android:id="@+id/addMoreBillsButton"
+                                android:id="@+id/addMoreSavingsButton"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_alignParentStart="true"
                                 android:layout_margin="10dp"
                                 android:background="@drawable/entry_box"
-                                android:contentDescription="@string/another_bill"
+                                android:contentDescription="@string/another_savings"
                                 android:gravity="center"
-                                android:text="@string/another_bill"
+                                android:text="@string/another_savings"
                                 android:textColor="@color/colorPrimaryDark" />
 
                             <Button
-                                android:id="@+id/doneBillsButton"
+                                android:id="@+id/doneSavingsButton"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_alignParentEnd="true"
                                 android:layout_margin="10dp"
                                 android:background="@drawable/entry_box"
-                                android:contentDescription="@string/done_bills"
+                                android:contentDescription="@string/done_savings"
                                 android:gravity="center"
-                                android:text="@string/done_bills"
+                                android:text="@string/done_savings"
                                 android:textColor="@color/colorPrimaryDark"
                                 tools:ignore="RelativeOverlap" />
 

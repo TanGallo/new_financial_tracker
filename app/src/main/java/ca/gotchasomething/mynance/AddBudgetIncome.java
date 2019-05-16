@@ -52,7 +52,7 @@ public class AddBudgetIncome extends LayoutBudget {
         if(dbManager.incomeDoneCheck > 0) {
             setContentView(R.layout.add_edit_budget_income);
         } else {
-            setContentView(R.layout.add_edit_income_list);
+            setContentView(R.layout.set_up_add_income_list);
 
             incomeListLabel = findViewById(R.id.incomeListLabel);
             doneIncomeButton = findViewById(R.id.doneIncomeButton);
@@ -296,7 +296,7 @@ public class AddBudgetIncome extends LayoutBudget {
                 @Override
                 public void onClick(View v) {
 
-                    setContentView(R.layout.add_edit_income_list);
+                    setContentView(R.layout.set_up_add_income_list);
                     AddBudgetIncome.this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
                     incomeListLabel = findViewById(R.id.incomeListLabel);

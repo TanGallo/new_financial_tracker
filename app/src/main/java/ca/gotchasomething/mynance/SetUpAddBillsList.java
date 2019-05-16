@@ -1,7 +1,9 @@
 package ca.gotchasomething.mynance;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,11 +25,12 @@ import androidx.annotation.Nullable;
 import java.util.List;
 
 import ca.gotchasomething.mynance.data.ExpenseBudgetDb;
-import ca.gotchasomething.mynance.data.SetUpDb;
 
-public class AddBillsSetUpList extends LayoutBudget {
+public class SetUpAddBillsList extends LayoutBudget {
 
     Button addMoreBillsButton, updateBillsButton, cancelBillsButton, doneBillsButton, saveBillsButton;
+    ContentValues cv16;
+    DbHelper helper16;
     DbManager dbManager;
     Double billsAmountD = 0.0, billsAnnualAmountD = 0.0;
     EditText billsAmountET, billsCategory;
@@ -39,12 +42,13 @@ public class AddBillsSetUpList extends LayoutBudget {
     RadioButton billsAnnuallyRadioButton, billsBiAnnuallyRadioButton, billsBiMonthlyRadioButton, billsBiWeeklyRadioButton,
             billsMonthlyRadioButton, billsWeeklyRadioButton;
     RadioGroup billsFrequencyRadioGroup;
+    SQLiteDatabase db16;
     String billsFrequencyS = null, billsAnnualAmountS = null, billsAnnualAmount2 = null, billsAmountS = null;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.add_edit_income_list);
+        setContentView(R.layout.set_up_add_bills_list);
 
         dbManager = new DbManager(this);
 
@@ -60,19 +64,19 @@ public class AddBillsSetUpList extends LayoutBudget {
     }
 
     public void backToBillsSetUpList() {
-        backToBillsSetUp = new Intent(AddBillsSetUpList.this, AddBillsSetUpList.class);
+        backToBillsSetUp = new Intent(SetUpAddBillsList.this, SetUpAddBillsList.class);
         backToBillsSetUp.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
         startActivity(backToBillsSetUp);
     }
 
     public void backToSetUp() {
-        backToSetUp = new Intent(AddBillsSetUpList.this, LayoutSetUp.class);
+        backToSetUp = new Intent(SetUpAddBillsList.this, LayoutSetUp.class);
         backToSetUp.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
         startActivity(backToSetUp);
     }
 
     public void backToSetUpBills() {
-        backToSetUpBills = new Intent(AddBillsSetUpList.this, AddBillsSetUp.class);
+        backToSetUpBills = new Intent(SetUpAddBillsList.this, SetUpAddBills.class);
         backToSetUpBills.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
         startActivity(backToSetUpBills);
     }
@@ -87,10 +91,12 @@ public class AddBillsSetUpList extends LayoutBudget {
     View.OnClickListener onClickDoneBillsButton = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            billsDone = 1;
-
-            setUpDb = new SetUpDb(incomeDone, billsDone, debtsDone, savingsDone, budgetDone, balanceDone, balanceAmount, tourDone, 0);
-            dbManager.addSetUp(setUpDb);
+            cv16 = new ContentValues();
+            cv16.put(DbHelper.LATESTDONE, "bills");
+            helper16 = new DbHelper(getApplicationContext());
+            db16 = helper16.getWritableDatabase();
+            db16.update(DbHelper.SET_UP_TABLE_NAME, cv16, DbHelper.ID + "= '1'", null);
+            db16.close();
 
             backToSetUp();
         }
@@ -169,8 +175,8 @@ public class AddBillsSetUpList extends LayoutBudget {
                 @Override
                 public void onClick(View v) {
 
-                    setContentView(R.layout.add_edit_bills);
-                    AddBillsSetUpList.this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+                    setContentView(R.layout.set_up_add_bills);
+                    SetUpAddBillsList.this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
                     billsCategory = findViewById(R.id.billsCategory);
                     billsAmountET = findViewById(R.id.billsAmount);
@@ -262,7 +268,7 @@ public class AddBillsSetUpList extends LayoutBudget {
                                 frequencyEntry = Double.valueOf(billsFrequencyS);
                                 annualIncome = amountEntry * frequencyEntry;
 
-                                expenseBudgetDb.setExpenseName(nameEntryInc);
+                                expenseBudgetDb.setExpenseName(nameEntryExp);
                                 expenseBudgetDb.setExpenseAmount(amountEntry);
                                 expenseBudgetDb.setExpenseFrequency(frequencyEntry);
                                 expenseBudgetDb.setExpenseAnnualAmount(annualIncome);

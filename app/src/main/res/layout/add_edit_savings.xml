@@ -38,6 +38,50 @@
                 tools:ignore="Autofill" />
 
             <TextView
+                android:id="@+id/savingsSeparateLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:text="@string/own_account"
+                android:labelFor="@id/savingsFrequencyRadioGroup"
+                android:textSize="16sp"
+                android:textColor="@color/colorPrimaryDark"/>
+
+            <RadioGroup
+                android:id="@+id/savingsSeparateRadioGroup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/savingsSeparateYesRadioButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
+                    android:text="@string/yes"
+                    android:textSize="15sp"
+                    android:textColor="@color/colorPrimaryDark"/>
+
+                <RadioButton
+                    android:id="@+id/savingsSeparateNoRadioButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/no"
+                    android:textSize="15sp"
+                    android:textColor="@color/colorPrimaryDark"/>
+
+                </LinearLayout>
+
+            </RadioGroup>
+
+            <TextView
                 android:id="@+id/savingsAmountEntryLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

@@ -291,7 +291,7 @@
     <string name="need_income">First, you\'ll need to know how much money you earn in a typical year, so set up each of your sources of income separately in the following screen.</string>
     <string name="done_income_categories">Done entering income categories</string>
     <string name="enter_bills">Enter bills</string>
-    <string name="enter_bills_1">Bills are payments you regularly make in any given year. Set up your bills in the following screen.</string>
+    <string name="enter_bills_1">Bills are payments you regularly make in any given year. Set up your bills in the following screens.</string>
     <string name="enter_bills_2">Bills DO NOT include debts (credit cards, other loans/lines of credit, or mortgages) or savings (money that you put into savings accounts or investments). You will set those up separately in another screen.</string>
     <string name="enter_bills_3">Bills also DO NOT include optional expenses or spending (entertainment, travel, clothing, gifts, etc.).</string>
     <string name="enter_bills_4">For simplicity, add up amounts for bills that are similar and enter them as one bill. For example, if you pay for swimming lessons and martial arts, enter them as one bill called \'lessons\' or \'kids activities\'.</string>
@@ -306,5 +306,23 @@
     <string name="name_bill">Name this bill</string>
     <string name="bill_frequency">How often do you pay this bill?</string>
     <string name="bill_amount">What is the usual amount of this bill?</string>
-    <string name="enter_bills_1a">Bills DO include items that are necessary living expenses (groceries, etc.) and obligations (memberships, etc.).</string>
+    <string name="enter_bills_1a">Bills DO include items that are necessary living expenses (groceries, rent, insurance, etc.) and obligations (memberships, yearly vehicle registration costs, etc.).</string>
+    <string name="do_include">DO include:</string>
+    <string name="necessary_expenses">necessary living expenses</string>
+    <string name="regular_payments">regular service payments</string>
+    <string name="memberships">memberships/obligations</string>
+    <string name="do_not_include">DO NOT include:</string>
+    <string name="debts_loans">debts/loans</string>
+    <string name="credit_vehicles">credit cards/lines of credit</string>
+    <string name="mortgages">mortgages</string>
+    <string name="savings_investments">savings/investments</string>
+    <string name="unnecessary_spending">unnecessary spending</string>
+    <string name="debts_description">Debts are any money that you owe, whether it\'s a credit card, line of credit, mortgage, bank loan, or personal loan. Set up your debts in the following screens.</string>
+    <string name="debts_description_2">Set up each of your credit cards separately, even if you don\'t usually use them or currently owe any money on them.</string>
+    <string name="debts_description_3">Set up each of your other debts as separate items too, including mortgages and personal loans.</string>
+    <string name="another_debt">add another debt</string>
+    <string name="savings_description">Savings is any money that you set aside for any purpose, whether it\'s short-term (to buy something in particular) or long-term (in case of emergency, for retirement, or for investment).</string>
+    <string name="savings_description_2">You can physically set the money aside in a different account or MYnance can simply track a portion of your main bank account as being reserved for a savings purpose.</string>
+    <string name="another_savings">add another savings</string>
+    <string name="own_account">Will this money be kept separately, in its own account?</string>
 </resources>

@@ -32,13 +32,13 @@ public class LayoutSetUp extends MainNavigation {
             moneyInA = 0.0, moneyInOwing = 0.0, moneyInB = 0.0;
     EditText setUpAccountAmount;
     int balanceDone = 0, billsDone = 0, budgetDone = 0, currentPageId = 0, debtsDone = 0, incomeDone = 0, savingsDone = 0, tourDone = 0;
-    Intent setUpIncome, setUpBudget, setUpDebts, setUpSavings, toMainActivity;
+    Intent goToSlides, setUpIncome, setUpBudget, setUpDebts, setUpSavings, toMainActivity;
     long incRefKeyMI;
     MoneyInDb moneyInDb;
     NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
     SetUpDb setUpDb;
     SimpleDateFormat moneyInSDF;
-    String startingBalance2 = null, startingBalanceS = null, moneyInCat = null, moneyInCreatedOn = null;
+    String startingBalance2 = null, startingBalanceS = null, moneyInCat = null, moneyInCreatedOn = null, latestDone = null;
     TextView almostDone, setUpIncomeLabel, setUpAccountAmountLabel, setUpAccountAmountLabel2, setUpAccountAmountLabel3, setUpAccountAmountLabel4, setUpBillsLabel,
             setUpBudgetLabel, setUpDebtsLabel, setUpGotItLabel, setUpSavingsLabel, setUpTourLabel, setUpTourLabel2, setUpTourLabel3, setUpTourLabel4;
     Timestamp moneyInTimestamp;
@@ -122,7 +122,67 @@ public class LayoutSetUp extends MainNavigation {
         setUpAccountCheckbox.setOnCheckedChangeListener(onCheckBalanceDone);
         setUpTourCheckbox.setOnCheckedChangeListener(onCheckTourCheckbox);
 
-        if (dbManager.incomeSetUpCheck() > 0) {
+        dbManager.retrieveLatestDone();
+        switch (latestDone) {
+            case "income":
+                setUpIncomeLabel.setVisibility(View.VISIBLE);
+                setUpIncomeButton.setVisibility(View.GONE);
+                setUpIncomeCheckbox.setChecked(true);
+                setUpBillsButton.setVisibility(View.VISIBLE);
+                setUpBillsLabel.setVisibility(View.GONE);
+                break;
+            case "bills":
+                setUpBillsLabel.setVisibility(View.VISIBLE);
+                setUpBillsButton.setVisibility(View.GONE);
+                setUpBillsCheckbox.setChecked(true);
+                setUpDebtsButton.setVisibility(View.VISIBLE);
+                setUpDebtsLabel.setVisibility(View.GONE);
+                break;
+            case "debts":
+                setUpDebtsLabel.setVisibility(View.VISIBLE);
+                setUpDebtsButton.setVisibility(View.GONE);
+                setUpDebtsCheckbox.setChecked(true);
+                setUpSavingsButton.setVisibility(View.VISIBLE);
+                setUpSavingsLabel.setVisibility(View.GONE);
+                break;
+            case "savings":
+                setUpSavingsLabel.setVisibility(View.VISIBLE);
+                setUpSavingsButton.setVisibility(View.GONE);
+                setUpSavingsCheckbox.setChecked(true);
+                setUpBudgetButton.setVisibility(View.VISIBLE);
+                setUpBudgetLabel.setVisibility(View.GONE);
+                break;
+            case"budget":
+                setUpBudgetLabel.setVisibility(View.VISIBLE);
+                setUpBudgetButton.setVisibility(View.GONE);
+                setUpBudgetCheckbox.setChecked(true);
+                setUpAccountAmount.setVisibility(View.VISIBLE);
+                setUpAccountAmountLabel.setVisibility(View.VISIBLE);
+                setUpAccountAmountLabel2.setVisibility(View.VISIBLE);
+                setUpAccountAmountLabel4.setVisibility(View.VISIBLE);
+                setUpAccountCheckbox.setVisibility(View.VISIBLE);
+                break;
+            case"balance":
+                setUpAccountAmountLabel.setVisibility(View.GONE);
+                setUpAccountAmountLabel2.setVisibility(View.GONE);
+                setUpAccountAmountLabel3.setVisibility(View.VISIBLE);
+                setUpAccountAmountLabel4.setVisibility(View.GONE);
+                setUpAccountAmount.setVisibility(View.GONE);
+                setUpAccountCheckbox.setChecked(true);
+                almostDone.setVisibility(View.VISIBLE);
+                setUpTourLabel.setVisibility(View.VISIBLE);
+                setUpTourLabel2.setVisibility(View.VISIBLE);
+                setUpTourLabel3.setVisibility(View.VISIBLE);
+                setUpTourLabel4.setVisibility(View.VISIBLE);
+                setUpGotItLabel.setVisibility(View.VISIBLE);
+                setUpTourCheckbox.setVisibility(View.VISIBLE);
+                break;
+            case "tour":
+                toMainActivity = new Intent(LayoutSetUp.this, MainActivity.class);
+                toMainActivity.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+                startActivity(toMainActivity);
+        }
+        /*if (dbManager.incomeSetUpCheck() > 0) {
             setUpIncomeLabel.setVisibility(View.VISIBLE);
             setUpIncomeButton.setVisibility(View.GONE);
             setUpIncomeCheckbox.setChecked(true);
@@ -185,22 +245,23 @@ public class LayoutSetUp extends MainNavigation {
             toMainActivity = new Intent(LayoutSetUp.this, MainActivity.class);
             toMainActivity.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
             startActivity(toMainActivity);
-        }
+        }*/
     }
 
     CheckBox.OnCheckedChangeListener onCheckTourCheckbox = new CompoundButton.OnCheckedChangeListener() {
         @Override
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-            incomeDone = 0;
+            latestDone = "tour";
+            /*incomeDone = 0;
             billsDone = 0;
             debtsDone = 0;
             savingsDone = 0;
             budgetDone = 0;
             balanceDone = 0;
+            tourDone = 1;*/
             balanceAmount = 0.0;
-            tourDone = 1;
 
-            setUpDb = new SetUpDb(incomeDone, billsDone, debtsDone, savingsDone, budgetDone, balanceDone, balanceAmount, tourDone, 0);
+            setUpDb = new SetUpDb(latestDone, balanceAmount, 0);
             dbManager.addSetUp(setUpDb);
 
             toMainActivity = new Intent(LayoutSetUp.this, MainActivity.class);
@@ -212,7 +273,8 @@ public class LayoutSetUp extends MainNavigation {
     CheckBox.OnCheckedChangeListener onCheckBalanceDone = new CompoundButton.OnCheckedChangeListener() {
         @Override
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-            balanceDone = 1;
+            latestDone = "balance";
+            //balanceDone = 1;
 
             try {
                 startingBalanceS = setUpAccountAmount.getText().toString();
@@ -225,7 +287,7 @@ public class LayoutSetUp extends MainNavigation {
                 e.printStackTrace();
             }
 
-            setUpDb = new SetUpDb(incomeDone, billsDone, debtsDone, savingsDone, budgetDone, balanceDone, balanceAmount, tourDone, 0);
+            setUpDb = new SetUpDb(latestDone, balanceAmount, 0);
             dbManager.addSetUp(setUpDb);
 
             moneyInCat = getString(R.string.starting_balance);
@@ -274,48 +336,59 @@ public class LayoutSetUp extends MainNavigation {
         }
     };
 
+    public void slides() {
+        goToSlides = new Intent(LayoutSetUp.this, SlidesLayoutSetUp.class);
+        goToSlides.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+        startActivity(goToSlides);
+    }
+
     View.OnClickListener onClickSetUpBudgetButton = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            setUpBudget = new Intent(LayoutSetUp.this, LayoutBudget.class);
+            slides();
+            /*setUpBudget = new Intent(LayoutSetUp.this, SlidesLayoutSetUp.class);
             setUpBudget.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-            startActivity(setUpBudget);
+            startActivity(setUpBudget);*/
         }
     };
 
     View.OnClickListener onClickSetUpSavingsButton = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            setUpSavings = new Intent(LayoutSetUp.this, LayoutSavings.class);
+            slides();
+            /*setUpSavings = new Intent(LayoutSetUp.this, SlidesLayoutSetUp.class);
             setUpSavings.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-            startActivity(setUpSavings);
+            startActivity(setUpSavings);*/
         }
     };
 
     View.OnClickListener onClickSetUpDebtsButton = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            setUpDebts = new Intent(LayoutSetUp.this, LayoutDebt.class);
+            slides();
+            /*setUpDebts = new Intent(LayoutSetUp.this, SlidesLayoutSetUp.class);
             setUpDebts.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-            startActivity(setUpDebts);
+            startActivity(setUpDebts);*/
         }
     };
 
     View.OnClickListener onClickSetUpBillsButton = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            setUpIncome = new Intent(LayoutSetUp.this, SlidesLayoutSetUpBills.class);
+            slides();
+            /*setUpIncome = new Intent(LayoutSetUp.this, SlidesLayoutSetUp.class);
             setUpIncome.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-            startActivity(setUpIncome);
+            startActivity(setUpIncome);*/
         }
     };
 
     View.OnClickListener onClickSetUpIncomeButton = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            setUpIncome = new Intent(LayoutSetUp.this, SlidesLayoutSetUpIncome.class);
+            slides();
+            /*setUpIncome = new Intent(LayoutSetUp.this, SlidesLayoutSetUp.class);
             setUpIncome.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-            startActivity(setUpIncome);
+            startActivity(setUpIncome);*/
         }
     };
 

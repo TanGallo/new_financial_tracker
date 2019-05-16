@@ -1,5 +1,6 @@
 package ca.gotchasomething.mynance;
 
+import android.graphics.Color;
 import android.view.View;
 import android.widget.TextView;
 
@@ -209,6 +210,17 @@ public class General extends AppCompatActivity {
             tv5.setVisibility(View.VISIBLE);
         }
         tv6.setText(debtEnd);
+        if (debtEnd.equals(str1)) {
+            tv5.setVisibility(View.GONE);
+            tv6.setTextColor(Color.parseColor("#03ac13"));
+        } else if (debtEnd.equals(str2)) {
+            tv5.setVisibility(View.GONE);
+            tv6.setTextColor(Color.parseColor("#ffff4444"));
+        } else {
+            tv5.setVisibility(View.VISIBLE);
+            tv6.setTextColor(Color.parseColor("#303F9F"));
+            tv5.setTextColor(Color.parseColor("#303F9F"));
+        }
     }
 
     public String calcSavingsDate(

@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+
 import ca.gotchasomething.mynance.data.DebtDb;
 import ca.gotchasomething.mynance.data.ExpenseBudgetDb;
 import ca.gotchasomething.mynance.data.IncomeBudgetDb;
@@ -30,7 +31,7 @@ public class AddDebt extends LayoutDebt {
     EditText debtAmountEntry, debtLimitEntry, debtNameEntry, debtPaymentsEntry, debtPercentEntry;
     ExpenseBudgetDb expenseBudgetDb;
     IncomeBudgetDb incomeBudgetDb;
-    Intent backToDebtLayout;
+    Intent backToDebtLayout, showList;
     LinearLayout toastLayout;
     long expRefKeyD, incRefKeyD;
     RadioButton debtBiWeeklyRadioButton, debtMonthlyRadioButton, debtWeeklyRadioButton;
@@ -150,6 +151,12 @@ public class AddDebt extends LayoutDebt {
         startActivity(backToDebtLayout);
     }
 
+    public void showList() {
+        showList = new Intent(AddDebt.this, SetUpAddDebtsList.class);
+        showList.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+        startActivity(showList);
+    }
+
     public void debtEndResult() {
         allDebtData();
         debtEnd2 = general.calcDebtDate(debtAmount,
@@ -161,7 +168,7 @@ public class AddDebt extends LayoutDebt {
                 getString(R.string.too_far));
         if (debtEnd2.equals(getString(R.string.debt_paid))) {
             debtDateResult.setTextColor(Color.parseColor("#03ac13"));
-        } else if(debtEnd2.equals(getString(R.string.too_far))) {
+        } else if (debtEnd2.equals(getString(R.string.too_far))) {
             debtDateResult.setTextColor(Color.parseColor("#ffff4444"));
         } else {
             debtDateResult.setTextColor(Color.parseColor("#303F9F"));
@@ -192,7 +199,11 @@ public class AddDebt extends LayoutDebt {
     View.OnClickListener onClickCancelDebtButton = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            backToDebt();
+            if (dbManager.retrieveLatestDone() == "bills") {
+                showList();
+            } else {
+                backToDebt();
+            }
         }
     };
 
@@ -261,15 +272,12 @@ public class AddDebt extends LayoutDebt {
 
                 dbManager.addDebt(debt);
 
-                toast = Toast.makeText(getBaseContext(), R.string.debt_saved,
-                        Toast.LENGTH_LONG);
-                toastLayout = (LinearLayout) toast.getView();
-                tvToast = (TextView) toastLayout.getChildAt(0);
-                tvToast.setTextSize(20);
-                toast.show();
-
-                debtHeaderText();
-                backToDebt();
+                if (dbManager.retrieveLatestDone() == "bills") {
+                    showList();
+                } else {
+                    debtHeaderText();
+                    backToDebt();
+                }
             } else {
                 Toast.makeText(getBaseContext(), R.string.no_blanks_warning, Toast.LENGTH_LONG).show();
             }

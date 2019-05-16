@@ -1,7 +1,9 @@
 package ca.gotchasomething.mynance;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,11 +25,12 @@ import androidx.annotation.Nullable;
 import java.util.List;
 
 import ca.gotchasomething.mynance.data.IncomeBudgetDb;
-import ca.gotchasomething.mynance.data.SetUpDb;
 
-public class AddIncomeSetUpList extends LayoutBudget {
+public class SetUpAddIncomeList extends LayoutBudget {
 
     Button addMoreIncomeButton, updateIncomeButton, cancelIncomeButton, doneIncomeButton, saveIncomeButton;
+    ContentValues cv15;
+    DbHelper helper15;
     DbManager dbManager;
     Double incomeAmount = 0.0, incomeAmountD = 0.0, incomeAnnualAmount = 0.0, incomeAnnualAmountD = 0.0, incomeFrequency = 0.0, incomeFrequencyD = 0.0;
     EditText incomeAmountET, incomeCategory;
@@ -39,14 +42,15 @@ public class AddIncomeSetUpList extends LayoutBudget {
     RadioButton incomeAnnuallyRadioButton, incomeBiAnnuallyRadioButton, incomeBiMonthlyRadioButton, incomeBiWeeklyRadioButton,
             incomeMonthlyRadioButton, incomeWeeklyRadioButton;
     RadioGroup incomeFrequencyRadioGroup;
-    String incomeFrequencyS = null, incomeName = null, incomeNameS = null, incomeAmountS = null;
+    SQLiteDatabase db15;
+    String incomeFrequencyS = null, incomeName = null, incomeNameS = null, incomeAmountS = null, latestDone = null;
     TextView incomeAmountLabel, incomeListLabel, incomeCategoryLabel, incomeFrequencyLabel;
     View incomeLine;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.add_edit_income_list);
+        setContentView(R.layout.set_up_add_income_list);
 
         dbManager = new DbManager(this);
 
@@ -62,19 +66,19 @@ public class AddIncomeSetUpList extends LayoutBudget {
     }
 
     public void backToIncomeSetUpList() {
-        backToIncomeSetUp = new Intent(AddIncomeSetUpList.this, AddIncomeSetUpList.class);
+        backToIncomeSetUp = new Intent(SetUpAddIncomeList.this, SetUpAddIncomeList.class);
         backToIncomeSetUp.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
         startActivity(backToIncomeSetUp);
     }
 
     public void backToSetUp() {
-        backToSetUp = new Intent(AddIncomeSetUpList.this, LayoutSetUp.class);
+        backToSetUp = new Intent(SetUpAddIncomeList.this, LayoutSetUp.class);
         backToSetUp.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
         startActivity(backToSetUp);
     }
 
     public void backToSetUpIncome() {
-        backToSetUpIncome = new Intent(AddIncomeSetUpList.this, AddIncomeSetUp.class);
+        backToSetUpIncome = new Intent(SetUpAddIncomeList.this, SetUpAddIncome.class);
         backToSetUpIncome.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
         startActivity(backToSetUpIncome);
     }
@@ -89,10 +93,12 @@ public class AddIncomeSetUpList extends LayoutBudget {
     View.OnClickListener onClickDoneIncomeButton = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            incomeDone = 1;
-
-            setUpDb = new SetUpDb(incomeDone, billsDone, debtsDone, savingsDone, budgetDone, balanceDone, balanceAmount, tourDone, 0);
-            dbManager.addSetUp(setUpDb);
+            cv15 = new ContentValues();
+            cv15.put(DbHelper.LATESTDONE, "income");
+            helper15 = new DbHelper(getApplicationContext());
+            db15 = helper15.getWritableDatabase();
+            db15.update(DbHelper.SET_UP_TABLE_NAME, cv15, DbHelper.ID + "= '1'", null);
+            db15.close();
 
             backToSetUp();
         }
@@ -171,8 +177,8 @@ public class AddIncomeSetUpList extends LayoutBudget {
                 @Override
                 public void onClick(View v) {
 
-                    setContentView(R.layout.add_edit_income);
-                    AddIncomeSetUpList.this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+                    setContentView(R.layout.set_up_add_income);
+                    SetUpAddIncomeList.this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
                     incomeCategory = findViewById(R.id.incomeCategory);
                     incomeAmountET = findViewById(R.id.incomeAmount);

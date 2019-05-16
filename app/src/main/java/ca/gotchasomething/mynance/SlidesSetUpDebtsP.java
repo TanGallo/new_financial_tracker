@@ -15,19 +15,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.viewpager.widget.ViewPager;
 
-public class SlidesSetUpBillsP extends AppCompatActivity implements View.OnClickListener {
+public class SlidesSetUpDebtsP extends AppCompatActivity implements View.OnClickListener {
 
-    private AdapterSlides adapter2;
+    private AdapterSlides adapter3;
     private Button previousButton, nextButton;
     DbManager dbManager;
     private ImageView[] dots;
     private int[] slides = {
-            R.layout.slides_set_up_bills_1,
-            R.layout.slides_set_up_bills_1a,
-            R.layout.slides_set_up_bills_2,
-            R.layout.slides_set_up_bills_3,
-            R.layout.slides_set_up_bills_4,
-            R.layout.slides_set_up_bills_5
+            R.layout.slides_set_up_debts_1,
+            R.layout.slides_set_up_debts_2,
+            R.layout.slides_set_up_debts_3
     };
     private LinearLayout dotsLayout;
     ViewPager viewPager;
@@ -35,10 +32,6 @@ public class SlidesSetUpBillsP extends AppCompatActivity implements View.OnClick
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        //if (new PreferenceManager(this).checkPreferences()) {
-            //loadHome();
-        //}
 
         if (Build.VERSION.SDK_INT >= 19) {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
@@ -49,8 +42,8 @@ public class SlidesSetUpBillsP extends AppCompatActivity implements View.OnClick
         setContentView(R.layout.slides_set_up_background);
 
         viewPager = findViewById(R.id.viewPager);
-        adapter2 = new AdapterSlides(slides, this);
-        viewPager.setAdapter(adapter2);
+        adapter3 = new AdapterSlides(slides, this);
+        viewPager.setAdapter(adapter3);
 
         dotsLayout = findViewById(R.id.dotsLayout);
         previousButton = findViewById(R.id.previousButton);
@@ -129,7 +122,7 @@ public class SlidesSetUpBillsP extends AppCompatActivity implements View.OnClick
     }
 
     private void loadHome() {
-            startActivity(new Intent(this, SetUpAddBills.class));
+            startActivity(new Intent(this, AddDebt.class));
             finish();
     }
 

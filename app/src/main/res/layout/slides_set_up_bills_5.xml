@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimaryDark">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/billsSlide4Image"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_gravity="center_horizontal"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_receipt_white_24dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="-70dp"
+        android:contentDescription="@string/enter_bills" />
+
+    <TextView
+        android:id="@+id/billsSlide4Description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorWhite"
+        android:textSize="22sp"
+        android:text="@string/do_include"
+        android:layout_marginTop="100dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginStart="30dp"
+        />
+
+    <TextView
+        android:id="@+id/billsSlide4Description2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorWhite"
+        android:textSize="22sp"
+        android:text="@string/necessary_expenses"
+        android:layout_marginStart="50dp"
+        />
+
+    <TextView
+        android:id="@+id/billsSlide4Description3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorWhite"
+        android:textSize="22sp"
+        android:text="@string/regular_payments"
+        android:layout_marginStart="50dp"
+        />
+
+    <TextView
+        android:id="@+id/billsSlide4Description4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorWhite"
+        android:textSize="22sp"
+        android:text="@string/memberships"
+        android:layout_marginStart="50dp"
+        />
+
+        <TextView
+            android:id="@+id/billsSlide4Description5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorWhite"
+            android:textSize="22sp"
+            android:text="@string/do_not_include"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="30dp"
+            />
+
+        <TextView
+            android:id="@+id/billsSlide4Description6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorWhite"
+            android:textSize="22sp"
+            android:text="@string/debts_loans"
+            android:layout_marginStart="50dp"
+            />
+
+        <TextView
+            android:id="@+id/billsSlide4Description7"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorWhite"
+            android:textSize="22sp"
+            android:text="@string/credit_vehicles"
+            android:layout_marginStart="50dp"
+            />
+
+        <TextView
+            android:id="@+id/billsSlide4Description8"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorWhite"
+            android:textSize="22sp"
+            android:text="@string/mortgages"
+            android:layout_marginStart="50dp"
+            />
+
+        <TextView
+            android:id="@+id/billsSlide4Description9"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorWhite"
+            android:textSize="22sp"
+            android:text="@string/savings_investments"
+            android:layout_marginStart="50dp"
+            />
+
+        <TextView
+            android:id="@+id/billsSlide4Description10"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorWhite"
+            android:textSize="22sp"
+            android:text="@string/unnecessary_spending"
+            android:layout_marginStart="50dp"
+            />
+
+    </LinearLayout>
+
+</RelativeLayout>

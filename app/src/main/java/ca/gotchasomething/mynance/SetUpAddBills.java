@@ -14,7 +14,7 @@ import androidx.annotation.Nullable;
 
 import ca.gotchasomething.mynance.data.ExpenseBudgetDb;
 
-public class AddBillsSetUp extends LayoutBudget {
+public class SetUpAddBills extends LayoutBudget {
 
     Button saveBillsButton, updateBillsButton, cancelBillsButton;
     DbManager dbManager;
@@ -32,7 +32,7 @@ public class AddBillsSetUp extends LayoutBudget {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.add_edit_bills);
+        setContentView(R.layout.set_up_add_bills);
 
         dbManager = new DbManager(this);
 
@@ -90,13 +90,13 @@ public class AddBillsSetUp extends LayoutBudget {
     };
 
     public void backToBillsSetUp() {
-        backToBillsSetUp = new Intent(AddBillsSetUp.this, AddBillsSetUp.class);
+        backToBillsSetUp = new Intent(SetUpAddBills.this, SetUpAddBills.class);
         backToBillsSetUp.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
         startActivity(backToBillsSetUp);
     }
 
     public void showList() {
-        showList = new Intent(AddBillsSetUp.this, AddBillsSetUpList.class);
+        showList = new Intent(SetUpAddBills.this, SetUpAddBillsList.class);
         showList.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
         startActivity(showList);
     }
@@ -104,7 +104,7 @@ public class AddBillsSetUp extends LayoutBudget {
     View.OnClickListener onClickCancelBillsButton = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            backToBillsSetUp();
+            showList();
         }
     };
 

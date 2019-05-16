@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".AddIncomeSetUp"
+    tools:context=".SetUpAddDebtsList"
     tools:openDrawer="end">
 
     <LinearLayout
@@ -28,7 +28,7 @@
             android:layout_height="match_parent">
 
             <LinearLayout
-                android:id="@+id/set_up_income_list_layout"
+                android:id="@+id/set_up_debts_list_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
@@ -37,21 +37,20 @@
 
                 <ScrollView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="wrap_content">
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="100dp"
-                        android:layout_margin="10dp"
+                        android:layout_height="wrap_content"
                         android:orientation="vertical">
 
                         <TextView
-                            android:id="@+id/incomeListLabel"
+                            android:id="@+id/debtsListLabel"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
                             android:layout_margin="10dp"
-                            android:text="@string/income_categories"
+                            android:text="@string/debts"
                             android:textColor="@color/colorPrimaryDark"
                             android:textSize="22sp" />
 
@@ -61,7 +60,7 @@
                             android:fillViewport="true">
 
                             <ListView
-                                android:id="@+id/incomeListView"
+                                android:id="@+id/debtsListView"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content">
 
@@ -75,29 +74,27 @@
                             android:orientation="vertical">
 
                             <Button
-                                android:id="@+id/addMoreIncomeButton"
+                                android:id="@+id/addMoreDebtsButton"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_alignParentEnd="true"
                                 android:layout_margin="10dp"
                                 android:background="@drawable/entry_box"
-                                android:contentDescription="@string/another_income"
-                                android:text="@string/another_income"
-                                android:textColor="@color/colorPrimaryDark"
-                                tools:ignore="RelativeOverlap" />
+                                android:contentDescription="@string/another_debt"
+                                android:gravity="center"
+                                android:text="@string/another_debt"
+                                android:textColor="@color/colorPrimaryDark" />
 
                             <Button
-                                android:id="@+id/doneIncomeButton"
+                                android:id="@+id/doneDebtsButton"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_alignParentEnd="true"
                                 android:layout_margin="10dp"
                                 android:background="@drawable/entry_box"
-                                android:contentDescription="@string/done_income_categories"
-                                android:text="@string/done_income_categories"
+                                android:contentDescription="@string/done_debts"
+                                android:gravity="center"
+                                android:text="@string/done_debts"
                                 android:textColor="@color/colorPrimaryDark"
                                 tools:ignore="RelativeOverlap" />
-
 
                         </LinearLayout>
 

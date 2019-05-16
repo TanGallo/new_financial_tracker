@@ -1,4 +1,4 @@
-/*package ca.gotchasomething.mynance;
+package ca.gotchasomething.mynance;
 
 import android.content.Intent;
 import android.os.Build;
@@ -15,30 +15,29 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.viewpager.widget.ViewPager;
 
-public class SlidesSetUpBillsP extends AppCompatActivity implements View.OnClickListener {
+public class SlidesSetUpP extends AppCompatActivity implements View.OnClickListener {
 
-    private AdapterSlides adapter2;
+    private AdapterSlides adapter;
     private Button previousButton, nextButton;
     DbManager dbManager;
     private ImageView[] dots;
-    private int[] slides = {
-            R.layout.slides_set_up_bills_1,
-            R.layout.slides_set_up_bills_1a,
-            R.layout.slides_set_up_bills_2,
-            R.layout.slides_set_up_bills_3,
-            R.layout.slides_set_up_bills_4,
-            R.layout.slides_set_up_bills_5
-    };
+    private int[] slides, incomeSlides = {R.layout.slides_set_up_income_1, R.layout.slides_set_up_income_2}, billsSlides = {R.layout.slides_set_up_bills_1,
+            R.layout.slides_set_up_bills_1a, R.layout.slides_set_up_bills_2, R.layout.slides_set_up_bills_3, R.layout.slides_set_up_bills_4,
+            R.layout.slides_set_up_bills_5}, debtsSlides = {R.layout.slides_set_up_debts_1, R.layout.slides_set_up_debts_2, R.layout.slides_set_up_debts_3},
+            savingsSlides = {R.layout.slides_set_up_savings_1, R.layout.slides_set_up_savings_2};
     private LinearLayout dotsLayout;
+    String latestDone = null;
     ViewPager viewPager;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //if (new PreferenceManager(this).checkPreferences()) {
-            //loadHome();
-        //}
+        dbManager = new DbManager(this);
+
+        /*if (new PreferenceManager(this).checkPreferences()) {
+            loadHome();
+        }*/
 
         if (Build.VERSION.SDK_INT >= 19) {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
@@ -49,8 +48,32 @@ public class SlidesSetUpBillsP extends AppCompatActivity implements View.OnClick
         setContentView(R.layout.slides_set_up_background);
 
         viewPager = findViewById(R.id.viewPager);
-        adapter2 = new AdapterSlides(slides, this);
-        viewPager.setAdapter(adapter2);
+        dbManager.retrieveLatestDone();
+        switch(latestDone) {
+            case "null":
+                slides = incomeSlides;
+                break;
+            case "income":
+                slides = billsSlides;
+                break;
+            case "bills":
+                slides = debtsSlides;
+                break;
+            case "debts":
+                slides = savingsSlides;
+                break;
+                /*case "savings":
+                slides = ;
+                    break;
+                case "budget":
+                slides = ;
+                    break;
+                case "balance":
+                slides = ;
+                    break;*/
+        }
+        adapter = new AdapterSlides(slides, this);
+        viewPager.setAdapter(adapter);
 
         dotsLayout = findViewById(R.id.dotsLayout);
         previousButton = findViewById(R.id.previousButton);
@@ -129,7 +152,29 @@ public class SlidesSetUpBillsP extends AppCompatActivity implements View.OnClick
     }
 
     private void loadHome() {
-            startActivity(new Intent(this, SetUpAddBills.class));
+        switch(latestDone) {
+            case "null":
+                startActivity(new Intent(this, SetUpAddIncome.class));
+                break;
+            case "income":
+                startActivity(new Intent(this, SetUpAddBills.class));
+                break;
+            case "bills":
+                startActivity(new Intent(this, AddDebt.class));
+                break;
+            case "debts":
+                startActivity(new Intent(this, AddSavings.class));
+                break;
+                /*startActivity(new Intent(this, className.class));
+                    break;
+                case "budget":
+                startActivity(new Intent(this, className.class));
+                    break;
+                case "balance":
+                startActivity(new Intent(this, className.class));
+                    break;*/
+        }
+            //startActivity(new Intent(this, SetUpAddIncome.class));
             finish();
     }
 
@@ -153,4 +198,4 @@ public class SlidesSetUpBillsP extends AppCompatActivity implements View.OnClick
             viewPager.setCurrentItem(previous);
         }
     }
-}*/
+}

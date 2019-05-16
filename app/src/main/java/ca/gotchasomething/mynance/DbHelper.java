@@ -44,6 +44,7 @@ public class DbHelper extends SQLiteOpenHelper {
 
     public static final String SAVINGS_TABLE_NAME = "savings";
     public static final String SAVINGSNAME = "savingsName";
+    public static final String SAVINGSSEPARATE = "savingsSeparate";
     public static final String SAVINGSAMOUNT = "savingsAmount";
     public static final String SAVINGSGOAL = "savingsGoal";
     public static final String SAVINGSPAYMENTS = "savingsPayments";
@@ -80,14 +81,15 @@ public class DbHelper extends SQLiteOpenHelper {
     public static final String EXPREFKEYMO = "expRefKeyMO";
 
     public static final String SET_UP_TABLE_NAME = "setUp";
-    public static final String INCOMEDONE = "incomeDone";
+    public static final String LATESTDONE = "latestDone";
+    /*public static final String INCOMEDONE = "incomeDone";
     public static final String BILLSDONE = "billsDone";
     public static final String DEBTSDONE = "debtsDone";
     public static final String SAVINGSDONE = "savingsDone";
     public static final String BUDGETDONE = "budgetDone";
     public static final String BALANCEDONE = "balanceDone";
+    public static final String TOURDONE = "tourDone";*/
     public static final String BALANCEAMOUNT = "balanceAmount";
-    public static final String TOURDONE = "tourDone";
 
     public static final String CURRENT_TABLE_NAME = "current";
     public static final String CURRENTACCOUNT = "currentAccount";
@@ -145,6 +147,7 @@ public class DbHelper extends SQLiteOpenHelper {
     private static final String createSavingsQuery = "CREATE TABLE " + SAVINGS_TABLE_NAME +
             " (_id INTEGER PRIMARY KEY," +
             " savingsName TEXT," +
+            " savingsSeparate TEXT," +
             " savingsAmount REAL," +
             " savingsGoal REAL," +
             " savingsPayments REAL," +
@@ -184,12 +187,13 @@ public class DbHelper extends SQLiteOpenHelper {
 
     private static final String createSetUpQuery = "CREATE TABLE " + SET_UP_TABLE_NAME +
             " (_id INTEGER PRIMARY KEY," +
-            " incomeDone INTEGER," +
+            " latestDone TEXT," +
+            /*" incomeDone INTEGER," +
             " billsDone INTEGER," +
             " debtsDone INTEGER," +
             " savingsDone INTEGER," +
             " budgetDone INTEGER," +
-            " balanceDone INTEGER," +
+            " balanceDone INTEGER," +*/
             " balanceAmount REAL," +
             " tourDone INTEGER)";
 

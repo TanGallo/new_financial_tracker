@@ -59,15 +59,16 @@ public class LayoutSavings extends MainNavigation {
     long id, incRefKeyS;
     NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
     NumberFormat percentFormat = NumberFormat.getPercentInstance();
-    RadioButton savingsAnnuallyRadioButton, savingsBiWeeklyRadioButton, savingsMonthlyRadioButton, savingsWeeklyRadioButton;
-    RadioGroup savingsFrequencyRadioGroup;
+    RadioButton savingsAnnuallyRadioButton, savingsBiWeeklyRadioButton, savingsMonthlyRadioButton, savingsWeeklyRadioButton, savingsSeparateYesRadioButton,
+            savingsSeparateNoRadioButton;
+    RadioGroup savingsFrequencyRadioGroup, savingsSeparateRadioGroup;
     SavingsDbAdapter savingsAdapter;
     SavingsDb savingsDb;
     SetUpDb setUpDb;
     SQLiteDatabase expenseDb;
     String expRefKeyS = null, savingsName = null, savingsNameb = null, priority = null, savingsAmountS = null, savingsCurrent2 = null, savingsCurrentS = null,
             savingsDate = null, savingsDate2 = null, savingsFrequencyS = null, savingsGoal2 = null, savingsGoalS = null, savingsGoalS2 = null,
-            savingsPaymentsS = null, savingsPercentS = null, totalSavings2 = null, totalSavingsS = null;
+            savingsPaymentsS = null, savingsPercentS = null, totalSavings2 = null, totalSavingsS = null, savingsSeparate = null, savingsSeparateS = null;
     TextView deleteSavingsWarningText, emptysavingsText, emptysavingsText2, emptySavingsText3, savingsDateResult, savingsDateResultLabel, savingsFrequencyLabel,
             savingsSetUpNoTime, savingsSetUpNoTime2, savingsSetUpNeedHelp, savingsSetUpNeedHelp2, totalSavedText, tv;
     Toast toast;
@@ -92,7 +93,7 @@ public class LayoutSavings extends MainNavigation {
         dbManager = new DbManager(this);
 
         totalSavedText = findViewById(R.id.totalSavedText);
-        emptysavingsText = findViewById(R.id.emptySavingsText);
+        /*emptysavingsText = findViewById(R.id.emptySavingsText);
         emptysavingsText2 = findViewById(R.id.emptySavingsText2);
         emptySavingsText3 = findViewById(R.id.emptySavingsText3);
         savingsSetUpNoTime = findViewById(R.id.savingsSetUpNoTime);
@@ -106,7 +107,7 @@ public class LayoutSavings extends MainNavigation {
         savingsSetUpNeedHelp2 = findViewById(R.id.savingsSetUpNeedHelp2);
         savingsSetUpNeedHelp2.setVisibility(View.GONE);
         savingsSetUpHelpButton = findViewById(R.id.savingsSetUpHelpButton);
-        savingsSetUpHelpButton.setVisibility(View.GONE);
+        savingsSetUpHelpButton.setVisibility(View.GONE);*/
         deleteSavingsWarningText = findViewById(R.id.deleteSavingsWarningText);
         deleteSavingsWarningText.setVisibility(View.GONE);
         cancelDeleteSavingsButton = findViewById(R.id.cancelDeleteSavingsButton);
@@ -120,10 +121,10 @@ public class LayoutSavings extends MainNavigation {
         addSavingsButton = findViewById(R.id.addSavingsButton);
         addSavingsButton.setVisibility(View.GONE);
 
-        doneSavingsSetUpButton = findViewById(R.id.doneSavingsSetUpButton);
-        doneSavingsSetUpButton.setOnClickListener(onClickDoneSavingsSetUpButton);
+        //doneSavingsSetUpButton = findViewById(R.id.doneSavingsSetUpButton);
+        //doneSavingsSetUpButton.setOnClickListener(onClickDoneSavingsSetUpButton);
 
-        if (dbManager.savingsSetUpCheck() > 0) {
+        /*if (dbManager.savingsSetUpCheck() > 0) {
             addNewSavingsButton.setVisibility(View.GONE);
             addSavingsButton.setVisibility(View.VISIBLE);
             addSavingsButton.setOnClickListener(onClickAddSavingsButton);
@@ -135,7 +136,7 @@ public class LayoutSavings extends MainNavigation {
             savingsSetUpNeedHelp.setVisibility(View.GONE);
             savingsSetUpNeedHelp2.setVisibility(View.GONE);
             savingsSetUpHelpButton.setVisibility(View.GONE);
-        }
+        }*/
 
         savingsAdapter = new SavingsDbAdapter(this, dbManager.getSavings());
         savingsListView.setAdapter(savingsAdapter);
@@ -151,10 +152,10 @@ public class LayoutSavings extends MainNavigation {
         savingsHeaderText();
     }
 
-    View.OnClickListener onClickDoneSavingsSetUpButton = new View.OnClickListener() {
+    /*View.OnClickListener onClickDoneSavingsSetUpButton = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            savingsDone = 1;
+            latestDone = 1;
 
             setUpDb = new SetUpDb(incomeDone, billsDone, debtsDone, savingsDone, budgetDone, balanceDone, balanceAmount, tourDone, 0);
             dbManager.addSetUp(setUpDb);
@@ -170,9 +171,9 @@ public class LayoutSavings extends MainNavigation {
             startActivity(backToSetUp);
 
         }
-    };
+    };*/
 
-    View.OnClickListener onClickNoTimeSavings = new View.OnClickListener() {
+    /*View.OnClickListener onClickNoTimeSavings = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             savingsSetUpNoTime2.setVisibility(View.VISIBLE);
@@ -185,9 +186,9 @@ public class LayoutSavings extends MainNavigation {
                 }
             });
         }
-    };
+    };*/
 
-    View.OnClickListener onClickNeedHelpSavings = new View.OnClickListener() {
+    /*View.OnClickListener onClickNeedHelpSavings = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             savingsSetUpNeedHelp2.setVisibility(View.VISIBLE);
@@ -200,7 +201,7 @@ public class LayoutSavings extends MainNavigation {
                 }
             });
         }
-    };
+    };*/
 
     public void savingsHeaderText() {
 
@@ -331,6 +332,7 @@ public class LayoutSavings extends MainNavigation {
         } else {
             savingsName = savingsNameEntry.getText().toString();
         }
+        savingsSeparate = savingsSeparateS;
         savingsAmount = general.extractingDouble(savingsAmountEntry);
         savingsGoal = general.extractingDouble(savingsGoalAmountEntry);
         currentSavingsRate = general.extractingPercent(savingsPercentEntry);
@@ -486,6 +488,10 @@ public class LayoutSavings extends MainNavigation {
                     savingsMonthlyRadioButton = findViewById(R.id.savingsMonthlyRadioButton);
                     savingsAnnuallyRadioButton = findViewById(R.id.savingsAnnuallyRadioButton);
 
+                    savingsSeparateRadioGroup = findViewById(R.id.savingsSeparateRadioGroup);
+                    savingsSeparateYesRadioButton = findViewById(R.id.savingsSeparateYesRadioButton);
+                    savingsSeparateNoRadioButton = findViewById(R.id.savingsSeparateNoRadioButton);
+
                     saveSavingsButton = findViewById(R.id.saveSavingsButton);
                     saveSavingsButton.setVisibility(View.GONE);
                     updateSavingsButton = findViewById(R.id.updateSavingsButton);
@@ -551,6 +557,14 @@ public class LayoutSavings extends MainNavigation {
                         savingsFrequencyS = "1";
                     }
 
+                    if (savingsDb.getSavingsSeparate().equals("Y")) {
+                        savingsSeparateYesRadioButton.setChecked(true);
+                        savingsSeparateS = "Y";
+                    } else if (savingsDb.getSavingsSeparate().equals("N")) {
+                        savingsSeparateNoRadioButton.setChecked(true);
+                        savingsSeparateS = "N";
+                    }
+
                     //update db if radio buttons changed
                     savingsFrequencyRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
                         @Override
@@ -580,6 +594,20 @@ public class LayoutSavings extends MainNavigation {
                         }
                     });
 
+                    savingsSeparateRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+                        @Override
+                        public void onCheckedChanged(RadioGroup group, int checkedId) {
+                            switch (checkedId) {
+                                case R.id.savingsSeparateYesRadioButton:
+                                    savingsSeparateS = "Y";
+                                    break;
+                                case R.id.savingsSeparateNoRadioButton:
+                                    savingsSeparateS = "N";
+                                    break;
+                            }
+                        }
+                    });
+
                     updateSavingsButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -591,6 +619,7 @@ public class LayoutSavings extends MainNavigation {
                             if (savingsName != "null") {
 
                                 savingsDb.setSavingsName(savingsName);
+                                savingsDb.setSavingsSeparate(savingsSeparate);
                                 savingsDb.setSavingsAmount(savingsAmount);
                                 savingsDb.setSavingsGoal(savingsGoal);
                                 savingsDb.setSavingsPayments(savingsPayments);
