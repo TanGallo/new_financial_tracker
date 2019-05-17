@@ -62,17 +62,6 @@
 
                 </LinearLayout>
 
-                <Button
-                    android:id="@+id/addNewSavingsButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="start"
-                    android:layout_margin="10dp"
-                    android:background="@drawable/entry_box"
-                    android:contentDescription="@string/enter_savings"
-                    android:text="@string/click_here_savings2"
-                    android:textColor="@color/colorAccent" />
-
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
                     android:id="@+id/addSavingsButton"
                     android:layout_width="30dp"
@@ -83,17 +72,6 @@
                     android:foreground="@drawable/ic_add_white_24dp"
                     android:scaleType="fitCenter"
                     tools:ignore="UnusedAttribute" />
-
-                <Button
-                    android:id="@+id/doneSavingsSetUpButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="start"
-                    android:layout_margin="10dp"
-                    android:background="@drawable/entry_box"
-                    android:contentDescription="@string/done_savings"
-                    android:text="@string/done_savings"
-                    android:textColor="@color/colorPrimaryDark" />
 
                 <View
                     android:layout_width="match_parent"
@@ -136,87 +114,6 @@
                             android:text="@string/plus_button_savings"
                             android:textColor="@color/colorGreen"
                             android:textSize="18sp" />
-
-                        <TextView
-                            android:id="@+id/emptySavingsText3"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal"
-                            android:layout_margin="10dp"
-                            android:gravity="center_horizontal"
-                            android:text="@string/empty_savings_3"
-                            android:textColor="@color/colorGreen"
-                            android:textSize="18sp" />
-
-                        <TextView
-                            android:id="@+id/savingsSetUpNoTime"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal"
-                            android:layout_margin="10dp"
-                            android:clickable="true"
-                            android:focusable="true"
-                            android:gravity="center_horizontal"
-                            android:text="@string/no_time"
-                            android:textColor="@color/colorPrimaryDark"
-                            android:textSize="16sp" />
-
-                        <TextView
-                            android:id="@+id/savingsSetUpNoTime2"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal"
-                            android:layout_margin="10dp"
-                            android:gravity="center_horizontal"
-                            android:text="@string/no_time3"
-                            android:textColor="@color/colorGreen"
-                            android:textSize="16sp" />
-
-                        <Button
-                            android:id="@+id/savingsSetUpTimeButton"
-                            android:layout_width="50dp"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="end"
-                            android:layout_margin="10dp"
-                            android:background="@drawable/entry_box"
-                            android:contentDescription="@string/ok"
-                            android:text="@string/ok"
-                            android:textColor="@color/colorPrimaryDark" />
-
-                        <TextView
-                            android:id="@+id/savingsSetUpNeedHelp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal"
-                            android:layout_margin="10dp"
-                            android:clickable="true"
-                            android:focusable="true"
-                            android:gravity="center_horizontal"
-                            android:text="@string/need_help"
-                            android:textColor="@color/colorPrimaryDark"
-                            android:textSize="16sp" />
-
-                        <TextView
-                            android:id="@+id/savingsSetUpNeedHelp2"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal"
-                            android:layout_margin="10dp"
-                            android:gravity="center_horizontal"
-                            android:text="@string/need_help3"
-                            android:textColor="@color/colorGreen"
-                            android:textSize="16sp" />
-
-                        <Button
-                            android:id="@+id/savingsSetUpHelpButton"
-                            android:layout_width="50dp"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="end"
-                            android:layout_margin="10dp"
-                            android:background="@drawable/entry_box"
-                            android:contentDescription="@string/ok"
-                            android:text="@string/ok"
-                            android:textColor="@color/colorPrimaryDark" />
 
                         <TextView
                             android:id="@+id/deleteSavingsWarningText"

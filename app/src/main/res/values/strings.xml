@@ -324,5 +324,7 @@
     <string name="savings_description">Savings is any money that you set aside for any purpose, whether it\'s short-term (to buy something in particular) or long-term (in case of emergency, for retirement, or for investment).</string>
     <string name="savings_description_2">You can physically set the money aside in a different account or MYnance can simply track a portion of your main bank account as being reserved for a savings purpose.</string>
     <string name="another_savings">add another savings</string>
-    <string name="own_account">Will this money be kept separately, in its own account?</string>
+    <string name="own_account">Will this money be kept in your main bank account or separately, in its own account?</string>
+    <string name="in_main_account">main account</string>
+    <string name="separately">separately</string>
 </resources>

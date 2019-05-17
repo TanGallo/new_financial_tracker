@@ -258,7 +258,7 @@ public class AddSavings extends LayoutSavings {
     View.OnClickListener onClickCancelSavingsButton = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            if (dbManager.retrieveLatestDone() == "debts") {
+            if (dbManager.retrieveLatestDone().equals("debts")) {
                 showList();
             } else {
                 backToSavings();
@@ -340,7 +340,7 @@ public class AddSavings extends LayoutSavings {
                 tv.setTextSize(20);
                 toast.show();*/
 
-                if (dbManager.retrieveLatestDone() == "debts") {
+                if (dbManager.retrieveLatestDone().equals("debts")) {
                     showList();
                 } else {
                     savingsHeaderText();

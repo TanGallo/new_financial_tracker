@@ -88,17 +88,6 @@
 
                 </LinearLayout>
 
-                <Button
-                    android:id="@+id/addNewDebtButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="start"
-                    android:layout_margin="10dp"
-                    android:background="@drawable/entry_box"
-                    android:contentDescription="@string/enter_debts"
-                    android:text="@string/click_here_debts2"
-                    android:textColor="@color/colorAccent" />
-
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
                     android:id="@+id/addDebtButton"
                     android:layout_width="30dp"
@@ -109,17 +98,6 @@
                     android:foreground="@drawable/ic_add_white_24dp"
                     android:scaleType="fitCenter"
                     tools:ignore="UnusedAttribute" />
-
-                <Button
-                    android:id="@+id/doneDebtsSetUpButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="start"
-                    android:layout_margin="10dp"
-                    android:background="@drawable/entry_box"
-                    android:contentDescription="@string/done_debts"
-                    android:text="@string/done_debts"
-                    android:textColor="@color/colorPrimaryDark" />
 
                 <View
                     android:layout_width="match_parent"
@@ -162,87 +140,6 @@
                             android:text="@string/plus_button_debts"
                             android:textColor="@color/colorGreen"
                             android:textSize="18sp" />
-
-                        <TextView
-                            android:id="@+id/emptyDebtsText3"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal"
-                            android:layout_margin="10dp"
-                            android:gravity="center_horizontal"
-                            android:text="@string/empty_debts_3"
-                            android:textColor="@color/colorGreen"
-                            android:textSize="18sp" />
-
-                        <TextView
-                            android:id="@+id/debtsSetUpNoTime"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal"
-                            android:layout_margin="10dp"
-                            android:clickable="true"
-                            android:focusable="true"
-                            android:gravity="center_horizontal"
-                            android:text="@string/no_time"
-                            android:textColor="@color/colorPrimaryDark"
-                            android:textSize="16sp" />
-
-                        <TextView
-                            android:id="@+id/debtsSetUpNoTime2"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal"
-                            android:layout_margin="10dp"
-                            android:gravity="center_horizontal"
-                            android:text="@string/no_time2"
-                            android:textColor="@color/colorGreen"
-                            android:textSize="16sp" />
-
-                        <Button
-                            android:id="@+id/debtsSetUpTimeButton"
-                            android:layout_width="50dp"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="end"
-                            android:layout_margin="10dp"
-                            android:background="@drawable/entry_box"
-                            android:contentDescription="@string/ok"
-                            android:text="@string/ok"
-                            android:textColor="@color/colorPrimaryDark" />
-
-                        <TextView
-                            android:id="@+id/debtsSetUpNeedHelp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal"
-                            android:layout_margin="10dp"
-                            android:clickable="true"
-                            android:focusable="true"
-                            android:gravity="center_horizontal"
-                            android:text="@string/need_help"
-                            android:textColor="@color/colorPrimaryDark"
-                            android:textSize="16sp" />
-
-                        <TextView
-                            android:id="@+id/debtsSetUpNeedHelp2"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal"
-                            android:layout_margin="10dp"
-                            android:gravity="center_horizontal"
-                            android:text="@string/need_help2"
-                            android:textColor="@color/colorGreen"
-                            android:textSize="16sp" />
-
-                        <Button
-                            android:id="@+id/debtsSetUpHelpButton"
-                            android:layout_width="50dp"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="end"
-                            android:layout_margin="10dp"
-                            android:background="@drawable/entry_box"
-                            android:contentDescription="@string/ok"
-                            android:text="@string/ok"
-                            android:textColor="@color/colorPrimaryDark" />
 
                         <TextView
                             android:id="@+id/deleteDebtWarningText"

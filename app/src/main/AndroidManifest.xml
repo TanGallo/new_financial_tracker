@@ -42,21 +42,15 @@
         <activity android:name="ca.gotchasomething.mynance.LayoutSetUp"/>
         <activity android:name="ca.gotchasomething.mynance.SlidesOnboardingL"/>
         <activity android:name="ca.gotchasomething.mynance.SlidesOnboardingP"/>
-        <activity android:name="ca.gotchasomething.mynance.SlidesLayoutSetUpIncome"/>
-        <activity android:name="ca.gotchasomething.mynance.SlidesSetUpIncomeP"/>
-        <activity android:name="ca.gotchasomething.mynance.SlidesSetUpIncomeL"/>
+        <activity android:name="ca.gotchasomething.mynance.SlidesLayoutSetUp"/>
+        <activity android:name="ca.gotchasomething.mynance.SlidesSetUpP"/>
+        <activity android:name="ca.gotchasomething.mynance.SlidesSetUpL"/>
         <activity android:name="ca.gotchasomething.mynance.SetUpAddIncome"/>
         <activity android:name="ca.gotchasomething.mynance.SetUpAddIncomeList"/>
-        <activity android:name="ca.gotchasomething.mynance.SlidesLayoutSetUpBills"/>
-        <activity android:name="ca.gotchasomething.mynance.SlidesSetUpBillsP"/>
-        <activity android:name="ca.gotchasomething.mynance.SlidesSetUpBillsL"/>
         <activity android:name="ca.gotchasomething.mynance.SetUpAddBills"/>
         <activity android:name="ca.gotchasomething.mynance.SetUpAddBillsList"/>
-        <activity android:name="ca.gotchasomething.mynance.SlidesLayoutSetUpDebts"/>
-        <activity android:name="ca.gotchasomething.mynance.SlidesSetUpDebtsP"/>
-        <activity android:name="ca.gotchasomething.mynance.SlidesSetUpDebtsL"/>
-        <activity android:name="ca.gotchasomething.mynance.SetUpAddDebts"/>
         <activity android:name="ca.gotchasomething.mynance.SetUpAddDebtsList"/>
+        <activity android:name="ca.gotchasomething.mynance.SetUpAddSavingsList"/>
 
     </application>
 

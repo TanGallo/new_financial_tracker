@@ -33,7 +33,7 @@ public class DbManager extends AppCompatActivity {
     public General general = new General();
     public int balanceDoneCheck = 0, billsDoneCheck = 0, budgetDoneCheck = 0, currentPageId = 0, debtCount = 0, debtsDoneCheck = 0, earliestYear = 0,
             endIndex = 0, incomeDoneCheck = 0, latestYear = 0, savingsDoneCheck = 0, startIndex = 0, tourDoneCheck = 0;
-    public Long debtId, expenseId, incomeId;
+    public Long debtId, expenseId, incomeId, setUpId;
     public SQLiteDatabase db;
     public String category = null, startingString = null, subStringResult = null, latestDone = null;
 
@@ -107,12 +107,27 @@ public class DbManager extends AppCompatActivity {
 
     public String retrieveLatestDone() {
         latestDone = null;
-        for (SetUpDb s : getSetUp()) {
-            if (s.getId() == 1) {
-                latestDone = s.getLatestDone();
+        for (SetUpDb s2 : getSetUp()) {
+            if (s2.getId() == 1) {
+                latestDone = s2.getLatestDone();
             }
         }
         return latestDone;
+    }
+
+
+    public Long findLatestSetUpId() {
+        List<Long> setUpIds = new ArrayList<>(getSetUp().size());
+        for (SetUpDb s : getSetUp()) {
+            setUpIds.add(s.getId());
+        }
+        setUpId = null;
+        if (setUpIds.size() == 0) {
+            setUpId = null;
+        } else {
+            setUpId = Collections.max(setUpIds);
+        }
+        return setUpId;
     }
 
     /*public int tourSetUpCheck() {

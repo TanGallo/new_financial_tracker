@@ -48,9 +48,9 @@ public class SlidesSetUpL extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.slides_set_up_background_land);
 
         viewPager = findViewById(R.id.viewPager);
-        dbManager.retrieveLatestDone();
+        latestDone = dbManager.retrieveLatestDone();
         switch(latestDone) {
-            case "null":
+            case "start":
                 slides = incomeSlides;
                 break;
             case "income":
@@ -152,8 +152,9 @@ public class SlidesSetUpL extends AppCompatActivity implements View.OnClickListe
     }
 
     private void loadHome() {
+        //dbManager.retrieveLatestDone();
         switch(latestDone) {
-            case "null":
+            case "start":
                 startActivity(new Intent(this, SetUpAddIncome.class));
                 break;
             case "income":

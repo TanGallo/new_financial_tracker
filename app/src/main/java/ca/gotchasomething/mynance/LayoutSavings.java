@@ -40,8 +40,7 @@ import ca.gotchasomething.mynance.data.SetUpDb;
 
 public class LayoutSavings extends MainNavigation {
 
-    Button addNewSavingsButton, cancelDeleteSavingsButton, continueDeleteSavingsButton, cancelSavingsButton, doneSavingsSetUpButton, saveSavingsButton,
-            savingsSetUpTimeButton, savingsSetUpHelpButton, updateSavingsButton;
+    Button cancelDeleteSavingsButton, continueDeleteSavingsButton, cancelSavingsButton, saveSavingsButton, updateSavingsButton;
     ContentValues values, values2, values3, values4;
     DbHelper dbHelper;
     DbManager dbManager;
@@ -93,21 +92,8 @@ public class LayoutSavings extends MainNavigation {
         dbManager = new DbManager(this);
 
         totalSavedText = findViewById(R.id.totalSavedText);
-        /*emptysavingsText = findViewById(R.id.emptySavingsText);
+        emptysavingsText = findViewById(R.id.emptySavingsText);
         emptysavingsText2 = findViewById(R.id.emptySavingsText2);
-        emptySavingsText3 = findViewById(R.id.emptySavingsText3);
-        savingsSetUpNoTime = findViewById(R.id.savingsSetUpNoTime);
-        savingsSetUpNoTime.setOnClickListener(onClickNoTimeSavings);
-        savingsSetUpNoTime2 = findViewById(R.id.savingsSetUpNoTime2);
-        savingsSetUpNoTime2.setVisibility(View.GONE);
-        savingsSetUpTimeButton = findViewById(R.id.savingsSetUpTimeButton);
-        savingsSetUpTimeButton.setVisibility(View.GONE);
-        savingsSetUpNeedHelp = findViewById(R.id.savingsSetUpNeedHelp);
-        savingsSetUpNeedHelp.setOnClickListener(onClickNeedHelpSavings);
-        savingsSetUpNeedHelp2 = findViewById(R.id.savingsSetUpNeedHelp2);
-        savingsSetUpNeedHelp2.setVisibility(View.GONE);
-        savingsSetUpHelpButton = findViewById(R.id.savingsSetUpHelpButton);
-        savingsSetUpHelpButton.setVisibility(View.GONE);*/
         deleteSavingsWarningText = findViewById(R.id.deleteSavingsWarningText);
         deleteSavingsWarningText.setVisibility(View.GONE);
         cancelDeleteSavingsButton = findViewById(R.id.cancelDeleteSavingsButton);
@@ -116,27 +102,8 @@ public class LayoutSavings extends MainNavigation {
         continueDeleteSavingsButton.setVisibility(View.GONE);
 
         savingsListView = findViewById(R.id.savingsListView);
-        addNewSavingsButton = findViewById(R.id.addNewSavingsButton);
-        addNewSavingsButton.setOnClickListener(onClickAddNewSavingsButton);
         addSavingsButton = findViewById(R.id.addSavingsButton);
-        addSavingsButton.setVisibility(View.GONE);
-
-        //doneSavingsSetUpButton = findViewById(R.id.doneSavingsSetUpButton);
-        //doneSavingsSetUpButton.setOnClickListener(onClickDoneSavingsSetUpButton);
-
-        /*if (dbManager.savingsSetUpCheck() > 0) {
-            addNewSavingsButton.setVisibility(View.GONE);
-            addSavingsButton.setVisibility(View.VISIBLE);
-            addSavingsButton.setOnClickListener(onClickAddSavingsButton);
-            doneSavingsSetUpButton.setVisibility(View.GONE);
-            emptySavingsText3.setVisibility(View.GONE);
-            savingsSetUpNoTime.setVisibility(View.GONE);
-            savingsSetUpNoTime2.setVisibility(View.GONE);
-            savingsSetUpTimeButton.setVisibility(View.GONE);
-            savingsSetUpNeedHelp.setVisibility(View.GONE);
-            savingsSetUpNeedHelp2.setVisibility(View.GONE);
-            savingsSetUpHelpButton.setVisibility(View.GONE);
-        }*/
+        addSavingsButton.setOnClickListener(onClickAddSavingsButton);
 
         savingsAdapter = new SavingsDbAdapter(this, dbManager.getSavings());
         savingsListView.setAdapter(savingsAdapter);
@@ -151,57 +118,6 @@ public class LayoutSavings extends MainNavigation {
 
         savingsHeaderText();
     }
-
-    /*View.OnClickListener onClickDoneSavingsSetUpButton = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            latestDone = 1;
-
-            setUpDb = new SetUpDb(incomeDone, billsDone, debtsDone, savingsDone, budgetDone, balanceDone, balanceAmount, tourDone, 0);
-            dbManager.addSetUp(setUpDb);
-
-            toast = Toast.makeText(getApplicationContext(), R.string.edit_savings_message, Toast.LENGTH_LONG);
-            toastLayout = (LinearLayout) toast.getView();
-            tv = (TextView) toastLayout.getChildAt(0);
-            tv.setTextSize(20);
-            toast.show();
-
-            backToSetUp = new Intent(LayoutSavings.this, LayoutSetUp.class);
-            backToSetUp.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-            startActivity(backToSetUp);
-
-        }
-    };*/
-
-    /*View.OnClickListener onClickNoTimeSavings = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            savingsSetUpNoTime2.setVisibility(View.VISIBLE);
-            savingsSetUpTimeButton.setVisibility(View.VISIBLE);
-            savingsSetUpTimeButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    savingsSetUpNoTime2.setVisibility(View.GONE);
-                    savingsSetUpTimeButton.setVisibility(View.GONE);
-                }
-            });
-        }
-    };*/
-
-    /*View.OnClickListener onClickNeedHelpSavings = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            savingsSetUpNeedHelp2.setVisibility(View.VISIBLE);
-            savingsSetUpHelpButton.setVisibility(View.VISIBLE);
-            savingsSetUpHelpButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    savingsSetUpNeedHelp2.setVisibility(View.GONE);
-                    savingsSetUpHelpButton.setVisibility(View.GONE);
-                }
-            });
-        }
-    };*/
 
     public void savingsHeaderText() {
 
@@ -762,16 +678,6 @@ public class LayoutSavings extends MainNavigation {
         ImageButton savingsDeleted;
         ImageButton savingsEdit;
     }
-
-    View.OnClickListener onClickAddNewSavingsButton = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-
-            addNewSavings = new Intent(LayoutSavings.this, AddSavings.class);
-            addNewSavings.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-            startActivity(addNewSavings);
-        }
-    };
 
     View.OnClickListener onClickAddSavingsButton = new View.OnClickListener() {
         @Override

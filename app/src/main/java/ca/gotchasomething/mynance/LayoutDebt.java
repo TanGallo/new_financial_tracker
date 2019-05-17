@@ -46,8 +46,7 @@ import ca.gotchasomething.mynance.data.SetUpDb;
 
 public class LayoutDebt extends MainNavigation {
 
-    Button addNewDebtButton, cancelDebtButton, cancelDeleteDebtButton, continueDeleteDebtButton, debtsSetUpTimeButton, debtsSetUpHelpButton, doneDebtsSetUpButton,
-            saveDebtButton, updateDebtButton;
+    Button cancelDebtButton, cancelDeleteDebtButton, continueDeleteDebtButton, saveDebtButton, updateDebtButton;
     ContentValues values, values2, values3, values4, values5;
     Date latestDateD;
     DbHelper dbHelper;
@@ -101,21 +100,8 @@ public class LayoutDebt extends MainNavigation {
         totalDebtOwing = findViewById(R.id.totalDebtOwing);
         totalDebtPaidLabel = findViewById(R.id.totalDebtPaidLabel);
         totalDebtPaidByDate = findViewById(R.id.totalDebtPaidByDate);
-        /*emptyDebtsText = findViewById(R.id.emptyDebtsText);
+        emptyDebtsText = findViewById(R.id.emptyDebtsText);
         emptyDebtsText2 = findViewById(R.id.emptyDebtsText2);
-        emptyDebtsText3 = findViewById(R.id.emptyDebtsText3);
-        debtsSetUpNoTime = findViewById(R.id.debtsSetUpNoTime);
-        debtsSetUpNoTime.setOnClickListener(onClickNoTime);
-        debtsSetUpNoTime2 = findViewById(R.id.debtsSetUpNoTime2);
-        debtsSetUpNoTime2.setVisibility(View.GONE);
-        debtsSetUpTimeButton = findViewById(R.id.debtsSetUpTimeButton);
-        debtsSetUpTimeButton.setVisibility(View.GONE);
-        debtsSetUpNeedHelp = findViewById(R.id.debtsSetUpNeedHelp);
-        debtsSetUpNeedHelp.setOnClickListener(onClickNeedHelp);
-        debtsSetUpNeedHelp2 = findViewById(R.id.debtsSetUpNeedHelp2);
-        debtsSetUpNeedHelp2.setVisibility(View.GONE);
-        debtsSetUpHelpButton = findViewById(R.id.debtsSetUpHelpButton);
-        debtsSetUpHelpButton.setVisibility(View.GONE);*/
         deleteDebtWarningText = findViewById(R.id.deleteDebtWarningText);
         deleteDebtWarningText.setVisibility(View.GONE);
         cancelDeleteDebtButton = findViewById(R.id.cancelDeleteDebtButton);
@@ -124,27 +110,8 @@ public class LayoutDebt extends MainNavigation {
         continueDeleteDebtButton.setVisibility(View.GONE);
 
         debtListView = findViewById(R.id.debtListView);
-        addNewDebtButton = findViewById(R.id.addNewDebtButton);
-        addNewDebtButton.setOnClickListener(onClickAddNewDebtButton);
         addDebtButton = findViewById(R.id.addDebtButton);
-        addDebtButton.setVisibility(View.GONE);
-
-        doneDebtsSetUpButton = findViewById(R.id.doneDebtsSetUpButton);
-        //doneDebtsSetUpButton.setOnClickListener(onClickDoneDebtsSetUpButton);
-
-        /*if (dbManager.debtSetUpCheck() > 0) {
-            addNewDebtButton.setVisibility(View.GONE);
-            addDebtButton.setVisibility(View.VISIBLE);
-            addDebtButton.setOnClickListener(onClickAddDebtButton);
-            doneDebtsSetUpButton.setVisibility(View.GONE);
-            emptyDebtsText3.setVisibility(View.GONE);
-            debtsSetUpNoTime.setVisibility(View.GONE);
-            debtsSetUpNoTime2.setVisibility(View.GONE);
-            debtsSetUpTimeButton.setVisibility(View.GONE);
-            debtsSetUpNeedHelp.setVisibility(View.GONE);
-            debtsSetUpNeedHelp2.setVisibility(View.GONE);
-            debtsSetUpHelpButton.setVisibility(View.GONE);
-        }*/
+        addDebtButton.setOnClickListener(onClickAddDebtButton);
 
         debtAdapter = new DebtDbAdapter(this, dbManager.getDebts());
         debtListView.setAdapter(debtAdapter);
@@ -161,62 +128,6 @@ public class LayoutDebt extends MainNavigation {
 
         debtHeaderText();
     }
-
-    /*View.OnClickListener onClickDoneDebtsSetUpButton = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            debtsDone = 1;
-            savingsDone = 0;
-            budgetDone = 0;
-            balanceDone = 0;
-            balanceAmount = 0.0;
-            tourDone = 0;
-
-            setUpDb = new SetUpDb(incomeDone, billsDone, debtsDone, savingsDone, budgetDone, balanceDone, balanceAmount, tourDone, 0);
-            dbManager.addSetUp(setUpDb);
-
-            toast = Toast.makeText(getApplicationContext(), R.string.edit_debts_message, Toast.LENGTH_LONG);
-            toastLayout = (LinearLayout) toast.getView();
-            tv = (TextView) toastLayout.getChildAt(0);
-            tv.setTextSize(20);
-            toast.show();
-
-            backToSetUp = new Intent(LayoutDebt.this, LayoutSetUp.class);
-            backToSetUp.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-            startActivity(backToSetUp);
-
-        }
-    };*/
-
-    /*View.OnClickListener onClickNoTime = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            debtsSetUpNoTime2.setVisibility(View.VISIBLE);
-            debtsSetUpTimeButton.setVisibility(View.VISIBLE);
-            debtsSetUpTimeButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    debtsSetUpNoTime2.setVisibility(View.GONE);
-                    debtsSetUpTimeButton.setVisibility(View.GONE);
-                }
-            });
-        }
-    };*/
-
-    /*View.OnClickListener onClickNeedHelp = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            debtsSetUpNeedHelp2.setVisibility(View.VISIBLE);
-            debtsSetUpHelpButton.setVisibility(View.VISIBLE);
-            debtsSetUpHelpButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    debtsSetUpNeedHelp2.setVisibility(View.GONE);
-                    debtsSetUpHelpButton.setVisibility(View.GONE);
-                }
-            });
-        }
-    };*/
 
     public void debtHeaderText() {
 
@@ -735,16 +646,6 @@ public class LayoutDebt extends MainNavigation {
         ImageButton debtDeleted;
         ImageButton debtEdit;
     }
-
-    View.OnClickListener onClickAddNewDebtButton = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-
-            addNewDebt = new Intent(LayoutDebt.this, AddDebt.class);
-            addNewDebt.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-            startActivity(addNewDebt);
-        }
-    };
 
     View.OnClickListener onClickAddDebtButton = new View.OnClickListener() {
         @Override

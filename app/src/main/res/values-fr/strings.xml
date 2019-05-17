@@ -315,5 +315,7 @@
     <string name="savings_description">Des épargnes sont n\'importe quel argent que vous avez mis de côté, que ce soit à court terme (pour acheter quelque chose en particulier) ou à long terme (en cas d’urgence, pour la retraite, ou pour investir).</string>
     <string name="savings_description_2">Vous pouvez physiquement mettre l\'argent de côté dans un compte différent ou MYnance peut simplement réserver une partie de votre compte bancaire principal en tant qu\'épargne.</string>
     <string name="another_savings">ajouter une autre épargne</string>
-    <string name="own_account">Cet argent sera-t-il gardé séparément, sur son propre compte?</string>
+    <string name="own_account">Cet argent sera-t-il conservé sur votre compte bancaire principal ou séparément, sur son propre compte?</string>
+    <string name="in_main_account">compte principal</string>
+    <string name="separately">séparément</string>
 </resources>

@@ -16,6 +16,8 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.google.android.material.navigation.NavigationView;
 
+import ca.gotchasomething.mynance.data.SetUpDb;
+
 public class MainNavigation extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     ActionBarDrawerToggle toggle;
@@ -23,12 +25,15 @@ public class MainNavigation extends AppCompatActivity implements NavigationView.
     Cursor setUpCursor;
     DbHelper setUpHelper;
     public DbManager dbManager;
+    Double balanceAmount;
     protected DrawerLayout drawer;
     int tourDoneYes;
     Intent i, i2, i4, i5, i6, i7, i8, i9, i10;
     Menu menu;
     NavigationView navigationView;
+    SetUpDb setUpDb;
     SQLiteDatabase setUpDbDb;
+    String latestDone;
     Toolbar toolbar;
 
     @Override
@@ -38,6 +43,8 @@ public class MainNavigation extends AppCompatActivity implements NavigationView.
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        dbManager = new DbManager(this);
+
         drawer = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
         menuConfig();
@@ -46,19 +53,6 @@ public class MainNavigation extends AppCompatActivity implements NavigationView.
         drawer.addDrawerListener(toggle);
         toggle.syncState();
     }
-
-    /*public void menuDisable() {
-        menu = navigationView.getMenu();
-        menu.findItem(R.id.menu_daily_money).setEnabled(false);
-        menu.findItem(R.id.menu_budget).setEnabled(false);
-        menu.findItem(R.id.menu_debt).setEnabled(false);
-        menu.findItem(R.id.menu_savings).setEnabled(false);
-        menu.findItem(R.id.menu_spending_report).setEnabled(false);
-        menu.findItem(R.id.menu_budget_report_exp).setEnabled(false);
-        menu.findItem(R.id.menu_budget_report_inc).setEnabled(false);
-        menu.findItem(R.id.menu_help).setEnabled(false);
-        navigationView.setNavigationItemSelectedListener(this);
-    }*/
 
     public void menuConfig() {
         beforeSetUpOrAfter();
@@ -108,19 +102,22 @@ public class MainNavigation extends AppCompatActivity implements NavigationView.
     }
 
     public boolean beforeSetUpOrAfter() {
-        setUpHelper = new DbHelper(getApplicationContext());
-        setUpDbDb = setUpHelper.getReadableDatabase();
-        setUpCursor = setUpDbDb.rawQuery(" SELECT max(tourDone) FROM " + DbHelper.SET_UP_TABLE_NAME + "", null);
-        setUpCursor.moveToFirst();
-        tourDoneYes = setUpCursor.getInt(0);
-        setUpCursor.close();
 
-        if (tourDoneYes <= 0) {
-            before = true;
-        } else {
-            before = false;
+        latestDone = dbManager.retrieveLatestDone();
+        switch(latestDone) {
+            case "start":
+                before = true;
+            case "income":
+                before = true;
+            case "bills":
+                before = true;
+            case "debts":
+                before = true;
+            case "savings":
+                before = true;
+            case "tour":
+                before = false;
         }
-
         return before;
     }
 

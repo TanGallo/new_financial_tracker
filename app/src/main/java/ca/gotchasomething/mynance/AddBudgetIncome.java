@@ -23,7 +23,6 @@ import androidx.annotation.Nullable;
 import java.util.List;
 
 import ca.gotchasomething.mynance.data.IncomeBudgetDb;
-import ca.gotchasomething.mynance.data.SetUpDb;
 
 public class AddBudgetIncome extends LayoutBudget {
 
@@ -77,12 +76,12 @@ public class AddBudgetIncome extends LayoutBudget {
             cancelIncomeButton.setOnClickListener(onClickCancelIncomeButton);
             saveIncomeButton.setOnClickListener(onClickSaveIncomeButton);
             incomeFrequencyRadioGroup.setOnCheckedChangeListener(onCheckIncomeFrequency);
-            doneIncomeButton.setOnClickListener(onClickDoneIncomeButton);
+            //doneIncomeButton.setOnClickListener(onClickDoneIncomeButton);
 
             incomeListAdapter = new IncomeListAdapter(this, dbManager.getIncomes());
             incomeListView.setAdapter(incomeListAdapter);
 
-            if (dbManager.incomeDoneCheck > 0) {
+            /*if (dbManager.incomeDoneCheck > 0) {
                 doneIncomeButton.setVisibility(View.GONE);
                 incomeListView.setVisibility(View.GONE);
                 incomeLine.setVisibility(View.GONE);
@@ -101,7 +100,7 @@ public class AddBudgetIncome extends LayoutBudget {
                     incomeLine.setVisibility(View.VISIBLE);
                 }
                 updateIncomeButton.setVisibility(View.GONE);
-            }
+            }*/
         }
     }
 
@@ -153,7 +152,7 @@ public class AddBudgetIncome extends LayoutBudget {
         startActivity(backToSetUp);
     }
 
-    View.OnClickListener onClickDoneIncomeButton = new View.OnClickListener() {
+    /*View.OnClickListener onClickDoneIncomeButton = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             incomeDone = 1;
@@ -163,7 +162,7 @@ public class AddBudgetIncome extends LayoutBudget {
 
             backToSetUp();
         }
-    };
+    };*/
 
     View.OnClickListener onClickCancelIncomeButton = new View.OnClickListener() {
         @Override

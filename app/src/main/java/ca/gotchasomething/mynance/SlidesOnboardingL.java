@@ -17,12 +17,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.viewpager.widget.ViewPager;
 
+import ca.gotchasomething.mynance.data.SetUpDb;
+
 public class SlidesOnboardingL extends AppCompatActivity implements View.OnClickListener {
 
     private AdapterSlides adapter;
     private Button skipButton, nextButton;
     Cursor setUpCursor;
     DbHelper setUpHelper;
+    DbManager dbManager;
+    Double balanceAmount;
     private ImageView[] dots;
     int tourDoneYes;
     private int[] slides = {
@@ -34,12 +38,16 @@ public class SlidesOnboardingL extends AppCompatActivity implements View.OnClick
             R.layout.slides_onboarding_6_land
     };
     private LinearLayout dotsLayout;
+    SetUpDb setUpDb;
     SQLiteDatabase setUpDbDb;
+    String latestDone;
     ViewPager viewPager;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //dbManager = new DbManager(this);
 
         if (new PreferenceManager(this).checkPreferences()) {
             loadHome();
@@ -131,20 +139,12 @@ public class SlidesOnboardingL extends AppCompatActivity implements View.OnClick
     }
 
     private void loadHome() {
-        setUpHelper = new DbHelper(getApplicationContext());
-        setUpDbDb = setUpHelper.getReadableDatabase();
-        setUpCursor = setUpDbDb.rawQuery(" SELECT max(tourDone) FROM " + DbHelper.SET_UP_TABLE_NAME + "", null);
-        setUpCursor.moveToFirst();
-        tourDoneYes = setUpCursor.getInt(0);
-        setUpCursor.close();
-
-        if (tourDoneYes <= 0) {
-            startActivity(new Intent(this, LayoutSetUp.class));
-            finish();
-        } else {
-            startActivity(new Intent(this, MainActivity.class));
-            finish();
-        }
+        dbManager = new DbManager(this);
+        latestDone = "start";
+        setUpDb = new SetUpDb(latestDone, balanceAmount, 0);
+        dbManager.addSetUp(setUpDb);
+        startActivity(new Intent(this, LayoutSetUp.class));
+        finish();
     }
 
     private void loadNextSlide() {

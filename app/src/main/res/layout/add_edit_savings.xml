@@ -61,19 +61,19 @@
                     android:orientation="horizontal">
 
                 <RadioButton
-                    android:id="@+id/savingsSeparateYesRadioButton"
+                    android:id="@+id/savingsSeparateNoRadioButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="10dp"
-                    android:text="@string/yes"
+                    android:text="@string/in_main_account"
                     android:textSize="15sp"
                     android:textColor="@color/colorPrimaryDark"/>
 
                 <RadioButton
-                    android:id="@+id/savingsSeparateNoRadioButton"
+                    android:id="@+id/savingsSeparateYesRadioButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/no"
+                    android:text="@string/separately"
                     android:textSize="15sp"
                     android:textColor="@color/colorPrimaryDark"/>
 

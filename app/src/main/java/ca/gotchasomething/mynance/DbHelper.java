@@ -193,9 +193,9 @@ public class DbHelper extends SQLiteOpenHelper {
             " debtsDone INTEGER," +
             " savingsDone INTEGER," +
             " budgetDone INTEGER," +
-            " balanceDone INTEGER," +*/
-            " balanceAmount REAL," +
-            " tourDone INTEGER)";
+            " balanceDone INTEGER," +
+            " tourDone INTEGER)," +*/
+            " balanceAmount REAL)";
 
     private static final String createCurrentQuery = "CREATE TABLE " + CURRENT_TABLE_NAME +
             " (_id INTEGER PRIMARY KEY," +

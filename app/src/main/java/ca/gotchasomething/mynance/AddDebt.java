@@ -199,7 +199,7 @@ public class AddDebt extends LayoutDebt {
     View.OnClickListener onClickCancelDebtButton = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            if (dbManager.retrieveLatestDone() == "bills") {
+            if (dbManager.retrieveLatestDone().equals("bills")) {
                 showList();
             } else {
                 backToDebt();
@@ -272,7 +272,7 @@ public class AddDebt extends LayoutDebt {
 
                 dbManager.addDebt(debt);
 
-                if (dbManager.retrieveLatestDone() == "bills") {
+                if (dbManager.retrieveLatestDone().equals("bills")) {
                     showList();
                 } else {
                     debtHeaderText();
