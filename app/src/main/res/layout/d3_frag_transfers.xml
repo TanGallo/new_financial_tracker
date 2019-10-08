@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+        <LinearLayout
+            android:id="@+id/transferSpinLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@drawable/entry_box"
+            android:layout_below="@id/transferWarnLayout"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:text="@string/transfer_from"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="16sp" />
+
+            <Spinner
+                android:id="@+id/transferFromSpin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:gravity="fill_horizontal">
+
+            </Spinner>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:text="@string/transfer_to"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="16sp" />
+
+            <Spinner
+                android:id="@+id/transferToSpin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:gravity="fill_horizontal">
+
+            </Spinner>
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/transferAmtET"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:digits="0123456789-"
+                    android:hint="@string/amount"
+                    android:inputType="numberDecimal|numberSigned"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="16sp" />
+
+                <Button
+                    android:id="@+id/transferBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/entry_box"
+                    android:contentDescription="@string/enter"
+                    android:text="@string/enter"
+                    android:textColor="@color/colorPrimaryDark" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/transferWarnLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@drawable/entry_box"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/transferWarnTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:text="@string/warning"
+                android:textColor="@color/brightRed"
+                android:textSize="14sp" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:ignore="UselessParent">
+
+                <TextView
+                    android:id="@+id/transferWarnTV2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:text="@string/continue_anyway"
+                    android:textColor="@color/brightRed"
+                    android:textSize="14sp" />
+
+                <Button
+                    android:id="@+id/transferNoBtn"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="10dp"
+                    android:background="@drawable/circle_box"
+                    android:contentDescription="@string/edit"
+                    android:text="@string/no"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="12sp" />
+
+                <Button
+                    android:id="@+id/transferYesBtn"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_toStartOf="@id/transferNoBtn"
+                    android:background="@drawable/circle_box"
+                    android:contentDescription="@string/delete"
+                    android:text="@string/yes"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="12sp" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    <Button
+        android:id="@+id/transfersDoneBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:layout_below="@id/transferSpinLayout"
+        android:background="@drawable/entry_box"
+        android:textColor="@color/colorPrimaryDark"
+        android:text="@string/done_transfers"
+        android:layout_alignParentEnd="true"
+        />
+
+    </RelativeLayout>
+
+</FrameLayout>

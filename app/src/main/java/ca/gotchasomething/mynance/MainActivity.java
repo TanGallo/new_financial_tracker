@@ -8,16 +8,18 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 
 public class MainActivity extends MainNavigation {
 
+    General mainGen2;
     Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.c1_activity_main);
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
             drawer = findViewById(R.id.drawer_layout);
+            mainGen2 = new General();
 
             navigationView = findViewById(R.id.nav_view);
             menuConfig();
@@ -30,7 +32,7 @@ public class MainActivity extends MainNavigation {
         if(savedInstanceState == null) {
             intent = new Intent(MainActivity.this, LayoutDailyMoney.class);
             startActivity(intent);
-            navigationView.setCheckedItem(R.id.menu_daily_money);
+            navigationView.setCheckedItem(R.id.menu_home_page);
         }
     }
 

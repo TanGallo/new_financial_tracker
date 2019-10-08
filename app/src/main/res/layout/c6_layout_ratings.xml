@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:openDrawer="end">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/colorPrimary"
+            android:elevation="4dp"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <androidx.core.widget.NestedScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:id="@+id/ratEnjoyLayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/ratLabel"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="10dp"
+                                android:gravity="center_horizontal"
+                                android:text="@string/enjoying_question"
+                                android:textColor="@color/colorPrimaryDark"
+                                android:textSize="18sp" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_horizontal"
+                                android:orientation="horizontal">
+
+                                <Button
+                                    android:id="@+id/ratNoJoyBtn"
+                                    android:layout_width="60dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="end"
+                                    android:layout_margin="10dp"
+                                    android:background="@drawable/entry_box"
+                                    android:contentDescription="@string/no"
+                                    android:gravity="center"
+                                    android:text="@string/no"
+                                    android:textColor="@color/colorPrimaryDark"
+                                    tools:ignore="ButtonStyle,UnusedAttribute" />
+
+                                <Button
+                                    android:id="@+id/ratNotSureJoyBtn"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="end"
+                                    android:layout_margin="10dp"
+                                    android:background="@drawable/entry_box"
+                                    android:contentDescription="@string/not_sure_yet"
+                                    android:gravity="center"
+                                    android:text="@string/not_sure_yet"
+                                    android:textColor="@color/colorPrimaryDark"
+                                    tools:ignore="ButtonStyle,UnusedAttribute" />
+
+                                <Button
+                                    android:id="@+id/ratYesJoyBtn"
+                                    android:layout_width="60dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="end"
+                                    android:layout_margin="10dp"
+                                    android:background="@drawable/entry_box"
+                                    android:contentDescription="@string/yes"
+                                    android:gravity="center"
+                                    android:text="@string/yes"
+                                    android:textColor="@color/colorPrimaryDark"
+                                    tools:ignore="ButtonStyle,UnusedAttribute" />
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/ratRateLayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/ratYesLabel"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="10dp"
+                                android:gravity="center_horizontal"
+                                android:text="@string/rate_it_question"
+                                android:textColor="@color/colorPrimaryDark"
+                                android:textSize="18sp" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_horizontal"
+                                android:orientation="horizontal">
+
+                                <Button
+                                    android:id="@+id/ratNoRateBtn"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="end"
+                                    android:layout_margin="10dp"
+                                    android:background="@drawable/entry_box"
+                                    android:contentDescription="@string/not_now"
+                                    android:gravity="center"
+                                    android:text="@string/not_now"
+                                    android:textColor="@color/colorPrimaryDark"
+                                    tools:ignore="ButtonStyle,UnusedAttribute" />
+
+                                <Button
+                                    android:id="@+id/ratYesRateBtn"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="end"
+                                    android:layout_margin="10dp"
+                                    android:background="@drawable/entry_box"
+                                    android:contentDescription="@string/sure"
+                                    android:gravity="center"
+                                    android:text="@string/sure"
+                                    android:textColor="@color/colorPrimaryDark"
+                                    tools:ignore="ButtonStyle,UnusedAttribute" />
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/ratEmailLayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/ratNoLabel"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="10dp"
+                                android:gravity="center_horizontal"
+                                android:text="@string/email_question"
+                                android:textColor="@color/colorPrimaryDark"
+                                android:textSize="18sp" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_horizontal"
+                                android:orientation="horizontal">
+
+                                <Button
+                                    android:id="@+id/ratNoEmailBtn"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="end"
+                                    android:layout_margin="10dp"
+                                    android:background="@drawable/entry_box"
+                                    android:contentDescription="@string/not_now"
+                                    android:gravity="center"
+                                    android:text="@string/not_now"
+                                    android:textColor="@color/colorPrimaryDark"
+                                    tools:ignore="ButtonStyle,UnusedAttribute" />
+
+                                <Button
+                                    android:id="@+id/ratYesEmailBtn"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="end"
+                                    android:layout_margin="10dp"
+                                    android:background="@drawable/entry_box"
+                                    android:contentDescription="@string/sure"
+                                    android:gravity="center"
+                                    android:text="@string/sure"
+                                    android:textColor="@color/colorPrimaryDark"
+                                    tools:ignore="ButtonStyle,UnusedAttribute" />
+
+                            </LinearLayout>
+
+                            <TextView
+                                android:id="@+id/ratTemp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal"
+                                android:gravity="center_horizontal"
+                                android:text="@string/temp" />
+
+                            <TextView
+                                android:id="@+id/ratTempE"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal"
+                                android:gravity="center_horizontal"
+                                android:text="@string/tempE" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </androidx.core.widget.NestedScrollView>
+
+            </LinearLayout>
+
+        </FrameLayout>
+
+    </LinearLayout>
+
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/nav_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        app:headerLayout="@layout/c1_nav_header_main"
+        app:menu="@menu/activity_main_drawer" />
+
+</androidx.drawerlayout.widget.DrawerLayout>

@@ -21,10 +21,12 @@ public class SlidesSetUpL extends AppCompatActivity implements View.OnClickListe
     private Button previousButton, nextButton;
     DbManager dbManager;
     private ImageView[] dots;
-    private int[] slides, incomeSlides = {R.layout.slides_set_up_income_1_land, R.layout.slides_set_up_income_2_land}, billsSlides = {R.layout.slides_set_up_bills_1_land,
-            R.layout.slides_set_up_bills_1a_land, R.layout.slides_set_up_bills_2_land, R.layout.slides_set_up_bills_3_land, R.layout.slides_set_up_bills_4_land,
-            R.layout.slides_set_up_bills_5_land}, debtsSlides = {R.layout.slides_set_up_debts_1_land, R.layout.slides_set_up_debts_2_land, R.layout.slides_set_up_debts_3_land},
-            savingsSlides = {R.layout.slides_set_up_savings_1_land, R.layout.slides_set_up_savings_2_land};
+    private int[] slides, incomeSlides = {R.layout.b2_slides_set_up_income_1_land, R.layout.b2_slides_set_up_income_2_land, R.layout.b2_slides_set_up_income_3_land, R.layout.b2_slides_set_up_income_4_land}, billsSlides = {R.layout.b3_slides_set_up_bills_1_land,
+            R.layout.b3_slides_set_up_bills_1a_land, R.layout.b3_slides_set_up_bills_2_land, R.layout.b3_slides_set_up_bills_3_land, R.layout.b3_slides_set_up_bills_4_land,
+            R.layout.b3_slides_set_up_bills_5_land}, debtsSlides = {R.layout.b4_slides_set_up_debts_1_land, R.layout.b4_slides_set_up_debts_2_land},
+            savingsSlides = {R.layout.b5_slides_set_up_savings_1_land, R.layout.b5_slides_set_up_savings_2_land}, analysisSlides = {R.layout.b6_slides_set_up_analysis_1_land},
+            weeklySlides = {R.layout.b7_slides_set_up_weekly_1_land, R.layout.b7_slides_set_up_weekly_2_land, R.layout.b7_slides_set_up_weekly_3_land},
+            finalSlides = {R.layout.b8_slides_set_up_final_1_land, R.layout.b8_slides_set_up_final_2_land};
     private LinearLayout dotsLayout;
     String latestDone = null;
     ViewPager viewPager;
@@ -35,21 +37,17 @@ public class SlidesSetUpL extends AppCompatActivity implements View.OnClickListe
 
         dbManager = new DbManager(this);
 
-        /*if (new PreferenceManager(this).checkPreferences()) {
-            loadHome();
-        }*/
-
         if (Build.VERSION.SDK_INT >= 19) {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         } else {
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         }
 
-        setContentView(R.layout.slides_set_up_background_land);
+        setContentView(R.layout.b1_slides_set_up_background_land);
 
         viewPager = findViewById(R.id.viewPager);
         latestDone = dbManager.retrieveLatestDone();
-        switch(latestDone) {
+        switch (latestDone) {
             case "start":
                 slides = incomeSlides;
                 break;
@@ -62,15 +60,15 @@ public class SlidesSetUpL extends AppCompatActivity implements View.OnClickListe
             case "debts":
                 slides = savingsSlides;
                 break;
-                /*case "savings":
-                slides = ;
-                    break;
-                case "budget":
-                slides = ;
-                    break;
-                case "balance":
-                slides = ;
-                    break;*/
+            case "savings":
+                slides = analysisSlides;
+                break;
+            case "analysis":
+                slides = weeklySlides;
+                break;
+            case "weekly":
+                slides = finalSlides;
+                break;
         }
         adapter = new AdapterSlides(slides, this);
         viewPager.setAdapter(adapter);
@@ -152,31 +150,30 @@ public class SlidesSetUpL extends AppCompatActivity implements View.OnClickListe
     }
 
     private void loadHome() {
-        //dbManager.retrieveLatestDone();
-        switch(latestDone) {
+        switch (latestDone) {
             case "start":
-                startActivity(new Intent(this, SetUpAddIncome.class));
+                startActivity(new Intent(this, AddIncome.class));
                 break;
             case "income":
-                startActivity(new Intent(this, SetUpAddBills.class));
+                startActivity(new Intent(this, AddExpense.class));
                 break;
             case "bills":
-                startActivity(new Intent(this, AddDebt.class));
+                startActivity(new Intent(this, AddDebts.class));
                 break;
             case "debts":
                 startActivity(new Intent(this, AddSavings.class));
                 break;
-                /*startActivity(new Intent(this, className.class));
-                    break;
-                case "budget":
-                startActivity(new Intent(this, className.class));
-                    break;
-                case "balance":
-                startActivity(new Intent(this, className.class));
-                    break;*/
+            case "savings":
+                startActivity(new Intent(this, SetUpAnalysis.class));
+                break;
+            case "analysis":
+                startActivity(new Intent(this, LayoutWeeklyLimitsList.class));
+                break;
+            case "weekly":
+                startActivity(new Intent(this, SetUpFinal.class));
+                break;
         }
-            //startActivity(new Intent(this, SetUpAddIncome.class));
-            finish();
+        finish();
     }
 
     private void loadNextSlide() {
@@ -186,7 +183,6 @@ public class SlidesSetUpL extends AppCompatActivity implements View.OnClickListe
             viewPager.setCurrentItem(next);
         } else {
             loadHome();
-            //new PreferenceManager(this).writePreferences();
         }
     }
 

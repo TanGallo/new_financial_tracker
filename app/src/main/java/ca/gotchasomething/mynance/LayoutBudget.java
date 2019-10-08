@@ -1,17 +1,10 @@
 package ca.gotchasomething.mynance;
 
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.Intent;
-import android.database.CursorIndexOutOfBoundsException;
-import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -19,72 +12,89 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.text.NumberFormat;
-import java.util.List;
 
-import ca.gotchasomething.mynance.data.DebtDb;
 import ca.gotchasomething.mynance.data.ExpenseBudgetDb;
 import ca.gotchasomething.mynance.data.IncomeBudgetDb;
-import ca.gotchasomething.mynance.data.SavingsDb;
 import ca.gotchasomething.mynance.data.SetUpDb;
 
 public class LayoutBudget extends MainNavigation {
 
-    boolean foundDebtId = false, foundSavingsId = false, foundDebtIdExp = false, foundDebtIdInc = false, foundSavingsIdExp = false, foundSavingsIdInc = false;
-    Button budgetAddExpenseButton, budgetAddIncomeButton, budgetCancelExpenseButton, budgetCancelIncomeButton, budgetSetUpTimeButton,
-            budgetSetUpHelpButton, budgetUpdateExpenseButton, budgetUpdateIncomeButton, cancelButton, doneBudgetSetUpButton, okButton, ok2Button;
-    ContentValues cv, cv2, cv3, cv4, cv5, cv6, cv7, cv8, cv9, cv10, cv11, cv12, cv13, cv14, debtValues, debtValues2, debtValues3, debtValues4, expValues, incValues, moneyInValues, moneyOutValues, moneyOutValues2, moneyOutValues3, savingsValues, savingsValues2,
+    boolean foundDebtIdInc = false, foundSavIdInc = false, foundDebtIdExp = false, foundSavIdExp = false, foundDebtIdCharging = false, foundExpIdE = false,
+            foundExpIdI = false;
+    Button layBudExpCancelBtn, layBudExpSaveBtn, layBudExpUpdateBtn, layBudIncCancelBtn, layBudIncUpdateBtn, layBudIncSaveBtn, layBudResInfoOkBtn, budgetCancelExpenseButton,
+            budgetCancelIncomeButton, budgetSetUpTimeButton,
+            budgetSetUpHelpButton, budgetUpdateExpenseButton, budgetUpdateIncomeButton, budRepWarnCancelBtn, doneBudgetSetUpButton,
+            layBudDelWarnBtn, layBudRepWarnOkBtn;
+    ContentValues layBudCV, layBudCV2, layBudCV3, layBudCV4, layBudCV5, layBudCV6, layBudCV7, layBudCV8, layBudCV9, layBudCV10, cv5, cv6, cv7, cv8, cv9, cv10, cv11, cv12, cv13, cv14, debtValues, debtValues2, debtValues3,
+            debtValues4, expValues, incValues, moneyInValues, moneyOutValues, moneyOutValues2, moneyOutValues3, savingsValues, savingsValues2,
             savingsValues3, savingsValues4;
-    DbHelper dbHelper, dbHelper2;
-    DbManager dbManager;
-    Double amountEntry = 0.0, annualAmount = 0.0, annualIncome = 0.0, balanceAmount = 0.0, budgetExpenseAmountD = 0.0, budgetIncomeAmountD = 0.0,
-            savingsFrequency = 0.0, savingsPayments = 0.0, currentSavingsRate = 0.0, debtAmount = 0.0, debtAnnualIncome = 0.0, debtFrequency = 0.0,
+    DbHelper layBudHelper, layBudHelper2;
+    DbManager layBudDbMgr;
+    Double layBudStillAvail = 0.0, debtAmtFromDb = 0.0, debtAnnIncFromDb = 0.0, debtFrqFromDb = 0.0, debtPaytFromDb = 0.0, debtRateFromDb = 0.0,
+            expAmtFromEntry = 0.0, expAnnAmtFromTag = 0.0, expAnnAmtFromEntry = 0.0, expAAnnAmtFromEntry = 0.0, expBAnnAmtFromEntry = 0.0,
+            expFrqFromEntry = 0.0, expFrqFromTag = 0.0, incAmtFromEntry = 0.0,
+            incAnnAmtFromTag = 0.0, incAnnAmtFromEntry = 0.0, incFrqFromEntry = 0.0,
+            savAmtFromDb = 0.0, savAnnIncFromDb = 0.0, savFrqFromDb = 0.0, savGoalFromDb = 0.0, savPaytFromDb = 0.0,
+            savRateFromDb = 0.0, amountEntry = 0.0,
+            annualAmount = 0.0, annualIncome = 0.0, balanceAmount = 0.0, budgetExpenseAmountD = 0.0, budgetIncomeAmountD = 0.0,
+            savFrqFromEntry = 0.0, savPaytFromEntry = 0.0, currentSavingsRate = 0.0, debtAmount = 0.0, debtAnnualIncome = 0.0, debtFrequency = 0.0,
             debtPayments = 0.0, debtRate = 0.0, expenseAnnualAmountD = 0.0, frequencyEntry = 0.0, incomeAnnualAmountD = 0.0, incomeAvailableD = 0.0,
-            incomeAvailableN = 0.0, savingsAmount = 0.0, savingsAnnualIncome = 0.0, savingsGoal = 0.0, savingsRate = 0.0,
-            totalExpensesD = 0.0, totalExpensesR = 0.0, totalIncomeD = 0.0, totalIncomeR = 0.0, years2 = 0.0;
-    EditText budgetExpenseAmount, budgetExpenseCategory, budgetIncomeAmount, budgetIncomeCategory;
-    ExpenseBudgetDb expenseBudgetDb;
-    ExpenseDbAdapter expenseAdapter;
-    General general;
-    FloatingActionButton budgetExpensePlusButton, budgetIncomePlusButton;
-    IncomeBudgetDb incomeBudgetDb;
-    IncomeDbAdapter incomeAdapter;
+            incomeAvailableN = 0.0, savAmtFromEntry = 0.0, savAnnIncFromEntry = 0.0, savGoalFromEntry = 0.0, savRateFromEntry = 0.0,
+            totalExpensesD = 0.0, layBudTotRes = 0.0, totalIncomeD = 0.0, layBudTotInc = 0.0, spendPercent2 = 0.0, years2 = 0.0;
+    EditText layBudExpAmtET, layBudExpCatET, layBudIncAmtET, layBudIncCatET;
+    ExpenseBudgetDb layBudExpDb;
+    //BudExpListAdapter layBudExpListAdapter;
+    General layBudGen;
+    FloatingActionButton layBudAddExpBtn, layBudAddIncBtn;
+    ImageButton layBudAdjIncBtn, layBudAdjExpBtn, layBudAdjDebtsBtn, layBudAdjSavBtn, layBudResInfoBtn;
+    IncomeBudgetDb layBudIncDb;
+    //BudIncListAdapter layBudIncListAdapter;
     int balanceDone = 0, billsDone = 0, budgetDone = 0, debtsDone = 0, incomeDone = 0, savingsDone = 0, tourDone = 0;
-    Intent backToBudget, backToSetUp, expensePlusButton, incomePlusButton;
-    LinearLayout toastLayout;
-    ListView budgetExpensesDetails, budgetIncomeDetails;
-    long id;
+    Intent layBudToAdjInc, layBudToAdjExp, layBudToAdjDebt, layBudToAdjSav;
+    LinearLayout layBudResInfoLayout, layBudExpListLayout, layBudIncListLayout, layBudRepWarnLayout;
+    ListView layBudExpListView, layBudIncListView;
+    long debtIdCharging, debtIdInc, debtIdExp, expIdFromTag, expRefKeyDFromDb, expRefKeySFromDb, incRefKeyDFromDb, incRefKeySFromDb,
+            incIdFromTag, savIdInc, savIdExp;
     NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
-    RadioButton budgetExpenseARadioButton, budgetExpenseAnnuallyRadioButton, budgetExpenseBRadioButton, budgetExpenseBiAnnuallyRadioButton,
-            budgetExpenseBiMonthlyRadioButton, budgetExpenseBiWeeklyRadioButton, budgetExpenseMonthlyRadioButton, budgetExpenseNoRadioButton,
-            budgetExpenseWeeklyRadioButton, budgetExpenseYesRadioButton, budgetIncomeAnnuallyRadioButton, budgetIncomeBiAnnuallyRadioButton,
-            budgetIncomeBiMonthlyRadioButton, budgetIncomeBiWeeklyRadioButton, budgetIncomeMonthlyRadioButton, budgetIncomeWeeklyRadioButton;
-    RadioGroup budgetExpenseABRadioGroup, budgetExpenseFrequencyRadioGroup, budgetIncomeFrequencyRadioGroup, budgetExpenseReminderRadioGroup;
+    public NumberFormat percentFormat = NumberFormat.getPercentInstance();
+    RadioButton layBudExpARB, layBudExpAnnlyRB, layBudExpBRB, layBudExpBiAnnlyRB, layBudExpBiMthlyRB, layBudExpBiWklyRB, layBudExpMthlyRB, layBudExpNoWklyRB,
+            layBudExpWklyRB, layBudExpYesWklyRB, layBudIncAnnlyRB, layBudIncBiAnnlyRB, layBudIncBiMthlyRB, layBudIncBiWklyRB, layBudIncMthlyRB, layBudIncWklyRB;
+    RadioGroup layBudExpWklyRG, layBudExpFrqRG, layBudIncFrqRG, layBudExpABRG;
+    RelativeLayout layBudAdjIncLayout, layBudAdjExpLayout, layBudAdjDebtsLayout, layBudAdjSavLayout;
     SetUpDb setUpDb;
-    SQLiteDatabase db, db2;
-    String budgetExpenseAmountS = null, budgetIncomeAmountS = null, debtId = null, expRefKeyS = null, expDebtId = null, expSavingsId = null, expRefKeyD = null, expenseAnnualAmount2 = null,
-            expenseAnnualAmountS = null, expenseFrequencyS = null, expenseId = null, expensePriorityS = null, expenseWeeklyS = null, incomeId = null, incomeAnnualAmount2 = null,
-            incomeAnnualAmountS = null, incRefKeyD = null, incRefKeyS = null, incDebtId = null, incSavingsId = null, incomeAvailable2 = null, incomeAvailableN2 = null,
-            incomeFrequencyS = null, savingsId = null, nameEntryInc = null, nameEntryExp = null, priorityEntryExp = null, savingsDate2 = null, totalExpenses2 = null,
+    SQLiteDatabase layBudDb, layBudDb2;
+    String budExpIdE = null, budExpIdI = null, layBudExpPriorityRB = null, layBudIncFrqRB = null, budPriorityFromTag = null, budWeeklyFromTag = null,
+            expNameFromEntry = null, expNameFromTag = null,
+            expPriorityFromEntry = null, expPriorityFromTag = null, expWeeklyFromEntry = null, expWeeklyFromTag = null, layBudExpWeeklyRB = null, incFrqFromTag = null, layBudExpFrqRB = null, incNameFromEntry = null, incNameFromTag = null, budgetExpenseAmountS = null,
+            budgetIncomeAmountS = null, debtId = null, expRefKeyS = null, expDebtId = null, expSavingsId = null, expRefKeyD = null,
+            expenseAnnualAmount2 = null,
+            expenseAnnualAmountS = null, expenseFrequencyS = null, expenseId = null, expensePriorityS = null, expenseWeeklyS = null,
+            incomeId = null, incomeAnnualAmount2 = null,
+            incomeAnnualAmountS = null, incRefKeyD = null, incRefKeyS = null, incDebtId = null, incSavingsId = null, incomeAvailable2 = null,
+            incomeAvailableN2 = null,
+            incomeFrequencyS = null, savingsId = null, nameEntryInc = null, nameEntryExp = null, priorityEntryExp = null, layBudSavDate2 = null,
+            spendResStmt = null, spendPercent = null, totalExpenses2 = null,
             totalExpensesS = null, totalIncome2 = null, totalIncomeS = null, weeklyEntry = null;
-    TextView budgetExpensesTotalText, budgetIncomeTotalText, budgetOopsAmountText, budgetOopsText, budgetSetUpNoTime, budgetSetUpNoTime2,
-            budgetSetUpNeedHelp, budgetSetUpNeedHelp2, deleteExpText, emptyBudgetText, headerLabel2, incomeAvailable, noSpendingReportText,
+    TextView layBudStatusTV, layBudStatusTV2, layBudExpWklyLabel, layBudIncFrqLabel, layBudTotResTV, layBudTotIncTV, layBudOverWarnTV, layBudOverWarnLabel, layBudResLabel, budgetSetUpNoTime2,
+            budgetSetUpNeedHelp, budgetSetUpNeedHelp2, deleteExpText, emptyBudgetText, layBudHeaderLabel, layBudHeaderTV, layBudRepWarnTV,
             weeklyGuidanceLabel, tv;
     Toast toast;
+    View layBudExpLine1, layBudExpLine2;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.layout_budget);
+        setContentView(R.layout.c5_layout_budget_main);
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         drawer = findViewById(R.id.drawer_layout);
@@ -97,208 +107,745 @@ public class LayoutBudget extends MainNavigation {
 
         menuConfig();
 
-        general = new General();
-        dbManager = new DbManager(this);
+        layBudGen = new General();
+        layBudDbMgr = new DbManager(this);
 
-        budgetIncomeTotalText = findViewById(R.id.budgetIncomeTotalText);
-        budgetExpensesTotalText = findViewById(R.id.budgetExpensesTotalText);
-        headerLabel2 = findViewById(R.id.headerLabel2);
-        incomeAvailable = findViewById(R.id.incomeAvailable);
-        budgetOopsText = findViewById(R.id.budgetOopsText);
-        budgetOopsText.setVisibility(View.GONE);
-        budgetOopsAmountText = findViewById(R.id.budgetOopsAmountText);
-        budgetOopsAmountText.setVisibility(View.GONE);
-        emptyBudgetText = findViewById(R.id.emptyBudgetText);
-        /*budgetSetUpNoTime = findViewById(R.id.budgetSetUpNoTime);
-        budgetSetUpNoTime.setOnClickListener(onClickNoTimeBudget);
-        budgetSetUpNoTime2 = findViewById(R.id.budgetSetUpNoTime2);
-        budgetSetUpNoTime2.setVisibility(View.GONE);
-        budgetSetUpTimeButton = findViewById(R.id.budgetSetUpTimeButton);
-        budgetSetUpTimeButton.setVisibility(View.GONE);
-        budgetSetUpNeedHelp = findViewById(R.id.budgetSetUpNeedHelp);
-        budgetSetUpNeedHelp.setOnClickListener(onClickNeedHelpBudget);
-        budgetSetUpNeedHelp2 = findViewById(R.id.budgetSetUpNeedHelp2);
-        budgetSetUpNeedHelp2.setVisibility(View.GONE);
-        budgetSetUpHelpButton = findViewById(R.id.budgetSetUpHelpButton);
-        budgetSetUpHelpButton.setVisibility(View.GONE);*/
-        deleteExpText = findViewById(R.id.deleteExpText);
-        deleteExpText.setVisibility(View.GONE);
-        noSpendingReportText = findViewById(R.id.noSpendingReportText);
-        noSpendingReportText.setVisibility(View.GONE);
-        okButton = findViewById(R.id.okButton);
-        okButton.setVisibility(View.GONE);
-        ok2Button = findViewById(R.id.ok2Button);
-        ok2Button.setVisibility(View.GONE);
-        cancelButton = findViewById(R.id.cancelButton);
-        cancelButton.setVisibility(View.GONE);
-        budgetIncomePlusButton = findViewById(R.id.budgetIncomePlusButton);
-        budgetExpensePlusButton = findViewById(R.id.budgetExpensePlusButton);
-        budgetIncomeDetails = findViewById(R.id.budgetIncomeDetails);
-        budgetExpensesDetails = findViewById(R.id.budgetExpensesDetails);
+        layBudTotIncTV = findViewById(R.id.budMnTotIncTV);
+        layBudTotResTV = findViewById(R.id.budMnTotExpTV);
+        layBudResInfoBtn = findViewById(R.id.budMnResInfoBtn);
+        layBudResInfoLayout = findViewById(R.id.budMnResInfoLayout);
+        layBudResInfoLayout.setVisibility(View.GONE);
+        layBudResInfoOkBtn = findViewById(R.id.budMnResInfoOkBtn);
+        layBudStatusTV = findViewById(R.id.budMnStatusTV);
+        layBudStatusTV2 = findViewById(R.id.budMnStatusTV2);
+        layBudOverWarnLabel = findViewById(R.id.budMnOverWarnLabel);
+        layBudOverWarnLabel.setVisibility(View.GONE);
+        layBudOverWarnTV = findViewById(R.id.budMnOverWarnTV);
+        layBudOverWarnTV.setVisibility(View.GONE);
+        layBudAdjIncBtn = findViewById(R.id.budMnAdjIncBtn);
+        layBudAdjExpBtn = findViewById(R.id.budMnAdjExpBtn);
+        layBudAdjDebtsBtn = findViewById(R.id.budMnAdjDebtsBtn);
+        layBudAdjSavBtn = findViewById(R.id.budMnAdjSavBtn);
 
-        budgetIncomePlusButton.setOnClickListener(onClickIncomePlusButton);
-        budgetExpensePlusButton.setOnClickListener(onClickExpensePlusButton);
+        layBudResInfoBtn.setOnClickListener(onClickLayBudResInfoBtn);
+        layBudAdjIncBtn.setOnClickListener(onClickLayBudAdjIncBtn);
+        layBudAdjExpBtn.setOnClickListener(onClickLayBudAdjExpBtn);
+        layBudAdjDebtsBtn.setOnClickListener(onClickLayBudAdjDebtsBtn);
+        layBudAdjSavBtn.setOnClickListener(onClickLayBudAdjSavBtn);
 
-        /*doneBudgetSetUpButton = findViewById(R.id.doneBudgetSetUpButton);
-        doneBudgetSetUpButton.setOnClickListener(onClickDoneBudgetSetUpButton);
+        layBudHeaderText();
 
-        if (dbManager.budgetSetUpCheck() > 0) {
-            doneBudgetSetUpButton.setVisibility(View.GONE);
-            emptyBudgetText.setVisibility(View.GONE);
-            budgetSetUpNoTime.setVisibility(View.GONE);
-            budgetSetUpNoTime2.setVisibility(View.GONE);
-            budgetSetUpTimeButton.setVisibility(View.GONE);
-            budgetSetUpNeedHelp.setVisibility(View.GONE);
-            budgetSetUpNeedHelp2.setVisibility(View.GONE);
-            budgetSetUpHelpButton.setVisibility(View.GONE);
-        }*/
-
-        incomeAdapter = new IncomeDbAdapter(this, dbManager.getIncomes());
-        budgetIncomeDetails.setAdapter(incomeAdapter);
-
-        expenseAdapter = new ExpenseDbAdapter(this, dbManager.getExpense());
-        budgetExpensesDetails.setAdapter(expenseAdapter);
-
-        budgetHeaderText();
-
+        layBudCV = new ContentValues();
+        layBudCV.put(DbHelper.LASTPAGEID, 2);
+        layBudHelper = new DbHelper(this);
+        layBudDb = layBudHelper.getWritableDatabase();
+        layBudDb.update(DbHelper.CURRENT_TABLE_NAME, layBudCV, DbHelper.ID + "= '1'", null);
+        layBudDb.close();
     }
 
-    /*View.OnClickListener onClickDoneBudgetSetUpButton = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            budgetDone = 1;
+    /*public void spendResPara(TextView tv, TextView tv2, String str1, String str2, String str3) {
+        //tv = statement textView
+        //tv2 = additional textView re: whether or not adjustments necessary
+        //str1 = ana_res_prt_1
+        //str2 = ana_res_part_2
+        //str3 = no_adj_nec
 
-            setUpDb = new SetUpDb(incomeDone, billsDone, debtsDone, savingsDone, budgetDone, balanceDone, balanceAmount, tourDone, 0);
-            dbManager.addSetUp(setUpDb);
-
-            toast = Toast.makeText(getApplicationContext(), R.string.edit_budget_message, Toast.LENGTH_LONG);
-            toastLayout = (LinearLayout) toast.getView();
-            tv = (TextView) toastLayout.getChildAt(0);
-            tv.setTextSize(20);
-            toast.show();
-
-            backToSetUp = new Intent(LayoutBudget.this, LayoutSetUp.class);
-            backToSetUp.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-            startActivity(backToSetUp);
-
-        }
-    };*/
-
-    /*View.OnClickListener onClickNoTimeBudget = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            budgetSetUpNoTime2.setVisibility(View.VISIBLE);
-            budgetSetUpTimeButton.setVisibility(View.VISIBLE);
-            budgetSetUpTimeButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    budgetSetUpNoTime2.setVisibility(View.GONE);
-                    budgetSetUpTimeButton.setVisibility(View.GONE);
-                }
-            });
-        }
-    };*/
-
-    /*View.OnClickListener onClickNeedHelpBudget = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            budgetSetUpNeedHelp2.setVisibility(View.VISIBLE);
-            budgetSetUpHelpButton.setVisibility(View.VISIBLE);
-            budgetSetUpHelpButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    budgetSetUpNeedHelp2.setVisibility(View.GONE);
-                    budgetSetUpHelpButton.setVisibility(View.GONE);
-                }
-            });
-        }
-    };*/
-
-    public void budgetHeaderText() {
-
-        totalIncomeR = dbManager.sumTotalIncome();
-        totalExpensesR = dbManager.sumTotalExpenses();
-
-        try {
-            totalIncomeS = String.valueOf(totalIncomeR);
-            if (totalIncomeS != null && !totalIncomeS.equals("")) {
-                totalIncomeD = Double.valueOf(totalIncomeS);
-            } else {
-                totalIncomeD = 0.0;
-            }
-
-            totalIncome2 = currencyFormat.format(totalIncomeD);
-            budgetIncomeTotalText.setText(totalIncome2);
-
-        } catch (NumberFormatException e) {
-            budgetIncomeTotalText.setText(totalIncome2);
+        //spendPercent2 = retrieveAPercentage();
+        spendPercent2 = (layBudDbMgr.sumTotalAExpenses() / layBudDbMgr.sumTotalIncome());
+        if(spendPercent2 == 0) {
+            spendPercent = "0.0%";
+        } else {
+            percentFormat.setMinimumFractionDigits(1);
+            percentFormat.setMaximumFractionDigits(1);
+            spendPercent = percentFormat.format(spendPercent2);
         }
 
-        try {
-            totalExpensesS = String.valueOf(totalExpensesR);
-            if (totalExpensesS != null && !totalExpensesS.equals("")) {
-                totalExpensesD = Double.valueOf(totalExpensesS);
-            } else {
-                totalExpensesD = 0.0;
-            }
+        spendResStmt = str1 + " " + spendPercent + " " + str2;
+        tv.setText(spendResStmt);
 
-            totalExpenses2 = currencyFormat.format(totalExpensesD);
-            budgetExpensesTotalText.setText(totalExpenses2);
-
-        } catch (NumberFormatException e) {
-            budgetExpensesTotalText.setText(totalExpenses2);
+        if (spendPercent2 >= 91.0) {
+            tv.setTextColor(Color.parseColor("#ffff4444"));
+            tv2.setText(getString(R.string.should_adj));
+            tv2.setTextColor(Color.parseColor("#ffff4444"));
+        } else if (spendPercent2 <= 90.9 && spendPercent2 >= 80.1) {
+            tv.setTextColor(Color.parseColor("#ffff4444"));
+            tv2.setText(getString(R.string.may_adj));
+            tv2.setTextColor(Color.parseColor("#ffff4444"));
+        } else {
+            tv.setTextColor(Color.parseColor("#03ac13"));
+            tv2.setText(str3);
+            tv2.setTextColor(Color.parseColor("#03ac13"));
         }
+    }*/
 
-        if (totalExpensesD > totalIncomeD) {
+    public void layBudHeaderText() {
 
-            incomeAvailableN = (totalExpensesR - totalIncomeR);
-            incomeAvailableN2 = currencyFormat.format(incomeAvailableN);
+        layBudTotInc = layBudDbMgr.sumTotalIncome();
+        //layBudTotRes = layBudTotInc * layBudDbMgr.retrieveAPercentage();
+        layBudTotRes = layBudTotInc * (layBudDbMgr.sumTotalAExpenses() / layBudDbMgr.sumTotalIncome());
+        layBudGen.dblASCurrency(String.valueOf(layBudTotInc), layBudTotIncTV);
+        layBudGen.dblASCurrency(String.valueOf(layBudTotRes), layBudTotResTV);
 
-            budgetOopsText.setVisibility(View.VISIBLE);
-            budgetOopsAmountText.setVisibility(View.VISIBLE);
-            budgetOopsAmountText.setText("-" + incomeAvailableN2);
-            headerLabel2.setVisibility(View.GONE);
-            incomeAvailable.setVisibility(View.GONE);
+        layBudStillAvail = layBudTotInc - layBudTotRes;
+        layBudDbMgr.spendResPara(layBudStatusTV, layBudStatusTV2, getString(R.string.ana_res_prt_1), getString(R.string.ana_res_part_2), getString(R.string.no_adj_nec), (layBudDbMgr.sumTotalAExpenses() / layBudDbMgr.sumTotalIncome()));
+        if (layBudStillAvail < 0) {
+            layBudStatusTV.setVisibility(View.GONE);
+            layBudStatusTV2.setVisibility(View.GONE);
+            layBudOverWarnLabel.setVisibility(View.VISIBLE);
+            layBudOverWarnTV.setVisibility(View.VISIBLE);
+            layBudGen.dblASCurrency(String.valueOf(layBudStillAvail), layBudOverWarnTV);
+        } else {
+            layBudOverWarnLabel.setVisibility(View.GONE);
+            layBudOverWarnTV.setVisibility(View.GONE);
+            layBudStatusTV.setVisibility(View.VISIBLE);
+            layBudStatusTV2.setVisibility(View.VISIBLE);
         }
-
-        if (totalIncomeD >= totalExpensesD) {
-            budgetOopsText.setVisibility(View.GONE);
-            budgetOopsAmountText.setVisibility(View.GONE);
-            headerLabel2.setVisibility(View.VISIBLE);
-            incomeAvailable.setVisibility(View.VISIBLE);
-        }
-
-        incomeAvailableD = (totalIncomeR - totalExpensesR);
-        incomeAvailable2 = currencyFormat.format(incomeAvailableD);
-        incomeAvailable.setText(incomeAvailable2);
-
     }
 
-    View.OnClickListener onClickIncomePlusButton = new View.OnClickListener() {
+    View.OnClickListener onClickLayBudResInfoBtn = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            incomePlusButton = new Intent(LayoutBudget.this, AddBudgetIncome.class);
-            incomePlusButton.setFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-            startActivity(incomePlusButton);
+            layBudResInfoLayout.setVisibility(View.VISIBLE);
+            layBudResInfoOkBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    layBudResInfoLayout.setVisibility(View.GONE);
+                }
+            });
+
         }
     };
 
-    View.OnClickListener onClickExpensePlusButton = new View.OnClickListener() {
+    View.OnClickListener onClickLayBudAdjIncBtn = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            expensePlusButton = new Intent(LayoutBudget.this, AddBudgetExpense.class);
-            expensePlusButton.setFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-            startActivity(expensePlusButton);
+            layBudToAdjInc = new Intent(LayoutBudget.this, AddIncomeList.class);
+            layBudToAdjInc.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+            startActivity(layBudToAdjInc);
         }
     };
 
-    public void backToBudget() {
-        backToBudget = new Intent(LayoutBudget.this, LayoutBudget.class);
-        backToBudget.setFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-        startActivity(backToBudget);
+    View.OnClickListener onClickLayBudAdjExpBtn = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            layBudToAdjExp = new Intent(LayoutBudget.this, AddExpenseList.class);
+            layBudToAdjExp.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+            startActivity(layBudToAdjExp);
+        }
+    };
+
+    View.OnClickListener onClickLayBudAdjDebtsBtn = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            layBudToAdjDebt = new Intent(LayoutBudget.this, AddDebtsList.class);
+            layBudToAdjDebt.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+            startActivity(layBudToAdjDebt);
+        }
+    };
+
+    View.OnClickListener onClickLayBudAdjSavBtn = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            layBudToAdjSav = new Intent(LayoutBudget.this, AddSavingsList.class);
+            layBudToAdjSav.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+            startActivity(layBudToAdjSav);
+        }
+    };
+
+    /*View.OnClickListener onClickBudAddIncBtn = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            budGen.intentMethod(budToAddInc, LayoutBudget.this, AddIncomeFromBudget.class);
+
+        }
+    };*/
+
+    /*View.OnClickListener onClickBudAddExpBtn = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            budGen.intentMethod(budToAddExp, LayoutBudget.this, AddExpenseFromBudget.class);
+
+        }
+    };*/
+
+    /*public void budRefresh() {
+        budGen.intentMethod(budRefresh, this, LayoutBudget.class);
+
+    }*/
+
+    /*public class BudIncListAdapter extends ArrayAdapter<IncomeBudgetDb> {
+
+        public Context context;
+        public List<IncomeBudgetDb> incomes;
+
+        public BudIncListAdapter(
+                Context context,
+                List<IncomeBudgetDb> incomes) {
+
+            super(context, -1, incomes);
+
+            this.context = context;
+            this.incomes = incomes;
+        }
+
+        public void updateIncomes(List<IncomeBudgetDb> incomes) {
+            this.incomes = incomes;
+            notifyDataSetChanged();
+        }
+
+        @Override
+        public int getCount() {
+            return incomes.size();
+        }
+
+        @NonNull
+        @Override
+        public View getView(final int position,
+                            View convertView, @NonNull ViewGroup parent) {
+
+            final BudIncListViewHolder budIncListHldr;
+
+            if (convertView == null) {
+                convertView = LayoutInflater.from(getApplicationContext()).inflate(
+                        R.layout.frag_list_2_2tv_edit_del,
+                        parent, false);
+
+                budIncListHldr = new BudIncListViewHolder();
+                budIncListHldr.budIncListNameTV = convertView.findViewById(R.id.list2TV1);
+                budIncListHldr.budIncListAmtTV = convertView.findViewById(R.id.list2TV2);
+                budIncListHldr.budIncListDelBtn = convertView.findViewById(R.id.list2DelBtn);
+                budIncListHldr.budIncListEditBtn = convertView.findViewById(R.id.list2EditBtn);
+                convertView.setTag(budIncListHldr);
+
+            } else {
+                budIncListHldr = (BudIncListViewHolder) convertView.getTag();
+            }
+
+            budIncListHldr.budIncListNameTV.setText(incomes.get(position).getIncomeName());
+            budGen.dblASCurrency(String.valueOf(incomes.get(position).getIncomeAnnualAmount()), budIncListHldr.budIncListAmtTV);
+
+            budIncListHldr.budIncListDelBtn.setTag(incomes.get(position));
+            budIncListHldr.budIncListEditBtn.setTag(incomes.get(position));
+
+            //click on pencil icon to edit a data record
+            budIncListHldr.budIncListEditBtn.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+
+                    setContentView(R.layout.form_1_add_income);
+                    LayoutBudget.this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+
+                    budIncCatET = findViewById(R.id.addIncCatET);
+                    budIncAmtET = findViewById(R.id.addIncAmtET);
+                    budIncFrqLabel = findViewById(R.id.addIncFrqLabel);
+                    budIncFrqRG = findViewById(R.id.addIncFrqRG);
+                    budIncWklyRB = findViewById(R.id.addIncWklyRB);
+                    budIncBiWklyRB = findViewById(R.id.addIncBiWklyRB);
+                    budIncBiMthlyRB = findViewById(R.id.addIncBiMthlyRB);
+                    budIncMthlyRB = findViewById(R.id.addIncMthlyRB);
+                    budIncBiAnnlyRB = findViewById(R.id.addIncBiAnnlyRB);
+                    budIncAnnlyRB = findViewById(R.id.addIncAnnlyRB);
+                    budIncSaveBtn = findViewById(R.id.addIncSaveBtn);
+                    budIncUpdateBtn = findViewById(R.id.addIncUpdateBtn);
+                    budIncSaveBtn.setVisibility(View.GONE);
+                    budIncCancelBtn = findViewById(R.id.addIncCancelBtn);
+
+                    budIncDb = (IncomeBudgetDb) budIncListHldr.budIncListEditBtn.getTag();
+                    budGen.incDataFromTag(budIncDb);
+
+                    budIncCatET.setText(incNameFromTag);
+                    budGen.dblASCurrency(String.valueOf(incAnnAmtFromTag), budIncAmtET);
+
+
+                    if (incFrqFromTag.equals("52")) {
+                        budIncWklyRB.setChecked(true);
+                        budIncFrqRB = "52";
+                    } else if (incFrqFromTag.equals("26")) {
+                        budIncBiWklyRB.setChecked(true);
+                        budIncFrqRB = "26";
+                    } else if (incFrqFromTag.equals("24")) {
+                        budIncBiMthlyRB.setChecked(true);
+                        budIncFrqRB = "24";
+                    } else if (incFrqFromTag.equals("12")) {
+                        budIncMthlyRB.setChecked(true);
+                        budIncFrqRB = "12";
+                    } else if (incFrqFromTag.equals("2")) {
+                        budIncBiAnnlyRB.setChecked(true);
+                        budIncFrqRB = "2";
+                    } else if (incFrqFromTag.equals("1")) {
+                        budIncAnnlyRB.setChecked(true);
+                        budIncFrqRB = "1";
+                    }
+
+                    //update db if changed
+                    budIncFrqRG.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+                        @Override
+                        public void onCheckedChanged(RadioGroup group, int checkedId) {
+
+                            switch (checkedId) {
+                                case R.id.addIncWklyRB:
+                                    budIncFrqRB = "52";
+                                    break;
+                                case R.id.addIncBiWklyRB:
+                                    budIncFrqRB = "26";
+                                    break;
+                                case R.id.addIncBiMthlyRB:
+                                    budIncFrqRB = "24";
+                                    break;
+                                case R.id.addIncMthlyRB:
+                                    budIncFrqRB = "12";
+                                    break;
+                                case R.id.addIncBiAnnlyRB:
+                                    budIncFrqRB = "2";
+                                    break;
+                                case R.id.addIncAnnlyRB:
+                                    budIncFrqRB = "1";
+                                    break;
+                            }
+                        }
+                    });
+
+                    budIncCancelBtn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            budRefresh();
+                        }
+                    });
+
+                    budIncUpdateBtn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+                            budGen.incomeDataFromEntries(
+                                    budIncCatET,
+                                    budIncAmtET,
+                                    budIncFrqRB
+                            );
+
+                            //budGen.findMatchId(String.valueOf(incIdFromTag));
+
+                            if (incNameFromEntry != null) {
+
+                                budIncDb.setIncomeName(incNameFromEntry);
+                                budIncDb.setIncomeAmount(incAmtFromEntry);
+                                budIncDb.setIncomeFrequency(incFrqFromEntry);
+                                budIncDb.setIncomeAnnualAmount(incAnnAmtFromEntry);
+
+                                budDbMgr.updateIncome(budIncDb);
+
+                                budHelper = new DbHelper(getContext());
+                                budDb = budHelper.getWritableDatabase();
+
+                                budCV7 = new ContentValues();
+
+                                String[] args7 = new String[]{String.valueOf(incIdFromTag)};
+                                try {
+                                    budCV7.put(DbHelper.MONEYINCAT, incNameFromEntry);
+                                    budDb.update(DbHelper.MONEY_IN_TABLE_NAME, budCV7, DbHelper.INCREFKEYMI + "=?", args7);
+                                } catch (CursorIndexOutOfBoundsException | SQLException e7) {
+                                    e7.printStackTrace();
+                                }
+
+                                budDb.close();
+
+                                budIncListAdapter.updateIncomes(budDbMgr.getIncomes());
+                                budIncListAdapter.notifyDataSetChanged();
+                                Toast.makeText(getBaseContext(), R.string.changes_saved, Toast.LENGTH_LONG).show();
+
+                                budRefresh();
+                            } else {
+                                Toast.makeText(getBaseContext(), R.string.no_blanks_warning, Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    });
+                }
+            });
+
+            //click on trash can to delete data record
+            budIncListHldr.budIncListDelBtn.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+
+                    budIncDb = (IncomeBudgetDb) budIncListHldr.budIncListDelBtn.getTag();
+
+                    budRepWarnLayout.setVisibility(View.VISIBLE);
+
+                    budRepWarnCancelBtn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            budRefresh();
+                        }
+                    });
+
+                    budRepWarnOkBtn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+                            budRepWarnLayout.setVisibility(View.GONE);
+
+                        }
+                    });
+
+                    budDbMgr.deleteIncome(budIncDb);
+                    budIncListAdapter.updateIncomes(budDbMgr.getIncomes());
+                    budIncListAdapter.notifyDataSetChanged();
+
+                    budHeaderText();
+                }
+            });
+            return convertView;
+        }
     }
 
-    public void findMatchingDebtId() {
+    public class BudExpListAdapter extends ArrayAdapter<ExpenseBudgetDb> {
+
+        public Context context;
+        public List<ExpenseBudgetDb> expenses;
+
+        public BudExpListAdapter(
+                Context context,
+                List<ExpenseBudgetDb> expenses) {
+
+            super(context, -1, expenses);
+
+            this.context = context;
+            this.expenses = expenses;
+        }
+
+        public void updateExpenses(List<ExpenseBudgetDb> expenses) {
+            this.expenses = expenses;
+            notifyDataSetChanged();
+        }
+
+        @Override
+        public int getCount() {
+            return expenses.size();
+        }
+
+        @NonNull
+        @Override
+        public View getView(final int position,
+                            View convertView, @NonNull ViewGroup parent) {
+
+            final BudExpListViewHolder budExpListHldr;
+
+            if (convertView == null) {
+                convertView = LayoutInflater.from(getApplicationContext()).inflate(
+                        R.layout.frag_list_2_2tv_edit_del,
+                        parent, false);
+
+                budExpListHldr = new BudExpListViewHolder();
+                budExpListHldr.budExpListNameTV = convertView.findViewById(R.id.list2TV1);
+                budExpListHldr.budExpListAmtTV = convertView.findViewById(R.id.list2TV2);
+                budExpListHldr.budExpListDelBtn = convertView.findViewById(R.id.list2DelBtn);
+                budExpListHldr.budExpListEditBtn = convertView.findViewById(R.id.list2EditBtn);
+                convertView.setTag(budExpListHldr);
+
+            } else {
+                budExpListHldr = (BudExpListViewHolder) convertView.getTag();
+            }
+
+            budExpListHldr.budExpListNameTV.setText(expenses.get(position).getExpenseName());
+            budGen.dblASCurrency(String.valueOf(expenses.get(position).getExpenseAnnualAmount()), budExpListHldr.budExpListAmtTV);
+
+            budExpListHldr.budExpListDelBtn.setTag(expenses.get(position));
+            budExpListHldr.budExpListEditBtn.setTag(expenses.get(position));
+
+            //click on pencil icon to edit a data record
+            budExpListHldr.budExpListEditBtn.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+
+                    setContentView(R.layout.form_5_add_expense);
+                    LayoutBudget.this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+
+                    budExpCatET = findViewById(R.id.addExpCatET);
+                    budExpAmtET = findViewById(R.id.addExpAmtET);
+                    budExpFrqRG = findViewById(R.id.addExpFrqRG);
+                    budExpABRG = findViewById(R.id.addExpABRG);
+                    budExpWklyLabel = findViewById(R.id.addExpWklyLabel);
+                    budExpWklyLabel.setVisibility(View.GONE);
+                    budExpWklyRG = findViewById(R.id.addExpWklyRG);
+                    budExpWklyRG.setVisibility(View.GONE);
+                    budExpCancelBtn = findViewById(R.id.addExpCancelBtn);
+                    budExpSaveBtn = findViewById(R.id.addExpSaveBtn);
+                    budExpSaveBtn.setVisibility(View.GONE);
+                    budExpUpdateBtn = findViewById(R.id.addExpUpdateBtn);
+                    budExpLine1 = findViewById(R.id.addExpLine1);
+                    budExpLine2 = findViewById(R.id.addExpLine2);
+
+                    budExpWklyRB = findViewById(R.id.addExpWklyRB);
+                    budExpBiWklyRB = findViewById(R.id.addExpBiWklyRB);
+                    budExpBiMthlyRB = findViewById(R.id.addExpBiMthlyRB);
+                    budExpMthlyRB = findViewById(R.id.addExpMthlyRB);
+                    budExpBiAnnlyRB = findViewById(R.id.addExpBiAnnlyRB);
+                    budExpAnnlyRB = findViewById(R.id.addExpAnnlyRB);
+
+                    budExpARB = findViewById(R.id.addExpARB);
+                    budExpBRB = findViewById(R.id.addExpBRB);
+
+                    budExpYesWklyRB = findViewById(R.id.addExpYesWklyRB);
+                    budExpNoWklyRB = findViewById(R.id.addExpNoWklyRB);
+
+                    budExpDb = (ExpenseBudgetDb) budExpListHldr.budExpListEditBtn.getTag();
+                    budGen.expDataFromTag(budExpDb);
+
+                    budExpCatET.setText(expNameFromTag);
+                    budGen.dblASCurrency(String.valueOf(expAnnAmtFromTag), budExpAmtET);
+
+                    //set radio buttons from data
+                    if (expPriorityFromTag.equals("52")) {
+                        budExpWklyRB.setChecked(true);
+                        budExpFrqRB = "52";
+                    } else if (expPriorityFromTag.equals("26")) {
+                        budExpBiWklyRB.setChecked(true);
+                        budExpFrqRB = "26";
+                    } else if (expPriorityFromTag.equals("24")) {
+                        budExpBiMthlyRB.setChecked(true);
+                        budExpFrqRB = "24";
+                    } else if (expPriorityFromTag.equals("12")) {
+                        budExpMthlyRB.setChecked(true);
+                        budExpFrqRB = "12";
+                    } else if (expPriorityFromTag.equals("2")) {
+                        budExpBiAnnlyRB.setChecked(true);
+                        budExpFrqRB = "2";
+                    } else if (expPriorityFromTag.equals("1")) {
+                        budExpAnnlyRB.setChecked(true);
+                        budExpFrqRB = "1";
+                    }
+
+                    switch (expPriorityFromTag) {
+                        case "A":
+                            budExpARB.setChecked(true);
+                            budExpPriorityRB = "A";
+                            budExpWklyRG.setVisibility(View.GONE);
+                            budExpWklyLabel.setVisibility(View.GONE);
+                            break;
+                        case "B":
+                            budExpBRB.setChecked(true);
+                            budExpPriorityRB = "B";
+                            budExpWklyRG.setVisibility(View.VISIBLE);
+                            budExpWklyLabel.setVisibility(View.VISIBLE);
+                            break;
+                    }
+
+                    switch (expWeeklyFromTag) {
+                        case "Y":
+                            budExpYesWklyRB.setChecked(true);
+                            budExpWeeklyRB = "Y";
+                            break;
+                        case "N":
+                            budExpNoWklyRB.setChecked(true);
+                            budExpWeeklyRB = "N";
+                            break;
+                    }
+
+                    //update db if changed
+                    budExpFrqRG.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+                        @Override
+                        public void onCheckedChanged(RadioGroup group, int checkedId) {
+
+                            switch (checkedId) {
+                                case R.id.addExpWklyRB:
+                                    budExpFrqRB = "52";
+                                    break;
+                                case R.id.addExpBiWklyRB:
+                                    budExpFrqRB = "26";
+                                    break;
+                                case R.id.addExpBiMthlyRB:
+                                    budExpFrqRB = "24";
+                                    break;
+                                case R.id.addExpMthlyRB:
+                                    budExpFrqRB = "12";
+                                    break;
+                                case R.id.addExpBiAnnlyRB:
+                                    budExpFrqRB = "2";
+                                    break;
+                                case R.id.addExpAnnlyRB:
+                                    budExpFrqRB = "1";
+                                    break;
+                            }
+                        }
+                    });
+
+                    budExpABRG.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+                        @Override
+                        public void onCheckedChanged(RadioGroup group, int checkedId) {
+
+                            switch (checkedId) {
+                                case R.id.addExpARB:
+                                    budExpPriorityRB = "A";
+                                    budExpWeeklyRB = "N";
+                                    budExpWklyRG.setVisibility(View.GONE);
+                                    budExpWklyLabel.setVisibility(View.GONE);
+                                    break;
+                                case R.id.addExpBRB:
+                                    budExpPriorityRB = "B";
+                                    budExpWklyRG.setVisibility(View.VISIBLE);
+                                    budExpWklyLabel.setVisibility(View.VISIBLE);
+                                    break;
+                            }
+                        }
+
+                    });
+
+                    budExpWklyRG.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+                        @Override
+                        public void onCheckedChanged(RadioGroup group, int checkedId) {
+
+                            switch (checkedId) {
+                                case R.id.addExpYesWklyRB:
+                                    budExpWeeklyRB = "Y";
+                                    break;
+                                case R.id.addExpNoWklyRB:
+                                    budExpWeeklyRB = "N";
+                                    break;
+                            }
+                        }
+
+                    });
+
+                    budExpCancelBtn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            budRefresh();
+                        }
+                    });
+
+                    budExpUpdateBtn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+                            budGen.expenseDataFromEntries(
+                                    budExpCatET,
+                                    budExpAmtET,
+                                    budExpFrqRB,
+                                    budExpPriorityRB,
+                                    budExpWeeklyRB);
+
+                            //budGen.findMatchId(String.valueOf(expIdFromTag));
+
+                            if (expNameFromEntry != null) {
+
+                                budExpDb.setExpenseName(expNameFromEntry);
+                                budExpDb.setExpenseAmount(expAmtFromEntry);
+                                budExpDb.setExpenseFrequency(expFrqFromEntry);
+                                budExpDb.setExpensePriority(expPriorityFromEntry);
+                                budExpDb.setExpenseWeekly(expWeeklyFromEntry);
+                                budExpDb.setExpenseAnnualAmount(expAnnAmtFromEntry);
+                                budExpDb.setExpenseAAnnualAmount(expAAnnAmtFromEntry);
+                                budExpDb.setExpenseBAnnualAmount(expBAnnAmtFromEntry);
+
+                                budDbMgr.updateExpense(budExpDb);
+
+                                budHelper2 = new DbHelper(getContext());
+                                budDb2 = budHelper2.getWritableDatabase();
+
+                                budCV9 = new ContentValues();
+
+                                String[] args4 = new String[]{String.valueOf(expIdFromTag)};
+
+                                budCV9.put(DbHelper.MONEYOUTCAT, nameEntryExp);
+                                budCV9.put(DbHelper.MONEYOUTPRIORITY, priorityEntryExp);
+                                budCV9.put(DbHelper.MONEYOUTWEEKLY, weeklyEntry);
+
+                                try {
+                                    budDb2.update(DbHelper.MONEY_OUT_TABLE_NAME, budCV9, DbHelper.EXPREFKEYMO + "=?", args4);
+                                } catch (CursorIndexOutOfBoundsException | SQLException e4) {
+                                    e4.printStackTrace();
+                                }
+
+                                budDb2.close();
+
+                                budDbMgr.updateExpense(budExpDb);
+                                budExpListAdapter.updateExpenses(budDbMgr.getExpense());
+                                budExpListAdapter.notifyDataSetChanged();
+                                Toast.makeText(getBaseContext(), getString(R.string.changes_saved), Toast.LENGTH_LONG).show();
+
+                                budRefresh();
+                            } else {
+                                Toast.makeText(getBaseContext(), R.string.no_blanks_warning, Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    });
+                }
+            });
+
+            //click on trash can to delete data record
+            budExpListHldr.budExpListDelBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    budExpDb = (ExpenseBudgetDb) budExpListHldr.budExpListDelBtn.getTag();
+
+                    budRepWarnLayout.setVisibility(View.VISIBLE);
+
+                    budRepWarnCancelBtn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            budRefresh();
+                        }
+                    });
+
+                    budRepWarnOkBtn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+                            budRepWarnLayout.setVisibility(View.GONE);
+                        }
+                    });
+
+                    budDbMgr.deleteExpense(budExpDb);
+                    budExpListAdapter.updateExpenses(budDbMgr.getExpense());
+                    budExpListAdapter.notifyDataSetChanged();
+
+                    budHeaderText();
+                }
+            });
+            return convertView;
+        }
+    }
+
+    private static class BudIncListViewHolder {
+        private TextView budIncListNameTV;
+        private TextView budIncListAmtTV;
+        private ImageButton budIncListDelBtn;
+        private ImageButton budIncListEditBtn;
+    }
+
+    private static class BudExpListViewHolder {
+        private TextView budExpListNameTV;
+        private TextView budExpListAmtTV;
+        private ImageButton budExpListDelBtn;
+        private ImageButton budExpListEditBtn;
+    }*/
+
+    /*public void budSavDateRes() {
+        budGen.savingsDataFromEntries(
+                savingsNameEntry,
+                savingsSeparateS,
+                savingsAmountEntry,
+                savingsGoalAmountEntry,
+                savingsPercentEntry,
+                savingsPaymentsEntry,
+                savingsAnnualIncomeb,
+                savingsAnnuallyRadioButton,
+                savingsFrequencyS);
+        budSavDate2 = budGen.calcSavingsDate(
+                savGoalFromEntry,
+                savAmtFromEntry,
+                savRateFromEntry,
+                savPaytFromEntry,
+                savFrqFromEntry,
+                savAnnIncFromEntry,
+                getString(R.string.goal_achieved),
+                getString(R.string.too_far));
+    }*/
+
+     /*public void findMatchingDebtId() {
         foundDebtId = false;
         for (DebtDb d : dbManager.getDebts()) {
             if (String.valueOf(d.getIncRefKeyD()).equals(incomeId) || String.valueOf(d.getExpRefKeyD()).equals(expenseId)) {
@@ -322,7 +869,7 @@ public class LayoutBudget extends MainNavigation {
         }
     }
 
-    /*public void findAllMatchingIncIds() {
+    public void findAllMatchingIncIds() {
 
         foundDebtIdInc = false;
         foundSavingsIdInc = false;
@@ -380,76 +927,13 @@ public class LayoutBudget extends MainNavigation {
         }
     }*/
 
-    public void allDebtData() {
-        for (DebtDb d3 : dbManager.getDebts()) {
-            if (String.valueOf(d3.getId()).equals(debtId)) {
-                debtAmount = d3.getDebtAmount();
-                debtRate = d3.getDebtRate();
-                debtPayments = d3.getDebtPayments();
-                debtFrequency = d3.getDebtFrequency();
-                debtAnnualIncome = d3.getDebtAnnualIncome();
-            }
-        }
-    }
 
-    /*public void allDebtDataInc() {
-        for (DebtDb d4 : dbManager.getDebts()) {
-            if (String.valueOf(d4.getId()).equals(debtId)) {
-                debtAmount = d4.getDebtAmount();
-                debtRate = d4.getDebtRate();
-                debtPayments = d4.getDebtPayments();
-                debtFrequency = d4.getDebtFrequency();
-                debtAnnualIncome = d4.getDebtAnnualIncome();
-            }
-        }
-    }*/
-
-    public void allSavingsData() {
-        for (SavingsDb s2 : dbManager.getSavings()) {
-            if (String.valueOf(s2.getId()).equals(savingsId)) {
-                savingsAmount = s2.getSavingsAmount();
-                savingsGoal = s2.getSavingsGoal();
-                savingsRate = s2.getSavingsRate();
-                //savingsRate = currentSavingsRate / 100;
-                savingsPayments = s2.getSavingsPayments();
-                savingsFrequency = s2.getSavingsFrequency();
-                savingsAnnualIncome = s2.getSavingsAnnualIncome();
-            }
-        }
-    }
-
-    /*public void savingsDateResult() {
-        allSavingsData();
-        savingsDate2 = general.calcSavingsDate(
-                savingsGoal,
-                savingsAmount,
-                savingsRate,
-                savingsPayments,
-                savingsFrequency,
-                savingsAnnualIncome,
-                getString(R.string.goal_achieved),
-                getString(R.string.too_far));
-    }*/
-
-    /*public void allDataSavingsInc() {
-        for (SavingsDb s3 : dbManager.getSavings()) {
-            if (String.valueOf(s3.getId()).equals(incSavingsId)) {
-                savingsAmount = s3.getSavingsAmount();
-                currentSavingsRate = s3.getSavingsRate();
-                savingsRate = currentSavingsRate / 100;
-                savingsPayments = s3.getSavingsPayments();
-                savingsFrequency = s3.getSavingsFrequency();
-                savingsAnnualIncome = s3.getSavingsAnnualIncome();
-            }
-        }
-    }*/
-
-    public class IncomeDbAdapter extends ArrayAdapter<IncomeBudgetDb> {
+    /*public class BudIncListAdapter extends ArrayAdapter<IncomeBudgetDb> {
 
         public Context context;
         public List<IncomeBudgetDb> incomes;
 
-        public IncomeDbAdapter(
+        public BudIncListAdapter(
                 Context context,
                 List<IncomeBudgetDb> incomes) {
 
@@ -478,14 +962,14 @@ public class LayoutBudget extends MainNavigation {
 
             if (convertView == null) {
                 convertView = LayoutInflater.from(getApplicationContext()).inflate(
-                        R.layout.fragment_list_budget_income,
+                        R.layout.frag_list_2_2tv_edit_del,
                         parent, false);
 
                 incomeHolder = new ViewHolderIncome();
-                incomeHolder.incomeName = convertView.findViewById(R.id.budgetIncomeCategoryText);
-                incomeHolder.incomeAmount = convertView.findViewById(R.id.budgetIncomeAmountText);
-                incomeHolder.incomeDeleted = convertView.findViewById(R.id.deleteIncomeButton);
-                incomeHolder.incomeEdit = convertView.findViewById(R.id.editIncomeButton);
+                incomeHolder.incomeName = convertView.findViewById(R.id.list2TV1);
+                incomeHolder.incomeAmount = convertView.findViewById(R.id.list2TV2);
+                incomeHolder.incomeDeleted = convertView.findViewById(R.id.list2DelButton);
+                incomeHolder.incomeEdit = convertView.findViewById(R.id.list2EditButton);
                 convertView.setTag(incomeHolder);
 
             } else {
@@ -519,7 +1003,7 @@ public class LayoutBudget extends MainNavigation {
                 @Override
                 public void onClick(View v) {
 
-                    setContentView(R.layout.add_edit_budget_income);
+                    setContentView(R.layout.z_add_edit_budget_income);
                     LayoutBudget.this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
                     budgetIncomeCategory = findViewById(R.id.budgetIncomeCategory);
@@ -639,7 +1123,7 @@ public class LayoutBudget extends MainNavigation {
                                 Toast.makeText(getBaseContext(), R.string.no_blanks_warning, Toast.LENGTH_LONG).show();
                             } else {
                                 nameEntryInc = budgetIncomeCategory.getText().toString();
-                                amountEntry = general.extractingDouble(budgetIncomeAmount);
+                                amountEntry = general.dblFromET(budgetIncomeAmount);
                                 frequencyEntry = Double.valueOf(incomeFrequencyS);
                                 annualIncome = amountEntry * frequencyEntry;
 
@@ -706,14 +1190,14 @@ public class LayoutBudget extends MainNavigation {
                                     e4.printStackTrace();
                                 }
 
-                                /*savingsDateResult();
+                                savingsDateResult();
                                 cv14 = new ContentValues();
                                 try {
                                     cv14.put(DbHelper.SAVINGSDATE, savingsDate2);
                                     db2.update(DbHelper.SAVINGS_TABLE_NAME, cv14, DbHelper.ID + "=?", args5);
                                 } catch (CursorIndexOutOfBoundsException | SQLException e5) {
                                     e5.printStackTrace();
-                                }*/
+                                }
 
                                 //general.allSavingsDataFromDb(dbManager, savingsId);
 
@@ -761,7 +1245,7 @@ public class LayoutBudget extends MainNavigation {
                                     e8.printStackTrace();
                                 }
 
-                                /*try {
+                                try {
                                     String[] args4 = new String[]{debtId};
                                     debtValues3 = new ContentValues();
 
@@ -856,7 +1340,7 @@ public class LayoutBudget extends MainNavigation {
 
                                 } catch (CursorIndexOutOfBoundsException e8) {
                                     e8.printStackTrace();
-                                }*/
+                                }
 
                                 db2.close();
 
@@ -933,14 +1417,14 @@ public class LayoutBudget extends MainNavigation {
 
             return convertView;
         }
-    }
+    }*/
 
-    public class ExpenseDbAdapter extends ArrayAdapter<ExpenseBudgetDb> {
+    /*public class BudExpListAdapter extends ArrayAdapter<ExpenseBudgetDb> {
 
         public Context context;
         public List<ExpenseBudgetDb> expenses;
 
-        public ExpenseDbAdapter(
+        public BudExpListAdapter(
                 Context context,
                 List<ExpenseBudgetDb> expenses) {
 
@@ -969,14 +1453,14 @@ public class LayoutBudget extends MainNavigation {
 
             if (convertView == null) {
                 convertView = LayoutInflater.from(getApplicationContext()).inflate(
-                        R.layout.fragment_list_budget_expense,
+                        R.layout.frag_list_2_2tv_edit_del,
                         parent, false);
 
                 expenseHolder = new ViewHolderExpense();
-                expenseHolder.expenseName = convertView.findViewById(R.id.budgetExpenseCategoryText);
-                expenseHolder.expenseAmount = convertView.findViewById(R.id.budgetExpenseAmountText);
-                expenseHolder.expenseDeleted = convertView.findViewById(R.id.deleteExpenseButton);
-                expenseHolder.expenseEdit = convertView.findViewById(R.id.editExpenseButton);
+                expenseHolder.expenseName = convertView.findViewById(R.id.list2TV1);
+                expenseHolder.expenseAmount = convertView.findViewById(R.id.list2TV2);
+                expenseHolder.expenseDeleted = convertView.findViewById(R.id.list2DelButton);
+                expenseHolder.expenseEdit = convertView.findViewById(R.id.list2EditButton);
                 convertView.setTag(expenseHolder);
 
             } else {
@@ -1010,7 +1494,7 @@ public class LayoutBudget extends MainNavigation {
                 @Override
                 public void onClick(View v) {
 
-                    setContentView(R.layout.add_edit_budget_expense);
+                    setContentView(R.layout.form_5_add_expense);
                     LayoutBudget.this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
                     budgetExpenseCategory = findViewById(R.id.budgetExpenseCategory);
@@ -1207,7 +1691,7 @@ public class LayoutBudget extends MainNavigation {
                                 Toast.makeText(getBaseContext(), R.string.no_blanks_warning, Toast.LENGTH_LONG).show();
                             } else {
                                 nameEntryExp = budgetExpenseCategory.getText().toString();
-                                amountEntry = general.extractingDouble(budgetExpenseAmount);
+                                amountEntry = general.dblFromET(budgetExpenseAmount);
                                 frequencyEntry = Double.valueOf(expenseFrequencyS);
                                 priorityEntryExp = String.valueOf(expensePriorityS);
                                 weeklyEntry = String.valueOf(expenseWeeklyS);
@@ -1307,7 +1791,7 @@ public class LayoutBudget extends MainNavigation {
                                     e6.printStackTrace();
                                 }
 
-                                /*try {
+                                try {
                                     String[] args = new String[]{debtId};
                                     debtValues = new ContentValues();
 
@@ -1399,7 +1883,7 @@ public class LayoutBudget extends MainNavigation {
 
                                 } catch (CursorIndexOutOfBoundsException e13) {
                                     e13.printStackTrace();
-                                }*/
+                                }
 
                                 db.close();
 
@@ -1472,19 +1956,201 @@ public class LayoutBudget extends MainNavigation {
             });
             return convertView;
         }
-    }
+    }*/
 
-    private static class ViewHolderIncome {
+    /*private static class ViewHolderIncome {
         private TextView incomeName;
         private TextView incomeAmount;
         private ImageButton incomeDeleted;
         private ImageButton incomeEdit;
-    }
+    }*/
 
-    private static class ViewHolderExpense {
+    /*private static class ViewHolderExpense {
         private TextView expenseName;
         private TextView expenseAmount;
         private ImageButton expenseDeleted;
         private ImageButton expenseEdit;
-    }
+    }*/
+
+    /*public void budHeaderText() {
+
+        budTotInc = budDbMgr.sumTotalIncome();
+        budTotExp = budDbMgr.sumTotalExpenses();
+        budGen.dblASCurrency(String.valueOf(budTotInc), budTotIncTV);
+        budGen.dblASCurrency(String.valueOf(budTotExp), budTotExpTV);
+
+        budStillAvail = budTotInc - budTotExp;
+
+        if (budStillAvail < 0) {
+            budOverWarnLabel.setVisibility(View.VISIBLE);
+            budOverWarnTV.setVisibility(View.VISIBLE);
+            budGen.dblASCurrency("-" + String.valueOf(budStillAvail), budOverWarnTV);
+            budHeaderLabel.setVisibility(View.GONE);
+            budHeaderTV.setVisibility(View.GONE);
+
+        } else {
+            budOverWarnLabel.setVisibility(View.GONE);
+            budOverWarnTV.setVisibility(View.GONE);
+            budHeaderLabel.setVisibility(View.VISIBLE);
+            budHeaderTV.setVisibility(View.VISIBLE);
+            budGen.dblASCurrency(String.valueOf(budStillAvail), budHeaderTV);
+        }
+
+        try {
+            totalIncomeS = String.valueOf(totalIncomeR);
+            if (totalIncomeS != null && !totalIncomeS.equals("")) {
+                totalIncomeD = Double.valueOf(totalIncomeS);
+            } else {
+                totalIncomeD = 0.0;
+            }
+
+            totalIncome2 = currencyFormat.format(totalIncomeD);
+            budgetIncomeTotalText.setText(totalIncome2);
+
+        } catch (NumberFormatException e) {
+            budgetIncomeTotalText.setText(totalIncome2);
+        }
+
+        try {
+            totalExpensesS = String.valueOf(totalExpensesR);
+            if (totalExpensesS != null && !totalExpensesS.equals("")) {
+                totalExpensesD = Double.valueOf(totalExpensesS);
+            } else {
+                totalExpensesD = 0.0;
+            }
+
+            totalExpenses2 = currencyFormat.format(totalExpensesD);
+            budgetExpensesTotalText.setText(totalExpenses2);
+
+        } catch (NumberFormatException e) {
+            budgetExpensesTotalText.setText(totalExpenses2);
+        }
+
+        if (budTotExp > budTotInc) {
+
+            incomeAvailableN = (totalExpensesR - totalIncomeR);
+            incomeAvailableN2 = currencyFormat.format(incomeAvailableN);
+
+            budgetOopsText.setVisibility(View.VISIBLE);
+            budgetOopsAmountText.setVisibility(View.VISIBLE);
+            budgetOopsAmountText.setText("-" + incomeAvailableN2);
+            headerLabel2.setVisibility(View.GONE);
+            incomeAvailable.setVisibility(View.GONE);
+        }
+
+        if (totalIncomeD >= totalExpensesD) {
+            budgetOopsText.setVisibility(View.GONE);
+            budgetOopsAmountText.setVisibility(View.GONE);
+            headerLabel2.setVisibility(View.VISIBLE);
+            incomeAvailable.setVisibility(View.VISIBLE);
+        }
+
+        incomeAvailableD = (totalIncomeR - totalExpensesR);
+        incomeAvailable2 = currencyFormat.format(incomeAvailableD);
+        incomeAvailable.setText(incomeAvailable2);
+
+    }*/
+
+    /*View.OnClickListener onClickDoneBudgetSetUpButton = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            budgetDone = 1;
+
+            setUpDb = new SetUpDb(incomeDone, billsDone, debtsDone, savingsDone, budgetDone, balanceDone, balanceAmount, tourDone, 0);
+            dbManager.addSetUp(setUpDb);
+
+            toast = Toast.makeText(getApplicationContext(), R.string.edit_budget_message, Toast.LENGTH_LONG);
+            toastLayout = (LinearLayout) toast.getView();
+            tv = (TextView) toastLayout.getChildAt(0);
+            tv.setTextSize(20);
+            toast.show();
+
+            backToSetUp = new Intent(LayoutBudget.this, LayoutSetUp.class);
+            backToSetUp.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+            startActivity(backToSetUp);
+
+        }
+    };*/
+
+    /*View.OnClickListener onClickNoTimeBudget = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            budgetSetUpNoTime2.setVisibility(View.VISIBLE);
+            budgetSetUpTimeButton.setVisibility(View.VISIBLE);
+            budgetSetUpTimeButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    budgetSetUpNoTime2.setVisibility(View.GONE);
+                    budgetSetUpTimeButton.setVisibility(View.GONE);
+                }
+            });
+        }
+    };*/
+
+    /*View.OnClickListener onClickNeedHelpBudget = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            budgetSetUpNeedHelp2.setVisibility(View.VISIBLE);
+            budgetSetUpHelpButton.setVisibility(View.VISIBLE);
+            budgetSetUpHelpButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    budgetSetUpNeedHelp2.setVisibility(View.GONE);
+                    budgetSetUpHelpButton.setVisibility(View.GONE);
+                }
+            });
+        }
+    };*/
+
+    /*public void allDebtData() {
+        for (DebtDb d3 : dbManager.getDebts()) {
+            if (String.valueOf(d3.getId()).equals(debtId)) {
+                debtAmount = d3.getDebtAmount();
+                debtRate = d3.getDebtRate();
+                debtPayments = d3.getDebtPayments();
+                debtFrequency = d3.getDebtFrequency();
+                debtAnnualIncome = d3.getDebtAnnualIncome();
+            }
+        }
+    }*/
+
+    /*public void allDebtDataInc() {
+        for (DebtDb d4 : dbManager.getDebts()) {
+            if (String.valueOf(d4.getId()).equals(debtId)) {
+                debtAmount = d4.getDebtAmount();
+                debtRate = d4.getDebtRate();
+                debtPayments = d4.getDebtPayments();
+                debtFrequency = d4.getDebtFrequency();
+                debtAnnualIncome = d4.getDebtAnnualIncome();
+            }
+        }
+    }*/
+
+    /*public void allSavingsData() {
+        for (SavingsDb s2 : dbManager.getSavings()) {
+            if (String.valueOf(s2.getId()).equals(savingsId)) {
+                savingsAmount = s2.getSavingsAmount();
+                savingsGoal = s2.getSavingsGoal();
+                savingsRate = s2.getSavingsRate();
+                //savingsRate = currentSavingsRate / 100;
+                savingsPayments = s2.getSavingsPayments();
+                savingsFrequency = s2.getSavingsFrequency();
+                savingsAnnualIncome = s2.getSavingsAnnualIncome();
+            }
+        }
+    }*/
+
+    /*public void allDataSavingsInc() {
+        for (SavingsDb s3 : dbManager.getSavings()) {
+            if (String.valueOf(s3.getId()).equals(incSavingsId)) {
+                savingsAmount = s3.getSavingsAmount();
+                currentSavingsRate = s3.getSavingsRate();
+                savingsRate = currentSavingsRate / 100;
+                savingsPayments = s3.getSavingsPayments();
+                savingsFrequency = s3.getSavingsFrequency();
+                savingsAnnualIncome = s3.getSavingsAnnualIncome();
+            }
+        }
+    }*/
+
 }

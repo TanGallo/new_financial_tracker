@@ -7,6 +7,8 @@ public class MoneyInDb {
     private Double moneyInA;
     private Double moneyInOwing;
     private Double moneyInB;
+    private long moneyInToAcct;
+    private String moneyInToName;
     private String moneyInCreatedOn;
     private long incRefKeyMI;
     private long id;
@@ -17,6 +19,8 @@ public class MoneyInDb {
             Double moneyInA,
             Double moneyInOwing,
             Double moneyInB,
+            long moneyInToAcct,
+            String moneyInToName,
             String moneyInCreatedOn,
             long incRefKeyMI,
             long id) {
@@ -25,6 +29,8 @@ public class MoneyInDb {
         this.moneyInA = moneyInA;
         this.moneyInOwing = moneyInOwing;
         this.moneyInB = moneyInB;
+        this.moneyInToAcct = moneyInToAcct;
+        this.moneyInToName = moneyInToName;
         this.moneyInCreatedOn = moneyInCreatedOn;
         this.incRefKeyMI = incRefKeyMI;
         this.id = id;
@@ -44,6 +50,12 @@ public class MoneyInDb {
 
     public Double getMoneyInB() { return moneyInB; }
     public void setMoneyInB(Double moneyInB) { this.moneyInB = moneyInB; }
+
+    public long getMoneyInToAcct() { return moneyInToAcct; }
+    public void setMoneyInToAcct(long moneyInToAcct) { this.moneyInToAcct = moneyInToAcct; }
+
+    public String getMoneyInToName() { return moneyInToName; }
+    public void setMoneyInToName(String moneyInToName) { this.moneyInToName = moneyInToName; }
 
     public String getMoneyInCreatedOn() { return moneyInCreatedOn; }
     public void setMoneyInCreatedOn(String moneyInCreatedOn) { this.moneyInCreatedOn = moneyInCreatedOn; }

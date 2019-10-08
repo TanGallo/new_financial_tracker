@@ -8,38 +8,19 @@
         android:textColor="@color/colorPrimaryDark"
         />
     <item
-        android:id="@+id/menu_daily_money"
+        android:id="@+id/menu_home_page"
         android:icon="@drawable/ic_account_balance_white_24dp"
-        android:title="@string/daily_money"
+        android:title="@string/Home_page"
         android:textColor="@color/colorPrimaryDark"/>
     <item
-        android:id="@+id/menu_transfers"
-        android:icon="@drawable/ic_compare_arrows_black_24dp"
-        android:title="@string/transfer_funds" />
-    <item
-        android:id="@+id/menu_budget"
+        android:id="@+id/menu_financial_summary"
         android:icon="@drawable/ic_equalizer_black_24dp"
-        android:title="@string/budget" />
+        android:title="@string/edit_financial_summary" />
+
     <item
-        android:id="@+id/menu_debt"
-        android:icon="@drawable/ic_payment_black_24dp"
-        android:title="@string/debt" />
-    <item
-        android:id="@+id/menu_savings"
-        android:icon="@drawable/ic_attach_money_black_24dp"
-        android:title="@string/savings" />
-    <item
-        android:id="@+id/menu_spending_report"
-        android:icon="@drawable/ic_trending_up_black_24dp"
-        android:title="@string/spending_report" />
-    <item
-        android:id="@+id/menu_budget_report_exp"
-        android:icon="@drawable/ic_trending_up_black_24dp"
-        android:title="@string/budget_report_exp" />
-    <item
-        android:id="@+id/menu_budget_report_inc"
-        android:icon="@drawable/ic_trending_up_black_24dp"
-        android:title="@string/budget_report_inc" />
+        android:id="@+id/menu_view_edit_transactions"
+        android:icon="@drawable/ic_equalizer_black_24dp"
+        android:title="@string/view_transactions" />
     <item
         android:id="@+id/menu_help"
         android:icon="@drawable/ic_help_outline_black_24dp"

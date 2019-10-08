@@ -5,49 +5,59 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 
-import ca.gotchasomething.mynance.data.DebtDb;
-import ca.gotchasomething.mynance.data.SavingsDb;
-import ca.gotchasomething.mynance.spinners.TransferDebtSpinnerAdapter;
-import ca.gotchasomething.mynance.spinners.TransferSavingsSpinnerAdapter;
+import ca.gotchasomething.mynance.data.AccountsDb;
+//import ca.gotchasomething.mynance.data.DebtDb;
+//import ca.gotchasomething.mynance.data.SavingsDb;
+import ca.gotchasomething.mynance.data.TransfersDb;
+import ca.gotchasomething.mynance.spinners.TransferSpinnerAdapter;
 
 public class LayoutTransfers extends MainNavigation {
 
-    //boolean[] checkedState;
-    Button transfersButton;
-    CheckBox fromDebtCheckbox, toDebtCheckbox, fromSavingsCheckbox, toSavingsCheckbox;
-    ContentValues content, content2, content3, content4, content5, content6, content7, content8;
-    Cursor cursor, cursor2, cursor3, cursor4;
-    DbHelper dbHelper, dbHelper2, dbHelper3, dbHelper4, dbHelper5, dbHelper6, dbHelper7, dbHelper8;
-    Double transferAmount = 0.0, fromDebtCurrentBalance = 0.0, fromDebtCurrentBalanceS = 0.0, newFromDebtAmount = 0.0, toDebtCurrentBalance = 0.0, toDebtCurrentBalanceS = 0.0,
-            newToDebtAmount = 0.0, fromSavingsCurrentBalance = 0.0, fromSavingsCurrentBalanceS = 0.0, newFromSavingsAmount = 0.0, toSavingsCurrentBalance = 0.0,
-            toSavingsCurrentBalanceS = 0.0, newToSavingsAmount = 0.0, debtAmount = 0.0, debtRate = 0.0, debtPayments = 0.0, debtFrequency = 0.0, debtAnnualIncome = 0.0,
-            savingsAmount = 0.0, savingsGoal = 0.0, savingsRate = 0.0, savingsPayments = 0.0, savingsFrequency = 0.0, savingsAnnualIncome = 0.0;
-    EditText transferAmountText;
-    General general;
-    int position;
-    Intent backToTransferscreen;
-    Long fromDebtId, fromDebtIdS, toDebtId, toDebtIdS, fromSavingsId, fromSavingsIdS, toSavingsId, toSavingsIdS;
-    Spinner fromDebtSpinner, toDebtSpinner, fromSavingsSpinner, toSavingsSpinner;
-    SQLiteDatabase db, db2, db3, db4, db5, db6, db7, db8;
-    TransferDebtSpinnerAdapter fromDebtSpinnerAdapter, toDebtSpinnerAdapter;
-    TransferSavingsSpinnerAdapter fromSavingsSpinnerAdapter, toSavingsSpinnerAdapter;
+    Button trn1Btn, trn1DoneBtn, trn1FromBtn, trn1NoBtn, trn1YesBtn;
+    ContentValues trn1CV;
+    Cursor trn1Cur, trn1Cur2, trn1Cur3;
+    DbHelper trn1Helper, trn1Helper2, trn1Helper3, trn1Helper4;
+    DbManager trn1DbMgr;
+    Double debtAmtFromDb = 0.0, debtLimitFromDb = 0.0, debtPaytFromDb = 0.0, debtRateFromDb = 0.0, savAmtFromDb = 0.0,
+            savGoalFromDb = 0.0, savPaytFromDb = 0.0, savRateFromDb = 0.0, trn1TrnAmt = 0.0, trn1AmtForA = 0.0, trn1AmtForB = 0.0,
+            trn1AmtMissing = 0.0, trn1MoneyInA = 0.0, trn1MoneyInOwing = 0.0, trn1MoneyInB = 0.0, trn1MoneyOutA = 0.0,
+            trn1MoneyOutAEntry = 0.0, trn1MoneyOutOwing = 0.0, trn1MoneyOutB = 0.0, trn1NewAcctBal = 0.0;
+    EditText trn1FromResET, trn1TrnAmtET;
+    General trn1Gen;
+    ImageButton trn1InfoBtn;
+    Intent trn1Refresh, trn1ToList, trn1ToMain;
+    LinearLayout trn1FromAmtLayout, trn1FromAvailLayout, trn1FromCustomLayout, trn1FromWarnLayout, trn1WarnLayout;
+    long trn1AcctId, trn1FromSpinId, trn1ToSpinId;
+    RadioButton trn1FromAvailRB, trn1FromCustomRB, trn1FromResRB, trn1FromUsualRB;
+    RadioGroup trn1FromRG;
+    Spinner trn1FromSpin, trn1ToSpin;
+    SQLiteDatabase trn1Db, trn1Db2, trn1Db3, trn1Db4;
+    String trn1FromIsDebt = null, trn1FromIsSav = null, trn1FromSpinName = null, trn1ToIsDebt = null, trn1ToIsSav = null, trn1ToSpinName = null;
+    TextView trn1FromWarnTV, trn1FromAvailTV, trn1InfoLabel, trn1WarnTV;
+    TransfersDb trn1TransDb;
+    TransferSpinnerAdapter trn1FromSpinAdapter, trn1ToSpinAdapter;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.layout_transfers);
+        setContentView(R.layout.c3_layout_main_transfers);
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         drawer = findViewById(R.id.drawer_layout);
@@ -60,151 +70,112 @@ public class LayoutTransfers extends MainNavigation {
 
         menuConfig();
 
-        general = new General();
-        dbManager = new DbManager(this);
+        trn1Gen = new General();
+        trn1DbMgr = new DbManager(this);
 
-        transfersButton = findViewById(R.id.transfersButton);
-        fromDebtCheckbox = findViewById(R.id.fromDebtCheckbox);
-        fromSavingsCheckbox = findViewById(R.id.fromSavingsCheckbox);
-        toDebtCheckbox = findViewById(R.id.toDebtCheckbox);
-        toSavingsCheckbox = findViewById(R.id.toSavingsCheckbox);
-        transferAmountText = findViewById(R.id.transferAmountText);
-        fromDebtSpinner = findViewById(R.id.fromDebtSpinner);
-        fromDebtSpinner.setVisibility(View.GONE);
-        fromSavingsSpinner = findViewById(R.id.fromSavingsSpinner);
-        fromSavingsSpinner.setVisibility(View.GONE);
-        toDebtSpinner = findViewById(R.id.toDebtSpinner);
-        toDebtSpinner.setVisibility(View.GONE);
-        toSavingsSpinner = findViewById(R.id.toSavingsSpinner);
-        toSavingsSpinner.setVisibility(View.GONE);
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
-        fromDebtCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                //checkedState[position] = !checkedState[position];
+        trn1FromSpin = findViewById(R.id.transferFromSpin);
+        trn1ToSpin = findViewById(R.id.transferToSpin);
+        trn1TrnAmtET = findViewById(R.id.transferAmtET);
+        trn1Btn = findViewById(R.id.transferBtn);
+        trn1DoneBtn = findViewById(R.id.transfersDoneBtn);
+        trn1FromWarnLayout = findViewById(R.id.transferFromWarnLayout);
+        trn1FromWarnLayout.setVisibility(View.GONE);
+        trn1FromWarnTV = findViewById(R.id.transferFromWarnTV);
+        trn1InfoBtn = findViewById(R.id.transferInfoBtn);
+        trn1InfoLabel = findViewById(R.id.transferInfoLabel);
+        trn1FromRG = findViewById(R.id.transferFromRG);
+        trn1FromResRB = findViewById(R.id.transferFromResRB);
+        trn1FromAvailRB = findViewById(R.id.transferFromAvailRB);
+        trn1FromUsualRB = findViewById(R.id.transferFromUsualRB);
+        trn1FromCustomRB = findViewById(R.id.transferFromCustomRB);
+        trn1FromCustomLayout = findViewById(R.id.transferFromCustomLayout);
+        trn1FromAmtLayout = findViewById(R.id.transferFromAmtLayout);
+        trn1FromResET = findViewById(R.id.transferFromResET);
+        trn1FromAvailLayout = findViewById(R.id.transferFromAvailLayout);
+        trn1FromAvailLayout.setVisibility(View.GONE);
+        trn1FromBtn = findViewById(R.id.transferFromBtn);
+        trn1FromBtn.setVisibility(View.GONE);
+        trn1FromAvailTV = findViewById(R.id.transferFromAvailTV);
+        trn1WarnLayout = findViewById(R.id.transferWarnLayout);
+        trn1WarnLayout.setVisibility(View.GONE);
+        trn1WarnTV = findViewById(R.id.transferWarnTV);
+        trn1NoBtn = findViewById(R.id.transferNoBtn);
+        trn1YesBtn = findViewById(R.id.transferYesBtn);
 
-                if (isChecked) {
-                    fromDebtSpinner.setVisibility(View.VISIBLE);
-                } else if (!isChecked) {
-                    fromDebtSpinner.setVisibility(View.GONE);
-                }
+        trn1Btn.setOnClickListener(onClickTransferBtn);
+        trn1DoneBtn.setOnClickListener(onClickTrn1DoneBtn);
 
-                /*if (checkedState[position]) {
-                    fromDebtSpinner.setVisibility(View.VISIBLE);
-                } else if (!checkedState[position]) {
-                    fromDebtSpinner.setVisibility(View.GONE);
-                }*/
+        /*for(AccountsDb a : trn1DbMgr.getAccounts()) {
+            trn1AcctId = a.getId();
+            if(a.getId() == 1) {
+                trn1NewAcctBal = trn1DbMgr.retrieveCurrentAccountBalance();
+            } else if(a.getDebtId() != 0) {
+                trn1NewAcctBal = -trn1DbMgr.retrieveCurrentDebtAmtOwing(trn1AcctId);
+            } else if(a.getSavId() != 0) {
+                trn1NewAcctBal = trn1DbMgr.retrieveCurrentSavAmt(trn1AcctId);
             }
-        });
-        //fromDebtCheckbox.setChecked(checkedState[position]);
+        }
 
-        fromSavingsCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                //checkedState[position] = !checkedState[position];
+        trn1Helper4 = new DbHelper(this);
+        trn1Db4 = trn1Helper4.getReadableDatabase();
+        trn1Db4.beginTransaction();
+        trn1Cur3 = trn1Db4.rawQuery("SELECT * FROM " + DbHelper.ACCOUNTS_TABLE_NAME, null);
+        trn1Db4.execSQL("UPDATE " + DbHelper.ACCOUNTS_TABLE_NAME + " SET " + DbHelper.ACCTBAL + " = " + trn1NewAcctBal + " WHERE " + DbHelper.ID + " = " + trn1AcctId);
+        trn1Cur3.close();
+        trn1Db4.setTransactionSuccessful();
+        trn1Db4.endTransaction();*/
 
-                if (isChecked) {
-                    fromSavingsSpinner.setVisibility(View.VISIBLE);
-                } else if (!isChecked) {
-                    fromSavingsSpinner.setVisibility(View.GONE);
-                }
+        /*trn1DbMgr.updateAllAcctBal(
+                trn1DbMgr.retrieveCurrentAccountBalance(),
+                trn1DbMgr.retrieveCurrentDebtAmtOwing(),
+                trn1DbMgr.retrieveCurrentSavAmt());*/
 
-                /*if (checkedState[position]) {
-                    fromSavingsSpinner.setVisibility(View.VISIBLE);
-                } else if (!checkedState[position]) {
-                    fromSavingsSpinner.setVisibility(View.GONE);
-                }*/
-            }
-        });
-        //fromSavingsCheckbox.setChecked(checkedState[position]);
+        trn1Helper = new DbHelper(this);
+        trn1Db = trn1Helper.getReadableDatabase();
+        trn1Cur = trn1Db.rawQuery("SELECT * FROM " + DbHelper.ACCOUNTS_TABLE_NAME + " ORDER BY " + DbHelper.ACCTNAME + " ASC", null);
+        trn1FromSpinAdapter = new TransferSpinnerAdapter(getApplicationContext(), trn1Cur);
+        trn1FromSpin.setAdapter(trn1FromSpinAdapter);
 
-        toDebtCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                //checkedState[position] = !checkedState[position];
+        trn1FromSpin.setOnItemSelectedListener(trn1FromSpinSel);
 
-                if (isChecked) {
-                    toDebtSpinner.setVisibility(View.VISIBLE);
-                } else if (!isChecked) {
-                    toDebtSpinner.setVisibility(View.GONE);
-                }
+        trn1Helper2 = new DbHelper(this);
+        trn1Db2 = trn1Helper2.getReadableDatabase();
+        trn1Cur2 = trn1Db2.rawQuery("SELECT * FROM " + DbHelper.ACCOUNTS_TABLE_NAME + " ORDER BY " + DbHelper.ACCTNAME + " ASC", null);
+        trn1ToSpinAdapter = new TransferSpinnerAdapter(getApplicationContext(), trn1Cur2);
+        trn1ToSpin.setAdapter(trn1ToSpinAdapter);
 
-                /*if (checkedState[position]) {
-                    toDebtSpinner.setVisibility(View.VISIBLE);
-                } else if (!checkedState[position]) {
-                    toDebtSpinner.setVisibility(View.GONE);
-                }*/
-            }
-        });
-        //toDebtCheckbox.setChecked(checkedState[position]);
+        trn1ToSpin.setOnItemSelectedListener(trn1ToSpinSel);
 
-        toSavingsCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                //checkedState[position] = !checkedState[position];
-
-                if (isChecked) {
-                    toSavingsSpinner.setVisibility(View.VISIBLE);
-                } else if (!isChecked) {
-                    toSavingsSpinner.setVisibility(View.GONE);
-                }
-
-                /*if (checkedState[position]) {
-                    toSavingsSpinner.setVisibility(View.VISIBLE);
-                } else if (!checkedState[position]) {
-                    toSavingsSpinner.setVisibility(View.GONE);
-                }*/
-            }
-        });
-        //toSavingsCheckbox.setChecked(checkedState[position]);
-
-        dbHelper = new DbHelper(getApplicationContext());
-        db = dbHelper.getReadableDatabase();
-        cursor = db.rawQuery("SELECT * FROM " + DbHelper.DEBTS_TABLE_NAME + " ORDER BY " + DbHelper.DEBTNAME + " ASC", null);
-        fromDebtSpinnerAdapter = new TransferDebtSpinnerAdapter(getApplicationContext(), cursor);
-        fromDebtSpinner.setAdapter(fromDebtSpinnerAdapter);
-
-        fromDebtSpinner.setOnItemSelectedListener(fromDebtSpinnerSelection);
-
-        dbHelper2 = new DbHelper(getApplicationContext());
-        db2 = dbHelper2.getReadableDatabase();
-        cursor2 = db2.rawQuery("SELECT * FROM " + DbHelper.DEBTS_TABLE_NAME + " ORDER BY " + DbHelper.DEBTNAME + " ASC", null);
-        toDebtSpinnerAdapter = new TransferDebtSpinnerAdapter(getApplicationContext(), cursor2);
-        toDebtSpinner.setAdapter(toDebtSpinnerAdapter);
-
-        toDebtSpinner.setOnItemSelectedListener(toDebtSpinnerSelection);
-
-        dbHelper3 = new DbHelper(getApplicationContext());
-        db3 = dbHelper3.getReadableDatabase();
-        cursor3 = db3.rawQuery("SELECT * FROM " + DbHelper.SAVINGS_TABLE_NAME + " ORDER BY " + DbHelper.SAVINGSNAME + " ASC", null);
-        fromSavingsSpinnerAdapter = new TransferSavingsSpinnerAdapter(getApplicationContext(), cursor3);
-        fromSavingsSpinner.setAdapter(fromSavingsSpinnerAdapter);
-
-        fromSavingsSpinner.setOnItemSelectedListener(fromSavingsSpinnerSelection);
-
-        dbHelper4 = new DbHelper(getApplicationContext());
-        db4 = dbHelper4.getReadableDatabase();
-        cursor4 = db4.rawQuery("SELECT * FROM " + DbHelper.SAVINGS_TABLE_NAME + " ORDER BY " + DbHelper.SAVINGSNAME + " ASC", null);
-        toSavingsSpinnerAdapter = new TransferSavingsSpinnerAdapter(getApplicationContext(), cursor4);
-        toSavingsSpinner.setAdapter(toSavingsSpinnerAdapter);
-
-        toSavingsSpinner.setOnItemSelectedListener(toSavingsSpinnerSelection);
-
-        transfersButton.setOnClickListener(onClickTransfersButton);
+        trn1CV = new ContentValues();
+        trn1CV.put(DbHelper.LASTPAGEID, 8);
+        trn1Helper3 = new DbHelper(this);
+        trn1Db3 = trn1Helper3.getWritableDatabase();
+        trn1Db3.update(DbHelper.CURRENT_TABLE_NAME, trn1CV, DbHelper.ID + "= '1'", null);
+        trn1Db3.close();
 
     }
 
-    public void backToTransfers() {
-        backToTransferscreen = new Intent(LayoutTransfers.this, LayoutTransfers.class);
-        backToTransferscreen.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-        startActivity(backToTransferscreen);
+    public void trn1Refresh() {
+        trn1Refresh = new Intent(LayoutTransfers.this, LayoutTransfers.class);
+        trn1Refresh.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+        startActivity(trn1Refresh);
     }
 
-    AdapterView.OnItemSelectedListener fromDebtSpinnerSelection = new AdapterView.OnItemSelectedListener() {
+    public void trn1ToList() {
+        trn1ToList = new Intent(LayoutTransfers.this, LayoutTransfersList.class);
+        trn1ToList.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+        startActivity(trn1ToList);
+    }
+
+    AdapterView.OnItemSelectedListener trn1FromSpinSel = new AdapterView.OnItemSelectedListener() {
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-            fromDebtIdS = cursor.getLong(cursor.getColumnIndexOrThrow(DbHelper.ID));
-            fromDebtCurrentBalanceS = cursor.getDouble(cursor.getColumnIndexOrThrow(DbHelper.DEBTAMOUNT));
+            trn1FromSpinName = trn1Cur.getString(trn1Cur.getColumnIndexOrThrow(DbHelper.ACCTNAME));
+            trn1FromSpinId = trn1Cur.getLong(trn1Cur.getColumnIndexOrThrow(DbHelper.ID));
+            trn1FromIsDebt = trn1Cur.getString(trn1Cur.getColumnIndexOrThrow(DbHelper.ISDEBT));
+            trn1FromIsSav = trn1Cur.getString(trn1Cur.getColumnIndexOrThrow(DbHelper.ISSAV));
         }
 
         @Override
@@ -212,11 +183,13 @@ public class LayoutTransfers extends MainNavigation {
         }
     };
 
-    AdapterView.OnItemSelectedListener fromSavingsSpinnerSelection = new AdapterView.OnItemSelectedListener() {
+    AdapterView.OnItemSelectedListener trn1ToSpinSel = new AdapterView.OnItemSelectedListener() {
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-            fromSavingsIdS = cursor3.getLong(cursor3.getColumnIndexOrThrow(DbHelper.ID));
-            fromSavingsCurrentBalanceS = cursor3.getDouble(cursor3.getColumnIndexOrThrow(DbHelper.SAVINGSAMOUNT));
+            trn1ToSpinName = trn1Cur2.getString(trn1Cur2.getColumnIndexOrThrow(DbHelper.ACCTNAME));
+            trn1ToSpinId = trn1Cur2.getLong(trn1Cur2.getColumnIndexOrThrow(DbHelper.ID));
+            trn1ToIsDebt = trn1Cur2.getString(trn1Cur2.getColumnIndexOrThrow(DbHelper.ISDEBT));
+            trn1ToIsSav = trn1Cur2.getString(trn1Cur2.getColumnIndexOrThrow(DbHelper.ISSAV));
         }
 
         @Override
@@ -224,254 +197,844 @@ public class LayoutTransfers extends MainNavigation {
         }
     };
 
-    AdapterView.OnItemSelectedListener toDebtSpinnerSelection = new AdapterView.OnItemSelectedListener() {
+    View.OnClickListener onClickTrn1DoneBtn = new View.OnClickListener() {
         @Override
-        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-            toDebtIdS = cursor2.getLong(cursor2.getColumnIndexOrThrow(DbHelper.ID));
-            toDebtCurrentBalanceS = cursor2.getDouble(cursor2.getColumnIndexOrThrow(DbHelper.DEBTAMOUNT));
-        }
-
-        @Override
-        public void onNothingSelected(AdapterView<?> parent) {
+        public void onClick(View v) {
+            trn1ToMain = new Intent(LayoutTransfers.this, MainActivity.class);
+            trn1ToMain.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+            startActivity(trn1ToMain);
         }
     };
 
-    AdapterView.OnItemSelectedListener toSavingsSpinnerSelection = new AdapterView.OnItemSelectedListener() {
-        @Override
-        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-            toSavingsIdS = cursor4.getLong(cursor4.getColumnIndexOrThrow(DbHelper.ID));
-            toSavingsCurrentBalanceS = cursor4.getDouble(cursor4.getColumnIndexOrThrow(DbHelper.SAVINGSAMOUNT));
-        }
+    //UPDATE THE FROM ACCOUNTS
 
-        @Override
-        public void onNothingSelected(AdapterView<?> parent) {
-        }
-    };
-
-    public void allFromDebtData() {
-        for (DebtDb d : dbManager.getDebts()) {
-            if (d.getId() == fromDebtId) {
-                debtAmount = d.getDebtAmount();
-                debtRate = d.getDebtRate();
-                debtPayments = d.getDebtPayments();
-                debtFrequency = d.getDebtFrequency();
-                debtAnnualIncome = d.getDebtAnnualIncome();
+    public void trn1DebtPlus() {
+        trn1DbMgr.updateDebtRecPlusPt1(trn1TrnAmt, trn1DbMgr.retrieveCurrentDebtAmtOwing(trn1FromSpinId), trn1FromSpinId);
+        for (AccountsDb d : trn1DbMgr.getDebts()) {
+            if (d.getId() == trn1FromSpinId) {
+                debtAmtFromDb = d.getAcctBal();
+                debtLimitFromDb = d.getAcctMax();
+                debtRateFromDb = d.getIntRate();
+                debtPaytFromDb = d.getPaytsTo();
             }
         }
-    }
-
-    public void allToDebtData() {
-        for (DebtDb d2 : dbManager.getDebts()) {
-            if (d2.getId() == toDebtId) {
-                debtAmount = d2.getDebtAmount();
-                debtRate = d2.getDebtRate();
-                debtPayments = d2.getDebtPayments();
-                debtFrequency = d2.getDebtFrequency();
-                debtAnnualIncome = d2.getDebtAnnualIncome();
-            }
-        }
-    }
-
-    public void allFromSavingsData() {
-        for (SavingsDb s : dbManager.getSavings()) {
-            if (s.getId() == fromSavingsId) {
-                savingsAmount = s.getSavingsAmount();
-                savingsGoal = s.getSavingsGoal();
-                savingsRate = s.getSavingsRate();
-                savingsPayments = s.getSavingsPayments();
-                savingsFrequency = s.getSavingsFrequency();
-                savingsAnnualIncome = s.getSavingsAnnualIncome();
-            }
-        }
-    }
-
-    public void allToSavingsData() {
-        for (SavingsDb s2 : dbManager.getSavings()) {
-            if (s2.getId() == toSavingsId) {
-                savingsAmount = s2.getSavingsAmount();
-                savingsGoal = s2.getSavingsGoal();
-                savingsRate = s2.getSavingsRate();
-                savingsPayments = s2.getSavingsPayments();
-                savingsFrequency = s2.getSavingsFrequency();
-                savingsAnnualIncome = s2.getSavingsAnnualIncome();
-            }
-        }
-    }
-
-    public void updateFromDebtRecord() {
-        dbHelper5 = new DbHelper(getApplicationContext());
-        db5 = dbHelper5.getWritableDatabase();
-        content = new ContentValues();
-        newFromDebtAmount = fromDebtCurrentBalance + transferAmount;
-        content.put(DbHelper.DEBTAMOUNT, newFromDebtAmount);
-        db5.update(DbHelper.DEBTS_TABLE_NAME, content, DbHelper.ID + "=" + fromDebtId, null);
-
-        allFromDebtData();
-
-        content5 = new ContentValues();
-        content5.put(DbHelper.DEBTEND, general.calcDebtDate(
-                debtAmount,
-                debtRate,
-                debtPayments,
-                debtFrequency,
-                debtAnnualIncome,
+        trn1DbMgr.updateDebtRecPt2(trn1Gen.calcDebtDate(
+                debtAmtFromDb,
+                debtRateFromDb,
+                debtPaytFromDb,
                 getString(R.string.debt_paid),
-                getString(R.string.too_far)));
-        db5.update(DbHelper.DEBTS_TABLE_NAME, content5, DbHelper.ID + "=" + fromDebtId, null);
-        db5.close();
+                getString(R.string.too_far)), trn1FromSpinId);
     }
 
-    public void updateToDebtRecord() {
-        dbHelper6 = new DbHelper(getApplicationContext());
-        db6 = dbHelper6.getWritableDatabase();
-        content2 = new ContentValues();
-        newToDebtAmount = toDebtCurrentBalance - transferAmount;
-        content2.put(DbHelper.DEBTAMOUNT, newToDebtAmount);
-        db6.update(DbHelper.DEBTS_TABLE_NAME, content2, DbHelper.ID + "=" + toDebtId, null);
+    public void trn1SavMinus() {
+        trn1DbMgr.updateSavRecMinusPt1(trn1TrnAmt, trn1DbMgr.retrieveCurrentSavAmt(trn1FromSpinId), trn1FromSpinId);
+        for (AccountsDb s : trn1DbMgr.getSavings()) {
+            if (s.getId() == trn1FromSpinId) {
+                savAmtFromDb = s.getAcctBal();
+                savGoalFromDb = s.getAcctMax();
+                savRateFromDb = s.getIntRate();
+                savPaytFromDb = s.getPaytsTo();
+            }
+        }
+        trn1DbMgr.updateSavRecPt2(trn1Gen.calcSavingsDate(
+                savGoalFromDb,
+                savAmtFromDb,
+                savRateFromDb,
+                savPaytFromDb,
+                getString(R.string.goal_achieved),
+                getString(R.string.too_far)), trn1FromSpinId);
+    }
 
-        allToDebtData();
+    public void trn1MainMinus() {
+        trn1DbMgr.updateTotAcctBalMinus(trn1TrnAmt, trn1DbMgr.retrieveCurrentAccountBalance());
 
-        content6 = new ContentValues();
-        content6.put(DbHelper.DEBTEND, general.calcDebtDate(
-                debtAmount,
-                debtRate,
-                debtPayments,
-                debtFrequency,
-                debtAnnualIncome,
+        trn1DbMgr.updateAvailBalMinus(trn1MoneyOutA, trn1MoneyOutOwing, trn1MoneyOutB, trn1DbMgr.retrieveCurrentA(), trn1DbMgr.retrieveCurrentOwingA(), trn1DbMgr.retrieveCurrentB());
+        if (trn1DbMgr.retrieveCurrentOwingA() < 0) {
+            trn1DbMgr.adjustCurrentAandB(trn1DbMgr.retrieveCurrentOwingA(), trn1DbMgr.retrieveCurrentA(), trn1DbMgr.retrieveCurrentB());
+        }
+    }
+
+    //UPDATE THE TO ACCOUNTS
+
+    public void trn1DebtMinus() {
+        trn1DbMgr.updateDebtRecMinusPt1(trn1TrnAmt, trn1DbMgr.retrieveCurrentDebtAmtOwing(trn1ToSpinId), trn1ToSpinId);
+
+        for (AccountsDb d : trn1DbMgr.getDebts()) {
+            if (d.getId() == trn1ToSpinId) {
+                debtAmtFromDb = d.getAcctBal();
+                debtLimitFromDb = d.getAcctMax();
+                debtRateFromDb = d.getIntRate();
+                debtPaytFromDb = d.getPaytsTo();
+            }
+        }
+
+        trn1DbMgr.updateDebtRecPt2(trn1Gen.calcDebtDate(
+                debtAmtFromDb,
+                debtRateFromDb,
+                debtPaytFromDb,
                 getString(R.string.debt_paid),
-                getString(R.string.too_far)));
-        db6.update(DbHelper.DEBTS_TABLE_NAME, content6, DbHelper.ID + "=" + toDebtId, null);
-        db6.close();
+                getString(R.string.too_far)), trn1ToSpinId);
     }
 
-    public void updateFromSavingsRecord() {
-        dbHelper7 = new DbHelper(getApplicationContext());
-        db7 = dbHelper7.getWritableDatabase();
-        content3 = new ContentValues();
-        newFromSavingsAmount = fromSavingsCurrentBalance - transferAmount;
-        content3.put(DbHelper.SAVINGSAMOUNT, newFromSavingsAmount);
-        db7.update(DbHelper.SAVINGS_TABLE_NAME, content3, DbHelper.ID + "=" + fromSavingsId, null);
+    public void trn1SavPlus() {
+        trn1DbMgr.updateSavRecPlusPt1(trn1TrnAmt, trn1DbMgr.retrieveCurrentSavAmt(trn1ToSpinId), trn1ToSpinId);
 
-        allFromSavingsData();
+        for (AccountsDb s : trn1DbMgr.getSavings()) {
+            if (s.getId() == trn1ToSpinId) {
+                savAmtFromDb = s.getAcctBal();
+                savGoalFromDb = s.getAcctMax();
+                savRateFromDb = s.getIntRate();
+                savPaytFromDb = s.getPaytsTo();
+            }
+        }
 
-        content7 = new ContentValues();
-        content7.put(DbHelper.SAVINGSDATE, general.calcSavingsDate(
-                savingsGoal,
-                savingsAmount,
-                savingsRate,
-                savingsPayments,
-                savingsFrequency,
-                savingsAnnualIncome,
+        trn1DbMgr.updateSavRecPt2(trn1Gen.calcSavingsDate(
+                savGoalFromDb,
+                savAmtFromDb,
+                savRateFromDb,
+                savPaytFromDb,
                 getString(R.string.goal_achieved),
-                getString(R.string.too_far)));
-        db7.update(DbHelper.SAVINGS_TABLE_NAME, content7, DbHelper.ID + "=" + fromSavingsId, null);
-        db7.close();
+                getString(R.string.too_far)), trn1ToSpinId);
     }
 
-    public void updateToSavingsRecord() {
-        dbHelper8 = new DbHelper(getApplicationContext());
-        db8 = dbHelper8.getWritableDatabase();
-        content4 = new ContentValues();
-        newToSavingsAmount = toSavingsCurrentBalance + transferAmount;
-        content4.put(DbHelper.SAVINGSAMOUNT, newToSavingsAmount);
-        db8.update(DbHelper.SAVINGS_TABLE_NAME, content4, DbHelper.ID + "=" + toSavingsId, null);
+    public void trn1MainPlus() {
+        trn1DbMgr.updateTotAcctBalPlus(trn1TrnAmt, trn1DbMgr.retrieveCurrentAccountBalance());
 
-        allToSavingsData();
-
-        content8 = new ContentValues();
-        content8.put(DbHelper.SAVINGSDATE, general.calcSavingsDate(
-                savingsGoal,
-                savingsAmount,
-                savingsRate,
-                savingsPayments,
-                savingsFrequency,
-                savingsAnnualIncome,
-                getString(R.string.goal_achieved),
-                getString(R.string.too_far)));
-        db8.update(DbHelper.SAVINGS_TABLE_NAME, content8, DbHelper.ID + "=" + toSavingsId, null);
-        db8.close();
+        trn1DbMgr.updateAvailBalPlus(trn1MoneyInA, trn1MoneyInOwing, trn1MoneyInB, trn1DbMgr.retrieveCurrentA(), trn1DbMgr.retrieveCurrentOwingA(), trn1DbMgr.retrieveCurrentB());
+        if (trn1DbMgr.retrieveCurrentOwingA() < 0) {
+            trn1DbMgr.adjustCurrentAandB(trn1DbMgr.retrieveCurrentOwingA(), trn1DbMgr.retrieveCurrentA(), trn1DbMgr.retrieveCurrentB());
+        }
     }
 
-    /*public void determineFromAndTo() {
-        try {
-            fromDebtId = fromDebtIdS;
-        } catch (NullPointerException e) {
-            e.printStackTrace();
-        }
-        try {
-            toDebtId = toDebtIdS;
-        } catch (NullPointerException e) {
-            e.printStackTrace();
-        }
-        try {
-            fromSavingsId = fromSavingsIdS;
-        } catch (NullPointerException e) {
-            e.printStackTrace();
-        }
-        try {
-            toSavingsId = toSavingsIdS;
-        } catch (NullPointerException e) {
-            e.printStackTrace();
-        }
-    }*/
+    TextWatcher onChangeFromResET = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-    View.OnClickListener onClickTransfersButton = new View.OnClickListener() {
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            trn1MoneyOutAEntry = trn1Gen.dblFromET(trn1FromResET);
+            trn1Gen.dblASCurrency(String.valueOf((trn1TrnAmt - trn1MoneyOutAEntry)), trn1FromAvailTV);
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+
+        }
+    };
+
+    public void addTransAndFinish() {
+        trn1TransDb = new TransfersDb(
+                trn1FromSpinName,
+                trn1ToSpinName,
+                trn1FromSpinDebtId,
+                trn1FromSpinSavId,
+                trn1ToSpinDebtId,
+                trn1ToSpinSavId,
+                trn1TrnAmt,
+                trn1MoneyOutA,
+                trn1MoneyOutOwing,
+                trn1MoneyOutB,
+                trn1MoneyInA,
+                trn1MoneyInOwing,
+                trn1MoneyInB,
+                trn1Gen.createTimestamp(),
+                0);
+        trn1DbMgr.addTransfers(trn1TransDb);
+
+        //ADJUST THESE 2 METHODS****************************************************************************************
+        //trn1DbMgr.updateAllSavBudget();
+        //trn1DbMgr.updateAllDebtBudget();
+
+        Toast.makeText(LayoutTransfers.this, R.string.transfer_complete, Toast.LENGTH_LONG).show();
+        trn1ToList();
+    }
+
+    public void notCustomBtnView() {
+        trn1InfoLabel.setVisibility(View.GONE);
+        trn1FromCustomLayout.setVisibility(View.GONE);
+        trn1FromAvailLayout.setVisibility(View.GONE);
+        trn1FromBtn.setVisibility(View.VISIBLE);
+    }
+
+    public void customBtnView() {
+        trn1InfoLabel.setVisibility(View.GONE);
+        trn1FromCustomLayout.setVisibility(View.VISIBLE);
+        trn1FromAmtLayout.setVisibility(View.VISIBLE);
+        trn1FromAvailLayout.setVisibility(View.VISIBLE);
+        trn1FromResET.addTextChangedListener(onChangeFromResET);
+        trn1FromBtn.setVisibility(View.VISIBLE);
+    }
+
+    public void allFromRes() {
+        trn1MoneyOutA = trn1TrnAmt;
+        trn1MoneyOutOwing = 0.0;
+        trn1MoneyOutB = 0.0;
+    }
+
+    public void allFromAvail() {
+        trn1MoneyOutA = 0.0;
+        trn1MoneyOutOwing = 0.0;
+        trn1MoneyOutB = trn1TrnAmt;
+    }
+
+    public void fromUsual() {
+        trn1MoneyOutA = trn1TrnAmt * (trn1DbMgr.sumTotalAExpenses() / trn1DbMgr.sumTotalIncome());
+        trn1MoneyOutOwing = 0.0;
+        trn1MoneyOutB = trn1TrnAmt - trn1MoneyOutA;
+    }
+
+    public void fromCustom() {
+        trn1MoneyOutA = trn1MoneyOutAEntry;
+        trn1MoneyOutOwing = 0.0;
+        trn1MoneyOutB = trn1TrnAmt - trn1MoneyOutA;
+    }
+
+    public void allToRes() {
+        trn1MoneyInA = trn1TrnAmt;
+        trn1MoneyInOwing = 0.0;
+        trn1MoneyInB = 0.0;
+    }
+
+    public void allToAvail() {
+        trn1MoneyInA = 0.0;
+        trn1MoneyInOwing = 0.0;
+        trn1MoneyInB = trn1TrnAmt;
+    }
+
+    public void toUsual() {
+        trn1MoneyInA = trn1TrnAmt * (trn1DbMgr.sumTotalAExpenses() / trn1DbMgr.sumTotalIncome());
+        trn1MoneyInOwing = 0.0;
+        trn1MoneyInB = trn1TrnAmt - trn1MoneyInA;
+    }
+
+    public void toCustom() {
+        trn1MoneyInA = trn1MoneyOutAEntry;
+        trn1MoneyInOwing = 0.0;
+        trn1MoneyInB = trn1TrnAmt - trn1MoneyInA;
+    }
+
+    View.OnClickListener onClickTransferBtn = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
 
-            transferAmount = general.extractingDouble(transferAmountText);
-            if (transferAmount == 0 || transferAmount == null) {
-                Toast.makeText(getApplicationContext(), R.string.no_amount_warning, Toast.LENGTH_LONG).show();
-            } else {
+            trn1TrnAmt = trn1Gen.dblFromET(trn1TrnAmtET);
 
-                try {
-                    fromDebtId = fromDebtIdS;
-                } catch (NullPointerException e) {
-                    fromDebtId = Long.valueOf(0);
-                    //e.printStackTrace();
-                }
-                try {
-                    toDebtId = toDebtIdS;
-                } catch (NullPointerException e) {
-                    toDebtId = Long.valueOf(0);
-                    //e.printStackTrace();
-                }
-                try {
-                    fromSavingsId = fromSavingsIdS;
-                } catch (NullPointerException e) {
-                    fromSavingsId = Long.valueOf(0);
-                    //e.printStackTrace();
-                }
-                try {
-                    toSavingsId = toSavingsIdS;
-                } catch (NullPointerException e) {
-                    toSavingsId = Long.valueOf(0);
-                    //e.printStackTrace();
-                }
+            if (trn1FromSpinId == trn1ToSpinId) { //FROM & TO ACCT THE SAME
+                Toast.makeText(LayoutTransfers.this, R.string.same_acct, Toast.LENGTH_LONG).show();
+            } else if (trn1FromSpinId != 1) { //NOT FROM MAIN ACCT
+                trn1MoneyOutA = 0.0;
+                trn1MoneyOutOwing = 0.0;
+                trn1MoneyOutB = 0.0;
 
-                if (fromDebtId == null && fromSavingsId == null) {
-                    Toast.makeText(getApplicationContext(), R.string.no_from_item_warning, Toast.LENGTH_LONG).show();
-                } else if (fromDebtId != null) {
-                    fromDebtCurrentBalance = fromDebtCurrentBalanceS;
-                    updateFromDebtRecord();
-                } else if (fromSavingsId != null) {
-                    fromSavingsCurrentBalance = fromSavingsCurrentBalanceS;
-                    updateFromSavingsRecord();
-                }
+                if (trn1FromIsDebt.equals("Y")) { //FROM DEBT ACCT
+                    trn1FromWarnLayout.setVisibility(View.GONE);
+                    trn1FromCustomLayout.setVisibility(View.GONE);
+                    for (AccountsDb d : trn1DbMgr.getDebts()) {
+                        if (d.getId() == trn1FromSpinId) {
+                            debtAmtFromDb = d.getAcctBal();
+                            debtLimitFromDb = d.getAcctMax();
+                        }
+                    }
+                    if ((debtLimitFromDb > 0) && (debtAmtFromDb + trn1TrnAmt > debtLimitFromDb)) { //IF CARD WILL BE OVER LIMIT
+                        trn1WarnLayout.setVisibility(View.VISIBLE);
+                        trn1WarnTV.setText(getString(R.string.not_enough_credit_warning));
 
-                if (toDebtId == null && toSavingsId == null) {
-                    Toast.makeText(getApplicationContext(), R.string.no_to_item_warning, Toast.LENGTH_LONG).show();
-                } else if (toDebtId != null) {
-                    toDebtCurrentBalance = toDebtCurrentBalanceS;
-                    updateToDebtRecord();
-                } else if (toSavingsId != null) {
-                    toSavingsCurrentBalance = toSavingsCurrentBalanceS;
-                    updateToSavingsRecord();
-                }
+                        trn1NoBtn.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                trn1WarnLayout.setVisibility(View.GONE);
+                                trn1Refresh();
+                            }
+                        });
 
-                Toast.makeText(getApplicationContext(), R.string.saved, Toast.LENGTH_LONG).show();
-                backToTransfers();
+                        trn1YesBtn.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                trn1WarnLayout.setVisibility(View.GONE);
+                                trn1DebtPlus();
+
+                                if (trn1ToSpinId != 1) { //NOT INTO MAIN ACCT
+                                    trn1MoneyInA = 0.0;
+                                    trn1MoneyInOwing = 0.0;
+                                    trn1MoneyInB = 0.0;
+
+                                    if (trn1ToIsDebt.equals("Y")) { //INTO DEBT ACCT
+                                        trn1FromCustomLayout.setVisibility(View.GONE);
+                                        trn1DebtMinus();
+                                        addTransAndFinish();
+                                    } else if (trn1ToIsSav.equals("Y")) { //INTO SAVINGS ACCT
+                                        trn1FromCustomLayout.setVisibility(View.GONE);
+                                        trn1SavPlus();
+                                        addTransAndFinish();
+                                    }
+                                } else { //INTO MAIN ACCT
+                                    trn1InfoLabel.setVisibility(View.GONE);
+                                    trn1DoneBtn.setVisibility(View.GONE);
+                                    trn1FromWarnLayout.setVisibility(View.VISIBLE);
+                                    trn1FromWarnTV.setText(getString(R.string.choose_split_inc));
+                                    trn1FromAmtLayout.setVisibility(View.GONE);
+
+                                    trn1InfoBtn.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            trn1InfoLabel.setVisibility(View.VISIBLE);
+                                        }
+                                    });
+
+                                    trn1FromRG.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+                                        @Override
+                                        public void onCheckedChanged(RadioGroup group, int checkedId) {
+                                            if (checkedId == R.id.transferFromResRB) {
+                                                notCustomBtnView();
+                                            } else if (checkedId == R.id.transferFromAvailRB) {
+                                                notCustomBtnView();
+                                            } else if (checkedId == R.id.transferFromUsualRB) {
+                                                notCustomBtnView();
+                                            } else if (checkedId == R.id.transferFromCustomRB) {
+                                                customBtnView();
+                                            }
+                                        }
+                                    });
+
+                                    trn1FromBtn.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            if (trn1FromResRB.isChecked()) {
+                                                allToRes();
+                                            } else if (trn1FromAvailRB.isChecked()) {
+                                                allToAvail();
+                                            } else if (trn1FromUsualRB.isChecked()) {
+                                                toUsual();
+                                            } else if (trn1FromCustomRB.isChecked()) {
+                                                toCustom();
+                                            }
+
+                                            trn1MainPlus();
+                                            addTransAndFinish();
+                                        }
+                                    });
+                                }
+                            }
+                        });
+                    } else { //CARD WON'T GO OVER LIMIT
+                        trn1DebtPlus();
+
+                        if (trn1ToSpinId != 1) { //NOT INTO MAIN ACCT
+                            trn1MoneyInA = 0.0;
+                            trn1MoneyInOwing = 0.0;
+                            trn1MoneyInB = 0.0;
+
+                            if (trn1ToIsDebt.equals("Y")) { //INTO DEBT ACCT
+                                trn1FromCustomLayout.setVisibility(View.GONE);
+                                trn1DebtMinus();
+                                addTransAndFinish();
+                            } else if (trn1ToIsSav.equals("Y")) { //INTO SAVINGS ACCT
+                                trn1FromCustomLayout.setVisibility(View.GONE);
+                                trn1SavPlus();
+                                addTransAndFinish();
+                            }
+                        } else { //INTO MAIN ACCT
+                            trn1InfoLabel.setVisibility(View.GONE);
+                            trn1DoneBtn.setVisibility(View.GONE);
+                            trn1FromWarnLayout.setVisibility(View.VISIBLE);
+                            trn1FromAmtLayout.setVisibility(View.GONE);
+
+                            trn1InfoBtn.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    trn1InfoLabel.setVisibility(View.VISIBLE);
+                                }
+                            });
+
+                            trn1FromRG.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+                                @Override
+                                public void onCheckedChanged(RadioGroup group, int checkedId) {
+                                    if (checkedId == R.id.transferFromResRB) {
+                                        notCustomBtnView();
+                                    } else if (checkedId == R.id.transferFromAvailRB) {
+                                        notCustomBtnView();
+                                    } else if (checkedId == R.id.transferFromUsualRB) {
+                                        notCustomBtnView();
+                                    } else if (checkedId == R.id.transferFromCustomRB) {
+                                        customBtnView();
+                                    }
+                                }
+                            });
+
+                            trn1FromBtn.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    if (trn1FromResRB.isChecked()) {
+                                        allToRes();
+                                    } else if (trn1FromAvailRB.isChecked()) {
+                                        allToAvail();
+                                    } else if (trn1FromUsualRB.isChecked()) {
+                                        toUsual();
+                                    } else if (trn1FromCustomRB.isChecked()) {
+                                        toCustom();
+                                    }
+
+                                    trn1MainPlus();
+                                    addTransAndFinish();
+                                }
+                            });
+                        }
+                    }
+                } else if (trn1FromIsSav.equals("Y")) { //FROM SAVINGS ACCT
+                    trn1FromWarnLayout.setVisibility(View.GONE);
+                    trn1FromCustomLayout.setVisibility(View.GONE);
+                    for (AccountsDb s : trn1DbMgr.getSavings()) {
+                        if (s.getId() == trn1FromSpinId) {
+                            savAmtFromDb = s.getAcctBal();
+                        }
+                    }
+                    if (savAmtFromDb - trn1TrnAmt < 0) { //IF SAVINGS WILL GO NEGATIVE
+                        trn1WarnLayout.setVisibility(View.VISIBLE);
+                        trn1WarnTV.setText(getString(R.string.not_enough_savings_warning));
+                        trn1NoBtn.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                trn1WarnLayout.setVisibility(View.GONE);
+                                trn1Refresh();
+                            }
+                        });
+                        trn1YesBtn.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                trn1WarnLayout.setVisibility(View.GONE);
+                                trn1SavMinus();
+
+                                if (trn1ToSpinId != 1) { //NOT INTO MAIN ACCT
+                                    trn1MoneyInA = 0.0;
+                                    trn1MoneyInOwing = 0.0;
+                                    trn1MoneyInB = 0.0;
+
+                                    if (trn1ToIsDebt.equals("Y")) { //INTO DEBT ACCT
+                                        trn1FromCustomLayout.setVisibility(View.GONE);
+                                        trn1DebtMinus();
+                                        addTransAndFinish();
+                                    } else if (trn1ToIsSav.equals("Y")) { //INTO SAVINGS ACCT
+                                        trn1FromCustomLayout.setVisibility(View.GONE);
+                                        trn1SavPlus();
+                                        addTransAndFinish();
+                                    }
+                                } else { //INTO MAIN ACCT
+                                    trn1InfoLabel.setVisibility(View.GONE);
+                                    trn1DoneBtn.setVisibility(View.GONE);
+                                    trn1FromWarnLayout.setVisibility(View.VISIBLE);
+                                    trn1FromAmtLayout.setVisibility(View.GONE);
+
+                                    trn1InfoBtn.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            trn1InfoLabel.setVisibility(View.VISIBLE);
+                                        }
+                                    });
+
+                                    trn1FromRG.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+                                        @Override
+                                        public void onCheckedChanged(RadioGroup group, int checkedId) {
+                                            if (checkedId == R.id.transferFromResRB) {
+                                                notCustomBtnView();
+                                            } else if (checkedId == R.id.transferFromAvailRB) {
+                                                notCustomBtnView();
+                                            } else if (checkedId == R.id.transferFromUsualRB) {
+                                                notCustomBtnView();
+                                            } else if (checkedId == R.id.transferFromCustomRB) {
+                                                customBtnView();
+                                            }
+                                        }
+                                    });
+
+                                    trn1FromBtn.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            if (trn1FromResRB.isChecked()) {
+                                                allToRes();
+                                            } else if (trn1FromAvailRB.isChecked()) {
+                                                allToAvail();
+                                            } else if (trn1FromUsualRB.isChecked()) {
+                                                toUsual();
+                                            } else if (trn1FromCustomRB.isChecked()) {
+                                                toCustom();
+                                            }
+
+                                            trn1MainPlus();
+                                            addTransAndFinish();
+                                        }
+                                    });
+                                }
+                            }
+                        });
+                    } else { //SAVINGS WILL NOT GO NEGATIVE
+                        trn1SavMinus();
+
+                        if (trn1ToSpinId != 1) { //NOT INTO MAIN ACCT
+                            trn1MoneyInA = 0.0;
+                            trn1MoneyInOwing = 0.0;
+                            trn1MoneyInB = 0.0;
+
+                            if (trn1ToIsDebt.equals("Y")) { //INTO DEBT ACCT
+                                trn1FromCustomLayout.setVisibility(View.GONE);
+                                trn1DebtMinus();
+                                addTransAndFinish();
+                            } else if (trn1ToIsSav.equals("Y")) { //INTO SAVINGS ACCT
+                                trn1FromCustomLayout.setVisibility(View.GONE);
+                                trn1SavPlus();
+                                addTransAndFinish();
+                            }
+                        } else { //INTO MAIN ACCT
+                            trn1InfoLabel.setVisibility(View.GONE);
+                            trn1DoneBtn.setVisibility(View.GONE);
+                            trn1FromWarnLayout.setVisibility(View.VISIBLE);
+                            trn1FromAmtLayout.setVisibility(View.GONE);
+
+                            trn1InfoBtn.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    trn1InfoLabel.setVisibility(View.VISIBLE);
+                                }
+                            });
+
+                            trn1FromRG.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+                                @Override
+                                public void onCheckedChanged(RadioGroup group, int checkedId) {
+                                    if (checkedId == R.id.transferFromResRB) {
+                                        notCustomBtnView();
+                                    } else if (checkedId == R.id.transferFromAvailRB) {
+                                        notCustomBtnView();
+                                    } else if (checkedId == R.id.transferFromUsualRB) {
+                                        notCustomBtnView();
+                                    } else if (checkedId == R.id.transferFromCustomRB) {
+                                        customBtnView();
+                                    }
+                                }
+                            });
+
+                            trn1FromBtn.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    if (trn1FromResRB.isChecked()) {
+                                        allToRes();
+                                    } else if (trn1FromAvailRB.isChecked()) {
+                                        allToAvail();
+                                    } else if (trn1FromUsualRB.isChecked()) {
+                                        toUsual();
+                                    } else if (trn1FromCustomRB.isChecked()) {
+                                        toCustom();
+                                    }
+
+                                    trn1MainPlus();
+                                    addTransAndFinish();
+                                }
+                            });
+                        }
+                    }
+                }
+            } else { //FROM MAIN ACCT
+                trn1MoneyInA = 0.0;
+                trn1MoneyInOwing = 0.0;
+                trn1MoneyInB = 0.0;
+
+                if (trn1DbMgr.retrieveCurrentAccountBalance() < trn1TrnAmt) { //ACCT BALANCE IS LESS THAN TRANSFER AMT
+                    trn1WarnLayout.setVisibility(View.VISIBLE);
+                    trn1WarnTV.setText(getString(R.string.payment_not_possible_A));
+
+                    trn1NoBtn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            trn1WarnLayout.setVisibility(View.GONE);
+                            trn1Refresh();
+                        }
+                    });
+
+                    trn1YesBtn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            trn1WarnLayout.setVisibility(View.GONE);
+                            trn1InfoLabel.setVisibility(View.GONE);
+                            trn1DoneBtn.setVisibility(View.GONE);
+                            trn1FromWarnLayout.setVisibility(View.VISIBLE);
+                            trn1FromAmtLayout.setVisibility(View.GONE);
+
+                            trn1InfoBtn.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    trn1InfoLabel.setVisibility(View.VISIBLE);
+                                }
+                            });
+
+                            trn1FromRG.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+                                @Override
+                                public void onCheckedChanged(RadioGroup group, int checkedId) {
+                                    if (checkedId == R.id.transferFromResRB) {
+                                        notCustomBtnView();
+                                    } else if (checkedId == R.id.transferFromAvailRB) {
+                                        notCustomBtnView();
+                                    } else if (checkedId == R.id.transferFromUsualRB) {
+                                        notCustomBtnView();
+                                    } else if (checkedId == R.id.transferFromCustomRB) {
+                                        customBtnView();
+                                    }
+                                }
+                            });
+
+                            trn1FromBtn.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    if (trn1FromResRB.isChecked()) {
+                                        if (trn1DbMgr.retrieveCurrentA() < trn1TrnAmt) { //A CAN'T COVER WHOLE AMT
+                                            trn1AmtMissing = trn1TrnAmt - trn1DbMgr.retrieveCurrentA();
+                                            trn1MoneyOutOwing = 0.0;
+                                            if (trn1DbMgr.retrieveCurrentB() > 0) { //B HAS MONEY
+                                                if (trn1DbMgr.retrieveCurrentB() >= trn1AmtMissing) { //B CAN COVER THE MISSING AMT
+                                                    trn1MoneyOutA = trn1TrnAmt - trn1AmtMissing;
+                                                    trn1MoneyOutB = trn1AmtMissing;
+                                                } else { //B CAN'T COVER MISSING AMT: B GIVES WHAT IT CAN AND A GOES NEGATIVE BY THE REST
+                                                    trn1MoneyOutA = trn1TrnAmt - trn1DbMgr.retrieveCurrentB();
+                                                    trn1MoneyOutB = trn1DbMgr.retrieveCurrentB();
+                                                }
+                                            } else { //B HAS NO MONEY: A GOES NEGATIVE BY WHOLE AMT
+                                                trn1MoneyOutA = trn1TrnAmt;
+                                                trn1MoneyOutB = 0.0;
+                                            }
+                                        } else { //A CAN COVER WHOLE AMT
+                                            allFromRes();
+                                        }
+                                    } else if (trn1FromAvailRB.isChecked()) {
+                                        if (trn1DbMgr.retrieveCurrentB() < trn1TrnAmt) { //B IS LESS THAN AMT: A COVERS MISSING AMT, BUT IS OWED FOR IT
+                                            trn1AmtMissing = trn1TrnAmt - trn1DbMgr.retrieveCurrentB();
+                                            trn1MoneyOutA = trn1AmtMissing;
+                                            trn1MoneyOutOwing = trn1AmtMissing;
+                                            trn1MoneyOutB = trn1DbMgr.retrieveCurrentB();
+                                        } else {
+                                            allFromAvail();
+                                        }
+                                    } else if (trn1FromUsualRB.isChecked()) {
+                                        trn1AmtForA = trn1TrnAmt * (trn1DbMgr.sumTotalAExpenses() / trn1DbMgr.sumTotalIncome());
+                                        trn1AmtForB = trn1TrnAmt - trn1AmtForA;
+                                        if (trn1DbMgr.retrieveCurrentB() < trn1AmtForB) { //B CAN'T COVER ITS PORTION
+                                            if (trn1DbMgr.retrieveCurrentB() > 0) { //B HAS MONEY, GIVES WHAT IT CAN AND A GOES NEGATIVE AND IS OWED
+                                                trn1MoneyOutA = trn1TrnAmt - trn1DbMgr.retrieveCurrentB();
+                                                trn1MoneyOutOwing = trn1AmtForB - trn1DbMgr.retrieveCurrentB();
+                                                trn1MoneyOutB = trn1DbMgr.retrieveCurrentB();
+                                            } else { //B HAS NO MONEY, A PAYS, BUT IS OWED FOR B'S PORTION
+                                                trn1MoneyOutA = trn1TrnAmt;
+                                                trn1MoneyOutOwing = trn1AmtForB;
+                                                trn1MoneyOutB = 0.0;
+                                            }
+                                        } else { //B CAN COVER ITS OWN PORTION
+                                            fromUsual();
+                                        }
+                                    } else if (trn1FromCustomRB.isChecked()) {
+                                        trn1AmtForA = trn1MoneyOutAEntry;
+                                        trn1AmtForB = trn1TrnAmt - trn1AmtForA;
+                                        if (trn1DbMgr.retrieveCurrentB() < trn1AmtForB) { //B CAN'T COVER ITS PORTION
+                                            if (trn1DbMgr.retrieveCurrentB() > 0) { //B HAS MONEY, GIVES WHAT IT CAN AND A GOES NEGATIVE AND IS OWED
+                                                trn1MoneyOutA = trn1TrnAmt - trn1DbMgr.retrieveCurrentB();
+                                                trn1MoneyOutOwing = trn1AmtForB - trn1DbMgr.retrieveCurrentB();
+                                                trn1MoneyOutB = trn1DbMgr.retrieveCurrentB();
+                                            } else { //B HAS NO MONEY, A PAYS, BUT IS OWED FOR B'S PORTION
+                                                trn1MoneyOutA = trn1TrnAmt;
+                                                trn1MoneyOutOwing = trn1AmtForB;
+                                                trn1MoneyOutB = 0.0;
+                                            }
+                                        } else { //B CAN COVER ITS OWN PORTION
+                                            fromCustom();
+                                        }
+                                    }
+
+                                    trn1MainMinus();
+
+                                    if (trn1ToIsDebt.equals("Y")) {
+                                        trn1FromCustomLayout.setVisibility(View.GONE);
+                                        trn1DebtMinus();
+                                        addTransAndFinish();
+                                    } else if (trn1ToIsSav.equals("Y")) {
+                                        trn1FromCustomLayout.setVisibility(View.GONE);
+                                        trn1SavPlus();
+                                        addTransAndFinish();
+                                    }
+                                }
+                            });
+                        }
+                    });
+                } else {
+                    trn1InfoLabel.setVisibility(View.GONE);
+                    trn1DoneBtn.setVisibility(View.GONE);
+                    trn1FromWarnLayout.setVisibility(View.VISIBLE);
+                    trn1FromAmtLayout.setVisibility(View.GONE);
+
+                    trn1InfoBtn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            trn1InfoLabel.setVisibility(View.VISIBLE);
+                        }
+                    });
+
+                    trn1FromRG.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+                        @Override
+                        public void onCheckedChanged(RadioGroup group, int checkedId) {
+                            if (checkedId == R.id.transferFromResRB) {
+                                notCustomBtnView();
+                            } else if (checkedId == R.id.transferFromAvailRB) {
+                                notCustomBtnView();
+                            } else if (checkedId == R.id.transferFromUsualRB) {
+                                notCustomBtnView();
+                            } else if (checkedId == R.id.transferFromCustomRB) {
+                                customBtnView();
+                            }
+                        }
+                    });
+
+                    trn1FromBtn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if (trn1FromResRB.isChecked()) {
+                                if (trn1DbMgr.retrieveCurrentA() < trn1TrnAmt) { //A CAN'T COVER WHOLE AMT
+                                    trn1WarnLayout.setVisibility(View.VISIBLE);
+                                    trn1WarnTV.setText(getString(R.string.payment_not_possible_A));
+
+                                    trn1NoBtn.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            trn1WarnLayout.setVisibility(View.GONE);
+                                            trn1Refresh();
+                                        }
+                                    });
+
+                                    trn1YesBtn.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            trn1AmtMissing = trn1TrnAmt - trn1DbMgr.retrieveCurrentA();
+                                            trn1MoneyOutOwing = 0.0;
+                                            if (trn1DbMgr.retrieveCurrentB() > 0) { //B HAS MONEY
+                                                if (trn1DbMgr.retrieveCurrentB() >= trn1AmtMissing) { //B CAN COVER THE MISSING AMT
+                                                    trn1MoneyOutA = trn1TrnAmt - trn1AmtMissing;
+                                                    trn1MoneyOutB = trn1AmtMissing;
+                                                } else { //B CAN'T COVER MISSING AMT: B GIVES WHAT IT CAN AND A GOES NEGATIVE BY THE REST
+                                                    trn1MoneyOutA = trn1TrnAmt - trn1DbMgr.retrieveCurrentB();
+                                                    trn1MoneyOutB = trn1DbMgr.retrieveCurrentB();
+                                                }
+
+                                            } else { //B HAS NO MONEY: A GOES NEGATIVE BY WHOLE AMT
+                                                trn1MoneyOutA = trn1TrnAmt;
+                                                trn1MoneyOutB = 0.0;
+                                            }
+                                        }
+                                    });
+                                } else { //A CAN COVER WHOLE AMT
+                                    allFromRes();
+                                }
+                            } else if (trn1FromAvailRB.isChecked()) {
+                                if (trn1DbMgr.retrieveCurrentB() < trn1TrnAmt) { //B IS LESS THAN AMT: A COVERS MISSING AMT, BUT IS OWED FOR IT
+                                    trn1WarnLayout.setVisibility(View.VISIBLE);
+                                    trn1WarnTV.setText(getString(R.string.payment_not_possible_B));
+
+                                    trn1NoBtn.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            trn1WarnLayout.setVisibility(View.GONE);
+                                            trn1Refresh();
+                                        }
+                                    });
+
+                                    trn1YesBtn.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            trn1AmtMissing = trn1TrnAmt - trn1DbMgr.retrieveCurrentB();
+                                            trn1MoneyOutA = trn1AmtMissing;
+                                            trn1MoneyOutOwing = trn1AmtMissing;
+                                            trn1MoneyOutB = trn1DbMgr.retrieveCurrentB();
+                                        }
+                                    });
+                                } else {
+                                    allFromAvail();
+                                }
+                            } else if (trn1FromUsualRB.isChecked()) {
+                                trn1AmtForA = trn1TrnAmt * (trn1DbMgr.sumTotalAExpenses() / trn1DbMgr.sumTotalIncome());
+                                trn1AmtForB = trn1TrnAmt - trn1AmtForA;
+                                if (trn1DbMgr.retrieveCurrentB() < trn1AmtForB) { //B CAN'T COVER ITS PORTION
+                                    trn1WarnLayout.setVisibility(View.VISIBLE);
+                                    trn1WarnTV.setText(getString(R.string.payment_not_possible_B));
+
+                                    trn1NoBtn.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            trn1WarnLayout.setVisibility(View.GONE);
+                                            trn1Refresh();
+                                        }
+                                    });
+
+                                    trn1YesBtn.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            if (trn1DbMgr.retrieveCurrentB() > 0) { //B HAS MONEY, GIVES WHAT IT CAN AND A GOES NEGATIVE AND IS OWED
+                                                trn1MoneyOutA = trn1TrnAmt - trn1DbMgr.retrieveCurrentB();
+                                                trn1MoneyOutOwing = trn1AmtForB - trn1DbMgr.retrieveCurrentB();
+                                                trn1MoneyOutB = trn1DbMgr.retrieveCurrentB();
+                                            } else { //B HAS NO MONEY, A PAYS, BUT IS OWED FOR B'S PORTION
+                                                trn1MoneyOutA = trn1TrnAmt;
+                                                trn1MoneyOutOwing = trn1AmtForB;
+                                                trn1MoneyOutB = 0.0;
+                                            }
+                                        }
+                                    });
+                                } else { //B CAN COVER ITS OWN PORTION
+                                    fromUsual();
+                                }
+                            } else if (trn1FromCustomRB.isChecked()) {
+                                trn1AmtForA = trn1MoneyOutAEntry;
+                                trn1AmtForB = trn1TrnAmt - trn1AmtForA;
+                                if (trn1DbMgr.retrieveCurrentB() < trn1AmtForB) { //B CAN'T COVER ITS PORTION
+                                    trn1WarnLayout.setVisibility(View.VISIBLE);
+                                    trn1WarnTV.setText(getString(R.string.payment_not_possible_B));
+
+                                    trn1NoBtn.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            trn1WarnLayout.setVisibility(View.GONE);
+                                            trn1Refresh();
+                                        }
+                                    });
+
+                                    trn1YesBtn.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            if (trn1DbMgr.retrieveCurrentB() > 0) { //B HAS MONEY, GIVES WHAT IT CAN AND A GOES NEGATIVE AND IS OWED
+                                                trn1MoneyOutA = trn1TrnAmt - trn1DbMgr.retrieveCurrentB();
+                                                trn1MoneyOutOwing = trn1AmtForB - trn1DbMgr.retrieveCurrentB();
+                                                trn1MoneyOutB = trn1DbMgr.retrieveCurrentB();
+                                            } else { //B HAS NO MONEY, A PAYS, BUT IS OWED FOR B'S PORTION
+                                                trn1MoneyOutA = trn1TrnAmt;
+                                                trn1MoneyOutOwing = trn1AmtForB;
+                                                trn1MoneyOutB = 0.0;
+                                            }
+                                        }
+                                    });
+                                } else { //B CAN COVER ITS OWN PORTION
+                                    fromCustom();
+                                }
+                            }
+
+                            trn1MainMinus();
+
+                            if (trn1ToIsDebt.equals("Y")) {
+                                trn1FromCustomLayout.setVisibility(View.GONE);
+                                trn1DebtMinus();
+                                addTransAndFinish();
+                            } else if (trn1ToIsSav.equals("Y")) {
+                                trn1FromCustomLayout.setVisibility(View.GONE);
+                                trn1SavPlus();
+                                addTransAndFinish();
+                            }
+                        }
+                    });
+                }
             }
         }
     };
 }
+

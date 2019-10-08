@@ -17,25 +17,29 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.viewpager.widget.ViewPager;
 
+import ca.gotchasomething.mynance.data.AccountsDb;
+import ca.gotchasomething.mynance.data.ExpenseBudgetDb;
 import ca.gotchasomething.mynance.data.SetUpDb;
 
 public class SlidesOnboardingP extends AppCompatActivity implements View.OnClickListener {
 
+    AccountsDb acctDb;
     private AdapterSlides adapter;
     private Button skipButton, nextButton;
     Cursor setUpCursor;
     DbHelper setUpHelper;
     DbManager dbManager;
     Double balanceAmount;
+    ExpenseBudgetDb expDb;
     private ImageView[] dots;
-    int tourDoneYes;
+    int position, tourDoneYes;
     private int[] slides = {
-            R.layout.slides_onboarding_1,
-            R.layout.slides_onboarding_2,
-            R.layout.slides_onboarding_3,
-            R.layout.slides_onboarding_4,
-            R.layout.slides_onboarding_5,
-            R.layout.slides_onboarding_6
+            R.layout.a_slides_onboarding_1,
+            R.layout.a_slides_onboarding_2,
+            R.layout.a_slides_onboarding_3,
+            R.layout.a_slides_onboarding_4,
+            R.layout.a_slides_onboarding_5,
+            R.layout.a_slides_onboarding_6
     };
     private LinearLayout dotsLayout;
     SetUpDb setUpDb;
@@ -59,7 +63,7 @@ public class SlidesOnboardingP extends AppCompatActivity implements View.OnClick
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         }
 
-        setContentView(R.layout.slides_onboarding_background);
+        setContentView(R.layout.a1_slides_onboarding_background);
 
         viewPager = findViewById(R.id.viewPager);
         adapter = new AdapterSlides(slides, this);
@@ -140,9 +144,35 @@ public class SlidesOnboardingP extends AppCompatActivity implements View.OnClick
 
     private void loadHome() {
         dbManager = new DbManager(this);
-        latestDone = "start";
-        setUpDb = new SetUpDb(latestDone, balanceAmount, 0);
-        dbManager.addSetUp(setUpDb);
+        if(dbManager.getSetUp().size() == 0) {
+            setUpDb = new SetUpDb(
+                    "start",
+                    balanceAmount,
+                    0);
+            dbManager.addSetUp(setUpDb);
+        }
+        if(dbManager.getAccounts().size() == 0) {
+            acctDb = new AccountsDb(
+                    "Main Account",
+                    0.0,
+                    0,
+                    0,
+                    0);
+            dbManager.addAccounts(acctDb);
+        }
+        if(dbManager.getExpense().size() == 0) {
+            expDb = new ExpenseBudgetDb(
+                    "Other",
+                    0.0,
+                    12.0,
+                    "B",
+                    "N",
+                    0.0,
+                    //0.0,
+                    //0.0,
+                    0);
+            dbManager.addExpense(expDb);
+        }
         startActivity(new Intent(this, LayoutSetUp.class));
         finish();
 

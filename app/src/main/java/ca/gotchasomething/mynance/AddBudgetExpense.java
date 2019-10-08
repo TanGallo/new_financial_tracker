@@ -1,4 +1,4 @@
-package ca.gotchasomething.mynance;
+/*package ca.gotchasomething.mynance;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -35,7 +35,7 @@ public class AddBudgetExpense extends LayoutBudget {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.add_edit_budget_expense);
+        setContentView(R.layout.form_5_add_expense);
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
         budgetExpenseCategory = findViewById(R.id.budgetExpenseCategory);
@@ -231,4 +231,4 @@ public class AddBudgetExpense extends LayoutBudget {
             }
         }
     };
-}
+}*/

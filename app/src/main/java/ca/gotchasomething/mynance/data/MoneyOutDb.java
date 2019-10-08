@@ -9,6 +9,8 @@ public class MoneyOutDb {
     private Double moneyOutA;
     private Double moneyOutOwing;
     private Double moneyOutB;
+    private long moneyOutPayFromId;
+    private String moneyOutPayFromName;
     private String moneyOutCreatedOn;
     private String moneyOutCC;
     private String moneyOutDebtCat;
@@ -26,6 +28,8 @@ public class MoneyOutDb {
             Double moneyOutA,
             Double moneyOutOwing,
             Double moneyOutB,
+            long moneyOutPayFromId,
+            String moneyOutPayFromName,
             String moneyOutCreatedOn,
             String moneyOutCC,
             String moneyOutDebtCat,
@@ -41,6 +45,8 @@ public class MoneyOutDb {
         this.moneyOutA = moneyOutA;
         this.moneyOutOwing = moneyOutOwing;
         this.moneyOutB = moneyOutB;
+        this.moneyOutPayFromId = moneyOutPayFromId;
+        this.moneyOutPayFromName = moneyOutPayFromName;
         this.moneyOutCreatedOn = moneyOutCreatedOn;
         this.moneyOutCC = moneyOutCC;
         this.moneyOutDebtCat = moneyOutDebtCat;
@@ -51,51 +57,145 @@ public class MoneyOutDb {
         this.id = id;
     }
 
-    public String getMoneyOutCat() { return moneyOutCat; }
-    public void setMoneyOutCat(String moneyOutCat) { this.moneyOutCat = moneyOutCat; }
+    public String getMoneyOutCat() {
+        return moneyOutCat;
+    }
 
-    public String getMoneyOutPriority() { return moneyOutPriority; }
-    public void setMoneyOutPriority(String moneyOutPriority) { this.moneyOutPriority = moneyOutPriority; }
+    public void setMoneyOutCat(String moneyOutCat) {
+        this.moneyOutCat = moneyOutCat;
+    }
 
-    public String getMoneyOutWeekly() { return moneyOutWeekly; }
-    public void setMoneyOutWeekly(String moneyOutWeekly) { this.moneyOutWeekly = moneyOutWeekly; }
+    public String getMoneyOutPriority() {
+        return moneyOutPriority;
+    }
 
-    public Double getMoneyOutAmount() { return moneyOutAmount; }
-    public void setMoneyOutAmount(Double moneyOutAmount) { this.moneyOutAmount = moneyOutAmount; }
+    public void setMoneyOutPriority(String moneyOutPriority) {
+        this.moneyOutPriority = moneyOutPriority;
+    }
 
-    public Double getMoneyOutA() { return moneyOutA; }
-    public void setMoneyOutA(Double moneyOutA) { this.moneyOutA = moneyOutA; }
+    public String getMoneyOutWeekly() {
+        return moneyOutWeekly;
+    }
 
-    public Double getMoneyOutOwing() { return moneyOutOwing; }
-    public void setMoneyOutOwing(Double moneyOutOwing) { this.moneyOutOwing = moneyOutOwing; }
+    public void setMoneyOutWeekly(String moneyOutWeekly) {
+        this.moneyOutWeekly = moneyOutWeekly;
+    }
 
-    public Double getMoneyOutB() { return moneyOutB; }
-    public void setMoneyOutB(Double moneyOutB) { this.moneyOutB = moneyOutB; }
+    public Double getMoneyOutAmount() {
+        return moneyOutAmount;
+    }
 
-    public String getMoneyOutCreatedOn() { return moneyOutCreatedOn; }
-    public void setMoneyOutCreatedOn(String moneyOutCreatedOn) { this.moneyOutCreatedOn = moneyOutCreatedOn; }
+    public void setMoneyOutAmount(Double moneyOutAmount) {
+        this.moneyOutAmount = moneyOutAmount;
+    }
 
-    public String getMoneyOutCC() { return moneyOutCC; }
-    public void setMoneyOutCC(String moneyOutCC) { this.moneyOutCC = moneyOutCC; }
+    public Double getMoneyOutA() {
+        return moneyOutA;
+    }
 
-    public String getMoneyOutDebtCat() { return moneyOutDebtCat; }
-    public void setMoneyOutDebtCat(String moneyOutDebtCat) { this.moneyOutDebtCat = moneyOutDebtCat; }
+    public void setMoneyOutA(Double moneyOutA) {
+        this.moneyOutA = moneyOutA;
+    }
 
-    public long getMoneyOutChargingDebtId() { return moneyOutChargingDebtId; }
-    public void setMoneyOutChargingDebtId(long moneyOutChargingDebtId) { this.moneyOutChargingDebtId = moneyOutChargingDebtId; }
+    public Double getMoneyOutOwing() {
+        return moneyOutOwing;
+    }
 
-    public int getMoneyOutToPay() { return moneyOutToPay; }
-    public void setMoneyOutToPay(int moneyOutToPay) { this.moneyOutToPay = moneyOutToPay; }
+    public void setMoneyOutOwing(Double moneyOutOwing) {
+        this.moneyOutOwing = moneyOutOwing;
+    }
 
-    public int getMoneyOutPaid() { return moneyOutPaid; }
-    public void setMoneyOutPaid(int moneyOutPaid) { this.moneyOutPaid = moneyOutPaid; }
+    public Double getMoneyOutB() {
+        return moneyOutB;
+    }
 
-    public long getExpRefKeyMO() { return expRefKeyMO; }
-    public void setExpRefKeyMO(long expRefKeyMO) { this.expRefKeyMO = expRefKeyMO; }
+    public void setMoneyOutB(Double moneyOutB) {
+        this.moneyOutB = moneyOutB;
+    }
 
-    public long getId() { return id; }
-    public void setId(long id) { this.id = id; }
+    public long getMoneyOutPayFromId() {
+        return moneyOutPayFromId;
+    }
+
+    public void setMoneyOutPayFromId(long moneyOutPayFromId) {
+        this.moneyOutPayFromId = moneyOutPayFromId;
+    }
+
+    public String getMoneyOutPayFromName() {
+        return moneyOutPayFromName;
+    }
+
+    public void setMoneyOutPayFromName(String moneyOutPayFromName) {
+        this.moneyOutPayFromName = moneyOutPayFromName;
+    }
+
+
+    public String getMoneyOutCreatedOn() {
+        return moneyOutCreatedOn;
+    }
+
+    public void setMoneyOutCreatedOn(String moneyOutCreatedOn) {
+        this.moneyOutCreatedOn = moneyOutCreatedOn;
+    }
+
+    public String getMoneyOutCC() {
+        return moneyOutCC;
+    }
+
+    public void setMoneyOutCC(String moneyOutCC) {
+        this.moneyOutCC = moneyOutCC;
+    }
+
+    public String getMoneyOutDebtCat() {
+        return moneyOutDebtCat;
+    }
+
+    public void setMoneyOutDebtCat(String moneyOutDebtCat) {
+        this.moneyOutDebtCat = moneyOutDebtCat;
+    }
+
+    public long getMoneyOutChargingDebtId() {
+        return moneyOutChargingDebtId;
+    }
+
+    public void setMoneyOutChargingDebtId(long moneyOutChargingDebtId) {
+        this.moneyOutChargingDebtId = moneyOutChargingDebtId;
+    }
+
+    public int getMoneyOutToPay() {
+        return moneyOutToPay;
+    }
+
+    public void setMoneyOutToPay(int moneyOutToPay) {
+        this.moneyOutToPay = moneyOutToPay;
+    }
+
+    public int getMoneyOutPaid() {
+        return moneyOutPaid;
+    }
+
+    public void setMoneyOutPaid(int moneyOutPaid) {
+        this.moneyOutPaid = moneyOutPaid;
+    }
+
+    public long getExpRefKeyMO() {
+        return expRefKeyMO;
+    }
+
+    public void setExpRefKeyMO(long expRefKeyMO) {
+        this.expRefKeyMO = expRefKeyMO;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 
     @Override
-    public String toString() { return getMoneyOutCat(); }
+    public String toString() {
+        return getMoneyOutCat();
+    }
 }

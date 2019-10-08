@@ -1,4 +1,4 @@
-package ca.gotchasomething.mynance;
+/*package ca.gotchasomething.mynance;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -13,13 +13,14 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBarDrawerToggle;
 import ca.gotchasomething.mynance.data.IncomeBudgetDb;
 import ca.gotchasomething.mynance.data.MoneyInDb;
 
@@ -44,7 +45,7 @@ public class LayoutBudgetReport2 extends MainNavigation {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.layout_budget_report);
+        setContentView(R.layout.z_layout_budget_report);
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         drawer = findViewById(R.id.drawer_layout);
@@ -98,7 +99,7 @@ public class LayoutBudgetReport2 extends MainNavigation {
             year2Spinner.setVisibility(View.VISIBLE);
             budgetReportButton.setVisibility(View.VISIBLE);
 
-            year2SpinnerAdapter = new ArrayAdapter(this, R.layout.spinner_layout, R.id.spinnerText, years);
+            year2SpinnerAdapter = new ArrayAdapter(this, R.layout.layout_1_spinner, R.id.spinnerText, years);
             year2Spinner.setAdapter(year2SpinnerAdapter);
             year2Spinner.setOnItemSelectedListener(onYear2Selected);
         }
@@ -235,4 +236,4 @@ public class LayoutBudgetReport2 extends MainNavigation {
         public TextView budgetReportBudgetedAmount;
         public TextView budgetReportPercentSpent;
     }
-}
+}*/

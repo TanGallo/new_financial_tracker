@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/zzratLabel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:gravity="center_horizontal"
+                    android:text="@string/enjoying_question"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="18sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/zzratNoJoyBtn"
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:layout_margin="10dp"
+                        android:background="@drawable/entry_box"
+                        android:contentDescription="@string/no"
+                        android:gravity="center"
+                        android:text="@string/no"
+                        android:textColor="@color/colorPrimaryDark"
+                        tools:ignore="ButtonStyle,UnusedAttribute" />
+
+                    <Button
+                        android:id="@+id/zzratNotSureJoyBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:layout_margin="10dp"
+                        android:background="@drawable/entry_box"
+                        android:contentDescription="@string/not_sure_yet"
+                        android:gravity="center"
+                        android:text="@string/not_sure_yet"
+                        android:textColor="@color/colorPrimaryDark"
+                        tools:ignore="ButtonStyle,UnusedAttribute" />
+
+                    <Button
+                        android:id="@+id/zzratYesJoyBtn"
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:layout_margin="10dp"
+                        android:background="@drawable/entry_box"
+                        android:contentDescription="@string/yes"
+                        android:gravity="center"
+                        android:text="@string/yes"
+                        android:textColor="@color/colorPrimaryDark"
+                        tools:ignore="ButtonStyle,UnusedAttribute" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/zzratYesLabel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:gravity="center_horizontal"
+                    android:text="@string/rate_it_question"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="18sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/zzratNoRateBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:layout_margin="10dp"
+                        android:background="@drawable/entry_box"
+                        android:contentDescription="@string/not_now"
+                        android:gravity="center"
+                        android:text="@string/not_now"
+                        android:textColor="@color/colorPrimaryDark"
+                        tools:ignore="ButtonStyle,UnusedAttribute" />
+
+                    <Button
+                        android:id="@+id/zzratYesRateBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:layout_margin="10dp"
+                        android:background="@drawable/entry_box"
+                        android:contentDescription="@string/sure"
+                        android:gravity="center"
+                        android:text="@string/sure"
+                        android:textColor="@color/colorPrimaryDark"
+                        tools:ignore="ButtonStyle,UnusedAttribute" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/zzratNoLabel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:gravity="center_horizontal"
+                    android:text="@string/email_question"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="18sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/zzratNoEmailBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:layout_margin="10dp"
+                        android:background="@drawable/entry_box"
+                        android:contentDescription="@string/not_now"
+                        android:gravity="center"
+                        android:text="@string/not_now"
+                        android:textColor="@color/colorPrimaryDark"
+                        tools:ignore="ButtonStyle,UnusedAttribute" />
+
+                    <Button
+                        android:id="@+id/zzratYesEmailBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:layout_margin="10dp"
+                        android:background="@drawable/entry_box"
+                        android:contentDescription="@string/sure"
+                        android:gravity="center"
+                        android:text="@string/sure"
+                        android:textColor="@color/colorPrimaryDark"
+                        tools:ignore="ButtonStyle,UnusedAttribute" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/zzratTemp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/zzratTempE"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="18sp" />
+
+
+            </LinearLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+    </LinearLayout>
+
+</FrameLayout>

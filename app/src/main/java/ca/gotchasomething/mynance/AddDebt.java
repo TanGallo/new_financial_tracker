@@ -1,4 +1,4 @@
-package ca.gotchasomething.mynance;
+/*package ca.gotchasomething.mynance;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -23,13 +23,14 @@ import ca.gotchasomething.mynance.data.IncomeBudgetDb;
 public class AddDebt extends LayoutDebt {
 
     Button cancelDebtButton, saveDebtButton, updateDebtButton;
-    DbManager dbManager;
+    DbManager debt1DBMgr;
     DebtDb debt;
     Double debtAmount = 0.0, debtAnnualIncome = 0.0, debtFrequency = 0.0, debtLimit = 0.0, debtPayments = 0.0, debtRate = 0.0, debtToPay = 0.0, expenseAmount = 0.0,
             expenseAAnnualAmount = 0.0, expenseBAnnualAmount = 0.0, expenseAnnualAmount = 0.0, expenseFrequency = 0.0, incomeAmount = 0.0,
             incomeAnnualAmount = 0.0, incomeFrequency = 0.0;
     EditText debtAmountEntry, debtLimitEntry, debtNameEntry, debtPaymentsEntry, debtPercentEntry;
     ExpenseBudgetDb expenseBudgetDb;
+    General debt1Gen;
     IncomeBudgetDb incomeBudgetDb;
     Intent backToDebtLayout, showList;
     LinearLayout toastLayout;
@@ -43,9 +44,10 @@ public class AddDebt extends LayoutDebt {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.add_edit_debt);
+        setContentView(R.layout.form_3_add_debt);
 
-        dbManager = new DbManager(this);
+        debt1DBMgr = new DbManager(this);
+        debt1Gen = new General();
 
         debtNameEntry = findViewById(R.id.debtNameEntry);
         debtLimitEntry = findViewById(R.id.debtLimitEntry);
@@ -152,14 +154,14 @@ public class AddDebt extends LayoutDebt {
     }
 
     public void showList() {
-        showList = new Intent(AddDebt.this, SetUpAddDebtsList.class);
+        showList = new Intent(AddDebt.this, SetUp3AddDebtsList.class);
         showList.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
         startActivity(showList);
     }
 
     public void debtEndResult() {
         allDebtData();
-        debtEnd2 = general.calcDebtDate(debtAmount,
+        debtEnd2 = debt1Gen.calcDebtDate(debtAmount,
                 debtRate,
                 debtPayments,
                 debtFrequency,
@@ -174,7 +176,7 @@ public class AddDebt extends LayoutDebt {
             debtDateResult.setTextColor(Color.parseColor("#303F9F"));
             debtDateResultLabel.setTextColor(Color.parseColor("#303F9F"));
         }
-        general.whatToShowDebt(getString(R.string.debt_paid), getString(R.string.too_far), debtDateResultLabel, debtDateResult);
+        debt1Gen.whatToShowDebt(getString(R.string.debt_paid), getString(R.string.too_far), debtDateResultLabel, debtDateResult);
     }
 
     public void allDebtData() {
@@ -249,12 +251,12 @@ public class AddDebt extends LayoutDebt {
                         expenseBAnnualAmount,
                         0);
 
-                dbManager.addExpense(expenseBudgetDb);
+                debt1DBMgr.addExpense(expenseBudgetDb);
 
                 debtEnd = debtEnd2;
 
-                expRefKeyD = dbManager.findLatestExpenseId();
-                incRefKeyD = dbManager.findLatestIncomeId();
+                expRefKeyD = debt1DBMgr.findLatestExpenseId();
+                incRefKeyD = debt1DBMgr.findLatestIncomeId();
 
                 debt = new DebtDb(
                         debtName,
@@ -270,9 +272,9 @@ public class AddDebt extends LayoutDebt {
                         incRefKeyD,
                         0);
 
-                dbManager.addDebt(debt);
+                debt1DBMgr.addDebt(debt);
 
-                if (dbManager.retrieveLatestDone().equals("bills")) {
+                if (debt1DBMgr.retrieveLatestDone().equals("bills")) {
                     showList();
                 } else {
                     debtHeaderText();
@@ -283,4 +285,4 @@ public class AddDebt extends LayoutDebt {
             }
         }
     };
-}
+}*/

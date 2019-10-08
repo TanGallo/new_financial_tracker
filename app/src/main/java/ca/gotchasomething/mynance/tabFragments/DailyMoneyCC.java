@@ -1,4 +1,4 @@
-package ca.gotchasomething.mynance.tabFragments;
+/*package ca.gotchasomething.mynance.tabFragments;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -287,7 +287,7 @@ public class DailyMoneyCC extends Fragment {
         return currentDebtAmount;
     }*/
 
-    public void allDebtData() {
+    /*public void allDebtData() {
         for (DebtDb d2 : dbManager.getDebts()) {
             if (d2.getId() == findMatchingDebtId()) {
                 debtAmount = d2.getDebtAmount();
@@ -405,7 +405,7 @@ public class DailyMoneyCC extends Fragment {
         return currentSavingsAmount;
     }*/
 
-    public void allSavingsData() {
+    /*public void allSavingsData() {
         for (SavingsDb s2 : dbManager.getSavings()) {
             if (s2.getId() == findMatchingSavingsId()) {
                 savingsAmount = s2.getSavingsAmount();
@@ -526,7 +526,7 @@ public class DailyMoneyCC extends Fragment {
         }
     }*/
 
-    View.OnClickListener onClickNoCCButton = new View.OnClickListener() {
+    /*View.OnClickListener onClickNoCCButton = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             cancelTransaction();
@@ -585,7 +585,7 @@ public class DailyMoneyCC extends Fragment {
                             updateMoneyOutCC();
                             updateDebtsandSavings();
                         }*/
-                        ccTransAdapter.updateCCTrans(dbManager.getCCTrans());
+                        /*ccTransAdapter.updateCCTrans(dbManager.getCCTrans());
                         ccTransAdapter.notifyDataSetChanged();
                         backToMainLayout();
                     }
@@ -599,7 +599,7 @@ public class DailyMoneyCC extends Fragment {
                     updateMoneyOutCC();
                     updateDebtsandSavings();
                 }*/
-                ccTransAdapter.updateCCTrans(dbManager.getCCTrans());
+                /*ccTransAdapter.updateCCTrans(dbManager.getCCTrans());
                 ccTransAdapter.notifyDataSetChanged();
                 backToMainLayout();
             }
@@ -622,7 +622,7 @@ public class DailyMoneyCC extends Fragment {
                             updateMoneyOutCC();
                             updateDebtsandSavings();
                         }*/
-                        ccTransAdapter.updateCCTrans(dbManager.getCCTrans());
+                        /*ccTransAdapter.updateCCTrans(dbManager.getCCTrans());
                         ccTransAdapter.notifyDataSetChanged();
                         backToMainLayout();
                     }
@@ -644,7 +644,7 @@ public class DailyMoneyCC extends Fragment {
                             updateMoneyOutCC();
                             updateDebtsandSavings();
                         }*/
-                        ccTransAdapter.updateCCTrans(dbManager.getCCTrans());
+                        /*ccTransAdapter.updateCCTrans(dbManager.getCCTrans());
                         ccTransAdapter.notifyDataSetChanged();
                         backToMainLayout();
                     }
@@ -658,7 +658,7 @@ public class DailyMoneyCC extends Fragment {
                     updateMoneyOutCC();
                     updateDebtsandSavings();
                 }*/
-                ccTransAdapter.updateCCTrans(dbManager.getCCTrans());
+                /*ccTransAdapter.updateCCTrans(dbManager.getCCTrans());
                 ccTransAdapter.notifyDataSetChanged();
                 backToMainLayout();
             }
@@ -834,7 +834,7 @@ public class DailyMoneyCC extends Fragment {
                     /*moneyOutA = -(moneyOutDb.getMoneyOutA());
                     moneyOutOwing = -(moneyOutDb.getMoneyOutOwing());
                     moneyOutB = -(moneyOutDb.getMoneyOutB());*/
-                    moneyOutRefKeyMO = moneyOutDb.getExpRefKeyMO();
+                    /*moneyOutRefKeyMO = moneyOutDb.getExpRefKeyMO();
                     moneyOutPriority = moneyOutDb.getMoneyOutPriority();
                     moneyOutChargingDebtId = moneyOutDb.getMoneyOutChargingDebtId();
                     moneyOutPaid = moneyOutDb.getMoneyOutPaid();
@@ -923,7 +923,7 @@ public class DailyMoneyCC extends Fragment {
                     }
                     db5.close();*/
 
-                    dbManager.deleteMoneyOut(moneyOutDb);
+                    /*dbManager.deleteMoneyOut(moneyOutDb);
                     ccTransAdapter.updateCCTrans(dbManager.getCCTrans());
                     notifyDataSetChanged();
                     backToMainLayout();
@@ -935,7 +935,7 @@ public class DailyMoneyCC extends Fragment {
                         newMoneyCCLabel.setVisibility(View.GONE);
                         newMoneyCCLabel2.setVisibility(View.GONE);
                     }*/
-                }
+                /*}
             });
             return convertView;
         }
@@ -950,3 +950,4 @@ public class DailyMoneyCC extends Fragment {
         ImageButton ccTransEdit;
     }
 }
+*/

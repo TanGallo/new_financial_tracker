@@ -1,4 +1,4 @@
-package ca.gotchasomething.mynance;
+/*package ca.gotchasomething.mynance;
 
 import android.content.Context;
 import android.content.Intent;
@@ -49,9 +49,9 @@ public class AddBudgetIncome extends LayoutBudget {
         dbManager = new DbManager(this);
 
         if(dbManager.incomeDoneCheck > 0) {
-            setContentView(R.layout.add_edit_budget_income);
+            setContentView(R.layout.z_add_edit_budget_income);
         } else {
-            setContentView(R.layout.set_up_add_income_list);
+            setContentView(R.layout.form_1_add_income);
 
             incomeListLabel = findViewById(R.id.incomeListLabel);
             doneIncomeButton = findViewById(R.id.doneIncomeButton);
@@ -101,7 +101,7 @@ public class AddBudgetIncome extends LayoutBudget {
                 }
                 updateIncomeButton.setVisibility(View.GONE);
             }*/
-        }
+        /*}
     }
 
     //handle radioGroup for incomeFrequency
@@ -164,7 +164,7 @@ public class AddBudgetIncome extends LayoutBudget {
         }
     };*/
 
-    View.OnClickListener onClickCancelIncomeButton = new View.OnClickListener() {
+    /*View.OnClickListener onClickCancelIncomeButton = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             if(dbManager.incomeDoneCheck > 0) {
@@ -356,7 +356,7 @@ public class AddBudgetIncome extends LayoutBudget {
                         budgetIncomeAnnuallyRadioButton.setVisibility(View.VISIBLE);
                     }*/
 
-                    if (incomeBudgetDb.getIncomeFrequency() == 52) {
+                    /*if (incomeBudgetDb.getIncomeFrequency() == 52) {
                         incomeWeeklyRadioButton.setChecked(true);
                         incomeFrequencyS = "52";
                     } else if (incomeBudgetDb.getIncomeFrequency() == 26) {
@@ -418,7 +418,7 @@ public class AddBudgetIncome extends LayoutBudget {
                             /*findMatchingDebtId();
                             findMatchingSavingsId();*/
 
-                            if (incomeCategory.getText().toString().equals("")) {
+                            /*if (incomeCategory.getText().toString().equals("")) {
                                 Toast.makeText(getBaseContext(), R.string.no_blanks_warning, Toast.LENGTH_LONG).show();
                             } else {
                                 nameEntryInc = incomeCategory.getText().toString();
@@ -535,7 +535,7 @@ public class AddBudgetIncome extends LayoutBudget {
 
                                 db2.close();*/
 
-                                dbManager.updateIncome(incomeBudgetDb);
+                                /*dbManager.updateIncome(incomeBudgetDb);
                                 incomeAdapter.updateIncomes(dbManager.getIncomes());
                                 incomeAdapter.notifyDataSetChanged();
                                 Toast.makeText(getBaseContext(), R.string.changes_saved,
@@ -593,7 +593,7 @@ public class AddBudgetIncome extends LayoutBudget {
                                 deleteExpText.setVisibility(View.GONE);
                                 ok2Button.setVisibility(View.GONE);*/
 
-                    dbManager.deleteIncome(incomeBudgetDb);
+                    /*dbManager.deleteIncome(incomeBudgetDb);
                     incomeAdapter.updateIncomes(dbManager.getIncomes());
                     incomeAdapter.notifyDataSetChanged();
 
@@ -612,4 +612,4 @@ public class AddBudgetIncome extends LayoutBudget {
         private ImageButton incomeDeleted;
         private ImageButton incomeEdit;
     }
-}
+}*/

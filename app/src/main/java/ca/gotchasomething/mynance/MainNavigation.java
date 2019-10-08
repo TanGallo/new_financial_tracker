@@ -1,8 +1,6 @@
 package ca.gotchasomething.mynance;
 
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,34 +14,28 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.google.android.material.navigation.NavigationView;
 
-import ca.gotchasomething.mynance.data.SetUpDb;
-
 public class MainNavigation extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     ActionBarDrawerToggle toggle;
     Boolean before = false;
-    Cursor setUpCursor;
-    DbHelper setUpHelper;
     public DbManager dbManager;
-    Double balanceAmount;
     protected DrawerLayout drawer;
-    int tourDoneYes;
-    Intent i, i2, i4, i5, i6, i7, i8, i9, i10;
+    General mainGen;
+    Intent i, i2, i3, i4, i5, i6;
     Menu menu;
     NavigationView navigationView;
-    SetUpDb setUpDb;
-    SQLiteDatabase setUpDbDb;
     String latestDone;
     Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.c1_activity_main);
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         dbManager = new DbManager(this);
+        mainGen = new General();
 
         drawer = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
@@ -55,69 +47,49 @@ public class MainNavigation extends AppCompatActivity implements NavigationView.
     }
 
     public void menuConfig() {
-        beforeSetUpOrAfter();
+        latestDone = dbManager.retrieveLatestDone();
+        beforeSetUpOrAfter(latestDone);
         menu = navigationView.getMenu();
         if (before) {
             menu.findItem(R.id.menu_before).setVisible(true);
-            menu.findItem(R.id.menu_daily_money).setVisible(false);
-            menu.findItem(R.id.menu_transfers).setVisible(false);
-            menu.findItem(R.id.menu_budget).setVisible(false);
-            menu.findItem(R.id.menu_debt).setVisible(false);
-            menu.findItem(R.id.menu_savings).setVisible(false);
-            menu.findItem(R.id.menu_spending_report).setVisible(false);
-            menu.findItem(R.id.menu_budget_report_exp).setVisible(false);
-            menu.findItem(R.id.menu_budget_report_inc).setVisible(false);
+            menu.findItem(R.id.menu_home_page).setVisible(false);
+            menu.findItem(R.id.menu_home_page).setEnabled(false);
+            menu.findItem(R.id.menu_financial_summary).setVisible(false);
+            menu.findItem(R.id.menu_financial_summary).setEnabled(false);
+            /*menu.findItem(R.id.menu_debt_plan).setVisible(false);
+            menu.findItem(R.id.menu_debt_plan).setEnabled(false);
+            menu.findItem(R.id.menu_savings_plan).setVisible(false);
+            menu.findItem(R.id.menu_savings_plan).setEnabled(false);*/
+            menu.findItem(R.id.menu_view_edit_transactions).setVisible(false);
+            menu.findItem(R.id.menu_view_edit_transactions).setEnabled(false);
             menu.findItem(R.id.menu_help).setVisible(false);
-            menu.findItem(R.id.menu_daily_money).setEnabled(false);
-            menu.findItem(R.id.menu_transfers).setEnabled(false);
-            menu.findItem(R.id.menu_budget).setEnabled(false);
-            menu.findItem(R.id.menu_debt).setEnabled(false);
-            menu.findItem(R.id.menu_savings).setEnabled(false);
-            menu.findItem(R.id.menu_spending_report).setEnabled(false);
-            menu.findItem(R.id.menu_budget_report_exp).setEnabled(false);
-            menu.findItem(R.id.menu_budget_report_inc).setEnabled(false);
             menu.findItem(R.id.menu_help).setEnabled(false);
         } else {
             menu.findItem(R.id.menu_before).setVisible(false);
-            menu.findItem(R.id.menu_daily_money).setVisible(true);
-            menu.findItem(R.id.menu_transfers).setVisible(true);
-            menu.findItem(R.id.menu_budget).setVisible(true);
-            menu.findItem(R.id.menu_debt).setVisible(true);
-            menu.findItem(R.id.menu_savings).setVisible(true);
-            menu.findItem(R.id.menu_spending_report).setVisible(true);
-            menu.findItem(R.id.menu_budget_report_exp).setVisible(true);
-            menu.findItem(R.id.menu_budget_report_inc).setVisible(true);
+            menu.findItem(R.id.menu_home_page).setVisible(true);
+            menu.findItem(R.id.menu_home_page).setEnabled(true);
+            menu.findItem(R.id.menu_financial_summary).setVisible(true);
+            menu.findItem(R.id.menu_financial_summary).setEnabled(true);
+            /*menu.findItem(R.id.menu_debt_plan).setVisible(true);
+            menu.findItem(R.id.menu_debt_plan).setEnabled(true);
+            menu.findItem(R.id.menu_savings_plan).setVisible(true);
+            menu.findItem(R.id.menu_savings_plan).setEnabled(true);*/
+            menu.findItem(R.id.menu_view_edit_transactions).setVisible(true);
+            menu.findItem(R.id.menu_view_edit_transactions).setEnabled(true);
             menu.findItem(R.id.menu_help).setVisible(true);
-            menu.findItem(R.id.menu_daily_money).setEnabled(true);
-            menu.findItem(R.id.menu_transfers).setEnabled(true);
-            menu.findItem(R.id.menu_budget).setEnabled(true);
-            menu.findItem(R.id.menu_debt).setEnabled(true);
-            menu.findItem(R.id.menu_savings).setEnabled(true);
-            menu.findItem(R.id.menu_spending_report).setEnabled(true);
-            menu.findItem(R.id.menu_budget_report_exp).setEnabled(true);
-            menu.findItem(R.id.menu_budget_report_inc).setEnabled(true);
             menu.findItem(R.id.menu_help).setEnabled(true);
         }
         navigationView.setNavigationItemSelectedListener(this);
     }
 
-    public boolean beforeSetUpOrAfter() {
+    public boolean beforeSetUpOrAfter(String str1) {
 
-        latestDone = dbManager.retrieveLatestDone();
-        switch(latestDone) {
-            case "start":
-                before = true;
-            case "income":
-                before = true;
-            case "bills":
-                before = true;
-            case "debts":
-                before = true;
-            case "savings":
-                before = true;
-            case "tour":
-                before = false;
+        if(str1.equals("tour")) {
+            before = false;
+        } else {
+            before = true;
         }
+
         return before;
     }
 
@@ -127,48 +99,33 @@ public class MainNavigation extends AppCompatActivity implements NavigationView.
 
         switch (item.getItemId()) {
 
-            case R.id.menu_daily_money:
+            case R.id.menu_home_page:
                 i = new Intent(MainNavigation.this, LayoutDailyMoney.class);
                 i.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
                 startActivity(i);
                 break;
-            case R.id.menu_transfers:
-                i10 = new Intent(MainNavigation.this, LayoutTransfers.class);
-                i10.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-                startActivity(i10);
-                break;
-            case R.id.menu_budget:
-                i2 = new Intent(MainNavigation.this, LayoutBudget.class);
-                i2.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-                startActivity(i2);
-                break;
-            case R.id.menu_debt:
-                i4 = new Intent(MainNavigation.this, LayoutDebt.class);
+            case R.id.menu_financial_summary:
+                i4 = new Intent(MainNavigation.this, LayoutBudget.class);
                 i4.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
                 startActivity(i4);
                 break;
-            case R.id.menu_savings:
+            /*case R.id.menu_debt_plan:
+                i2 = new Intent(MainNavigation.this, LayoutDebt.class);
+                i2.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+                startActivity(i2);
+                break;
+            case R.id.menu_savings_plan:
+                i3 = new Intent(MainNavigation.this, LayoutSavings.class);
+                i3.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+                startActivity(i3);
+                break;*/
+            case R.id.menu_view_edit_transactions:
                 i5 = new Intent(MainNavigation.this, LayoutSavings.class);
                 i5.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
                 startActivity(i5);
                 break;
-            case R.id.menu_spending_report:
-                i7 = new Intent(MainNavigation.this, LayoutSpendingReport.class);
-                i7.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-                startActivity(i7);
-                break;
-            case R.id.menu_budget_report_exp:
-                i8 = new Intent(MainNavigation.this, LayoutBudgetReport.class);
-                i8.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-                startActivity(i8);
-                break;
-            case R.id.menu_budget_report_inc:
-                i9 = new Intent(MainNavigation.this, LayoutBudgetReport2.class);
-                i9.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-                startActivity(i9);
-                break;
             case R.id.menu_help:
-                i6 = new Intent(MainNavigation.this, LayoutHelp.class);
+                i6 = new Intent(MainNavigation.this, LayoutSavings.class);
                 i6.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
                 startActivity(i6);
                 break;

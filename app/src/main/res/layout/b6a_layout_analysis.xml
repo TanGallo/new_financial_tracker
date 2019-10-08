@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context=".SetUpAnalysis"
+    tools:openDrawer="end">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/colorPrimary"
+            android:elevation="4dp"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:id="@+id/set_up_analysis_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="vertical"
+                tools:ignore="UselessParent">
+
+                <ScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/ana1PgLabel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_margin="10dp"
+                            android:text="@string/spending_analysis"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textSize="22sp" />
+
+                        <TextView
+                            android:id="@+id/ana1ResLabel2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="20dp"
+                            android:text="@string/analysis_explanation_2"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textSize="20sp" />
+                        
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="5dp"
+                            android:background="@drawable/entry_box"
+                            android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/ana1AnaResTV"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginTop="10dp"
+                            android:text="@string/anaresult"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textSize="20sp" />
+
+                        <TextView
+                            android:id="@+id/ana1ResLabel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginTop="10dp"
+                            android:text="@string/no_adj_nec"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textSize="18sp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/ana1AdjLayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="5dp"
+                            android:layout_weight="4"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginBottom="10dp"
+                                android:text="@string/make_adj"
+                                android:textColor="@color/colorPrimaryDark"
+                                android:textSize="16sp" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <RelativeLayout
+                                    android:id="@+id/ana1AdjIncLayout"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:clickable="true"
+                                    android:focusable="true"
+                                    android:layout_marginStart="10dp"
+                                    android:layout_marginBottom="10dp">
+
+                                    <ImageButton
+                                        android:id="@+id/ana1AdjIncBtn"
+                                        android:layout_width="60dp"
+                                        android:layout_height="60dp"
+                                        android:background="@drawable/circle_box"
+                                        android:layout_centerHorizontal="true"
+                                        android:contentDescription="@string/income"
+                                        android:scaleType="fitCenter"
+                                        android:src="@drawable/ic_add_circle_outline_blue_24dp" />
+
+                                    <TextView
+                                        android:layout_width="70dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_below="@id/ana1AdjIncBtn"
+                                        android:text="@string/income"
+                                        android:textColor="@color/colorPrimaryDark"
+                                        android:layout_alignParentStart="true"
+                                        android:gravity="center_horizontal"
+                                        android:layout_centerHorizontal="true"
+                                        android:textSize="14sp" />
+
+                                </RelativeLayout>
+
+                                <RelativeLayout
+                                    android:id="@+id/ana1AdjExpLayout"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:clickable="true"
+                                    android:focusable="true"
+                                    android:layout_marginStart="25dp"
+                                    android:layout_marginBottom="10dp">
+
+                                    <ImageButton
+                                        android:id="@+id/ana1AdjExpBtn"
+                                        android:layout_width="60dp"
+                                        android:layout_height="60dp"
+                                        android:background="@drawable/circle_box"
+                                        android:contentDescription="@string/expenses"
+                                        android:scaleType="fitCenter"
+                                        android:layout_centerHorizontal="true"
+                                        android:src="@drawable/ic_remove_circle_outline_blue_24dp" />
+
+                                    <TextView
+                                        android:layout_width="80dp"
+                                        android:layout_height="wrap_content"
+                                        android:text="@string/expenses"
+                                        android:textColor="@color/colorPrimaryDark"
+                                        android:layout_alignParentStart="true"
+                                        android:gravity="center_horizontal"
+                                        android:layout_centerHorizontal="true"
+                                        android:layout_below="@id/ana1AdjExpBtn"
+                                        android:textSize="14sp" />
+
+                                </RelativeLayout>
+
+                                <RelativeLayout
+                                    android:id="@+id/ana1AdjDebtsLayout"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:clickable="true"
+                                    android:focusable="true"
+                                    android:layout_marginStart="25dp"
+                                    android:layout_marginBottom="10dp">
+
+                                    <ImageButton
+                                        android:id="@+id/ana1AdjDebtsBtn"
+                                        android:layout_width="60dp"
+                                        android:layout_height="60dp"
+                                        android:background="@drawable/circle_box"
+                                        android:contentDescription="@string/credit_types"
+                                        android:scaleType="fitCenter"
+                                        android:layout_centerHorizontal="true"
+                                        android:src="@drawable/ic_credit_card_blue_24dp" />
+
+                                    <TextView
+                                        android:layout_width="80dp"
+                                        android:layout_height="wrap_content"
+                                        android:text="@string/credit_types"
+                                        android:textColor="@color/colorPrimaryDark"
+                                        android:layout_alignParentStart="true"
+                                        android:gravity="center_horizontal"
+                                        android:layout_centerHorizontal="true"
+                                        android:layout_below="@id/ana1AdjDebtsBtn"
+                                        android:textSize="14sp" />
+
+                                </RelativeLayout>
+
+                                <RelativeLayout
+                                    android:id="@+id/ana1AdjSavLayout"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:clickable="true"
+                                    android:focusable="true"
+                                    android:layout_marginStart="25dp"
+                                    android:layout_marginBottom="10dp">
+
+                                    <ImageButton
+                                        android:id="@+id/ana1AdjSavBtn"
+                                        android:layout_width="60dp"
+                                        android:layout_height="60dp"
+                                        android:background="@drawable/circle_box"
+                                        android:contentDescription="@string/savings"
+                                        android:scaleType="fitCenter"
+                                        android:layout_centerHorizontal="true"
+                                        android:src="@drawable/ic_trending_up_blue_24dp" />
+
+                                    <TextView
+                                        android:layout_width="70dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_centerVertical="true"
+                                        android:text="@string/savings"
+                                        android:textColor="@color/colorPrimaryDark"
+                                        android:layout_alignParentStart="true"
+                                        android:gravity="center_horizontal"
+                                        android:layout_centerHorizontal="true"
+                                        android:layout_below="@id/ana1AdjSavBtn"
+                                        android:textSize="14sp" />
+
+                                </RelativeLayout>
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                        <Button
+                            android:id="@+id/ana1DoneAdjBtn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:text="@string/done"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:background="@drawable/entry_box"/>
+
+                    </LinearLayout>
+
+                </ScrollView>
+
+            </LinearLayout>
+
+        </FrameLayout>
+
+    </LinearLayout>
+
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/nav_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        app:headerLayout="@layout/c1_nav_header_main"
+        app:menu="@menu/activity_main_drawer" />
+
+</androidx.drawerlayout.widget.DrawerLayout>

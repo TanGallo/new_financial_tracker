@@ -121,7 +121,7 @@ public class SlidesSetUpIncomeP extends AppCompatActivity implements View.OnClic
     }
 
     private void loadHome() {
-            startActivity(new Intent(this, SetUpAddIncome.class));
+            startActivity(new Intent(this, SetUp1AddIncome.class));
             finish();
     }
 

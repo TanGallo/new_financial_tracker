@@ -1,4 +1,4 @@
-package ca.gotchasomething.mynance.tabFragments;
+/*package ca.gotchasomething.mynance.tabFragments;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -246,7 +246,7 @@ public class DailyCreditCard extends Fragment {
         }
     }*/
 
-    public void updateDebtRecords() {
+    /*public void updateDebtRecords() {
         dbHelper = new DbHelper(getContext());
         db = dbHelper.getReadableDatabase();
         db.beginTransaction();
@@ -281,9 +281,9 @@ public class DailyCreditCard extends Fragment {
                 db8.close();
             }
         }*/
-    }
+    /*}
 
-    /*public void refundChargingDebtRecord() {
+    public void refundChargingDebtRecord() {
 
         dbHelper8 = new DbHelper(getContext());
         db8 = dbHelper8.getWritableDatabase();
@@ -308,7 +308,7 @@ public class DailyCreditCard extends Fragment {
         db8.close();
     }*/
 
-    public void assignAandBPortions() {
+    /*public void assignAandBPortions() {
 
         if (moneyOutPriority.equals("A")) {
             if (dbManager.retrieveCurrentA() >= moneyOutAmountN) { //if A can cover the purchase, it does
@@ -382,7 +382,7 @@ public class DailyCreditCard extends Fragment {
                 moneyOutValue3.put(DbHelper.CURRENTB, newBBalance);
                 db7.update(DbHelper.CURRENT_TABLE_NAME, moneyOutValue3, DbHelper.ID + "= '1'", null);
                 db7.close();*/
-    }
+    /*}
 
     public void finishTransaction() {
         updateAllBalances();
@@ -392,7 +392,7 @@ public class DailyCreditCard extends Fragment {
         dbManager.updatePaid();
         ccAdapter.notifyDataSetChanged();
         backToCCLayout();
-    }
+    }*/
 
     /*public void updateCurrentB() {
         newCurrentAvailableBalance = dbManager.retrieveCurrentB() - dbManager.retrieveToPayBTotal();
@@ -405,7 +405,7 @@ public class DailyCreditCard extends Fragment {
         db3.close();
     }*/
 
-    public void updateAllBalances() {
+    /*public void updateAllBalances() {
         newCurrentAccountBalance = dbManager.retrieveCurrentAccountBalance() - dbManager.retrieveToPayTotal();
         newABalance = dbManager.retrieveCurrentA() - dbManager.retrieveAPortion();
         newOwingBalance = dbManager.retrieveCurrentOwingA() + dbManager.retrieveOwingPortion();
@@ -439,7 +439,7 @@ public class DailyCreditCard extends Fragment {
         //adj bal = 250A (300-50), 0Owing(-50+50), 50B (0 +50)
         //adj amt = 100A (150-50), 50Owing (0 + 50), 50B, (0+50)
 
-        dbHelper3 = new DbHelper(getContext());
+        /*dbHelper3 = new DbHelper(getContext());
         db3 = dbHelper3.getWritableDatabase();
 
         moneyOutValue4 = new ContentValues();
@@ -448,7 +448,7 @@ public class DailyCreditCard extends Fragment {
         moneyOutValue4.put(DbHelper.CURRENTB, newBBalance);
         db3.update(DbHelper.CURRENT_TABLE_NAME, moneyOutValue4, DbHelper.ID + "= '1'", null);
         db3.close();
-    }
+    }*/
 
     /*public void updateCurrentA() {
         newABalance = dbManager.retrieveCurrentA() - (dbManager.retrieveToPayTotal() - dbManager.retrieveToPayBTotal());
@@ -471,7 +471,7 @@ public class DailyCreditCard extends Fragment {
         db6.close();
     }*/
 
-    CompoundButton.OnCheckedChangeListener onCheckCCPaid = new CompoundButton.OnCheckedChangeListener() {
+    /*CompoundButton.OnCheckedChangeListener onCheckCCPaid = new CompoundButton.OnCheckedChangeListener() {
         @Override
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
             finishTransaction();
@@ -520,7 +520,7 @@ public class DailyCreditCard extends Fragment {
         db2.update(DbHelper.MONEY_OUT_TABLE_NAME, updateMoneyOutToPay, DbHelper.MONEYOUTTOPAY + "= '1' AND " + DbHelper.MONEYOUTPAID
                 + " = '0'", null);
         db2.close();
-    }
+    }*/
 
     /*public void continueTransaction() {
         if (dbManager.retrieveToPayTotal() == 0) {
@@ -542,7 +542,7 @@ public class DailyCreditCard extends Fragment {
         ccTransContinueButton.setVisibility(View.GONE);
     }*/
 
-    public class CCAdapter extends ArrayAdapter<MoneyOutDb> {
+    /*public class CCAdapter extends ArrayAdapter<MoneyOutDb> {
 
         private Context context;
         private List<MoneyOutDb> ccTransToPay;
@@ -717,9 +717,9 @@ public class DailyCreditCard extends Fragment {
                         ccTransContinueAnywayText.setVisibility(View.GONE);
                         ccTransCancelButton.setVisibility(View.GONE);
                         ccTransContinueButton.setVisibility(View.GONE);*/
-                    }
+                    /*}
 
-                    /*if (dbManager.retrieveToPayTotal() == 0) {
+                    if (dbManager.retrieveToPayTotal() == 0) {
                         checkBelowLabel.setVisibility(View.VISIBLE);
                         totalCCPaymentDueLabel.setVisibility(View.GONE);
                         ccPaymentsList.setVisibility(View.GONE);
@@ -786,7 +786,7 @@ public class DailyCreditCard extends Fragment {
                             }
                         });
                     }*/
-                }
+                /*}
             });
 
             holder.ccCheck.setChecked(checkedState[position]);
@@ -882,10 +882,10 @@ public class DailyCreditCard extends Fragment {
 
             //pair = new Pair<>(chargingDebtId, amountDue);
 
-        /*debtAmounts = new HashMap<>();
+        debtAmounts = new HashMap<>();
         debtAmounts.put(chargingDebtId, amountDue);*/
 
-            return convertView2;
+            /*return convertView2;
         }
     }
 
@@ -893,4 +893,4 @@ public class DailyCreditCard extends Fragment {
         public TextView chargingDebt;
         public TextView paymentDue;
     }
-}
+}*/

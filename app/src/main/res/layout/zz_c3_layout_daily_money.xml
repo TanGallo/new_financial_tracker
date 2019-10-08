@@ -1,0 +1,425 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:openDrawer="end">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/colorPrimary"
+            android:elevation="4dp"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                tools:ignore="UselessParent">
+
+                <TextView
+                    android:id="@+id/dailyMoneyBudgetWarnTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_margin="10dp"
+                    android:gravity="center_horizontal"
+                    android:text="@string/budget_does_not_balance"
+                    android:textColor="@android:color/holo_red_light"
+                    android:textSize="18sp"
+                    android:clickable="true"
+                    android:focusable="true"/>
+
+                <LinearLayout
+                    android:id="@+id/mainHeaderLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/entry_box"
+                    android:layout_margin="5dp"
+                    android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:text="@string/available_to_spend"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="22sp" />
+
+                    <TextView
+                        android:id="@+id/dailyMoneyAvailAmtTV"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="22sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:text="@string/total_in_account"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="22sp" />
+
+                    <TextView
+                        android:id="@+id/dailyMoneyTotalAmtTV"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="22sp" />
+
+                </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/dailyMoneyTransactionsLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:layout_weight="4"
+                    android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="@string/create_transactions"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="16sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                <RelativeLayout
+                    android:id="@+id/dailyMoneyMonInLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginBottom="10dp">
+
+                    <ImageButton
+                        android:id="@+id/dailyMoneyMonInBtn"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:background="@drawable/circle_box"
+                        android:layout_centerHorizontal="true"
+                        android:contentDescription="@string/money_in"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/ic_add_circle_outline_blue_24dp" />
+
+                    <TextView
+                        android:layout_width="70dp"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/dailyMoneyMonInBtn"
+                        android:text="@string/record_money_in"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:layout_alignParentStart="true"
+                        android:gravity="center_horizontal"
+                        android:layout_centerHorizontal="true"
+                        android:textSize="14sp" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/dailyMoneyMonOutLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:layout_marginStart="25dp"
+                    android:layout_marginBottom="10dp">
+
+                    <ImageButton
+                        android:id="@+id/dailyMoneyMonOutBtn"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:background="@drawable/circle_box"
+                        android:contentDescription="@string/money_out"
+                        android:scaleType="fitCenter"
+                        android:layout_centerHorizontal="true"
+                        android:src="@drawable/ic_remove_circle_outline_blue_24dp" />
+
+                    <TextView
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/record_money_out"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:layout_alignParentStart="true"
+                        android:gravity="center_horizontal"
+                        android:layout_centerHorizontal="true"
+                        android:layout_below="@id/dailyMoneyMonOutBtn"
+                        android:textSize="14sp" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/dailyMoneyCCTransLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:layout_marginStart="25dp"
+                    android:layout_marginBottom="10dp">
+
+                    <ImageButton
+                        android:id="@+id/dailyMoneyCCTransBtn"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:background="@drawable/circle_box"
+                        android:contentDescription="@string/money_in"
+                        android:scaleType="fitCenter"
+                        android:layout_centerHorizontal="true"
+                        android:src="@drawable/ic_credit_card_blue_24dp" />
+
+                    <TextView
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/credit_card_purchases"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:layout_alignParentStart="true"
+                        android:gravity="center_horizontal"
+                        android:layout_centerHorizontal="true"
+                        android:layout_below="@id/dailyMoneyCCTransBtn"
+                        android:textSize="14sp" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/dailyMoneyTransferLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:layout_marginStart="25dp"
+                    android:layout_marginBottom="10dp">
+
+                    <ImageButton
+                        android:id="@+id/dailyMoneyTransferBtn"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:background="@drawable/circle_box"
+                        android:contentDescription="@string/transfer_funds"
+                        android:scaleType="fitCenter"
+                        android:layout_centerHorizontal="true"
+                        android:src="@drawable/ic_compare_arrows_blue_24dp" />
+
+                    <TextView
+                        android:layout_width="70dp"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="@string/transfer_between"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:layout_alignParentStart="true"
+                        android:gravity="center_horizontal"
+                        android:layout_centerHorizontal="true"
+                        android:layout_below="@id/dailyMoneyTransferBtn"
+                        android:textSize="14sp" />
+
+                </RelativeLayout>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/dailyMoneyReportsLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:text="@string/view_reports"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="16sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <RelativeLayout
+                            android:id="@+id/dailyMoneyWklyLimitsLayout"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginBottom="10dp">
+
+                            <ImageButton
+                                android:id="@+id/dailyMoneyWklyLimitsBtn"
+                                android:layout_width="60dp"
+                                android:layout_height="60dp"
+                                android:background="@drawable/circle_box"
+                                android:layout_centerHorizontal="true"
+                                android:contentDescription="@string/money_in"
+                                android:scaleType="fitCenter"
+                                android:src="@drawable/ic_warning_blue_24dp" />
+
+                            <TextView
+                                android:layout_width="70dp"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/dailyMoneyWklyLimitsBtn"
+                                android:text="@string/weekly_limits"
+                                android:textColor="@color/colorPrimaryDark"
+                                android:layout_alignParentStart="true"
+                                android:gravity="center_horizontal"
+                                android:layout_centerHorizontal="true"
+                                android:textSize="14sp" />
+
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:id="@+id/dailyMoneyIncRepLayout"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:layout_marginStart="25dp"
+                            android:layout_marginBottom="10dp">
+
+                            <ImageButton
+                                android:id="@+id/dailyMoneyIncRepBtn"
+                                android:layout_width="60dp"
+                                android:layout_height="60dp"
+                                android:background="@drawable/circle_box"
+                                android:contentDescription="@string/transfer_funds"
+                                android:scaleType="fitCenter"
+                                android:layout_centerHorizontal="true"
+                                android:src="@drawable/ic_trending_up_blue_24dp" />
+
+                            <TextView
+                                android:layout_width="70dp"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:text="@string/inc_summary"
+                                android:textColor="@color/colorPrimaryDark"
+                                android:layout_alignParentStart="true"
+                                android:gravity="center_horizontal"
+                                android:layout_centerHorizontal="true"
+                                android:layout_below="@id/dailyMoneyIncRepBtn"
+                                android:textSize="14sp" />
+
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:id="@+id/dailyMoneySpendLayout"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:layout_marginStart="25dp"
+                            android:layout_marginBottom="10dp">
+
+                            <ImageButton
+                                android:id="@+id/dailySpendingBtn"
+                                android:layout_width="60dp"
+                                android:layout_height="60dp"
+                                android:background="@drawable/circle_box"
+                                android:contentDescription="@string/money_out"
+                                android:scaleType="fitCenter"
+                                android:layout_centerHorizontal="true"
+                                android:src="@drawable/ic_trending_down_blue_24dp" />
+
+                            <TextView
+                                android:layout_width="80dp"
+                                android:layout_height="wrap_content"
+                                android:text="@string/spending_summary"
+                                android:textColor="@color/colorPrimaryDark"
+                                android:layout_alignParentStart="true"
+                                android:gravity="center_horizontal"
+                                android:layout_centerHorizontal="true"
+                                android:layout_below="@id/dailySpendingBtn"
+                                android:textSize="14sp" />
+
+                        </RelativeLayout>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <com.google.android.material.tabs.TabLayout
+                    android:id="@+id/dailyMoneyTabLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="?attr/actionBarSize"
+                    app:tabBackground="@drawable/tab_view"
+                    app:tabTextColor="@color/colorPrimaryDark"
+                    app:tabSelectedTextColor="@color/colorAccent"
+                    app:tabTextAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                    app:tabGravity="fill"
+                    app:tabMode="fixed">
+
+                </com.google.android.material.tabs.TabLayout>
+
+                <FrameLayout
+                    android:id="@+id/dailyMoneyFragContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="10dp">
+
+                </FrameLayout>
+
+            </LinearLayout>
+
+        </FrameLayout>
+
+    </LinearLayout>
+
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/nav_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        app:headerLayout="@layout/c1_nav_header_main"
+        app:menu="@menu/activity_main_drawer" />
+
+</androidx.drawerlayout.widget.DrawerLayout>

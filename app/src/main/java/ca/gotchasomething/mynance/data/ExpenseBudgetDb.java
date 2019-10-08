@@ -8,8 +8,8 @@ public class ExpenseBudgetDb {
     private String expensePriority;
     private String expenseWeekly;
     private Double expenseAnnualAmount;
-    private Double expenseAAnnualAmount;
-    private Double expenseBAnnualAmount;
+    //private Double expenseAAnnualAmount;
+    //private Double expenseBAnnualAmount;
     private long id;
 
     public ExpenseBudgetDb(
@@ -19,8 +19,8 @@ public class ExpenseBudgetDb {
             String expensePriority,
             String expenseWeekly,
             Double expenseAnnualAmount,
-            Double expenseAAnnualAmount,
-            Double expenseBAnnualAmount,
+            //Double expenseAAnnualAmount,
+            //Double expenseBAnnualAmount,
             long id) {
         this.expenseName = expenseName;
         this.expenseAmount = expenseAmount;
@@ -28,8 +28,8 @@ public class ExpenseBudgetDb {
         this.expensePriority = expensePriority;
         this.expenseWeekly = expenseWeekly;
         this.expenseAnnualAmount = expenseAnnualAmount;
-        this.expenseAAnnualAmount = expenseAAnnualAmount;
-        this.expenseBAnnualAmount = expenseBAnnualAmount;
+        //this.expenseAAnnualAmount = expenseAAnnualAmount;
+        //this.expenseBAnnualAmount = expenseBAnnualAmount;
         this.id = id;
     }
 
@@ -51,11 +51,11 @@ public class ExpenseBudgetDb {
     public Double getExpenseAnnualAmount() { return expenseAnnualAmount; }
     public void setExpenseAnnualAmount(Double expenseAnnualAmount) { this.expenseAnnualAmount = expenseAnnualAmount; }
 
-    public Double getExpenseAAnnualAmount() { return expenseAAnnualAmount; }
+    /*public Double getExpenseAAnnualAmount() { return expenseAAnnualAmount; }
     public void setExpenseAAnnualAmount(Double expenseAAnnualAmount) { this.expenseAAnnualAmount = expenseAAnnualAmount; }
 
     public Double getExpenseBAnnualAmount() { return expenseBAnnualAmount; }
-    public void setExpenseBAnnualAmount(Double expenseBAnnualAmount) { this.expenseBAnnualAmount = expenseBAnnualAmount; }
+    public void setExpenseBAnnualAmount(Double expenseBAnnualAmount) { this.expenseBAnnualAmount = expenseBAnnualAmount; }*/
 
     public long getId() { return id; }
     public void setId(long id) { this.id = id; }

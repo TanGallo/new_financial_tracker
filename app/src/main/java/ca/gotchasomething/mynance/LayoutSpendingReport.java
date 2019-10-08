@@ -1,4 +1,4 @@
-package ca.gotchasomething.mynance;
+/*package ca.gotchasomething.mynance;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -45,7 +45,7 @@ public class LayoutSpendingReport extends MainNavigation {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.layout_spending_report);
+        setContentView(R.layout.z_layout_spending_report);
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         drawer = findViewById(R.id.drawer_layout);
@@ -78,7 +78,7 @@ public class LayoutSpendingReport extends MainNavigation {
 
         monthSpinner = findViewById(R.id.monthSpinner);
         months = new String[]{getString(R.string.jan), getString(R.string.feb), getString(R.string.mar), getString(R.string.apr), getString(R.string.may), getString(R.string.jun), getString(R.string.jul), getString(R.string.aug), getString(R.string.sep), getString(R.string.oct), getString(R.string.nov), getString(R.string.dec), getString(R.string.year_to_date)};
-        monthSpinnerAdapter = new ArrayAdapter(this, R.layout.spinner_layout, R.id.spinnerText, months);
+        monthSpinnerAdapter = new ArrayAdapter(this, R.layout.layout_1_spinner, R.id.spinnerText, months);
         monthSpinner.setAdapter(monthSpinnerAdapter);
         monthSpinner.setOnItemSelectedListener(onMonthSelected);
 
@@ -105,7 +105,7 @@ public class LayoutSpendingReport extends MainNavigation {
             yearSpinner.setVisibility(View.VISIBLE);
             spendingReportButton.setVisibility(View.VISIBLE);
 
-            yearSpinnerAdapter = new ArrayAdapter(this, R.layout.spinner_layout, R.id.spinnerText, years);
+            yearSpinnerAdapter = new ArrayAdapter(this, R.layout.layout_1_spinner, R.id.spinnerText, years);
             yearSpinner.setAdapter(yearSpinnerAdapter);
             yearSpinner.setOnItemSelectedListener(onYearSelected);
         }
@@ -296,4 +296,4 @@ public class LayoutSpendingReport extends MainNavigation {
         public TextView spendingReportCat;
         public TextView spendingReportAmount;
     }
-}
+}*/

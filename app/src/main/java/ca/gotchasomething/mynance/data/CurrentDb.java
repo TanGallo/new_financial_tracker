@@ -6,7 +6,7 @@ public class CurrentDb {
     private Double currentB;
     private Double currentA;
     private Double currentOwingA;
-    private int currentPageId;
+    private int lastPageId;
     private long id;
 
     public CurrentDb(
@@ -14,18 +14,18 @@ public class CurrentDb {
             Double currentB,
             Double currentA,
             Double currentOwingA,
-            int currentPageId,
+            int lastPageId,
             long id) {
         this.currentAccount = currentAccount;
         this.currentB = currentB;
         this.currentA = currentA;
         this.currentOwingA = currentOwingA;
-        this.currentPageId = currentPageId;
+        this.lastPageId = lastPageId;
         this.id = id;
     }
 
     public Double getCurrentAccount() { return currentAccount; }
-    public void setCurrentAccount(Double currentAccountBalance) { this.currentAccount = currentAccount; }
+    public void setCurrentAccount(Double currentAccount) { this.currentAccount = currentAccount; }
 
     public Double getCurrentB() { return currentB; }
     public void setCurrentB(Double currentB) { this.currentB = currentB; }
@@ -36,8 +36,8 @@ public class CurrentDb {
     public Double getCurrentOwingA() { return currentOwingA; }
     public void setCurrentOwingA(Double currentOwingA) { this.currentOwingA = currentOwingA; }
 
-    public int getCurrentPageId() { return currentPageId; }
-    public void setCurrentPageId(int currentPageId) { this.currentPageId = currentPageId; }
+    public int getLastPageId() { return lastPageId; }
+    public void setLastPageId(int lastPageId) { this.lastPageId = lastPageId; }
 
     public long getId() { return id; }
     public void setId(long id) { this.id = id; }

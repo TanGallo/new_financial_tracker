@@ -26,31 +26,41 @@
         </activity>
 
 
-        <activity android:name="ca.gotchasomething.mynance.LayoutDebt"/>
-        <activity android:name="ca.gotchasomething.mynance.LayoutTransfers"/>
-        <activity android:name="ca.gotchasomething.mynance.AddDebt"/>
-        <activity android:name="ca.gotchasomething.mynance.AddSavings"/>
-        <activity android:name="ca.gotchasomething.mynance.LayoutDailyMoney"/>
-        <activity android:name="ca.gotchasomething.mynance.LayoutBudget"/>
-        <activity android:name="ca.gotchasomething.mynance.LayoutSavings"/>
-        <activity android:name="ca.gotchasomething.mynance.LayoutSpendingReport"/>
-        <activity android:name="ca.gotchasomething.mynance.LayoutBudgetReport"/>
-        <activity android:name="ca.gotchasomething.mynance.LayoutBudgetReport2"/>
-        <activity android:name="ca.gotchasomething.mynance.LayoutHelp"/>
-        <activity android:name="ca.gotchasomething.mynance.AddBudgetIncome"/>
-        <activity android:name="ca.gotchasomething.mynance.AddBudgetExpense"/>
-        <activity android:name="ca.gotchasomething.mynance.LayoutSetUp"/>
         <activity android:name="ca.gotchasomething.mynance.SlidesOnboardingL"/>
         <activity android:name="ca.gotchasomething.mynance.SlidesOnboardingP"/>
+        <activity android:name="ca.gotchasomething.mynance.LayoutSetUp"/>
         <activity android:name="ca.gotchasomething.mynance.SlidesLayoutSetUp"/>
         <activity android:name="ca.gotchasomething.mynance.SlidesSetUpP"/>
         <activity android:name="ca.gotchasomething.mynance.SlidesSetUpL"/>
-        <activity android:name="ca.gotchasomething.mynance.SetUpAddIncome"/>
-        <activity android:name="ca.gotchasomething.mynance.SetUpAddIncomeList"/>
-        <activity android:name="ca.gotchasomething.mynance.SetUpAddBills"/>
-        <activity android:name="ca.gotchasomething.mynance.SetUpAddBillsList"/>
-        <activity android:name="ca.gotchasomething.mynance.SetUpAddDebtsList"/>
-        <activity android:name="ca.gotchasomething.mynance.SetUpAddSavingsList"/>
+        <activity android:name="ca.gotchasomething.mynance.AddIncome"/>
+        <activity android:name="ca.gotchasomething.mynance.AddIncomeList"/>
+        <activity android:name="ca.gotchasomething.mynance.AddExpense"/>
+        <activity android:name="ca.gotchasomething.mynance.AddExpenseList"/>
+        <activity android:name="ca.gotchasomething.mynance.AddDebts"/>
+        <activity android:name="ca.gotchasomething.mynance.AddDebtsList"/>
+        <activity android:name="ca.gotchasomething.mynance.AddSavings"/>
+        <activity android:name="ca.gotchasomething.mynance.AddSavingsList"/>
+        <activity android:name="ca.gotchasomething.mynance.SetUpAnalysis"/>
+        <activity android:name="ca.gotchasomething.mynance.SetUpFinal"/>
+        <activity android:name="ca.gotchasomething.mynance.SetUpFinalL"/>
+        <activity android:name="ca.gotchasomething.mynance.SetUpFinalP"/>
+        <activity android:name="ca.gotchasomething.mynance.LayoutDailyMoney"/>
+        <activity android:name="ca.gotchasomething.mynance.LayoutMoneyIn"/>
+        <activity android:name="ca.gotchasomething.mynance.LayoutMoneyInList"/>
+        <activity android:name="ca.gotchasomething.mynance.LayoutMoneyOut"/>
+        <activity android:name="ca.gotchasomething.mynance.LayoutMoneyOutList"/>
+        <activity android:name="ca.gotchasomething.mynance.LayoutTransfers"/>
+        <activity android:name="ca.gotchasomething.mynance.LayoutTransfersList"/>
+        <activity android:name="ca.gotchasomething.mynance.LayoutWeeklyLimits"/>
+        <activity android:name="ca.gotchasomething.mynance.LayoutWeeklyLimitsList"/>
+        <activity android:name="ca.gotchasomething.mynance.LayoutCCPur"/>
+        <activity android:name="ca.gotchasomething.mynance.LayoutCCPurList"/>
+        <activity android:name="ca.gotchasomething.mynance.LayoutCCPay"/>
+        <activity android:name="ca.gotchasomething.mynance.LayoutDebt"/>
+        <activity android:name="ca.gotchasomething.mynance.LayoutSavings"/>
+        <activity android:name="ca.gotchasomething.mynance.LayoutBudget"/>
+        <activity android:name="ca.gotchasomething.mynance.LayoutRatings"/>
+        <activity android:name="ca.gotchasomething.mynance.LayoutHelp"/>
 
     </application>
 

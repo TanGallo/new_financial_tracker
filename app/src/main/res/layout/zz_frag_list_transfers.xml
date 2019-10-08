@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+            <ImageButton
+                android:id="@+id/transferListEditBtn"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="5dp"
+                android:backgroundTint="@android:color/white"
+                android:contentDescription="@string/edit"
+                android:src="@drawable/ic_edit_black_24dp" />
+
+            <ImageButton
+                android:id="@+id/transferListDelBtn"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="5dp"
+                android:layout_toEndOf="@id/transferListEditBtn"
+                android:backgroundTint="@android:color/white"
+                android:contentDescription="@string/delete"
+                android:src="@drawable/ic_delete_black_24dp" />
+
+            <TextView
+                android:id="@+id/transferListDateTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:layout_toEndOf="@id/transferListDelBtn"
+                android:text="@string/date"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/transferListAmtTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:layout_toEndOf="@id/transferListDateTV"
+                android:text="@string/amount"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="14sp" />
+
+
+            <TextView
+                android:id="@+id/transferListFromLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="5dp"
+                android:text="@string/from"
+                android:layout_alignStart="@id/transferListDateTV"
+                android:layout_below="@id/transferListAmtTV"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/transferListFromTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:text="@string/name"
+                android:layout_below="@id/transferListAmtTV"
+                android:layout_toEndOf="@id/transferListFromLabel"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/transferListToLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:text="@string/to"
+                android:layout_below="@id/transferListAmtTV"
+                android:layout_toEndOf="@id/transferListFromTV"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/transferListToTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:text="@string/name"
+                android:layout_below="@id/transferListAmtTV"
+                android:layout_toEndOf="@id/transferListToLabel"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="14sp" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/transferListUpdateLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:background="@drawable/entry_box"
+        tools:ignore="UselessParent">
+
+        <Button
+            android:id="@+id/transferListUpdateBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/entry_box"
+            android:contentDescription="@string/edit"
+            android:text="@string/update"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="12sp" />
+
+        <Button
+            android:id="@+id/transferListCancelBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="10dp"
+            android:layout_toStartOf="@id/transferListUpdateBtn"
+            android:background="@drawable/entry_box"
+            android:contentDescription="@string/delete"
+            android:text="@string/cancel"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="12sp" />
+
+        <EditText
+            android:id="@+id/transferListAmtET"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="10dp"
+            android:digits="01234567890-"
+            android:hint="@string/amount"
+            android:inputType="numberSigned|numberDecimal"
+            android:text="@string/amount"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="14sp" />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/transferListWarnLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:background="@drawable/entry_box"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/transferListWarnTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="@string/warning"
+            android:textColor="@color/brightRed"
+            android:textSize="14sp" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:ignore="UselessParent">
+
+            <Button
+                android:id="@+id/transferListNoBtn"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/circle_box"
+                android:contentDescription="@string/edit"
+                android:text="@string/no"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="12sp" />
+
+            <Button
+                android:id="@+id/transferListYesBtn"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="10dp"
+                android:layout_toStartOf="@id/transferListNoBtn"
+                android:background="@drawable/circle_box"
+                android:contentDescription="@string/delete"
+                android:text="@string/yes"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="12sp" />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</LinearLayout>
+

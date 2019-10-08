@@ -8,50 +8,30 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 
-import java.sql.Timestamp;
-import java.text.NumberFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
-import ca.gotchasomething.mynance.data.CurrentDb;
-import ca.gotchasomething.mynance.data.MoneyInDb;
-import ca.gotchasomething.mynance.data.SetUpDb;
-
 public class LayoutSetUp extends MainNavigation {
 
-    Button setUpIncomeButton, setUpBillsButton, setUpBudgetButton, setUpDebtsButton, setUpSavingsButton;
-    CheckBox setUpIncomeCheckbox, setUpAccountCheckbox, setUpBillsCheckbox, setUpBudgetCheckbox, setUpDebtsCheckbox, setUpSavingsCheckbox, setUpTourCheckbox;
-    ContentValues cv, cv2;
-    CurrentDb currentDb;
-    Date moneyInDate;
-    DbHelper helper, helper2;
-    DbManager dbManager;
-    Double balanceAmount = 0.0, currentAccount = 0.0, currentB = 0.0, currentA = 0.0, currentOwingA = 0.0, moneyInAmount = 0.0,
-            moneyInA = 0.0, moneyInOwing = 0.0, moneyInB = 0.0;
-    EditText setUpAccountAmount;
-    int balanceDone = 0, billsDone = 0, budgetDone = 0, currentPageId = 0, debtsDone = 0, incomeDone = 0, savingsDone = 0, tourDone = 0;
-    Intent goToSlides, setUpIncome, setUpBudget, setUpDebts, setUpSavings, toMainActivity;
-    long incRefKeyMI;
-    MoneyInDb moneyInDb;
-    NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
-    SetUpDb setUpDb;
-    SimpleDateFormat moneyInSDF;
-    SQLiteDatabase db, db2;
-    String startingBalance2 = null, startingBalanceS = null, moneyInCat = null, moneyInCreatedOn = null, latestDone = null;
-    TextView almostDone, setUpIncomeLabel, setUpAccountAmountLabel, setUpAccountAmountLabel2, setUpAccountAmountLabel3, setUpAccountAmountLabel4, setUpBillsLabel,
-            setUpBudgetLabel, setUpDebtsLabel, setUpGotItLabel, setUpSavingsLabel, setUpTourLabel, setUpTourLabel2, setUpTourLabel3, setUpTourLabel4;
-    Timestamp moneyInTimestamp;
+    Button laySetIncBtn, laySetBillsBtn, laySetWeeklyBtn, laySetDebtsBtn, laySetSavingsBtn, laySetAnalysisBtn, laySetFinalBtn;
+    CheckBox laySetIncomeCheckbox, laySetBillsCheckbox, laySetWeeklyCheckbox, laySetDebtsCheckbox, laySetSavingsCheckbox, laySetAnalysisCheckbox,
+            laySetTourCheckbox, laySetFinalCheckbox;
+    ContentValues laySetCV;
+    DbHelper laySetHelper;
+    DbManager laySetDbMgr;
+    General laySetGen;
+    Intent laySetToSlides, laySetToMain;
+    SQLiteDatabase laySetDb;
+    String latestDone = null;
+    TextView laySetIncomeLabel, laySetBillsLabel, laySetWeeklyLabel, laySetDebtsLabel, laySetTourLabel, laySetTourLabel2, laySetSavingsLabel,
+            laySetAnalysisLabel, laySetFinalLabel;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.layout_set_up);
+        setContentView(R.layout.c2_layout_set_up);
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         drawer = findViewById(R.id.drawer_layout);
@@ -64,401 +44,237 @@ public class LayoutSetUp extends MainNavigation {
 
         menuConfig();
 
-        dbManager = new DbManager(this);
+        laySetDbMgr = new DbManager(this);
+        laySetGen = new General();
 
-        setUpIncomeButton = findViewById(R.id.setUpIncomeButton);
-        setUpIncomeLabel = findViewById(R.id.setUpIncomeLabel);
-        setUpIncomeLabel.setVisibility(View.GONE);
-        setUpIncomeCheckbox = findViewById(R.id.setUpIncomeCheckbox);
+        laySetIncBtn = findViewById(R.id.setUpIncomeButton);
+        laySetIncomeLabel = findViewById(R.id.setUpIncomeLabel);
+        laySetIncomeLabel.setVisibility(View.GONE);
+        laySetIncomeCheckbox = findViewById(R.id.setUpIncomeCheckbox);
 
-        setUpBillsButton = findViewById(R.id.setUpBillsButton);
-        setUpBillsButton.setVisibility(View.GONE);
-        setUpBillsLabel = findViewById(R.id.setUpBillsLabel);
-        setUpBillsCheckbox = findViewById(R.id.setUpBillsCheckbox);
+        laySetBillsBtn = findViewById(R.id.setUpBillsButton);
+        laySetBillsBtn.setVisibility(View.GONE);
+        laySetBillsLabel = findViewById(R.id.setUpBillsLabel);
+        laySetBillsCheckbox = findViewById(R.id.setUpBillsCheckbox);
 
-        setUpDebtsButton = findViewById(R.id.setUpDebtsButton);
-        setUpDebtsButton.setVisibility(View.GONE);
-        setUpDebtsLabel = findViewById(R.id.setUpDebtsLabel);
-        setUpDebtsCheckbox = findViewById(R.id.setUpDebtsCheckbox);
+        laySetDebtsBtn = findViewById(R.id.setUpDebtsButton);
+        laySetDebtsBtn.setVisibility(View.GONE);
+        laySetDebtsLabel = findViewById(R.id.setUpDebtsLabel);
+        laySetDebtsCheckbox = findViewById(R.id.setUpDebtsCheckbox);
 
-        setUpSavingsButton = findViewById(R.id.setUpSavingsButton);
-        setUpSavingsButton.setVisibility(View.GONE);
-        setUpSavingsLabel = findViewById(R.id.setUpSavingsLabel);
-        setUpSavingsCheckbox = findViewById(R.id.setUpSavingsCheckbox);
+        laySetSavingsBtn = findViewById(R.id.setUpSavingsButton);
+        laySetSavingsBtn.setVisibility(View.GONE);
+        laySetSavingsLabel = findViewById(R.id.setUpSavingsLabel);
+        laySetSavingsCheckbox = findViewById(R.id.setUpSavingsCheckbox);
 
-        setUpBudgetButton = findViewById(R.id.setUpBudgetButton);
-        setUpBudgetButton.setVisibility(View.GONE);
-        setUpBudgetLabel = findViewById(R.id.setUpBudgetLabel);
-        setUpBudgetCheckbox = findViewById(R.id.setUpBudgetCheckbox);
+        laySetAnalysisBtn = findViewById(R.id.setUpAnalysisButton);
+        laySetAnalysisBtn.setVisibility(View.GONE);
+        laySetAnalysisLabel = findViewById(R.id.setUpAnalysisLabel);
+        laySetAnalysisCheckbox = findViewById(R.id.setUpAnalysisCheckbox);
 
-        setUpAccountAmount = findViewById(R.id.setUpAccountAmount);
-        setUpAccountAmount.setVisibility(View.GONE);
-        setUpAccountAmountLabel = findViewById(R.id.setUpAccountAmountLabel);
-        setUpAccountAmountLabel.setVisibility(View.GONE);
-        setUpAccountAmountLabel2 = findViewById(R.id.setUpAccountAmountLabel2);
-        setUpAccountAmountLabel2.setVisibility(View.GONE);
-        setUpAccountAmountLabel3 = findViewById(R.id.setUpAccountAmountLabel3);
-        setUpAccountAmountLabel3.setVisibility(View.GONE);
-        setUpAccountAmountLabel4 = findViewById(R.id.setUpAccountAmountLabel4);
-        setUpAccountAmountLabel4.setVisibility(View.GONE);
-        setUpAccountCheckbox = findViewById(R.id.setUpAccountCheckbox);
-        setUpAccountCheckbox.setVisibility(View.GONE);
+        laySetWeeklyBtn = findViewById(R.id.setUpWeeklyButton);
+        laySetWeeklyBtn.setVisibility(View.GONE);
+        laySetWeeklyLabel = findViewById(R.id.setUpWeeklyLabel);
+        laySetWeeklyCheckbox = findViewById(R.id.setUpWeeklyCheckbox);
 
-        almostDone = findViewById(R.id.almostDone);
-        almostDone.setVisibility(View.GONE);
-        setUpTourLabel = findViewById(R.id.setUpTourLabel);
-        setUpTourLabel.setVisibility(View.GONE);
-        setUpTourLabel2 = findViewById(R.id.setUpTourLabel2);
-        setUpTourLabel2.setVisibility(View.GONE);
-        setUpTourLabel3 = findViewById(R.id.setUpTourLabel3);
-        setUpTourLabel3.setVisibility(View.GONE);
-        setUpTourLabel4 = findViewById(R.id.setUpTourLabel4);
-        setUpTourLabel4.setVisibility(View.GONE);
-        setUpGotItLabel = findViewById(R.id.setUpGotItLabel);
-        setUpGotItLabel.setVisibility(View.GONE);
-        setUpTourCheckbox = findViewById(R.id.setUpTourCheckbox);
-        setUpTourCheckbox.setVisibility(View.GONE);
+        laySetFinalBtn = findViewById(R.id.setUpFinalButton);
+        laySetFinalBtn.setVisibility(View.GONE);
+        laySetFinalLabel = findViewById(R.id.setUpFinalLabel);
+        laySetFinalCheckbox = findViewById(R.id.setUpFinalCheckbox);
 
-        setUpIncomeButton.setOnClickListener(onClickSetUpIncomeButton);
-        setUpBillsButton.setOnClickListener(onClickSetUpBillsButton);
-        setUpDebtsButton.setOnClickListener(onClickSetUpDebtsButton);
-        setUpSavingsButton.setOnClickListener(onClickSetUpSavingsButton);
-        setUpBudgetButton.setOnClickListener(onClickSetUpBudgetButton);
-        setUpAccountCheckbox.setOnCheckedChangeListener(onCheckBalanceDone);
-        setUpTourCheckbox.setOnCheckedChangeListener(onCheckTourCheckbox);
+        laySetTourLabel = findViewById(R.id.setUpTourLabel);
+        laySetTourLabel.setVisibility(View.GONE);
+        laySetTourLabel2 = findViewById(R.id.setUpTourLabel2);
+        laySetTourLabel2.setVisibility(View.GONE);
+        laySetTourCheckbox = findViewById(R.id.setUpTourCheckbox);
+        laySetTourCheckbox.setVisibility(View.GONE);
 
-        latestDone = dbManager.retrieveLatestDone();
+        laySetIncBtn.setOnClickListener(onClickLaySetIncButton);
+        laySetBillsBtn.setOnClickListener(onClickLaySetBillsButton);
+        laySetDebtsBtn.setOnClickListener(onClickLaySetDebtsButton);
+        laySetSavingsBtn.setOnClickListener(onClickLaySetSavingsButton);
+        laySetAnalysisBtn.setOnClickListener(onClickLaySetAnalysisButton);
+        laySetWeeklyBtn.setOnClickListener(onClickLaySetWeeklyButton);
+        laySetFinalBtn.setOnClickListener(onClickLaySetFinalButton);
+        laySetTourCheckbox.setOnCheckedChangeListener(onCheckLaySetTourCheckbox);
+
+        latestDone = laySetDbMgr.retrieveLatestDone();
         switch (latestDone) {
             case "income":
-                afterIncome();
-                setUpBillsButton.setVisibility(View.VISIBLE);
-                setUpBillsLabel.setVisibility(View.GONE);
+                laySetAfterIncome();
+                laySetBillsBtn.setVisibility(View.VISIBLE);
+                laySetBillsLabel.setVisibility(View.GONE);
                 break;
             case "bills":
-                afterIncome();
-                afterBills();
-                setUpDebtsButton.setVisibility(View.VISIBLE);
-                setUpDebtsLabel.setVisibility(View.GONE);
+                laySetAfterIncome();
+                laySetAfterBills();
+                laySetDebtsBtn.setVisibility(View.VISIBLE);
+                laySetDebtsLabel.setVisibility(View.GONE);
                 break;
             case "debts":
-                afterIncome();
-                afterBills();
-                afterDebts();
-                setUpSavingsButton.setVisibility(View.VISIBLE);
-                setUpSavingsLabel.setVisibility(View.GONE);
+                laySetAfterIncome();
+                laySetAfterBills();
+                laySetAfterDebts();
+                laySetSavingsBtn.setVisibility(View.VISIBLE);
+                laySetSavingsLabel.setVisibility(View.GONE);
                 break;
             case "savings":
-                afterIncome();
-                afterBills();
-                afterDebts();
-                afterSavings();
-                setUpBudgetButton.setVisibility(View.VISIBLE);
-                setUpBudgetLabel.setVisibility(View.GONE);
+                laySetAfterIncome();
+                laySetAfterBills();
+                laySetAfterDebts();
+                laySetAfterSavings();
+                laySetAnalysisBtn.setVisibility(View.VISIBLE);
+                laySetAnalysisLabel.setVisibility(View.GONE);
                 break;
-            case"budget":
-                afterIncome();
-                afterBills();
-                afterDebts();
-                afterSavings();
-                afterBudget();
-                setUpAccountAmount.setVisibility(View.VISIBLE);
-                setUpAccountAmountLabel.setVisibility(View.VISIBLE);
-                setUpAccountAmountLabel2.setVisibility(View.VISIBLE);
-                setUpAccountAmountLabel4.setVisibility(View.VISIBLE);
-                setUpAccountCheckbox.setVisibility(View.VISIBLE);
+            case "analysis":
+                laySetAfterIncome();
+                laySetAfterBills();
+                laySetAfterDebts();
+                laySetAfterSavings();
+                laySetAfterAnalysis();
+                laySetWeeklyBtn.setVisibility(View.VISIBLE);
+                laySetWeeklyLabel.setVisibility(View.GONE);
                 break;
-            case"balance":
-                afterIncome();
-                afterBills();
-                afterDebts();
-                afterSavings();
-                afterBudget();
-                afterBalance();
-                almostDone.setVisibility(View.VISIBLE);
-                setUpTourLabel.setVisibility(View.VISIBLE);
-                setUpTourLabel2.setVisibility(View.VISIBLE);
-                setUpTourLabel3.setVisibility(View.VISIBLE);
-                setUpTourLabel4.setVisibility(View.VISIBLE);
-                setUpGotItLabel.setVisibility(View.VISIBLE);
-                setUpTourCheckbox.setVisibility(View.VISIBLE);
+            case"weekly":
+                laySetAfterIncome();
+                laySetAfterBills();
+                laySetAfterDebts();
+                laySetAfterSavings();
+                laySetAfterAnalysis();
+                laySetAfterWeekly();
+                laySetFinalBtn.setVisibility(View.VISIBLE);
+                laySetFinalLabel.setVisibility(View.GONE);
+                break;
+            case"final":
+                laySetAfterIncome();
+                laySetAfterBills();
+                laySetAfterDebts();
+                laySetAfterSavings();
+                laySetAfterAnalysis();
+                laySetAfterWeekly();
+                laySetAfterFinal();
                 break;
             case "tour":
-                toMainActivity = new Intent(LayoutSetUp.this, MainActivity.class);
-                toMainActivity.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-                startActivity(toMainActivity);
+                laySetToMain = new Intent(LayoutSetUp.this, MainActivity.class);
+                laySetToMain.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+                startActivity(laySetToMain);
         }
-        /*if (dbManager.incomeSetUpCheck() > 0) {
-            setUpIncomeLabel.setVisibility(View.VISIBLE);
-            setUpIncomeButton.setVisibility(View.GONE);
-            setUpIncomeCheckbox.setChecked(true);
-            setUpBillsButton.setVisibility(View.VISIBLE);
-            setUpBillsLabel.setVisibility(View.GONE);
-        }
-
-        if (dbManager.billsSetUpCheck() > 0) {
-            setUpBillsLabel.setVisibility(View.VISIBLE);
-            setUpBillsButton.setVisibility(View.GONE);
-            setUpBillsCheckbox.setChecked(true);
-            setUpDebtsButton.setVisibility(View.VISIBLE);
-            setUpDebtsLabel.setVisibility(View.GONE);
-        }
-
-        if (dbManager.debtSetUpCheck() > 0) {
-            setUpDebtsLabel.setVisibility(View.VISIBLE);
-            setUpDebtsButton.setVisibility(View.GONE);
-            setUpDebtsCheckbox.setChecked(true);
-            setUpSavingsButton.setVisibility(View.VISIBLE);
-            setUpSavingsLabel.setVisibility(View.GONE);
-        }
-
-        if (dbManager.savingsSetUpCheck() > 0) {
-            setUpSavingsLabel.setVisibility(View.VISIBLE);
-            setUpSavingsButton.setVisibility(View.GONE);
-            setUpSavingsCheckbox.setChecked(true);
-            setUpBudgetButton.setVisibility(View.VISIBLE);
-            setUpBudgetLabel.setVisibility(View.GONE);
-        }
-
-        if (dbManager.budgetSetUpCheck() > 0) {
-            setUpBudgetLabel.setVisibility(View.VISIBLE);
-            setUpBudgetButton.setVisibility(View.GONE);
-            setUpBudgetCheckbox.setChecked(true);
-            setUpAccountAmount.setVisibility(View.VISIBLE);
-            setUpAccountAmountLabel.setVisibility(View.VISIBLE);
-            setUpAccountAmountLabel2.setVisibility(View.VISIBLE);
-            setUpAccountAmountLabel4.setVisibility(View.VISIBLE);
-            setUpAccountCheckbox.setVisibility(View.VISIBLE);
-        }
-
-        if (dbManager.balanceSetUpCheck() > 0) {
-            setUpAccountAmountLabel.setVisibility(View.GONE);
-            setUpAccountAmountLabel2.setVisibility(View.GONE);
-            setUpAccountAmountLabel3.setVisibility(View.VISIBLE);
-            setUpAccountAmountLabel4.setVisibility(View.GONE);
-            setUpAccountAmount.setVisibility(View.GONE);
-            setUpAccountCheckbox.setChecked(true);
-            almostDone.setVisibility(View.VISIBLE);
-            setUpTourLabel.setVisibility(View.VISIBLE);
-            setUpTourLabel2.setVisibility(View.VISIBLE);
-            setUpTourLabel3.setVisibility(View.VISIBLE);
-            setUpTourLabel4.setVisibility(View.VISIBLE);
-            setUpGotItLabel.setVisibility(View.VISIBLE);
-            setUpTourCheckbox.setVisibility(View.VISIBLE);
-        }
-
-        if (dbManager.tourSetUpCheck() > 0) {
-            toMainActivity = new Intent(LayoutSetUp.this, MainActivity.class);
-            toMainActivity.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-            startActivity(toMainActivity);
-        }*/
     }
 
-    public void afterIncome() {
-        setUpIncomeButton.setVisibility(View.GONE);
-        setUpIncomeLabel.setVisibility(View.VISIBLE);
-        setUpIncomeCheckbox.setChecked(true);
+    public void laySetAfterIncome() {
+        laySetIncBtn.setVisibility(View.GONE);
+        laySetIncomeLabel.setVisibility(View.VISIBLE);
+        laySetIncomeCheckbox.setChecked(true);
     }
 
-    public void afterBills() {
-        setUpBillsButton.setVisibility(View.GONE);
-        setUpBillsLabel.setVisibility(View.VISIBLE);
-        setUpBillsCheckbox.setChecked(true);
+    public void laySetAfterBills() {
+        laySetBillsBtn.setVisibility(View.GONE);
+        laySetBillsLabel.setVisibility(View.VISIBLE);
+        laySetBillsCheckbox.setChecked(true);
     }
 
-    public void afterDebts() {
-        setUpDebtsButton.setVisibility(View.GONE);
-        setUpDebtsLabel.setVisibility(View.VISIBLE);
-        setUpDebtsCheckbox.setChecked(true);
+    public void laySetAfterDebts() {
+        laySetDebtsBtn.setVisibility(View.GONE);
+        laySetDebtsLabel.setVisibility(View.VISIBLE);
+        laySetDebtsCheckbox.setChecked(true);
     }
 
-    public void afterSavings() {
-        setUpSavingsButton.setVisibility(View.GONE);
-        setUpSavingsLabel.setVisibility(View.VISIBLE);
-        setUpSavingsCheckbox.setChecked(true);
+    public void laySetAfterSavings() {
+        laySetSavingsBtn.setVisibility(View.GONE);
+        laySetSavingsLabel.setVisibility(View.VISIBLE);
+        laySetSavingsCheckbox.setChecked(true);
     }
 
-    public void afterBudget() {
-        setUpBudgetLabel.setVisibility(View.VISIBLE);
-        setUpBudgetButton.setVisibility(View.GONE);
-        setUpBudgetCheckbox.setChecked(true);
+    public void laySetAfterAnalysis() {
+        laySetAnalysisBtn.setVisibility(View.GONE);
+        laySetAnalysisLabel.setVisibility(View.VISIBLE);
+        laySetAnalysisCheckbox.setChecked(true);
     }
 
-    public void afterBalance() {
-        setUpAccountAmountLabel.setVisibility(View.GONE);
-        setUpAccountAmountLabel2.setVisibility(View.GONE);
-        setUpAccountAmountLabel3.setVisibility(View.VISIBLE);
-        setUpAccountAmountLabel4.setVisibility(View.GONE);
-        setUpAccountAmount.setVisibility(View.GONE);
-        setUpAccountCheckbox.setChecked(true);
+    public void laySetAfterWeekly() {
+        laySetWeeklyLabel.setVisibility(View.VISIBLE);
+        laySetWeeklyBtn.setVisibility(View.GONE);
+        laySetWeeklyCheckbox.setChecked(true);
     }
 
-    CheckBox.OnCheckedChangeListener onCheckTourCheckbox = new CompoundButton.OnCheckedChangeListener() {
+    public void laySetAfterFinal() {
+        laySetFinalLabel.setVisibility(View.VISIBLE);
+        laySetFinalBtn.setVisibility(View.GONE);
+        laySetFinalCheckbox.setChecked(true);
+        laySetTourLabel.setVisibility(View.VISIBLE);
+        laySetTourLabel2.setVisibility(View.VISIBLE);
+        laySetTourCheckbox.setVisibility(View.VISIBLE);
+    }
+
+    CheckBox.OnCheckedChangeListener onCheckLaySetTourCheckbox = new CompoundButton.OnCheckedChangeListener() {
         @Override
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-            helper2 = new DbHelper(getApplicationContext());
-            db2 = helper2.getWritableDatabase();
-            cv2 = new ContentValues();
-            cv2.put(DbHelper.LATESTDONE, "tour");
-            db2.update(DbHelper.SET_UP_TABLE_NAME, cv2, DbHelper.ID + "= '1'", null);
-            db2.close();
+            laySetHelper = new DbHelper(getApplicationContext());
+            laySetDb = laySetHelper.getWritableDatabase();
+            laySetCV = new ContentValues();
+            laySetCV.put(DbHelper.LATESTDONE, "tour");
+            laySetDb.update(DbHelper.SET_UP_TABLE_NAME, laySetCV, DbHelper.ID + "= '1'", null);
+            laySetDb.close();
 
-            //latestDone = "tour";
-            /*incomeDone = 0;
-            billsDone = 0;
-            debtsDone = 0;
-            savingsDone = 0;
-            budgetDone = 0;
-            balanceDone = 0;
-            tourDone = 1;
-            balanceAmount = 0.0;*/
-
-            /*setUpDb = new SetUpDb(latestDone, balanceAmount, 0);
-            dbManager.addSetUp(setUpDb);*/
-
-            toMainActivity = new Intent(LayoutSetUp.this, MainActivity.class);
-            toMainActivity.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-            startActivity(toMainActivity);
+            laySetToMain = new Intent(LayoutSetUp.this, MainActivity.class);
+            laySetToMain.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+            startActivity(laySetToMain);
         }
     };
 
-    CheckBox.OnCheckedChangeListener onCheckBalanceDone = new CompoundButton.OnCheckedChangeListener() {
-        @Override
-        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
-            try {
-                startingBalanceS = setUpAccountAmount.getText().toString();
-                if (startingBalanceS != null && !startingBalanceS.equals("")) {
-                    balanceAmount = Double.valueOf(startingBalanceS);
-                } else {
-                    balanceAmount = 0.0;
-                }
-            } catch (NumberFormatException e) {
-                e.printStackTrace();
-            }
-
-            helper = new DbHelper(getApplicationContext());
-            db = helper.getWritableDatabase();
-            cv = new ContentValues();
-            cv.put(DbHelper.LATESTDONE, "balance");
-            cv.put(DbHelper.BALANCEAMOUNT, balanceAmount);
-            db.update(DbHelper.SET_UP_TABLE_NAME, cv, DbHelper.ID + "= '1'", null);
-            db.close();
-            //latestDone = "balance";
-            //balanceDone = 1;
-
-            /*try {
-                startingBalanceS = setUpAccountAmount.getText().toString();
-                if (startingBalanceS != null && !startingBalanceS.equals("")) {
-                    balanceAmount = Double.valueOf(startingBalanceS);
-                } else {
-                    balanceAmount = 0.0;
-                }
-            } catch (NumberFormatException e) {
-                e.printStackTrace();
-            }*/
-
-            //setUpDb = new SetUpDb(latestDone, balanceAmount, 0);
-            //dbManager.addSetUp(setUpDb);
-
-            moneyInCat = getString(R.string.starting_balance);
-            moneyInAmount = balanceAmount;
-            if(dbManager.getIncomes().size() == 0) {
-                moneyInA = moneyInAmount;
-                moneyInB = 0.0;
-            } else {
-                moneyInA = moneyInAmount * dbManager.retrieveAPercentage();
-                moneyInB = moneyInAmount * dbManager.retrieveBPercentage();
-            }
-            moneyInOwing = 0.0;
-            moneyInDate = new Date();
-            moneyInTimestamp = new Timestamp(moneyInDate.getTime());
-            moneyInSDF = new SimpleDateFormat("dd-MMM-yyyy");
-            moneyInCreatedOn = moneyInSDF.format(moneyInTimestamp);
-            incRefKeyMI = 1;
-
-            moneyInDb = new MoneyInDb(moneyInCat, moneyInAmount, moneyInA, moneyInOwing, moneyInB, moneyInCreatedOn, incRefKeyMI, 0);
-
-            dbManager.addMoneyIn(moneyInDb);
-
-            currentAccount = balanceAmount;
-            currentB = moneyInB;
-            currentA = moneyInA;
-            currentOwingA = 0.0;
-            currentPageId = 1;
-
-            currentDb = new CurrentDb(currentAccount, currentB, currentA, currentOwingA, currentPageId, 0);
-
-            dbManager.addCurrent(currentDb);
-
-            setUpAccountAmountLabel.setVisibility(View.GONE);
-            setUpAccountAmountLabel2.setVisibility(View.GONE);
-            setUpAccountAmountLabel3.setVisibility(View.VISIBLE);
-            setUpAccountAmountLabel4.setVisibility(View.GONE);
-            setUpAccountAmount.setVisibility(View.GONE);
-            setUpAccountCheckbox.setChecked(true);
-            almostDone.setVisibility(View.VISIBLE);
-            setUpTourLabel.setVisibility(View.VISIBLE);
-            setUpTourLabel2.setVisibility(View.VISIBLE);
-            setUpTourLabel3.setVisibility(View.VISIBLE);
-            setUpTourLabel4.setVisibility(View.VISIBLE);
-            setUpGotItLabel.setVisibility(View.VISIBLE);
-            setUpTourCheckbox.setVisibility(View.VISIBLE);
-        }
-    };
-
-    public void slides() {
-        goToSlides = new Intent(LayoutSetUp.this, SlidesLayoutSetUp.class);
-        goToSlides.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-        startActivity(goToSlides);
+    public void laySetGoToSlides() {
+        laySetToSlides = new Intent(LayoutSetUp.this, SlidesLayoutSetUp.class);
+        laySetToSlides.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+        startActivity(laySetToSlides);
     }
 
-    View.OnClickListener onClickSetUpBudgetButton = new View.OnClickListener() {
+
+    View.OnClickListener onClickLaySetFinalButton = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            slides();
-            /*setUpBudget = new Intent(LayoutSetUp.this, SlidesLayoutSetUp.class);
-            setUpBudget.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-            startActivity(setUpBudget);*/
+            laySetGoToSlides();
         }
     };
 
-    View.OnClickListener onClickSetUpSavingsButton = new View.OnClickListener() {
+    View.OnClickListener onClickLaySetWeeklyButton = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            slides();
-            /*setUpSavings = new Intent(LayoutSetUp.this, SlidesLayoutSetUp.class);
-            setUpSavings.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-            startActivity(setUpSavings);*/
+            laySetGoToSlides();
         }
     };
 
-    View.OnClickListener onClickSetUpDebtsButton = new View.OnClickListener() {
+    View.OnClickListener onClickLaySetAnalysisButton = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            slides();
-            /*setUpDebts = new Intent(LayoutSetUp.this, SlidesLayoutSetUp.class);
-            setUpDebts.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-            startActivity(setUpDebts);*/
+            laySetGoToSlides();
         }
     };
 
-    View.OnClickListener onClickSetUpBillsButton = new View.OnClickListener() {
+    View.OnClickListener onClickLaySetSavingsButton = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            slides();
-            /*setUpIncome = new Intent(LayoutSetUp.this, SlidesLayoutSetUp.class);
-            setUpIncome.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-            startActivity(setUpIncome);*/
+            laySetGoToSlides();
         }
     };
 
-    View.OnClickListener onClickSetUpIncomeButton = new View.OnClickListener() {
+    View.OnClickListener onClickLaySetDebtsButton = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            slides();
-            /*setUpIncome = new Intent(LayoutSetUp.this, SlidesLayoutSetUp.class);
-            setUpIncome.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-            startActivity(setUpIncome);*/
+            laySetGoToSlides();
+        }
+    };
+
+    View.OnClickListener onClickLaySetBillsButton = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            laySetGoToSlides();
+        }
+    };
+
+    View.OnClickListener onClickLaySetIncButton = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            laySetGoToSlides();
         }
     };
 }

@@ -1,4 +1,4 @@
-package ca.gotchasomething.mynance;
+/*package ca.gotchasomething.mynance;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -29,7 +29,7 @@ public class LayoutHelp extends MainNavigation {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.layout_help);
+        setContentView(R.layout.z_layout_help);
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         drawer = findViewById(R.id.drawer_layout);
@@ -645,4 +645,4 @@ public class LayoutHelp extends MainNavigation {
             startActivity(goToRatings);
         }
     };
-}
+}*/

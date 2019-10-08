@@ -1,4 +1,4 @@
-package ca.gotchasomething.mynance.tabFragments;
+/*package ca.gotchasomething.mynance.tabFragments;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -183,4 +183,4 @@ public class DailyWeeklyLimits extends Fragment {
         private TextView amountLeftText;
         private TextView spentAmount;
     }
-}
+}*/

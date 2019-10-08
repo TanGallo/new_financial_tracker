@@ -129,7 +129,7 @@ public class SlidesSetUpBillsL extends AppCompatActivity implements View.OnClick
     }
 
     private void loadHome() {
-            startActivity(new Intent(this, SetUpAddBills.class));
+            startActivity(new Intent(this, SetUp2AddBills.class));
             finish();
     }
 
