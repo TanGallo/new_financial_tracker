@@ -25,7 +25,8 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import ca.gotchasomething.mynance.data.AccountsDb;
 //import ca.gotchasomething.mynance.data.DebtDb;
 //import ca.gotchasomething.mynance.data.SavingsDb;
-import ca.gotchasomething.mynance.data.TransfersDb;
+//import ca.gotchasomething.mynance.data.TransfersDb;
+import ca.gotchasomething.mynance.data.TransactionsDb;
 import ca.gotchasomething.mynance.spinners.TransferSpinnerAdapter;
 
 public class LayoutTransfers extends MainNavigation {
@@ -51,7 +52,7 @@ public class LayoutTransfers extends MainNavigation {
     SQLiteDatabase trn1Db, trn1Db2, trn1Db3, trn1Db4;
     String trn1FromIsDebt = null, trn1FromIsSav = null, trn1FromSpinName = null, trn1ToIsDebt = null, trn1ToIsSav = null, trn1ToSpinName = null;
     TextView trn1FromWarnTV, trn1FromAvailTV, trn1InfoLabel, trn1WarnTV;
-    TransfersDb trn1TransDb;
+    TransactionsDb trn1TransDb;
     TransferSpinnerAdapter trn1FromSpinAdapter, trn1ToSpinAdapter;
 
     @Override
@@ -174,8 +175,8 @@ public class LayoutTransfers extends MainNavigation {
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
             trn1FromSpinName = trn1Cur.getString(trn1Cur.getColumnIndexOrThrow(DbHelper.ACCTNAME));
             trn1FromSpinId = trn1Cur.getLong(trn1Cur.getColumnIndexOrThrow(DbHelper.ID));
-            trn1FromIsDebt = trn1Cur.getString(trn1Cur.getColumnIndexOrThrow(DbHelper.ISDEBT));
-            trn1FromIsSav = trn1Cur.getString(trn1Cur.getColumnIndexOrThrow(DbHelper.ISSAV));
+            trn1FromIsDebt = trn1Cur.getString(trn1Cur.getColumnIndexOrThrow(DbHelper.ACCTISDEBT));
+            trn1FromIsSav = trn1Cur.getString(trn1Cur.getColumnIndexOrThrow(DbHelper.ACCTISSAV));
         }
 
         @Override
@@ -188,8 +189,8 @@ public class LayoutTransfers extends MainNavigation {
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
             trn1ToSpinName = trn1Cur2.getString(trn1Cur2.getColumnIndexOrThrow(DbHelper.ACCTNAME));
             trn1ToSpinId = trn1Cur2.getLong(trn1Cur2.getColumnIndexOrThrow(DbHelper.ID));
-            trn1ToIsDebt = trn1Cur2.getString(trn1Cur2.getColumnIndexOrThrow(DbHelper.ISDEBT));
-            trn1ToIsSav = trn1Cur2.getString(trn1Cur2.getColumnIndexOrThrow(DbHelper.ISSAV));
+            trn1ToIsDebt = trn1Cur2.getString(trn1Cur2.getColumnIndexOrThrow(DbHelper.ACCTISDEBT));
+            trn1ToIsSav = trn1Cur2.getString(trn1Cur2.getColumnIndexOrThrow(DbHelper.ACCTISSAV));
         }
 
         @Override
@@ -209,16 +210,16 @@ public class LayoutTransfers extends MainNavigation {
     //UPDATE THE FROM ACCOUNTS
 
     public void trn1DebtPlus() {
-        trn1DbMgr.updateDebtRecPlusPt1(trn1TrnAmt, trn1DbMgr.retrieveCurrentDebtAmtOwing(trn1FromSpinId), trn1FromSpinId);
+        trn1DbMgr.updateRecPlusPt1(trn1TrnAmt, trn1DbMgr.retrieveCurrentDebtAmtOwing(trn1FromSpinId), trn1FromSpinId);
         for (AccountsDb d : trn1DbMgr.getDebts()) {
             if (d.getId() == trn1FromSpinId) {
                 debtAmtFromDb = d.getAcctBal();
                 debtLimitFromDb = d.getAcctMax();
-                debtRateFromDb = d.getIntRate();
-                debtPaytFromDb = d.getPaytsTo();
+                debtRateFromDb = d.getAcctIntRate();
+                debtPaytFromDb = d.getAcctPaytsTo();
             }
         }
-        trn1DbMgr.updateDebtRecPt2(trn1Gen.calcDebtDate(
+        trn1DbMgr.updateRecPt2(trn1Gen.calcDebtDate(
                 debtAmtFromDb,
                 debtRateFromDb,
                 debtPaytFromDb,
@@ -227,16 +228,16 @@ public class LayoutTransfers extends MainNavigation {
     }
 
     public void trn1SavMinus() {
-        trn1DbMgr.updateSavRecMinusPt1(trn1TrnAmt, trn1DbMgr.retrieveCurrentSavAmt(trn1FromSpinId), trn1FromSpinId);
+        trn1DbMgr.updateRecMinusPt1(trn1TrnAmt, trn1DbMgr.retrieveCurrentSavAmt(trn1FromSpinId), trn1FromSpinId);
         for (AccountsDb s : trn1DbMgr.getSavings()) {
             if (s.getId() == trn1FromSpinId) {
                 savAmtFromDb = s.getAcctBal();
                 savGoalFromDb = s.getAcctMax();
-                savRateFromDb = s.getIntRate();
-                savPaytFromDb = s.getPaytsTo();
+                savRateFromDb = s.getAcctIntRate();
+                savPaytFromDb = s.getAcctPaytsTo();
             }
         }
-        trn1DbMgr.updateSavRecPt2(trn1Gen.calcSavingsDate(
+        trn1DbMgr.updateRecPt2(trn1Gen.calcSavingsDate(
                 savGoalFromDb,
                 savAmtFromDb,
                 savRateFromDb,
@@ -257,18 +258,18 @@ public class LayoutTransfers extends MainNavigation {
     //UPDATE THE TO ACCOUNTS
 
     public void trn1DebtMinus() {
-        trn1DbMgr.updateDebtRecMinusPt1(trn1TrnAmt, trn1DbMgr.retrieveCurrentDebtAmtOwing(trn1ToSpinId), trn1ToSpinId);
+        trn1DbMgr.updateRecMinusPt1(trn1TrnAmt, trn1DbMgr.retrieveCurrentDebtAmtOwing(trn1ToSpinId), trn1ToSpinId);
 
         for (AccountsDb d : trn1DbMgr.getDebts()) {
             if (d.getId() == trn1ToSpinId) {
                 debtAmtFromDb = d.getAcctBal();
                 debtLimitFromDb = d.getAcctMax();
-                debtRateFromDb = d.getIntRate();
-                debtPaytFromDb = d.getPaytsTo();
+                debtRateFromDb = d.getAcctIntRate();
+                debtPaytFromDb = d.getAcctPaytsTo();
             }
         }
 
-        trn1DbMgr.updateDebtRecPt2(trn1Gen.calcDebtDate(
+        trn1DbMgr.updateRecPt2(trn1Gen.calcDebtDate(
                 debtAmtFromDb,
                 debtRateFromDb,
                 debtPaytFromDb,
@@ -277,18 +278,18 @@ public class LayoutTransfers extends MainNavigation {
     }
 
     public void trn1SavPlus() {
-        trn1DbMgr.updateSavRecPlusPt1(trn1TrnAmt, trn1DbMgr.retrieveCurrentSavAmt(trn1ToSpinId), trn1ToSpinId);
+        trn1DbMgr.updateRecPlusPt1(trn1TrnAmt, trn1DbMgr.retrieveCurrentSavAmt(trn1ToSpinId), trn1ToSpinId);
 
         for (AccountsDb s : trn1DbMgr.getSavings()) {
             if (s.getId() == trn1ToSpinId) {
                 savAmtFromDb = s.getAcctBal();
                 savGoalFromDb = s.getAcctMax();
-                savRateFromDb = s.getIntRate();
-                savPaytFromDb = s.getPaytsTo();
+                savRateFromDb = s.getAcctIntRate();
+                savPaytFromDb = s.getAcctPaytsTo();
             }
         }
 
-        trn1DbMgr.updateSavRecPt2(trn1Gen.calcSavingsDate(
+        trn1DbMgr.updateRecPt2(trn1Gen.calcSavingsDate(
                 savGoalFromDb,
                 savAmtFromDb,
                 savRateFromDb,
@@ -325,20 +326,30 @@ public class LayoutTransfers extends MainNavigation {
     };
 
     public void addTransAndFinish() {
-        trn1TransDb = new TransfersDb(
-                trn1FromSpinName,
-                trn1ToSpinName,
-                trn1FromSpinDebtId,
-                trn1FromSpinSavId,
-                trn1ToSpinDebtId,
-                trn1ToSpinSavId,
+        trn1TransDb = new TransactionsDb(
+                "transfer",
+                "N/A",
+                "N/A",
+                0,
                 trn1TrnAmt,
-                trn1MoneyOutA,
-                trn1MoneyOutOwing,
-                trn1MoneyOutB,
                 trn1MoneyInA,
                 trn1MoneyInOwing,
                 trn1MoneyInB,
+                trn1MoneyOutA,
+                trn1MoneyOutOwing,
+                trn1MoneyOutB,
+                trn1ToSpinId,
+                trn1ToSpinName,
+                trn1ToIsDebt,
+                trn1ToIsSav,
+                trn1FromSpinId,
+                trn1FromSpinName,
+                trn1FromIsDebt,
+                trn1FromIsSav,
+                "N/A",
+                "N/A",
+                "N/A",
+                "N/A",
                 trn1Gen.createTimestamp(),
                 0);
         trn1DbMgr.addTransfers(trn1TransDb);

@@ -1,4 +1,4 @@
-package ca.gotchasomething.mynance.data;
+/*package ca.gotchasomething.mynance.data;
 //Db description
 
 public class TransfersDb {
@@ -171,4 +171,4 @@ public class TransfersDb {
         this.id = id;
     }
 
-}
+}*/

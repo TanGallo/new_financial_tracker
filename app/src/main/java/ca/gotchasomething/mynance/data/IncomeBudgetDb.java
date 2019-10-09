@@ -1,4 +1,4 @@
-package ca.gotchasomething.mynance.data;
+/*package ca.gotchasomething.mynance.data;
 //Db description
 
 public class IncomeBudgetDb {
@@ -66,4 +66,4 @@ public class IncomeBudgetDb {
         return getIncomeName();
     }
 
-}
+}*/

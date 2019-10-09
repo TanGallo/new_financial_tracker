@@ -30,7 +30,7 @@ public class MoneyOutSpinnerAdapter extends CursorAdapter {
     public void bindView(View view, Context context, Cursor cursor) {
 
         spinnerText = view.findViewById(R.id.spinnerText);
-        expenseName = cursor.getString(cursor.getColumnIndexOrThrow(DbHelper.EXPENSENAME));
+        expenseName = cursor.getString(cursor.getColumnIndexOrThrow(DbHelper.BDGTCAT));
         spinnerText.setText(expenseName);
     }
 

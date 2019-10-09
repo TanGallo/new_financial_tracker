@@ -2,7 +2,7 @@ package ca.gotchasomething.mynance.data;
 //Db description
 
 public class CurrentDb {
-    private Double currentAccount;
+    //private Double currentAccount;
     private Double currentB;
     private Double currentA;
     private Double currentOwingA;
@@ -10,13 +10,13 @@ public class CurrentDb {
     private long id;
 
     public CurrentDb(
-            Double currentAccount,
+            //Double currentAccount,
             Double currentB,
             Double currentA,
             Double currentOwingA,
             int lastPageId,
             long id) {
-        this.currentAccount = currentAccount;
+        //this.currentAccount = currentAccount;
         this.currentB = currentB;
         this.currentA = currentA;
         this.currentOwingA = currentOwingA;
@@ -24,8 +24,8 @@ public class CurrentDb {
         this.id = id;
     }
 
-    public Double getCurrentAccount() { return currentAccount; }
-    public void setCurrentAccount(Double currentAccount) { this.currentAccount = currentAccount; }
+    //public Double getCurrentAccount() { return currentAccount; }
+    //public void setCurrentAccount(Double currentAccount) { this.currentAccount = currentAccount; }
 
     public Double getCurrentB() { return currentB; }
     public void setCurrentB(Double currentB) { this.currentB = currentB; }

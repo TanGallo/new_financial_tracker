@@ -13,15 +13,17 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import ca.gotchasomething.mynance.data.ExpenseBudgetDb;
+import ca.gotchasomething.mynance.data.BudgetDb;
+
+//import ca.gotchasomething.mynance.data.ExpenseBudgetDb;
 
 public class AddExpense extends AppCompatActivity {
 
+    BudgetDb addExpExpDb;
     Button addExpSaveBtn, addExpCancelBtn, addExpUpdateBtn;
     DbManager addExpDbMgr;
     Double expAmtFromEntry = 0.0, expAnnAmtFromEntry = 0.0, expAAnnAmtFromEntry = 0.0, expBAnnAmtFromEntry = 0.0, expFrqFromEntry = 0.0;
     EditText addExpCatET, addExpAmtET;
-    ExpenseBudgetDb addExpExpDb;
     General addExpGen;
     Intent addExpToList;
     RadioButton addExpARB, addExpAnnlyRB, addExpBRB, addExpBiAnnlyRB, addExpBiMthlyRB, addExpBiWklyRB, addExpMthlyRB, addExpNoWklyRB, addExpWklyRB, addExpYesWklyRB;
@@ -180,21 +182,23 @@ public class AddExpense extends AppCompatActivity {
                 expWeeklyFromEntry = addExpWklyLimRB;
             }
 
-            if(expPriorityFromEntry.equals("A")) {
+            /*if(expPriorityFromEntry.equals("A")) {
                 expAAnnAmtFromEntry = expAnnAmtFromEntry;
             } else {
                 expBAnnAmtFromEntry = expAnnAmtFromEntry;
-            }
+            }*/
 
             if(!expNameFromEntry.equals("null")) {
 
-                addExpExpDb = new ExpenseBudgetDb(
+                addExpExpDb = new BudgetDb(
                         expNameFromEntry,
                         expAmtFromEntry,
+                        "Y",
+                        "N",
                         expFrqFromEntry,
+                        expAnnAmtFromEntry,
                         expPriorityFromEntry,
                         expWeeklyFromEntry,
-                        expAnnAmtFromEntry,
                         0);
 
                 addExpDbMgr.addExpense(addExpExpDb);

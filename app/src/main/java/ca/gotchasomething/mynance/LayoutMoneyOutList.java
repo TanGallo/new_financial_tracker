@@ -23,7 +23,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.util.List;
 
 import ca.gotchasomething.mynance.data.AccountsDb;
-import ca.gotchasomething.mynance.data.MoneyOutDb;
+import ca.gotchasomething.mynance.data.TransactionsDb;
+//import ca.gotchasomething.mynance.data.MoneyOutDb;
 //import ca.gotchasomething.mynance.data.SavingsDb;
 
 public class LayoutMoneyOutList extends AppCompatActivity {
@@ -37,10 +38,10 @@ public class LayoutMoneyOutList extends AppCompatActivity {
     Intent monOutLstToMain, monOutLstToAddMonOut, monOutLstRefresh;
     ListView monOutLstList;
     long monOutLstFromAcctId, monOutLstExpRefKeyMO;
-    MoneyOutDb monOutLstMonOutDb;
     MonOutLstAdapter monOutLstAdapter;
     String monOutLstIsSav = null;
     TextView monOutLstTitle;
+    TransactionsDb monOutLstMonOutDb;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -83,14 +84,14 @@ public class LayoutMoneyOutList extends AppCompatActivity {
         }
     };
 
-    public class MonOutLstAdapter extends ArrayAdapter<MoneyOutDb> {
+    public class MonOutLstAdapter extends ArrayAdapter<TransactionsDb> {
 
         private Context context;
-        private List<MoneyOutDb> moneyOuts;
+        private List<TransactionsDb> moneyOuts;
 
         private MonOutLstAdapter(
                 Context context,
-                List<MoneyOutDb> moneyOuts) {
+                List<TransactionsDb> moneyOuts) {
 
             super(context, -1, moneyOuts);
 
@@ -98,7 +99,7 @@ public class LayoutMoneyOutList extends AppCompatActivity {
             this.moneyOuts = moneyOuts;
         }
 
-        public void updateMoneyOuts(List<MoneyOutDb> moneyOuts) {
+        public void updateMoneyOuts(List<TransactionsDb> moneyOuts) {
             this.moneyOuts = moneyOuts;
             notifyDataSetChanged();
         }
@@ -153,7 +154,7 @@ public class LayoutMoneyOutList extends AppCompatActivity {
                 monOutLstHldr = (MoneyOut2ViewHolder) convertView.getTag();
             }
 
-            if(moneyOuts.get(position).getMoneyOutCC().equals("Y")) {
+            if(moneyOuts.get(position).getTransIsCC().equals("Y")) {
                 monOutLstHldr.monOutLstCatTV.setVisibility(View.GONE);
                 monOutLstHldr.monOutLstAmtTV.setVisibility(View.GONE);
                 monOutLstHldr.monOutLstDateTV.setVisibility(View.GONE);
@@ -163,24 +164,24 @@ public class LayoutMoneyOutList extends AppCompatActivity {
                 monOutLstHldr.monOutLstDelBtn.setVisibility(View.GONE);
             }
 
-            monOutLstHldr.monOutLstCatTV.setText(moneyOuts.get(position).getMoneyOutCat());
-            monOutLstMonOutAmt = moneyOuts.get(position).getMoneyOutAmount();
+            monOutLstHldr.monOutLstCatTV.setText(moneyOuts.get(position).getTransBdgtCat());
+            monOutLstMonOutAmt = moneyOuts.get(position).getTransAmt();
             monOutLstGen.dblASCurrency(String.valueOf(monOutLstMonOutAmt), monOutLstHldr.monOutLstAmtTV);
-            monOutLstHldr.monOutLstDateTV.setText(moneyOuts.get(position).getMoneyOutCreatedOn());
-            monOutLstHldr.monOutLstAcctTV.setText(moneyOuts.get(position).getMoneyOutPayFromName());
+            monOutLstHldr.monOutLstDateTV.setText(moneyOuts.get(position).getTransCreatedOn());
+            monOutLstHldr.monOutLstAcctTV.setText(moneyOuts.get(position).getTransFromAcctName());
 
             monOutLstHldr.monOutLstEditBtn.setTag(moneyOuts.get(position));
             monOutLstHldr.monOutLstDelBtn.setTag(moneyOuts.get(position));
 
-            monOutLstExpRefKeyMO = moneyOuts.get(position).getExpRefKeyMO();
-            monOutLstIsSav = monOutLstDbMgr.findMoneyInIsSav(moneyOuts.get(position).getMoneyOutPayFromId());
+            monOutLstExpRefKeyMO = moneyOuts.get(position).getTransBdgtId();
+            monOutLstIsSav = monOutLstDbMgr.findMoneyInIsSav(moneyOuts.get(position).getTransFromAcctId());
 
             //click on pencil icon
             monOutLstHldr.monOutLstEditBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
-                    monOutLstMonOutDb = (MoneyOutDb) monOutLstHldr.monOutLstEditBtn.getTag();
+                    monOutLstMonOutDb = (TransactionsDb) monOutLstHldr.monOutLstEditBtn.getTag();
                     LayoutMoneyOutList.this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
                     monOutLstDbMgr = new DbManager(getContext());
 
@@ -200,16 +201,16 @@ public class LayoutMoneyOutList extends AppCompatActivity {
                         public void onClick(View v) {
 
                             monOutLstAmtEntry = monOutLstGen.dblFromET(monOutLstHldr.monOutLstAmtET);
-                            monOutLstMonOutAmtDiff = monOutLstAmtEntry - moneyOuts.get(position).getMoneyOutAmount();
+                            monOutLstMonOutAmtDiff = monOutLstAmtEntry - moneyOuts.get(position).getTransAmt();
 
                             if(monOutLstIsSav.equals("N")) {
                                 monOutLstDbMgr.updateTotAcctBalMinus(monOutLstMonOutAmtDiff, monOutLstDbMgr.retrieveCurrentAccountBalance());
 
-                                monOutLstDbMgr.updateAvailBalPlus(moneyOuts.get(position).getMoneyOutA(), moneyOuts.get(position).getMoneyOutOwing(), moneyOuts.get(position).getMoneyOutB(), monOutLstDbMgr.retrieveCurrentA(), monOutLstDbMgr.retrieveCurrentOwingA(), monOutLstDbMgr.retrieveCurrentB());
+                                monOutLstDbMgr.updateAvailBalPlus(moneyOuts.get(position).getTransAmtOutA(), moneyOuts.get(position).getTransAmtOutOwing(), moneyOuts.get(position).getTransAmtOutB(), monOutLstDbMgr.retrieveCurrentA(), monOutLstDbMgr.retrieveCurrentOwingA(), monOutLstDbMgr.retrieveCurrentB());
 
-                                monOutLstMoneyOutA = monOutLstDbMgr.detAPortionExp(monOutLstAmtEntry, moneyOuts.get(position).getMoneyOutPriority(), monOutLstDbMgr.retrieveCurrentA(), monOutLstDbMgr.retrieveCurrentB());
-                                monOutLstMoneyOutOwing = monOutLstDbMgr.detOwingPortionExp(monOutLstAmtEntry, moneyOuts.get(position).getMoneyOutPriority(), monOutLstDbMgr.retrieveCurrentA(), monOutLstDbMgr.retrieveCurrentB());
-                                monOutLstMoneyOutB = monOutLstDbMgr.detBPortionExp(monOutLstAmtEntry, moneyOuts.get(position).getMoneyOutPriority(), monOutLstDbMgr.retrieveCurrentA(), monOutLstDbMgr.retrieveCurrentB());
+                                monOutLstMoneyOutA = monOutLstDbMgr.detAPortionExp(monOutLstAmtEntry, moneyOuts.get(position).getTransBdgtPriority(), monOutLstDbMgr.retrieveCurrentA(), monOutLstDbMgr.retrieveCurrentB());
+                                monOutLstMoneyOutOwing = monOutLstDbMgr.detOwingPortionExp(monOutLstAmtEntry, moneyOuts.get(position).getTransBdgtPriority(), monOutLstDbMgr.retrieveCurrentA(), monOutLstDbMgr.retrieveCurrentB());
+                                monOutLstMoneyOutB = monOutLstDbMgr.detBPortionExp(monOutLstAmtEntry, moneyOuts.get(position).getTransBdgtPriority(), monOutLstDbMgr.retrieveCurrentA(), monOutLstDbMgr.retrieveCurrentB());
 
                                 monOutLstDbMgr.updateAvailBalMinus(monOutLstMoneyOutA, monOutLstMoneyOutOwing, monOutLstMoneyOutB, monOutLstDbMgr.retrieveCurrentA(), monOutLstDbMgr.retrieveCurrentOwingA(), monOutLstDbMgr.retrieveCurrentB());
 
@@ -227,16 +228,16 @@ public class LayoutMoneyOutList extends AppCompatActivity {
                                     moneyOutB = monOutLstMoneyOutB;
                                 }
                             } else {
-                                monOutLstDbMgr.updateSavRecMinusPt1(monOutLstMonOutAmtDiff, monOutLstDbMgr.retrieveCurrentSavAmt(monOutLstFromAcctId), monOutLstFromAcctId);
+                                monOutLstDbMgr.updateRecMinusPt1(monOutLstMonOutAmtDiff, monOutLstDbMgr.retrieveCurrentSavAmt(monOutLstFromAcctId), monOutLstFromAcctId);
                                 for (AccountsDb a : monOutLstDbMgr.getSavings()) {
                                     if (a.getId() == monOutLstFromAcctId) {
                                         savGoalFromDb = a.getAcctMax();
                                         savAmtFromDb = a.getAcctBal();
-                                        savRateFromDb = a.getIntRate();
-                                        savPaytFromDb = a.getPaytsTo();
+                                        savRateFromDb = a.getAcctIntRate();
+                                        savPaytFromDb = a.getAcctPaytsTo();
                                     }
                                 }
-                                monOutLstDbMgr.updateSavRecPt2(monOutLstGen.calcSavingsDate(
+                                monOutLstDbMgr.updateRecPt2(monOutLstGen.calcSavingsDate(
                                         savGoalFromDb,
                                         savAmtFromDb,
                                         savRateFromDb,
@@ -248,10 +249,10 @@ public class LayoutMoneyOutList extends AppCompatActivity {
                                 moneyOutB = 0.0;
                             }
 
-                            monOutLstMonOutDb.setMoneyOutAmount(monOutLstAmtEntry);
-                            monOutLstMonOutDb.setMoneyOutA(moneyOutA);
-                            monOutLstMonOutDb.setMoneyOutOwing(moneyOutOwing);
-                            monOutLstMonOutDb.setMoneyOutB(moneyOutB);
+                            monOutLstMonOutDb.setTransAmt(monOutLstAmtEntry);
+                            monOutLstMonOutDb.setTransAmtOutA(moneyOutA);
+                            monOutLstMonOutDb.setTransAmtOutOwing(moneyOutOwing);
+                            monOutLstMonOutDb.setTransAmtOutB(moneyOutB);
                             monOutLstDbMgr.updateMoneyOut(monOutLstMonOutDb);
 
                             monOutLstAdapter.updateMoneyOuts(monOutLstDbMgr.getMoneyOuts());
@@ -272,27 +273,27 @@ public class LayoutMoneyOutList extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
 
-                    monOutLstMonOutDb = (MoneyOutDb) monOutLstHldr.monOutLstDelBtn.getTag();
-                    monOutLstExpRefKeyMO = moneyOuts.get(position).getExpRefKeyMO();
+                    monOutLstMonOutDb = (TransactionsDb) monOutLstHldr.monOutLstDelBtn.getTag();
+                    monOutLstExpRefKeyMO = moneyOuts.get(position).getTransBdgtId();
 
                     if(monOutLstIsSav.equals("N")) {
-                        monOutLstDbMgr.updateTotAcctBalPlus(moneyOuts.get(position).getMoneyOutAmount(), monOutLstDbMgr.retrieveCurrentAccountBalance());
+                        monOutLstDbMgr.updateTotAcctBalPlus(moneyOuts.get(position).getTransAmt(), monOutLstDbMgr.retrieveCurrentAccountBalance());
 
-                        monOutLstDbMgr.updateAvailBalPlus(moneyOuts.get(position).getMoneyOutA(), moneyOuts.get(position).getMoneyOutOwing(), moneyOuts.get(position).getMoneyOutB(), monOutLstDbMgr.retrieveCurrentA(), monOutLstDbMgr.retrieveCurrentOwingA(), monOutLstDbMgr.retrieveCurrentB());
+                        monOutLstDbMgr.updateAvailBalPlus(moneyOuts.get(position).getTransAmtOutA(), moneyOuts.get(position).getTransAmtOutOwing(), moneyOuts.get(position).getTransAmtOutB(), monOutLstDbMgr.retrieveCurrentA(), monOutLstDbMgr.retrieveCurrentOwingA(), monOutLstDbMgr.retrieveCurrentB());
                         if (monOutLstDbMgr.retrieveCurrentOwingA() < 0) {
                             monOutLstDbMgr.adjustCurrentAandB(monOutLstDbMgr.retrieveCurrentOwingA(), monOutLstDbMgr.retrieveCurrentA(), monOutLstDbMgr.retrieveCurrentB());
                         }
                     } else {
-                        monOutLstDbMgr.updateSavRecPlusPt1(moneyOuts.get(position).getMoneyOutAmount(), monOutLstDbMgr.retrieveCurrentSavAmt(monOutLstFromAcctId), monOutLstFromAcctId);
+                        monOutLstDbMgr.updateRecPlusPt1(moneyOuts.get(position).getTransAmt(), monOutLstDbMgr.retrieveCurrentSavAmt(monOutLstFromAcctId), monOutLstFromAcctId);
                         for (AccountsDb a : monOutLstDbMgr.getSavings()) {
                             if (a.getId() == monOutLstFromAcctId) {
                                 savGoalFromDb = a.getAcctMax();
                                 savAmtFromDb = a.getAcctBal();
-                                savRateFromDb = a.getIntRate();
-                                savPaytFromDb = a.getPaytsTo();
+                                savRateFromDb = a.getAcctIntRate();
+                                savPaytFromDb = a.getAcctPaytsTo();
                             }
                         }
-                        monOutLstDbMgr.updateSavRecPt2(monOutLstGen.calcSavingsDate(
+                        monOutLstDbMgr.updateRecPt2(monOutLstGen.calcSavingsDate(
                                 savGoalFromDb,
                                 savAmtFromDb,
                                 savRateFromDb,

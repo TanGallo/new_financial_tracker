@@ -25,10 +25,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.List;
 
-import ca.gotchasomething.mynance.data.IncomeBudgetDb;
+import ca.gotchasomething.mynance.data.BudgetDb;
+
+//import ca.gotchasomething.mynance.data.IncomeBudgetDb;
 
 public class AddIncomeList extends AppCompatActivity {
 
+    BudgetDb incLstIncDB;
     Button incLstAddMoreBtn, incLstUpdateBtn, incLstCancelBtn, incLstDoneBtn, incLstSaveBtn;
     ContentValues incLstCV;
     DbHelper incLstHelper;
@@ -36,7 +39,6 @@ public class AddIncomeList extends AppCompatActivity {
     Double incAnnAmtFromTag = 0.0, incAmtFromEntry = 0.0, incAmtFromTag = 0.0, incAnnAmtFromEntry = 0.0, incFrqFromEntry = 0.0, incFrqFromTag = 0.0;
     EditText incLstIncAmtET, incLstIncCatET;
     General incLstGen;
-    IncomeBudgetDb incLstIncDB;
     IncLstLstAdapter incLstLstAdapter;
     Intent incLstRefresh, incLstToBud, incLstToMonIn, incLstToAnalysis, incLstToAddMore, incLstToSetUp;
     ListView incLstListView;
@@ -111,14 +113,14 @@ public class AddIncomeList extends AppCompatActivity {
         }
     };
 
-    public class IncLstLstAdapter extends ArrayAdapter<IncomeBudgetDb> {
+    public class IncLstLstAdapter extends ArrayAdapter<BudgetDb> {
 
         public Context context;
-        public List<IncomeBudgetDb> incomes;
+        public List<BudgetDb> incomes;
 
         public IncLstLstAdapter(
                 Context context,
-                List<IncomeBudgetDb> incomes) {
+                List<BudgetDb> incomes) {
 
             super(context, -1, incomes);
 
@@ -126,7 +128,7 @@ public class AddIncomeList extends AppCompatActivity {
             this.incomes = incomes;
         }
 
-        public void updateIncomes(List<IncomeBudgetDb> incomes) {
+        public void updateIncomes(List<BudgetDb> incomes) {
             this.incomes = incomes;
             notifyDataSetChanged();
         }
@@ -163,10 +165,10 @@ public class AddIncomeList extends AppCompatActivity {
                 incLstHldr = (IncLstViewHolder) convertView.getTag();
             }
 
-            incLstHldr.incLstIncName.setText(incomes.get(position).getIncomeName());
+            incLstHldr.incLstIncName.setText(incomes.get(position).getBdgtCat());
 
             //retrieve incomeAnnualAmount and format as currency
-            incLstAnnAmt2 = String.valueOf((incomes.get(position).getIncomeAmount()) * (incomes.get(position).getIncomeFrequency()));
+            incLstAnnAmt2 = String.valueOf((incomes.get(position).getBdgtPaytAmt()) * (incomes.get(position).getBdgtPaytFrq()));
             incLstGen.dblASCurrency(incLstAnnAmt2, incLstHldr.incLstIncAmt);
 
             incLstHldr.incLstDel.setTag(incomes.get(position));
@@ -196,12 +198,12 @@ public class AddIncomeList extends AppCompatActivity {
                     incLstBiAnnlyRB= findViewById(R.id.addIncBiAnnlyRB);
                     incLstAnnlyRB = findViewById(R.id.addIncAnnlyRB);
 
-                    incLstIncDB = (IncomeBudgetDb) incLstHldr.incLstEdit.getTag();
+                    incLstIncDB = (BudgetDb) incLstHldr.incLstEdit.getTag();
 
-                    incNameFromTag = incLstIncDB.getIncomeName();
-                    incAmtFromTag = incLstIncDB.getIncomeAmount();
-                    incFrqFromTag = incLstIncDB.getIncomeFrequency();
-                    incAnnAmtFromTag = incLstIncDB.getIncomeAnnualAmount();
+                    incNameFromTag = incLstIncDB.getBdgtCat();
+                    incAmtFromTag = incLstIncDB.getBdgtPaytAmt();
+                    incFrqFromTag = incLstIncDB.getBdgtPaytFrq();
+                    incAnnAmtFromTag = incLstIncDB.getBdgtAnnPayt();
                     incIdFromTag = incLstIncDB.getId();
 
                     incLstIncCatET.setText(incNameFromTag);
@@ -280,13 +282,13 @@ public class AddIncomeList extends AppCompatActivity {
 
                             if (!incNameFromEntry.equals("null")) {
 
-                                incLstIncDB.setIncomeName(incNameFromEntry);
-                                incLstIncDB.setIncomeAmount(incAmtFromEntry);
-                                incLstIncDB.setIncomeFrequency(incFrqFromEntry);
+                                incLstIncDB.setBdgtCat(incNameFromEntry);
+                                incLstIncDB.setBdgtPaytAmt(incAmtFromEntry);
+                                incLstIncDB.setBdgtPaytFrq(incFrqFromEntry);
                                 if(incLstDbMgr.getMoneyIns().size() == 0) {
-                                    incLstIncDB.setIncomeAnnualAmount(incAnnAmtFromEntry);
+                                    incLstIncDB.setBdgtAnnPayt(incAnnAmtFromEntry);
                                 } else {
-                                    incLstIncDB.setIncomeAnnualAmount(incLstDbMgr.makeNewIncAnnAmt(incIdFromTag, incLstGen.lastNumOfDays(365)));
+                                    incLstIncDB.setBdgtAnnPayt(incLstDbMgr.makeNewIncAnnAmt(incIdFromTag, incLstGen.lastNumOfDays(365)));
                                 }
                                 incLstDbMgr.updateIncome(incLstIncDB);
 
@@ -313,7 +315,7 @@ public class AddIncomeList extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
 
-                    incLstIncDB = (IncomeBudgetDb) incLstHldr.incLstDel.getTag();
+                    incLstIncDB = (BudgetDb) incLstHldr.incLstDel.getTag();
 
                     incLstDbMgr.deleteIncome(incLstIncDB);
                     incLstLstAdapter.updateIncomes(incLstDbMgr.getIncomes());

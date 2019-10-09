@@ -265,7 +265,7 @@ public class AddSavingsList extends AppCompatActivity {
             savLstGen.dblASCurrency(String.valueOf(savLstGoalAmt2), savLstHldr.savLstGoalAmtTV);
 
             //retrieve savingsDate
-            savLstSavDate = savings.get(position).getEndDate();
+            savLstSavDate = savings.get(position).getAcctEndDate();
             savLstHldr.savLstDateTV.setText(savLstSavDate);
             if (savLstSavDate.contains("2")) {
                 savLstHldr.savLstDateLabelTV.setVisibility(View.VISIBLE);
@@ -317,9 +317,9 @@ public class AddSavingsList extends AppCompatActivity {
                     savNameFromTag = savLstSavDb.getAcctName();
                     savAmtFromTag = savLstSavDb.getAcctBal();
                     savGoalFromTag = savLstSavDb.getAcctMax();
-                    savPaytFromTag = savLstSavDb.getPaytsTo();
-                    savRateFromTag = savLstSavDb.getIntRate();
-                    savDateFromTag = savLstSavDb.getEndDate();
+                    savPaytFromTag = savLstSavDb.getAcctPaytsTo();
+                    savRateFromTag = savLstSavDb.getAcctIntRate();
+                    savDateFromTag = savLstSavDb.getAcctEndDate();
                     savIdFromTag = savLstSavDb.getId();
 
                     savLstSavNameET.setText(savNameFromTag);
@@ -359,18 +359,18 @@ public class AddSavingsList extends AppCompatActivity {
                                 savLstSavDb.setAcctName(savNameFromEntry);
                                 savLstSavDb.setAcctBal(savAmtFromEntry);
                                 savLstSavDb.setAcctMax(savGoalFromEntry);
-                                savLstSavDb.setPaytsTo(savPaytFromEntry);
-                                savLstSavDb.setIntRate(savRateFromEntry);
-                                savLstSavDb.setEndDate(savLstSavDate2);
+                                savLstSavDb.setAcctPaytsTo(savPaytFromEntry);
+                                savLstSavDb.setAcctIntRate(savRateFromEntry);
+                                savLstSavDb.setAcctEndDate(savLstSavDate2);
 
                                 savLstDBMgr.updateAccounts(savLstSavDb);
 
                                 if(savLstDBMgr.getTransfers().size() != 0) {
                                     //savLstTransToSavThisYr = savLstDBMgr.transfersToSavThisYear(savIdFromTag);
                                     //savLstTransFromSavThisYr = savLstDBMgr.transfersFromSavThisYear(savIdFromTag);
-                                    savLstDBMgr.updateSavRecReTransfer(savIdFromTag, savLstDBMgr.transfersToSavThisYear(savIdFromTag, savLstGen.lastNumOfDays(365)), savLstDBMgr.transfersFromSavThisYear(savIdFromTag, savLstGen.lastNumOfDays(365)));
+                                    savLstDBMgr.updateRecReTransfer(savIdFromTag, savLstDBMgr.transfersToAcctThisYear(savIdFromTag, savLstGen.lastNumOfDays(365)), savLstDBMgr.transfersFromAcctThisYear(savIdFromTag, savLstGen.lastNumOfDays(365)));
                                 } else {
-                                    savLstSavDb.setAnnPaytsTo(savPaytFromEntry * 12.0);
+                                    savLstSavDb.setAcctAnnPaytsTo(savPaytFromEntry * 12.0);
                                     savLstDBMgr.updateAccounts(savLstSavDb);
                                 }
 

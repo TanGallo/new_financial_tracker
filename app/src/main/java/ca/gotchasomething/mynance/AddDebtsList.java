@@ -257,7 +257,7 @@ public class AddDebtsList extends AppCompatActivity {
             debtLstGen.dblASCurrency(debtLstDebtAmt2, debtLstHldr.debtLstAmtTV);
 
             //retrieve debtEnd
-            debtLstDebtEnd = debts.get(position).getEndDate();
+            debtLstDebtEnd = debts.get(position).getAcctEndDate();
             if (debtLstDebtEnd.contains("2")) {
                 debtLstHldr.debtLstFreeDateLabel.setVisibility(View.VISIBLE);
             } else {
@@ -318,9 +318,9 @@ public class AddDebtsList extends AppCompatActivity {
                     debtNameFromTag = debtLstDebtDb.getAcctName();
                     debtAmtFromTag = debtLstDebtDb.getAcctBal();
                     debtLimitFromTag = debtLstDebtDb.getAcctMax();
-                    debtRateFromTag = debtLstDebtDb.getIntRate();
-                    debtPaytFromTag = debtLstDebtDb.getPaytsTo();
-                    debtEndFromTag = debtLstDebtDb.getEndDate();
+                    debtRateFromTag = debtLstDebtDb.getAcctIntRate();
+                    debtPaytFromTag = debtLstDebtDb.getAcctPaytsTo();
+                    debtEndFromTag = debtLstDebtDb.getAcctEndDate();
                     debtIdFromTag = debtLstDebtDb.getId();
 
                     debtLstDebtNameET.setText(debtNameFromTag);
@@ -368,18 +368,18 @@ public class AddDebtsList extends AppCompatActivity {
                                 debtLstDebtDb.setAcctName(debtNameFromEntry);
                                 debtLstDebtDb.setAcctMax(debtLimitFromEntry);
                                 debtLstDebtDb.setAcctBal(debtAmtFromEntry);
-                                debtLstDebtDb.setIntRate(debtRateFromEntry);
-                                debtLstDebtDb.setPaytsTo(debtPaytFromEntry);
-                                debtLstDebtDb.setEndDate(debtLstDebtEnd);
+                                debtLstDebtDb.setAcctIntRate(debtRateFromEntry);
+                                debtLstDebtDb.setAcctPaytsTo(debtPaytFromEntry);
+                                debtLstDebtDb.setAcctEndDate(debtLstDebtEnd);
 
                                 debtLstDBMgr.updateAccounts(debtLstDebtDb);
 
                                 if(debtLstDBMgr.getTransfers().size() != 0) {
                                     //debtLstTransToDebtThisYr = debtLstDBMgr.transfersToDebtThisYear(debtIdFromTag);
                                     //debtLstTransFromDebtThisYr = debtLstDBMgr.transfersFromDebtThisYear(debtIdFromTag);
-                                    debtLstDBMgr.updateDebtRecReTransfer(debtIdFromTag, debtLstDBMgr.transfersToDebtThisYear(debtIdFromTag, debtLstGen.lastNumOfDays(365)), debtLstDBMgr.transfersFromDebtThisYear(debtIdFromTag, debtLstGen.lastNumOfDays(365)));
+                                    debtLstDBMgr.updateRecReTransfer(debtIdFromTag, debtLstDBMgr.transfersToAcctThisYear(debtIdFromTag, debtLstGen.lastNumOfDays(365)), debtLstDBMgr.transfersFromAcctThisYear(debtIdFromTag, debtLstGen.lastNumOfDays(365)));
                                 } else {
-                                    debtLstDebtDb.setAnnPaytsTo(debtPaytFromEntry * 12.0);
+                                    debtLstDebtDb.setAcctAnnPaytsTo(debtPaytFromEntry * 12.0);
                                     debtLstDBMgr.updateAccounts(debtLstDebtDb);
                                 }
 
@@ -391,12 +391,12 @@ public class AddDebtsList extends AppCompatActivity {
                                 debtLstCV2 = new ContentValues();
                                 //debtLstCV3 = new ContentValues();
 
-                                debtLstCV2.put(DbHelper.MONEYOUTDEBTCAT, debtNameFromEntry);
+                                debtLstCV2.put(DbHelper.TRANSFROMACCTNAME, debtNameFromEntry);
                                 /*debtLstCV3.put(DbHelper.ACCTNAME, debtNameFromEntry);
                                 debtLstCV3.put(DbHelper.ACCTBAL, debtAmtFromEntry);*/
 
                                 try {
-                                    debtLstDB2.update(DbHelper.MONEY_OUT_TABLE_NAME, debtLstCV2, DbHelper.MONEYOUTCHARGINGDEBTID + "=?", args2);
+                                    debtLstDB2.update(DbHelper.TRANSACTIONS_TABLE_NAME, debtLstCV2, DbHelper.TRANSFROMACCTID + "=?", args2);
                                     //debtLstDB2.update(DbHelper.ACCOUNTS_TABLE_NAME, debtLstCV3, DbHelper.DEBTID + "=?", args2);
                                 } catch (CursorIndexOutOfBoundsException | SQLException e) {
                                     e.printStackTrace();

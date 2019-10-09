@@ -12,16 +12,18 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import ca.gotchasomething.mynance.data.IncomeBudgetDb;
+import ca.gotchasomething.mynance.data.BudgetDb;
+
+//import ca.gotchasomething.mynance.data.IncomeBudgetDb;
 
 public class AddIncome extends AppCompatActivity {
 
+    BudgetDb addIncIncDb;
     Button addIncSaveBtn, addIncCancelBtn, addIncUpdateBtn;
     DbManager addIncDbMgr;
     Double incAmtFromEntry = 0.0, incAnnAmtFromEntry = 0.0, incFrqFromEntry = 0.0;
     EditText addIncAmtET, addIncCatET;
     General addIncGen;
-    IncomeBudgetDb addIncIncDb;
     Intent addIncToList;
     RadioButton addIncAnnlyRB, addIncBiAnnlyRB, addIncBiMthlyRB, addIncBiWklyRB, addIncMthlyRB, addIncWklyRB;
     RadioGroup addIncFrqRG;
@@ -109,11 +111,15 @@ public class AddIncome extends AppCompatActivity {
 
                 if (!incNameFromEntry.equals("null")) {
 
-                    addIncIncDb = new IncomeBudgetDb(
+                    addIncIncDb = new BudgetDb(
                             incNameFromEntry,
                             incAmtFromEntry,
+                            "N",
+                            "Y",
                             incFrqFromEntry,
                             incAnnAmtFromEntry,
+                            "N/A",
+                            "N",
                             0);
 
                     addIncDbMgr.addIncome(addIncIncDb);

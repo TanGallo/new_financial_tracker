@@ -23,14 +23,17 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.text.NumberFormat;
 
-import ca.gotchasomething.mynance.data.ExpenseBudgetDb;
-import ca.gotchasomething.mynance.data.IncomeBudgetDb;
+import ca.gotchasomething.mynance.data.BudgetDb;
 import ca.gotchasomething.mynance.data.SetUpDb;
+
+//import ca.gotchasomething.mynance.data.ExpenseBudgetDb;
+//import ca.gotchasomething.mynance.data.IncomeBudgetDb;
 
 public class LayoutBudget extends MainNavigation {
 
     boolean foundDebtIdInc = false, foundSavIdInc = false, foundDebtIdExp = false, foundSavIdExp = false, foundDebtIdCharging = false, foundExpIdE = false,
             foundExpIdI = false;
+    BudgetDb layBudExpDb, layBudIncDb;
     Button layBudExpCancelBtn, layBudExpSaveBtn, layBudExpUpdateBtn, layBudIncCancelBtn, layBudIncUpdateBtn, layBudIncSaveBtn, layBudResInfoOkBtn, budgetCancelExpenseButton,
             budgetCancelIncomeButton, budgetSetUpTimeButton,
             budgetSetUpHelpButton, budgetUpdateExpenseButton, budgetUpdateIncomeButton, budRepWarnCancelBtn, doneBudgetSetUpButton,
@@ -52,12 +55,11 @@ public class LayoutBudget extends MainNavigation {
             incomeAvailableN = 0.0, savAmtFromEntry = 0.0, savAnnIncFromEntry = 0.0, savGoalFromEntry = 0.0, savRateFromEntry = 0.0,
             totalExpensesD = 0.0, layBudTotRes = 0.0, totalIncomeD = 0.0, layBudTotInc = 0.0, spendPercent2 = 0.0, years2 = 0.0;
     EditText layBudExpAmtET, layBudExpCatET, layBudIncAmtET, layBudIncCatET;
-    ExpenseBudgetDb layBudExpDb;
     //BudExpListAdapter layBudExpListAdapter;
     General layBudGen;
     FloatingActionButton layBudAddExpBtn, layBudAddIncBtn;
     ImageButton layBudAdjIncBtn, layBudAdjExpBtn, layBudAdjDebtsBtn, layBudAdjSavBtn, layBudResInfoBtn;
-    IncomeBudgetDb layBudIncDb;
+    //IncomeBudgetDb layBudIncDb;
     //BudIncListAdapter layBudIncListAdapter;
     int balanceDone = 0, billsDone = 0, budgetDone = 0, debtsDone = 0, incomeDone = 0, savingsDone = 0, tourDone = 0;
     Intent layBudToAdjInc, layBudToAdjExp, layBudToAdjDebt, layBudToAdjSav;

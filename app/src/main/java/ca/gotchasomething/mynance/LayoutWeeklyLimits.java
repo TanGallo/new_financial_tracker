@@ -23,8 +23,11 @@ import com.github.mikephil.charting.charts.PieChart;
 import java.util.ArrayList;
 import java.util.List;
 
-import ca.gotchasomething.mynance.data.ExpenseBudgetDb;
-import ca.gotchasomething.mynance.data.MoneyOutDb;
+import ca.gotchasomething.mynance.data.BudgetDb;
+import ca.gotchasomething.mynance.data.TransactionsDb;
+//import ca.gotchasomething.mynance.data.MoneyOutDb;
+
+//import ca.gotchasomething.mynance.data.ExpenseBudgetDb;
 
 public class LayoutWeeklyLimits extends MainNavigation {
 
@@ -103,14 +106,14 @@ public class LayoutWeeklyLimits extends MainNavigation {
         }
     };
 
-    public class Wee2LstAdapter extends ArrayAdapter<ExpenseBudgetDb> {
+    public class Wee2LstAdapter extends ArrayAdapter<BudgetDb> {
 
         public Context context;
-        public List<ExpenseBudgetDb> weeklyLimits;
+        public List<BudgetDb> weeklyLimits;
 
         public Wee2LstAdapter(
                 Context context,
-                List<ExpenseBudgetDb> weeklyLimits) {
+                List<BudgetDb> weeklyLimits) {
 
             super(context, -1, weeklyLimits);
 
@@ -118,7 +121,7 @@ public class LayoutWeeklyLimits extends MainNavigation {
             this.weeklyLimits = weeklyLimits;
         }
 
-        public void getWeeklyLimits(List<ExpenseBudgetDb> weeklyLimits) {
+        public void getWeeklyLimits(List<BudgetDb> weeklyLimits) {
             this.weeklyLimits = weeklyLimits;
             notifyDataSetChanged();
         }
@@ -161,15 +164,15 @@ public class LayoutWeeklyLimits extends MainNavigation {
             }
 
             //retrieve spendingCategory
-            wee2Hldr.wee2CatTV.setText(weeklyLimits.get(position).getExpenseName());
+            wee2Hldr.wee2CatTV.setText(weeklyLimits.get(position).getBdgtCat());
 
             //retrieve amount spent in this category during general.thisWeek();
             wee2ExpId = weeklyLimits.get(position).getId();
 
             List<Double> spentThisWeekList = new ArrayList<>();
-            for(MoneyOutDb m : wee2DbMgr.getMoneyOuts()) {
-                if(String.valueOf(m.getExpRefKeyMO()).equals(String.valueOf(wee2ExpId)) && wee2Gen.thisWeek().contains(m.getMoneyOutCreatedOn())) {
-                    spentThisWeekList.add(m.getMoneyOutAmount());
+            for(TransactionsDb m : wee2DbMgr.getMoneyOuts()) {
+                if(m.getTransBdgtId() == wee2ExpId && wee2Gen.thisWeek().contains(m.getTransCreatedOn())) {
+                    spentThisWeekList.add(m.getTransAmt());
                 }
             }
             wee2SpentThisWeek = 0.0;
@@ -184,7 +187,7 @@ public class LayoutWeeklyLimits extends MainNavigation {
             wee2Gen.dblASCurrency(String.valueOf(wee2SpentThisWeek), wee2Hldr.wee2SpentAmtTV);
 
             //retrieve amountLeft
-            wee2StartBal = weeklyLimits.get(position).getExpenseAnnualAmount() / 52;
+            wee2StartBal = weeklyLimits.get(position).getBdgtAnnPayt() / 52;
             wee2AmtLeft = wee2StartBal - wee2SpentThisWeek;
             wee2Gen.dblASCurrency(String.valueOf(wee2AmtLeft), wee2Hldr.wee2AmtLeftTV);
 

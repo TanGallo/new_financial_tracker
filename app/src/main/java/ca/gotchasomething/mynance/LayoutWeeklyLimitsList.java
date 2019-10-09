@@ -21,17 +21,19 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.List;
 
-import ca.gotchasomething.mynance.data.ExpenseBudgetDb;
+import ca.gotchasomething.mynance.data.BudgetDb;
+
+//import ca.gotchasomething.mynance.data.ExpenseBudgetDb;
 
 public class LayoutWeeklyLimitsList extends AppCompatActivity {
 
+    BudgetDb wee1ExpDb;
     Button wee1DoneBtn;
     ContentValues wee1CV, wee1CV2;
     DbHelper wee1Helper, wee1Helper2;
     DbManager wee1DbMgr;
     Double wee1WeeklyAmt;
     General wee1Gen;
-    ExpenseBudgetDb wee1ExpDb;
     Intent wee1ToSetUp, wee1ToMain, wee1ToAddMoreExp, wee1ToWeekly;
     ListView wee1ListView;
     SQLiteDatabase wee1DB, wee1DB2;
@@ -101,15 +103,15 @@ public class LayoutWeeklyLimitsList extends AppCompatActivity {
             }
     };
 
-    public class Wee1LstAdapter extends ArrayAdapter<ExpenseBudgetDb> {
+    public class Wee1LstAdapter extends ArrayAdapter<BudgetDb> {
 
         public Context context;
-        public List<ExpenseBudgetDb> expenses;
+        public List<BudgetDb> expenses;
         boolean[] checkedState;
 
         public Wee1LstAdapter(
                 Context context,
-                List<ExpenseBudgetDb> expenses) {
+                List<BudgetDb> expenses) {
 
             super(context, -1, expenses);
 
@@ -118,7 +120,7 @@ public class LayoutWeeklyLimitsList extends AppCompatActivity {
             checkedState = new boolean[expenses.size()];
         }
 
-        public void updateExpenses(List<ExpenseBudgetDb> expenses) {
+        public void updateExpenses(List<BudgetDb> expenses) {
             this.expenses = expenses;
             notifyDataSetChanged();
         }
@@ -152,13 +154,13 @@ public class LayoutWeeklyLimitsList extends AppCompatActivity {
             }
 
             //retrieve category
-            wee1Hldr.wee1WeeklyCatTV.setText(expenses.get(position).getExpenseName());
+            wee1Hldr.wee1WeeklyCatTV.setText(expenses.get(position).getBdgtCat());
 
-            wee1WeeklyAmt = expenses.get(position).getExpenseAnnualAmount() / 52;
+            wee1WeeklyAmt = expenses.get(position).getBdgtAnnPayt() / 52;
 
             wee1Gen.dblASCurrency(String.valueOf(wee1WeeklyAmt), wee1Hldr.wee1WeeklyAmtTV);
 
-            if (expenses.get(position).getExpenseWeekly().equals("Y")) {
+            if (expenses.get(position).getBdgtWeekly().equals("Y")) {
                 checkedState[position] = true;
             } else {
                 checkedState[position] = false;
@@ -171,19 +173,19 @@ public class LayoutWeeklyLimitsList extends AppCompatActivity {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     wee1DbMgr = new DbManager(getApplicationContext());
-                    wee1ExpDb = (ExpenseBudgetDb) wee1Hldr.wee1AddWatchSwitch.getTag();
+                    wee1ExpDb = (BudgetDb) wee1Hldr.wee1AddWatchSwitch.getTag();
                     checkedState[position] = !checkedState[position];
 
                     if(isChecked) {
                         checkedState[position] = true;
-                        wee1ExpDb.setExpenseWeekly("Y");
+                        wee1ExpDb.setBdgtWeekly("Y");
 
                         wee1DbMgr.updateExpense(wee1ExpDb);
                         wee1LstAdapter.updateExpenses(wee1DbMgr.getExpense());
                         notifyDataSetChanged();
                     } else if(!isChecked) {
                         checkedState[position] = false;
-                        wee1ExpDb.setExpenseWeekly("N");
+                        wee1ExpDb.setBdgtWeekly("N");
 
                         wee1DbMgr.updateExpense(wee1ExpDb);
                         wee1LstAdapter.updateExpenses(wee1DbMgr.getExpense());

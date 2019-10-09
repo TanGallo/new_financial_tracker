@@ -261,7 +261,7 @@ public class LayoutSavings extends MainNavigation {
             laySavGen.dblASCurrency(String.valueOf(savings.get(position).getAcctMax()), laySavHldr.laySavGoalTV);
 
             //retrieve savingsDate
-            laySavSavDate = savings.get(position).getEndDate();
+            laySavSavDate = savings.get(position).getAcctEndDate();
             laySavHldr.laySavDateTV.setText(laySavSavDate);
             if (laySavSavDate.contains("2")) {
                 laySavHldr.laySavDateLabel.setVisibility(View.VISIBLE);
@@ -311,9 +311,9 @@ public class LayoutSavings extends MainNavigation {
                     savNameFromTag = laySavSavDb.getAcctName();
                     savAmtFromTag = laySavSavDb.getAcctBal();
                     savGoalFromTag = laySavSavDb.getAcctMax();
-                    savPaytFromTag = laySavSavDb.getPaytsTo();
-                    savRateFromTag = laySavSavDb.getIntRate();
-                    savDateFromTag = laySavSavDb.getEndDate();
+                    savPaytFromTag = laySavSavDb.getAcctPaytsTo();
+                    savRateFromTag = laySavSavDb.getAcctIntRate();
+                    savDateFromTag = laySavSavDb.getAcctEndDate();
                     savIdFromTag = laySavSavDb.getId();
 
                     laySavSavNameET.setText(savNameFromTag);
@@ -358,18 +358,18 @@ public class LayoutSavings extends MainNavigation {
                                 laySavSavDb.setAcctName(savNameFromEntry);
                                 laySavSavDb.setAcctBal(savAmtFromEntry);
                                 laySavSavDb.setAcctMax(savGoalFromEntry);
-                                laySavSavDb.setPaytsTo(savPaytFromEntry);
-                                laySavSavDb.setIntRate(savRateFromEntry);
-                                laySavSavDb.setEndDate(laySavSavDate2);
+                                laySavSavDb.setAcctPaytsTo(savPaytFromEntry);
+                                laySavSavDb.setAcctIntRate(savRateFromEntry);
+                                laySavSavDb.setAcctEndDate(laySavSavDate2);
 
                                 laySavDbMgr.updateAccounts(laySavSavDb);
 
                                 if(laySavDbMgr.getTransfers().size() != 0) {
                                     //laySavTransToSavThisYr = laySavDbMgr.transfersToSavThisYear(savIdFromTag);
                                     //laySavTransFromSavThisYr = laySavDbMgr.transfersFromSavThisYear(savIdFromTag);
-                                    laySavDbMgr.updateSavRecReTransfer(savIdFromTag, laySavDbMgr.transfersToSavThisYear(savIdFromTag, laySavGen.lastNumOfDays(365)), laySavDbMgr.transfersFromSavThisYear(savIdFromTag, laySavGen.lastNumOfDays(365)));
+                                    laySavDbMgr.updateRecReTransfer(savIdFromTag, laySavDbMgr.transfersToAcctThisYear(savIdFromTag, laySavGen.lastNumOfDays(365)), laySavDbMgr.transfersFromAcctThisYear(savIdFromTag, laySavGen.lastNumOfDays(365)));
                                 } else {
-                                    laySavSavDb.setAnnPaytsTo(savPaytFromEntry * 12.0);
+                                    laySavSavDb.setAcctAnnPaytsTo(savPaytFromEntry * 12.0);
                                     laySavDbMgr.updateAccounts(laySavSavDb);
                                 }
 

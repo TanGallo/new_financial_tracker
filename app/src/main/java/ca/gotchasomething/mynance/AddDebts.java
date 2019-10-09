@@ -14,17 +14,18 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import ca.gotchasomething.mynance.data.AccountsDb;
-import ca.gotchasomething.mynance.data.ExpenseBudgetDb;
+import ca.gotchasomething.mynance.data.BudgetDb;
+//import ca.gotchasomething.mynance.data.ExpenseBudgetDb;
 
 public class AddDebts extends AppCompatActivity {
 
     AccountsDb addDebtAcctdb;
+    BudgetDb addDebtExpDb;
     Button addDebtSaveBtn, addDebtCancelBtn, addDebtUpdateBtn;
     DbManager addDebtDbMgr;
     //DebtDb addDebtDebtDb;
     Double debtAmtFromEntry = 0.0, debtLimitFromEntry = 0.0, debtPaytFromEntry = 0.0, debtRateFromEntry = 0.0;
     EditText addDebtDebtNameET, addDebtDebtLimitET, addDebtDebtAmtET, addDebtDebtRateET, addDebtDebtPaytET;
-    ExpenseBudgetDb addDebtExpDb;
     General addDebtGen;
     Intent addDebtToList;
     long addDebtDebtId;
@@ -59,15 +60,15 @@ public class AddDebts extends AppCompatActivity {
         addDebtDebtPaytET.addTextChangedListener(onChangeAddDebtDebtPaytET);
 
         if(addDebtDbMgr.getExpense().size() == 0) {
-            addDebtExpDb = new ExpenseBudgetDb(
-                    "Other",
+            addDebtExpDb = new BudgetDb(
+                    getString(R.string.other),
                     0.0,
+                    "Y",
+                    "N",
                     12.0,
+                    0.0,
                     "B",
                     "N",
-                    0.0,
-                    //0.0,
-                    //0.0,
                     0);
             addDebtDbMgr.addExpense(addDebtExpDb);
         }

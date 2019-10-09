@@ -28,19 +28,22 @@ import com.google.android.material.tabs.TabLayout;
 import java.util.List;
 
 import ca.gotchasomething.mynance.data.AccountsDb;
-import ca.gotchasomething.mynance.data.ExpenseBudgetDb;
-import ca.gotchasomething.mynance.data.MoneyOutDb;
+import ca.gotchasomething.mynance.data.BudgetDb;
+//import ca.gotchasomething.mynance.data.MoneyOutDb;
+import ca.gotchasomething.mynance.data.TransactionsDb;
 import ca.gotchasomething.mynance.spinners.MoneyOutCCSpinnerAdapter;
+
+//import ca.gotchasomething.mynance.data.ExpenseBudgetDb;
 
 public class LayoutCCPur extends MainNavigation {
 
+    BudgetDb layCCPurExpDb;
     ContentValues layCCPurCV;
     Cursor layCCPurCur;
     DbHelper layCCPurHelper, layCCPurHelper2;
     DbManager layCCPurDbMgr;
     Double debtAmtFromDb = 0.0, debtLimitFromDb = 0.0, debtPaytFromDb = 0.0, debtRateFromDb = 0.0, layCCPurMonOutAmt = 0.0, layCCPurMonOutNewAmt = 0.0,
             layCCPurMonOutOldAmt = 0.0;
-    ExpenseBudgetDb layCCPurExpDb;
     General layCCPurGen;
     Intent layCCPurToAddCC, layCCPurToAddMore, layCCPurToFixBudget, layCCPurToList, layCCPurRefresh;
     LayCCPurLstAdapter layCCPurListAdapter;
@@ -48,12 +51,12 @@ public class LayoutCCPur extends MainNavigation {
     ListView layCCPurList;
     long layCCPurChargingDebtIdFromSpin, layCCPurExpId, layCCPurExpRefKeyMO;
     MoneyOutCCSpinnerAdapter layCCPurSpinAdapter;
-    MoneyOutDb layCCPurMonOutDb;
     Spinner layCCPurSpin;
     SQLiteDatabase layCCPurDb, layCCPurDb2;
     String layCCPurChargingDebtNameFromSpin = null, layCCPurExpName = null, layCCPurExpPriority = null, layCCPurExpWeekly = null;
     TabLayout layCCPurTabLay;
     TextView layCCPurAddMoreTV, layCCPurAvailAcctTV, layCCPurAvailAmtLabel, layCCPurBudgWarnTV, layCCPurLabel2, layCCPurNewCCTV, layCCPurTotAcctTV;
+    TransactionsDb layCCPurMonOutDb;
 
 
     @Override
@@ -108,12 +111,9 @@ public class LayoutCCPur extends MainNavigation {
 
         layCCPurSpin = findViewById(R.id.mainSpin);
 
-        //layCCPurDbMgr.mainHeaderText(layCCPurBudgWarnTV, layCCPurTotAcctTV, layCCPurAvailAcctTV, layCCPurDbMgr.sumTotalExpenses(), layCCPurDbMgr.sumTotalIncome(), layCCPurDbMgr.retrieveCurrentAccountBalance(), layCCPurDbMgr.retrieveCurrentB());
-        //layCCPurBudgWarnTV.setOnClickListener(onClickLayCCPurBudgWarnTV);
-
         layCCPurHelper = new DbHelper(this);
         layCCPurDb = layCCPurHelper.getReadableDatabase();
-        layCCPurCur = layCCPurDb.rawQuery("SELECT * FROM " + DbHelper.ACCOUNTS_TABLE_NAME + " WHERE " + DbHelper.ISDEBT + " = 'Y'" + " ORDER BY " + DbHelper.ACCTNAME + " ASC", null);
+        layCCPurCur = layCCPurDb.rawQuery("SELECT * FROM " + DbHelper.ACCOUNTS_TABLE_NAME + " WHERE " + DbHelper.ACCTISDEBT + " = 'Y'" + " ORDER BY " + DbHelper.ACCTNAME + " ASC", null);
         layCCPurSpinAdapter = new MoneyOutCCSpinnerAdapter(getApplicationContext(), layCCPurCur);
         layCCPurSpin.setAdapter(layCCPurSpinAdapter);
 
@@ -173,46 +173,54 @@ public class LayoutCCPur extends MainNavigation {
     };
 
     public void layCCPurChangeDefault() {
-        layCCPurExpDb.setExpenseAmount(layCCPurMonOutAmt);
+        layCCPurExpDb.setBdgtPaytAmt(layCCPurMonOutAmt);
         layCCPurDbMgr.updateExpense(layCCPurExpDb);
         layCCPurContTransaction();
     }
 
     public void layCCPurContTransaction() {
 
-        layCCPurDbMgr.updateDebtRecPlusPt1(layCCPurMonOutAmt, debtAmtFromDb, layCCPurChargingDebtIdFromSpin);
+        layCCPurDbMgr.updateRecPlusPt1(layCCPurMonOutAmt, debtAmtFromDb, layCCPurChargingDebtIdFromSpin);
         for (AccountsDb a : layCCPurDbMgr.getDebts()) {
             if (String.valueOf(a.getId()).equals(String.valueOf(layCCPurChargingDebtIdFromSpin))) {
                 debtAmtFromDb = a.getAcctBal();
                 debtLimitFromDb = a.getAcctMax();
-                debtRateFromDb = a.getIntRate();
-                debtPaytFromDb = a.getPaytsTo();
+                debtRateFromDb = a.getAcctIntRate();
+                debtPaytFromDb = a.getAcctPaytsTo();
             }
         }
-        layCCPurDbMgr.updateDebtRecPt2(layCCPurGen.calcDebtDate(
+        layCCPurDbMgr.updateRecPt2(layCCPurGen.calcDebtDate(
                 debtAmtFromDb,
                 debtRateFromDb,
                 debtPaytFromDb,
                 getString(R.string.debt_paid),
                 getString(R.string.too_far)), layCCPurChargingDebtIdFromSpin);
 
-        layCCPurMonOutDb = new MoneyOutDb(
+        layCCPurMonOutDb = new TransactionsDb(
+                "out",
+                "Y",
                 layCCPurExpName,
-                layCCPurExpPriority,
-                layCCPurExpWeekly,
+                layCCPurExpRefKeyMO,
                 layCCPurMonOutAmt,
                 0.0,
                 0.0,
                 0.0,
+                0.0,
+                0.0,
+                0.0,
+                0,
+                "N/A",
+                "N/A",
+                "N/A",
                 layCCPurChargingDebtIdFromSpin,
                 layCCPurChargingDebtNameFromSpin,
-                layCCPurGen.createTimestamp(),
                 "Y",
-                layCCPurChargingDebtNameFromSpin,
-                layCCPurChargingDebtIdFromSpin,
-                0,
-                0,
-                layCCPurExpRefKeyMO,
+                "N",
+                layCCPurExpPriority,
+                layCCPurExpWeekly,
+                "N",
+                "N",
+                layCCPurGen.createTimestamp(),
                 0);
         layCCPurDbMgr.addMoneyOut(layCCPurMonOutDb);
 
@@ -227,14 +235,14 @@ public class LayoutCCPur extends MainNavigation {
         startActivity(layCCPurToList);
     }
 
-    public class LayCCPurLstAdapter extends ArrayAdapter<ExpenseBudgetDb> {
+    public class LayCCPurLstAdapter extends ArrayAdapter<BudgetDb> {
 
         private Context context;
-        private List<ExpenseBudgetDb> expenses;
+        private List<BudgetDb> expenses;
 
         private LayCCPurLstAdapter(
                 Context context,
-                List<ExpenseBudgetDb> expenses) {
+                List<BudgetDb> expenses) {
 
             super(context, -1, expenses);
 
@@ -242,7 +250,7 @@ public class LayoutCCPur extends MainNavigation {
             this.expenses = expenses;
         }
 
-        public void updateExpenses(List<ExpenseBudgetDb> expenses) {
+        public void updateExpenses(List<BudgetDb> expenses) {
             this.expenses = expenses;
             notifyDataSetChanged();
         }
@@ -289,8 +297,8 @@ public class LayoutCCPur extends MainNavigation {
                 layCCPurHldr = (LayCCPurViewHolder) convertView.getTag();
             }
 
-            layCCPurHldr.layCCPurPaytCatTV.setText(expenses.get(position).getExpenseName());
-            layCCPurGen.dblASCurrency(String.valueOf(expenses.get(position).getExpenseAmount()), layCCPurHldr.layCCPurPaytAmtTV);
+            layCCPurHldr.layCCPurPaytCatTV.setText(expenses.get(position).getBdgtCat());
+            layCCPurGen.dblASCurrency(String.valueOf(expenses.get(position).getBdgtPaytAmt()), layCCPurHldr.layCCPurPaytAmtTV);
 
             layCCPurExpRefKeyMO = expenses.get(position).getId();
 
@@ -306,12 +314,12 @@ public class LayoutCCPur extends MainNavigation {
                     layCCPurHldr.layCCPurPaytSaveBtn.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            layCCPurExpDb = (ExpenseBudgetDb) layCCPurHldr.layCCPurPaytSaveBtn.getTag();
+                            layCCPurExpDb = (BudgetDb) layCCPurHldr.layCCPurPaytSaveBtn.getTag();
 
-                            layCCPurExpName = layCCPurExpDb.getExpenseName();
+                            layCCPurExpName = layCCPurExpDb.getBdgtCat();
                             layCCPurExpId = layCCPurExpDb.getId();
 
-                            layCCPurMonOutOldAmt = expenses.get(position).getExpenseAmount();
+                            layCCPurMonOutOldAmt = expenses.get(position).getBdgtPaytAmt();
                             layCCPurMonOutNewAmt = layCCPurGen.dblFromET(layCCPurHldr.layCCPurPaytAmtET);
 
                             if (layCCPurMonOutNewAmt == 0) {
@@ -320,15 +328,15 @@ public class LayoutCCPur extends MainNavigation {
                                 layCCPurMonOutAmt = layCCPurMonOutNewAmt;
                             }
 
-                            layCCPurExpPriority = layCCPurExpDb.getExpensePriority();
-                            layCCPurExpWeekly = layCCPurExpDb.getExpenseWeekly();
+                            layCCPurExpPriority = layCCPurExpDb.getBdgtPriority();
+                            layCCPurExpWeekly = layCCPurExpDb.getBdgtWeekly();
 
                             for (AccountsDb a : layCCPurDbMgr.getDebts()) {
                                 if (String.valueOf(a.getId()).equals(String.valueOf(layCCPurChargingDebtIdFromSpin))) {
                                     debtAmtFromDb = a.getAcctBal();
                                     debtLimitFromDb = a.getAcctMax();
-                                    debtRateFromDb = a.getIntRate();
-                                    debtPaytFromDb = a.getPaytsTo();
+                                    debtRateFromDb = a.getAcctIntRate();
+                                    debtPaytFromDb = a.getAcctPaytsTo();
                                 }
                             }
 

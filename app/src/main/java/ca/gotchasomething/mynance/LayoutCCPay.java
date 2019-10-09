@@ -25,7 +25,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ca.gotchasomething.mynance.data.AccountsDb;
-import ca.gotchasomething.mynance.data.MoneyOutDb;
+import ca.gotchasomething.mynance.data.TransactionsDb;
+//import ca.gotchasomething.mynance.data.MoneyOutDb;
 
 public class LayoutCCPay extends MainNavigation {
 
@@ -43,11 +44,11 @@ public class LayoutCCPay extends MainNavigation {
     LinearLayout layCCPayPaytListLayout, layCCPayWarnLayout;
     ListView layCCPayCCPaytListView, layCCPayTransListView;
     long layCCPayChargingDebtIdFromTag, layCCPayId;
-    MoneyOutDb layCCPayMonOutDb;
     RelativeLayout layCCPayToPayHeaderLayout;
     SQLiteDatabase layCCPayDb, layCCPayDb2;
     String layCCPayPriorityFromTag = null;
     TextView layCCPaycheckBelowLabel, layCCPayNoCCTransTV, layCCPayWarnTV;
+    TransactionsDb layCCPayMonOutDb;
 
 
     @Override
@@ -154,7 +155,7 @@ public class LayoutCCPay extends MainNavigation {
     public void layCCPayPlusDebtToPay() {
         for (AccountsDb a : layCCPayDbMgr.getDebts()) {
             if (a.getId() == layCCPayChargingDebtIdFromTag) {
-                debtToPayFromTag = a.getDebtToPay();
+                debtToPayFromTag = a.getAcctDebtToPay();
             }
         }
         layCCPayNewDebtToPay = debtToPayFromTag + layCCPayAmtFromTag;
@@ -162,7 +163,7 @@ public class LayoutCCPay extends MainNavigation {
         layCCPayHelper = new DbHelper(this);
         layCCPayDb = layCCPayHelper.getWritableDatabase();
         layCCPayCV = new ContentValues();
-        layCCPayCV.put(DbHelper.DEBTTOPAY, layCCPayNewDebtToPay);
+        layCCPayCV.put(DbHelper.ACCTDEBTTOPAY, layCCPayNewDebtToPay);
         layCCPayDb.update(DbHelper.ACCOUNTS_TABLE_NAME, layCCPayCV, DbHelper.ID + "=" + layCCPayChargingDebtIdFromTag, null);
         layCCPayDb.close();
     }
@@ -170,7 +171,7 @@ public class LayoutCCPay extends MainNavigation {
     public void layCCPayMinusDebtToPay() {
         for (AccountsDb a2 : layCCPayDbMgr.getDebts()) {
             if (a2.getId() == layCCPayChargingDebtIdFromTag) {
-                debtToPayFromTag = a2.getDebtToPay();
+                debtToPayFromTag = a2.getAcctDebtToPay();
             }
         }
         layCCPayNewDebtToPay = debtToPayFromTag - layCCPayAmtFromTag;
@@ -178,7 +179,7 @@ public class LayoutCCPay extends MainNavigation {
         layCCPayHelper2 = new DbHelper(this);
         layCCPayDb2 = layCCPayHelper2.getWritableDatabase();
         layCCPayCV2 = new ContentValues();
-        layCCPayCV2.put(DbHelper.DEBTTOPAY, layCCPayNewDebtToPay);
+        layCCPayCV2.put(DbHelper.ACCTDEBTTOPAY, layCCPayNewDebtToPay);
         layCCPayDb2.update(DbHelper.ACCOUNTS_TABLE_NAME, layCCPayCV2, DbHelper.ID + "=" + layCCPayChargingDebtIdFromTag, null);
         layCCPayDb2.close();
 
@@ -205,30 +206,30 @@ public class LayoutCCPay extends MainNavigation {
     }
 
     public void layCCPayAddToPayList() {
-        layCCPayMonOutDb.setMoneyOutToPay(1);
-        layCCPayMonOutDb.setMoneyOutA(moneyOutA);
-        layCCPayMonOutDb.setMoneyOutOwing(moneyOutOwing);
-        layCCPayMonOutDb.setMoneyOutB(moneyOutB);
+        layCCPayMonOutDb.setTransCCToPay("Y");
+        layCCPayMonOutDb.setTransAmtOutA(moneyOutA);
+        layCCPayMonOutDb.setTransAmtOutOwing(moneyOutOwing);
+        layCCPayMonOutDb.setTransAmtOutB(moneyOutB);
         layCCPayDbMgr.updateMoneyOut(layCCPayMonOutDb);
     }
 
     public void layCCPayRemoveFromPayList() {
-        layCCPayMonOutDb.setMoneyOutToPay(0);
-        layCCPayMonOutDb.setMoneyOutA(0.0);
-        layCCPayMonOutDb.setMoneyOutOwing(0.0);
-        layCCPayMonOutDb.setMoneyOutB(0.0);
+        layCCPayMonOutDb.setTransCCToPay("N");
+        layCCPayMonOutDb.setTransAmtOutA(0.0);
+        layCCPayMonOutDb.setTransAmtOutOwing(0.0);
+        layCCPayMonOutDb.setTransAmtOutB(0.0);
         layCCPayDbMgr.updateMoneyOut(layCCPayMonOutDb);
     }
 
-    public class LayCCPayTransLstAdapter extends ArrayAdapter<MoneyOutDb> {
+    public class LayCCPayTransLstAdapter extends ArrayAdapter<TransactionsDb> {
 
         private Context context;
-        private List<MoneyOutDb> ccTransToPay;
+        private List<TransactionsDb> ccTransToPay;
         boolean[] checkedState;
 
         private LayCCPayTransLstAdapter(
                 Context context,
-                List<MoneyOutDb> ccTransToPay) {
+                List<TransactionsDb> ccTransToPay) {
 
             super(context, -1, ccTransToPay);
 
@@ -237,7 +238,7 @@ public class LayoutCCPay extends MainNavigation {
             checkedState = new boolean[ccTransToPay.size()];
         }
 
-        public void updateCCTransToPay(List<MoneyOutDb> ccTransToPay) {
+        public void updateCCTransToPay(List<TransactionsDb> ccTransToPay) {
             this.ccTransToPay = ccTransToPay;
             notifyDataSetChanged();
         }
@@ -271,10 +272,10 @@ public class LayoutCCPay extends MainNavigation {
                 layCCPayTransHldr.layCCPayLstCheckbox.setTag(layCCPayTransHldr);
             }
 
-            layCCPayGen.dblASCurrency(String.valueOf(ccTransToPay.get(position).getMoneyOutAmount()), layCCPayTransHldr.layCCPayLstAmtTV);
+            layCCPayGen.dblASCurrency(String.valueOf(ccTransToPay.get(position).getTransAmt()), layCCPayTransHldr.layCCPayLstAmtTV);
 
-            layCCPayTransHldr.layCCPayLstCatTV.setText(ccTransToPay.get(position).getMoneyOutCat());
-            layCCPayTransHldr.layCCPayLstChargingDebtCatTV.setText(ccTransToPay.get(position).getMoneyOutDebtCat());
+            layCCPayTransHldr.layCCPayLstCatTV.setText(ccTransToPay.get(position).getTransBdgtCat());
+            layCCPayTransHldr.layCCPayLstChargingDebtCatTV.setText(ccTransToPay.get(position).getTransFromAcctName());
 
             layCCPayTransHldr.layCCPayLstCheckbox.setTag(ccTransToPay.get(position));
             layCCPayTransHldr.layCCPayLstCheckbox.setTag(R.id.payCCLstCheckbox, position);
@@ -282,12 +283,12 @@ public class LayoutCCPay extends MainNavigation {
             layCCPayTransHldr.layCCPayLstCheckbox.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    layCCPayMonOutDb = (MoneyOutDb) layCCPayTransHldr.layCCPayLstCheckbox.getTag();
+                    layCCPayMonOutDb = (TransactionsDb) layCCPayTransHldr.layCCPayLstCheckbox.getTag();
                     checkedState[position] = !checkedState[position];
 
-                    layCCPayPriorityFromTag = layCCPayMonOutDb.getMoneyOutPriority();
-                    layCCPayAmtFromTag = layCCPayMonOutDb.getMoneyOutAmount();
-                    layCCPayChargingDebtIdFromTag = layCCPayMonOutDb.getMoneyOutChargingDebtId();
+                    layCCPayPriorityFromTag = layCCPayMonOutDb.getTransBdgtPriority();
+                    layCCPayAmtFromTag = layCCPayMonOutDb.getTransAmt();
+                    layCCPayChargingDebtIdFromTag = layCCPayMonOutDb.getTransFromAcctId();
 
                     if (checkedState[position]) {
                         layCCPayDetAandBPortionsExp();
@@ -435,9 +436,9 @@ public class LayoutCCPay extends MainNavigation {
 
             //retrieve amount due in each category and format as currency
             List<Double> layCCPayTotDueList = new ArrayList<>();
-            for (MoneyOutDb m2 : layCCPayDbMgr.getMoneyOuts()) {
-                if (m2.getMoneyOutChargingDebtId() == layCCPayId && m2.getMoneyOutToPay() == 1 && m2.getMoneyOutPaid() == 0) {
-                    layCCPayTotDueList.add(m2.getMoneyOutAmount());
+            for (TransactionsDb m2 : layCCPayDbMgr.getMoneyOuts()) {
+                if (m2.getTransFromAcctId() == layCCPayId && m2.getTransCCToPay().equals("Y") && m2.getTransCCPaid().equals("N")) {
+                    layCCPayTotDueList.add(m2.getTransAmt());
                 }
             }
             layCCPayAmtDue = 0.0;

@@ -24,7 +24,8 @@ import java.util.List;
 
 //import ca.gotchasomething.mynance.data.DebtDb;
 import ca.gotchasomething.mynance.data.AccountsDb;
-import ca.gotchasomething.mynance.data.MoneyOutDb;
+import ca.gotchasomething.mynance.data.TransactionsDb;
+//import ca.gotchasomething.mynance.data.MoneyOutDb;
 
 public class LayoutCCPurList extends AppCompatActivity {
 
@@ -36,9 +37,9 @@ public class LayoutCCPurList extends AppCompatActivity {
     Intent monCC2ToMain, monCC2ToAddCCTrans, monCC2Refresh;
     ListView monCC2List;
     long monCC2ExpRefKeyMO, monCC2MonOutchargingDebtId;
-    MoneyOutDb monCC2MonOutDb;
     MonCC2Adapter monCC2Adapter;
     TextView monCC2Title;
+    TransactionsDb monCC2MonOutDb;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -81,14 +82,14 @@ public class LayoutCCPurList extends AppCompatActivity {
         }
     };
 
-    public class MonCC2Adapter extends ArrayAdapter<MoneyOutDb> {
+    public class MonCC2Adapter extends ArrayAdapter<TransactionsDb> {
 
         private Context context;
-        private List<MoneyOutDb> ccTrans;
+        private List<TransactionsDb> ccTrans;
 
         private MonCC2Adapter(
                 Context context,
-                List<MoneyOutDb> ccTrans) {
+                List<TransactionsDb> ccTrans) {
 
             super(context, -1, ccTrans);
 
@@ -96,7 +97,7 @@ public class LayoutCCPurList extends AppCompatActivity {
             this.ccTrans = ccTrans;
         }
 
-        public void updateCCTrans(List<MoneyOutDb> ccTrans) {
+        public void updateCCTrans(List<TransactionsDb> ccTrans) {
             this.ccTrans = ccTrans;
             notifyDataSetChanged();
         }
@@ -149,22 +150,22 @@ public class LayoutCCPurList extends AppCompatActivity {
                 monCC2Hldr = (MoneyCC2ViewHolder) convertView.getTag();
             }
 
-            monCC2Hldr.monCC2CatTV.setText(ccTrans.get(position).getMoneyOutCat());
-            monCC2MonOutAmt = ccTrans.get(position).getMoneyOutAmount();
+            monCC2Hldr.monCC2CatTV.setText(ccTrans.get(position).getTransBdgtCat());
+            monCC2MonOutAmt = ccTrans.get(position).getTransAmt();
             monCC2Gen.dblASCurrency(String.valueOf(monCC2MonOutAmt), monCC2Hldr.monCC2AmtTV);
-            monCC2Hldr.monCC2DateTV.setText(ccTrans.get(position).getMoneyOutCreatedOn());
-            monCC2Hldr.monCC2CCTV.setText(ccTrans.get(position).getMoneyOutDebtCat());
+            monCC2Hldr.monCC2DateTV.setText(ccTrans.get(position).getTransCreatedOn());
+            monCC2Hldr.monCC2CCTV.setText(ccTrans.get(position).getTransFromAcctName());
             monCC2Hldr.monCC2EditBtn.setTag(ccTrans.get(position));
             monCC2Hldr.monCC2DelBtn.setTag(ccTrans.get(position));
 
-            monCC2ExpRefKeyMO = ccTrans.get(position).getExpRefKeyMO();
+            monCC2ExpRefKeyMO = ccTrans.get(position).getTransBdgtId();
 
             //click on pencil icon
             monCC2Hldr.monCC2EditBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
-                    monCC2MonOutDb = (MoneyOutDb) monCC2Hldr.monCC2EditBtn.getTag();
+                    monCC2MonOutDb = (TransactionsDb) monCC2Hldr.monCC2EditBtn.getTag();
                     LayoutCCPurList.this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
                     monCC2DbMgr = new DbManager(getContext());
 
@@ -184,15 +185,15 @@ public class LayoutCCPurList extends AppCompatActivity {
                         public void onClick(View v) {
 
                             monCC2AmtEntry = monCC2Gen.dblFromET(monCC2Hldr.monCC2AmtET);
-                            monCC2MonOutAmtDiff = monCC2AmtEntry - ccTrans.get(position).getMoneyOutAmount();
-                            monCC2MonOutchargingDebtId = ccTrans.get(position).getMoneyOutChargingDebtId();
+                            monCC2MonOutAmtDiff = monCC2AmtEntry - ccTrans.get(position).getTransAmt();
+                            monCC2MonOutchargingDebtId = ccTrans.get(position).getTransFromAcctId();
 
                             for (AccountsDb a : monCC2DbMgr.getDebts()) {
                                 if (String.valueOf(a.getId()).equals(monCC2MonOutchargingDebtId)) {
                                     debtAmtFromDb = a.getAcctBal();
                                     debtLimitFromDb = a.getAcctMax();
-                                    debtRateFromDb = a.getIntRate();
-                                    debtPaytFromDb = a.getPaytsTo();
+                                    debtRateFromDb = a.getAcctIntRate();
+                                    debtPaytFromDb = a.getAcctPaytsTo();
                                 }
                             }
                             if (debtAmtFromDb + monCC2MonOutAmtDiff > debtLimitFromDb) {
@@ -215,23 +216,23 @@ public class LayoutCCPurList extends AppCompatActivity {
                                 });
                             }
 
-                            monCC2DbMgr.updateDebtRecPlusPt1(monCC2MonOutAmtDiff, debtAmtFromDb, monCC2MonOutchargingDebtId);
+                            monCC2DbMgr.updateRecPlusPt1(monCC2MonOutAmtDiff, debtAmtFromDb, monCC2MonOutchargingDebtId);
                             for (AccountsDb a : monCC2DbMgr.getDebts()) {
                                 if (String.valueOf(a.getId()).equals(monCC2MonOutchargingDebtId)) {
                                     debtAmtFromDb = a.getAcctBal();
                                     debtLimitFromDb = a.getAcctMax();
-                                    debtRateFromDb = a.getIntRate();
-                                    debtPaytFromDb = a.getPaytsTo();
+                                    debtRateFromDb = a.getAcctIntRate();
+                                    debtPaytFromDb = a.getAcctPaytsTo();
                                 }
                             }
-                            monCC2DbMgr.updateDebtRecPt2(monCC2Gen.calcDebtDate(
+                            monCC2DbMgr.updateRecPt2(monCC2Gen.calcDebtDate(
                                     debtAmtFromDb,
                                     debtRateFromDb,
                                     debtPaytFromDb,
                                     getString(R.string.debt_paid),
                                     getString(R.string.too_far)), monCC2MonOutchargingDebtId);
 
-                            monCC2MonOutDb.setMoneyOutAmount(monCC2AmtEntry);
+                            monCC2MonOutDb.setTransAmt(monCC2AmtEntry);
                             monCC2DbMgr.updateMoneyOut(monCC2MonOutDb);
 
                             monCC2Adapter.updateCCTrans(monCC2DbMgr.getCCTrans());
@@ -252,28 +253,28 @@ public class LayoutCCPurList extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
 
-                    monCC2MonOutDb = (MoneyOutDb) monCC2Hldr.monCC2DelBtn.getTag();
-                    monCC2ExpRefKeyMO = ccTrans.get(position).getExpRefKeyMO();
-                    monCC2MonOutchargingDebtId = ccTrans.get(position).getMoneyOutChargingDebtId();
+                    monCC2MonOutDb = (TransactionsDb) monCC2Hldr.monCC2DelBtn.getTag();
+                    monCC2ExpRefKeyMO = ccTrans.get(position).getTransBdgtId();
+                    monCC2MonOutchargingDebtId = ccTrans.get(position).getTransFromAcctId();
 
                     for (AccountsDb a : monCC2DbMgr.getDebts()) {
                         if (String.valueOf(a.getId()).equals(monCC2MonOutchargingDebtId)) {
                             debtAmtFromDb = a.getAcctBal();
                             debtLimitFromDb = a.getAcctMax();
-                            debtRateFromDb = a.getIntRate();
-                            debtPaytFromDb = a.getPaytsTo();
+                            debtRateFromDb = a.getAcctIntRate();
+                            debtPaytFromDb = a.getAcctPaytsTo();
                         }
                     }
-                    monCC2DbMgr.updateDebtRecMinusPt1(ccTrans.get(position).getMoneyOutAmount(), debtAmtFromDb, monCC2MonOutchargingDebtId);
+                    monCC2DbMgr.updateRecMinusPt1(ccTrans.get(position).getTransAmt(), debtAmtFromDb, monCC2MonOutchargingDebtId);
                     for (AccountsDb a : monCC2DbMgr.getDebts()) {
                         if (String.valueOf(a.getId()).equals(monCC2MonOutchargingDebtId)) {
                             debtAmtFromDb = a.getAcctBal();
                             debtLimitFromDb = a.getAcctMax();
-                            debtRateFromDb = a.getIntRate();
-                            debtPaytFromDb = a.getPaytsTo();
+                            debtRateFromDb = a.getAcctIntRate();
+                            debtPaytFromDb = a.getAcctPaytsTo();
                         }
                     }
-                    monCC2DbMgr.updateDebtRecPt2(monCC2Gen.calcDebtDate(
+                    monCC2DbMgr.updateRecPt2(monCC2Gen.calcDebtDate(
                             debtAmtFromDb,
                             debtRateFromDb,
                             debtPaytFromDb,

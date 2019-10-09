@@ -1,4 +1,4 @@
-package ca.gotchasomething.mynance.data;
+/*package ca.gotchasomething.mynance.data;
 //Db description
 
 public class MoneyInDb {
@@ -68,4 +68,4 @@ public class MoneyInDb {
 
     @Override
     public String toString() { return getMoneyInCat(); }
-}
+}*/

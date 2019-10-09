@@ -12,7 +12,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import ca.gotchasomething.mynance.data.CurrentDb;
-import ca.gotchasomething.mynance.data.MoneyInDb;
+import ca.gotchasomething.mynance.data.TransactionsDb;
+//import ca.gotchasomething.mynance.data.MoneyInDb;
 
 public class SetUpFinalP extends AppCompatActivity {
 
@@ -25,8 +26,8 @@ public class SetUpFinalP extends AppCompatActivity {
     EditText fin1ET;
     General fin1Gen;
     Intent fin1ToSetUp;
-    MoneyInDb fin1MoneyInDb;
     SQLiteDatabase fin1DB;
+    TransactionsDb fin1MoneyInDb;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -65,22 +66,37 @@ public class SetUpFinalP extends AppCompatActivity {
                 fin1MoneyInB = fin1StartBal - fin1MoneyInA;
             }
 
-            fin1MoneyInDb = new MoneyInDb(
+            fin1MoneyInDb = new TransactionsDb(
+                    "in",
+                    "N/A",
                     getString(R.string.starting_balance),
+                    0,
                     fin1StartBal,
                     fin1MoneyInA,
                     0.0,
                     fin1MoneyInB,
+                    0.0,
+                    0.0,
+                    0.0,
                     1,
                     getString(R.string.main_account),
-                    fin1Gen.createTimestamp(),
+                    "N",
+                    "N",
                     0,
+                    "N/A",
+                    "N/A",
+                    "N/A",
+                    "N/A",
+                    "N/A",
+                    "N/A",
+                    "N/A",
+                    fin1Gen.createTimestamp(),
                     0);
 
             fin1DbMgr.addMoneyIn(fin1MoneyInDb);
 
             fin1CurrDb = new CurrentDb(
-                    fin1StartBal,
+                    //fin1StartBal,
                     fin1MoneyInB,
                     fin1MoneyInA,
                     0.0,

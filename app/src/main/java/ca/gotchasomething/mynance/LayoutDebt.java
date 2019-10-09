@@ -134,8 +134,8 @@ public class LayoutDebt extends MainNavigation {
     public String layDebtLatestDate() {
         List<String> dates = new ArrayList<>();
         for (AccountsDb a : layDebtDbMgr.getDebts()) {
-            if (a.getIsDebt().equals("Y")) {
-                dates.add(a.getEndDate());
+            if (a.getAcctIsDebt().equals("Y")) {
+                dates.add(a.getAcctEndDate());
             }
         }
         List<Date> dates2 = new ArrayList<>(dates.size());
@@ -287,7 +287,7 @@ public class LayoutDebt extends MainNavigation {
             layDebtGen.dblASCurrency(String.valueOf(debts.get(position).getAcctBal()), layDebtHldr.layDebtAmtTV);
 
             //retrieve debtEnd
-            layDebtDebtEnd = debts.get(position).getEndDate();
+            layDebtDebtEnd = debts.get(position).getAcctEndDate();
             if (layDebtDebtEnd.contains("2")) {
                 layDebtHldr.layDebtFreeDateLabel.setVisibility(View.VISIBLE);
             } else {
@@ -349,10 +349,10 @@ public class LayoutDebt extends MainNavigation {
                     debtNameFromTag = layDebtDebtDb.getAcctName();
                     debtAmtFromTag = layDebtDebtDb.getAcctBal();
                     debtLimitFromTag = layDebtDebtDb.getAcctMax();
-                    debtRateFromTag = layDebtDebtDb.getIntRate();
-                    debtPaytFromTag = layDebtDebtDb.getPaytsTo();
-                    debtToPayFromTag = layDebtDebtDb.getDebtToPay();
-                    debtEndFromTag = layDebtDebtDb.getEndDate();
+                    debtRateFromTag = layDebtDebtDb.getAcctIntRate();
+                    debtPaytFromTag = layDebtDebtDb.getAcctPaytsTo();
+                    debtToPayFromTag = layDebtDebtDb.getAcctDebtToPay();
+                    debtEndFromTag = layDebtDebtDb.getAcctEndDate();
                     debtIdFromTag = layDebtDebtDb.getId();
 
                     layDebtDebtNameET.setText(debtNameFromTag);
@@ -398,18 +398,18 @@ public class LayoutDebt extends MainNavigation {
                                 layDebtDebtDb.setAcctName(debtNameFromEntry);
                                 layDebtDebtDb.setAcctMax(debtLimitFromEntry);
                                 layDebtDebtDb.setAcctBal(debtAmtFromEntry);
-                                layDebtDebtDb.setIntRate(debtRateFromEntry);
-                                layDebtDebtDb.setPaytsTo(debtPaytFromEntry);
-                                layDebtDebtDb.setEndDate(layDebtDebtEnd2);
+                                layDebtDebtDb.setAcctIntRate(debtRateFromEntry);
+                                layDebtDebtDb.setAcctPaytsTo(debtPaytFromEntry);
+                                layDebtDebtDb.setAcctEndDate(layDebtDebtEnd2);
 
                                 layDebtDbMgr.updateAccounts(layDebtDebtDb);
 
                                 if(layDebtDbMgr.getTransfers().size() != 0) {
                                     //layDebtTransToDebtThisYr = layDebtDbMgr.transfersToDebtThisYear(debtIdFromTag);
                                     //layDebtTransFromDebtThisYr = layDebtDbMgr.transfersFromDebtThisYear(debtIdFromTag);
-                                    layDebtDbMgr.updateDebtRecReTransfer(debtIdFromTag, layDebtDbMgr.transfersToDebtThisYear(debtIdFromTag, layDebtGen.lastNumOfDays(365)), layDebtDbMgr.transfersFromDebtThisYear(debtIdFromTag, layDebtGen.lastNumOfDays(365)));
+                                    layDebtDbMgr.updateRecReTransfer(debtIdFromTag, layDebtDbMgr.transfersToAcctThisYear(debtIdFromTag, layDebtGen.lastNumOfDays(365)), layDebtDbMgr.transfersFromAcctThisYear(debtIdFromTag, layDebtGen.lastNumOfDays(365)));
                                 } else {
-                                    layDebtDebtDb.setAnnPaytsTo(debtPaytFromEntry * 12.0);
+                                    layDebtDebtDb.setAcctAnnPaytsTo(debtPaytFromEntry * 12.0);
                                     layDebtDbMgr.updateAccounts(layDebtDebtDb);
                                 }
 
@@ -421,11 +421,11 @@ public class LayoutDebt extends MainNavigation {
                                 layDebtCV2 = new ContentValues();
                                 //layDebtCV3 = new ContentValues();
 
-                                layDebtCV2.put(DbHelper.MONEYOUTDEBTCAT, debtNameFromEntry);
+                                layDebtCV2.put(DbHelper.TRANSFROMACCTNAME, debtNameFromEntry);
                                 //layDebtCV3.put(DbHelper.ACCTNAME, debtNameFromEntry);
 
                                 try {
-                                    layDebtDb.update(DbHelper.MONEY_OUT_TABLE_NAME, layDebtCV2, DbHelper.MONEYOUTCHARGINGDEBTID + "=?", args2);
+                                    layDebtDb.update(DbHelper.TRANSACTIONS_TABLE_NAME, layDebtCV2, DbHelper.TRANSFROMACCTID + "=?", args2);
                                     //layDebtDb.update(DbHelper.ACCOUNTS_TABLE_NAME, layDebtCV3, DbHelper.DEBTID + "=?", args2);
                                 } catch (CursorIndexOutOfBoundsException | SQLException e) {
                                     e.printStackTrace();

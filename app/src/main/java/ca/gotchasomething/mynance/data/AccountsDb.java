@@ -4,47 +4,38 @@ package ca.gotchasomething.mynance.data;
 public class AccountsDb {
     private String acctName;
     private Double acctBal;
-    private String isDebt;
-    private String isSav;
-    private Double acctMax;
-    private Double intRate;
-    private Double paytsTo;
-    private Double annPaytsTo;
-    private String endDate;
-    private Double debtToPay;
+    private String acctIsDebt;
+    private String acctIsSav;
+    private Double acctMax; //limit for debts, goal for sav
+    private Double acctIntRate;
+    private Double acctPaytsTo;
+    private Double acctAnnPaytsTo;
+    private String acctEndDate;
+    private Double acctDebtToPay; //debts only
     private long id;
-    //private Double savGoal;
-    //private Double debtOwing;
-    //private Double savingsAmount;
-    //private Double savingsPayments;
-    //private Double savingsRate;
-    //private Double savingsAnnualPayments;
-    //private String savDate;
-    //private long debtId;
-    //private long savId;
 
     public AccountsDb(
             String acctName,
             Double acctBal,
-            String isDebt,
-            String isSav,
+            String acctIsDebt,
+            String acctIsSav,
             Double acctMax,
-            Double intRate,
-            Double paytsTo,
-            Double annPaytsTo,
-            String endDate,
-            Double debtToPay,
+            Double acctIntRate,
+            Double acctPaytsTo,
+            Double acctAnnPaytsTo,
+            String acctEndDate,
+            Double acctDebtToPay,
             long id) {
         this.acctName = acctName;
         this.acctBal = acctBal;
-        this.isDebt = isDebt;
-        this.isSav = isSav;
+        this.acctIsDebt = acctIsDebt;
+        this.acctIsSav = acctIsSav;
         this.acctMax = acctMax;
-        this.intRate = intRate;
-        this.paytsTo = paytsTo;
-        this.annPaytsTo = annPaytsTo;
-        this.endDate = endDate;
-        this.debtToPay = debtToPay;
+        this.acctIntRate = acctIntRate;
+        this.acctPaytsTo = acctPaytsTo;
+        this.acctAnnPaytsTo = acctAnnPaytsTo;
+        this.acctEndDate = acctEndDate;
+        this.acctDebtToPay = acctDebtToPay;
         this.id = id;
     }
 
@@ -54,29 +45,29 @@ public class AccountsDb {
     public Double getAcctBal() { return acctBal; }
     public void setAcctBal(Double acctBal) { this.acctBal = acctBal; }
 
-    public String getIsDebt() { return isDebt; }
-    public void setIsDebt(String isDebt) { this.isDebt = isDebt; }
+    public String getAcctIsDebt() { return acctIsDebt; }
+    public void setAcctIsDebt(String acctIsDebt) { this.acctIsDebt = acctIsDebt; }
 
-    public String getIsSav() { return isSav; }
-    public void setIsSav(String isSav) { this.isSav = isSav; }
+    public String getAcctIsSav() { return acctIsSav; }
+    public void setAcctIsSav(String acctIsSav) { this.acctIsSav = acctIsSav; }
 
     public Double getAcctMax() { return acctMax; }
     public void setAcctMax(Double acctMax) { this.acctMax = acctMax; }
 
-    public Double getIntRate() { return intRate; }
-    public void setIntRate(Double intRate) { this.intRate = intRate; }
+    public Double getAcctIntRate() { return acctIntRate; }
+    public void setAcctIntRate(Double acctIntRate) { this.acctIntRate = acctIntRate; }
 
-    public Double getPaytsTo() { return paytsTo; }
-    public void setPaytsTo(Double paytsTo) { this.paytsTo = paytsTo; }
+    public Double getAcctPaytsTo() { return acctPaytsTo; }
+    public void setAcctPaytsTo(Double acctPaytsTo) { this.acctPaytsTo = acctPaytsTo; }
 
-    public Double getAnnPaytsTo() { return annPaytsTo; }
-    public void setAnnPaytsTo(Double annPaytsTo) { this.annPaytsTo = annPaytsTo; }
+    public Double getAcctAnnPaytsTo() { return acctAnnPaytsTo; }
+    public void setAcctAnnPaytsTo(Double acctAnnPaytsTo) { this.acctAnnPaytsTo = acctAnnPaytsTo; }
 
-    public String getEndDate() { return endDate; }
-    public void setEndDate(String endDate) { this.endDate = endDate; }
+    public String getAcctEndDate() { return acctEndDate; }
+    public void setAcctEndDate(String acctEndDate) { this.acctEndDate = acctEndDate; }
 
-    public Double getDebtToPay() { return debtToPay; }
-    public void setDebtToPay(Double debtToPay) { this.debtToPay = debtToPay; }
+    public Double getAcctDebtToPay() { return acctDebtToPay; }
+    public void setAcctDebtToPay(Double acctDebtToPay) { this.acctDebtToPay = acctDebtToPay; }
 
     public long getId() { return id; }
     public void setId(long id) { this.id = id; }

@@ -461,5 +461,7 @@
     <string name="choose_split_inc">Combien devrait aller dans vos fonds réservés?</string>
     <string name="reserved_for_bills">réservér pour les factures, etc</string>
     <string name="weekly2">hebdo.</string>
-    <string name="avail_for_bills">Available for paying bills, etc:</string>
+    <string name="avail_for_bills">Pour payer les factures, etc:</string>
+    <string name="main_acct">Compte principal</string>
+    <string name="other">Other</string>
 </resources>

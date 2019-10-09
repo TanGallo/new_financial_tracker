@@ -30,7 +30,7 @@ public class TransferSavingsSpinnerAdapter extends CursorAdapter {
     public void bindView(View view, Context context, Cursor cursor) {
 
         spinnerText = view.findViewById(R.id.spinnerText);
-        savingsName = cursor.getString(cursor.getColumnIndexOrThrow(DbHelper.SAVINGSNAME));
+        savingsName = cursor.getString(cursor.getColumnIndexOrThrow(DbHelper.ACCTNAME));
         spinnerText.setText(savingsName);
     }
 

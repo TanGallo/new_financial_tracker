@@ -13,7 +13,66 @@ public class DbHelper extends SQLiteOpenHelper {
 
     public static final String ID = "_id";
 
-    public static final String INCOME_TABLE_NAME = "incomes";
+    public static final String ACCOUNTS_TABLE_NAME = "accounts";
+    public static final String ACCTNAME = "acctName";
+    public static final String ACCTBAL = "acctBal";
+    public static final String ACCTISDEBT = "acctIsDebt";
+    public static final String ACCTISSAV = "acctIsSav";
+    public static final String ACCTMAX = "acctMax";
+    public static final String ACCTINTRATE = "acctIntRate";
+    public static final String ACCTPAYTSTO = "acctPaytsTo";
+    public static final String ACCTANNPAYTSTO = "acctAnnPaytsTo";
+    public static final String ACCTENDDATE = "acctEndDate";
+    public static final String ACCTDEBTTOPAY = "acctDebtToPay";
+
+    public static final String BUDGET_TABLE_NAME = "budget";
+    public static final String BDGTCAT = "bdgtCat";
+    public static final String BDGTPAYTAMT = "bdgtPaytAmt";
+    public static final String BDGTISEXP = "bdgtIsExp";
+    public static final String BDGTISINC = "bdgtIsInc";
+    public static final String BDGTPAYTFRQ = "bdgtPaytFrq";
+    public static final String BDGTANNPAYT = "bdgtAnnPayt";
+    public static final String BDGTPRIORITY = "bdgtPriority";
+    public static final String BDGTWEEKLY = "bdgtWeekly";
+
+    public static final String CURRENT_TABLE_NAME = "current";
+    //public static final String CURRENTACCOUNT = "currentAccount";
+    public static final String CURRENTB = "currentB";
+    public static final String CURRENTA = "currentA";
+    public static final String CURRENTOWINGA = "currentOwingA";
+    public static final String LASTPAGEID = "lastPageId";
+
+    public static final String TRANSACTIONS_TABLE_NAME = "transactions";
+    public static final String TRANSTYPE = "transType";
+    public static final String TRANSISCC = "transIsCC";
+    public static final String TRANSBDGTCAT = "transBdgtCat";
+    public static final String TRANSBDGTID = "transBdgtId";
+    public static final String TRANSAMT = "transAmt";
+    public static final String TRANSAMTINA = "transAmtInA";
+    public static final String TRANSAMTINOWING = "transAmtInOwing";
+    public static final String TRANSAMTINB = "transAmtInB";
+    public static final String TRANSAMTOUTA = "transAmtOutA";
+    public static final String TRANSAMTOUTOWING = "transAmtOutOwing";
+    public static final String TRANSAMTOUTB = "transAmtOutB";
+    public static final String TRANSTOACCTID = "transToAcctId";
+    public static final String TRANSTOACCTNAME = "transToAcctName";
+    public static final String TRANSTOISDEBT = "transToIsDebt";
+    public static final String TRANSTOISSAV = "transToIsSav";
+    public static final String TRANSFROMACCTID = "transFromAcctId";
+    public static final String TRANSFROMACCTNAME = "transFromAcctName";
+    public static final String TRANSFROMISDEBT = "transFromIsDebt";
+    public static final String TRANSFROMISSAV = "transFromIsSav";
+    public static final String TRANSBDGTPRIORITY = "transBdgtPriority";
+    public static final String TRANSBDGTWEEKLY = "transBdgtWeekly";
+    public static final String TRANSCCTOPAY = "transCCToPay";
+    public static final String TRANSCCPAID = "transCCPaid";
+    public static final String TRANSCREATEDON = "transCreatedOn";
+
+    public static final String SET_UP_TABLE_NAME = "setUp";
+    public static final String LATESTDONE = "latestDone";
+    public static final String BALANCEAMOUNT = "balanceAmount";
+
+    /*public static final String INCOME_TABLE_NAME = "incomes";
     public static final String INCOMENAME = "incomeName";
     public static final String INCOMEAMOUNT = "incomeAmount";
     public static final String INCOMEFREQUENCY = "incomeFrequency";
@@ -25,7 +84,7 @@ public class DbHelper extends SQLiteOpenHelper {
     public static final String EXPENSEFREQUENCY = "expenseFrequency";
     public static final String EXPENSEPRIORITY = "expensePriority";
     public static final String EXPENSEWEEKLY = "expenseWeekly";
-    public static final String EXPENSEANNUALAMOUNT = "expenseAnnualAmount";
+    public static final String EXPENSEANNUALAMOUNT = "expenseAnnualAmount";*/
 
     /*public static final String DEBTS_TABLE_NAME = "debts";
     public static final String DEBTNAME = "debtName";
@@ -46,7 +105,7 @@ public class DbHelper extends SQLiteOpenHelper {
     public static final String SAVINGSANNUALPAYMENTS = "savingsAnnualPayments";
     public static final String SAVINGSDATE = "savingsDate";*/
 
-    public static final String MONEY_IN_TABLE_NAME = "moneyIn";
+    /*public static final String MONEY_IN_TABLE_NAME = "moneyIn";
     public static final String MONEYINCAT = "moneyInCat";
     public static final String MONEYINAMOUNT = "moneyInAmount";
     public static final String MONEYINA = "moneyInA";
@@ -73,32 +132,9 @@ public class DbHelper extends SQLiteOpenHelper {
     public static final String MONEYOUTCHARGINGDEBTID = "moneyOutChargingDebtId";
     public static final String MONEYOUTTOPAY = "moneyOutToPay";
     public static final String MONEYOUTPAID = "moneyOutPaid";
-    public static final String EXPREFKEYMO = "expRefKeyMO";
+    public static final String EXPREFKEYMO = "expRefKeyMO";*/
 
-    public static final String SET_UP_TABLE_NAME = "setUp";
-    public static final String LATESTDONE = "latestDone";
-    public static final String BALANCEAMOUNT = "balanceAmount";
-
-    public static final String CURRENT_TABLE_NAME = "current";
-    public static final String CURRENTACCOUNT = "currentAccount";
-    public static final String CURRENTB = "currentB";
-    public static final String CURRENTA = "currentA";
-    public static final String CURRENTOWINGA = "currentOwingA";
-    public static final String LASTPAGEID = "lastPageId";
-
-    public static final String ACCOUNTS_TABLE_NAME = "accounts";
-    public static final String ACCTNAME = "acctName";
-    public static final String ACCTBAL = "acctBal";
-    public static final String ISDEBT = "isDebt";
-    public static final String ISSAV = "isSav";
-    public static final String ACCTMAX = "acctMax";
-    public static final String INTRATE = "intRate";
-    public static final String PAYTSTO = "paytsTo";
-    public static final String ANNPAYTSTO = "annPaytsTo";
-    public static final String ENDDATE = "endDate";
-    public static final String DEBTTOPAY = "debtToPay";
-
-    public static final String TRANSFERS_TABLE_NAME = "transfers";
+    /*public static final String TRANSFERS_TABLE_NAME = "transfers";
     public static final String TRANSFROMACCT = "transFromAcct";
     public static final String TRANSTOACCT = "transToAcct";
     public static final String TRANSFROMDEBTID = "transFromDebtId";
@@ -112,7 +148,7 @@ public class DbHelper extends SQLiteOpenHelper {
     public static final String TRANSAMTINA = "transAmtInA";
     public static final String TRANSAMTINOWING = "transAmtInOwing";
     public static final String TRANSAMTINB = "transAmtInB";
-    public static final String TRANSCREATEDON = "transCreatedOn";
+    public static final String TRANSCREATEDON = "transCreatedOn";*/
 
     //singleton pattern
     public static DbHelper instance = null;
@@ -128,7 +164,71 @@ public class DbHelper extends SQLiteOpenHelper {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
-    private static final String createExpensesQuery = "CREATE TABLE " + EXPENSES_TABLE_NAME +
+    private static final String createAccountsQuery = "CREATE TABLE " + ACCOUNTS_TABLE_NAME +
+            " (_id INTEGER PRIMARY KEY," +
+            " acctName TEXT," +
+            " acctBal REAL," +
+            " acctIsDebt TEXT," +
+            " acctIsSav TEXT," +
+            " acctMax REAL," +
+            " acctIntRate REAL," +
+            " acctPaytsTo REAL," +
+            " acctAnnPaytsTo REAL," +
+            " acctEndDate TEXT," +
+            " acctDebtToPay REAL)";
+
+    private static final String createBudgetQuery = "CREATE TABLE " + BUDGET_TABLE_NAME +
+            " (_id INTEGER PRIMARY KEY," +
+            " bdgtCat TEXT," +
+            " bdgtPaytAmt REAL," +
+            " bdgtIsExp TEXT," +
+            " bdgtIsInc TEXT," +
+            " bdgtPaytFrq REAL," +
+            " bdgtAnnPayt REAL," +
+            " bdgtPriority TEXT," +
+            " bdgtWeekly TEXT)";
+
+    private static final String createCurrentQuery = "CREATE TABLE " + CURRENT_TABLE_NAME +
+            " (_id INTEGER PRIMARY KEY," +
+            //" currentAccount REAL," +
+            " currentB REAL," +
+            " currentA REAL," +
+            " currentOwingA REAL," +
+            " lastPageId INTEGER)";
+
+    private static final String createTransactionsQuery = "CREATE TABLE " + TRANSACTIONS_TABLE_NAME +
+            " (_id INTEGER PRIMARY KEY," +
+            " transType TEXT," +
+            " transIsCC TEXT," +
+            " transBdgtCat TEXT," +
+            " transBdgtId INTEGER," +
+            " transAmt REAL," +
+            " transAmtInA REAL," +
+            " transAmtInOwing REAL," +
+            " transAmtInB REAL," +
+            " transAmtOutA REAL," +
+            " transAmtOutOwing REAL," +
+            " transAmtOutB REAL," +
+            " transToAcctId INTEGER," +
+            " transToAcctName TEXT," +
+            " transToIsDebt TEXT," +
+            " transToIsSav TEXT," +
+            " transFromAcctId INTEGER," +
+            " transFromAcctName TEXT," +
+            " transFromIsDebt TEXT," +
+            " transFromIsSav TEXT," +
+            " transBdgtPriority TEXT," +
+            " transBdgtWeekly TEXT," +
+            " transCCToPay TEXT," +
+            " transCCPaid TEXT," +
+            " transCreatedOn TEXT)";
+
+    private static final String createSetUpQuery = "CREATE TABLE " + SET_UP_TABLE_NAME +
+            " (_id INTEGER PRIMARY KEY," +
+            " latestDone TEXT," +
+            " balanceAmount REAL)";
+
+    /*private static final String createExpensesQuery = "CREATE TABLE " + EXPENSES_TABLE_NAME +
             " (_id INTEGER PRIMARY KEY AUTOINCREMENT," +
             " expenseName TEXT," +
             " expenseAmount REAL," +
@@ -142,7 +242,7 @@ public class DbHelper extends SQLiteOpenHelper {
             " incomeName TEXT," +
             " incomeAmount REAL," +
             " incomeFrequency REAL," +
-            " incomeAnnualAmount REAL NOT NULL)";
+            " incomeAnnualAmount REAL NOT NULL)";*/
 
     /*private static final String createDebtsQuery = "CREATE TABLE " + DEBTS_TABLE_NAME +
             " (_id INTEGER PRIMARY KEY," +
@@ -165,7 +265,7 @@ public class DbHelper extends SQLiteOpenHelper {
             " savingsAnnualPayments REAL," +
             " savingsDate TEXT)";*/
 
-    private static final String createMoneyInQuery = "CREATE TABLE " + MONEY_IN_TABLE_NAME +
+    /*private static final String createMoneyInQuery = "CREATE TABLE " + MONEY_IN_TABLE_NAME +
             " (_id INTEGER PRIMARY KEY," +
             " moneyInCat TEXT," +
             " moneyInAmount REAL," +
@@ -194,35 +294,9 @@ public class DbHelper extends SQLiteOpenHelper {
             " moneyOutChargingDebtId INTEGER," +
             " moneyOutToPay INTEGER," +
             " moneyOutPaid INTEGER," +
-            " expRefKeyMO INTEGER)";
+            " expRefKeyMO INTEGER)";*/
 
-    private static final String createSetUpQuery = "CREATE TABLE " + SET_UP_TABLE_NAME +
-            " (_id INTEGER PRIMARY KEY," +
-            " latestDone TEXT," +
-            " balanceAmount REAL)";
-
-    private static final String createCurrentQuery = "CREATE TABLE " + CURRENT_TABLE_NAME +
-            " (_id INTEGER PRIMARY KEY," +
-            " currentAccount REAL," +
-            " currentB REAL," +
-            " currentA REAL," +
-            " currentOwingA REAL," +
-            " lastPageId INTEGER)";
-
-    private static final String createAccountsQuery = "CREATE TABLE " + ACCOUNTS_TABLE_NAME +
-            " (_id INTEGER PRIMARY KEY," +
-            " acctName TEXT," +
-            " acctBal REAL," +
-            " isDebt TEXT," +
-            " isSav TEXT," +
-            " acctMax REAL," +
-            " intRate REAL," +
-            " paytsTo REAL," +
-            " annPaytsTo REAL," +
-            " endDate TEXT," +
-            " debtToPay REAL)";
-
-    private static final String createTransfersQuery = "CREATE TABLE " + TRANSFERS_TABLE_NAME +
+    /*private static final String createTransfersQuery = "CREATE TABLE " + TRANSFERS_TABLE_NAME +
             " (_id INTEGER PRIMARY KEY," +
             " transFromAcct TEXT," +
             " transToAcct TEXT," +
@@ -237,21 +311,21 @@ public class DbHelper extends SQLiteOpenHelper {
             " transAmtInA REAL," +
             " transAmtInOwing REAL," +
             " transAmtInB REAL," +
-            " transCreatedOn TEXT)";
+            " transCreatedOn TEXT)";*/
 
     @Override
     public void onCreate(SQLiteDatabase db) {
 
-        db.execSQL(createExpensesQuery);
-        db.execSQL(createIncomesQuery);
+        db.execSQL(createAccountsQuery);
+        db.execSQL(createBudgetQuery);
+        db.execSQL(createCurrentQuery);
+        db.execSQL(createTransactionsQuery);
+        db.execSQL(createSetUpQuery);
+        //db.execSQL(createIncomesQuery);
         //db.execSQL(createDebtsQuery);
         //db.execSQL(createSavingsQuery);
-        db.execSQL(createMoneyInQuery);
-        db.execSQL(createMoneyOutQuery);
-        db.execSQL(createSetUpQuery);
-        db.execSQL(createCurrentQuery);
-        db.execSQL(createAccountsQuery);
-        db.execSQL(createTransfersQuery);
+        //db.execSQL(createMoneyOutQuery);
+        //db.execSQL(createTransfersQuery);
     }
 
     @Override

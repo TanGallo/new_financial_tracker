@@ -26,13 +26,17 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import java.util.List;
 
 import ca.gotchasomething.mynance.data.AccountsDb;
-import ca.gotchasomething.mynance.data.ExpenseBudgetDb;
-import ca.gotchasomething.mynance.data.MoneyOutDb;
-//import ca.gotchasomething.mynance.data.SavingsDb;
+import ca.gotchasomething.mynance.data.BudgetDb;
+//import ca.gotchasomething.mynance.data.MoneyOutDb;
+import ca.gotchasomething.mynance.data.TransactionsDb;
 import ca.gotchasomething.mynance.spinners.TransferSpinnerAdapter;
+
+//import ca.gotchasomething.mynance.data.ExpenseBudgetDb;
+//import ca.gotchasomething.mynance.data.SavingsDb;
 
 public class LayoutMoneyOut extends MainNavigation {
 
+    BudgetDb monOutExpDb;
     ContentValues monOutCV;
     Cursor monOutCur, monOutCur2;
     DbHelper monOutHelper, monOutHelper2, monOutHelper3;
@@ -41,19 +45,18 @@ public class LayoutMoneyOut extends MainNavigation {
             monOutMonOutAmt = 0.0, monOutMonOutOldAmt = 0.0, monOutMonOutNewAmt = 0.0, newMoneyA = 0.0, newMoneyOwing = 0.0, newMoneyB = 0.0,
             savAmtFromDb = 0.0, savGoalFromDb = 0.0, savPaytFromDb = 0.0, savRateFromDb = 0.0;
     General monOutGen;
-    ExpenseBudgetDb monOutExpDb;
     int clicked2 = 0, clickedE2 = 0;
     Intent monOutToRatings, monOutToAddMore, monOutRefresh, monOutToList, monOutToFixBudget;
     LinearLayout monOutHeaderLayout;
     ListView monOutList;
     long monOutExpId, monOutMaxId, monOutExpRefKeyMO, monOutSavId, monOutFromAcctId;
-    MoneyOutDb monOutMonOutDb;
     MonOutLstAdapter monOutLstAdapter;
     SharedPreferences sp, spE;
     Spinner monOutSpin;
     SQLiteDatabase monOutDb, monOutDb2, monOutDb3;
-    String clicked2S = null, clickedE2S = null, monOutAcctName = null, monOutExpName = null, monOutExpPriority = null, monOutExpWeekly = null, monOutIsSav = null;
+    String clicked2S = null, clickedE2S = null, monOutAcctName = null, monOutExpName = null, monOutExpPriority = null, monOutExpWeekly = null, monOutFromIsSav = null;
     TextView monOutAddMoreTV, monOutBudgWarnTV, monOutAvailAcctTV, monOutAvailAmtLabel, monOutDepToTV, monOutIncSourceTV, monOutTotAcctTV;
+    TransactionsDb monOutMonOutDb;
     TransferSpinnerAdapter monOutSpinAdapter;
 
     @Override
@@ -107,7 +110,7 @@ public class LayoutMoneyOut extends MainNavigation {
 
         monOutHelper3 = new DbHelper(this);
         monOutDb3 = monOutHelper3.getReadableDatabase();
-        monOutCur2 = monOutDb3.rawQuery("SELECT * FROM " + DbHelper.ACCOUNTS_TABLE_NAME + " WHERE " + DbHelper.ISDEBT + " = 'N' " + " ORDER BY " + DbHelper.ACCTNAME + " ASC", null);
+        monOutCur2 = monOutDb3.rawQuery("SELECT * FROM " + DbHelper.ACCOUNTS_TABLE_NAME + " WHERE " + DbHelper.ACCTISDEBT + " = 'N' " + " ORDER BY " + DbHelper.ACCTNAME + " ASC", null);
         monOutSpinAdapter = new TransferSpinnerAdapter(getApplicationContext(), monOutCur2);
         monOutSpin.setAdapter(monOutSpinAdapter);
 
@@ -163,7 +166,7 @@ public class LayoutMoneyOut extends MainNavigation {
 
         monOutHelper = new DbHelper(this);
         monOutDb = monOutHelper.getReadableDatabase();
-        monOutCur = monOutDb.rawQuery("SELECT max(_id)" + " FROM " + DbHelper.MONEY_OUT_TABLE_NAME, null);
+        monOutCur = monOutDb.rawQuery("SELECT max(_id)" + " FROM " + DbHelper.TRANSACTIONS_TABLE_NAME, null);
         monOutCur.moveToFirst();
         monOutMaxId = monOutCur.getLong(0);
         monOutCur.close();
@@ -189,7 +192,7 @@ public class LayoutMoneyOut extends MainNavigation {
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
             monOutAcctName = monOutCur2.getString(monOutCur2.getColumnIndexOrThrow(DbHelper.ACCTNAME));
-            monOutIsSav = monOutCur2.getString(monOutCur2.getColumnIndexOrThrow(DbHelper.ISSAV));
+            monOutFromIsSav = monOutCur2.getString(monOutCur2.getColumnIndexOrThrow(DbHelper.ACCTISSAV));
             monOutFromAcctId = monOutCur2.getLong(monOutCur2.getColumnIndexOrThrow(DbHelper.ID));
         }
 
@@ -200,7 +203,7 @@ public class LayoutMoneyOut extends MainNavigation {
     };
 
     public void monOutChangeDefault() {
-        monOutExpDb.setExpenseAmount(monOutMonOutAmt);
+        monOutExpDb.setBdgtPaytAmt(monOutMonOutAmt);
         monOutDbMgr.updateExpense(monOutExpDb);
     }
 
@@ -230,16 +233,16 @@ public class LayoutMoneyOut extends MainNavigation {
     }
 
     public void monOutContSavAcctTrans() {
-        monOutDbMgr.updateSavRecMinusPt1(monOutMonOutAmt, monOutDbMgr.retrieveCurrentSavAmt(monOutFromAcctId), monOutFromAcctId);
+        monOutDbMgr.updateRecMinusPt1(monOutMonOutAmt, monOutDbMgr.retrieveCurrentSavAmt(monOutFromAcctId), monOutFromAcctId);
         for (AccountsDb a : monOutDbMgr.getSavings()) {
             if (a.getId() == monOutFromAcctId) {
                 savGoalFromDb = a.getAcctMax();
                 savAmtFromDb = a.getAcctBal();
-                savRateFromDb = a.getIntRate();
-                savPaytFromDb = a.getPaytsTo();
+                savRateFromDb = a.getAcctIntRate();
+                savPaytFromDb = a.getAcctPaytsTo();
             }
         }
-        monOutDbMgr.updateSavRecPt2(monOutGen.calcSavingsDate(
+        monOutDbMgr.updateRecPt2(monOutGen.calcSavingsDate(
                 savGoalFromDb,
                 savAmtFromDb,
                 savRateFromDb,
@@ -254,27 +257,35 @@ public class LayoutMoneyOut extends MainNavigation {
     }
 
     public void monOutAddMoneyOut() {
-        monOutMonOutDb = new MoneyOutDb(
+        monOutMonOutDb = new TransactionsDb(
+                "out",
+                "N",
                 monOutExpName,
-                monOutExpPriority,
-                monOutExpWeekly,
+                monOutExpId,
                 monOutMonOutAmt,
+                0.0,
+                0.0,
+                0.0,
                 moneyOutA,
                 moneyOutOwing,
                 moneyOutB,
+                0,
+                "N/A",
+                "N/A",
+                "N/A",
                 monOutFromAcctId,
                 monOutAcctName,
-                monOutGen.createTimestamp(),
                 "N",
+                monOutFromIsSav,
+                monOutExpPriority,
+                monOutExpWeekly,
                 "N/A",
-                0,
-                0,
-                0,
-                monOutExpId,
+                "N/A",
+                monOutGen.createTimestamp(),
                 0);
         monOutDbMgr.addMoneyOut(monOutMonOutDb);
 
-        monOutExpDb.setExpenseAnnualAmount(monOutDbMgr.makeNewExpAnnAmt(monOutExpId, monOutGen.lastNumOfDays(365)));
+        monOutExpDb.setBdgtAnnPayt(monOutDbMgr.makeNewExpAnnAmt(monOutExpId, monOutGen.lastNumOfDays(365)));
         monOutDbMgr.updateExpense(monOutExpDb);
 
         monOutLstAdapter.updateExpenses(monOutDbMgr.getExpense());
@@ -283,14 +294,14 @@ public class LayoutMoneyOut extends MainNavigation {
         noRatingsYet();
     }
 
-    public class MonOutLstAdapter extends ArrayAdapter<ExpenseBudgetDb> {
+    public class MonOutLstAdapter extends ArrayAdapter<BudgetDb> {
 
         private Context context;
-        private List<ExpenseBudgetDb> expenses;
+        private List<BudgetDb> expenses;
 
         private MonOutLstAdapter(
                 Context context,
-                List<ExpenseBudgetDb> expenses) {
+                List<BudgetDb> expenses) {
 
             super(context, -1, expenses);
 
@@ -298,7 +309,7 @@ public class LayoutMoneyOut extends MainNavigation {
             this.expenses = expenses;
         }
 
-        public void updateExpenses(List<ExpenseBudgetDb> expenses) {
+        public void updateExpenses(List<BudgetDb> expenses) {
             this.expenses = expenses;
             notifyDataSetChanged();
         }
@@ -345,8 +356,8 @@ public class LayoutMoneyOut extends MainNavigation {
                 monOutHldr = (MonOutViewHolder) convertView.getTag();
             }
 
-            monOutHldr.monOutCatTV.setText(expenses.get(position).getExpenseName());
-            monOutGen.dblASCurrency(String.valueOf(expenses.get(position).getExpenseAmount()), monOutHldr.monOutAmtTV);
+            monOutHldr.monOutCatTV.setText(expenses.get(position).getBdgtCat());
+            monOutGen.dblASCurrency(String.valueOf(expenses.get(position).getBdgtPaytAmt()), monOutHldr.monOutAmtTV);
 
             monOutExpRefKeyMO = expenses.get(position).getId();
 
@@ -362,12 +373,12 @@ public class LayoutMoneyOut extends MainNavigation {
                     monOutHldr.monOutSaveButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            monOutExpDb = (ExpenseBudgetDb) monOutHldr.monOutSaveButton.getTag();
+                            monOutExpDb = (BudgetDb) monOutHldr.monOutSaveButton.getTag();
 
-                            monOutExpName = monOutExpDb.getExpenseName();
+                            monOutExpName = monOutExpDb.getBdgtCat();
                             monOutExpId = monOutExpDb.getId();
 
-                            monOutMonOutOldAmt = monOutExpDb.getExpenseAmount();
+                            monOutMonOutOldAmt = monOutExpDb.getBdgtPaytAmt();
                             monOutMonOutNewAmt = monOutGen.dblFromET(monOutHldr.monOutNewAmtET);
 
                             if (monOutMonOutNewAmt == 0) {
@@ -376,8 +387,8 @@ public class LayoutMoneyOut extends MainNavigation {
                                 monOutMonOutAmt = monOutMonOutNewAmt;
                             }
 
-                            monOutExpPriority = monOutExpDb.getExpensePriority();
-                            monOutExpWeekly = monOutExpDb.getExpenseWeekly();
+                            monOutExpPriority = monOutExpDb.getBdgtPriority();
+                            monOutExpWeekly = monOutExpDb.getBdgtWeekly();
 
                             if (monOutSavId > 0) {
                                 if (monOutDbMgr.retrieveCurrentSavAmt(monOutSavId) - monOutMonOutAmt < 0) {

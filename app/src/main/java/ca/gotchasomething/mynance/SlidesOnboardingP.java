@@ -18,19 +18,20 @@ import androidx.appcompat.content.res.AppCompatResources;
 import androidx.viewpager.widget.ViewPager;
 
 import ca.gotchasomething.mynance.data.AccountsDb;
-import ca.gotchasomething.mynance.data.ExpenseBudgetDb;
+import ca.gotchasomething.mynance.data.BudgetDb;
+//import ca.gotchasomething.mynance.data.ExpenseBudgetDb;
 import ca.gotchasomething.mynance.data.SetUpDb;
 
 public class SlidesOnboardingP extends AppCompatActivity implements View.OnClickListener {
 
     AccountsDb acctDb;
     private AdapterSlides adapter;
+    BudgetDb expDb;
     private Button skipButton, nextButton;
     Cursor setUpCursor;
     DbHelper setUpHelper;
     DbManager dbManager;
     Double balanceAmount;
-    ExpenseBudgetDb expDb;
     private ImageView[] dots;
     int position, tourDoneYes;
     private int[] slides = {
@@ -153,23 +154,29 @@ public class SlidesOnboardingP extends AppCompatActivity implements View.OnClick
         }
         if(dbManager.getAccounts().size() == 0) {
             acctDb = new AccountsDb(
-                    "Main Account",
+                    getString(R.string.main_account),
                     0.0,
-                    0,
-                    0,
+                    "N",
+                    "N",
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    "N/A",
+                    0.0,
                     0);
             dbManager.addAccounts(acctDb);
         }
         if(dbManager.getExpense().size() == 0) {
-            expDb = new ExpenseBudgetDb(
-                    "Other",
+            expDb = new BudgetDb(
+                    getString(R.string.other),
                     0.0,
+                    "Y",
+                    "N",
                     12.0,
+                    0.0,
                     "B",
                     "N",
-                    0.0,
-                    //0.0,
-                    //0.0,
                     0);
             dbManager.addExpense(expDb);
         }

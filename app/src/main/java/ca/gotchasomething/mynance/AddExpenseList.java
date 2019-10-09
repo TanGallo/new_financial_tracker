@@ -25,10 +25,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.List;
 
-import ca.gotchasomething.mynance.data.ExpenseBudgetDb;
+import ca.gotchasomething.mynance.data.BudgetDb;
+
+//import ca.gotchasomething.mynance.data.ExpenseBudgetDb;
 
 public class AddExpenseList extends AppCompatActivity {
 
+    BudgetDb expLstExpDB;
     Button expLstAddMoreButton, expLstDoneButton, expLstExpCancelBtn, expLstExpSaveBtn, expLstExpUpdateBtn;
     ContentValues expLstCV;
     DbHelper expLstHelper;
@@ -36,7 +39,6 @@ public class AddExpenseList extends AppCompatActivity {
     Double expAmtFromEntry = 0.0, expAmtFromTag = 0.0, expFrqFromTag = 0.0, expFrqFromEntry = 0.0, expLstNewExpAnnAmt = 0.0;
     EditText expLstExpAmtET, expLstExpCatET;
     General expLstGen;
-    ExpenseBudgetDb expLstExpDB;
     ExpLstLstAdapter expLstLstAdapter;
     Intent expLstToBud, expLstToCCPur, expLstToMonOut, expLstToWklyList, expLstRefresh, expLstToSetUp, expLstToAddMore, expLstToAnalysis;
     ListView expLstListView;
@@ -129,14 +131,14 @@ public class AddExpenseList extends AppCompatActivity {
         }
     };
 
-    public class ExpLstLstAdapter extends ArrayAdapter<ExpenseBudgetDb> {
+    public class ExpLstLstAdapter extends ArrayAdapter<BudgetDb> {
 
         public Context context;
-        public List<ExpenseBudgetDb> expense;
+        public List<BudgetDb> expense;
 
         public ExpLstLstAdapter(
                 Context context,
-                List<ExpenseBudgetDb> expense) {
+                List<BudgetDb> expense) {
 
             super(context, -1, expense);
 
@@ -144,7 +146,7 @@ public class AddExpenseList extends AppCompatActivity {
             this.expense = expense;
         }
 
-        public void updateExpenses(List<ExpenseBudgetDb> expense) {
+        public void updateExpenses(List<BudgetDb> expense) {
             this.expense = expense;
             notifyDataSetChanged();
         }
@@ -181,10 +183,10 @@ public class AddExpenseList extends AppCompatActivity {
                 expLstHldr = (ExpLstViewHolder) convertView.getTag();
             }
 
-            expLstHldr.expLstExpName.setText(expense.get(position).getExpenseName());
+            expLstHldr.expLstExpName.setText(expense.get(position).getBdgtCat());
 
             //retrieve incomeAnnualAmount and format as currency
-            expLstAnnAmt2 = String.valueOf((expense.get(position).getExpenseAmount()) * (expense.get(position).getExpenseFrequency()));
+            expLstAnnAmt2 = String.valueOf((expense.get(position).getBdgtPaytAmt()) * (expense.get(position).getBdgtPaytFrq()));
             expLstGen.dblASCurrency(expLstAnnAmt2, expLstHldr.expLstExpAmt);
 
             expLstHldr.expLstDel.setTag(expense.get(position));
@@ -235,12 +237,12 @@ public class AddExpenseList extends AppCompatActivity {
                     expLstExpYesWklyRB = findViewById(R.id.addExpYesWklyRB);
                     expLstExpNoWklyRB = findViewById(R.id.addExpNoWklyRB);
 
-                    expLstExpDB = (ExpenseBudgetDb) expLstHldr.expLstEdit.getTag();
-                    expNameFromTag = expLstExpDB.getExpenseName();
-                    expAmtFromTag = expLstExpDB.getExpenseAmount();
-                    expFrqFromTag = expLstExpDB.getExpenseFrequency();
-                    expPriorityFromTag = expLstExpDB.getExpensePriority();
-                    expWeeklyFromTag = expLstExpDB.getExpenseWeekly();
+                    expLstExpDB = (BudgetDb) expLstHldr.expLstEdit.getTag();
+                    expNameFromTag = expLstExpDB.getBdgtCat();
+                    expAmtFromTag = expLstExpDB.getBdgtPaytAmt();
+                    expFrqFromTag = expLstExpDB.getBdgtPaytFrq();
+                    expPriorityFromTag = expLstExpDB.getBdgtPriority();
+                    expWeeklyFromTag = expLstExpDB.getBdgtWeekly();
                     expIdFromTag = expLstExpDB.getId();
 
                     expLstExpCatET.setText(expNameFromTag);
@@ -388,11 +390,11 @@ public class AddExpenseList extends AppCompatActivity {
 
                             if (!expNameFromEntry.equals("null")) {
 
-                                expLstExpDB.setExpenseName(expNameFromEntry);
-                                expLstExpDB.setExpenseAmount(expAmtFromEntry);
-                                expLstExpDB.setExpenseFrequency(expFrqFromEntry);
-                                expLstExpDB.setExpensePriority(expPriorityFromEntry);
-                                expLstExpDB.setExpenseWeekly(expWeeklyFromEntry);
+                                expLstExpDB.setBdgtCat(expNameFromEntry);
+                                expLstExpDB.setBdgtPaytAmt(expAmtFromEntry);
+                                expLstExpDB.setBdgtPaytFrq(expFrqFromEntry);
+                                expLstExpDB.setBdgtPriority(expPriorityFromEntry);
+                                expLstExpDB.setBdgtWeekly(expWeeklyFromEntry);
 
                                 expLstDbMgr.updateExpense(expLstExpDB);
 
@@ -401,7 +403,7 @@ public class AddExpenseList extends AppCompatActivity {
                                 } else {
                                     expLstNewExpAnnAmt = expAmtFromEntry * expFrqFromEntry;
                                 }
-                                expLstExpDB.setExpenseAnnualAmount(expLstNewExpAnnAmt);
+                                expLstExpDB.setBdgtAnnPayt(expLstNewExpAnnAmt);
                                 expLstDbMgr.updateExpense(expLstExpDB);
                                 
                                 expLstLstAdapter.updateExpenses(expLstDbMgr.getExpense());
@@ -427,7 +429,7 @@ public class AddExpenseList extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
 
-                    expLstExpDB = (ExpenseBudgetDb) expLstHldr.expLstDel.getTag();
+                    expLstExpDB = (BudgetDb) expLstHldr.expLstDel.getTag();
 
                     expLstDbMgr.deleteExpense(expLstExpDB);
                     expLstLstAdapter.updateExpenses(expLstDbMgr.getExpense());

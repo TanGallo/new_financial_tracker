@@ -1,4 +1,4 @@
-package ca.gotchasomething.mynance.data;
+/*package ca.gotchasomething.mynance.data;
 //Db description
 
 public class MoneyOutDb {
@@ -198,4 +198,4 @@ public class MoneyOutDb {
     public String toString() {
         return getMoneyOutCat();
     }
-}
+}*/

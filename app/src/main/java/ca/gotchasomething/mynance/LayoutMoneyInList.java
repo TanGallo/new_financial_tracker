@@ -26,7 +26,8 @@ import java.util.List;
 
 //import ca.gotchasomething.mynance.data.DebtDb;
 import ca.gotchasomething.mynance.data.AccountsDb;
-import ca.gotchasomething.mynance.data.MoneyInDb;
+import ca.gotchasomething.mynance.data.TransactionsDb;
+//import ca.gotchasomething.mynance.data.MoneyInDb;
 //import ca.gotchasomething.mynance.data.SavingsDb;
 
 public class LayoutMoneyInList extends AppCompatActivity {
@@ -42,11 +43,11 @@ public class LayoutMoneyInList extends AppCompatActivity {
     Intent monInLstToMain, monInLstToAddMonIn, monInLstRefresh;
     ListView monInLstList;
     long monInLstIncRefKeyMI, monInToAcctId;
-    MoneyInDb monInLstMonInDb;
     MonInLstAdapter monInLstAdapter;
     SQLiteDatabase monInLstDb;
     String monInIsDebt = null, monInIsSav = null;
     TextView monInLstTitle;
+    TransactionsDb monInLstMonInDb;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -89,14 +90,14 @@ public class LayoutMoneyInList extends AppCompatActivity {
         }
     };
 
-    public class MonInLstAdapter extends ArrayAdapter<MoneyInDb> {
+    public class MonInLstAdapter extends ArrayAdapter<TransactionsDb> {
 
         private Context context;
-        private List<MoneyInDb> moneyIns;
+        private List<TransactionsDb> moneyIns;
 
         private MonInLstAdapter(
                 Context context,
-                List<MoneyInDb> moneyIns) {
+                List<TransactionsDb> moneyIns) {
 
             super(context, -1, moneyIns);
 
@@ -104,7 +105,7 @@ public class LayoutMoneyInList extends AppCompatActivity {
             this.moneyIns = moneyIns;
         }
 
-        public void updateMoneyIns(List<MoneyInDb> moneyIns) {
+        public void updateMoneyIns(List<TransactionsDb> moneyIns) {
             this.moneyIns = moneyIns;
             notifyDataSetChanged();
         }
@@ -159,18 +160,18 @@ public class LayoutMoneyInList extends AppCompatActivity {
                 monInLstHldr = (MoneyIn2ViewHolder) convertView.getTag();
             }
 
-            monInLstHldr.monInLstCatTV.setText(moneyIns.get(position).getMoneyInCat());
-            monInLstMonInAmt = moneyIns.get(position).getMoneyInAmount();
+            monInLstHldr.monInLstCatTV.setText(moneyIns.get(position).getTransBdgtCat());
+            monInLstMonInAmt = moneyIns.get(position).getTransAmt();
             monInLstGen.dblASCurrency(String.valueOf(monInLstMonInAmt), monInLstHldr.monInLstAmtTV);
-            monInLstHldr.monInLstDateTV.setText(moneyIns.get(position).getMoneyInCreatedOn());
-            monInLstHldr.monInLstAcctTV.setText(moneyIns.get(position).getMoneyInToName());
+            monInLstHldr.monInLstDateTV.setText(moneyIns.get(position).getTransCreatedOn());
+            monInLstHldr.monInLstAcctTV.setText(moneyIns.get(position).getTransToAcctName());
 
             monInLstHldr.monInLstEditBtn.setTag(moneyIns.get(position));
             monInLstHldr.monInLstDelBtn.setTag(moneyIns.get(position));
 
-            monInLstIncRefKeyMI = moneyIns.get(position).getIncRefKeyMI();
-            monInIsDebt = monInLstDbMgr.findMoneyInIsDebt(moneyIns.get(position).getMoneyInToAcct());
-            monInIsSav = monInLstDbMgr.findMoneyInIsSav(moneyIns.get(position).getMoneyInToAcct());
+            monInLstIncRefKeyMI = moneyIns.get(position).getTransBdgtId();
+            monInIsDebt = monInLstDbMgr.findMoneyInIsDebt(moneyIns.get(position).getTransToAcctId());
+            monInIsSav = monInLstDbMgr.findMoneyInIsSav(moneyIns.get(position).getTransToAcctId());
             //monInLstSavId = monInLstDbMgr.findMoneyInSavId(moneyIns.get(position).getMoneyInToAcct());
 
             //click on pencil icon
@@ -178,7 +179,7 @@ public class LayoutMoneyInList extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
 
-                    monInLstMonInDb = (MoneyInDb) monInLstHldr.monInLstEditBtn.getTag();
+                    monInLstMonInDb = (TransactionsDb) monInLstHldr.monInLstEditBtn.getTag();
                     LayoutMoneyInList.this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
                     monInLstDbMgr = new DbManager(getContext());
 
@@ -198,11 +199,11 @@ public class LayoutMoneyInList extends AppCompatActivity {
                         public void onClick(View v) {
 
                             monInLstAmtEntry = monInLstGen.dblFromET(monInLstHldr.monInLstAmtET);
-                            monInLstMonInAmtDiff = monInLstAmtEntry - moneyIns.get(position).getMoneyInAmount();
+                            monInLstMonInAmtDiff = monInLstAmtEntry - moneyIns.get(position).getTransAmt();
 
                             if (monInIsDebt.equals("N") && monInIsSav.equals("N")) {
                                 monInLstDbMgr.updateTotAcctBalPlus(monInLstMonInAmtDiff, monInLstDbMgr.retrieveCurrentAccountBalance());
-                                monInLstDbMgr.updateAvailBalMinus(moneyIns.get(position).getMoneyInA(), moneyIns.get(position).getMoneyInOwing(), moneyIns.get(position).getMoneyInB(), monInLstDbMgr.retrieveCurrentA(), monInLstDbMgr.retrieveCurrentOwingA(), monInLstDbMgr.retrieveCurrentB());
+                                monInLstDbMgr.updateAvailBalMinus(moneyIns.get(position).getTransAmtInA(), moneyIns.get(position).getTransAmtInOwing(), moneyIns.get(position).getTransAmtInB(), monInLstDbMgr.retrieveCurrentA(), monInLstDbMgr.retrieveCurrentOwingA(), monInLstDbMgr.retrieveCurrentB());
 
                                 monInLstPercentA = monInLstDbMgr.sumTotalAExpenses() / monInLstDbMgr.sumTotalIncome();
                                 monInLstMoneyInA = monInLstDbMgr.detAPortionInc(monInLstAmtEntry, (monInLstPercentA * monInLstAmtEntry), monInLstDbMgr.retrieveCurrentOwingA());
@@ -225,16 +226,16 @@ public class LayoutMoneyInList extends AppCompatActivity {
                                     moneyInB = monInLstMoneyInB;
                                 }
                             } else if(monInIsDebt.equals("Y")) {
-                                monInLstDbMgr.updateDebtRecMinusPt1(monInLstMonInAmtDiff, monInLstDbMgr.retrieveCurrentDebtAmtOwing(monInToAcctId), monInToAcctId);
+                                monInLstDbMgr.updateRecMinusPt1(monInLstMonInAmtDiff, monInLstDbMgr.retrieveCurrentDebtAmtOwing(monInToAcctId), monInToAcctId);
                                 for (AccountsDb a : monInLstDbMgr.getDebts()) {
                                     if (a.getId() == monInToAcctId) {
                                         debtAmtFromDb = a.getAcctBal();
                                         debtLimitFromDb = a.getAcctMax();
-                                        debtRateFromDb = a.getIntRate();
-                                        debtPaytFromDb = a.getPaytsTo();
+                                        debtRateFromDb = a.getAcctIntRate();
+                                        debtPaytFromDb = a.getAcctPaytsTo();
                                     }
                                 }
-                                monInLstDbMgr.updateDebtRecPt2(monInLstGen.calcDebtDate(
+                                monInLstDbMgr.updateRecPt2(monInLstGen.calcDebtDate(
                                         debtAmtFromDb,
                                         debtRateFromDb,
                                         debtPaytFromDb,
@@ -244,16 +245,16 @@ public class LayoutMoneyInList extends AppCompatActivity {
                                 moneyInOwing = 0.0;
                                 moneyInB = 0.0;
                             } else if(monInIsSav.equals("Y")) {
-                                monInLstDbMgr.updateSavRecPlusPt1(monInLstMonInAmtDiff, monInLstDbMgr.retrieveCurrentSavAmt(monInToAcctId), monInToAcctId);
+                                monInLstDbMgr.updateRecPlusPt1(monInLstMonInAmtDiff, monInLstDbMgr.retrieveCurrentSavAmt(monInToAcctId), monInToAcctId);
                                 for (AccountsDb a : monInLstDbMgr.getSavings()) {
                                     if (a.getId() == monInToAcctId) {
                                         savGoalFromDb = a.getAcctMax();
                                         savAmtFromDb = a.getAcctBal();
-                                        savRateFromDb = a.getIntRate();
-                                        savPaytFromDb = a.getPaytsTo();
+                                        savRateFromDb = a.getAcctIntRate();
+                                        savPaytFromDb = a.getAcctPaytsTo();
                                     }
                                 }
-                                monInLstDbMgr.updateSavRecPt2(monInLstGen.calcSavingsDate(
+                                monInLstDbMgr.updateRecPt2(monInLstGen.calcSavingsDate(
                                         savGoalFromDb,
                                         savAmtFromDb,
                                         savRateFromDb,
@@ -265,10 +266,10 @@ public class LayoutMoneyInList extends AppCompatActivity {
                                 moneyInB = 0.0;
                             }
 
-                            monInLstMonInDb.setMoneyInAmount(monInLstAmtEntry);
-                            monInLstMonInDb.setMoneyInA(moneyInA);
-                            monInLstMonInDb.setMoneyInOwing(moneyInOwing);
-                            monInLstMonInDb.setMoneyInB(moneyInB);
+                            monInLstMonInDb.setTransAmt(monInLstAmtEntry);
+                            monInLstMonInDb.setTransAmtInA(moneyInA);
+                            monInLstMonInDb.setTransAmtInOwing(moneyInOwing);
+                            monInLstMonInDb.setTransAmtInB(moneyInB);
                             monInLstDbMgr.updateMoneyIn(monInLstMonInDb);
 
                             monInLstAdapter.updateMoneyIns(monInLstDbMgr.getMoneyIns());
@@ -277,8 +278,8 @@ public class LayoutMoneyInList extends AppCompatActivity {
                             monInLstHelper = new DbHelper(getContext());
                             monInLstDb = monInLstHelper.getWritableDatabase();
                             monInLstCV = new ContentValues();
-                            monInLstCV.put(DbHelper.INCOMEANNUALAMOUNT, monInLstDbMgr.makeNewIncAnnAmt(monInLstIncRefKeyMI, monInLstGen.lastNumOfDays(365)));
-                            monInLstDb.update(DbHelper.INCOME_TABLE_NAME, monInLstCV, DbHelper.ID + "=" + monInLstIncRefKeyMI, null);
+                            monInLstCV.put(DbHelper.BDGTANNPAYT, monInLstDbMgr.makeNewIncAnnAmt(monInLstIncRefKeyMI, monInLstGen.lastNumOfDays(365)));
+                            monInLstDb.update(DbHelper.BUDGET_TABLE_NAME, monInLstCV, DbHelper.ID + "=" + monInLstIncRefKeyMI, null);
                             monInLstDb.close();
 
                             monInLstRefresh = new Intent(getContext(), LayoutMoneyInList.class);
@@ -294,43 +295,43 @@ public class LayoutMoneyInList extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
 
-                    monInLstMonInDb = (MoneyInDb) monInLstHldr.monInLstDelBtn.getTag();
-                    monInLstIncRefKeyMI = moneyIns.get(position).getIncRefKeyMI();
+                    monInLstMonInDb = (TransactionsDb) monInLstHldr.monInLstDelBtn.getTag();
+                    monInLstIncRefKeyMI = moneyIns.get(position).getTransBdgtId();
 
                     if(monInIsDebt.equals("N") && monInIsSav.equals("N")) {
-                        monInLstDbMgr.updateTotAcctBalMinus(moneyIns.get(position).getMoneyInAmount(), monInLstDbMgr.retrieveCurrentAccountBalance());
+                        monInLstDbMgr.updateTotAcctBalMinus(moneyIns.get(position).getTransAmt(), monInLstDbMgr.retrieveCurrentAccountBalance());
 
-                        monInLstDbMgr.updateAvailBalMinus(moneyIns.get(position).getMoneyInA(), moneyIns.get(position).getMoneyInOwing(), moneyIns.get(position).getMoneyInB(), monInLstDbMgr.retrieveCurrentA(), monInLstDbMgr.retrieveCurrentOwingA(), monInLstDbMgr.retrieveCurrentB());
+                        monInLstDbMgr.updateAvailBalMinus(moneyIns.get(position).getTransAmtInA(), moneyIns.get(position).getTransAmtInOwing(), moneyIns.get(position).getTransAmtInB(), monInLstDbMgr.retrieveCurrentA(), monInLstDbMgr.retrieveCurrentOwingA(), monInLstDbMgr.retrieveCurrentB());
                         if (monInLstDbMgr.retrieveCurrentOwingA() < 0) {
                             monInLstDbMgr.adjustCurrentAandB(monInLstDbMgr.retrieveCurrentOwingA(), monInLstDbMgr.retrieveCurrentA(), monInLstDbMgr.retrieveCurrentB());
                         }
                     } else if(monInIsDebt.equals("Y")) {
-                        monInLstDbMgr.updateDebtRecPlusPt1(moneyIns.get(position).getMoneyInAmount(), monInLstDbMgr.retrieveCurrentDebtAmtOwing(monInToAcctId), monInToAcctId);
+                        monInLstDbMgr.updateRecPlusPt1(moneyIns.get(position).getTransAmt(), monInLstDbMgr.retrieveCurrentDebtAmtOwing(monInToAcctId), monInToAcctId);
                         for (AccountsDb a : monInLstDbMgr.getDebts()) {
                             if (a.getId() == monInToAcctId) {
                                 debtAmtFromDb = a.getAcctBal();
                                 debtLimitFromDb = a.getAcctMax();
-                                debtRateFromDb = a.getIntRate();
-                                debtPaytFromDb = a.getPaytsTo();
+                                debtRateFromDb = a.getAcctIntRate();
+                                debtPaytFromDb = a.getAcctPaytsTo();
                             }
                         }
-                        monInLstDbMgr.updateDebtRecPt2(monInLstGen.calcDebtDate(
+                        monInLstDbMgr.updateRecPt2(monInLstGen.calcDebtDate(
                                 debtAmtFromDb,
                                 debtRateFromDb,
                                 debtPaytFromDb,
                                 getString(R.string.debt_paid),
                                 getString(R.string.too_far)), monInToAcctId);
                     } else if(monInIsSav.equals("Y")) {
-                        monInLstDbMgr.updateSavRecMinusPt1(moneyIns.get(position).getMoneyInAmount(), monInLstDbMgr.retrieveCurrentSavAmt(monInToAcctId), monInToAcctId);
+                        monInLstDbMgr.updateRecMinusPt1(moneyIns.get(position).getTransAmt(), monInLstDbMgr.retrieveCurrentSavAmt(monInToAcctId), monInToAcctId);
                         for (AccountsDb a : monInLstDbMgr.getSavings()) {
                             if (a.getId() == monInToAcctId) {
                                 savGoalFromDb = a.getAcctMax();
                                 savAmtFromDb = a.getAcctBal();
-                                savRateFromDb = a.getIntRate();
-                                savPaytFromDb = a.getPaytsTo();
+                                savRateFromDb = a.getAcctIntRate();
+                                savPaytFromDb = a.getAcctPaytsTo();
                             }
                         }
-                        monInLstDbMgr.updateSavRecPt2(monInLstGen.calcSavingsDate(
+                        monInLstDbMgr.updateRecPt2(monInLstGen.calcSavingsDate(
                                 savGoalFromDb,
                                 savAmtFromDb,
                                 savRateFromDb,

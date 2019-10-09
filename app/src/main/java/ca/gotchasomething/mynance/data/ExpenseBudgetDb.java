@@ -1,4 +1,4 @@
-package ca.gotchasomething.mynance.data;
+/*package ca.gotchasomething.mynance.data;
 //Db description
 
 public class ExpenseBudgetDb {
@@ -51,15 +51,9 @@ public class ExpenseBudgetDb {
     public Double getExpenseAnnualAmount() { return expenseAnnualAmount; }
     public void setExpenseAnnualAmount(Double expenseAnnualAmount) { this.expenseAnnualAmount = expenseAnnualAmount; }
 
-    /*public Double getExpenseAAnnualAmount() { return expenseAAnnualAmount; }
-    public void setExpenseAAnnualAmount(Double expenseAAnnualAmount) { this.expenseAAnnualAmount = expenseAAnnualAmount; }
-
-    public Double getExpenseBAnnualAmount() { return expenseBAnnualAmount; }
-    public void setExpenseBAnnualAmount(Double expenseBAnnualAmount) { this.expenseBAnnualAmount = expenseBAnnualAmount; }*/
-
     public long getId() { return id; }
     public void setId(long id) { this.id = id; }
 
     @Override
     public String toString() { return getExpenseName(); }
-}
+}*/
