@@ -70,8 +70,16 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="5dp"
+                            android:gravity="center_horizontal"
                             android:background="@drawable/entry_box"
                             android:orientation="vertical">
+
+                            <com.github.mikephil.charting.charts.PieChart
+                                android:id="@+id/ana1PieChart"
+                                android:layout_width="150dp"
+                                android:layout_height="150dp">
+
+                            </com.github.mikephil.charting.charts.PieChart>
 
                         <TextView
                             android:id="@+id/ana1AnaResTV"
@@ -80,7 +88,7 @@
                             android:layout_marginStart="10dp"
                             android:layout_marginTop="10dp"
                             android:text="@string/anaresult"
-                            android:textColor="@color/colorPrimaryDark"
+                            android:layout_gravity="center_horizontal"
                             android:textSize="20sp" />
 
                         <TextView
@@ -89,8 +97,8 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="10dp"
                             android:layout_marginTop="10dp"
-                            android:text="@string/no_adj_nec"
-                            android:textColor="@color/colorPrimaryDark"
+                            android:text="@string/anaresult"
+                            android:layout_gravity="center_horizontal"
                             android:textSize="18sp" />
 
                         </LinearLayout>

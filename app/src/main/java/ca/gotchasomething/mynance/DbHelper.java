@@ -41,6 +41,7 @@ public class DbHelper extends SQLiteOpenHelper {
     public static final String CURRENTA = "currentA";
     public static final String CURRENTOWINGA = "currentOwingA";
     public static final String LASTPAGEID = "lastPageId";
+    public static final String LASTDATE = "lastDate";
 
     public static final String TRANSACTIONS_TABLE_NAME = "transactions";
     public static final String TRANSTYPE = "transType";
@@ -194,7 +195,8 @@ public class DbHelper extends SQLiteOpenHelper {
             " currentB REAL," +
             " currentA REAL," +
             " currentOwingA REAL," +
-            " lastPageId INTEGER)";
+            " lastPageId INTEGER," +
+            " lastDate TEXT)";
 
     private static final String createTransactionsQuery = "CREATE TABLE " + TRANSACTIONS_TABLE_NAME +
             " (_id INTEGER PRIMARY KEY," +

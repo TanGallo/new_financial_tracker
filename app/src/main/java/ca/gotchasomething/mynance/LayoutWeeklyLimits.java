@@ -212,7 +212,12 @@ public class LayoutWeeklyLimits extends MainNavigation {
             wee2AmtLeftF = wee2Gen.convertDblToFloat(wee2AmtLeft) / wee2Gen.convertDblToFloat(wee2StartBal);
             wee2AmtSpentF = wee2Gen.convertDblToFloat(wee2SpentThisWeek) / wee2Gen.convertDblToFloat(wee2StartBal);
 
-            wee2Gen.buildLimitsPieChart(wee2AmtLeftF, wee2AmtSpentF, wee2Hldr.wee2PieChart);
+            wee2Gen.buildLimitsPieChart(
+                    wee2AmtLeftF,
+                    wee2AmtSpentF,
+                    wee2Hldr.wee2PieChart,
+                    Color.parseColor("#5dbb63"), //light green
+                    Color.parseColor("#83878b")); //gray
 
             return convertView;
         }

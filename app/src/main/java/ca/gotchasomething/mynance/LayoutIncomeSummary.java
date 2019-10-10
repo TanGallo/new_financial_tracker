@@ -1,4 +1,4 @@
-package ca.gotchasomething.mynance;
+/*package ca.gotchasomething.mynance;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -171,4 +171,4 @@ public class LayoutIncomeSummary extends MainNavigation {
         public TextView incSumCatTV;
         public TextView incSumAmtTV;
     }
-}
+}*/

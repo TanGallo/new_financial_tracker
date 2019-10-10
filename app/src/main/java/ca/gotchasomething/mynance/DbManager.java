@@ -44,11 +44,12 @@ public class DbManager extends AppCompatActivity {
             totalCCPaymentDue = 0.0, totalDebt = 0.0, totalExpenses = 0.0, totalIncome = 0.0, totalSavings = 0.0, currentA = 0.0, currentOwingA = 0.0, totalAPortion = 0.0,
             totalOwingPortion = 0.0, totalBPortion = 0.0, transThisYear = 0.0;
     public General general = new General();
-    public int lastPageId = 0, earliestYear = 0, endIndex = 0, latestYear = 0, numberOfEntries = 0, numberOfEntriesE = 0, startIndex = 0;
+    public int int1 = 0, lastPageId = 0, earliestYear = 0, endIndex = 0, latestYear = 0, numberOfEntries = 0, numberOfEntriesE = 0, startIndex = 0;
     public Long acctId, debtId, expenseId, moneyInDebtId, moneyInSavId, savId;
     public NumberFormat percentFormat = NumberFormat.getPercentInstance();
     public SQLiteDatabase db;
-    public String category = null, expPriorityFromDb = null, moneyInIsDebt = null, moneyInIsSav = null, spendResStmt = null, spendPercent = null, startingString = null, subStringResult = null, latestDone = null;
+    public String category = null, expPriorityFromDb = null, lastDate = null, moneyInIsDebt = null, moneyInIsSav = null,
+            spendResStmt = null, spendPercent = null, startingString = null, subStringResult = null, latestDone = null, text = null;
 
     public DbManager(Context context) {
         dbHelper = DbHelper.getInstance(context);
@@ -455,7 +456,7 @@ public class DbManager extends AppCompatActivity {
 
     public List<BudgetDb> getIncomes() {
         db = dbHelper.getReadableDatabase();
-        cursor = db.rawQuery("SELECT * FROM " + DbHelper.BUDGET_TABLE_NAME +  " WHERE " + DbHelper.BDGTISINC + " = 'Y' " + " ORDER BY " + DbHelper.BDGTANNPAYT + " DESC", null);
+        cursor = db.rawQuery("SELECT * FROM " + DbHelper.BUDGET_TABLE_NAME + " WHERE " + DbHelper.BDGTISINC + " = 'Y' " + " ORDER BY " + DbHelper.BDGTANNPAYT + " DESC", null);
         List<BudgetDb> incomes = new ArrayList<>();
         if (cursor.moveToFirst()) {
             while (!cursor.isAfterLast()) {
@@ -675,7 +676,7 @@ public class DbManager extends AppCompatActivity {
         newMoneyOut.put(DbHelper.TRANSAMT, moneyOut.getTransAmt());
         newMoneyOut.put(DbHelper.TRANSAMTINA, moneyOut.getTransAmtInA());
         newMoneyOut.put(DbHelper.TRANSAMTINOWING, moneyOut.getTransAmtInOwing());
-        newMoneyOut.put(DbHelper.TRANSAMTINB,moneyOut.getTransAmtInB());
+        newMoneyOut.put(DbHelper.TRANSAMTINB, moneyOut.getTransAmtInB());
         newMoneyOut.put(DbHelper.TRANSAMTOUTA, moneyOut.getTransAmtOutA());
         newMoneyOut.put(DbHelper.TRANSAMTOUTOWING, moneyOut.getTransAmtOutOwing());
         newMoneyOut.put(DbHelper.TRANSAMTOUTB, moneyOut.getTransAmtOutB());
@@ -745,6 +746,7 @@ public class DbManager extends AppCompatActivity {
                         cursor.getDouble(cursor.getColumnIndex(DbHelper.CURRENTA)),
                         cursor.getDouble(cursor.getColumnIndex(DbHelper.CURRENTOWINGA)),
                         cursor.getInt(cursor.getColumnIndex(DbHelper.LASTPAGEID)),
+                        cursor.getString(cursor.getColumnIndex(DbHelper.LASTDATE)),
                         cursor.getLong(cursor.getColumnIndex(DbHelper.ID))
                 );
                 currents.add(0, current); //adds new items to beginning of list
@@ -762,6 +764,7 @@ public class DbManager extends AppCompatActivity {
         newCurrent.put(DbHelper.CURRENTA, current.getCurrentA());
         newCurrent.put(DbHelper.CURRENTOWINGA, current.getCurrentOwingA());
         newCurrent.put(DbHelper.LASTPAGEID, current.getLastPageId());
+        newCurrent.put(DbHelper.LASTDATE, current.getLastDate());
         db = dbHelper.getWritableDatabase();
         db.insert(DbHelper.CURRENT_TABLE_NAME, null, newCurrent);
     }
@@ -773,6 +776,7 @@ public class DbManager extends AppCompatActivity {
         updateCurrent.put(DbHelper.CURRENTA, current.getCurrentA());
         updateCurrent.put(DbHelper.CURRENTOWINGA, current.getCurrentOwingA());
         updateCurrent.put(DbHelper.LASTPAGEID, current.getLastPageId());
+        updateCurrent.put(DbHelper.LASTDATE, current.getLastDate());
         db = dbHelper.getWritableDatabase();
         String[] args = new String[]{String.valueOf(current.getId())};
         db.update(DbHelper.CURRENT_TABLE_NAME, updateCurrent, DbHelper.ID + "=?", args);
@@ -789,8 +793,8 @@ public class DbManager extends AppCompatActivity {
 
     public List<AccountsDb> getDebts() {
         List<AccountsDb> debts = new ArrayList<>();
-        for(AccountsDb a : getAccounts()) {
-            if(a.getAcctIsDebt().equals("Y")) {
+        for (AccountsDb a : getAccounts()) {
+            if (a.getAcctIsDebt().equals("Y")) {
                 debts.add(a);
             }
         }
@@ -799,8 +803,8 @@ public class DbManager extends AppCompatActivity {
 
     public List<AccountsDb> getSavings() {
         List<AccountsDb> savings = new ArrayList<>();
-        for(AccountsDb a : getAccounts()) {
-            if(a.getAcctIsSav().equals("Y")) {
+        for (AccountsDb a : getAccounts()) {
+            if (a.getAcctIsSav().equals("Y")) {
                 savings.add(a);
             }
         }
@@ -1017,6 +1021,16 @@ public class DbManager extends AppCompatActivity {
             }
         }
         return lastPageId;
+    }
+
+    public String retrieveLastDate() {
+        lastDate = null;
+        for (CurrentDb c4 : getCurrent()) {
+            if (c4.getId() == 1) {
+                lastDate = c4.getLastDate();
+            }
+        }
+        return lastDate;
     }
 
     public Double retrieveToPayTotal() {
@@ -1610,8 +1624,7 @@ public class DbManager extends AppCompatActivity {
 
     public Double makeNewExpAnnAmt(Long long1, List<String> list1) {
         //long1 = expenseId
-
-        //list1 = general.last365Days();
+        //list1 = general.lastNumOfDays(365);
         List<Double> expEntriesThisYear = new ArrayList<>();
         for (TransactionsDb m : getMoneyOuts()) {
             if (m.getTransBdgtId() == (long1) && list1.contains(m.getTransCreatedOn())) {
@@ -1740,7 +1753,7 @@ public class DbManager extends AppCompatActivity {
         db.beginTransaction();
         cursor = db.rawQuery("SELECT " + DbHelper.ACCTANNPAYTSTO + " FROM " + DbHelper.ACCOUNTS_TABLE_NAME + " WHERE " + DbHelper.ID + " = " + long1, null);
         annPaytFromDb = cursor.getDouble(0);
-        if(dbl1 - dbl2 > annPaytFromDb) {
+        if (dbl1 - dbl2 > annPaytFromDb) {
             db.execSQL("UPDATE " + DbHelper.ACCOUNTS_TABLE_NAME + " SET " + DbHelper.ACCTANNPAYTSTO + " = " + dbl1 + " - " + dbl2);
         }
         cursor.close();
@@ -1999,7 +2012,7 @@ public class DbManager extends AppCompatActivity {
         general.dblASCurrency(String.valueOf(dbl5), tv2);
         general.dblASCurrency(String.valueOf(newAvailBal2), tv3);
 
-        if(dbl4 > 0) {
+        if (dbl4 > 0) {
             tv3.setTextColor(Color.parseColor("#5dbb63")); //light green
             tv4.setTextColor(Color.parseColor("#5dbb63")); //light green
         } else {
@@ -2008,37 +2021,23 @@ public class DbManager extends AppCompatActivity {
         }
     }
 
-    public void spendResPara(TextView tv, TextView tv2, String str1, String str2, String str3, Double dbl1) {
+    public void spendResPara(TextView tv, TextView tv2, String str1, String str2, String str3, Double dbl1, int int1) {
         //tv = statement textView
         //tv2 = additional textView re: whether or not adjustments necessary
-        //str1 = ana_res_prt_1
-        //str2 = ana_res_part_2
-        //str3 = no_adj_nec
+        //str1 = recommendation
+        //str2 = ana_res_prt_1
+        //str3 = ana_res_prt_2
         //dbl1 = (sumTotalAExpenses() / sumTotalIncome());
-        if (dbl1 == 0) {
-            spendPercent = "0.0%";
-        } else {
-            percentFormat.setMinimumFractionDigits(1);
-            percentFormat.setMaximumFractionDigits(1);
-            spendPercent = percentFormat.format(dbl1);
-        }
 
-        spendResStmt = str1 + " " + spendPercent + " " + str2;
+        percentFormat.setMinimumFractionDigits(1);
+        percentFormat.setMaximumFractionDigits(1);
+        spendPercent = percentFormat.format(dbl1);
+        spendResStmt = str2 + " " + spendPercent + " " + str3;
+
         tv.setText(spendResStmt);
-
-        if (dbl1 >= 91.0) {
-            tv.setTextColor(Color.parseColor("#ffff4444")); //green
-            tv2.setText(getString(R.string.should_adj));
-            tv2.setTextColor(Color.parseColor("#ffff4444"));
-        } else if (dbl1 <= 90.9 && dbl1 >= 80.1) {
-            tv.setTextColor(Color.parseColor("#ffff4444"));
-            tv2.setText(getString(R.string.may_adj));
-            tv2.setTextColor(Color.parseColor("#ffff4444"));
-        } else {
-            tv.setTextColor(Color.parseColor("#03ac13")); //accent Fuschia
-            tv2.setText(str3);
-            tv2.setTextColor(Color.parseColor("#03ac13"));
-        }
+        tv.setTextColor(int1);
+        tv2.setText(str1);
+        tv2.setTextColor(int1);
     }
 
     public void updateAllDebtRecords() {

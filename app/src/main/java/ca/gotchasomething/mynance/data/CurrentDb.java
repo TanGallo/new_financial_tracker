@@ -7,6 +7,7 @@ public class CurrentDb {
     private Double currentA;
     private Double currentOwingA;
     private int lastPageId;
+    private String lastDate;
     private long id;
 
     public CurrentDb(
@@ -15,12 +16,14 @@ public class CurrentDb {
             Double currentA,
             Double currentOwingA,
             int lastPageId,
+            String lastDate,
             long id) {
         //this.currentAccount = currentAccount;
         this.currentB = currentB;
         this.currentA = currentA;
         this.currentOwingA = currentOwingA;
         this.lastPageId = lastPageId;
+        this.lastDate = lastDate;
         this.id = id;
     }
 
@@ -38,6 +41,9 @@ public class CurrentDb {
 
     public int getLastPageId() { return lastPageId; }
     public void setLastPageId(int lastPageId) { this.lastPageId = lastPageId; }
+
+    public String getLastDate() { return lastDate; }
+    public void setLastDate(String lastDate) { this.lastDate = lastDate; }
 
     public long getId() { return id; }
     public void setId(long id) { this.id = id; }

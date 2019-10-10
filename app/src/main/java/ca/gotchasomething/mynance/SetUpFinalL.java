@@ -17,7 +17,7 @@ import ca.gotchasomething.mynance.data.TransactionsDb;
 public class SetUpFinalL extends AppCompatActivity {
 
     Button fin2EnterBtn;
-    ContentValues fin2CV;
+    ContentValues fin2CV, fin2CV2, fin2CV3;
     CurrentDb fin2CurrDb;
     DbHelper fin2Helper;
     DbManager fin2DbMgr;
@@ -47,23 +47,29 @@ public class SetUpFinalL extends AppCompatActivity {
         public void onClick(View v) {
             fin2StartBal = fin2Gen.dblFromET(fin2ET);
 
-            fin2Helper = new DbHelper(getApplicationContext());
-            fin2DB = fin2Helper.getWritableDatabase();
-            fin2CV = new ContentValues();
-            fin2CV.put(DbHelper.LATESTDONE, "final");
-            fin2CV.put(DbHelper.BALANCEAMOUNT, fin2StartBal);
-            fin2DB.update(DbHelper.SET_UP_TABLE_NAME, fin2CV, DbHelper.ID + "= '1'", null);
-            fin2DB.close();
-
             if(fin2DbMgr.getIncomes().size() == 0) {
                 fin2MoneyInA = fin2StartBal;
                 fin2MoneyInB = 0.0;
             } else {
-                //fin2MoneyInA = fin2StartBal * fin2DbMgr.retrieveAPercentage();
-                //fin2MoneyInB = fin2StartBal * fin2DbMgr.retrieveBPercentage();
                 fin2MoneyInA = fin2StartBal * (fin2DbMgr.sumTotalAExpenses() / fin2DbMgr.sumTotalIncome());
                 fin2MoneyInB = fin2StartBal - fin2MoneyInA;
             }
+
+            fin2Helper = new DbHelper(getApplicationContext());
+            fin2DB = fin2Helper.getWritableDatabase();
+            fin2CV = new ContentValues();
+            fin2CV2 = new ContentValues();
+            fin2CV3 = new ContentValues();
+            fin2CV.put(DbHelper.LATESTDONE, "final");
+            fin2CV.put(DbHelper.BALANCEAMOUNT, fin2StartBal);
+            fin2CV2.put(DbHelper.ACCTBAL, fin2StartBal);
+            fin2CV3.put(DbHelper.CURRENTB, fin2MoneyInB);
+            fin2CV3.put(DbHelper.CURRENTA, fin2MoneyInA);
+            fin2CV3.put(DbHelper.LASTDATE, fin2Gen.createTimestamp());
+            fin2DB.update(DbHelper.SET_UP_TABLE_NAME, fin2CV, DbHelper.ID + "= '1'", null);
+            fin2DB.update(DbHelper.ACCOUNTS_TABLE_NAME, fin2CV2, DbHelper.ID + "= '1'", null);
+            fin2DB.update(DbHelper.CURRENT_TABLE_NAME, fin2CV3, DbHelper.ID + "= '1'", null);
+            fin2DB.close();
 
             fin2MoneyInDb = new TransactionsDb(
                     "in",
@@ -93,16 +99,6 @@ public class SetUpFinalL extends AppCompatActivity {
                     0);
 
             fin2DbMgr.addMoneyIn(fin2MoneyInDb);
-
-            fin2CurrDb = new CurrentDb(
-                    //fin2StartBal,
-                    fin2MoneyInB,
-                    fin2MoneyInA,
-                    0.0,
-                    0,
-                    0);
-
-            fin2DbMgr.addCurrent(fin2CurrDb);
 
             fin2ToSetUp = new Intent(SetUpFinalL.this, LayoutSetUp.class);
             fin2ToSetUp.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);

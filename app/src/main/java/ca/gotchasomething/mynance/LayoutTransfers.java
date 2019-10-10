@@ -23,16 +23,17 @@ import android.widget.Toast;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 
 import ca.gotchasomething.mynance.data.AccountsDb;
+import ca.gotchasomething.mynance.data.TransactionsDb;
+import ca.gotchasomething.mynance.spinners.TransferSpinnerAdapter;
+
 //import ca.gotchasomething.mynance.data.DebtDb;
 //import ca.gotchasomething.mynance.data.SavingsDb;
 //import ca.gotchasomething.mynance.data.TransfersDb;
-import ca.gotchasomething.mynance.data.TransactionsDb;
-import ca.gotchasomething.mynance.spinners.TransferSpinnerAdapter;
 
 public class LayoutTransfers extends MainNavigation {
 
     Button trn1Btn, trn1DoneBtn, trn1FromBtn, trn1NoBtn, trn1YesBtn;
-    ContentValues trn1CV;
+    ContentValues trn1CV, trn1CV2;
     Cursor trn1Cur, trn1Cur2, trn1Cur3;
     DbHelper trn1Helper, trn1Helper2, trn1Helper3, trn1Helper4;
     DbManager trn1DbMgr;
@@ -45,7 +46,7 @@ public class LayoutTransfers extends MainNavigation {
     ImageButton trn1InfoBtn;
     Intent trn1Refresh, trn1ToList, trn1ToMain;
     LinearLayout trn1FromAmtLayout, trn1FromAvailLayout, trn1FromCustomLayout, trn1FromWarnLayout, trn1WarnLayout;
-    long trn1AcctId, trn1FromSpinId, trn1ToSpinId;
+    long trn1DebtId, trn1SavId, trn1FromSpinId, trn1ToSpinId;
     RadioButton trn1FromAvailRB, trn1FromCustomRB, trn1FromResRB, trn1FromUsualRB;
     RadioGroup trn1FromRG;
     Spinner trn1FromSpin, trn1ToSpin;
@@ -354,9 +355,19 @@ public class LayoutTransfers extends MainNavigation {
                 0);
         trn1DbMgr.addTransfers(trn1TransDb);
 
-        //ADJUST THESE 2 METHODS****************************************************************************************
-        //trn1DbMgr.updateAllSavBudget();
-        //trn1DbMgr.updateAllDebtBudget();
+        //UPDATE ALL SAVINGS & DEBTS BUDGETS RE TRANSFERS
+        try {
+            for (AccountsDb a : trn1DbMgr.getDebts()) {
+                trn1DebtId = a.getId();
+                trn1DbMgr.updateRecReTransfer(trn1DebtId, trn1DbMgr.transfersToAcctThisYear(trn1DebtId, trn1Gen.lastNumOfDays(365)), trn1DbMgr.transfersFromAcctThisYear(trn1DebtId, trn1Gen.lastNumOfDays(365)));
+            }
+            for (AccountsDb a : trn1DbMgr.getSavings()) {
+                trn1SavId = a.getId();
+                trn1DbMgr.updateRecReTransfer(trn1SavId, trn1DbMgr.transfersToAcctThisYear(trn1SavId, trn1Gen.lastNumOfDays(365)), trn1DbMgr.transfersFromAcctThisYear(trn1SavId, trn1Gen.lastNumOfDays(365)));
+            }
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
 
         Toast.makeText(LayoutTransfers.this, R.string.transfer_complete, Toast.LENGTH_LONG).show();
         trn1ToList();

@@ -15,6 +15,8 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.github.mikephil.charting.charts.PieChart;
+
 import java.text.NumberFormat;
 
 public class SetUpAnalysis extends AppCompatActivity {
@@ -23,14 +25,16 @@ public class SetUpAnalysis extends AppCompatActivity {
     ContentValues ana1CV;
     DbHelper ana1Helper;
     DbManager ana1DBMgr;
-    Double ana1SpendPercent2 = 0.0;
+    Double ana1Reserved = 0.0, ana1SpendPercent2 = 0.0, ana1ToSpend = 0.0;
     General ana1Gen;
     ImageButton ana1AdjExpBtn, ana1AdjIncBtn, ana1AdjDebtsBtn, ana1AdjSavBtn;
+    int ana1Colour, int2;
     Intent ana1ToExp, ana1ToInc, ana1ToSetUp;
     LinearLayout ana1AdjLayout;
     NumberFormat ana1PerFor = NumberFormat.getPercentInstance();
+    PieChart ana1PieChart;
     RelativeLayout ana1AdjIncLayout, ana1AdjExpLayout, ana1AdjDebtsLayout, ana1AdjSavLayout;
-    String ana1SpendPercent = null, ana1SpendResStmt = null;
+    String ana1Recommendation = null, ana1SpendResStmt = null;
     SQLiteDatabase ana1DB;
     TextView ana1AnaResTV, ana1ResLabel;
 
@@ -42,6 +46,7 @@ public class SetUpAnalysis extends AppCompatActivity {
         ana1DBMgr = new DbManager(this);
         ana1Gen = new General();
 
+        ana1PieChart = findViewById(R.id.ana1PieChart);
         ana1AnaResTV = findViewById(R.id.ana1AnaResTV);
         ana1ResLabel = findViewById(R.id.ana1ResLabel);
         ana1AdjLayout = findViewById(R.id.ana1AdjLayout);
@@ -57,51 +62,39 @@ public class SetUpAnalysis extends AppCompatActivity {
         ana1AdjSavBtn.setOnClickListener(onClickAna1AdjSavBtn);
         ana1DoneAdjBtn.setOnClickListener(onClickAna1DoneAdjBtn);
 
-        ana1SpendResPara(ana1AnaResTV, ana1ResLabel);
-    }
+        ana1Reserved = (ana1DBMgr.sumTotalAExpenses() / ana1DBMgr.sumTotalIncome());
+        ana1ToSpend = 1 - ana1Reserved;
 
-    public void ana1SpendResPara(TextView tv, TextView tv2) {
-        //tv = statement textView
-        //tv2 = additional textView re: whether or not adjustments necessary
-
-        //ana1SpendPercent2 = ana1DBMgr.retrieveAPercentage();
-        ana1SpendPercent2 = (ana1DBMgr.sumTotalAExpenses() / ana1DBMgr.sumTotalIncome());
-        if(ana1SpendPercent2 == 0) {
-            ana1SpendPercent = "0.0%";
-        } else {
-            ana1PerFor.setMinimumFractionDigits(1);
-            ana1PerFor.setMaximumFractionDigits(1);
-            ana1SpendPercent = ana1PerFor.format(ana1SpendPercent2);
-        }
-
-        ana1SpendResStmt = getString(R.string.ana_res_prt_1) + " " + ana1SpendPercent + " " + getString(R.string.ana_res_part_2);
-        tv.setText(ana1SpendResStmt);
-
-        if (ana1SpendPercent2 >= .910) {
-            tv.setTextColor(Color.parseColor("#ffff4444"));
-            tv2.setText(getString(R.string.should_adj));
-            tv2.setTextColor(Color.parseColor("#ffff4444"));
+        if (ana1Reserved >= .910) {
+            ana1Colour = Color.parseColor("#ffff4444"); //red
+            ana1Recommendation = getString(R.string.should_adj);
             ana1AdjLayout.setVisibility(View.VISIBLE);
-            /*ana1AdjIncLayout.setOnClickListener(onClickAna1AdjIncLayout);
-            ana1AdjExpLayout.setOnClickListener(onClickAna1AdjExpLayout);
-            ana1AdjDebtsLayout.setOnClickListener(onClickAna1AdjDebtsLayout);
-            ana1AdjSavLayout.setOnClickListener(onClickAna1AdjSavLayout);*/
-        } else if (ana1SpendPercent2 <= .909 && ana1SpendPercent2 >= .801) {
-            tv.setTextColor(Color.parseColor("#ffff4444"));
-            tv2.setText(getString(R.string.may_adj));
-            tv2.setTextColor(Color.parseColor("#ffff4444"));
+        } else if (ana1Reserved <= .909 && ana1Reserved >= .801) {
+            ana1Colour = Color.parseColor("#ffc30b"); //yellow
+            ana1Recommendation = getString(R.string.may_adj);
             ana1AdjLayout.setVisibility(View.VISIBLE);
-            /*ana1AdjIncLayout.setOnClickListener(onClickAna1AdjIncLayout);
-            ana1AdjExpLayout.setOnClickListener(onClickAna1AdjExpLayout);
-            ana1AdjDebtsLayout.setOnClickListener(onClickAna1AdjDebtsLayout);
-            ana1AdjSavLayout.setOnClickListener(onClickAna1AdjSavLayout);*/
-        } else {
-            tv.setTextColor(Color.parseColor("#03ac13"));
-            tv2.setText(getString(R.string.no_adj_nec));
-            tv2.setTextColor(Color.parseColor("#03ac13"));
+        } else if(ana1Reserved <= .800) {
+            ana1Colour = Color.parseColor("#5dbb63"); //light green
+            ana1Recommendation = getString(R.string.no_adj_nec);
             ana1AdjLayout.setVisibility(View.GONE);
         }
-    };
+
+        ana1DBMgr.spendResPara(
+                ana1AnaResTV,
+                ana1ResLabel,
+                ana1Recommendation,
+                getString(R.string.ana_res_prt_1),
+                getString(R.string.ana_res_part_2),
+                ana1Reserved,
+                ana1Colour);
+
+        ana1Gen.buildLimitsPieChart(
+                ana1Gen.convertDblToFloat(ana1Reserved),
+                ana1Gen.convertDblToFloat(ana1ToSpend),
+                ana1PieChart,
+                ana1Colour,
+                Color.parseColor("#83878b")); //gray
+    }
 
     View.OnClickListener onClickAna1AdjIncBtn = new View.OnClickListener() {
         @Override

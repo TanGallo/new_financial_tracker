@@ -25,7 +25,7 @@ public class AddExpense extends AppCompatActivity {
     Double expAmtFromEntry = 0.0, expAnnAmtFromEntry = 0.0, expAAnnAmtFromEntry = 0.0, expBAnnAmtFromEntry = 0.0, expFrqFromEntry = 0.0;
     EditText addExpCatET, addExpAmtET;
     General addExpGen;
-    Intent addExpToList;
+    Intent addExpToList, addExpToWeeklyList;
     RadioButton addExpARB, addExpAnnlyRB, addExpBRB, addExpBiAnnlyRB, addExpBiMthlyRB, addExpBiWklyRB, addExpMthlyRB, addExpNoWklyRB, addExpWklyRB, addExpYesWklyRB;
     RadioGroup addExpFrqRG, addExpABRG, addExpWklyRG;
     String addExpABRB = null, addExpFrqRB = null, expPriorityFromEntry = null, expWeeklyFromEntry = null, addExpWklyLimRB = null, expNameFromEntry = null;
@@ -203,9 +203,15 @@ public class AddExpense extends AppCompatActivity {
 
                 addExpDbMgr.addExpense(addExpExpDb);
 
-                addExpToList = new Intent(AddExpense.this, AddExpenseList.class);
-                addExpToList.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-                startActivity(addExpToList);
+                if(addExpDbMgr.retrieveLastPageId() == 4) {
+                    addExpToWeeklyList = new Intent(AddExpense.this, LayoutWeeklyLimitsList.class);
+                    addExpToWeeklyList.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+                    startActivity(addExpToWeeklyList);
+                } else {
+                    addExpToList = new Intent(AddExpense.this, AddExpenseList.class);
+                    addExpToList.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+                    startActivity(addExpToList);
+                }
             } else {
                 Toast.makeText(getBaseContext(), R.string.no_blanks_warning, Toast.LENGTH_LONG).show();
             }

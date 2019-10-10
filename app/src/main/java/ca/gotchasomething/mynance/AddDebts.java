@@ -180,7 +180,7 @@ public class AddDebts extends AppCompatActivity {
 
                 addDebtAcctdb = new AccountsDb(
                         debtNameFromEntry,
-                        -debtAmtFromEntry,
+                        debtAmtFromEntry,
                         "Y",
                         "N",
                         debtLimitFromEntry,

@@ -13,12 +13,15 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 
+import ca.gotchasomething.mynance.data.CurrentDb;
+
 public class LayoutSetUp extends MainNavigation {
 
     Button laySetIncBtn, laySetBillsBtn, laySetWeeklyBtn, laySetDebtsBtn, laySetSavingsBtn, laySetAnalysisBtn, laySetFinalBtn;
     CheckBox laySetIncomeCheckbox, laySetBillsCheckbox, laySetWeeklyCheckbox, laySetDebtsCheckbox, laySetSavingsCheckbox, laySetAnalysisCheckbox,
             laySetTourCheckbox, laySetFinalCheckbox;
     ContentValues laySetCV;
+    CurrentDb laySetCurDb;
     DbHelper laySetHelper;
     DbManager laySetDbMgr;
     General laySetGen;
@@ -97,6 +100,17 @@ public class LayoutSetUp extends MainNavigation {
         laySetWeeklyBtn.setOnClickListener(onClickLaySetWeeklyButton);
         laySetFinalBtn.setOnClickListener(onClickLaySetFinalButton);
         laySetTourCheckbox.setOnCheckedChangeListener(onCheckLaySetTourCheckbox);
+
+        if(laySetDbMgr.getCurrent().size() == 0) {
+            laySetCurDb = new CurrentDb(
+                    0.0,
+                    0.0,
+                    0.0,
+                    0,
+                    laySetGen.createTimestamp(),
+                    0);
+            laySetDbMgr.addCurrent(laySetCurDb);
+        }
 
         latestDone = laySetDbMgr.retrieveLatestDone();
         switch (latestDone) {

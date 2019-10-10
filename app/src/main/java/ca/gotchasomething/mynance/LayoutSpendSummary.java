@@ -1,4 +1,4 @@
-package ca.gotchasomething.mynance;
+/*package ca.gotchasomething.mynance;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -257,3 +257,4 @@ public class LayoutSpendSummary extends MainNavigation {
         public TextView spndSumAmtTV;
     }
 }
+*/

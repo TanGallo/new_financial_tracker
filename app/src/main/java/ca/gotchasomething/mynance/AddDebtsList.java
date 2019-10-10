@@ -264,19 +264,19 @@ public class AddDebtsList extends AppCompatActivity {
                 debtLstHldr.debtLstFreeDateLabel.setVisibility(View.GONE);
             }
             debtLstHldr.debtLstFreeDateTV.setText(debtLstDebtEnd);
-            debtLstGen.whatToShowDebt(
+            /*debtLstGen.whatToShowDebt(
                     getString(R.string.debt_paid),
                     getString(R.string.too_far),
                     debtLstHldr.debtLstFreeDateLabel,
-                    debtLstHldr.debtLstFreeDateTV);
-            /*if (debtLstDebtEnd.equals(getString(R.string.debt_paid))) {
+                    debtLstHldr.debtLstFreeDateTV);*/
+            if (debtLstDebtEnd.equals(getString(R.string.debt_paid))) {
                 debtLstHldr.debtLstFreeDateTV.setTextColor(Color.parseColor("#03ac13"));
             } else if (debtLstDebtEnd.equals(getString(R.string.too_far))) {
                 debtLstHldr.debtLstFreeDateTV.setTextColor(Color.parseColor("#ffff4444"));
             } else {
                 debtLstHldr.debtLstFreeDateTV.setTextColor(Color.parseColor("#303F9F"));
                 debtLstHldr.debtLstFreeDateLabel.setTextColor(Color.parseColor("#303F9F"));
-            }*/
+            }
 
             if (debts.get(position).getAcctMax() == 0) {
                 debtLstHldr.debtLstOverLimit.setVisibility(View.GONE);

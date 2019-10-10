@@ -3,6 +3,7 @@ package ca.gotchasomething.mynance;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -61,7 +62,7 @@ public class LayoutBudget extends MainNavigation {
     ImageButton layBudAdjIncBtn, layBudAdjExpBtn, layBudAdjDebtsBtn, layBudAdjSavBtn, layBudResInfoBtn;
     //IncomeBudgetDb layBudIncDb;
     //BudIncListAdapter layBudIncListAdapter;
-    int balanceDone = 0, billsDone = 0, budgetDone = 0, debtsDone = 0, incomeDone = 0, savingsDone = 0, tourDone = 0;
+    int layBudInt1 = 0, balanceDone = 0, billsDone = 0, budgetDone = 0, debtsDone = 0, incomeDone = 0, savingsDone = 0, tourDone = 0;
     Intent layBudToAdjInc, layBudToAdjExp, layBudToAdjDebt, layBudToAdjSav;
     LinearLayout layBudResInfoLayout, layBudExpListLayout, layBudIncListLayout, layBudRepWarnLayout;
     ListView layBudExpListView, layBudIncListView;
@@ -75,7 +76,7 @@ public class LayoutBudget extends MainNavigation {
     RelativeLayout layBudAdjIncLayout, layBudAdjExpLayout, layBudAdjDebtsLayout, layBudAdjSavLayout;
     SetUpDb setUpDb;
     SQLiteDatabase layBudDb, layBudDb2;
-    String budExpIdE = null, budExpIdI = null, layBudExpPriorityRB = null, layBudIncFrqRB = null, budPriorityFromTag = null, budWeeklyFromTag = null,
+    String layBudRecommendation = null, budExpIdE = null, budExpIdI = null, layBudExpPriorityRB = null, layBudIncFrqRB = null, budPriorityFromTag = null, budWeeklyFromTag = null,
             expNameFromEntry = null, expNameFromTag = null,
             expPriorityFromEntry = null, expPriorityFromTag = null, expWeeklyFromEntry = null, expWeeklyFromTag = null, layBudExpWeeklyRB = null, incFrqFromTag = null, layBudExpFrqRB = null, incNameFromEntry = null, incNameFromTag = null, budgetExpenseAmountS = null,
             budgetIncomeAmountS = null, debtId = null, expRefKeyS = null, expDebtId = null, expSavingsId = null, expRefKeyD = null,
@@ -145,51 +146,34 @@ public class LayoutBudget extends MainNavigation {
         layBudDb.close();
     }
 
-    /*public void spendResPara(TextView tv, TextView tv2, String str1, String str2, String str3) {
-        //tv = statement textView
-        //tv2 = additional textView re: whether or not adjustments necessary
-        //str1 = ana_res_prt_1
-        //str2 = ana_res_part_2
-        //str3 = no_adj_nec
-
-        //spendPercent2 = retrieveAPercentage();
-        spendPercent2 = (layBudDbMgr.sumTotalAExpenses() / layBudDbMgr.sumTotalIncome());
-        if(spendPercent2 == 0) {
-            spendPercent = "0.0%";
-        } else {
-            percentFormat.setMinimumFractionDigits(1);
-            percentFormat.setMaximumFractionDigits(1);
-            spendPercent = percentFormat.format(spendPercent2);
-        }
-
-        spendResStmt = str1 + " " + spendPercent + " " + str2;
-        tv.setText(spendResStmt);
-
-        if (spendPercent2 >= 91.0) {
-            tv.setTextColor(Color.parseColor("#ffff4444"));
-            tv2.setText(getString(R.string.should_adj));
-            tv2.setTextColor(Color.parseColor("#ffff4444"));
-        } else if (spendPercent2 <= 90.9 && spendPercent2 >= 80.1) {
-            tv.setTextColor(Color.parseColor("#ffff4444"));
-            tv2.setText(getString(R.string.may_adj));
-            tv2.setTextColor(Color.parseColor("#ffff4444"));
-        } else {
-            tv.setTextColor(Color.parseColor("#03ac13"));
-            tv2.setText(str3);
-            tv2.setTextColor(Color.parseColor("#03ac13"));
-        }
-    }*/
-
     public void layBudHeaderText() {
 
         layBudTotInc = layBudDbMgr.sumTotalIncome();
-        //layBudTotRes = layBudTotInc * layBudDbMgr.retrieveAPercentage();
-        layBudTotRes = layBudTotInc * (layBudDbMgr.sumTotalAExpenses() / layBudDbMgr.sumTotalIncome());
+        layBudTotRes = layBudTotInc * (layBudDbMgr.sumTotalAExpenses() / layBudTotInc);
         layBudGen.dblASCurrency(String.valueOf(layBudTotInc), layBudTotIncTV);
         layBudGen.dblASCurrency(String.valueOf(layBudTotRes), layBudTotResTV);
 
         layBudStillAvail = layBudTotInc - layBudTotRes;
-        layBudDbMgr.spendResPara(layBudStatusTV, layBudStatusTV2, getString(R.string.ana_res_prt_1), getString(R.string.ana_res_part_2), getString(R.string.no_adj_nec), (layBudDbMgr.sumTotalAExpenses() / layBudDbMgr.sumTotalIncome()));
+
+        spendPercent2 = (layBudDbMgr.sumTotalAExpenses() / layBudDbMgr.sumTotalIncome());
+        if (spendPercent2 >= .910) {
+            layBudInt1 = Color.parseColor("#ffff4444"); //red
+            layBudRecommendation = getString(R.string.should_adj);
+        } else if (spendPercent2 <= .909 && spendPercent2 >= .801) {
+            layBudInt1 = Color.parseColor("#ffc30b"); //yellow
+            layBudRecommendation = getString(R.string.may_adj);
+        } else if(spendPercent2 <= .800) {
+            layBudInt1 = Color.parseColor("#5dbb63"); //light green
+            layBudRecommendation = getString(R.string.no_adj_nec);
+        }
+        layBudDbMgr.spendResPara(
+                layBudStatusTV,
+                layBudStatusTV2,
+                layBudRecommendation,
+                getString(R.string.ana_res_prt_1),
+                getString(R.string.ana_res_part_2),
+                spendPercent2,
+                layBudInt1);
         if (layBudStillAvail < 0) {
             layBudStatusTV.setVisibility(View.GONE);
             layBudStatusTV2.setVisibility(View.GONE);

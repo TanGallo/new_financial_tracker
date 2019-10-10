@@ -385,10 +385,12 @@ public class General extends AppCompatActivity {
 
         return f1;
     }
-    public void buildLimitsPieChart(float fl1, float fl2, PieChart pc) {
+    public void buildLimitsPieChart(float fl1, float fl2, PieChart pc, int int1, int int2) {
         //fl1 = amtLeft
         //fl2 = amtSpent
         //pc = pieChart
+        //int1 = color #1 (Color.parseColor("#NNNNNN")) - from colour resources list
+        //int2 = color #2 (Color.parseColor("#NNNNNN")) - from colour resources list
 
         pc.setHoleRadius(0);
         pc.getDescription().setEnabled(false);
@@ -406,8 +408,8 @@ public class General extends AppCompatActivity {
         PieData pieData = new PieData(pieDataSet);
 
         ArrayList<Integer> pieChartColours = new ArrayList<>();
-        pieChartColours.add(Color.parseColor("#5dbb63")); //light green
-        pieChartColours.add(Color.parseColor("#83878b")); //gray
+        pieChartColours.add(int1); //light green
+        pieChartColours.add(int2); //gray
         pieDataSet.setColors(pieChartColours);
 
         pc.setData(pieData);
