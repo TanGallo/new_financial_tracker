@@ -11,50 +11,39 @@
         android:layout_marginStart="10dp">
 
         <TextView
-        android:id="@+id/pcListCatTV"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="@string/category"
-        android:textColor="@color/colorPrimaryDark"
-        android:textSize="18sp" />
+            android:id="@+id/pcListCatTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/category"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/pcListStartBalTV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
             android:layout_marginStart="5dp"
+            android:layout_marginTop="10dp"
             android:layout_toEndOf="@id/pcListCatTV"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="18sp" />
-
-        <TextView
-            android:id="@+id/pcListAmtLeftWarnTV"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="10dp"
-            android:layout_below="@id/pcListCatTV"
-            android:text="@string/weekly_limit_exceeded"
-            android:textColor="@android:color/holo_red_light"
-            android:textSize="16sp" />
 
         <com.github.mikephil.charting.charts.PieChart
             android:id="@+id/pcListPieChart"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:layout_marginTop="5dp"
-            android:layout_below="@id/pcListCatTV">
+            android:layout_below="@id/pcListCatTV"
+            android:layout_marginTop="5dp">
 
         </com.github.mikephil.charting.charts.PieChart>
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignTop="@id/pcListPieChart"
             android:layout_marginTop="10dp"
             android:layout_toEndOf="@id/pcListPieChart"
-            android:layout_alignTop="@id/pcListPieChart"
             android:orientation="vertical">
 
             <LinearLayout
@@ -62,49 +51,59 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/pcListAmtLeftTV"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:layout_marginEnd="5dp"
-            android:textSize="16sp" />
+                <TextView
+                    android:id="@+id/pcListAmtLeftTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:textSize="16sp" />
 
-        <TextView
-            android:id="@+id/pcListAmtLeftLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:layout_marginEnd="10dp"
-            android:text="@string/left_this_week"
-            android:textSize="16sp" />
+                <TextView
+                    android:id="@+id/pcListAmtLeftLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="10dp"
+                    android:text="@string/left_this_week"
+                    android:textSize="16sp" />
 
             </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            <LinearLayout
+                android:id="@+id/pcListSpentLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/pcListSpentAmtTV"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:layout_marginEnd="5dp"
-            android:textSize="16sp" />
+                <TextView
+                    android:id="@+id/pcListSpentAmtTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:textSize="16sp" />
 
-        <TextView
-            android:id="@+id/pcListSpentAmtLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toEndOf="@id/pcListSpentAmtTV"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="10dp"
-            android:text="@string/already_spent"
-            android:textSize="16sp" />
+                <TextView
+                    android:id="@+id/pcListSpentAmtLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:text="@string/already_spent"
+                    android:textSize="16sp" />
 
-        </LinearLayout>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/pcListAmtLeftWarnTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="10dp"
+                android:text="@string/weekly_limit_exceeded"
+                android:textColor="@android:color/holo_red_light"
+                android:textSize="16sp" />
 
         </LinearLayout>
 

@@ -23,8 +23,6 @@ import java.util.List;
 
 import ca.gotchasomething.mynance.data.BudgetDb;
 
-//import ca.gotchasomething.mynance.data.ExpenseBudgetDb;
-
 public class LayoutWeeklyLimitsList extends AppCompatActivity {
 
     BudgetDb wee1ExpDb;
@@ -56,7 +54,7 @@ public class LayoutWeeklyLimitsList extends AppCompatActivity {
 
         wee1DoneBtn.setOnClickListener(onClickWee1DoneButton);
 
-        wee1LstAdapter = new Wee1LstAdapter(this, wee1DbMgr.getExpense());
+        wee1LstAdapter = new Wee1LstAdapter(this, wee1DbMgr.getExpenses());
         wee1ListView.setAdapter(wee1LstAdapter);
 
         wee1CV2 = new ContentValues();
@@ -180,15 +178,15 @@ public class LayoutWeeklyLimitsList extends AppCompatActivity {
                         checkedState[position] = true;
                         wee1ExpDb.setBdgtWeekly("Y");
 
-                        wee1DbMgr.updateExpense(wee1ExpDb);
-                        wee1LstAdapter.updateExpenses(wee1DbMgr.getExpense());
+                        wee1DbMgr.updateBudget(wee1ExpDb);
+                        wee1LstAdapter.updateExpenses(wee1DbMgr.getExpenses());
                         notifyDataSetChanged();
                     } else if(!isChecked) {
                         checkedState[position] = false;
                         wee1ExpDb.setBdgtWeekly("N");
 
-                        wee1DbMgr.updateExpense(wee1ExpDb);
-                        wee1LstAdapter.updateExpenses(wee1DbMgr.getExpense());
+                        wee1DbMgr.updateBudget(wee1ExpDb);
+                        wee1LstAdapter.updateExpenses(wee1DbMgr.getExpenses());
                         notifyDataSetChanged();
                     }
                 }

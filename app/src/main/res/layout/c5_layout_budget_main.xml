@@ -26,11 +26,147 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                >
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 tools:ignore="UselessParent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:background="@drawable/entry_box"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/budMnSavingsLabel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_horizontal"
+                            android:text="@string/you_have"
+                            android:textColor="@color/design_default_color_primary_dark"
+                            android:textSize="20sp">
+
+                        </TextView>
+
+                        <TextView
+
+                            android:id="@+id/budMnSavingsTV"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="5dp"
+                            android:text="@string/amount"
+                            android:textColor="@color/design_default_color_primary_dark"
+                            android:textSize="20sp">
+
+                        </TextView>
+
+                        <TextView
+
+                            android:id="@+id/budMnSavingsLabel2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="5dp"
+                            android:text="@string/in_savings"
+                            android:textColor="@color/design_default_color_primary_dark"
+                            android:textSize="20sp">
+
+                        </TextView>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:orientation="horizontal">
+
+                        <TextView
+
+                            android:id="@+id/budMnSavingsTV2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="5dp"
+                            android:text="@string/amount"
+                            android:textColor="@color/design_default_color_primary_dark"
+                            android:textSize="20sp">
+
+                        </TextView>
+
+                        <TextView
+
+                            android:id="@+id/budMnSavingsLabel3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="5dp"
+                            android:text="@string/towards_goal"
+                            android:textColor="@color/design_default_color_primary_dark"
+                            android:textSize="20sp">
+
+                        </TextView>
+
+                    </LinearLayout>
+
+                    <com.github.mikephil.charting.charts.PieChart
+                        android:id="@+id/budMnPieChart2"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_gravity="center_horizontal">
+
+                    </com.github.mikephil.charting.charts.PieChart>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/budMnDebtFreeLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:background="@drawable/entry_box"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/budMnDebtFreeLabel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/debt_free_by"
+                            android:textColor="@color/design_default_color_primary_dark"
+                            android:textSize="20sp">
+
+                        </TextView>
+
+                        <TextView
+
+                            android:id="@+id/budMnDebtFreeTV"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="5dp"
+                            android:text="@string/date"
+                            android:textColor="@color/design_default_color_primary_dark"
+                            android:textSize="20sp">
+
+                        </TextView>
+
+                    </LinearLayout>
+
+                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -54,7 +190,7 @@
                             android:layout_marginBottom="5dp"
                             android:text="@string/total_income"
                             android:textColor="@color/colorPrimaryDark"
-                            android:textSize="22sp" />
+                            android:textSize="20sp" />
 
                         <TextView
                             android:id="@+id/budMnTotIncTV"
@@ -66,7 +202,7 @@
                             android:layout_marginBottom="5dp"
                             android:text="@string/amount"
                             android:textColor="@color/colorPrimaryDark"
-                            android:textSize="22sp" />
+                            android:textSize="20sp" />
 
                     </LinearLayout>
 
@@ -85,7 +221,7 @@
                             android:layout_marginBottom="10dp"
                             android:text="@string/reserved"
                             android:textColor="@color/colorPrimaryDark"
-                            android:textSize="22sp" />
+                            android:textSize="20sp" />
 
                         <TextView
                             android:id="@+id/budMnTotExpTV"
@@ -97,15 +233,16 @@
                             android:layout_marginBottom="10dp"
                             android:text="@string/amount"
                             android:textColor="@color/colorPrimaryDark"
-                            android:textSize="22sp" />
+                            android:textSize="20sp" />
 
                         <ImageButton
                             android:id="@+id/budMnResInfoBtn"
                             android:layout_width="30dp"
                             android:layout_height="30dp"
+                            android:layout_gravity="end|center_vertical"
                             android:backgroundTint="@color/blue7"
                             android:src="@drawable/ic_info_outline_blue_24dp"
-                            android:layout_gravity="end|center_vertical"/>
+                            android:contentDescription="@string/reserved_includes"/>
 
                     </LinearLayout>
 
@@ -117,17 +254,17 @@
                         android:orientation="vertical">
 
 
-                    <TextView
-                        android:id="@+id/budMnResLabel"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginEnd="10dp"
-                        android:layout_marginBottom="5dp"
-                        android:layout_gravity="center_horizontal"
-                        android:text="@string/reserved_includes"
-                        android:textColor="@color/colorPrimaryDark"
-                        android:textSize="16sp" />
+                        <TextView
+                            android:id="@+id/budMnResLabel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginEnd="10dp"
+                            android:layout_marginBottom="5dp"
+                            android:text="@string/reserved_includes"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textSize="16sp" />
 
                         <Button
                             android:id="@+id/budMnResInfoOkBtn"
@@ -136,9 +273,17 @@
                             android:layout_gravity="end"
                             android:background="@drawable/circle_box"
                             android:text="@string/ok"
-                            android:textColor="@color/colorPrimaryDark"/>
+                            android:textColor="@color/colorPrimaryDark" />
 
                     </LinearLayout>
+
+                    <com.github.mikephil.charting.charts.PieChart
+                        android:id="@+id/budMnPieChart"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_gravity="center_horizontal">
+
+                    </com.github.mikephil.charting.charts.PieChart>
 
                     <TextView
                         android:id="@+id/budMnStatusTV"
@@ -153,8 +298,8 @@
                         android:id="@+id/budMnStatusTV2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
                         android:layout_gravity="center_horizontal"
+                        android:layout_margin="10dp"
                         android:text="@string/warning"
                         android:textColor="@color/colorPrimaryDark"
                         android:textSize="16sp" />
@@ -183,16 +328,16 @@
                 <LinearLayout
                     android:id="@+id/budMnAdjLayout"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="4"
+                    android:layout_height="0dp"
                     android:layout_margin="5dp"
+                    android:layout_weight="4"
                     android:orientation="vertical">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
                         android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
                         android:layout_marginBottom="10dp"
                         android:text="@string/make_adj"
                         android:textColor="@color/colorPrimaryDark"
@@ -201,24 +346,25 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:baselineAligned="false">
 
                         <RelativeLayout
                             android:id="@+id/budMnAdjIncLayout"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginBottom="10dp"
                             android:layout_weight="1"
                             android:clickable="true"
-                            android:focusable="true"
-                            android:layout_marginStart="10dp"
-                            android:layout_marginBottom="10dp">
+                            android:focusable="true">
 
                             <ImageButton
                                 android:id="@+id/budMnAdjIncBtn"
                                 android:layout_width="60dp"
                                 android:layout_height="60dp"
-                                android:background="@drawable/circle_box"
                                 android:layout_centerHorizontal="true"
+                                android:background="@drawable/circle_box"
                                 android:contentDescription="@string/income"
                                 android:scaleType="fitCenter"
                                 android:src="@drawable/ic_add_circle_outline_blue_24dp" />
@@ -227,11 +373,11 @@
                                 android:layout_width="70dp"
                                 android:layout_height="wrap_content"
                                 android:layout_below="@id/budMnAdjIncBtn"
+                                android:layout_alignParentStart="true"
+                                android:layout_centerHorizontal="true"
+                                android:gravity="center_horizontal"
                                 android:text="@string/income"
                                 android:textColor="@color/colorPrimaryDark"
-                                android:layout_alignParentStart="true"
-                                android:gravity="center_horizontal"
-                                android:layout_centerHorizontal="true"
                                 android:textSize="14sp" />
 
                         </RelativeLayout>
@@ -240,31 +386,31 @@
                             android:id="@+id/budMnAdjExpLayout"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginStart="25dp"
+                            android:layout_marginBottom="10dp"
                             android:layout_weight="1"
                             android:clickable="true"
-                            android:focusable="true"
-                            android:layout_marginStart="25dp"
-                            android:layout_marginBottom="10dp">
+                            android:focusable="true">
 
                             <ImageButton
                                 android:id="@+id/budMnAdjExpBtn"
                                 android:layout_width="60dp"
                                 android:layout_height="60dp"
+                                android:layout_centerHorizontal="true"
                                 android:background="@drawable/circle_box"
                                 android:contentDescription="@string/expenses"
                                 android:scaleType="fitCenter"
-                                android:layout_centerHorizontal="true"
                                 android:src="@drawable/ic_remove_circle_outline_blue_24dp" />
 
                             <TextView
                                 android:layout_width="80dp"
                                 android:layout_height="wrap_content"
+                                android:layout_below="@id/budMnAdjExpBtn"
+                                android:layout_alignParentStart="true"
+                                android:layout_centerHorizontal="true"
+                                android:gravity="center_horizontal"
                                 android:text="@string/expenses"
                                 android:textColor="@color/colorPrimaryDark"
-                                android:layout_alignParentStart="true"
-                                android:gravity="center_horizontal"
-                                android:layout_centerHorizontal="true"
-                                android:layout_below="@id/budMnAdjExpBtn"
                                 android:textSize="14sp" />
 
                         </RelativeLayout>
@@ -273,31 +419,31 @@
                             android:id="@+id/budMnAdjDebtsLayout"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginStart="25dp"
+                            android:layout_marginBottom="10dp"
                             android:layout_weight="1"
                             android:clickable="true"
-                            android:focusable="true"
-                            android:layout_marginStart="25dp"
-                            android:layout_marginBottom="10dp">
+                            android:focusable="true">
 
                             <ImageButton
                                 android:id="@+id/budMnAdjDebtsBtn"
                                 android:layout_width="60dp"
                                 android:layout_height="60dp"
-                                android:background="@drawable/circle_box"
-                                android:contentDescription="@string/credit_types"
-                                android:scaleType="fitCenter"
                                 android:layout_centerHorizontal="true"
-                                android:src="@drawable/ic_credit_card_blue_24dp" />
+                                android:background="@drawable/circle_box"
+                                android:contentDescription="@string/debt_repay"
+                                android:scaleType="fitCenter"
+                                android:src="@drawable/ic_trending_down_blue_24dp" />
 
                             <TextView
                                 android:layout_width="80dp"
                                 android:layout_height="wrap_content"
-                                android:text="@string/credit_types"
-                                android:textColor="@color/colorPrimaryDark"
-                                android:layout_alignParentStart="true"
-                                android:gravity="center_horizontal"
-                                android:layout_centerHorizontal="true"
                                 android:layout_below="@id/budMnAdjDebtsBtn"
+                                android:layout_alignParentStart="true"
+                                android:layout_centerHorizontal="true"
+                                android:gravity="center_horizontal"
+                                android:text="@string/debt_repay"
+                                android:textColor="@color/colorPrimaryDark"
                                 android:textSize="14sp" />
 
                         </RelativeLayout>
@@ -306,32 +452,32 @@
                             android:id="@+id/budMnAdjSavLayout"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginStart="25dp"
+                            android:layout_marginBottom="10dp"
                             android:layout_weight="1"
                             android:clickable="true"
-                            android:focusable="true"
-                            android:layout_marginStart="25dp"
-                            android:layout_marginBottom="10dp">
+                            android:focusable="true">
 
                             <ImageButton
                                 android:id="@+id/budMnAdjSavBtn"
                                 android:layout_width="60dp"
                                 android:layout_height="60dp"
-                                android:background="@drawable/circle_box"
-                                android:contentDescription="@string/savings"
-                                android:scaleType="fitCenter"
                                 android:layout_centerHorizontal="true"
+                                android:background="@drawable/circle_box"
+                                android:contentDescription="@string/savings_plan"
+                                android:scaleType="fitCenter"
                                 android:src="@drawable/ic_trending_up_blue_24dp" />
 
                             <TextView
                                 android:layout_width="70dp"
                                 android:layout_height="wrap_content"
-                                android:layout_centerVertical="true"
-                                android:text="@string/savings"
-                                android:textColor="@color/colorPrimaryDark"
-                                android:layout_alignParentStart="true"
-                                android:gravity="center_horizontal"
-                                android:layout_centerHorizontal="true"
                                 android:layout_below="@id/budMnAdjSavBtn"
+                                android:layout_alignParentStart="true"
+                                android:layout_centerHorizontal="true"
+                                android:layout_centerVertical="true"
+                                android:gravity="center_horizontal"
+                                android:text="@string/savings_plan"
+                                android:textColor="@color/colorPrimaryDark"
                                 android:textSize="14sp" />
 
                         </RelativeLayout>
@@ -341,6 +487,8 @@
                 </LinearLayout>
 
             </LinearLayout>
+
+            </ScrollView>
 
         </FrameLayout>
 

@@ -167,7 +167,7 @@ public class SlidesOnboardingP extends AppCompatActivity implements View.OnClick
                     0);
             dbManager.addAccounts(acctDb);
         }
-        if(dbManager.getExpense().size() == 0) {
+        if(dbManager.getExpenses().size() == 0) {
             expDb = new BudgetDb(
                     getString(R.string.other),
                     0.0,
@@ -178,7 +178,7 @@ public class SlidesOnboardingP extends AppCompatActivity implements View.OnClick
                     "B",
                     "N",
                     0);
-            dbManager.addExpense(expDb);
+            dbManager.addBudget(expDb);
         }
         startActivity(new Intent(this, LayoutSetUp.class));
         finish();

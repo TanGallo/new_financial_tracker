@@ -215,7 +215,7 @@
                                     <TextView
                                         android:layout_width="80dp"
                                         android:layout_height="wrap_content"
-                                        android:text="@string/credit_types"
+                                        android:text="@string/debt_repay"
                                         android:textColor="@color/colorPrimaryDark"
                                         android:layout_alignParentStart="true"
                                         android:gravity="center_horizontal"
@@ -249,7 +249,7 @@
                                         android:layout_width="70dp"
                                         android:layout_height="wrap_content"
                                         android:layout_centerVertical="true"
-                                        android:text="@string/savings"
+                                        android:text="@string/savings_plan"
                                         android:textColor="@color/colorPrimaryDark"
                                         android:layout_alignParentStart="true"
                                         android:gravity="center_horizontal"

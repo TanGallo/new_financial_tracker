@@ -52,6 +52,128 @@
                             android:textColor="@color/colorPrimaryDark"
                             android:textSize="22sp" />
 
+                        <LinearLayout
+                            android:id="@+id/layout1SpinLayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_margin="5dp"
+                            android:background="@drawable/entry_box"
+                            >
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="14sp"
+                                android:textColor="@color/colorPrimaryDark"
+                                android:text="@string/limit_list"
+                                >
+
+                            </TextView>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal"
+                                    android:layout_gravity="end"
+                                    android:weightSum="2"
+                                    >
+
+                                <Spinner
+                                    android:id="@+id/layout1FromMthSpin"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    >
+
+                                </Spinner>
+
+                                <Spinner
+                                    android:id="@+id/layout1FromYrSpin"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    >
+
+                                </Spinner>
+
+                                </LinearLayout>
+
+                                <TextView
+                                    android:id="@+id/layout1AndTV"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textSize="14sp"
+                                    android:textColor="@color/colorPrimaryDark"
+                                    android:text="@string/and"
+                                    android:layout_gravity="center_horizontal"
+                                    >
+                                </TextView>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:layout_gravity="end"
+                                android:weightSum="2"
+                                >
+
+                                <Spinner
+                                    android:id="@+id/layout1ToMthSpin"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    >
+
+                                </Spinner>
+
+                                <Spinner
+                                    android:id="@+id/layout1ToYrSpin"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    >
+
+                                </Spinner>
+
+                            </LinearLayout>
+
+                                <Button
+                                    android:id="@+id/layout1SpinOkBtn"
+                                    android:layout_width="40dp"
+                                    android:layout_height="40dp"
+                                    android:layout_gravity="end"
+                                    android:text="@string/ok"
+                                    android:layout_margin="5dp"
+                                    android:background="@drawable/circle_box"
+                                    >
+
+                                </Button>
+
+                            <Button
+                                android:id="@+id/layout1SpinResetBtn"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="end"
+                                android:text="@string/reset"
+                                android:layout_margin="5dp"
+                                android:background="@drawable/entry_box"
+                                >
+
+                            </Button>
+
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/layout1TotalTV"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_margin="10dp"
+                            android:text="@string/amount"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textSize="18sp" />
+
                         <ScrollView
                             android:layout_width="match_parent"
                             android:layout_height="350dp"

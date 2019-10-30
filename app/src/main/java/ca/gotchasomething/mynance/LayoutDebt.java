@@ -38,20 +38,17 @@ import java.util.NoSuchElementException;
 
 import ca.gotchasomething.mynance.data.AccountsDb;
 
-//import ca.gotchasomething.mynance.data.DebtDb;
-
 public class LayoutDebt extends MainNavigation {
 
     AccountsDb layDebtDebtDb;
     Button layDebtDebtCancelBtn, layDebtDebtSaveBtn, layDebtDebtUpdateBtn;
     ContentValues layDebtCV, layDebtCV2, layDebtCV3;
     Date latestDateD;
-    DbHelper layDebtHelper, layDebtHelper2, layDebtHelper3;
+    DbHelper layDebtHelper, layDebtHelper3;
     DbManager layDebtDbMgr;
     LayDebtListAdapter layDebtListAdapter;
     Double layDebtDebtRate = 0.0, layDebtTotDebt = 0.0, debtAmtFromEntry = 0.0, debtAmtFromTag = 0.0, debtLimitFromEntry = 0.0, debtLimitFromTag = 0.0,
-            debtPaytFromEntry = 0.0, debtPaytFromTag = 0.0, debtRateFromEntry = 0.0, debtRateFromTag = 0.0, debtToPayFromTag = 0.0,
-            layDebtTransToDebtThisYr = 0.0, layDebtTransFromDebtThisYr = 0.0;
+            debtPaytFromEntry = 0.0, debtPaytFromTag = 0.0, debtRateFromEntry = 0.0, debtRateFromTag = 0.0;
     EditText layDebtDebtAmtET, layDebtDebtLimitET, layDebtDebtNameET, layDebtDebtPaytET, layDebtDebtRateET;
     FloatingActionButton layDebtAddDebtBtn;
     General layDebtGen;
@@ -59,10 +56,9 @@ public class LayoutDebt extends MainNavigation {
     ListView layDebtListView;
     long id, debtIdFromTag;
     NumberFormat layDebtPerFor = NumberFormat.getPercentInstance();
-    SQLiteDatabase layDebtDb, layDebtDb2, layDebtDb3;
+    SQLiteDatabase layDebtDb, layDebtDb3;
     SimpleDateFormat latestDateS;
-    String layDebtDebtEnd = null, layDebtDebtEnd2 = null, layDebtDebtRateS = null, debtEndFromTag = null, debtNameFromEntry = null, debtNameFromTag = null,
-            latestDate = null;
+    String layDebtDebtEnd = null, layDebtDebtEnd2 = null, layDebtDebtRateS = null, debtEndFromTag = null, debtNameFromTag = null, latestDate = null;
     TextView layDebtDateHeaderLabel, layDebtDateHeaderTV, layDebtDebtDateResLabel, layDebtDebtDateResTV, layDebtTotAmtHeaderLabel, layDebtTotAmtHeaderTV;
 
     @Override
@@ -72,8 +68,8 @@ public class LayoutDebt extends MainNavigation {
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         drawer = findViewById(R.id.drawer_layout);
-        navigationView = findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+        navView = findViewById(R.id.nav_view);
+        navView.setNavigationItemSelectedListener(this);
 
         toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -97,14 +93,6 @@ public class LayoutDebt extends MainNavigation {
         layDebtListView = findViewById(R.id.c4ListView);
         layDebtListAdapter = new LayDebtListAdapter(this, layDebtDbMgr.getDebts());
         layDebtListView.setAdapter(layDebtListAdapter);
-
-        if (layDebtListAdapter.getCount() == 0) {
-            layDebtDateHeaderLabel.setVisibility(View.GONE);
-            layDebtDateHeaderTV.setVisibility(View.GONE);
-        } else {
-            layDebtDateHeaderLabel.setVisibility(View.VISIBLE);
-            layDebtDateHeaderTV.setVisibility(View.VISIBLE);
-        }
 
         layDebtHeaderText();
 
@@ -134,12 +122,11 @@ public class LayoutDebt extends MainNavigation {
     public String layDebtLatestDate() {
         List<String> dates = new ArrayList<>();
         for (AccountsDb a : layDebtDbMgr.getDebts()) {
-            if (a.getAcctIsDebt().equals("Y")) {
                 dates.add(a.getAcctEndDate());
-            }
         }
         List<Date> dates2 = new ArrayList<>(dates.size());
         layDebtGen.extractingDates(dates, dates2);
+
         try {
             latestDateD = Collections.max(dates2);
         } catch (NoSuchElementException e) {
@@ -151,6 +138,7 @@ public class LayoutDebt extends MainNavigation {
             latestDate = latestDateS.format(latestDateD);
         } catch (Exception e2) {
             layDebtDateHeaderTV.setVisibility(View.GONE);
+            //layDebtDateHeaderLabel.setVisibility(View.GONE);
         }
         return latestDate;
     }
@@ -168,8 +156,10 @@ public class LayoutDebt extends MainNavigation {
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
+            debtAmtFromEntry = layDebtGen.dblFromET(layDebtDebtAmtET);
+            debtRateFromEntry = layDebtGen.percentFromET(layDebtDebtRateET);
+            debtPaytFromEntry = layDebtGen.dblFromET(layDebtDebtPaytET);
             layDebtDebtEndResult();
-            layDebtDebtDateResTV.setText(layDebtDebtEnd2);
         }
 
         @Override
@@ -184,8 +174,10 @@ public class LayoutDebt extends MainNavigation {
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
+            debtAmtFromEntry = layDebtGen.dblFromET(layDebtDebtAmtET);
+            debtRateFromEntry = layDebtGen.percentFromET(layDebtDebtRateET);
+            debtPaytFromEntry = layDebtGen.dblFromET(layDebtDebtPaytET);
             layDebtDebtEndResult();
-            layDebtDebtDateResTV.setText(layDebtDebtEnd2);
         }
 
         @Override
@@ -200,8 +192,10 @@ public class LayoutDebt extends MainNavigation {
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
+            debtAmtFromEntry = layDebtGen.dblFromET(layDebtDebtAmtET);
+            debtRateFromEntry = layDebtGen.percentFromET(layDebtDebtRateET);
+            debtPaytFromEntry = layDebtGen.dblFromET(layDebtDebtPaytET);
             layDebtDebtEndResult();
-            layDebtDebtDateResTV.setText(layDebtDebtEnd2);
         }
 
         @Override
@@ -210,19 +204,26 @@ public class LayoutDebt extends MainNavigation {
     };
 
     public void layDebtDebtEndResult() {
-        debtNameFromEntry = layDebtGen.stringFromET(layDebtDebtNameET);
-        debtLimitFromEntry = layDebtGen.dblFromET(layDebtDebtLimitET);
-        debtAmtFromEntry = layDebtGen.dblFromET(layDebtDebtAmtET);
-        debtRateFromEntry = layDebtGen.percentFromET(layDebtDebtRateET);
-        debtPaytFromEntry = layDebtGen.dblFromET(layDebtDebtPaytET);
-
         layDebtDebtEnd2 = layDebtGen.calcDebtDate(
                 debtAmtFromEntry,
                 debtRateFromEntry,
                 debtPaytFromEntry,
                 getString(R.string.debt_paid),
                 getString(R.string.too_far));
-        layDebtGen.whatToShowDebt(getString(R.string.debt_paid), getString(R.string.too_far), layDebtDebtDateResLabel, layDebtDebtDateResTV);
+
+        if (layDebtDebtEnd2.equals(getString(R.string.debt_paid))) {
+            layDebtDebtDateResLabel.setVisibility(View.GONE);
+            layDebtDebtDateResTV.setTextColor(Color.parseColor("#5dbb63")); //light green
+        } else if (layDebtDebtEnd2.equals(getString(R.string.too_far))) {
+            layDebtDebtDateResLabel.setVisibility(View.GONE);
+            layDebtDebtDateResTV.setTextColor(Color.parseColor("#ffff4444")); //red
+        } else {
+            layDebtDebtDateResLabel.setVisibility(View.VISIBLE);
+            layDebtDebtDateResTV.setTextColor(Color.parseColor("#303F9F")); //primary dark
+            layDebtDebtDateResLabel.setTextColor(Color.parseColor("#303F9F"));
+        }
+
+        layDebtDebtDateResTV.setText(layDebtDebtEnd2);
     }
 
     public class LayDebtListAdapter extends ArrayAdapter<AccountsDb> {
@@ -288,27 +289,24 @@ public class LayoutDebt extends MainNavigation {
 
             //retrieve debtEnd
             layDebtDebtEnd = debts.get(position).getAcctEndDate();
+
             if (layDebtDebtEnd.contains("2")) {
                 layDebtHldr.layDebtFreeDateLabel.setVisibility(View.VISIBLE);
-            } else {
-                layDebtHldr.layDebtFreeDateLabel.setVisibility(View.GONE);
-            }
-            layDebtHldr.layDebtFreeDateTV.setText(layDebtDebtEnd);
-
-            layDebtGen.whatToShowDebt(
-                    getString(R.string.debt_paid),
-                    getString(R.string.too_far),
-                    layDebtHldr.layDebtFreeDateLabel,
-                    layDebtHldr.layDebtFreeDateTV);
-
-            /*if (layDebtDebtEnd.equals(getString(R.string.debt_paid))) {
-                layDebtHldr.layDebtFreeDateTV.setTextColor(Color.parseColor("#03ac13"));
-            } else if (layDebtDebtEnd.equals(getString(R.string.too_far))) {
-                layDebtHldr.layDebtFreeDateTV.setTextColor(Color.parseColor("#ffff4444"));
-            } else {
-                layDebtHldr.layDebtFreeDateTV.setTextColor(Color.parseColor("#303F9F"));
+                layDebtHldr.layDebtFreeDateTV.setTextColor(Color.parseColor("#303F9F")); //primary dark
                 layDebtHldr.layDebtFreeDateLabel.setTextColor(Color.parseColor("#303F9F"));
-            }*/
+            } else if (layDebtDebtEnd.equals(getString(R.string.debt_paid))) {
+                layDebtHldr.layDebtFreeDateLabel.setVisibility(View.GONE);
+                layDebtHldr.layDebtFreeDateTV.setTextColor(Color.parseColor("#5dbb63")); //light green
+            } else if (layDebtDebtEnd.equals(getString(R.string.too_far))) {
+                layDebtHldr.layDebtFreeDateLabel.setVisibility(View.GONE);
+                layDebtHldr.layDebtFreeDateTV.setTextColor(Color.parseColor("#ffff4444")); //red
+            } else {
+                layDebtHldr.layDebtFreeDateLabel.setVisibility(View.VISIBLE);
+                layDebtHldr.layDebtFreeDateTV.setTextColor(Color.parseColor("#303F9F")); //primary dark
+                layDebtHldr.layDebtFreeDateLabel.setTextColor(Color.parseColor("#303F9F"));
+            }
+
+            layDebtHldr.layDebtFreeDateTV.setText(layDebtDebtEnd);
 
             layDebtHldr.layDebtDelBtn.setTag(debts.get(position));
             layDebtHldr.layDebtEditBtn.setTag(debts.get(position));
@@ -351,11 +349,24 @@ public class LayoutDebt extends MainNavigation {
                     debtLimitFromTag = layDebtDebtDb.getAcctMax();
                     debtRateFromTag = layDebtDebtDb.getAcctIntRate();
                     debtPaytFromTag = layDebtDebtDb.getAcctPaytsTo();
-                    debtToPayFromTag = layDebtDebtDb.getAcctDebtToPay();
                     debtEndFromTag = layDebtDebtDb.getAcctEndDate();
                     debtIdFromTag = layDebtDebtDb.getId();
 
                     layDebtDebtNameET.setText(debtNameFromTag);
+
+                    if (debtEndFromTag.equals(getString(R.string.debt_paid))) {
+                        layDebtDebtDateResLabel.setVisibility(View.GONE);
+                        layDebtDebtDateResTV.setTextColor(Color.parseColor("#5dbb63")); //light green
+                    } else if (debtEndFromTag.equals(getString(R.string.too_far))) {
+                        layDebtDebtDateResLabel.setVisibility(View.GONE);
+                        layDebtDebtDateResTV.setTextColor(Color.parseColor("#ffff4444")); //red
+                    } else {
+                        layDebtDebtDateResLabel.setVisibility(View.VISIBLE);
+                        layDebtDebtDateResTV.setTextColor(Color.parseColor("#303F9F")); //primary dark
+                        layDebtDebtDateResLabel.setTextColor(Color.parseColor("#303F9F"));
+                    }
+                    layDebtDebtDateResTV.setText(debtEndFromTag);
+
                     layDebtGen.dblASCurrency(String.valueOf(debtLimitFromTag), layDebtDebtLimitET);
                     layDebtGen.dblASCurrency(String.valueOf(debtAmtFromTag), layDebtDebtAmtET);
                     layDebtDebtAmtET.addTextChangedListener(onChangeLayDebtDebtAmt);
@@ -369,44 +380,28 @@ public class LayoutDebt extends MainNavigation {
                     layDebtGen.dblASCurrency(String.valueOf(debtPaytFromTag), layDebtDebtPaytET);
                     layDebtDebtPaytET.addTextChangedListener(onChangeLayDebtDebtPayt);
 
-                    layDebtDebtDateResTV.setText(debtEndFromTag);
-                    layDebtGen.whatToShowDebt(
-                            getString(R.string.debt_paid),
-                            getString(R.string.too_far),
-                            layDebtDebtDateResLabel,
-                            layDebtDebtDateResTV);
-                    /*if (debtEndFromTag.equals(getString(R.string.debt_paid))) {
-                        layDebtDebtDateResLabel.setVisibility(View.GONE);
-                        layDebtDebtDateResTV.setTextColor(Color.parseColor("#03ac13"));
-                    } else if (debtEndFromTag.equals(getString(R.string.too_far))) {
-                        layDebtDebtDateResLabel.setVisibility(View.GONE);
-                        layDebtDebtDateResTV.setTextColor(Color.parseColor("#ffff4444"));
-                    } else {
-                        layDebtDebtDateResLabel.setVisibility(View.VISIBLE);
-                        layDebtDebtDateResTV.setTextColor(Color.parseColor("#303F9F"));
-                        layDebtDebtDateResLabel.setTextColor(Color.parseColor("#303F9F"));
-                    }*/
-
                     layDebtDebtUpdateBtn.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
 
-                            layDebtDebtEndResult();
+                            if (layDebtGen.stringFromET(layDebtDebtNameET) != null) {
 
-                            if (debtNameFromEntry != null) {
+                                debtLimitFromEntry = layDebtGen.dblFromET(layDebtDebtLimitET);
+                                debtAmtFromEntry = layDebtGen.dblFromET(layDebtDebtAmtET);
+                                debtRateFromEntry = layDebtGen.percentFromET(layDebtDebtRateET);
+                                debtPaytFromEntry = layDebtGen.dblFromET(layDebtDebtPaytET);
 
-                                layDebtDebtDb.setAcctName(debtNameFromEntry);
+                                layDebtDebtDb.setAcctName(layDebtGen.stringFromET(layDebtDebtNameET));
                                 layDebtDebtDb.setAcctMax(debtLimitFromEntry);
                                 layDebtDebtDb.setAcctBal(debtAmtFromEntry);
                                 layDebtDebtDb.setAcctIntRate(debtRateFromEntry);
                                 layDebtDebtDb.setAcctPaytsTo(debtPaytFromEntry);
+                                layDebtDebtEndResult();
                                 layDebtDebtDb.setAcctEndDate(layDebtDebtEnd2);
 
                                 layDebtDbMgr.updateAccounts(layDebtDebtDb);
 
-                                if(layDebtDbMgr.getTransfers().size() != 0) {
-                                    //layDebtTransToDebtThisYr = layDebtDbMgr.transfersToDebtThisYear(debtIdFromTag);
-                                    //layDebtTransFromDebtThisYr = layDebtDbMgr.transfersFromDebtThisYear(debtIdFromTag);
+                                if (layDebtDbMgr.getTransfers().size() != 0) {
                                     layDebtDbMgr.updateRecReTransfer(debtIdFromTag, layDebtDbMgr.transfersToAcctThisYear(debtIdFromTag, layDebtGen.lastNumOfDays(365)), layDebtDbMgr.transfersFromAcctThisYear(debtIdFromTag, layDebtGen.lastNumOfDays(365)));
                                 } else {
                                     layDebtDebtDb.setAcctAnnPaytsTo(debtPaytFromEntry * 12.0);
@@ -419,14 +414,14 @@ public class LayoutDebt extends MainNavigation {
                                 String[] args2 = new String[]{String.valueOf(layDebtDebtDb.getId())};
 
                                 layDebtCV2 = new ContentValues();
-                                //layDebtCV3 = new ContentValues();
+                                layDebtCV3 = new ContentValues();
 
-                                layDebtCV2.put(DbHelper.TRANSFROMACCTNAME, debtNameFromEntry);
-                                //layDebtCV3.put(DbHelper.ACCTNAME, debtNameFromEntry);
+                                layDebtCV2.put(DbHelper.TRANSFROMACCTNAME, layDebtGen.stringFromET(layDebtDebtNameET));
+                                layDebtCV3.put(DbHelper.TRANSTOACCTNAME, layDebtGen.stringFromET(layDebtDebtNameET));
 
                                 try {
                                     layDebtDb.update(DbHelper.TRANSACTIONS_TABLE_NAME, layDebtCV2, DbHelper.TRANSFROMACCTID + "=?", args2);
-                                    //layDebtDb.update(DbHelper.ACCOUNTS_TABLE_NAME, layDebtCV3, DbHelper.DEBTID + "=?", args2);
+                                    layDebtDb.update(DbHelper.TRANSACTIONS_TABLE_NAME, layDebtCV3, DbHelper.TRANSTOACCTID + "=?", args2);
                                 } catch (CursorIndexOutOfBoundsException | SQLException e) {
                                     e.printStackTrace();
                                 }
@@ -460,18 +455,6 @@ public class LayoutDebt extends MainNavigation {
                 public void onClick(View v) {
 
                     layDebtDebtDb = (AccountsDb) layDebtHldr.layDebtDelBtn.getTag();
-
-                    /*layDebtHelper2 = new DbHelper(getContext());
-                    layDebtDb2 = layDebtHelper2.getWritableDatabase();
-
-                    try {
-                        String[] args3 = new String[]{String.valueOf(layDebtDebtDb.getId())};
-                        layDebtDb2.delete(DbHelper.ACCOUNTS_TABLE_NAME, DbHelper.DEBTID + "=?", args3);
-                    } catch (CursorIndexOutOfBoundsException e3) {
-                        e3.printStackTrace();
-                    }
-
-                    layDebtDb2.close();*/
 
                     layDebtDbMgr.deleteAccounts(layDebtDebtDb);
                     layDebtListAdapter.updateDebts(layDebtDbMgr.getDebts());

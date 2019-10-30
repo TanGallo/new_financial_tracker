@@ -60,7 +60,8 @@
         <activity android:name="ca.gotchasomething.mynance.LayoutSavings"/>
         <activity android:name="ca.gotchasomething.mynance.LayoutBudget"/>
         <activity android:name="ca.gotchasomething.mynance.LayoutRatings"/>
-        <activity android:name="ca.gotchasomething.mynance.LayoutHelp"/>
+        <activity android:name="ca.gotchasomething.mynance.LayoutViewEdit"/>
+        <activity android:name="ca.gotchasomething.mynance.LayoutCCPayList"/>
 
     </application>
 

@@ -3,6 +3,8 @@ package ca.gotchasomething.mynance;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.database.CursorIndexOutOfBoundsException;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -31,19 +33,16 @@ import java.util.List;
 
 import ca.gotchasomething.mynance.data.AccountsDb;
 
-//import ca.gotchasomething.mynance.data.SavingsDb;
-
 public class LayoutSavings extends MainNavigation {
 
     AccountsDb laySavSavDb;
     Button laySavCancelBtn, laySavSaveBtn, laySavUpdateBtn;
-    ContentValues laySavCV, laySavCV2;
-    DbHelper laySavHelper, laySavHelper2, laySavHelper3;
+    ContentValues laySavCV, laySavCV2, laySavCV3;
+    DbHelper laySavHelper, laySavHelper3;
     DbManager laySavDbMgr;
-    Double currentSavingsRate = 0.0, laySavSavRate = 0.0, laySavTotSav = 0.0, laySavTransToSavThisYr = 0.0, laySavTransFromSavThisYr = 0.0,
-            savAmtFromEntry = 0.0, savAmtFromTag = 0.0, savGoalFromEntry = 0.0, savGoalFromTag = 0.0,
+    Double laySavSavRate = 0.0, laySavTotSav = 0.0, savAmtFromEntry = 0.0, savAmtFromTag = 0.0, savGoalFromEntry = 0.0, savGoalFromTag = 0.0,
             savPaytFromEntry = 0.0, savPaytFromTag = 0.0, savRateFromEntry = 0.0, savRateFromTag = 0.0;
-    EditText laySavSavAmtET, laySavSavGoalET, laySavSavNameET, laySavSavPaytET, laySavSavPercentET, laySavSavRateET;
+    EditText laySavSavAmtET, laySavSavGoalET, laySavSavNameET, laySavSavPaytET, laySavSavPercentET;
     FloatingActionButton laySavAddMoreBtn;
     General laySavGen;
     Intent laySavToAddMore, laySavRefresh;
@@ -51,7 +50,7 @@ public class LayoutSavings extends MainNavigation {
     long id, savIdFromTag;
     NumberFormat laySavPerFor = NumberFormat.getPercentInstance();
     LaySavListAdapter laySavListAdapter;
-    SQLiteDatabase laySavDb, laySavDb2, laySavDb3;
+    SQLiteDatabase laySavDb, laySavDb3;
     String laySavSavDate = null, laySavSavDate2 = null, laySavSavRateS = null, savDateFromTag = null, savNameFromEntry = null, savNameFromTag = null;
     TextView laySavDateHeaderLabel, laySavDateHeaderTV, laySavSavDateResLabel, laySavSavDateResTV, laySavTotAmtHeaderLabel, laySavTotAmtHeaderTV;
 
@@ -62,8 +61,8 @@ public class LayoutSavings extends MainNavigation {
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         drawer = findViewById(R.id.drawer_layout);
-        navigationView = findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+        navView = findViewById(R.id.nav_view);
+        navView.setNavigationItemSelectedListener(this);
 
         toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -117,8 +116,11 @@ public class LayoutSavings extends MainNavigation {
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
+            savAmtFromEntry = laySavGen.dblFromET(laySavSavAmtET);
+            savGoalFromEntry = laySavGen.dblFromET(laySavSavGoalET);
+            savRateFromEntry = laySavGen.percentFromET(laySavSavPercentET);
+            savPaytFromEntry = laySavGen.dblFromET(laySavSavPaytET);
             laySavDateResult();
-            laySavSavDateResTV.setText(laySavSavDate2);
         }
 
         @Override
@@ -133,8 +135,11 @@ public class LayoutSavings extends MainNavigation {
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
+            savAmtFromEntry = laySavGen.dblFromET(laySavSavAmtET);
+            savGoalFromEntry = laySavGen.dblFromET(laySavSavGoalET);
+            savRateFromEntry = laySavGen.percentFromET(laySavSavPercentET);
+            savPaytFromEntry = laySavGen.dblFromET(laySavSavPaytET);
             laySavDateResult();
-            laySavSavDateResTV.setText(laySavSavDate2);
         }
 
         @Override
@@ -149,8 +154,11 @@ public class LayoutSavings extends MainNavigation {
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
+            savAmtFromEntry = laySavGen.dblFromET(laySavSavAmtET);
+            savGoalFromEntry = laySavGen.dblFromET(laySavSavGoalET);
+            savRateFromEntry = laySavGen.percentFromET(laySavSavPercentET);
+            savPaytFromEntry = laySavGen.dblFromET(laySavSavPaytET);
             laySavDateResult();
-            laySavSavDateResTV.setText(laySavSavDate2);
         }
 
         @Override
@@ -165,8 +173,11 @@ public class LayoutSavings extends MainNavigation {
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
+            savAmtFromEntry = laySavGen.dblFromET(laySavSavAmtET);
+            savGoalFromEntry = laySavGen.dblFromET(laySavSavGoalET);
+            savRateFromEntry = laySavGen.percentFromET(laySavSavPercentET);
+            savPaytFromEntry = laySavGen.dblFromET(laySavSavPaytET);
             laySavDateResult();
-            laySavSavDateResTV.setText(laySavSavDate2);
         }
 
         @Override
@@ -175,12 +186,6 @@ public class LayoutSavings extends MainNavigation {
     };
 
     public void laySavDateResult() {
-        savNameFromEntry = laySavGen.stringFromET(laySavSavNameET);
-        savAmtFromEntry = laySavGen.dblFromET(laySavSavAmtET);
-        savGoalFromEntry = laySavGen.dblFromET(laySavSavGoalET);
-        savRateFromEntry = laySavGen.percentFromET(laySavSavRateET);
-        savPaytFromEntry = laySavGen.dblFromET(laySavSavPaytET);
-
         laySavSavDate2 = laySavGen.calcSavingsDate(
                 savGoalFromEntry,
                 savAmtFromEntry,
@@ -199,6 +204,8 @@ public class LayoutSavings extends MainNavigation {
             laySavSavDateResTV.setTextColor(Color.parseColor("#303F9F"));
             laySavSavDateResLabel.setTextColor(Color.parseColor("#303F9F"));
         }
+
+        laySavSavDateResTV.setText(laySavSavDate2);
     }
 
     public class LaySavListAdapter extends ArrayAdapter<AccountsDb> {
@@ -318,6 +325,20 @@ public class LayoutSavings extends MainNavigation {
 
                     laySavSavNameET.setText(savNameFromTag);
 
+                    laySavSavDate = savDateFromTag;
+                    laySavSavDateResTV.setText(laySavSavDate);
+                    if (laySavSavDate.equals(getString(R.string.goal_achieved))) {
+                        laySavSavDateResLabel.setVisibility(View.GONE);
+                        laySavSavDateResTV.setTextColor(Color.parseColor("#03ac13"));
+                    } else if (laySavSavDate.equals(getString(R.string.too_far))) {
+                        laySavSavDateResLabel.setVisibility(View.GONE);
+                        laySavSavDateResTV.setTextColor(Color.parseColor("#ffff4444"));
+                    } else {
+                        laySavSavDateResLabel.setVisibility(View.VISIBLE);
+                        laySavSavDateResTV.setTextColor(Color.parseColor("#303F9F"));
+                        laySavSavDateResLabel.setTextColor(Color.parseColor("#303F9F"));
+                    }
+
                     laySavGen.dblASCurrency(String.valueOf(savAmtFromTag), laySavSavAmtET);
                     laySavSavAmtET.addTextChangedListener(onChangeLaySavSavAmt);
 
@@ -333,62 +354,53 @@ public class LayoutSavings extends MainNavigation {
                     laySavSavPercentET.setText(laySavSavRateS);
                     laySavSavPercentET.addTextChangedListener(onChangeLaySavSavRate);
 
-                    laySavSavDate = savDateFromTag;
-                    laySavSavDateResTV.setText(laySavSavDate);
-                    if (laySavSavDate.equals(getString(R.string.goal_achieved))) {
-                        laySavSavDateResLabel.setVisibility(View.GONE);
-                        laySavSavDateResTV.setTextColor(Color.parseColor("#03ac13"));
-                    } else if (laySavSavDate.equals(getString(R.string.too_far))) {
-                        laySavSavDateResLabel.setVisibility(View.GONE);
-                        laySavSavDateResTV.setTextColor(Color.parseColor("#ffff4444"));
-                    } else {
-                        laySavSavDateResLabel.setVisibility(View.VISIBLE);
-                        laySavSavDateResTV.setTextColor(Color.parseColor("#303F9F"));
-                        laySavSavDateResLabel.setTextColor(Color.parseColor("#303F9F"));
-                    }
-
                     laySavUpdateBtn.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
 
-                            laySavDateResult();
+                            if (laySavGen.stringFromET(laySavSavNameET) != "null") {
 
-                            if (savNameFromEntry != "null") {
+                                savAmtFromEntry = laySavGen.dblFromET(laySavSavAmtET);
+                                savGoalFromEntry = laySavGen.dblFromET(laySavSavGoalET);
+                                savPaytFromEntry = laySavGen.dblFromET(laySavSavPaytET);
+                                savRateFromEntry = laySavGen.percentFromET(laySavSavPercentET);
 
-                                laySavSavDb.setAcctName(savNameFromEntry);
+                                laySavSavDb.setAcctName(laySavGen.stringFromET(laySavSavNameET));
                                 laySavSavDb.setAcctBal(savAmtFromEntry);
                                 laySavSavDb.setAcctMax(savGoalFromEntry);
                                 laySavSavDb.setAcctPaytsTo(savPaytFromEntry);
                                 laySavSavDb.setAcctIntRate(savRateFromEntry);
+                                laySavDateResult();
                                 laySavSavDb.setAcctEndDate(laySavSavDate2);
 
                                 laySavDbMgr.updateAccounts(laySavSavDb);
 
                                 if(laySavDbMgr.getTransfers().size() != 0) {
-                                    //laySavTransToSavThisYr = laySavDbMgr.transfersToSavThisYear(savIdFromTag);
-                                    //laySavTransFromSavThisYr = laySavDbMgr.transfersFromSavThisYear(savIdFromTag);
                                     laySavDbMgr.updateRecReTransfer(savIdFromTag, laySavDbMgr.transfersToAcctThisYear(savIdFromTag, laySavGen.lastNumOfDays(365)), laySavDbMgr.transfersFromAcctThisYear(savIdFromTag, laySavGen.lastNumOfDays(365)));
                                 } else {
                                     laySavSavDb.setAcctAnnPaytsTo(savPaytFromEntry * 12.0);
                                     laySavDbMgr.updateAccounts(laySavSavDb);
                                 }
 
-                                /*laySavHelper = new DbHelper(getContext());
+                                laySavHelper = new DbHelper(getContext());
                                 laySavDb = laySavHelper.getWritableDatabase();
 
                                 String[] args = new String[]{String.valueOf(laySavSavDb.getId())};
 
                                 laySavCV2 = new ContentValues();
+                                laySavCV3 = new ContentValues();
 
-                                laySavCV2.put(DbHelper.ACCTNAME, savNameFromEntry);
+                                laySavCV2.put(DbHelper.TRANSFROMACCTNAME, laySavGen.stringFromET(laySavSavNameET));
+                                laySavCV3.put(DbHelper.TRANSTOACCTNAME, laySavGen.stringFromET(laySavSavNameET));
 
                                 try {
-                                    laySavDb.update(DbHelper.ACCOUNTS_TABLE_NAME, laySavCV2, DbHelper.SAVID + "=?", args);
+                                    laySavDb.update(DbHelper.TRANSACTIONS_TABLE_NAME, laySavCV2, DbHelper.TRANSFROMACCTID + "=?", args);
+                                    laySavDb.update(DbHelper.TRANSACTIONS_TABLE_NAME, laySavCV3, DbHelper.TRANSTOACCTID + "=?", args);
                                 } catch (CursorIndexOutOfBoundsException | SQLException e) {
                                     e.printStackTrace();
                                 }
 
-                                laySavDb.close();*/
+                                laySavDb.close();
 
                                 laySavListAdapter.updateSavings(laySavDbMgr.getSavings());
                                 notifyDataSetChanged();
@@ -417,17 +429,6 @@ public class LayoutSavings extends MainNavigation {
                 public void onClick(View v) {
 
                     laySavSavDb = (AccountsDb) laySavHldr.laySavDelBtn.getTag();
-
-                    /*laySavHelper2 = new DbHelper(getContext());
-                    laySavDb2 = laySavHelper2.getWritableDatabase();
-
-                    try {
-                        String[] args3 = new String[]{String.valueOf(laySavSavDb.getId())};
-                        laySavDb2.delete(DbHelper.ACCOUNTS_TABLE_NAME, DbHelper.SAVID + "=?", args3);
-                    } catch (CursorIndexOutOfBoundsException e4) {
-                        e4.printStackTrace();
-                    }
-                    laySavDb2.close();*/
 
                     laySavDbMgr.deleteAccounts(laySavSavDb);
                     laySavListAdapter.updateSavings(laySavDbMgr.getSavings());

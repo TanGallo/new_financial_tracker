@@ -29,11 +29,8 @@ import java.util.List;
 
 import ca.gotchasomething.mynance.data.AccountsDb;
 import ca.gotchasomething.mynance.data.BudgetDb;
-//import ca.gotchasomething.mynance.data.MoneyOutDb;
 import ca.gotchasomething.mynance.data.TransactionsDb;
 import ca.gotchasomething.mynance.spinners.MoneyOutCCSpinnerAdapter;
-
-//import ca.gotchasomething.mynance.data.ExpenseBudgetDb;
 
 public class LayoutCCPur extends MainNavigation {
 
@@ -66,8 +63,8 @@ public class LayoutCCPur extends MainNavigation {
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         drawer = findViewById(R.id.drawer_layout);
-        navigationView = findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+        navView = findViewById(R.id.nav_view);
+        navView.setNavigationItemSelectedListener(this);
 
         toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -121,7 +118,7 @@ public class LayoutCCPur extends MainNavigation {
 
         layCCPurList = findViewById(R.id.mainListView);
         layCCPurList.setVisibility(View.VISIBLE);
-        layCCPurListAdapter = new LayCCPurLstAdapter(this, layCCPurDbMgr.getExpense());
+        layCCPurListAdapter = new LayCCPurLstAdapter(this, layCCPurDbMgr.getExpenses());
         layCCPurList.setAdapter(layCCPurListAdapter);
 
         layCCPurCV = new ContentValues();
@@ -130,6 +127,12 @@ public class LayoutCCPur extends MainNavigation {
         layCCPurDb2 = layCCPurHelper2.getWritableDatabase();
         layCCPurDb2.update(DbHelper.CURRENT_TABLE_NAME, layCCPurCV, DbHelper.ID + "= '1'", null);
         layCCPurDb2.close();
+    }
+
+    public void layCCPurRefresh() {
+        layCCPurRefresh = new Intent(this, LayoutCCPur.class);
+        layCCPurRefresh.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+        startActivity(layCCPurRefresh);
     }
 
     View.OnClickListener onClickLayCCPurAddMoreTV = new View.OnClickListener() {
@@ -174,7 +177,7 @@ public class LayoutCCPur extends MainNavigation {
 
     public void layCCPurChangeDefault() {
         layCCPurExpDb.setBdgtPaytAmt(layCCPurMonOutAmt);
-        layCCPurDbMgr.updateExpense(layCCPurExpDb);
+        layCCPurDbMgr.updateBudget(layCCPurExpDb);
         layCCPurContTransaction();
     }
 
@@ -182,7 +185,7 @@ public class LayoutCCPur extends MainNavigation {
 
         layCCPurDbMgr.updateRecPlusPt1(layCCPurMonOutAmt, debtAmtFromDb, layCCPurChargingDebtIdFromSpin);
         for (AccountsDb a : layCCPurDbMgr.getDebts()) {
-            if (String.valueOf(a.getId()).equals(String.valueOf(layCCPurChargingDebtIdFromSpin))) {
+            if (a.getId() == layCCPurChargingDebtIdFromSpin) {
                 debtAmtFromDb = a.getAcctBal();
                 debtLimitFromDb = a.getAcctMax();
                 debtRateFromDb = a.getAcctIntRate();
@@ -222,12 +225,12 @@ public class LayoutCCPur extends MainNavigation {
                 "N",
                 layCCPurGen.createTimestamp(),
                 0);
-        layCCPurDbMgr.addMoneyOut(layCCPurMonOutDb);
+        layCCPurDbMgr.addTransactions(layCCPurMonOutDb);
 
         layCCPurDbMgr.makeNewExpAnnAmt(layCCPurExpRefKeyMO, layCCPurGen.lastNumOfDays(365));
-        layCCPurDbMgr.updateExpense(layCCPurExpDb);
+        layCCPurDbMgr.updateBudget(layCCPurExpDb);
 
-        layCCPurListAdapter.updateExpenses(layCCPurDbMgr.getExpense());
+        layCCPurListAdapter.updateExpenses(layCCPurDbMgr.getExpenses());
         layCCPurListAdapter.notifyDataSetChanged();
 
         layCCPurToList = new Intent(LayoutCCPur.this, LayoutCCPurList.class);
@@ -332,7 +335,7 @@ public class LayoutCCPur extends MainNavigation {
                             layCCPurExpWeekly = layCCPurExpDb.getBdgtWeekly();
 
                             for (AccountsDb a : layCCPurDbMgr.getDebts()) {
-                                if (String.valueOf(a.getId()).equals(String.valueOf(layCCPurChargingDebtIdFromSpin))) {
+                                if (a.getId() == layCCPurChargingDebtIdFromSpin) {
                                     debtAmtFromDb = a.getAcctBal();
                                     debtLimitFromDb = a.getAcctMax();
                                     debtRateFromDb = a.getAcctIntRate();
@@ -349,9 +352,7 @@ public class LayoutCCPur extends MainNavigation {
                                     @Override
                                     public void onClick(View v) {
                                         layCCPurHldr.layCCPurPaytWarnLayout.setVisibility(View.GONE);
-                                        layCCPurRefresh = new Intent(getContext(), LayoutCCPur.class);
-                                        layCCPurRefresh.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-                                        startActivity(layCCPurRefresh);
+                                        layCCPurRefresh();
                                     }
                                 });
                                 //YES CONTINUE
@@ -369,9 +370,7 @@ public class LayoutCCPur extends MainNavigation {
                                                     @Override
                                                     public void onClick(View v) {
                                                         layCCPurHldr.layCCPurPaytWarnLayout.setVisibility(View.GONE);
-                                                        layCCPurRefresh = new Intent(getContext(), LayoutCCPur.class);
-                                                        layCCPurRefresh.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-                                                        startActivity(layCCPurRefresh);
+                                                        layCCPurRefresh();
                                                     }
                                                 });
                                                 //YES CONTINUE
@@ -437,9 +436,7 @@ public class LayoutCCPur extends MainNavigation {
                                                     @Override
                                                     public void onClick(View v) {
                                                         layCCPurHldr.layCCPurPaytWarnLayout.setVisibility(View.GONE);
-                                                        layCCPurRefresh = new Intent(getContext(), LayoutCCPur.class);
-                                                        layCCPurRefresh.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-                                                        startActivity(layCCPurRefresh);
+                                                        layCCPurRefresh();
                                                     }
                                                 });
                                                 //YES CONTINUE
@@ -509,9 +506,7 @@ public class LayoutCCPur extends MainNavigation {
                                             @Override
                                             public void onClick(View v) {
                                                 layCCPurHldr.layCCPurPaytWarnLayout.setVisibility(View.GONE);
-                                                layCCPurRefresh = new Intent(getContext(), LayoutCCPur.class);
-                                                layCCPurRefresh.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-                                                startActivity(layCCPurRefresh);
+                                                layCCPurRefresh();
                                             }
                                         });
                                         //YES CONTINUE
@@ -577,9 +572,7 @@ public class LayoutCCPur extends MainNavigation {
                                             @Override
                                             public void onClick(View v) {
                                                 layCCPurHldr.layCCPurPaytWarnLayout.setVisibility(View.GONE);
-                                                layCCPurRefresh = new Intent(getContext(), LayoutCCPur.class);
-                                                layCCPurRefresh.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-                                                startActivity(layCCPurRefresh);
+                                                layCCPurRefresh();
                                             }
                                         });
                                         //YES CONTINUE

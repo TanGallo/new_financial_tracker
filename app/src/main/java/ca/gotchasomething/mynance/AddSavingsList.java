@@ -16,50 +16,68 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 
 import java.text.NumberFormat;
 import java.util.List;
 
 import ca.gotchasomething.mynance.data.AccountsDb;
 
-public class AddSavingsList extends AppCompatActivity {
+public class AddSavingsList extends MainNavigation {
 
     AccountsDb savLstSavDb;
     Button savLstAddMoreBtn, savLstUpdateBtn, savLstCancelBtn, savLstDoneBtn, savLstSaveBtn;
-    ContentValues savLstCV, savLstCV2;
-    DbHelper savLstHelper, savLstHelper2, savLstHelper3;
+    ContentValues savLstCV;
+    DbHelper savLstHelper;
     DbManager savLstDBMgr;
-    Double currentSavingsRate = 0.0, savAmtFromEntry = 0.0, savAmtFromTag = 0.0, savRateFromEntry = 0.0, savRateFromTag = 0.0, savPaytFromEntry = 0.0, savPaytFromTag = 0.0,
-            savGoalFromEntry = 0.0, savGoalFromTag = 0.0, savLstSavRate2 = 0.0, savLstGoalAmt2 = 0.0, savLstSavCurr = 0.0, savLstTransToSavThisYr = 0.0,
-            savLstTransFromSavThisYr = 0.0;
+    Double savAmtFromEntry = 0.0, savAmtFromTag = 0.0, savRateFromEntry = 0.0, savRateFromTag = 0.0, savPaytFromEntry = 0.0, savPaytFromTag = 0.0,
+            savGoalFromEntry = 0.0, savGoalFromTag = 0.0, savLstSavRate2 = 0.0, savLstGoalAmt2 = 0.0, savLstSavCurr = 0.0;
     EditText savLstSavAmtET, savLstSavGoalET, savLstSavPaytET, savLstSavPercentET, savLstSavNameET;
     SavLstListAdapter savLstLstAdapter;
     General savLstGen;
     Intent savLstToLayoutSavings, savLstRefresh, savLstToSetUp, savLstToAddMore, savLstToAnalysis;
+    LinearLayout savLstSpinLayout;
     ListView savLstListView;
     Long savIdFromTag;
     NumberFormat savLstPercentFor = NumberFormat.getPercentInstance();
-    SQLiteDatabase savLstDB, savLstDB2, savLstDB3;
+    SQLiteDatabase savLstDB;
     String savDateFromTag = null, savNameFromEntry = null, savNameFromTag = null, savLstSavDate = null, savLstSavDate2 = null, savLstSavRate3 = null;
-    TextView savLstSavDateResLabel, savLstHeaderLabelTV, savLstSavDateResTV;
+    TextView savLstSavDateResLabel, savLstHeaderLabelTV, savLstSavDateResTV, savLstTotalTV;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_2_list_add_done);
 
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        drawer = findViewById(R.id.drawer_layout);
+        navView = findViewById(R.id.nav_view);
+        navView.setNavigationItemSelectedListener(this);
+
+        toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+
+        menuConfig();
+
         savLstDBMgr = new DbManager(this);
         savLstGen = new General();
 
+        savLstSpinLayout = findViewById(R.id.layout1SpinLayout);
+        savLstSpinLayout.setVisibility(View.GONE);
+
         savLstHeaderLabelTV = findViewById(R.id.layout1HeaderLabelTV);
         savLstHeaderLabelTV.setText(getString(R.string.savings));
+        savLstTotalTV = findViewById(R.id.layout1TotalTV);
+        savLstTotalTV.setVisibility(View.GONE);
 
         savLstListView = findViewById(R.id.layout1ListView);
         savLstAddMoreBtn = findViewById(R.id.layout1AddMoreBtn);
@@ -100,11 +118,11 @@ public class AddSavingsList extends AppCompatActivity {
                 savLstToSetUp = new Intent(AddSavingsList.this, LayoutSetUp.class);
                 savLstToSetUp.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
                 startActivity(savLstToSetUp);
-            } else if(savLstDBMgr.retrieveLastPageId() == 6) {
+            } else if (savLstDBMgr.retrieveLastPageId() == 6) {
                 savLstToLayoutSavings = new Intent(AddSavingsList.this, LayoutSavings.class);
                 savLstToLayoutSavings.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
                 startActivity(savLstToLayoutSavings);
-            } else if(savLstDBMgr.retrieveLastPageId() == 2) {
+            } else if (savLstDBMgr.retrieveLastPageId() == 2) {
                 savLstToLayoutSavings = new Intent(AddSavingsList.this, LayoutBudget.class);
                 savLstToLayoutSavings.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
                 startActivity(savLstToLayoutSavings);
@@ -251,6 +269,10 @@ public class AddSavingsList extends AppCompatActivity {
                 savLstHldr.savLstCurrAmtTV = convertView.findViewById(R.id.bigLstTV4);
                 savLstHldr.savLstDel = convertView.findViewById(R.id.bigLstDelBtn);
                 savLstHldr.savLstEdit = convertView.findViewById(R.id.bigLstEditBtn);
+                if (savLstDBMgr.retrieveLastPageId() == 13) {
+                    savLstHldr.savLstDel.setVisibility(View.GONE);
+                    savLstHldr.savLstEdit.setVisibility(View.GONE);
+                }
                 convertView.setTag(savLstHldr);
 
             } else {
@@ -284,7 +306,7 @@ public class AddSavingsList extends AppCompatActivity {
             //retrieve savingsAmount & format as currency
             savLstSavCurr = (savings.get(position).getAcctBal());
             savLstGen.dblASCurrency(String.valueOf(savLstSavCurr), savLstHldr.savLstCurrAmtTV);
-            
+
             savLstHldr.savLstDel.setTag(savings.get(position));
             savLstHldr.savLstEdit.setTag(savings.get(position));
 
@@ -365,7 +387,7 @@ public class AddSavingsList extends AppCompatActivity {
 
                                 savLstDBMgr.updateAccounts(savLstSavDb);
 
-                                if(savLstDBMgr.getTransfers().size() != 0) {
+                                if (savLstDBMgr.getTransfers().size() != 0) {
                                     //savLstTransToSavThisYr = savLstDBMgr.transfersToSavThisYear(savIdFromTag);
                                     //savLstTransFromSavThisYr = savLstDBMgr.transfersFromSavThisYear(savIdFromTag);
                                     savLstDBMgr.updateRecReTransfer(savIdFromTag, savLstDBMgr.transfersToAcctThisYear(savIdFromTag, savLstGen.lastNumOfDays(365)), savLstDBMgr.transfersFromAcctThisYear(savIdFromTag, savLstGen.lastNumOfDays(365)));

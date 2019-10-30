@@ -18,13 +18,12 @@ public class MainNavigation extends AppCompatActivity implements NavigationView.
 
     ActionBarDrawerToggle toggle;
     Boolean before = false;
-    public DbManager dbManager;
+    public DbManager dbMgr;
     protected DrawerLayout drawer;
     General mainGen;
-    Intent i, i2, i3, i4, i5, i6;
+    Intent i, i2, i3, i4;
     Menu menu;
-    NavigationView navigationView;
-    String latestDone;
+    NavigationView navView;
     Toolbar toolbar;
 
     @Override
@@ -34,11 +33,11 @@ public class MainNavigation extends AppCompatActivity implements NavigationView.
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        dbManager = new DbManager(this);
+        dbMgr = new DbManager(this);
         mainGen = new General();
 
         drawer = findViewById(R.id.drawer_layout);
-        navigationView = findViewById(R.id.nav_view);
+        navView = findViewById(R.id.nav_view);
         menuConfig();
 
         toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -47,19 +46,14 @@ public class MainNavigation extends AppCompatActivity implements NavigationView.
     }
 
     public void menuConfig() {
-        latestDone = dbManager.retrieveLatestDone();
-        beforeSetUpOrAfter(latestDone);
-        menu = navigationView.getMenu();
+        beforeSetUpOrAfter(dbMgr.retrieveLatestDone());
+        menu = navView.getMenu();
         if (before) {
             menu.findItem(R.id.menu_before).setVisible(true);
             menu.findItem(R.id.menu_home_page).setVisible(false);
             menu.findItem(R.id.menu_home_page).setEnabled(false);
             menu.findItem(R.id.menu_financial_summary).setVisible(false);
             menu.findItem(R.id.menu_financial_summary).setEnabled(false);
-            /*menu.findItem(R.id.menu_debt_plan).setVisible(false);
-            menu.findItem(R.id.menu_debt_plan).setEnabled(false);
-            menu.findItem(R.id.menu_savings_plan).setVisible(false);
-            menu.findItem(R.id.menu_savings_plan).setEnabled(false);*/
             menu.findItem(R.id.menu_view_edit_transactions).setVisible(false);
             menu.findItem(R.id.menu_view_edit_transactions).setEnabled(false);
             menu.findItem(R.id.menu_help).setVisible(false);
@@ -70,16 +64,12 @@ public class MainNavigation extends AppCompatActivity implements NavigationView.
             menu.findItem(R.id.menu_home_page).setEnabled(true);
             menu.findItem(R.id.menu_financial_summary).setVisible(true);
             menu.findItem(R.id.menu_financial_summary).setEnabled(true);
-            /*menu.findItem(R.id.menu_debt_plan).setVisible(true);
-            menu.findItem(R.id.menu_debt_plan).setEnabled(true);
-            menu.findItem(R.id.menu_savings_plan).setVisible(true);
-            menu.findItem(R.id.menu_savings_plan).setEnabled(true);*/
             menu.findItem(R.id.menu_view_edit_transactions).setVisible(true);
             menu.findItem(R.id.menu_view_edit_transactions).setEnabled(true);
             menu.findItem(R.id.menu_help).setVisible(true);
             menu.findItem(R.id.menu_help).setEnabled(true);
         }
-        navigationView.setNavigationItemSelectedListener(this);
+        navView.setNavigationItemSelectedListener(this);
     }
 
     public boolean beforeSetUpOrAfter(String str1) {
@@ -100,34 +90,24 @@ public class MainNavigation extends AppCompatActivity implements NavigationView.
         switch (item.getItemId()) {
 
             case R.id.menu_home_page:
-                i = new Intent(MainNavigation.this, LayoutDailyMoney.class);
+                i = new Intent(MainNavigation.this, MainActivity.class);
                 i.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
                 startActivity(i);
                 break;
             case R.id.menu_financial_summary:
-                i4 = new Intent(MainNavigation.this, LayoutBudget.class);
-                i4.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-                startActivity(i4);
-                break;
-            /*case R.id.menu_debt_plan:
-                i2 = new Intent(MainNavigation.this, LayoutDebt.class);
+                i2 = new Intent(MainNavigation.this, LayoutBudget.class);
                 i2.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
                 startActivity(i2);
                 break;
-            case R.id.menu_savings_plan:
-                i3 = new Intent(MainNavigation.this, LayoutSavings.class);
+            case R.id.menu_view_edit_transactions:
+                i3 = new Intent(MainNavigation.this, LayoutViewEdit.class);
                 i3.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
                 startActivity(i3);
-                break;*/
-            case R.id.menu_view_edit_transactions:
-                i5 = new Intent(MainNavigation.this, LayoutSavings.class);
-                i5.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-                startActivity(i5);
                 break;
             case R.id.menu_help:
-                i6 = new Intent(MainNavigation.this, LayoutSavings.class);
-                i6.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-                startActivity(i6);
+                i4 = new Intent(MainNavigation.this, LayoutViewEdit.class);
+                i4.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+                startActivity(i4);
                 break;
         }
         drawer.closeDrawer(GravityCompat.START);

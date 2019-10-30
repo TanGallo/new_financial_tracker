@@ -38,8 +38,8 @@ public class LayoutSetUp extends MainNavigation {
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         drawer = findViewById(R.id.drawer_layout);
-        navigationView = findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+        navView = findViewById(R.id.nav_view);
+        navView.setNavigationItemSelectedListener(this);
 
         toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -112,8 +112,8 @@ public class LayoutSetUp extends MainNavigation {
             laySetDbMgr.addCurrent(laySetCurDb);
         }
 
-        latestDone = laySetDbMgr.retrieveLatestDone();
-        switch (latestDone) {
+        //latestDone = laySetDbMgr.retrieveLatestDone();
+        switch (laySetDbMgr.retrieveLatestDone()) {
             case "income":
                 laySetAfterIncome();
                 laySetBillsBtn.setVisibility(View.VISIBLE);

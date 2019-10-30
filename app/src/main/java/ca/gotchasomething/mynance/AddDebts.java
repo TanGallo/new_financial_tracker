@@ -1,6 +1,9 @@
 package ca.gotchasomething.mynance;
 
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -15,21 +18,21 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import ca.gotchasomething.mynance.data.AccountsDb;
 import ca.gotchasomething.mynance.data.BudgetDb;
-//import ca.gotchasomething.mynance.data.ExpenseBudgetDb;
 
 public class AddDebts extends AppCompatActivity {
 
     AccountsDb addDebtAcctdb;
     BudgetDb addDebtExpDb;
     Button addDebtSaveBtn, addDebtCancelBtn, addDebtUpdateBtn;
+    ContentValues addDebtCV;
+    DbHelper addDebtHelper;
     DbManager addDebtDbMgr;
-    //DebtDb addDebtDebtDb;
-    Double debtAmtFromEntry = 0.0, debtLimitFromEntry = 0.0, debtPaytFromEntry = 0.0, debtRateFromEntry = 0.0;
+    Double debtAmtFromEntry = 0.0, debtPaytFromEntry = 0.0, debtRateFromEntry = 0.0;
     EditText addDebtDebtNameET, addDebtDebtLimitET, addDebtDebtAmtET, addDebtDebtRateET, addDebtDebtPaytET;
     General addDebtGen;
     Intent addDebtToList;
-    long addDebtDebtId;
-    String addDebtDebtEnd2 = null, debtNameFromEntry = null;
+    SQLiteDatabase addDebtDb;
+    String addDebtDebtEnd2 = null;
     TextView addDebtDebtDateResLabel, addDebtDebtDateResTV;
 
     @Override
@@ -59,7 +62,7 @@ public class AddDebts extends AppCompatActivity {
         addDebtDebtRateET.addTextChangedListener(onChangeAddDebtDebtRateET);
         addDebtDebtPaytET.addTextChangedListener(onChangeAddDebtDebtPaytET);
 
-        if(addDebtDbMgr.getExpense().size() == 0) {
+        if(addDebtDbMgr.getBudget().size() == 0) {
             addDebtExpDb = new BudgetDb(
                     getString(R.string.other),
                     0.0,
@@ -70,8 +73,15 @@ public class AddDebts extends AppCompatActivity {
                     "B",
                     "N",
                     0);
-            addDebtDbMgr.addExpense(addDebtExpDb);
+            addDebtDbMgr.addBudget(addDebtExpDb);
         }
+
+        addDebtCV = new ContentValues();
+        addDebtCV.put(DbHelper.LASTPAGEID, 11);
+        addDebtHelper = new DbHelper(getApplicationContext());
+        addDebtDb = addDebtHelper.getWritableDatabase();
+        addDebtDb.update(DbHelper.CURRENT_TABLE_NAME, addDebtCV, DbHelper.ID + "= '1'", null);
+        addDebtDb.close();
     }
 
     TextWatcher onChangeAddDebtDebtAmtET = new TextWatcher() {
@@ -81,8 +91,10 @@ public class AddDebts extends AppCompatActivity {
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
+            debtAmtFromEntry = addDebtGen.dblFromET(addDebtDebtAmtET);
+            debtRateFromEntry = addDebtGen.percentFromET(addDebtDebtRateET);
+            debtPaytFromEntry = addDebtGen.dblFromET(addDebtDebtPaytET);
             addDebtDebtEndRes();
-            addDebtDebtDateResTV.setText(addDebtDebtEnd2);
         }
 
         @Override
@@ -97,8 +109,10 @@ public class AddDebts extends AppCompatActivity {
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
+            debtAmtFromEntry = addDebtGen.dblFromET(addDebtDebtAmtET);
+            debtRateFromEntry = addDebtGen.percentFromET(addDebtDebtRateET);
+            debtPaytFromEntry = addDebtGen.dblFromET(addDebtDebtPaytET);
             addDebtDebtEndRes();
-            addDebtDebtDateResTV.setText(addDebtDebtEnd2);
         }
 
         @Override
@@ -113,8 +127,10 @@ public class AddDebts extends AppCompatActivity {
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
+            debtAmtFromEntry = addDebtGen.dblFromET(addDebtDebtAmtET);
+            debtRateFromEntry = addDebtGen.percentFromET(addDebtDebtRateET);
+            debtPaytFromEntry = addDebtGen.dblFromET(addDebtDebtPaytET);
             addDebtDebtEndRes();
-            addDebtDebtDateResTV.setText(addDebtDebtEnd2);
         }
 
         @Override
@@ -123,27 +139,25 @@ public class AddDebts extends AppCompatActivity {
     };
 
     public void addDebtDebtEndRes() {
-        debtNameFromEntry = addDebtGen.stringFromET(addDebtDebtNameET);
-        debtLimitFromEntry = addDebtGen.dblFromET(addDebtDebtLimitET);
-        debtAmtFromEntry = addDebtGen.dblFromET(addDebtDebtAmtET);
-        debtRateFromEntry = addDebtGen.percentFromET(addDebtDebtRateET);
-        debtPaytFromEntry = addDebtGen.dblFromET(addDebtDebtPaytET);
-
         addDebtDebtEnd2 = addDebtGen.calcDebtDate(
                 debtAmtFromEntry,
                 debtRateFromEntry,
                 debtPaytFromEntry,
                 getString(R.string.debt_paid),
                 getString(R.string.too_far));
-        /*if (addDebtDebtEnd2.equals(getString(R.string.debt_paid))) {
-            addDebtDebtDateResTV.setTextColor(Color.parseColor("#03ac13"));
+        if (addDebtDebtEnd2.equals(getString(R.string.debt_paid))) {
+            addDebtDebtDateResLabel.setVisibility(View.GONE);
+            addDebtDebtDateResTV.setTextColor(Color.parseColor("#5dbb63")); //light green
         } else if (addDebtDebtEnd2.equals(getString(R.string.too_far))) {
-            addDebtDebtDateResTV.setTextColor(Color.parseColor("#ffff4444"));
+            addDebtDebtDateResLabel.setVisibility(View.GONE);
+            addDebtDebtDateResTV.setTextColor(Color.parseColor("#ffff4444")); //red
         } else {
+            addDebtDebtDateResLabel.setVisibility(View.VISIBLE);
             addDebtDebtDateResTV.setTextColor(Color.parseColor("#303F9F"));
-            addDebtDebtDateResLabel.setTextColor(Color.parseColor("#303F9F"));
-        }*/
-        addDebtGen.whatToShowDebt(getString(R.string.debt_paid), getString(R.string.too_far), addDebtDebtDateResLabel, addDebtDebtDateResTV);
+            addDebtDebtDateResLabel.setTextColor(Color.parseColor("#303F9F")); //primary dark
+        }
+
+        addDebtDebtDateResTV.setText(addDebtDebtEnd2);
     }
 
     View.OnClickListener onClickAddDebtCancelBtn = new View.OnClickListener() {
@@ -159,31 +173,14 @@ public class AddDebts extends AppCompatActivity {
         @Override
         public void onClick(View v) {
 
-            addDebtDebtEndRes();
-
-            if (!debtNameFromEntry.equals("null")) {
-
-                /*addDebtDebtDb = new DebtDb(
-                        debtNameFromEntry,
-                        debtLimitFromEntry,
-                        debtAmtFromEntry,
-                        debtRateFromEntry,
-                        debtPaytFromEntry,
-                        (debtPaytFromEntry * 12.0),
-                        addDebtDebtEnd2,
-                        0.0,
-                        0);
-
-                addDebtDbMgr.addDebt(addDebtDebtDb);
-
-                addDebtDebtId = addDebtDbMgr.findLatestDebtId();*/
+            if (!addDebtGen.stringFromET(addDebtDebtNameET).equals("null")) {
 
                 addDebtAcctdb = new AccountsDb(
-                        debtNameFromEntry,
+                        addDebtGen.stringFromET(addDebtDebtNameET),
                         debtAmtFromEntry,
                         "Y",
                         "N",
-                        debtLimitFromEntry,
+                        addDebtGen.dblFromET(addDebtDebtLimitET),
                         debtRateFromEntry,
                         debtPaytFromEntry,
                         (debtPaytFromEntry * 12.0),

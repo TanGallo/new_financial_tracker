@@ -32,74 +32,6 @@
                 android:orientation="vertical"
                 tools:ignore="UselessParent">
 
-                <TextView
-                    android:id="@+id/mainMenuBudgetWarnTV"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_margin="10dp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:gravity="center_horizontal"
-                    android:text="@string/budget_does_not_balance"
-                    android:textColor="@android:color/holo_red_light"
-                    android:textSize="18sp" />
-
-                <LinearLayout
-                    android:id="@+id/mainMenuHeaderLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:background="@drawable/entry_box"
-                    android:orientation="vertical">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_horizontal"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:id="@+id/mainMenuAvailAmtLabel"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/available_to_spend"
-                            android:textColor="@color/colorPrimaryDark"
-                            android:textSize="14sp" />
-
-                        <TextView
-                            android:id="@+id/mainMenuAvailAmtTV"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/colorPrimaryDark"
-                            android:textSize="22sp" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_horizontal"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/avail_for_bills"
-                            android:textColor="@color/colorPrimaryDark"
-                            android:textSize="14sp" />
-
-                        <TextView
-                            android:id="@+id/mainMenuTotalAmtTV"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/colorPrimaryDark"
-                            android:textSize="22sp" />
-
-                    </LinearLayout>
-
-                </LinearLayout>
-
                 <ScrollView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
@@ -110,7 +42,7 @@
                         android:orientation="vertical">
 
                     <LinearLayout
-                        android:id="@+id/mainMenuTransactionsLayout"
+                        android:id="@+id/viewEditTransactionsLayout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
@@ -123,7 +55,7 @@
                             android:layout_marginStart="10dp"
                             android:layout_marginTop="10dp"
                             android:layout_marginBottom="10dp"
-                            android:text="@string/money_in_out"
+                            android:text="@string/choose_type"
                             android:textColor="@color/colorPrimaryDark"
                             android:textSize="16sp" />
 
@@ -133,7 +65,7 @@
                             android:orientation="horizontal">
 
                             <RelativeLayout
-                                android:id="@+id/mainMenuMonInLayout"
+                                android:id="@+id/viewEditMonInLayout"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="10dp"
@@ -143,7 +75,7 @@
                                 android:focusable="true">
 
                                 <ImageButton
-                                    android:id="@+id/mainMenuMonInBtn"
+                                    android:id="@+id/viewEditMonInBtn"
                                     android:layout_width="60dp"
                                     android:layout_height="60dp"
                                     android:layout_centerHorizontal="true"
@@ -155,7 +87,7 @@
                                 <TextView
                                     android:layout_width="70dp"
                                     android:layout_height="wrap_content"
-                                    android:layout_below="@id/mainMenuMonInBtn"
+                                    android:layout_below="@id/viewEditMonInBtn"
                                     android:layout_alignParentStart="true"
                                     android:layout_centerHorizontal="true"
                                     android:gravity="center_horizontal"
@@ -166,7 +98,7 @@
                             </RelativeLayout>
 
                             <RelativeLayout
-                                android:id="@+id/mainMenuMonOutLayout"
+                                android:id="@+id/viewEditMonOutLayout"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="25dp"
@@ -176,7 +108,7 @@
                                 android:focusable="true">
 
                                 <ImageButton
-                                    android:id="@+id/mainMenuMonOutBtn"
+                                    android:id="@+id/viewEditMonOutBtn"
                                     android:layout_width="60dp"
                                     android:layout_height="60dp"
                                     android:layout_centerHorizontal="true"
@@ -188,7 +120,7 @@
                                 <TextView
                                     android:layout_width="80dp"
                                     android:layout_height="wrap_content"
-                                    android:layout_below="@id/mainMenuMonOutBtn"
+                                    android:layout_below="@id/viewEditMonOutBtn"
                                     android:layout_alignParentStart="true"
                                     android:layout_centerHorizontal="true"
                                     android:gravity="center_horizontal"
@@ -199,7 +131,7 @@
                             </RelativeLayout>
 
                             <RelativeLayout
-                                android:id="@+id/mainMenuCCPurLayout"
+                                android:id="@+id/viewEditCCPurLayout"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="25dp"
@@ -209,7 +141,7 @@
                                 android:focusable="true">
 
                                 <ImageButton
-                                    android:id="@+id/mainMenuCCPurBtn"
+                                    android:id="@+id/viewEditCCPurBtn"
                                     android:layout_width="60dp"
                                     android:layout_height="60dp"
                                     android:layout_centerHorizontal="true"
@@ -221,7 +153,7 @@
                                 <TextView
                                     android:layout_width="80dp"
                                     android:layout_height="wrap_content"
-                                    android:layout_below="@id/mainMenuCCPurBtn"
+                                    android:layout_below="@id/viewEditCCPurBtn"
                                     android:layout_alignParentStart="true"
                                     android:layout_centerHorizontal="true"
                                     android:gravity="center_horizontal"
@@ -232,7 +164,7 @@
                             </RelativeLayout>
 
                             <RelativeLayout
-                                android:id="@+id/mainMenuTransferLayout"
+                                android:id="@+id/viewEditTransferLayout"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="25dp"
@@ -242,7 +174,7 @@
                                 android:focusable="true">
 
                                 <ImageButton
-                                    android:id="@+id/mainMenuTransferBtn"
+                                    android:id="@+id/viewEditTransferBtn"
                                     android:layout_width="60dp"
                                     android:layout_height="60dp"
                                     android:layout_centerHorizontal="true"
@@ -254,7 +186,7 @@
                                 <TextView
                                     android:layout_width="70dp"
                                     android:layout_height="wrap_content"
-                                    android:layout_below="@id/mainMenuTransferBtn"
+                                    android:layout_below="@id/viewEditTransferBtn"
                                     android:layout_alignParentStart="true"
                                     android:layout_centerHorizontal="true"
                                     android:layout_centerVertical="true"
@@ -270,70 +202,28 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:id="@+id/mainMenuControlLayout"
+                        android:id="@+id/viewEditControlLayout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
                         android:orientation="vertical">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp"
-                            android:layout_marginTop="10dp"
-                            android:layout_marginBottom="10dp"
-                            android:text="@string/take_control"
-                            android:textColor="@color/colorPrimaryDark"
-                            android:textSize="16sp" />
-
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
                             android:orientation="horizontal">
 
                             <RelativeLayout
-                                android:id="@+id/mainMenuWklyLimitsLayout"
+                                android:id="@+id/viewEditCCPayLayout"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginStart="10dp"
                                 android:layout_marginBottom="10dp"
                                 android:clickable="true"
                                 android:focusable="true">
 
                                 <ImageButton
-                                    android:id="@+id/mainMenuWklyLimitsBtn"
-                                    android:layout_width="60dp"
-                                    android:layout_height="60dp"
-                                    android:layout_centerHorizontal="true"
-                                    android:background="@drawable/circle_box"
-                                    android:contentDescription="@string/money_in"
-                                    android:scaleType="fitCenter"
-                                    android:src="@drawable/ic_warning_blue_24dp" />
-
-                                <TextView
-                                    android:layout_width="70dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_below="@id/mainMenuWklyLimitsBtn"
-                                    android:layout_alignParentStart="true"
-                                    android:layout_centerHorizontal="true"
-                                    android:gravity="center_horizontal"
-                                    android:text="@string/weekly_limits"
-                                    android:textColor="@color/colorPrimaryDark"
-                                    android:textSize="14sp" />
-
-                            </RelativeLayout>
-
-                            <RelativeLayout
-                                android:id="@+id/mainMenuCCPayLayout"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="25dp"
-                                android:layout_marginBottom="10dp"
-                                android:clickable="true"
-                                android:focusable="true">
-
-                                <ImageButton
-                                    android:id="@+id/mainMenuCCPayBtn"
+                                    android:id="@+id/viewEditCCPayBtn"
                                     android:layout_width="60dp"
                                     android:layout_height="60dp"
                                     android:layout_centerHorizontal="true"
@@ -345,12 +235,12 @@
                                 <TextView
                                     android:layout_width="75dp"
                                     android:layout_height="wrap_content"
-                                    android:layout_below="@id/mainMenuCCPayBtn"
+                                    android:layout_below="@id/viewEditCCPayBtn"
                                     android:layout_alignParentStart="true"
                                     android:layout_centerHorizontal="true"
                                     android:layout_centerVertical="true"
                                     android:gravity="center_horizontal"
-                                    android:text="@string/pay_cc"
+                                    android:text="@string/cc_payts"
                                     android:textColor="@color/colorPrimaryDark"
                                     android:textSize="14sp" />
 

@@ -10,6 +10,7 @@ public class MainActivity extends MainNavigation {
 
     General mainGen2;
     Intent intent;
+    public String[] monthsList, monthsOnlyList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,9 +22,9 @@ public class MainActivity extends MainNavigation {
             drawer = findViewById(R.id.drawer_layout);
             mainGen2 = new General();
 
-            navigationView = findViewById(R.id.nav_view);
+        navView = findViewById(R.id.nav_view);
             menuConfig();
-            navigationView.setNavigationItemSelectedListener(this);
+        navView.setNavigationItemSelectedListener(this);
 
             toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
             drawer.addDrawerListener(toggle);
@@ -32,7 +33,7 @@ public class MainActivity extends MainNavigation {
         if(savedInstanceState == null) {
             intent = new Intent(MainActivity.this, LayoutDailyMoney.class);
             startActivity(intent);
-            navigationView.setCheckedItem(R.id.menu_home_page);
+            navView.setCheckedItem(R.id.menu_home_page);
         }
     }
 

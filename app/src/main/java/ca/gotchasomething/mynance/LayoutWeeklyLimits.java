@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -25,9 +26,6 @@ import java.util.List;
 
 import ca.gotchasomething.mynance.data.BudgetDb;
 import ca.gotchasomething.mynance.data.TransactionsDb;
-//import ca.gotchasomething.mynance.data.MoneyOutDb;
-
-//import ca.gotchasomething.mynance.data.ExpenseBudgetDb;
 
 public class LayoutWeeklyLimits extends MainNavigation {
 
@@ -39,10 +37,11 @@ public class LayoutWeeklyLimits extends MainNavigation {
     float wee2AmtSpentF, wee2AmtLeftF;
     General wee2Gen;
     Intent wee2ToMain, wee2ToAddMore;
+    LinearLayout wee2SpinLayout;
     ListView wee2ListView;
     long wee2ExpId;
     SQLiteDatabase  wee2Db;
-    TextView wee2HeaderLabel;
+    TextView wee2HeaderLabel, wee2TotalTV;
     Wee2LstAdapter wee2LstAdapter;
 
     @Override
@@ -52,8 +51,8 @@ public class LayoutWeeklyLimits extends MainNavigation {
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         drawer = findViewById(R.id.drawer_layout);
-        navigationView = findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+        navView = findViewById(R.id.nav_view);
+        navView.setNavigationItemSelectedListener(this);
 
         toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -66,12 +65,16 @@ public class LayoutWeeklyLimits extends MainNavigation {
 
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
+        wee2SpinLayout = findViewById(R.id.layout1SpinLayout);
+        wee2SpinLayout.setVisibility(View.GONE);
         wee2HeaderLabel = findViewById(R.id.layout1HeaderLabelTV);
         wee2HeaderLabel.setText(getString(R.string.weekly_limits));
         wee2AddMoreBtn = findViewById(R.id.layout1AddMoreBtn);
         wee2AddMoreBtn.setText(getString(R.string.add_edit_weekly_limits));
         wee2DoneBtn = findViewById(R.id.layout1DoneBtn);
         wee2DoneBtn.setText(getString(R.string.done));
+        wee2TotalTV = findViewById(R.id.layout1TotalTV);
+        wee2TotalTV.setVisibility(View.GONE);
 
         wee2AddMoreBtn.setOnClickListener(onclickWee2AddMoreBtn);
         wee2DoneBtn.setOnClickListener(onclickWee2DoneBtn);
@@ -148,13 +151,13 @@ public class LayoutWeeklyLimits extends MainNavigation {
                 wee2Hldr.wee2CatTV = convertView.findViewById(R.id.pcListCatTV);
                 wee2Hldr.wee2StartBalTV = convertView.findViewById(R.id.pcListStartBalTV);
                 wee2Hldr.wee2AmtLeftLabel = convertView.findViewById(R.id.pcListAmtLeftLabel);
-                wee2Hldr.wee2AmtLeftLabel.setTextColor(Color.parseColor("#5dbb63"));
+                wee2Hldr.wee2AmtLeftLabel.setTextColor(Color.parseColor("#5dbb63")); //light green
                 wee2Hldr.wee2AmtLeftTV = convertView.findViewById(R.id.pcListAmtLeftTV);
-                wee2Hldr.wee2AmtLeftTV.setTextColor(Color.parseColor("#5dbb63"));
+                wee2Hldr.wee2AmtLeftTV.setTextColor(Color.parseColor("#5dbb63")); //light green
                 wee2Hldr.wee2SpentAmtTV = convertView.findViewById(R.id.pcListSpentAmtTV);
                 wee2Hldr.wee2SpentAmtTV.setTextColor(Color.parseColor("#83878b"));
-                wee2Hldr.wee2AmtSpentLabel = convertView.findViewById(R.id.pcListSpentAmtLabel);
-                wee2Hldr.wee2AmtSpentLabel.setTextColor(Color.parseColor("#83878b"));
+                wee2Hldr.wee2AmtSpentLabel = convertView.findViewById(R.id.pcListSpentAmtLabel); //grey
+                wee2Hldr.wee2AmtSpentLabel.setTextColor(Color.parseColor("#83878b")); //grey
                 wee2Hldr.wee2AmtLeftWarn = convertView.findViewById(R.id.pcListAmtLeftWarnTV);
                 wee2Hldr.wee2AmtLeftWarn.setVisibility(View.GONE);
                 convertView.setTag(wee2Hldr);
@@ -187,7 +190,7 @@ public class LayoutWeeklyLimits extends MainNavigation {
             wee2Gen.dblASCurrency(String.valueOf(wee2SpentThisWeek), wee2Hldr.wee2SpentAmtTV);
 
             //retrieve amountLeft
-            wee2StartBal = weeklyLimits.get(position).getBdgtAnnPayt() / 52;
+            wee2StartBal = weeklyLimits.get(position).getBdgtPaytAmt();
             wee2AmtLeft = wee2StartBal - wee2SpentThisWeek;
             wee2Gen.dblASCurrency(String.valueOf(wee2AmtLeft), wee2Hldr.wee2AmtLeftTV);
 
@@ -195,17 +198,13 @@ public class LayoutWeeklyLimits extends MainNavigation {
 
             if(wee2AmtLeft < 0) {
                 wee2Hldr.wee2AmtLeftWarn.setVisibility(View.VISIBLE);
-                wee2Hldr.wee2AmtLeftLabel.setVisibility(View.GONE);
-                wee2Hldr.wee2AmtLeftTV.setVisibility(View.GONE);
-                wee2Hldr.wee2AmtSpentLabel.setVisibility(View.GONE);
-                wee2Hldr.wee2SpentAmtTV.setVisibility(View.GONE);
+                wee2Hldr.wee2AmtLeftLabel.setVisibility(View.INVISIBLE);
+                wee2Hldr.wee2AmtLeftTV.setVisibility(View.INVISIBLE);
                 wee2Hldr.wee2PieChart.setVisibility(View.GONE);
             } else {
                 wee2Hldr.wee2AmtLeftWarn.setVisibility(View.GONE);
                 wee2Hldr.wee2AmtLeftLabel.setVisibility(View.VISIBLE);
                 wee2Hldr.wee2AmtLeftTV.setVisibility(View.VISIBLE);
-                wee2Hldr.wee2AmtSpentLabel.setVisibility(View.VISIBLE);
-                wee2Hldr.wee2SpentAmtTV.setVisibility(View.VISIBLE);
                 wee2Hldr.wee2PieChart.setVisibility(View.VISIBLE);
             }
 

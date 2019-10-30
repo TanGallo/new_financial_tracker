@@ -13,6 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -21,15 +22,13 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 
 import java.util.List;
 
 import ca.gotchasomething.mynance.data.BudgetDb;
 
-//import ca.gotchasomething.mynance.data.IncomeBudgetDb;
-
-public class AddIncomeList extends AppCompatActivity {
+public class AddIncomeList extends MainNavigation {
 
     BudgetDb incLstIncDB;
     Button incLstAddMoreBtn, incLstUpdateBtn, incLstCancelBtn, incLstDoneBtn, incLstSaveBtn;
@@ -41,21 +40,39 @@ public class AddIncomeList extends AppCompatActivity {
     General incLstGen;
     IncLstLstAdapter incLstLstAdapter;
     Intent incLstRefresh, incLstToBud, incLstToMonIn, incLstToAnalysis, incLstToAddMore, incLstToSetUp;
+    LinearLayout incLstSpinLayout;
     ListView incLstListView;
     long incIdFromTag;
     RadioButton incLstAnnlyRB, incLstBiAnnlyRB, incLstBiMthlyRB, incLstBiWklyRB, incLstMthlyRB, incLstWklyRB;
     RadioGroup incLstFrqRG;
     SQLiteDatabase incLstDB;
     String incLstAnnAmt2 = null, incLstIncFrqRB = null, incNameFromEntry = null, incNameFromTag = null;
-    TextView incLstHeaderLabelTV;
+    TextView incLstHeaderLabelTV, incLstTotalTV;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_2_list_add_done);
 
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        drawer = findViewById(R.id.drawer_layout);
+        navView = findViewById(R.id.nav_view);
+        navView.setNavigationItemSelectedListener(this);
+
+        toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+
+        menuConfig();
+
         incLstDbMgr = new DbManager(this);
         incLstGen = new General();
+
+        incLstSpinLayout = findViewById(R.id.layout1SpinLayout);
+        incLstSpinLayout.setVisibility(View.GONE);
+        incLstTotalTV = findViewById(R.id.layout1TotalTV);
+        incLstTotalTV.setVisibility(View.GONE);
 
         incLstHeaderLabelTV = findViewById(R.id.layout1HeaderLabelTV);
         incLstHeaderLabelTV.setText(getString(R.string.sources_of_income));
@@ -155,7 +172,7 @@ public class AddIncomeList extends AppCompatActivity {
                 incLstHldr.incLstIncAmt = convertView.findViewById(R.id.list2TV2);
                 incLstHldr.incLstDel = convertView.findViewById(R.id.list2DelBtn);
                 incLstHldr.incLstEdit = convertView.findViewById(R.id.list2EditBtn);
-                if(incLstDbMgr.retrieveLastPageId() == 1) {
+                if (incLstDbMgr.retrieveLastPageId() == 1) {
                     incLstHldr.incLstDel.setVisibility(View.GONE);
                     incLstHldr.incLstEdit.setVisibility(View.GONE);
                 }
@@ -168,7 +185,7 @@ public class AddIncomeList extends AppCompatActivity {
             incLstHldr.incLstIncName.setText(incomes.get(position).getBdgtCat());
 
             //retrieve incomeAnnualAmount and format as currency
-            incLstAnnAmt2 = String.valueOf((incomes.get(position).getBdgtPaytAmt()) * (incomes.get(position).getBdgtPaytFrq()));
+            incLstAnnAmt2 = String.valueOf(incomes.get(position).getBdgtAnnPayt());
             incLstGen.dblASCurrency(incLstAnnAmt2, incLstHldr.incLstIncAmt);
 
             incLstHldr.incLstDel.setTag(incomes.get(position));
@@ -195,7 +212,7 @@ public class AddIncomeList extends AppCompatActivity {
                     incLstBiWklyRB = findViewById(R.id.addIncBiWklyRB);
                     incLstBiMthlyRB = findViewById(R.id.addIncBiMthlyRB);
                     incLstMthlyRB = findViewById(R.id.addIncMthlyRB);
-                    incLstBiAnnlyRB= findViewById(R.id.addIncBiAnnlyRB);
+                    incLstBiAnnlyRB = findViewById(R.id.addIncBiAnnlyRB);
                     incLstAnnlyRB = findViewById(R.id.addIncAnnlyRB);
 
                     incLstIncDB = (BudgetDb) incLstHldr.incLstEdit.getTag();
@@ -285,12 +302,14 @@ public class AddIncomeList extends AppCompatActivity {
                                 incLstIncDB.setBdgtCat(incNameFromEntry);
                                 incLstIncDB.setBdgtPaytAmt(incAmtFromEntry);
                                 incLstIncDB.setBdgtPaytFrq(incFrqFromEntry);
-                                if(incLstDbMgr.getMoneyIns().size() == 0) {
+                                incLstDbMgr.updateBudget(incLstIncDB);
+
+                                if (incLstDbMgr.getMoneyIns().size() == 0) {
                                     incLstIncDB.setBdgtAnnPayt(incAnnAmtFromEntry);
                                 } else {
                                     incLstIncDB.setBdgtAnnPayt(incLstDbMgr.makeNewIncAnnAmt(incIdFromTag, incLstGen.lastNumOfDays(365)));
                                 }
-                                incLstDbMgr.updateIncome(incLstIncDB);
+                                incLstDbMgr.updateBudget(incLstIncDB);
 
                                 incLstLstAdapter.updateIncomes(incLstDbMgr.getIncomes());
                                 incLstLstAdapter.notifyDataSetChanged();
@@ -317,7 +336,7 @@ public class AddIncomeList extends AppCompatActivity {
 
                     incLstIncDB = (BudgetDb) incLstHldr.incLstDel.getTag();
 
-                    incLstDbMgr.deleteIncome(incLstIncDB);
+                    incLstDbMgr.deleteBudget(incLstIncDB);
                     incLstLstAdapter.updateIncomes(incLstDbMgr.getIncomes());
                     incLstLstAdapter.notifyDataSetChanged();
 

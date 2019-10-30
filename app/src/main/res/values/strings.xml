@@ -60,8 +60,8 @@
     <string name="higher_than_recommended">Oh oh, you\'re spending is a little higher than it should be.</string>
     <string name="too_high">Warning: You\'re spending is too high!</string>
     <string name="no_adj_nec">No adjustments necessary!</string>
-    <string name="may_adj">You may want to make adjustments to your spending in one of the areas below.</string>
-    <string name="should_adj">You should try to make adjustments to your spending in one of the areas below.</string>
+    <string name="may_adj">You may want to make adjustments in one of the areas below.</string>
+    <string name="should_adj">You should try to make adjustments in one of the areas below.</string>
     <string name="almost_done">Almost done!</string>
     <string name="what_mynance_does">MYnance will:</string>
     <string name="b7_text1">Let you know how much of your money is available for unnecessary spending.</string>
@@ -230,7 +230,7 @@
     <string name="enter_savings_payments">How much money do you usually put towards this every month?</string>
     <string name="enter_savings_rate">What is the annual interest rate being earned (if any)?</string>
     <string name="expense_categories">Expense Categories:</string>
-    <string name="expenses">Expenses:</string>
+    <string name="expenses">Expenses</string>
     <string name="feb">February</string>
     <string name="finish_budget">Finish budget</string>
     <string name="first_thing_first">First thing\'s first&#8230;</string>
@@ -248,7 +248,7 @@
     <string name="hide">hide</string>
     <string name="hide_list">hide list</string>
     <string name="how_often">How often?</string>
-    <string name="income">Income:</string>
+    <string name="income">Income</string>
     <string name="income_available">Money not reserved for living expenses:</string>
     <string name="income_categories">Income Categories:</string>
     <string name="in_main_account">main account</string>
@@ -431,7 +431,7 @@
     <string name="record_transfers">Record another transfer</string>
     <string name="edit_financial_summary">Financial Summary</string>
     <string name="reserved">Reserved:</string>
-    <string name="reserved_includes">(Reserved funds are reserved for bills, other living expenses, and any default payment amounts to credit cards/lines of credit or savings accounts)</string>
+    <string name="reserved_includes">(Reserved funds are reserved for bills, other living expenses, and any default payment amounts to credit cards/lines of credit or savings accounts. Ideally, this should not be more than 80% of your income.)</string>
     <string name="i">i</string>
     <string name="make_adj">Make Adjustments:</string>
     <string name="credit_types">Credit Cards/Lines of Credit</string>
@@ -474,4 +474,19 @@
     <string name="avail_for_bills">Available for paying bills, etc:</string>
     <string name="main_acct">Main Account</string>
     <string name="other">Other</string>
+    <string name="no_debts">You have no consumer debts!</string>
+    <string name="you_have">You have</string>
+    <string name="in_savings">in your savings.</string>
+    <string name="towards_goal">of the way to your goal!</string>
+    <string name="choose_type">Choose type of transaction:</string>
+    <string name="cc_payts">Credit card payments</string>
+    <string name="dialog">Warning: You will not be able to delete or edit credit card payment transactions.</string>
+    <string name="credit_card_payts">Credit card payments:</string>
+    <string name="paid_to">paid to</string>
+    <string name="limit_list">Limit list to transactions between</string>
+    <string name="and">and</string>
+    <string name="no_entries">No entries in that date range</string>
+    <string name="date_confusion">Your \"From\" date needs to be earlier than your \"To\" date</string>
+    <string name="reset">Reset</string>
+    <string name="add_bill">Add a bill category</string>
 </resources>

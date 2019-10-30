@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:background="@drawable/white_box"
+        >
+
+        <TextView
+            android:id="@+id/dialogWarnTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="@string/dialog"
+            android:textColor="@color/brightRed"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/dialogContTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="@string/continue_anyway"
+            android:textColor="@color/brightRed"
+            android:textSize="16sp"
+            android:layout_below="@id/dialogWarnTV"/>
+
+            <Button
+                android:id="@+id/dialogNoBtn"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/white_circle"
+                android:contentDescription="@string/no"
+                android:text="@string/no"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="14sp"
+                android:layout_below="@id/dialogWarnTV"/>
+
+            <Button
+                android:id="@+id/dialogYesBtn"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="10dp"
+                android:layout_toStartOf="@id/dialogNoBtn"
+                android:background="@drawable/white_circle"
+                android:contentDescription="@string/yes"
+                android:text="@string/yes"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="14sp"
+                android:layout_below="@id/dialogWarnTV"/>
+
+        </RelativeLayout>
+
+</LinearLayout>
+

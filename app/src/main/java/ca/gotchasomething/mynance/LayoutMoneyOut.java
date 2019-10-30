@@ -27,12 +27,8 @@ import java.util.List;
 
 import ca.gotchasomething.mynance.data.AccountsDb;
 import ca.gotchasomething.mynance.data.BudgetDb;
-//import ca.gotchasomething.mynance.data.MoneyOutDb;
 import ca.gotchasomething.mynance.data.TransactionsDb;
 import ca.gotchasomething.mynance.spinners.TransferSpinnerAdapter;
-
-//import ca.gotchasomething.mynance.data.ExpenseBudgetDb;
-//import ca.gotchasomething.mynance.data.SavingsDb;
 
 public class LayoutMoneyOut extends MainNavigation {
 
@@ -66,8 +62,8 @@ public class LayoutMoneyOut extends MainNavigation {
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         drawer = findViewById(R.id.drawer_layout);
-        navigationView = findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+        navView = findViewById(R.id.nav_view);
+        navView.setNavigationItemSelectedListener(this);
 
         toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -118,7 +114,7 @@ public class LayoutMoneyOut extends MainNavigation {
 
         monOutList = findViewById(R.id.mainListView);
         monOutList.setVisibility(View.VISIBLE);
-        monOutLstAdapter = new MonOutLstAdapter(this, monOutDbMgr.getExpense());
+        monOutLstAdapter = new MonOutLstAdapter(this, monOutDbMgr.getExpenses());
         monOutList.setAdapter(monOutLstAdapter);
 
         monOutCV = new ContentValues();
@@ -127,6 +123,12 @@ public class LayoutMoneyOut extends MainNavigation {
         monOutDb2 = monOutHelper2.getWritableDatabase();
         monOutDb2.update(DbHelper.CURRENT_TABLE_NAME, monOutCV, DbHelper.ID + "= '1'", null);
         monOutDb2.close();
+    }
+
+    public void monOutRefresh() {
+        monOutRefresh = new Intent(this, LayoutMoneyOut.class);
+        monOutRefresh.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+        startActivity(monOutRefresh);
     }
 
     View.OnClickListener onClickAddMoreTV = new View.OnClickListener() {
@@ -204,7 +206,7 @@ public class LayoutMoneyOut extends MainNavigation {
 
     public void monOutChangeDefault() {
         monOutExpDb.setBdgtPaytAmt(monOutMonOutAmt);
-        monOutDbMgr.updateExpense(monOutExpDb);
+        monOutDbMgr.updateBudget(monOutExpDb);
     }
 
     public void monOutContMainAcctTrans() {
@@ -213,7 +215,13 @@ public class LayoutMoneyOut extends MainNavigation {
         monOutMoneyOutB = monOutDbMgr.detBPortionExp(monOutMonOutAmt, monOutExpPriority, monOutDbMgr.retrieveCurrentA(), monOutDbMgr.retrieveCurrentB());
 
         monOutDbMgr.updateTotAcctBalMinus(monOutMonOutAmt, monOutDbMgr.retrieveCurrentAccountBalance());
-        monOutDbMgr.updateAvailBalMinus(monOutMoneyOutA, monOutMoneyOutOwing, monOutMoneyOutB, monOutDbMgr.retrieveCurrentA(), monOutDbMgr.retrieveCurrentOwingA(), monOutDbMgr.retrieveCurrentB());
+        monOutDbMgr.updateAandBBalMinus(
+                monOutMoneyOutA,
+                monOutMoneyOutOwing,
+                monOutMoneyOutB,
+                monOutDbMgr.retrieveCurrentA(),
+                monOutDbMgr.retrieveCurrentOwingA(),
+                monOutDbMgr.retrieveCurrentB());
 
         if (monOutDbMgr.retrieveCurrentOwingA() < 0) {
             monOutDbMgr.adjustCurrentAandB(monOutDbMgr.retrieveCurrentOwingA(), monOutDbMgr.retrieveCurrentA(), monOutDbMgr.retrieveCurrentB());
@@ -233,7 +241,7 @@ public class LayoutMoneyOut extends MainNavigation {
     }
 
     public void monOutContSavAcctTrans() {
-        monOutDbMgr.updateRecMinusPt1(monOutMonOutAmt, monOutDbMgr.retrieveCurrentSavAmt(monOutFromAcctId), monOutFromAcctId);
+        monOutDbMgr.updateRecMinusPt1(monOutMonOutAmt, monOutDbMgr.retrieveCurrentAcctAmt(monOutFromAcctId), monOutFromAcctId);
         for (AccountsDb a : monOutDbMgr.getSavings()) {
             if (a.getId() == monOutFromAcctId) {
                 savGoalFromDb = a.getAcctMax();
@@ -283,12 +291,12 @@ public class LayoutMoneyOut extends MainNavigation {
                 "N/A",
                 monOutGen.createTimestamp(),
                 0);
-        monOutDbMgr.addMoneyOut(monOutMonOutDb);
+        monOutDbMgr.addTransactions(monOutMonOutDb);
 
         monOutExpDb.setBdgtAnnPayt(monOutDbMgr.makeNewExpAnnAmt(monOutExpId, monOutGen.lastNumOfDays(365)));
-        monOutDbMgr.updateExpense(monOutExpDb);
+        monOutDbMgr.updateBudget(monOutExpDb);
 
-        monOutLstAdapter.updateExpenses(monOutDbMgr.getExpense());
+        monOutLstAdapter.updateExpenses(monOutDbMgr.getExpenses());
         monOutLstAdapter.notifyDataSetChanged();
 
         noRatingsYet();
@@ -390,8 +398,8 @@ public class LayoutMoneyOut extends MainNavigation {
                             monOutExpPriority = monOutExpDb.getBdgtPriority();
                             monOutExpWeekly = monOutExpDb.getBdgtWeekly();
 
-                            if (monOutSavId > 0) {
-                                if (monOutDbMgr.retrieveCurrentSavAmt(monOutSavId) - monOutMonOutAmt < 0) {
+                            if (monOutFromIsSav.equals("Y")) {
+                                if (monOutDbMgr.retrieveCurrentAcctAmt(monOutFromAcctId) - monOutMonOutAmt < 0) {
                                     monOutHldr.monOutWarnLayout.setVisibility(View.VISIBLE);
                                     monOutHldr.monOutWarnTV.setText(getString(R.string.not_enough_savings_warning));
 
@@ -399,9 +407,7 @@ public class LayoutMoneyOut extends MainNavigation {
                                         @Override
                                         public void onClick(View v) {
                                             monOutHldr.monOutWarnLayout.setVisibility(View.GONE);
-                                            monOutRefresh = new Intent(getContext(), LayoutMoneyOut.class);
-                                            monOutRefresh.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-                                            startActivity(monOutRefresh);
+                                            monOutRefresh();
                                         }
                                     });
 
@@ -467,9 +473,7 @@ public class LayoutMoneyOut extends MainNavigation {
                                             @Override
                                             public void onClick(View v) {
                                                 monOutHldr.monOutWarnLayout.setVisibility(View.GONE);
-                                                monOutRefresh = new Intent(getContext(), LayoutMoneyOut.class);
-                                                monOutRefresh.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-                                                startActivity(monOutRefresh);
+                                                monOutRefresh();
                                             }
                                         });
 
@@ -534,9 +538,7 @@ public class LayoutMoneyOut extends MainNavigation {
                                             @Override
                                             public void onClick(View v) {
                                                 monOutHldr.monOutWarnLayout.setVisibility(View.GONE);
-                                                monOutRefresh = new Intent(getContext(), LayoutMoneyOut.class);
-                                                monOutRefresh.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-                                                startActivity(monOutRefresh);
+                                                monOutRefresh();
                                             }
                                         });
 

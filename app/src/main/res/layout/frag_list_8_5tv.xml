@@ -39,7 +39,7 @@
             android:layout_margin="5dp"
             android:text="@string/date"
             android:textColor="@color/colorPrimaryDark"
-            android:textSize="16sp" />
+            android:textSize="14sp" />
 
         <TextView
             android:id="@+id/list8TV2"
@@ -49,7 +49,7 @@
             android:layout_marginTop="5dp"
             android:text="@string/amount"
             android:textColor="@color/colorPrimaryDark"
-            android:textSize="16sp" />
+            android:textSize="14sp" />
 
     </LinearLayout>
 
@@ -67,7 +67,7 @@
             android:layout_marginTop="5dp"
             android:text="@string/from"
             android:textColor="@color/colorPrimaryDark"
-            android:textSize="16sp" />
+            android:textSize="14sp" />
 
         <TextView
             android:id="@+id/list8TV4"
@@ -77,7 +77,7 @@
             android:layout_marginTop="5dp"
             android:text="@string/name"
             android:textColor="@color/colorPrimaryDark"
-            android:textSize="16sp" />
+            android:textSize="14sp" />
 
         <TextView
             android:id="@+id/list8TV5"
@@ -87,7 +87,7 @@
             android:layout_marginTop="5dp"
             android:text="@string/to"
             android:textColor="@color/colorPrimaryDark"
-            android:textSize="16sp" />
+            android:textSize="14sp" />
 
         <TextView
             android:id="@+id/list8TV6"
@@ -97,7 +97,7 @@
             android:layout_marginTop="5dp"
             android:text="@string/name"
             android:textColor="@color/colorPrimaryDark"
-            android:textSize="16sp" />
+            android:textSize="14sp" />
 
     </LinearLayout>
 
@@ -198,7 +198,6 @@
             android:digits="01234567890-"
             android:hint="@string/amount"
             android:inputType="numberSigned|numberDecimal"
-            android:text="@string/amount"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="14sp" />
 

@@ -15,8 +15,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import ca.gotchasomething.mynance.data.BudgetDb;
 
-//import ca.gotchasomething.mynance.data.ExpenseBudgetDb;
-
 public class AddExpense extends AppCompatActivity {
 
     BudgetDb addExpExpDb;
@@ -29,7 +27,7 @@ public class AddExpense extends AppCompatActivity {
     RadioButton addExpARB, addExpAnnlyRB, addExpBRB, addExpBiAnnlyRB, addExpBiMthlyRB, addExpBiWklyRB, addExpMthlyRB, addExpNoWklyRB, addExpWklyRB, addExpYesWklyRB;
     RadioGroup addExpFrqRG, addExpABRG, addExpWklyRG;
     String addExpABRB = null, addExpFrqRB = null, expPriorityFromEntry = null, expWeeklyFromEntry = null, addExpWklyLimRB = null, expNameFromEntry = null;
-    TextView addExpWklyLabel;
+    TextView addExpCatLabel, addExpWklyLabel;
     View addExpLine1, addExpLine2;
 
     @Override
@@ -40,6 +38,10 @@ public class AddExpense extends AppCompatActivity {
         addExpGen = new General();
         addExpDbMgr = new DbManager(this);
 
+        addExpCatLabel = findViewById(R.id.addExpCatLabel);
+        if(addExpDbMgr.retrieveLatestDone().equals("income")) {
+            addExpCatLabel.setText(getString(R.string.add_bill));
+        }
         addExpCatET = findViewById(R.id.addExpCatET);
         addExpAmtET = findViewById(R.id.addExpAmtET);
         addExpFrqRG = findViewById(R.id.addExpFrqRG);
@@ -120,12 +122,14 @@ public class AddExpense extends AppCompatActivity {
             switch (checkedId) {
                 case R.id.addExpARB:
                     addExpABRB = "A";
+                    addExpWklyLabel.setVisibility(View.GONE);
                     addExpWklyRG.setVisibility(View.GONE);
                     addExpLine2.setVisibility(View.GONE);
                     addExpWklyLimRB = "N";
                     break;
                 case R.id.addExpBRB:
                     addExpABRB = "B";
+                    addExpWklyLabel.setVisibility(View.VISIBLE);
                     addExpWklyRG.setVisibility(View.VISIBLE);
                     addExpLine2.setVisibility(View.VISIBLE);
                     addExpWklyRG.setOnCheckedChangeListener(onCheckAddExpWklyRG);
@@ -182,12 +186,6 @@ public class AddExpense extends AppCompatActivity {
                 expWeeklyFromEntry = addExpWklyLimRB;
             }
 
-            /*if(expPriorityFromEntry.equals("A")) {
-                expAAnnAmtFromEntry = expAnnAmtFromEntry;
-            } else {
-                expBAnnAmtFromEntry = expAnnAmtFromEntry;
-            }*/
-
             if(!expNameFromEntry.equals("null")) {
 
                 addExpExpDb = new BudgetDb(
@@ -201,7 +199,7 @@ public class AddExpense extends AppCompatActivity {
                         expWeeklyFromEntry,
                         0);
 
-                addExpDbMgr.addExpense(addExpExpDb);
+                addExpDbMgr.addBudget(addExpExpDb);
 
                 if(addExpDbMgr.retrieveLastPageId() == 4) {
                     addExpToWeeklyList = new Intent(AddExpense.this, LayoutWeeklyLimitsList.class);

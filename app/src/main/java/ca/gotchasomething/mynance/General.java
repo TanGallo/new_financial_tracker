@@ -3,8 +3,6 @@ package ca.gotchasomething.mynance;
 import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Color;
-import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -26,25 +24,26 @@ import java.util.List;
 
 public class General extends AppCompatActivity {
 
-    public boolean alreadyDetermined;
-    public Calendar debtCal, savingsCal;
+    public boolean alreadyDetermined, leapYear;
+    public Calendar cal, debtCal, savingsCal;
     public Context context;
-    public Date date, dateObj, debtEndD, savingsDateD;
+    public Date date, dateObj, debtEndD, earliestDate, latestDate, savingsDateD;
     public DbManager dbManager;
     public Double dbl = 0.0, dbl2 = 0.0, debtAmtFromDb = 0.0, debtPaytFromDb = 0.0, debtRateFromDb = 0.0, dObj = 0.0, dollars = 0.0, expenseAnnualAmount = 0.0,
             moneyInA = 0.0, moneyInOwing = 0.0, moneyInB = 0.0, moneyOutA = 0.0, moneyOutOwing = 0.0, moneyOutB = 0.0, newMoneyA = 0.0,
             newMoneyOwing = 0.0, newMoneyB = 0.0, numberOfYearsToPayDebt = 0.0, percent = 0.0, years = 0.0, years2 = 0.0;
     public float availFloat, f1, resFloat;
     public float[] fList;
-    public int position = 0, startIndex = 0, endIndex = 0, numberOfDaysToPayDebt = 0, numberOfDaysToSavingsGoal = 0;
+    public int calInt = 0, position = 0, startIndex = 0, endIndex = 0, numberOfDaysToPayDebt = 0, numberOfDaysToSavingsGoal = 0;
     public Intent in;
-    public List<String> lastNumOfDays, thisWeek;
+    public List<String> lastNumOfDays, thisWeek, yearsList;
     public NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
     public PieChart pieChart;
     public SimpleDateFormat sdf, debtEndS, savingsDateS;
     public SQLiteDatabase db;
-    public String createdOn = null, expenseName = null, expensePriority = null, startingString = null, startingString2 = null, string1 = null,
+    public String createdOn = null, earliestDateInRange = null, expenseName = null, expensePriority = null, startingString = null, startingString2 = null, string1 = null,
             str2 = null, subStringResult = null, subStringResult2 = null, percentS = null, debtEnd = null, savingsDate = null, savingsDateB = null;
+    String[] monthsList, monthsOnlyList, yearsList2;
     public Timestamp timestamp;
 
     public Double dollarsFromTV(TextView tv) {
@@ -87,6 +86,33 @@ public class General extends AppCompatActivity {
         }
 
         return percent;
+    }
+
+    public Date dateFromString(String str1) {
+        //str1 = date as string
+        String string = str1;
+        try {
+            dateObj = new SimpleDateFormat("dd-MMM-yyyy").parse(string);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return dateObj;
+    }
+
+    public boolean checkForLeapYear(int int1) {
+        //int1 = year from selection
+        leapYear = false;
+        if (int1 % 400 == 0) {
+            leapYear = true;
+        } else if (int1 % 100 == 0) {
+            leapYear = false;
+        } else if (int1 % 4 == 0) {
+            leapYear = true;
+        } else {
+            leapYear = false;
+        }
+
+        return leapYear;
     }
 
     public void extractingDates(List<String> dateList1, List<Date> dateList2) {
@@ -213,63 +239,54 @@ public class General extends AppCompatActivity {
     }
 
     public String calcDebtDate(Double dbl1, Double dbl2, Double dbl3, String str1, String str2) {
-        //debtOwing
-        //debtRate
-        //debtPayments
-        //debt_paid
-        //too_far
+        //dbl1 = debtOwing
+        //dbl2 = debtRate
+        //dbl3 = debtPayments
+        //str1 = debt_paid
+        //str2 = too_far
 
-        debtCal = Calendar.getInstance();
-        if (dbl2 == 0) { //if rate is 0 then
-            numberOfYearsToPayDebt = dbl1 / (dbl3 * 12.0); //years = amount owing / annual payments
-        } else { //else calculate date
-            numberOfYearsToPayDebt = -(Math.log(1 - (dbl1 * (dbl2 / 100) / (dbl3 * 12.0))) / (12.0 * Math.log(1 + ((dbl2 / 100) / 12.0))));
-        }
-
-        numberOfDaysToPayDebt = (int) Math.round(numberOfYearsToPayDebt * 365);
-
-        if (dbl3 == 0) {
-            debtEnd = str2;
-        } else if(dbl1 <= 0 || numberOfDaysToPayDebt == 0) { //if amount owing is <= 0 or number of days is 0 then debt paid
+        if (dbl1 <= 0) { //debtOwing = 0
             debtEnd = str1;
-        } else if (numberOfDaysToPayDebt > Integer.MAX_VALUE || numberOfDaysToPayDebt < 0) { //if number of days has too many digits or is < 0 then too far
+        } else if (dbl3 == 0) { //debtPayts = 0
             debtEnd = str2;
-        } else { //else calculate date
-            debtCal = Calendar.getInstance();
-            debtCal.add(Calendar.DATE, numberOfDaysToPayDebt);
-            debtEndD = debtCal.getTime();
-            debtEndS = new SimpleDateFormat("dd-MMM-yyyy");
-            debtEnd = debtEndS.format(debtEndD);
+        } else if (dbl3 < ((dbl1 * ((dbl2 / 100) / 365)) * 30)) { //payts are less than the interest
+            debtEnd = str2;
+        } else if (dbl2 == 0) { //debtRate = 0
+            numberOfYearsToPayDebt = dbl1 / (dbl3 * 12.0); //years = amount owing / annual payments
+            numberOfDaysToPayDebt = (int) Math.round(numberOfYearsToPayDebt * 365);
+            if (numberOfDaysToPayDebt <= 0) {
+                debtEnd = str1;
+            } else if (numberOfDaysToPayDebt > Integer.MAX_VALUE || numberOfYearsToPayDebt.isNaN()) {
+                debtEnd = str2;
+            } else {
+                debtCal = Calendar.getInstance();
+                debtCal.add(Calendar.DATE, numberOfDaysToPayDebt);
+                debtEndD = debtCal.getTime();
+                debtEndS = new SimpleDateFormat("dd-MMM-yyyy");
+                debtEnd = debtEndS.format(debtEndD);
+            }
+        } else { //3 values are not 0
+            numberOfYearsToPayDebt = -(Math.log(1 - (dbl1 * (dbl2 / 100) / (dbl3 * 12.0))) / (12.0 * Math.log(1 + ((dbl2 / 100) / 12.0))));
+            numberOfDaysToPayDebt = (int) Math.round(numberOfYearsToPayDebt * 365);
+            if (numberOfDaysToPayDebt <= 0) {
+                debtEnd = str1;
+            } else if (numberOfDaysToPayDebt > Integer.MAX_VALUE || numberOfYearsToPayDebt.isNaN()) {
+                debtEnd = str2;
+            } else {
+                debtCal = Calendar.getInstance();
+                debtCal.add(Calendar.DATE, numberOfDaysToPayDebt);
+                debtEndD = debtCal.getTime();
+                debtEndS = new SimpleDateFormat("dd-MMM-yyyy");
+                debtEnd = debtEndS.format(debtEndD);
+            }
         }
 
+        //return String.valueOf(dbl2);
         return debtEnd;
     }
 
-    public void whatToShowDebt(String str1, String str2, TextView tv5, TextView tv6) {
-        //debt paid
-        //too far
-        //resultLabel
-        //resultTV
-        if (debtEnd.equals(str1) || debtEnd.equals(str2)) {
-            tv5.setVisibility(View.GONE);
-        } else {
-            tv5.setVisibility(View.VISIBLE);
-        }
-        tv6.setText(debtEnd);
-        if (debtEnd.equals(str1)) {
-            tv5.setVisibility(View.GONE);
-            tv6.setTextColor(Color.parseColor("#03ac13"));
-        } else if (debtEnd.equals(str2)) {
-            tv5.setVisibility(View.GONE);
-            tv6.setTextColor(Color.parseColor("#ffff4444"));
-        } else {
-            tv5.setVisibility(View.VISIBLE);
-            tv6.setTextColor(Color.parseColor("#303F9F"));
-            tv5.setTextColor(Color.parseColor("#303F9F"));
-        }
-    }
-
-    public String calcSavingsDate(Double dbl1, Double dbl2, Double dbl4, Double dbl5, String str1, String str2) {
+    public String calcSavingsDate(Double dbl1, Double dbl2, Double dbl4, Double dbl5, String
+            str1, String str2) {
         //savingsGoal
         //savingsAmount
         //savingsRate
@@ -343,6 +360,12 @@ public class General extends AppCompatActivity {
         return createdOn;
     }
 
+    public String earliestDateInRange() {
+
+
+        return earliestDateInRange;
+    }
+
     public List<String> lastNumOfDays(int int1) {
         //int1 = number of days in desired range
         lastNumOfDays = new ArrayList<>();
@@ -358,26 +381,6 @@ public class General extends AppCompatActivity {
         return lastNumOfDays;
     }
 
-    public void buildHeaderPieLook(PieChart pieChart) {
-        pieChart.setHoleRadius(0);
-        pieChart.setDrawEntryLabels(true);
-        pieChart.setEntryLabelColor(android.R.attr.colorAccent);
-        pieChart.setEntryLabelTextSize(16);
-        pieChart.setMinAngleForSlices(1);
-
-        /*ArrayList<Integer> pieChartColours = new ArrayList<>();
-        pieChartColours.add(android.R.attr.colorAccent);
-        pieChartColours.add(android.R.attr.colorPrimaryDark);
-        ds1.setColors(pieChartColours);*/
-
-        /*ArrayList<PieEntry> xEntries = new ArrayList<>();
-
-        PieDataSet pieDataSet = new PieDataSet(xData, str1);
-        pieDataSet.setSliceSpace(2);
-        pieDataSet.setValueTextSize(12);*/
-
-    }
-
     public float convertDblToFloat(Double dbl1) {
         //dbl1 = Double to be converted
         dObj = new Double(dbl1);
@@ -385,6 +388,7 @@ public class General extends AppCompatActivity {
 
         return f1;
     }
+
     public void buildLimitsPieChart(float fl1, float fl2, PieChart pc, int int1, int int2) {
         //fl1 = amtLeft
         //fl2 = amtSpent
@@ -416,5 +420,52 @@ public class General extends AppCompatActivity {
         pc.invalidate();
     }
 
+    /*public String[] monthsList() {
+        monthsList = new String[]{
+                getResources().getString(R.string.jan),
+                getResources().getString(R.string.feb),
+                getResources().getString(R.string.mar),
+                getResources().getString(R.string.apr),
+                getResources().getString(R.string.may),
+                getResources().getString(R.string.jun),
+                getResources().getString(R.string.jul),
+                getResources().getString(R.string.aug),
+                getResources().getString(R.string.sep),
+                getResources().getString(R.string.oct),
+                getResources().getString(R.string.nov),
+                getResources().getString(R.string.dec),
+                getResources().getString(R.string.year_to_date)};
+        return monthsList;
+    }*/
+
+    /*public String[] monthsOnlyList() {
+        monthsOnlyList = new String[]{
+                getResources().getString(R.string.jan),
+                getResources().getString(R.string.feb),
+                getResources().getString(R.string.mar),
+                getResources().getString(R.string.apr),
+                getResources().getString(R.string.may),
+                getResources().getString(R.string.jun),
+                getResources().getString(R.string.jul),
+                getResources().getString(R.string.aug),
+                getResources().getString(R.string.sep),
+                getResources().getString(R.string.oct),
+                getResources().getString(R.string.nov),
+                getResources().getString(R.string.dec),
+                };
+        return monthsOnlyList;
+    }*/
+
+    public String[] yearsList(int int1, int int2) {
+        //int1 = dbMgr.getEarliestEntry(dbMgr.getYearsList())
+        //int2 = dbMgr.getLatestEntry(dbMgr.getYearsList())
+        yearsList = new ArrayList<>();
+        for (int firstYear = int1; firstYear <= int2; firstYear++) {
+            yearsList.add(String.valueOf(firstYear));
+        }
+        yearsList2 = yearsList.toArray(new String[yearsList.size()]);
+
+        return yearsList2;
+    }
 }
 

@@ -27,13 +27,8 @@ import java.util.List;
 
 import ca.gotchasomething.mynance.data.AccountsDb;
 import ca.gotchasomething.mynance.data.BudgetDb;
-//import ca.gotchasomething.mynance.data.MoneyInDb;
 import ca.gotchasomething.mynance.data.TransactionsDb;
 import ca.gotchasomething.mynance.spinners.TransferSpinnerAdapter;
-
-//import ca.gotchasomething.mynance.data.DebtDb;
-//import ca.gotchasomething.mynance.data.IncomeBudgetDb;
-//import ca.gotchasomething.mynance.data.SavingsDb;
 
 public class LayoutMoneyIn extends MainNavigation {
 
@@ -65,8 +60,8 @@ public class LayoutMoneyIn extends MainNavigation {
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         drawer = findViewById(R.id.drawer_layout);
-        navigationView = findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+        navView = findViewById(R.id.nav_view);
+        navView.setNavigationItemSelectedListener(this);
 
         toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -166,7 +161,7 @@ public class LayoutMoneyIn extends MainNavigation {
             monInMoneyInB = monInDbMgr.detBPortionInc(monInMonInAmt, (monInPercentA * monInMonInAmt), monInDbMgr.retrieveCurrentOwingA());
 
             monInDbMgr.updateTotAcctBalPlus(monInMonInAmt, monInDbMgr.retrieveCurrentAccountBalance());
-            monInDbMgr.updateAvailBalPlus(monInMoneyInA, monInMoneyInOwing, monInMoneyInB, monInDbMgr.retrieveCurrentA(), monInDbMgr.retrieveCurrentOwingA(), monInDbMgr.retrieveCurrentB());
+            monInDbMgr.updateAandBBalPlus(monInMoneyInA, monInMoneyInOwing, monInMoneyInB, monInDbMgr.retrieveCurrentA(), monInDbMgr.retrieveCurrentOwingA(), monInDbMgr.retrieveCurrentB());
 
             if (monInDbMgr.retrieveCurrentOwingA() < 0) {
                 monInDbMgr.adjustCurrentAandB(monInDbMgr.retrieveCurrentOwingA(), monInDbMgr.retrieveCurrentA(), monInDbMgr.retrieveCurrentB());
@@ -184,7 +179,7 @@ public class LayoutMoneyIn extends MainNavigation {
                 moneyInB = monInMoneyInB;
             }
         } else if (monInIsDebt.equals("Y")) {
-            monInDbMgr.updateRecMinusPt1(monInMonInAmt, monInDbMgr.retrieveCurrentDebtAmtOwing(monInToAcctId), monInToAcctId);
+            monInDbMgr.updateRecMinusPt1(monInMonInAmt, monInDbMgr.retrieveCurrentAcctAmt(monInToAcctId), monInToAcctId);
             for (AccountsDb a : monInDbMgr.getDebts()) {
                 if (a.getId() == monInToAcctId) {
                     debtAmtFromDb = a.getAcctBal();
@@ -203,7 +198,7 @@ public class LayoutMoneyIn extends MainNavigation {
             moneyInOwing = 0.0;
             moneyInB = 0.0;
         } else if (monInIsSav.equals("Y")) {
-            monInDbMgr.updateRecPlusPt1(monInMonInAmt, monInDbMgr.retrieveCurrentSavAmt(monInToAcctId), monInToAcctId);
+            monInDbMgr.updateRecPlusPt1(monInMonInAmt, monInDbMgr.retrieveCurrentAcctAmt(monInToAcctId), monInToAcctId);
             for (AccountsDb a : monInDbMgr.getSavings()) {
                 if (a.getId() == monInToAcctId) {
                     savGoalFromDb = a.getAcctMax();
@@ -250,10 +245,10 @@ public class LayoutMoneyIn extends MainNavigation {
                 "N/A",
                 monInGen.createTimestamp(),
                 0);
-        monInDbMgr.addMoneyIn(monInMoneyInDb);
+        monInDbMgr.addTransactions(monInMoneyInDb);
 
         monInIncDb.setBdgtAnnPayt(monInDbMgr.makeNewIncAnnAmt(monInIncId, monInGen.lastNumOfDays(365)));
-        monInDbMgr.updateIncome(monInIncDb);
+        monInDbMgr.updateBudget(monInIncDb);
 
         monInAdapter.updateIncomes(monInDbMgr.getIncomes());
         monInAdapter.notifyDataSetChanged();
@@ -372,7 +367,7 @@ public class LayoutMoneyIn extends MainNavigation {
                                     public void onClick(View v) {
                                         monInHldr.monInDefLayout.setVisibility(View.GONE);
                                         monInIncDb.setBdgtPaytAmt(monInMonInAmt);
-                                        monInDbMgr.updateIncome(monInIncDb);
+                                        monInDbMgr.updateBudget(monInIncDb);
                                         monInContinueTransaction();
                                     }
                                 });

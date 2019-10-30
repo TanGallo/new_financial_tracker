@@ -32,6 +32,61 @@
                 android:orientation="vertical"
                 tools:ignore="UselessParent">
 
+                <LinearLayout
+                    android:id="@+id/mainPayCCHeaderLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:background="@drawable/entry_box"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/mainPayCCAvailAmtLabel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/available_to_spend"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/mainPayCCAvailAmtTV"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textSize="22sp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/avail_for_bills"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/mainPayCCTotalAmtTV"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textSize="22sp" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
                 <TextView
                     android:id="@+id/mainPayCCHeaderTV"
                     android:layout_width="wrap_content"

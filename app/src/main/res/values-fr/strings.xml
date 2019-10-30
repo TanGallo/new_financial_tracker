@@ -339,8 +339,8 @@
     <string name="higher_than_recommended">Zut, vos dépenses sont un peu plus élevées que le montant recommandé.</string>
     <string name="too_high">Attention: vos dépenses sont trop élevées!</string>
     <string name="no_adj_nec">Aucun ajustement nécessaire!</string>
-    <string name="may_adj">Vous voudrez peut-être ajuster vos dépenses dans l’un des domaines ci-dessous.</string>
-    <string name="should_adj">Vous devriez essayer d’ajuster vos dépenses dans l’un des domaines ci-dessous.</string>
+    <string name="may_adj">Vous voudrez peut-être ajuster l’un des domaines ci-dessous.</string>
+    <string name="should_adj">Vous devriez essayer d’ajuster l’un des domaines ci-dessous.</string>
     <string name="click_here_weekly">Cliquez ici pour définir les limites de dépenses hebdomadaires.</string>
     <string name="done_weekly_limits">Limites hebdomadaires mises en place</string>
     <string name="what_mynance_does">MYnance va:</string>
@@ -421,7 +421,7 @@
     <string name="record_transfers">Créer un autre transfert</string>
     <string name="edit_financial_summary">Résumé Financier</string>
     <string name="reserved">Réservé:</string>
-    <string name="reserved_includes">(Les fonds réservés sont réservés pour les factures, les autres frais de subsistance, et tous les paiements par défaut dans les cartes de crédit/marges de crédit ou les comptes d\'épargne.</string>
+    <string name="reserved_includes">(Les fonds réservés sont réservés pour les factures, les autres frais de subsistance, et tous les paiements par défaut dans les cartes de crédit/marges de crédit ou les comptes d\'épargne. Idéalement, cela ne devrait pas dépasser 80% de votre revenu.</string>
     <string name="i">i</string>
     <string name="make_adj">Modifier:</string>
     <string name="credit_types">Cartes/Marges de Crédit</string>
@@ -440,7 +440,7 @@
     <string name="choose_acct">Choose an account below</string>
     <string name="deposit_to">Déposer à:</string>
     <string name="money_from">L\'argent vient de:</string>
-    <string name="pay_from">Pay from:</string>
+    <string name="pay_from">Payez de:</string>
     <string name="spent_on">Dépenser pour:</string>
     <string name="paid_from">payer de</string>
     <string name="main_account">Compte principal</string>
@@ -464,4 +464,19 @@
     <string name="avail_for_bills">Pour payer les factures, etc:</string>
     <string name="main_acct">Compte principal</string>
     <string name="other">Other</string>
+    <string name="no_debts">Vous n\'avez aucune dette de consommation!</string>
+    <string name="you_have">Vous avez</string>
+    <string name="in_savings">d\'épargne.</string>
+    <string name="towards_goal">du chemin vers votre objectif!</string>
+    <string name="choose_type">Choississez quel type de transaction:</string>
+    <string name="cc_payts">Paiements aux cartes de crédit</string>
+    <string name="dialog">Avertissement: Vous ne pourrez pas supprimer ou modifier des transactions de paiement par carte de crédit.</string>
+    <string name="credit_card_payts">Paiements aux cartes de crédit:</string>
+    <string name="paid_to">payer à</string>
+    <string name="limit_list">Limiter la liste aux transactions entre</string>
+    <string name="and">et</string>
+    <string name="no_entries">Aucune entrée pendant cette période</string>
+    <string name="date_confusion">Votre date de début doit être avant votre date de fin.</string>
+    <string name="reset">réinitialiser</string>
+    <string name="add_bill">Ajoutez une catégorie de facture</string>
 </resources>

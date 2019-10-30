@@ -9,32 +9,27 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 
 import com.github.mikephil.charting.charts.PieChart;
 
-import java.text.NumberFormat;
-
-public class SetUpAnalysis extends AppCompatActivity {
+public class SetUpAnalysis extends MainNavigation {
 
     Button ana1DoneAdjBtn;
     ContentValues ana1CV;
     DbHelper ana1Helper;
     DbManager ana1DBMgr;
-    Double ana1Reserved = 0.0, ana1SpendPercent2 = 0.0, ana1ToSpend = 0.0;
+    Double ana1Reserved = 0.0, ana1ToSpend = 0.0;
     General ana1Gen;
     ImageButton ana1AdjExpBtn, ana1AdjIncBtn, ana1AdjDebtsBtn, ana1AdjSavBtn;
-    int ana1Colour, int2;
+    int ana1Colour;
     Intent ana1ToExp, ana1ToInc, ana1ToSetUp;
     LinearLayout ana1AdjLayout;
-    NumberFormat ana1PerFor = NumberFormat.getPercentInstance();
     PieChart ana1PieChart;
-    RelativeLayout ana1AdjIncLayout, ana1AdjExpLayout, ana1AdjDebtsLayout, ana1AdjSavLayout;
-    String ana1Recommendation = null, ana1SpendResStmt = null;
+    String ana1Recommendation = null;
     SQLiteDatabase ana1DB;
     TextView ana1AnaResTV, ana1ResLabel;
 
@@ -42,6 +37,18 @@ public class SetUpAnalysis extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.b6a_layout_analysis);
+
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        drawer = findViewById(R.id.drawer_layout);
+        navView = findViewById(R.id.nav_view);
+        navView.setNavigationItemSelectedListener(this);
+
+        toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+
+        menuConfig();
 
         ana1DBMgr = new DbManager(this);
         ana1Gen = new General();

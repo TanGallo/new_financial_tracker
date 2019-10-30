@@ -1,6 +1,8 @@
 package ca.gotchasomething.mynance;
 
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
@@ -20,6 +22,8 @@ public class AddSavings extends AppCompatActivity {
 
     AccountsDb addSavAcctDb;
     Button addSavSavCancelBtn, addSavSavSaveBtn, addSavSavUpdateBtn;
+    ContentValues addSavCV;
+    DbHelper addSavHelper;
     DbManager addSavDbMgr;
     Double currentSavingsRate = 0.0, savAmtFromEntry = 0.0, savGoalFromEntry = 0.0, savPaytFromEntry = 0.0, savRateFromEntry = 0.0;
     EditText addSavSavAmtET, addSavSavGoalET, addSavSavNameET, addSavSavPaytET, addSavSavPercentET;
@@ -27,6 +31,7 @@ public class AddSavings extends AppCompatActivity {
     Intent addSavToList;
     long addSavSavId;
     //SavingsDb addSavSavDb;
+    SQLiteDatabase addSavDb;
     String addSavSavDate2 = null, savNameFromEntry = null;
     TextView addSavSavDateResTV, addSavSavDateResLabel;
     Toast toast;
@@ -58,6 +63,13 @@ public class AddSavings extends AppCompatActivity {
         addSavSavGoalET.addTextChangedListener(onChangeAddSavSavGoalET);
         addSavSavPaytET.addTextChangedListener(onChangeAddSavSavPaytET);
         addSavSavPercentET.addTextChangedListener(onChangeAddSavSavPercentET);
+
+        addSavCV = new ContentValues();
+        addSavCV.put(DbHelper.LASTPAGEID, 13);
+        addSavHelper = new DbHelper(getApplicationContext());
+        addSavDb = addSavHelper.getWritableDatabase();
+        addSavDb.update(DbHelper.CURRENT_TABLE_NAME, addSavCV, DbHelper.ID + "= '1'", null);
+        addSavDb.close();
     }
 
     TextWatcher onChangeAddSavSavAmtET = new TextWatcher() {

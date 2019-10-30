@@ -13,6 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -21,15 +22,13 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 
 import java.util.List;
 
 import ca.gotchasomething.mynance.data.BudgetDb;
 
-//import ca.gotchasomething.mynance.data.ExpenseBudgetDb;
-
-public class AddExpenseList extends AppCompatActivity {
+public class AddExpenseList extends MainNavigation {
 
     BudgetDb expLstExpDB;
     Button expLstAddMoreButton, expLstDoneButton, expLstExpCancelBtn, expLstExpSaveBtn, expLstExpUpdateBtn;
@@ -41,6 +40,7 @@ public class AddExpenseList extends AppCompatActivity {
     General expLstGen;
     ExpLstLstAdapter expLstLstAdapter;
     Intent expLstToBud, expLstToCCPur, expLstToMonOut, expLstToWklyList, expLstRefresh, expLstToSetUp, expLstToAddMore, expLstToAnalysis;
+    LinearLayout expLstSpinLayout;
     ListView expLstListView;
     long expIdFromTag;
     RadioButton expLstExpARB, expLstExpBRB, expLstExpAnnlyRB, expLstExpBiAnnlyRB, expLstExpBiMthlyRB, expLstExpBiWklyRB, expLstExpMthlyRB, expLstExpWklyRB,
@@ -49,7 +49,7 @@ public class AddExpenseList extends AppCompatActivity {
     SQLiteDatabase expLstDB;
     String expNameFromEntry = null, expLstExpPriorityRB = null, expPriorityFromEntry = null, expPriorityFromTag = null, expWeeklyFromEntry = null,
             expWeeklyFromTag = null, expLstAnnAmt2 = null, expLstExpFrqRB = null, expLstExpWeeklyRB = null, expNameFromTag = null;
-    TextView expLstHeaderLabelTV, expLstExpWklyLabel;
+    TextView expLstHeaderLabelTV, expLstExpWklyLabel, expLstTotalTV;
     View expLstExpLine1, expLstExpLine2;
 
     @Override
@@ -57,8 +57,25 @@ public class AddExpenseList extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_2_list_add_done);
 
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        drawer = findViewById(R.id.drawer_layout);
+        navView = findViewById(R.id.nav_view);
+        navView.setNavigationItemSelectedListener(this);
+
+        toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+
+        menuConfig();
+
         expLstDbMgr = new DbManager(this);
         expLstGen = new General();
+
+        expLstSpinLayout = findViewById(R.id.layout1SpinLayout);
+        expLstSpinLayout.setVisibility(View.GONE);
+        expLstTotalTV = findViewById(R.id.layout1TotalTV);
+        expLstTotalTV.setVisibility(View.GONE);
 
         expLstHeaderLabelTV = findViewById(R.id.layout1HeaderLabelTV);
         if(expLstDbMgr.retrieveLatestDone().equals("income")) {
@@ -80,7 +97,7 @@ public class AddExpenseList extends AppCompatActivity {
         expLstAddMoreButton.setOnClickListener(onClickExpLstAddMoreButton);
         expLstDoneButton.setOnClickListener(onClickExpLstDoneButton);
 
-        expLstLstAdapter = new ExpLstLstAdapter(this, expLstDbMgr.getExpense());
+        expLstLstAdapter = new ExpLstLstAdapter(this, expLstDbMgr.getExpenses());
         expLstListView.setAdapter(expLstLstAdapter);
     }
 
@@ -186,7 +203,7 @@ public class AddExpenseList extends AppCompatActivity {
             expLstHldr.expLstExpName.setText(expense.get(position).getBdgtCat());
 
             //retrieve incomeAnnualAmount and format as currency
-            expLstAnnAmt2 = String.valueOf((expense.get(position).getBdgtPaytAmt()) * (expense.get(position).getBdgtPaytFrq()));
+            expLstAnnAmt2 = String.valueOf((expense.get(position).getBdgtAnnPayt()));
             expLstGen.dblASCurrency(expLstAnnAmt2, expLstHldr.expLstExpAmt);
 
             expLstHldr.expLstDel.setTag(expense.get(position));
@@ -395,8 +412,7 @@ public class AddExpenseList extends AppCompatActivity {
                                 expLstExpDB.setBdgtPaytFrq(expFrqFromEntry);
                                 expLstExpDB.setBdgtPriority(expPriorityFromEntry);
                                 expLstExpDB.setBdgtWeekly(expWeeklyFromEntry);
-
-                                expLstDbMgr.updateExpense(expLstExpDB);
+                                expLstDbMgr.updateBudget(expLstExpDB);
 
                                 if(expLstDbMgr.getMoneyOuts().size() != 0) {
                                     expLstNewExpAnnAmt = expLstDbMgr.makeNewExpAnnAmt(expIdFromTag, expLstGen.lastNumOfDays(365));
@@ -404,9 +420,9 @@ public class AddExpenseList extends AppCompatActivity {
                                     expLstNewExpAnnAmt = expAmtFromEntry * expFrqFromEntry;
                                 }
                                 expLstExpDB.setBdgtAnnPayt(expLstNewExpAnnAmt);
-                                expLstDbMgr.updateExpense(expLstExpDB);
+                                expLstDbMgr.updateBudget(expLstExpDB);
                                 
-                                expLstLstAdapter.updateExpenses(expLstDbMgr.getExpense());
+                                expLstLstAdapter.updateExpenses(expLstDbMgr.getExpenses());
                                 expLstLstAdapter.notifyDataSetChanged();
                                 Toast.makeText(getBaseContext(), R.string.changes_saved,
                                         Toast.LENGTH_LONG).show();
@@ -431,8 +447,8 @@ public class AddExpenseList extends AppCompatActivity {
 
                     expLstExpDB = (BudgetDb) expLstHldr.expLstDel.getTag();
 
-                    expLstDbMgr.deleteExpense(expLstExpDB);
-                    expLstLstAdapter.updateExpenses(expLstDbMgr.getExpense());
+                    expLstDbMgr.deleteBudget(expLstExpDB);
+                    expLstLstAdapter.updateExpenses(expLstDbMgr.getExpenses());
                     expLstLstAdapter.notifyDataSetChanged();
 
                     expLstRefresh = new Intent(AddExpenseList.this, AddExpenseList.class);

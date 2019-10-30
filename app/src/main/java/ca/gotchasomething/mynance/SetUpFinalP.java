@@ -100,7 +100,7 @@ public class SetUpFinalP extends AppCompatActivity {
                     fin1Gen.createTimestamp(),
                     0);
 
-            fin1DbMgr.addMoneyIn(fin1MoneyInDb);
+            fin1DbMgr.addTransactions(fin1MoneyInDb);
 
             fin1ToSetUp = new Intent(SetUpFinalP.this, LayoutSetUp.class);
             fin1ToSetUp.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);

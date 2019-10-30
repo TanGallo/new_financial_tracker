@@ -2,7 +2,7 @@ package ca.gotchasomething.mynance.data;
 //Db description
 
 public class TransactionsDb {
-    private String transType; //"in" or "out" or "transfer"
+    private String transType; //"in" or "out" or "transfer" or "ccPayment"
     private String transIsCC;
     private String transBdgtCat;
     private long transBdgtId;
@@ -29,7 +29,7 @@ public class TransactionsDb {
     private long id;
 
     public TransactionsDb(
-            String transType, //"in" or "out" or "transfer"
+            String transType,
             String transIsCC,
             String transBdgtCat,
             long transBdgtId,
@@ -48,8 +48,8 @@ public class TransactionsDb {
             String transFromAcctName,
             String transFromIsDebt,
             String transFromIsSav,
-            String transBdgtPriority, //out only
-            String transBdgtWeekly, //out only
+            String transBdgtPriority,
+            String transBdgtWeekly,
             String transCCToPay,
             String transCCPaid,
             String transCreatedOn,

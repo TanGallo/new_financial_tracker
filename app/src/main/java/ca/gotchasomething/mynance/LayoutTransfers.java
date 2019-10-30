@@ -26,21 +26,17 @@ import ca.gotchasomething.mynance.data.AccountsDb;
 import ca.gotchasomething.mynance.data.TransactionsDb;
 import ca.gotchasomething.mynance.spinners.TransferSpinnerAdapter;
 
-//import ca.gotchasomething.mynance.data.DebtDb;
-//import ca.gotchasomething.mynance.data.SavingsDb;
-//import ca.gotchasomething.mynance.data.TransfersDb;
-
 public class LayoutTransfers extends MainNavigation {
 
     Button trn1Btn, trn1DoneBtn, trn1FromBtn, trn1NoBtn, trn1YesBtn;
-    ContentValues trn1CV, trn1CV2;
-    Cursor trn1Cur, trn1Cur2, trn1Cur3;
-    DbHelper trn1Helper, trn1Helper2, trn1Helper3, trn1Helper4;
+    ContentValues trn1CV;
+    Cursor trn1Cur, trn1Cur2;
+    DbHelper trn1Helper, trn1Helper2, trn1Helper3;
     DbManager trn1DbMgr;
     Double debtAmtFromDb = 0.0, debtLimitFromDb = 0.0, debtPaytFromDb = 0.0, debtRateFromDb = 0.0, savAmtFromDb = 0.0,
             savGoalFromDb = 0.0, savPaytFromDb = 0.0, savRateFromDb = 0.0, trn1TrnAmt = 0.0, trn1AmtForA = 0.0, trn1AmtForB = 0.0,
             trn1AmtMissing = 0.0, trn1MoneyInA = 0.0, trn1MoneyInOwing = 0.0, trn1MoneyInB = 0.0, trn1MoneyOutA = 0.0,
-            trn1MoneyOutAEntry = 0.0, trn1MoneyOutOwing = 0.0, trn1MoneyOutB = 0.0, trn1NewAcctBal = 0.0;
+            trn1MoneyOutAEntry = 0.0, trn1MoneyOutOwing = 0.0, trn1MoneyOutB = 0.0;
     EditText trn1FromResET, trn1TrnAmtET;
     General trn1Gen;
     ImageButton trn1InfoBtn;
@@ -50,7 +46,7 @@ public class LayoutTransfers extends MainNavigation {
     RadioButton trn1FromAvailRB, trn1FromCustomRB, trn1FromResRB, trn1FromUsualRB;
     RadioGroup trn1FromRG;
     Spinner trn1FromSpin, trn1ToSpin;
-    SQLiteDatabase trn1Db, trn1Db2, trn1Db3, trn1Db4;
+    SQLiteDatabase trn1Db, trn1Db2, trn1Db3;
     String trn1FromIsDebt = null, trn1FromIsSav = null, trn1FromSpinName = null, trn1ToIsDebt = null, trn1ToIsSav = null, trn1ToSpinName = null;
     TextView trn1FromWarnTV, trn1FromAvailTV, trn1InfoLabel, trn1WarnTV;
     TransactionsDb trn1TransDb;
@@ -63,8 +59,8 @@ public class LayoutTransfers extends MainNavigation {
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         drawer = findViewById(R.id.drawer_layout);
-        navigationView = findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+        navView = findViewById(R.id.nav_view);
+        navView.setNavigationItemSelectedListener(this);
 
         toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -108,31 +104,6 @@ public class LayoutTransfers extends MainNavigation {
 
         trn1Btn.setOnClickListener(onClickTransferBtn);
         trn1DoneBtn.setOnClickListener(onClickTrn1DoneBtn);
-
-        /*for(AccountsDb a : trn1DbMgr.getAccounts()) {
-            trn1AcctId = a.getId();
-            if(a.getId() == 1) {
-                trn1NewAcctBal = trn1DbMgr.retrieveCurrentAccountBalance();
-            } else if(a.getDebtId() != 0) {
-                trn1NewAcctBal = -trn1DbMgr.retrieveCurrentDebtAmtOwing(trn1AcctId);
-            } else if(a.getSavId() != 0) {
-                trn1NewAcctBal = trn1DbMgr.retrieveCurrentSavAmt(trn1AcctId);
-            }
-        }
-
-        trn1Helper4 = new DbHelper(this);
-        trn1Db4 = trn1Helper4.getReadableDatabase();
-        trn1Db4.beginTransaction();
-        trn1Cur3 = trn1Db4.rawQuery("SELECT * FROM " + DbHelper.ACCOUNTS_TABLE_NAME, null);
-        trn1Db4.execSQL("UPDATE " + DbHelper.ACCOUNTS_TABLE_NAME + " SET " + DbHelper.ACCTBAL + " = " + trn1NewAcctBal + " WHERE " + DbHelper.ID + " = " + trn1AcctId);
-        trn1Cur3.close();
-        trn1Db4.setTransactionSuccessful();
-        trn1Db4.endTransaction();*/
-
-        /*trn1DbMgr.updateAllAcctBal(
-                trn1DbMgr.retrieveCurrentAccountBalance(),
-                trn1DbMgr.retrieveCurrentDebtAmtOwing(),
-                trn1DbMgr.retrieveCurrentSavAmt());*/
 
         trn1Helper = new DbHelper(this);
         trn1Db = trn1Helper.getReadableDatabase();
@@ -211,7 +182,7 @@ public class LayoutTransfers extends MainNavigation {
     //UPDATE THE FROM ACCOUNTS
 
     public void trn1DebtPlus() {
-        trn1DbMgr.updateRecPlusPt1(trn1TrnAmt, trn1DbMgr.retrieveCurrentDebtAmtOwing(trn1FromSpinId), trn1FromSpinId);
+        trn1DbMgr.updateRecPlusPt1(trn1TrnAmt, trn1DbMgr.retrieveCurrentAcctAmt(trn1FromSpinId), trn1FromSpinId);
         for (AccountsDb d : trn1DbMgr.getDebts()) {
             if (d.getId() == trn1FromSpinId) {
                 debtAmtFromDb = d.getAcctBal();
@@ -229,7 +200,7 @@ public class LayoutTransfers extends MainNavigation {
     }
 
     public void trn1SavMinus() {
-        trn1DbMgr.updateRecMinusPt1(trn1TrnAmt, trn1DbMgr.retrieveCurrentSavAmt(trn1FromSpinId), trn1FromSpinId);
+        trn1DbMgr.updateRecMinusPt1(trn1TrnAmt, trn1DbMgr.retrieveCurrentAcctAmt(trn1FromSpinId), trn1FromSpinId);
         for (AccountsDb s : trn1DbMgr.getSavings()) {
             if (s.getId() == trn1FromSpinId) {
                 savAmtFromDb = s.getAcctBal();
@@ -250,7 +221,13 @@ public class LayoutTransfers extends MainNavigation {
     public void trn1MainMinus() {
         trn1DbMgr.updateTotAcctBalMinus(trn1TrnAmt, trn1DbMgr.retrieveCurrentAccountBalance());
 
-        trn1DbMgr.updateAvailBalMinus(trn1MoneyOutA, trn1MoneyOutOwing, trn1MoneyOutB, trn1DbMgr.retrieveCurrentA(), trn1DbMgr.retrieveCurrentOwingA(), trn1DbMgr.retrieveCurrentB());
+        trn1DbMgr.updateAandBBalMinus(
+                trn1MoneyOutA,
+                trn1MoneyOutOwing,
+                trn1MoneyOutB,
+                trn1DbMgr.retrieveCurrentA(),
+                trn1DbMgr.retrieveCurrentOwingA(),
+                trn1DbMgr.retrieveCurrentB());
         if (trn1DbMgr.retrieveCurrentOwingA() < 0) {
             trn1DbMgr.adjustCurrentAandB(trn1DbMgr.retrieveCurrentOwingA(), trn1DbMgr.retrieveCurrentA(), trn1DbMgr.retrieveCurrentB());
         }
@@ -259,7 +236,7 @@ public class LayoutTransfers extends MainNavigation {
     //UPDATE THE TO ACCOUNTS
 
     public void trn1DebtMinus() {
-        trn1DbMgr.updateRecMinusPt1(trn1TrnAmt, trn1DbMgr.retrieveCurrentDebtAmtOwing(trn1ToSpinId), trn1ToSpinId);
+        trn1DbMgr.updateRecMinusPt1(trn1TrnAmt, trn1DbMgr.retrieveCurrentAcctAmt(trn1ToSpinId), trn1ToSpinId);
 
         for (AccountsDb d : trn1DbMgr.getDebts()) {
             if (d.getId() == trn1ToSpinId) {
@@ -279,7 +256,7 @@ public class LayoutTransfers extends MainNavigation {
     }
 
     public void trn1SavPlus() {
-        trn1DbMgr.updateRecPlusPt1(trn1TrnAmt, trn1DbMgr.retrieveCurrentSavAmt(trn1ToSpinId), trn1ToSpinId);
+        trn1DbMgr.updateRecPlusPt1(trn1TrnAmt, trn1DbMgr.retrieveCurrentAcctAmt(trn1ToSpinId), trn1ToSpinId);
 
         for (AccountsDb s : trn1DbMgr.getSavings()) {
             if (s.getId() == trn1ToSpinId) {
@@ -302,7 +279,13 @@ public class LayoutTransfers extends MainNavigation {
     public void trn1MainPlus() {
         trn1DbMgr.updateTotAcctBalPlus(trn1TrnAmt, trn1DbMgr.retrieveCurrentAccountBalance());
 
-        trn1DbMgr.updateAvailBalPlus(trn1MoneyInA, trn1MoneyInOwing, trn1MoneyInB, trn1DbMgr.retrieveCurrentA(), trn1DbMgr.retrieveCurrentOwingA(), trn1DbMgr.retrieveCurrentB());
+        trn1DbMgr.updateAandBBalPlus(
+                trn1MoneyInA,
+                trn1MoneyInOwing,
+                trn1MoneyInB,
+                trn1DbMgr.retrieveCurrentA(),
+                trn1DbMgr.retrieveCurrentOwingA(),
+                trn1DbMgr.retrieveCurrentB());
         if (trn1DbMgr.retrieveCurrentOwingA() < 0) {
             trn1DbMgr.adjustCurrentAandB(trn1DbMgr.retrieveCurrentOwingA(), trn1DbMgr.retrieveCurrentA(), trn1DbMgr.retrieveCurrentB());
         }
@@ -353,17 +336,23 @@ public class LayoutTransfers extends MainNavigation {
                 "N/A",
                 trn1Gen.createTimestamp(),
                 0);
-        trn1DbMgr.addTransfers(trn1TransDb);
+        trn1DbMgr.addTransactions(trn1TransDb);
 
-        //UPDATE ALL SAVINGS & DEBTS BUDGETS RE TRANSFERS
+        //UPDATE ALL SAVINGS & DEBTS BUDGETS RE TRANSFERS ************************************IS THIS NECESSAY?
         try {
             for (AccountsDb a : trn1DbMgr.getDebts()) {
                 trn1DebtId = a.getId();
-                trn1DbMgr.updateRecReTransfer(trn1DebtId, trn1DbMgr.transfersToAcctThisYear(trn1DebtId, trn1Gen.lastNumOfDays(365)), trn1DbMgr.transfersFromAcctThisYear(trn1DebtId, trn1Gen.lastNumOfDays(365)));
+                trn1DbMgr.updateRecReTransfer(
+                        trn1DebtId,
+                        trn1DbMgr.transfersToAcctThisYear(trn1DebtId, trn1Gen.lastNumOfDays(365)),
+                        trn1DbMgr.transfersFromAcctThisYear(trn1DebtId, trn1Gen.lastNumOfDays(365)));
             }
             for (AccountsDb a : trn1DbMgr.getSavings()) {
                 trn1SavId = a.getId();
-                trn1DbMgr.updateRecReTransfer(trn1SavId, trn1DbMgr.transfersToAcctThisYear(trn1SavId, trn1Gen.lastNumOfDays(365)), trn1DbMgr.transfersFromAcctThisYear(trn1SavId, trn1Gen.lastNumOfDays(365)));
+                trn1DbMgr.updateRecReTransfer(
+                        trn1SavId,
+                        trn1DbMgr.transfersToAcctThisYear(trn1SavId, trn1Gen.lastNumOfDays(365)),
+                        trn1DbMgr.transfersFromAcctThisYear(trn1SavId, trn1Gen.lastNumOfDays(365)));
             }
         } catch(Exception e) {
             e.printStackTrace();
@@ -870,11 +859,11 @@ public class LayoutTransfers extends MainNavigation {
 
                                     trn1MainMinus();
 
-                                    if (trn1ToIsDebt.equals("Y")) {
+                                    if (trn1ToIsDebt.equals("Y")) { //TO DEBT ACCT
                                         trn1FromCustomLayout.setVisibility(View.GONE);
                                         trn1DebtMinus();
                                         addTransAndFinish();
-                                    } else if (trn1ToIsSav.equals("Y")) {
+                                    } else if (trn1ToIsSav.equals("Y")) { //TO SAV ACCT
                                         trn1FromCustomLayout.setVisibility(View.GONE);
                                         trn1SavPlus();
                                         addTransAndFinish();
@@ -1043,11 +1032,11 @@ public class LayoutTransfers extends MainNavigation {
 
                             trn1MainMinus();
 
-                            if (trn1ToIsDebt.equals("Y")) {
+                            if (trn1ToIsDebt.equals("Y")) { //TO DEBT ACCT
                                 trn1FromCustomLayout.setVisibility(View.GONE);
                                 trn1DebtMinus();
                                 addTransAndFinish();
-                            } else if (trn1ToIsSav.equals("Y")) {
+                            } else if (trn1ToIsSav.equals("Y")) { //TO SAV ACCT
                                 trn1FromCustomLayout.setVisibility(View.GONE);
                                 trn1SavPlus();
                                 addTransAndFinish();

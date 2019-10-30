@@ -122,7 +122,7 @@ public class AddIncome extends AppCompatActivity {
                             "N",
                             0);
 
-                    addIncDbMgr.addIncome(addIncIncDb);
+                    addIncDbMgr.addBudget(addIncIncDb);
 
                     addIncToList = new Intent(AddIncome.this, AddIncomeList.class);
                     addIncToList.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);

@@ -134,7 +134,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="10dp"
-            android:text="@string/amount"
             android:hint="@string/amount"
             android:layout_centerVertical="true"
             android:inputType="numberSigned|numberDecimal"
@@ -167,6 +166,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tools:ignore="UselessParent">
+
+        <TextView
+            android:id="@+id/list5ContTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="@string/continue_anyway"
+            android:textSize="14sp"
+            android:textColor="@color/brightRed"
+            />
 
         <Button
             android:id="@+id/list5NoBtn"
