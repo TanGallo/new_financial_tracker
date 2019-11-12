@@ -110,7 +110,7 @@ public class LayoutCCPur extends MainNavigation {
 
         layCCPurHelper = new DbHelper(this);
         layCCPurDb = layCCPurHelper.getReadableDatabase();
-        layCCPurCur = layCCPurDb.rawQuery("SELECT * FROM " + DbHelper.ACCOUNTS_TABLE_NAME + " WHERE " + DbHelper.ACCTISDEBT + " = 'Y'" + " ORDER BY " + DbHelper.ACCTNAME + " ASC", null);
+        layCCPurCur = layCCPurDb.rawQuery("SELECT * FROM " + DbHelper.ACCOUNTS_TABLE_NAME + " WHERE " + DbHelper.ACCTDEBTSAV + " = 'D'" + " ORDER BY " + DbHelper.ID + " ASC", null);
         layCCPurSpinAdapter = new MoneyOutCCSpinnerAdapter(getApplicationContext(), layCCPurCur);
         layCCPurSpin.setAdapter(layCCPurSpinAdapter);
 
@@ -214,11 +214,9 @@ public class LayoutCCPur extends MainNavigation {
                 0,
                 "N/A",
                 "N/A",
-                "N/A",
                 layCCPurChargingDebtIdFromSpin,
                 layCCPurChargingDebtNameFromSpin,
-                "Y",
-                "N",
+                "D",
                 layCCPurExpPriority,
                 layCCPurExpWeekly,
                 "N",

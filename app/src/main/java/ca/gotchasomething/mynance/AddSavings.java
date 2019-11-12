@@ -197,8 +197,7 @@ public class AddSavings extends AppCompatActivity {
                 addSavAcctDb = new AccountsDb(
                         savNameFromEntry,
                         savAmtFromEntry,
-                        "N",
-                        "Y",
+                        "S",
                         savGoalFromEntry,
                         savRateFromEntry,
                         savPaytFromEntry,

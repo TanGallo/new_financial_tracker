@@ -21,7 +21,7 @@ public class MainNavigation extends AppCompatActivity implements NavigationView.
     public DbManager dbMgr;
     protected DrawerLayout drawer;
     General mainGen;
-    Intent i, i2, i3, i4;
+    Intent i, i2, i3, i4, i5;
     Menu menu;
     NavigationView navView;
     Toolbar toolbar;
@@ -56,6 +56,8 @@ public class MainNavigation extends AppCompatActivity implements NavigationView.
             menu.findItem(R.id.menu_financial_summary).setEnabled(false);
             menu.findItem(R.id.menu_view_edit_transactions).setVisible(false);
             menu.findItem(R.id.menu_view_edit_transactions).setEnabled(false);
+            menu.findItem(R.id.menu_view_reports).setVisible(false);
+            menu.findItem(R.id.menu_view_reports).setEnabled(false);
             menu.findItem(R.id.menu_help).setVisible(false);
             menu.findItem(R.id.menu_help).setEnabled(false);
         } else {
@@ -66,6 +68,8 @@ public class MainNavigation extends AppCompatActivity implements NavigationView.
             menu.findItem(R.id.menu_financial_summary).setEnabled(true);
             menu.findItem(R.id.menu_view_edit_transactions).setVisible(true);
             menu.findItem(R.id.menu_view_edit_transactions).setEnabled(true);
+            menu.findItem(R.id.menu_view_reports).setVisible(true);
+            menu.findItem(R.id.menu_view_reports).setEnabled(true);
             menu.findItem(R.id.menu_help).setVisible(true);
             menu.findItem(R.id.menu_help).setEnabled(true);
         }
@@ -104,10 +108,15 @@ public class MainNavigation extends AppCompatActivity implements NavigationView.
                 i3.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
                 startActivity(i3);
                 break;
-            case R.id.menu_help:
-                i4 = new Intent(MainNavigation.this, LayoutViewEdit.class);
+            case R.id.menu_view_reports:
+                i4 = new Intent(MainNavigation.this, LayoutReports.class);
                 i4.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
                 startActivity(i4);
+                break;
+            case R.id.menu_help:
+                i5 = new Intent(MainNavigation.this, LayoutViewEdit.class);
+                i5.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+                startActivity(i5);
                 break;
         }
         drawer.closeDrawer(GravityCompat.START);

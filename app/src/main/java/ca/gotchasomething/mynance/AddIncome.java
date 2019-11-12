@@ -114,8 +114,7 @@ public class AddIncome extends AppCompatActivity {
                     addIncIncDb = new BudgetDb(
                             incNameFromEntry,
                             incAmtFromEntry,
-                            "N",
-                            "Y",
+                            "I",
                             incFrqFromEntry,
                             incAnnAmtFromEntry,
                             "N/A",

@@ -47,7 +47,7 @@ public class DbManager extends AppCompatActivity {
     public NumberFormat percentFormat = NumberFormat.getPercentInstance();
     public SimpleDateFormat sdf;
     public SQLiteDatabase db;
-    public String category = null, date = null, expPriorityFromDb = null, lastDate = null, moneyInIsDebt = null, moneyInIsSav = null, newMonth = null,
+    public String category = null, date = null, expPriorityFromDb = null, lastDate = null, moneyInDebtSav = null, moneyInIsSav = null, newMonth = null,
             newMonth2 = null,
             spendResStmt = null, spendPercent = null, startingString = null, subStringResult = null, latestDone = null, text = null, transDate = null;
 
@@ -77,12 +77,10 @@ public class DbManager extends AppCompatActivity {
                         cursor.getDouble(cursor.getColumnIndex(DbHelper.TRANSAMTOUTB)),
                         cursor.getLong(cursor.getColumnIndex(DbHelper.TRANSTOACCTID)),
                         cursor.getString(cursor.getColumnIndex(DbHelper.TRANSTOACCTNAME)),
-                        cursor.getString(cursor.getColumnIndex(DbHelper.TRANSTOISDEBT)),
-                        cursor.getString(cursor.getColumnIndex(DbHelper.TRANSTOISSAV)),
+                        cursor.getString(cursor.getColumnIndex(DbHelper.TRANSTODEBTSAV)),
                         cursor.getLong(cursor.getColumnIndex(DbHelper.TRANSFROMACCTID)),
                         cursor.getString(cursor.getColumnIndex(DbHelper.TRANSFROMACCTNAME)),
-                        cursor.getString(cursor.getColumnIndex(DbHelper.TRANSFROMISDEBT)),
-                        cursor.getString(cursor.getColumnIndex(DbHelper.TRANSFROMISSAV)),
+                        cursor.getString(cursor.getColumnIndex(DbHelper.TRANSFROMDEBTSAV)),
                         cursor.getString(cursor.getColumnIndex(DbHelper.TRANSBDGTPRIORITY)),
                         cursor.getString(cursor.getColumnIndex(DbHelper.TRANSBDGTWEEKLY)),
                         cursor.getString(cursor.getColumnIndex(DbHelper.TRANSCCTOPAY)),
@@ -113,12 +111,10 @@ public class DbManager extends AppCompatActivity {
         newTransactions.put(DbHelper.TRANSAMTOUTB, transactionsDb.getTransAmtOutB());
         newTransactions.put(DbHelper.TRANSTOACCTID, transactionsDb.getTransToAcctId());
         newTransactions.put(DbHelper.TRANSTOACCTNAME, transactionsDb.getTransToAcctName());
-        newTransactions.put(DbHelper.TRANSTOISDEBT, transactionsDb.getTransToIsDebt());
-        newTransactions.put(DbHelper.TRANSTOISSAV, transactionsDb.getTransToIsSav());
+        newTransactions.put(DbHelper.TRANSTODEBTSAV, transactionsDb.getTransToDebtSav());
         newTransactions.put(DbHelper.TRANSFROMACCTID, transactionsDb.getTransFromAcctId());
         newTransactions.put(DbHelper.TRANSFROMACCTNAME, transactionsDb.getTransFromAcctName());
-        newTransactions.put(DbHelper.TRANSFROMISDEBT, transactionsDb.getTransFromIsDebt());
-        newTransactions.put(DbHelper.TRANSFROMISSAV, transactionsDb.getTransFromIsSav());
+        newTransactions.put(DbHelper.TRANSFROMDEBTSAV, transactionsDb.getTransFromDebtSav());
         newTransactions.put(DbHelper.TRANSBDGTPRIORITY, transactionsDb.getTransBdgtPriority());
         newTransactions.put(DbHelper.TRANSBDGTWEEKLY, transactionsDb.getTransBdgtWeekly());
         newTransactions.put(DbHelper.TRANSCCTOPAY, transactionsDb.getTransCCToPay());
@@ -145,12 +141,10 @@ public class DbManager extends AppCompatActivity {
         updateTransactions.put(DbHelper.TRANSAMTOUTB, transactionsDb.getTransAmtOutB());
         updateTransactions.put(DbHelper.TRANSTOACCTID, transactionsDb.getTransToAcctId());
         updateTransactions.put(DbHelper.TRANSTOACCTNAME, transactionsDb.getTransToAcctName());
-        updateTransactions.put(DbHelper.TRANSTOISDEBT, transactionsDb.getTransToIsDebt());
-        updateTransactions.put(DbHelper.TRANSTOISSAV, transactionsDb.getTransToIsSav());
+        updateTransactions.put(DbHelper.TRANSTODEBTSAV, transactionsDb.getTransToDebtSav());
         updateTransactions.put(DbHelper.TRANSFROMACCTID, transactionsDb.getTransFromAcctId());
         updateTransactions.put(DbHelper.TRANSFROMACCTNAME, transactionsDb.getTransFromAcctName());
-        updateTransactions.put(DbHelper.TRANSFROMISDEBT, transactionsDb.getTransFromIsDebt());
-        updateTransactions.put(DbHelper.TRANSFROMISSAV, transactionsDb.getTransFromIsSav());
+        updateTransactions.put(DbHelper.TRANSFROMDEBTSAV, transactionsDb.getTransFromDebtSav());
         updateTransactions.put(DbHelper.TRANSBDGTPRIORITY, transactionsDb.getTransBdgtPriority());
         updateTransactions.put(DbHelper.TRANSBDGTWEEKLY, transactionsDb.getTransBdgtWeekly());
         updateTransactions.put(DbHelper.TRANSCCTOPAY, transactionsDb.getTransCCToPay());
@@ -179,8 +173,7 @@ public class DbManager extends AppCompatActivity {
                 AccountsDb acctsDb = new AccountsDb(
                         cursor.getString(cursor.getColumnIndex(DbHelper.ACCTNAME)),
                         cursor.getDouble(cursor.getColumnIndex(DbHelper.ACCTBAL)),
-                        cursor.getString(cursor.getColumnIndex(DbHelper.ACCTISDEBT)),
-                        cursor.getString(cursor.getColumnIndex(DbHelper.ACCTISSAV)),
+                        cursor.getString(cursor.getColumnIndex(DbHelper.ACCTDEBTSAV)),
                         cursor.getDouble(cursor.getColumnIndex(DbHelper.ACCTMAX)),
                         cursor.getDouble(cursor.getColumnIndex(DbHelper.ACCTINTRATE)),
                         cursor.getDouble(cursor.getColumnIndex(DbHelper.ACCTPAYTSTO)),
@@ -201,8 +194,7 @@ public class DbManager extends AppCompatActivity {
         newAccounts = new ContentValues();
         newAccounts.put(DbHelper.ACCTNAME, acctsDb.getAcctName());
         newAccounts.put(DbHelper.ACCTBAL, acctsDb.getAcctBal());
-        newAccounts.put(DbHelper.ACCTISDEBT, acctsDb.getAcctIsDebt());
-        newAccounts.put(DbHelper.ACCTISSAV, acctsDb.getAcctIsSav());
+        newAccounts.put(DbHelper.ACCTDEBTSAV, acctsDb.getAcctDebtSav());
         newAccounts.put(DbHelper.ACCTMAX, acctsDb.getAcctMax());
         newAccounts.put(DbHelper.ACCTINTRATE, acctsDb.getAcctIntRate());
         newAccounts.put(DbHelper.ACCTPAYTSTO, acctsDb.getAcctPaytsTo());
@@ -218,8 +210,7 @@ public class DbManager extends AppCompatActivity {
         updateAccounts = new ContentValues();
         updateAccounts.put(DbHelper.ACCTNAME, acctsDb.getAcctName());
         updateAccounts.put(DbHelper.ACCTBAL, acctsDb.getAcctBal());
-        updateAccounts.put(DbHelper.ACCTISDEBT, acctsDb.getAcctIsDebt());
-        updateAccounts.put(DbHelper.ACCTISSAV, acctsDb.getAcctIsSav());
+        updateAccounts.put(DbHelper.ACCTDEBTSAV, acctsDb.getAcctDebtSav());
         updateAccounts.put(DbHelper.ACCTMAX, acctsDb.getAcctMax());
         updateAccounts.put(DbHelper.ACCTINTRATE, acctsDb.getAcctIntRate());
         updateAccounts.put(DbHelper.ACCTPAYTSTO, acctsDb.getAcctPaytsTo());
@@ -293,8 +284,7 @@ public class DbManager extends AppCompatActivity {
                 BudgetDb budget = new BudgetDb(
                         cursor.getString(cursor.getColumnIndex(DbHelper.BDGTCAT)),
                         cursor.getDouble(cursor.getColumnIndex(DbHelper.BDGTPAYTAMT)),
-                        cursor.getString(cursor.getColumnIndex(DbHelper.BDGTISEXP)),
-                        cursor.getString(cursor.getColumnIndex(DbHelper.BDGTISINC)),
+                        cursor.getString(cursor.getColumnIndex(DbHelper.BDGTEXPINC)),
                         cursor.getDouble(cursor.getColumnIndex(DbHelper.BDGTPAYTFRQ)),
                         cursor.getDouble(cursor.getColumnIndex(DbHelper.BDGTANNPAYT)),
                         cursor.getString(cursor.getColumnIndex(DbHelper.BDGTPRIORITY)),
@@ -313,8 +303,7 @@ public class DbManager extends AppCompatActivity {
         newBudget = new ContentValues();
         newBudget.put(DbHelper.BDGTCAT, budget.getBdgtCat());
         newBudget.put(DbHelper.BDGTPAYTAMT, budget.getBdgtPaytAmt());
-        newBudget.put(DbHelper.BDGTISEXP, budget.getBdgtIsExp());
-        newBudget.put(DbHelper.BDGTISINC, budget.getBdgtIsInc());
+        newBudget.put(DbHelper.BDGTEXPINC, budget.getBdgtExpInc());
         newBudget.put(DbHelper.BDGTPAYTFRQ, budget.getBdgtPaytFrq());
         newBudget.put(DbHelper.BDGTANNPAYT, budget.getBdgtAnnPayt());
         newBudget.put(DbHelper.BDGTPRIORITY, budget.getBdgtPriority());
@@ -328,8 +317,7 @@ public class DbManager extends AppCompatActivity {
         updateBudget = new ContentValues();
         updateBudget.put(DbHelper.BDGTCAT, budget.getBdgtCat());
         updateBudget.put(DbHelper.BDGTPAYTAMT, budget.getBdgtPaytAmt());
-        updateBudget.put(DbHelper.BDGTISEXP, budget.getBdgtIsExp());
-        updateBudget.put(DbHelper.BDGTISINC, budget.getBdgtIsInc());
+        updateBudget.put(DbHelper.BDGTEXPINC, budget.getBdgtExpInc());
         updateBudget.put(DbHelper.BDGTPAYTFRQ, budget.getBdgtPaytFrq());
         updateBudget.put(DbHelper.BDGTANNPAYT, budget.getBdgtAnnPayt());
         updateBudget.put(DbHelper.BDGTPRIORITY, budget.getBdgtPriority());
@@ -346,276 +334,6 @@ public class DbManager extends AppCompatActivity {
         db.delete(DbHelper.BUDGET_TABLE_NAME, DbHelper.ID + "=?", args);
         db.close();
     }
-
-    /*public List<BudgetDb> getExpenses() {
-        db = dbHelper.getReadableDatabase();
-        cursor = db.rawQuery("SELECT * FROM " + DbHelper.BUDGET_TABLE_NAME + " WHERE " + DbHelper.BDGTISEXP + " = 'Y' " + " ORDER BY " + DbHelper.BDGTANNPAYT + " DESC", null);
-        List<BudgetDb> expenses = new ArrayList<>();
-        if (cursor.moveToFirst()) {
-            while (!cursor.isAfterLast()) {
-                BudgetDb expense = new BudgetDb(
-                        cursor.getString(cursor.getColumnIndex(DbHelper.BDGTCAT)),
-                        cursor.getDouble(cursor.getColumnIndex(DbHelper.BDGTPAYTAMT)),
-                        cursor.getString(cursor.getColumnIndex(DbHelper.BDGTISEXP)),
-                        cursor.getString(cursor.getColumnIndex(DbHelper.BDGTISINC)),
-                        cursor.getDouble(cursor.getColumnIndex(DbHelper.BDGTPAYTFRQ)),
-                        cursor.getDouble(cursor.getColumnIndex(DbHelper.BDGTANNPAYT)),
-                        cursor.getString(cursor.getColumnIndex(DbHelper.BDGTPRIORITY)),
-                        cursor.getString(cursor.getColumnIndex(DbHelper.BDGTWEEKLY)),
-                        cursor.getLong(cursor.getColumnIndex(DbHelper.ID))
-                );
-                expenses.add(expense); //adds new items to bottom of list
-                cursor.moveToNext();
-            }
-        }
-        cursor.close();
-        return expenses;
-    }*/
-
-    /*public List<BudgetDb> getIncomes() {
-        db = dbHelper.getReadableDatabase();
-        cursor = db.rawQuery("SELECT * FROM " + DbHelper.BUDGET_TABLE_NAME + " WHERE " + DbHelper.BDGTISINC + " = 'Y' " + " ORDER BY " + DbHelper.BDGTANNPAYT + " DESC", null);
-        List<BudgetDb> incomes = new ArrayList<>();
-        if (cursor.moveToFirst()) {
-            while (!cursor.isAfterLast()) {
-                BudgetDb income = new BudgetDb(
-                        cursor.getString(cursor.getColumnIndex(DbHelper.BDGTCAT)),
-                        cursor.getDouble(cursor.getColumnIndex(DbHelper.BDGTPAYTAMT)),
-                        cursor.getString(cursor.getColumnIndex(DbHelper.BDGTISEXP)),
-                        cursor.getString(cursor.getColumnIndex(DbHelper.BDGTISINC)),
-                        cursor.getDouble(cursor.getColumnIndex(DbHelper.BDGTPAYTFRQ)),
-                        cursor.getDouble(cursor.getColumnIndex(DbHelper.BDGTANNPAYT)),
-                        cursor.getString(cursor.getColumnIndex(DbHelper.BDGTPRIORITY)),
-                        cursor.getString(cursor.getColumnIndex(DbHelper.BDGTWEEKLY)),
-                        cursor.getLong(cursor.getColumnIndex(DbHelper.ID))
-                );
-                incomes.add(income); //adds new items to bottom of list
-                cursor.moveToNext();
-            }
-        }
-        cursor.close();
-        return incomes;
-    }*/
-
-    /*public List<TransactionsDb> getMoneyIns() {
-        db = dbHelper.getReadableDatabase();
-        cursor = db.rawQuery("SELECT * FROM " + DbHelper.TRANSACTIONS_TABLE_NAME + " WHERE " + DbHelper.TRANSTYPE + " = 'in'", null);
-        List<TransactionsDb> moneyIns = new ArrayList<>();
-        if (cursor.moveToFirst()) {
-            while (!cursor.isAfterLast()) {
-                TransactionsDb moneyIn = new TransactionsDb(
-                        cursor.getString(cursor.getColumnIndex(DbHelper.TRANSTYPE)),
-                        cursor.getString(cursor.getColumnIndex(DbHelper.TRANSISCC)),
-                        cursor.getString(cursor.getColumnIndex(DbHelper.TRANSBDGTCAT)),
-                        cursor.getLong(cursor.getColumnIndex(DbHelper.TRANSBDGTID)),
-                        cursor.getDouble(cursor.getColumnIndex(DbHelper.TRANSAMT)),
-                        cursor.getDouble(cursor.getColumnIndex(DbHelper.TRANSAMTINA)),
-                        cursor.getDouble(cursor.getColumnIndex(DbHelper.TRANSAMTINOWING)),
-                        cursor.getDouble(cursor.getColumnIndex(DbHelper.TRANSAMTINB)),
-                        cursor.getDouble(cursor.getColumnIndex(DbHelper.TRANSAMTOUTA)),
-                        cursor.getDouble(cursor.getColumnIndex(DbHelper.TRANSAMTOUTOWING)),
-                        cursor.getDouble(cursor.getColumnIndex(DbHelper.TRANSAMTOUTB)),
-                        cursor.getLong(cursor.getColumnIndex(DbHelper.TRANSTOACCTID)),
-                        cursor.getString(cursor.getColumnIndex(DbHelper.TRANSTOACCTNAME)),
-                        cursor.getString(cursor.getColumnIndex(DbHelper.TRANSTOISDEBT)),
-                        cursor.getString(cursor.getColumnIndex(DbHelper.TRANSTOISSAV)),
-                        cursor.getLong(cursor.getColumnIndex(DbHelper.TRANSFROMACCTID)),
-                        cursor.getString(cursor.getColumnIndex(DbHelper.TRANSFROMACCTNAME)),
-                        cursor.getString(cursor.getColumnIndex(DbHelper.TRANSFROMISDEBT)),
-                        cursor.getString(cursor.getColumnIndex(DbHelper.TRANSFROMISSAV)),
-                        cursor.getString(cursor.getColumnIndex(DbHelper.TRANSBDGTPRIORITY)),
-                        cursor.getString(cursor.getColumnIndex(DbHelper.TRANSBDGTWEEKLY)),
-                        cursor.getString(cursor.getColumnIndex(DbHelper.TRANSCCTOPAY)),
-                        cursor.getString(cursor.getColumnIndex(DbHelper.TRANSCCPAID)),
-                        cursor.getString(cursor.getColumnIndex(DbHelper.TRANSCREATEDON)),
-                        cursor.getLong(cursor.getColumnIndex(DbHelper.ID))
-                );
-                moneyIns.add(0, moneyIn); //adds new items to beginning of list
-                cursor.moveToNext();
-            }
-        }
-        cursor.close();
-        return moneyIns;
-    }*/
-
-    /*public void addMoneyIn(TransactionsDb moneyIn) {
-        newMoneyIn = new ContentValues();
-        newMoneyIn.put(DbHelper.TRANSTYPE, moneyIn.getTransType());
-        newMoneyIn.put(DbHelper.TRANSISCC, moneyIn.getTransIsCC());
-        newMoneyIn.put(DbHelper.TRANSBDGTCAT, moneyIn.getTransBdgtCat());
-        newMoneyIn.put(DbHelper.TRANSBDGTID, moneyIn.getTransBdgtId());
-        newMoneyIn.put(DbHelper.TRANSAMT, moneyIn.getTransAmt());
-        newMoneyIn.put(DbHelper.TRANSAMTINA, moneyIn.getTransAmtInA());
-        newMoneyIn.put(DbHelper.TRANSAMTINOWING, moneyIn.getTransAmtInOwing());
-        newMoneyIn.put(DbHelper.TRANSAMTINB, moneyIn.getTransAmtInB());
-        newMoneyIn.put(DbHelper.TRANSAMTOUTA, moneyIn.getTransAmtOutA());
-        newMoneyIn.put(DbHelper.TRANSAMTOUTOWING, moneyIn.getTransAmtOutOwing());
-        newMoneyIn.put(DbHelper.TRANSAMTOUTB, moneyIn.getTransAmtOutB());
-        newMoneyIn.put(DbHelper.TRANSTOACCTID, moneyIn.getTransToAcctId());
-        newMoneyIn.put(DbHelper.TRANSTOACCTNAME, moneyIn.getTransToAcctName());
-        newMoneyIn.put(DbHelper.TRANSTOISDEBT, moneyIn.getTransToIsDebt());
-        newMoneyIn.put(DbHelper.TRANSTOISSAV, moneyIn.getTransToIsSav());
-        newMoneyIn.put(DbHelper.TRANSFROMACCTID, moneyIn.getTransFromAcctId());
-        newMoneyIn.put(DbHelper.TRANSFROMACCTNAME, moneyIn.getTransFromAcctName());
-        newMoneyIn.put(DbHelper.TRANSFROMISDEBT, moneyIn.getTransFromIsDebt());
-        newMoneyIn.put(DbHelper.TRANSFROMISSAV, moneyIn.getTransFromIsSav());
-        newMoneyIn.put(DbHelper.TRANSBDGTPRIORITY, moneyIn.getTransBdgtPriority());
-        newMoneyIn.put(DbHelper.TRANSBDGTWEEKLY, moneyIn.getTransBdgtWeekly());
-        newMoneyIn.put(DbHelper.TRANSCCTOPAY, moneyIn.getTransCCToPay());
-        newMoneyIn.put(DbHelper.TRANSCCPAID, moneyIn.getTransCCPaid());
-        newMoneyIn.put(DbHelper.TRANSCREATEDON, moneyIn.getTransCreatedOn());
-        db = dbHelper.getWritableDatabase();
-        db.insert(DbHelper.TRANSACTIONS_TABLE_NAME, null, newMoneyIn);
-    }
-
-    public void updateMoneyIn(TransactionsDb moneyIn) {
-        updateMoneyIn = new ContentValues();
-        updateMoneyIn.put(DbHelper.TRANSTYPE, moneyIn.getTransType());
-        updateMoneyIn.put(DbHelper.TRANSISCC, moneyIn.getTransIsCC());
-        updateMoneyIn.put(DbHelper.TRANSBDGTCAT, moneyIn.getTransBdgtCat());
-        updateMoneyIn.put(DbHelper.TRANSBDGTID, moneyIn.getTransBdgtId());
-        updateMoneyIn.put(DbHelper.TRANSAMT, moneyIn.getTransAmt());
-        updateMoneyIn.put(DbHelper.TRANSAMTINA, moneyIn.getTransAmtInA());
-        updateMoneyIn.put(DbHelper.TRANSAMTINOWING, moneyIn.getTransAmtInOwing());
-        updateMoneyIn.put(DbHelper.TRANSAMTINB, moneyIn.getTransAmtInB());
-        updateMoneyIn.put(DbHelper.TRANSAMTOUTA, moneyIn.getTransAmtOutA());
-        updateMoneyIn.put(DbHelper.TRANSAMTOUTOWING, moneyIn.getTransAmtOutOwing());
-        updateMoneyIn.put(DbHelper.TRANSAMTOUTB, moneyIn.getTransAmtOutB());
-        updateMoneyIn.put(DbHelper.TRANSTOACCTID, moneyIn.getTransToAcctId());
-        updateMoneyIn.put(DbHelper.TRANSTOACCTNAME, moneyIn.getTransToAcctName());
-        updateMoneyIn.put(DbHelper.TRANSTOISDEBT, moneyIn.getTransToIsDebt());
-        updateMoneyIn.put(DbHelper.TRANSTOISSAV, moneyIn.getTransToIsSav());
-        updateMoneyIn.put(DbHelper.TRANSFROMACCTID, moneyIn.getTransFromAcctId());
-        updateMoneyIn.put(DbHelper.TRANSFROMACCTNAME, moneyIn.getTransFromAcctName());
-        updateMoneyIn.put(DbHelper.TRANSFROMISDEBT, moneyIn.getTransFromIsDebt());
-        updateMoneyIn.put(DbHelper.TRANSFROMISSAV, moneyIn.getTransFromIsSav());
-        updateMoneyIn.put(DbHelper.TRANSBDGTPRIORITY, moneyIn.getTransBdgtPriority());
-        updateMoneyIn.put(DbHelper.TRANSBDGTWEEKLY, moneyIn.getTransBdgtWeekly());
-        updateMoneyIn.put(DbHelper.TRANSCCTOPAY, moneyIn.getTransCCToPay());
-        updateMoneyIn.put(DbHelper.TRANSCCPAID, moneyIn.getTransCCPaid());
-        updateMoneyIn.put(DbHelper.TRANSCREATEDON, moneyIn.getTransCreatedOn());
-        db = dbHelper.getWritableDatabase();
-        String[] args = new String[]{String.valueOf(moneyIn.getId())};
-        db.update(DbHelper.TRANSACTIONS_TABLE_NAME, updateMoneyIn, DbHelper.ID + "=?", args);
-    }
-
-    public void deleteMoneyIn(TransactionsDb moneyIn) {
-        db = dbHelper.getWritableDatabase();
-        String[] args = new String[]{String.valueOf(moneyIn.getId())};
-        db.delete(DbHelper.TRANSACTIONS_TABLE_NAME, DbHelper.ID + "=?", args);
-    }*/
-
-    /*public List<TransactionsDb> getMoneyOuts() {
-        db = dbHelper.getReadableDatabase();
-        cursor = db.rawQuery("SELECT * FROM " + DbHelper.TRANSACTIONS_TABLE_NAME + " WHERE " + DbHelper.TRANSTYPE + " = 'out'", null);
-        List<TransactionsDb> moneyOuts = new ArrayList<>();
-        try {
-            if (cursor.moveToFirst()) {
-                while (!cursor.isAfterLast()) {
-                    TransactionsDb moneyOut = new TransactionsDb(
-                            cursor.getString(cursor.getColumnIndex(DbHelper.TRANSTYPE)),
-                            cursor.getString(cursor.getColumnIndex(DbHelper.TRANSISCC)),
-                            cursor.getString(cursor.getColumnIndex(DbHelper.TRANSBDGTCAT)),
-                            cursor.getLong(cursor.getColumnIndex(DbHelper.TRANSBDGTID)),
-                            cursor.getDouble(cursor.getColumnIndex(DbHelper.TRANSAMT)),
-                            cursor.getDouble(cursor.getColumnIndex(DbHelper.TRANSAMTINA)),
-                            cursor.getDouble(cursor.getColumnIndex(DbHelper.TRANSAMTINOWING)),
-                            cursor.getDouble(cursor.getColumnIndex(DbHelper.TRANSAMTINB)),
-                            cursor.getDouble(cursor.getColumnIndex(DbHelper.TRANSAMTOUTA)),
-                            cursor.getDouble(cursor.getColumnIndex(DbHelper.TRANSAMTOUTOWING)),
-                            cursor.getDouble(cursor.getColumnIndex(DbHelper.TRANSAMTOUTB)),
-                            cursor.getLong(cursor.getColumnIndex(DbHelper.TRANSTOACCTID)),
-                            cursor.getString(cursor.getColumnIndex(DbHelper.TRANSTOACCTNAME)),
-                            cursor.getString(cursor.getColumnIndex(DbHelper.TRANSTOISDEBT)),
-                            cursor.getString(cursor.getColumnIndex(DbHelper.TRANSTOISSAV)),
-                            cursor.getLong(cursor.getColumnIndex(DbHelper.TRANSFROMACCTID)),
-                            cursor.getString(cursor.getColumnIndex(DbHelper.TRANSFROMACCTNAME)),
-                            cursor.getString(cursor.getColumnIndex(DbHelper.TRANSFROMISDEBT)),
-                            cursor.getString(cursor.getColumnIndex(DbHelper.TRANSFROMISSAV)),
-                            cursor.getString(cursor.getColumnIndex(DbHelper.TRANSBDGTPRIORITY)),
-                            cursor.getString(cursor.getColumnIndex(DbHelper.TRANSBDGTWEEKLY)),
-                            cursor.getString(cursor.getColumnIndex(DbHelper.TRANSCCTOPAY)),
-                            cursor.getString(cursor.getColumnIndex(DbHelper.TRANSCCPAID)),
-                            cursor.getString(cursor.getColumnIndex(DbHelper.TRANSCREATEDON)),
-                            cursor.getLong(cursor.getColumnIndex(DbHelper.ID))
-                    );
-                    moneyOuts.add(0, moneyOut); //adds new items to beginning of list
-                    cursor.moveToNext();
-                }
-            }
-        } catch (NullPointerException e2) {
-            e2.printStackTrace();
-        }
-        cursor.close();
-        return moneyOuts;
-    }*/
-
-    /*public void addMoneyOut(TransactionsDb moneyOut) {
-        newMoneyOut = new ContentValues();
-        newMoneyOut.put(DbHelper.TRANSTYPE, moneyOut.getTransType());
-        newMoneyOut.put(DbHelper.TRANSISCC, moneyOut.getTransIsCC());
-        newMoneyOut.put(DbHelper.TRANSBDGTCAT, moneyOut.getTransBdgtCat());
-        newMoneyOut.put(DbHelper.TRANSBDGTID, moneyOut.getTransBdgtId());
-        newMoneyOut.put(DbHelper.TRANSAMT, moneyOut.getTransAmt());
-        newMoneyOut.put(DbHelper.TRANSAMTINA, moneyOut.getTransAmtInA());
-        newMoneyOut.put(DbHelper.TRANSAMTINOWING, moneyOut.getTransAmtInOwing());
-        newMoneyOut.put(DbHelper.TRANSAMTINB, moneyOut.getTransAmtInB());
-        newMoneyOut.put(DbHelper.TRANSAMTOUTA, moneyOut.getTransAmtOutA());
-        newMoneyOut.put(DbHelper.TRANSAMTOUTOWING, moneyOut.getTransAmtOutOwing());
-        newMoneyOut.put(DbHelper.TRANSAMTOUTB, moneyOut.getTransAmtOutB());
-        newMoneyOut.put(DbHelper.TRANSTOACCTID, moneyOut.getTransToAcctId());
-        newMoneyOut.put(DbHelper.TRANSTOACCTNAME, moneyOut.getTransToAcctName());
-        newMoneyOut.put(DbHelper.TRANSTOISDEBT, moneyOut.getTransToIsDebt());
-        newMoneyOut.put(DbHelper.TRANSTOISSAV, moneyOut.getTransToIsSav());
-        newMoneyOut.put(DbHelper.TRANSFROMACCTID, moneyOut.getTransFromAcctId());
-        newMoneyOut.put(DbHelper.TRANSFROMACCTNAME, moneyOut.getTransFromAcctName());
-        newMoneyOut.put(DbHelper.TRANSFROMISDEBT, moneyOut.getTransFromIsDebt());
-        newMoneyOut.put(DbHelper.TRANSFROMISSAV, moneyOut.getTransFromIsSav());
-        newMoneyOut.put(DbHelper.TRANSBDGTPRIORITY, moneyOut.getTransBdgtPriority());
-        newMoneyOut.put(DbHelper.TRANSBDGTWEEKLY, moneyOut.getTransBdgtWeekly());
-        newMoneyOut.put(DbHelper.TRANSCCTOPAY, moneyOut.getTransCCToPay());
-        newMoneyOut.put(DbHelper.TRANSCCPAID, moneyOut.getTransCCPaid());
-        newMoneyOut.put(DbHelper.TRANSCREATEDON, moneyOut.getTransCreatedOn());
-        db = dbHelper.getWritableDatabase();
-        db.insert(DbHelper.TRANSACTIONS_TABLE_NAME, null, newMoneyOut);
-    }
-
-    public void updateMoneyOut(TransactionsDb moneyOut) {
-        updateMoneyOut = new ContentValues();
-        updateMoneyOut.put(DbHelper.TRANSTYPE, moneyOut.getTransType());
-        updateMoneyOut.put(DbHelper.TRANSISCC, moneyOut.getTransIsCC());
-        updateMoneyOut.put(DbHelper.TRANSBDGTCAT, moneyOut.getTransBdgtCat());
-        updateMoneyOut.put(DbHelper.TRANSBDGTID, moneyOut.getTransBdgtId());
-        updateMoneyOut.put(DbHelper.TRANSAMT, moneyOut.getTransAmt());
-        updateMoneyOut.put(DbHelper.TRANSAMTINA, moneyOut.getTransAmtInA());
-        updateMoneyOut.put(DbHelper.TRANSAMTINOWING, moneyOut.getTransAmtInOwing());
-        updateMoneyOut.put(DbHelper.TRANSAMTINB, moneyOut.getTransAmtInB());
-        updateMoneyOut.put(DbHelper.TRANSAMTOUTA, moneyOut.getTransAmtOutA());
-        updateMoneyOut.put(DbHelper.TRANSAMTOUTOWING, moneyOut.getTransAmtOutOwing());
-        updateMoneyOut.put(DbHelper.TRANSAMTOUTB, moneyOut.getTransAmtOutB());
-        updateMoneyOut.put(DbHelper.TRANSTOACCTID, moneyOut.getTransToAcctId());
-        updateMoneyOut.put(DbHelper.TRANSTOACCTNAME, moneyOut.getTransToAcctName());
-        updateMoneyOut.put(DbHelper.TRANSTOISDEBT, moneyOut.getTransToIsDebt());
-        updateMoneyOut.put(DbHelper.TRANSTOISSAV, moneyOut.getTransToIsSav());
-        updateMoneyOut.put(DbHelper.TRANSFROMACCTID, moneyOut.getTransFromAcctId());
-        updateMoneyOut.put(DbHelper.TRANSFROMACCTNAME, moneyOut.getTransFromAcctName());
-        updateMoneyOut.put(DbHelper.TRANSFROMISDEBT, moneyOut.getTransFromIsDebt());
-        updateMoneyOut.put(DbHelper.TRANSFROMISSAV, moneyOut.getTransFromIsSav());
-        updateMoneyOut.put(DbHelper.TRANSBDGTPRIORITY, moneyOut.getTransBdgtPriority());
-        updateMoneyOut.put(DbHelper.TRANSBDGTWEEKLY, moneyOut.getTransBdgtWeekly());
-        updateMoneyOut.put(DbHelper.TRANSCCTOPAY, moneyOut.getTransCCToPay());
-        updateMoneyOut.put(DbHelper.TRANSCCPAID, moneyOut.getTransCCPaid());
-        updateMoneyOut.put(DbHelper.TRANSCREATEDON, moneyOut.getTransCreatedOn());
-        db = dbHelper.getWritableDatabase();
-        String[] args = new String[]{String.valueOf(moneyOut.getId())};
-        db.update(DbHelper.TRANSACTIONS_TABLE_NAME, updateMoneyOut, DbHelper.ID + "=?", args);
-    }
-
-    public void deleteMoneyOut(TransactionsDb moneyOut) {
-        db = dbHelper.getWritableDatabase();
-        String[] args = new String[]{String.valueOf(moneyOut.getId())};
-        db.delete(DbHelper.TRANSACTIONS_TABLE_NAME, DbHelper.ID + "=?", args);
-    }*/
 
     public List<CurrentDb> getCurrent() {
         db = dbHelper.getReadableDatabase();
@@ -677,7 +395,7 @@ public class DbManager extends AppCompatActivity {
     public List<BudgetDb> getExpenses() {
         List<BudgetDb> expenses = new ArrayList<>();
         for (BudgetDb b : getBudget()) {
-            if (b.getBdgtIsExp().equals("Y")) {
+            if (b.getBdgtExpInc().equals("E")) {
                 expenses.add(b);
             }
         }
@@ -687,7 +405,7 @@ public class DbManager extends AppCompatActivity {
     public List<BudgetDb> getIncomes() {
         List<BudgetDb> incomes = new ArrayList<>();
         for (BudgetDb b : getBudget()) {
-            if (b.getBdgtIsInc().equals("Y")) {
+            if (b.getBdgtExpInc().equals("I")) {
                 incomes.add(b);
             }
         }
@@ -760,7 +478,7 @@ public class DbManager extends AppCompatActivity {
     public List<AccountsDb> getDebts() {
         List<AccountsDb> debts = new ArrayList<>();
         for (AccountsDb a : getAccounts()) {
-            if (a.getAcctIsDebt().equals("Y")) {
+            if (a.getAcctDebtSav().equals("D")) {
                 debts.add(a);
             }
         }
@@ -770,7 +488,7 @@ public class DbManager extends AppCompatActivity {
     public List<AccountsDb> getSavings() {
         List<AccountsDb> savings = new ArrayList<>();
         for (AccountsDb a : getAccounts()) {
-            if (a.getAcctIsSav().equals("Y")) {
+            if (a.getAcctDebtSav().equals("S")) {
                 savings.add(a);
             }
         }
@@ -962,24 +680,14 @@ public class DbManager extends AppCompatActivity {
         return selectedTransactionSum;
     }
 
-    public String findMoneyInIsDebt(long long1) {
+    public String findMoneyInIsDebtSav(long long1) {
         //long1 = moneyInToAcctId
         for (AccountsDb a : getAccounts()) {
             if (a.getId() == long1) {
-                moneyInIsDebt = a.getAcctIsDebt();
+                moneyInDebtSav = a.getAcctDebtSav();
             }
         }
-        return moneyInIsDebt;
-    }
-
-    public String findMoneyInIsSav(long long1) {
-        //long1 = moneyInToAcctId
-        for (AccountsDb a : getAccounts()) {
-            if (a.getId() == long1) {
-                moneyInIsSav = a.getAcctIsSav();
-            }
-        }
-        return moneyInIsSav;
+        return moneyInDebtSav;
     }
 
     public Double retrieveCurrentAcctAmt(long long1) {
@@ -992,28 +700,6 @@ public class DbManager extends AppCompatActivity {
         }
         return currentAcctAmt;
     }
-
-    /*public Double retrieveCurrentDebtAmtOwing(long long1) {
-        //long1 = debtId
-        currentDebtAmtOwing = 0.0;
-        for (AccountsDb a : getAccounts()) {
-            if (a.getId() == long1) {
-                currentDebtAmtOwing = a.getAcctBal();
-            }
-        }
-        return currentDebtAmtOwing;
-    }*/
-
-    /*public Double retrieveCurrentSavAmt(long long1) {
-        //long1 = savId
-        currentSavAmt = 0.0;
-        for (AccountsDb a : getAccounts()) {
-            if (a.getId() == long1) {
-                currentSavAmt = a.getAcctBal();
-            }
-        }
-        return currentSavAmt;
-    }*/
 
     public Double retrieveCurrentAccountBalance() {
         currentAccountBalance = 0.0;
@@ -1886,222 +1572,4 @@ public class DbManager extends AppCompatActivity {
         }
         db.close();
     }
-
-    /*public void updateAllAcctBal(Double dbl1, Double dbl2, Double dbl3) {
-        //dbl1 = retrieveCurrentAcctBal()
-        //dbl2 = retrieveCurrentDebtAmtOwing
-        //dbl3 = retrieveCurrentSavAmt
-        for(AccountsDb a : getAccounts()) {
-            acctId = a.getId();
-            if(a.getId() == 1) {
-                newAcctBal = dbl1;
-            } else if(a.getDebtId() != 0) {
-                newAcctBal = -dbl2;
-            } else if(a.getSavId() != 0) {
-                newAcctBal = dbl3;
-            }
-        }
-
-        db = dbHelper.getReadableDatabase();
-        db.beginTransaction();
-        cursor = db.rawQuery("SELECT * FROM " + DbHelper.ACCOUNTS_TABLE_NAME, null);
-        db.execSQL("UPDATE " + DbHelper.ACCOUNTS_TABLE_NAME + " SET " + DbHelper.ACCTBAL + " = " + newAcctBal + " WHERE " + DbHelper.ID + " = " + acctId);
-        cursor.close();
-        db.setTransactionSuccessful();
-        db.endTransaction();
-    }*/
-
-    /*public void updateAllDebtBudget(Double dbl1, Double dbl2) {
-        //dbl1 = transfersToDebtThisYear(long1)
-        //dbl2 = transfersFromDebtThisYear(long1)
-        db = dbHelper.getReadableDatabase();
-        db.beginTransaction();
-        cursor = db.rawQuery("SELECT " + DbHelper.ACCTANNPAYTSTO + " FROM " + DbHelper.ACCOUNTS_TABLE_NAME , null);
-        annPaytFromDb = cursor.getDouble(0);
-        if(dbl1 - dbl2 <= annPaytFromDb) {
-            db.execSQL("UPDATE " + DbHelper.ACCOUNTS_TABLE_NAME + " SET " + DbHelper.ACCTANNPAYTSTO + " = " + DbHelper.ACCTANNPAYTSTO);
-        } else {
-            db.execSQL("UPDATE " + DbHelper.ACCOUNTS_TABLE_NAME + " SET " + DbHelper.ACCTANNPAYTSTO + " = " + dbl1 + " - " + dbl2);
-        }
-        cursor.close();
-        db.setTransactionSuccessful();
-        db.endTransaction();
-
-        List<Long> allDebtIds = new ArrayList<>();
-        for (DebtDb d : getDebts()) {
-            allDebtIds.add(d.getId());
-        }
-        for (long l : allDebtIds) {
-            updateDebtRecReTransfer(l, dbl1, dbl2);
-        }
-    }
-
-    public void updateAllSavBudget(Double dbl1, Double dbl2) {
-        //dbl1 = transfersToSavThisYear(long1)
-        //dbl2 = transfersFromSavThisYear(long1)
-        List<Long> allSavIds = new ArrayList<>();
-        for (SavingsDb s : getSavings()) {
-            allSavIds.add(s.getId());
-        }
-        for (long l : allSavIds) {
-            updateSavRecReTransfer(l, dbl1, dbl2);
-        }
-    }*/
-
-     /*public void updateAllIncBudget() {
-        List<Long> allIncIds = new ArrayList<>();
-        for(IncomeBudgetDb i : getIncomes()) {
-            allIncIds.add(i.getId());
-        }
-        for(long l : allIncIds) {
-            updateIncAnnAmt(l);
-        }
-    }*/
-
-    /*public void updateAllExpBudget() {
-        List<Long> allExpIds = new ArrayList<>();
-        for(ExpenseBudgetDb e : getExpense()) {
-            allExpIds.add(e.getId());
-        }
-        for(long l : allExpIds) {
-            updateExpAnnAmt(l);
-        }
-    }*/
-
-    /*public Double retrieveAPercentage() {
-        List<Double> aList = new ArrayList<>(getExpense().size());
-        for (ExpenseBudgetDb e : getExpense()) {
-            if (e.getExpensePriority().equals("A")) {
-                aList.add(e.getExpenseAAnnualAmount());
-            }
-        }
-        for(DebtDb d : getDebts()) {
-            aList.add(d.getDebtAnnualPayments());
-        }
-        for(SavingsDb s : getSavings()) {
-            aList.add(s.getSavingsAnnualPayments());
-        }
-        totalAExpenses = 0.0;
-        if (aList.size() == 0) {
-            totalAExpenses = 0.0;
-        } else {
-            for (Double dbl : aList) {
-                totalAExpenses += dbl;
-            }
-        }
-        percentA = totalAExpenses / sumTotalIncome();
-
-        return percentA;
-    }*/
-
-    /*public Double retrieveBPercentage() {
-        retrieveAPercentage();
-        percentB = 1 - percentA;
-
-        return percentB;
-    }*/
-
-    /*public Double retrieveToPayBTotal() {
-        List<Double> toPayBList = new ArrayList<>();
-        for (MoneyOutDb m6 : getMoneyOuts()) {
-            if (m6.getMoneyOutToPay() == 1 && m6.getMoneyOutPaid() == 0 && m6.getMoneyOutPriority().equals("B")) {
-                toPayBList.add(m6.getMoneyOutAmount());
-            }
-        }
-        totalCCPaymentBDue = 0.0;
-        if (toPayBList.size() == 0) {
-            totalCCPaymentBDue = 0.0;
-        } else {
-            for (Double dbl : toPayBList) {
-                totalCCPaymentBDue += dbl;
-            }
-        }
-        return totalCCPaymentBDue;
-    }*/
-
-    /*public Long findLatestSetUpId() {
-        List<Long> setUpIds = new ArrayList<>(getSetUp().size());
-        for (SetUpDb s : getSetUp()) {
-            setUpIds.add(s.getId());
-        }
-        setUpId = null;
-        if (setUpIds.size() == 0) {
-            setUpId = null;
-        } else {
-            setUpId = Collections.max(setUpIds);
-        }
-        return setUpId;
-    }*/
-
-    /*public Double retrieveStartingBalance() {
-        List<Double> startingBalanceList = new ArrayList<>(getSetUp().size());
-        for (SetUpDb s : getSetUp()) {
-            startingBalanceList.add(s.getBalanceAmount());
-        }
-        startingBalanceResult = 0.0;
-        if (startingBalanceList.size() == 0) {
-            startingBalanceResult = 0.0;
-        } else {
-            startingBalanceResult = Collections.max(startingBalanceList);
-        }
-        return startingBalanceResult;
-    }*/
-
-    /*public int getDebtCount() {
-        debtCount = getDebts().size();
-        return debtCount;
-    }*/
-
-     /*public Long findLatestExpenseId() {
-        List<Long> expenseIds = new ArrayList<>(getExpense().size());
-        for (ExpenseBudgetDb e : getExpense()) {
-            expenseIds.add(e.getId());
-        }
-        expenseId = null;
-        if (expenseIds.size() == 0) {
-            expenseId = null;
-        } else {
-            expenseId = Collections.max(expenseIds);
-        }
-        return expenseId;
-    }*/
-
-     /*public Long findLatestIncomeId() {
-        List<Long> incomeIds = new ArrayList<>(getIncomes().size());
-        for (IncomeBudgetDb i : getIncomes()) {
-            incomeIds.add(i.getId());
-        }
-        incomeId = null;
-        if (incomeIds.size() == 0) {
-            incomeId = null;
-        } else {
-            incomeId = Collections.max(incomeIds);
-        }
-        return incomeId;
-    }*/
-
-      /*public boolean checkIfAPoss(Double dbl1) {
-        //dbl1 = moneyOutAmt
-        aPoss = true;
-        if (retrieveCurrentAccountBalance() - dbl1 < 0) {
-            aPoss = false;
-        } else {
-            aPoss = true;
-        }
-
-        return aPoss;
-    }*/
-
-    /*public boolean checkIfBPoss(Double dbl1) {
-        //dbl1 = moneyOutAmt
-        bPoss = true;
-
-        if (retrieveCurrentB() - dbl1 < 0) {
-            bPoss = false;
-        } else {
-            bPoss = true;
-        }
-
-        return bPoss;
-    }*/
 }

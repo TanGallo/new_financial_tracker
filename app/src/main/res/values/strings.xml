@@ -410,7 +410,7 @@
     <string name="reports">Reports:</string>
     <string name="spending_summary">Spending Summary</string>
     <string name="create_transactions">Create transactions:</string>
-    <string name="view_reports">View reports:</string>
+    <string name="view_reports">View reports</string>
     <string name="inc_summary">Income Summary</string>
     <string name="main_menu">Main Menu</string>
     <string name="Home_page">Home Page</string>
@@ -489,4 +489,8 @@
     <string name="date_confusion">Your \"From\" date needs to be earlier than your \"To\" date</string>
     <string name="reset">Reset</string>
     <string name="add_bill">Add a bill category</string>
+    <string name="limit_report">Limit report to transactions between</string>
+    <string name="choose_cat">Choose a category</string>
+    <string name="total2">Total</string>
+    <string name="inc_exp_report">Income and Expenses Report</string>
 </resources>

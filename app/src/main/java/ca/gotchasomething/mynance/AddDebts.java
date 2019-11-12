@@ -30,7 +30,7 @@ public class AddDebts extends AppCompatActivity {
     Double debtAmtFromEntry = 0.0, debtPaytFromEntry = 0.0, debtRateFromEntry = 0.0;
     EditText addDebtDebtNameET, addDebtDebtLimitET, addDebtDebtAmtET, addDebtDebtRateET, addDebtDebtPaytET;
     General addDebtGen;
-    Intent addDebtToList;
+    Intent addDebtToBudget, addDebtToList;
     SQLiteDatabase addDebtDb;
     String addDebtDebtEnd2 = null;
     TextView addDebtDebtDateResLabel, addDebtDebtDateResTV;
@@ -62,12 +62,11 @@ public class AddDebts extends AppCompatActivity {
         addDebtDebtRateET.addTextChangedListener(onChangeAddDebtDebtRateET);
         addDebtDebtPaytET.addTextChangedListener(onChangeAddDebtDebtPaytET);
 
-        if(addDebtDbMgr.getBudget().size() == 0) {
+        if (addDebtDbMgr.getBudget().size() == 0) {
             addDebtExpDb = new BudgetDb(
                     getString(R.string.other),
                     0.0,
-                    "Y",
-                    "N",
+                    "E",
                     12.0,
                     0.0,
                     "B",
@@ -163,39 +162,38 @@ public class AddDebts extends AppCompatActivity {
     View.OnClickListener onClickAddDebtCancelBtn = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            addDebtToList = new Intent(AddDebts.this, AddDebtsList.class);
-            addDebtToList.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-            startActivity(addDebtToList);
-        }
-    };
-
-    View.OnClickListener onClickAddDebtSaveBtn = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-
-            if (!addDebtGen.stringFromET(addDebtDebtNameET).equals("null")) {
-
-                addDebtAcctdb = new AccountsDb(
-                        addDebtGen.stringFromET(addDebtDebtNameET),
-                        debtAmtFromEntry,
-                        "Y",
-                        "N",
-                        addDebtGen.dblFromET(addDebtDebtLimitET),
-                        debtRateFromEntry,
-                        debtPaytFromEntry,
-                        (debtPaytFromEntry * 12.0),
-                        addDebtDebtEnd2,
-                        0.0,
-                        0);
-
-                addDebtDbMgr.addAccounts(addDebtAcctdb);
-
                 addDebtToList = new Intent(AddDebts.this, AddDebtsList.class);
                 addDebtToList.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
                 startActivity(addDebtToList);
-            } else {
-                Toast.makeText(getBaseContext(), R.string.no_blanks_warning, Toast.LENGTH_LONG).show();
-            }
         }
     };
-}
+
+        View.OnClickListener onClickAddDebtSaveBtn = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (!addDebtGen.stringFromET(addDebtDebtNameET).equals("null")) {
+
+                    addDebtAcctdb = new AccountsDb(
+                            addDebtGen.stringFromET(addDebtDebtNameET),
+                            debtAmtFromEntry,
+                            "D",
+                            addDebtGen.dblFromET(addDebtDebtLimitET),
+                            debtRateFromEntry,
+                            debtPaytFromEntry,
+                            (debtPaytFromEntry * 12.0),
+                            addDebtDebtEnd2,
+                            0.0,
+                            0);
+
+                    addDebtDbMgr.addAccounts(addDebtAcctdb);
+
+                    addDebtToList = new Intent(AddDebts.this, AddDebtsList.class);
+                    addDebtToList.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+                    startActivity(addDebtToList);
+                } else {
+                    Toast.makeText(getBaseContext(), R.string.no_blanks_warning, Toast.LENGTH_LONG).show();
+                }
+            }
+        };
+    }

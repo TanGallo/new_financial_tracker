@@ -191,8 +191,7 @@ public class AddExpense extends AppCompatActivity {
                 addExpExpDb = new BudgetDb(
                         expNameFromEntry,
                         expAmtFromEntry,
-                        "Y",
-                        "N",
+                        "E",
                         expFrqFromEntry,
                         expAnnAmtFromEntry,
                         expPriorityFromEntry,

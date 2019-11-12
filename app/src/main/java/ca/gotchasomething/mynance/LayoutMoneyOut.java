@@ -50,7 +50,7 @@ public class LayoutMoneyOut extends MainNavigation {
     SharedPreferences sp, spE;
     Spinner monOutSpin;
     SQLiteDatabase monOutDb, monOutDb2, monOutDb3;
-    String clicked2S = null, clickedE2S = null, monOutAcctName = null, monOutExpName = null, monOutExpPriority = null, monOutExpWeekly = null, monOutFromIsSav = null;
+    String clicked2S = null, clickedE2S = null, monOutAcctName = null, monOutExpName = null, monOutExpPriority = null, monOutExpWeekly = null, monOutFromDebtSav = null;
     TextView monOutAddMoreTV, monOutBudgWarnTV, monOutAvailAcctTV, monOutAvailAmtLabel, monOutDepToTV, monOutIncSourceTV, monOutTotAcctTV;
     TransactionsDb monOutMonOutDb;
     TransferSpinnerAdapter monOutSpinAdapter;
@@ -106,7 +106,7 @@ public class LayoutMoneyOut extends MainNavigation {
 
         monOutHelper3 = new DbHelper(this);
         monOutDb3 = monOutHelper3.getReadableDatabase();
-        monOutCur2 = monOutDb3.rawQuery("SELECT * FROM " + DbHelper.ACCOUNTS_TABLE_NAME + " WHERE " + DbHelper.ACCTISDEBT + " = 'N' " + " ORDER BY " + DbHelper.ACCTNAME + " ASC", null);
+        monOutCur2 = monOutDb3.rawQuery("SELECT * FROM " + DbHelper.ACCOUNTS_TABLE_NAME + " WHERE " + DbHelper.ACCTDEBTSAV + " != 'D' " + " ORDER BY " + DbHelper.ID + " ASC", null);
         monOutSpinAdapter = new TransferSpinnerAdapter(getApplicationContext(), monOutCur2);
         monOutSpin.setAdapter(monOutSpinAdapter);
 
@@ -194,7 +194,7 @@ public class LayoutMoneyOut extends MainNavigation {
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
             monOutAcctName = monOutCur2.getString(monOutCur2.getColumnIndexOrThrow(DbHelper.ACCTNAME));
-            monOutFromIsSav = monOutCur2.getString(monOutCur2.getColumnIndexOrThrow(DbHelper.ACCTISSAV));
+            monOutFromDebtSav = monOutCur2.getString(monOutCur2.getColumnIndexOrThrow(DbHelper.ACCTDEBTSAV));
             monOutFromAcctId = monOutCur2.getLong(monOutCur2.getColumnIndexOrThrow(DbHelper.ID));
         }
 
@@ -280,11 +280,9 @@ public class LayoutMoneyOut extends MainNavigation {
                 0,
                 "N/A",
                 "N/A",
-                "N/A",
                 monOutFromAcctId,
                 monOutAcctName,
-                "N",
-                monOutFromIsSav,
+                monOutFromDebtSav,
                 monOutExpPriority,
                 monOutExpWeekly,
                 "N/A",
@@ -398,7 +396,7 @@ public class LayoutMoneyOut extends MainNavigation {
                             monOutExpPriority = monOutExpDb.getBdgtPriority();
                             monOutExpWeekly = monOutExpDb.getBdgtWeekly();
 
-                            if (monOutFromIsSav.equals("Y")) {
+                            if (monOutFromDebtSav.equals("S")) {
                                 if (monOutDbMgr.retrieveCurrentAcctAmt(monOutFromAcctId) - monOutMonOutAmt < 0) {
                                     monOutHldr.monOutWarnLayout.setVisibility(View.VISIBLE);
                                     monOutHldr.monOutWarnTV.setText(getString(R.string.not_enough_savings_warning));
@@ -463,7 +461,7 @@ public class LayoutMoneyOut extends MainNavigation {
                                         monOutContSavAcctTrans();
                                     }
                                 }
-                            } else {
+                            } else if(!monOutFromDebtSav.equals("D")) {
                                 if (monOutExpPriority.equals("A")) {
                                     if (monOutDbMgr.retrieveCurrentAccountBalance() - monOutMonOutAmt < 0) { //A NOT POSSIBLE
                                         monOutHldr.monOutWarnLayout.setVisibility(View.VISIBLE);

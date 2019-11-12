@@ -89,7 +89,8 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_margin="10dp"
-                                    android:inputType="numberDecimal"
+                                    android:digits="01234567890-"
+                                    android:inputType="numberSigned|numberDecimal"
                                     android:textColor="@color/colorPrimaryDark"
                                     android:textSize="18sp"
                                     tools:ignore="Autofill" />

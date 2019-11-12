@@ -13,7 +13,7 @@
         tools:ignore="UselessParent">
 
         <TextView
-            android:id="@+id/budgetReportCat"
+            android:id="@+id/repCatTV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
@@ -22,7 +22,7 @@
             android:textColor="@color/colorPrimaryDark"/>
 
         <TextView
-            android:id="@+id/budgetReportBudgetedAmount"
+            android:id="@+id/repAmtTV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
@@ -34,7 +34,7 @@
             tools:ignore="RelativeOverlap" />
 
         <TextView
-            android:id="@+id/budgetReportPercentSpent"
+            android:id="@+id/repPercentTV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"

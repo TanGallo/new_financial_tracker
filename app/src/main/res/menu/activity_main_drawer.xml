@@ -21,6 +21,12 @@
         android:id="@+id/menu_view_edit_transactions"
         android:icon="@drawable/ic_equalizer_black_24dp"
         android:title="@string/view_transactions" />
+
+    <item
+        android:id="@+id/menu_view_reports"
+        android:icon="@drawable/ic_equalizer_black_24dp"
+        android:title="@string/inc_exp_report" />
+
     <item
         android:id="@+id/menu_help"
         android:icon="@drawable/ic_help_outline_black_24dp"

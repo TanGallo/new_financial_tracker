@@ -36,7 +36,7 @@ public class General extends AppCompatActivity {
     public float[] fList;
     public int calInt = 0, position = 0, startIndex = 0, endIndex = 0, numberOfDaysToPayDebt = 0, numberOfDaysToSavingsGoal = 0;
     public Intent in;
-    public List<String> lastNumOfDays, thisWeek, yearsList;
+    public List<String> allDatesInRange, lastNumOfDays, thisWeek, yearsList;
     public NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
     public PieChart pieChart;
     public SimpleDateFormat sdf, debtEndS, savingsDateS;
@@ -379,6 +379,37 @@ public class General extends AppCompatActivity {
         }
 
         return lastNumOfDays;
+    }
+
+    public List<String> allDatesInRange(Date date1, Date date2) {
+        //date1 = earliestDate
+        //date2 = latestDate
+        allDatesInRange = new ArrayList<>();
+        //String s = String.valueOf(date1);
+        //String e = String.valueOf(date2);
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy");
+        try {
+            date = sdf.parse(String.valueOf(date1));
+        } catch(ParseException e) {
+            e.printStackTrace();
+        }
+        allDatesInRange.add(String.valueOf(date1));
+
+        while(!date.after(date1) && !date.before(date2)) {
+            allDatesInRange.add(String.valueOf(date));
+        }
+        //SimpleDateFormat sdf2 = new SimpleDateFormat("dd-MMM-yyyy");
+        //earliestDate = sdf2.parse(String.valueOf(date1));
+        int int1 = allDatesInRange.size();
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DATE, -int1);
+        for (int i = 0; i < int1; i++) {
+            cal.add(Calendar.DATE, 1);
+            lastNumOfDays.add(sdf.format(cal.getTime()));
+        }
+        allDatesInRange.add(String.valueOf(date2));
+
+        return allDatesInRange;
     }
 
     public float convertDblToFloat(Double dbl1) {

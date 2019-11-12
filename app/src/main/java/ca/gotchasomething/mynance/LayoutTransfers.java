@@ -47,7 +47,7 @@ public class LayoutTransfers extends MainNavigation {
     RadioGroup trn1FromRG;
     Spinner trn1FromSpin, trn1ToSpin;
     SQLiteDatabase trn1Db, trn1Db2, trn1Db3;
-    String trn1FromIsDebt = null, trn1FromIsSav = null, trn1FromSpinName = null, trn1ToIsDebt = null, trn1ToIsSav = null, trn1ToSpinName = null;
+    String trn1FromDebtSav = null, trn1FromSpinName = null, trn1ToDebtSav = null, trn1ToSpinName = null;
     TextView trn1FromWarnTV, trn1FromAvailTV, trn1InfoLabel, trn1WarnTV;
     TransactionsDb trn1TransDb;
     TransferSpinnerAdapter trn1FromSpinAdapter, trn1ToSpinAdapter;
@@ -107,7 +107,7 @@ public class LayoutTransfers extends MainNavigation {
 
         trn1Helper = new DbHelper(this);
         trn1Db = trn1Helper.getReadableDatabase();
-        trn1Cur = trn1Db.rawQuery("SELECT * FROM " + DbHelper.ACCOUNTS_TABLE_NAME + " ORDER BY " + DbHelper.ACCTNAME + " ASC", null);
+        trn1Cur = trn1Db.rawQuery("SELECT * FROM " + DbHelper.ACCOUNTS_TABLE_NAME + " ORDER BY " + DbHelper.ID + " ASC", null);
         trn1FromSpinAdapter = new TransferSpinnerAdapter(getApplicationContext(), trn1Cur);
         trn1FromSpin.setAdapter(trn1FromSpinAdapter);
 
@@ -115,7 +115,7 @@ public class LayoutTransfers extends MainNavigation {
 
         trn1Helper2 = new DbHelper(this);
         trn1Db2 = trn1Helper2.getReadableDatabase();
-        trn1Cur2 = trn1Db2.rawQuery("SELECT * FROM " + DbHelper.ACCOUNTS_TABLE_NAME + " ORDER BY " + DbHelper.ACCTNAME + " ASC", null);
+        trn1Cur2 = trn1Db2.rawQuery("SELECT * FROM " + DbHelper.ACCOUNTS_TABLE_NAME + " ORDER BY " + DbHelper.ID + " ASC", null);
         trn1ToSpinAdapter = new TransferSpinnerAdapter(getApplicationContext(), trn1Cur2);
         trn1ToSpin.setAdapter(trn1ToSpinAdapter);
 
@@ -147,8 +147,7 @@ public class LayoutTransfers extends MainNavigation {
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
             trn1FromSpinName = trn1Cur.getString(trn1Cur.getColumnIndexOrThrow(DbHelper.ACCTNAME));
             trn1FromSpinId = trn1Cur.getLong(trn1Cur.getColumnIndexOrThrow(DbHelper.ID));
-            trn1FromIsDebt = trn1Cur.getString(trn1Cur.getColumnIndexOrThrow(DbHelper.ACCTISDEBT));
-            trn1FromIsSav = trn1Cur.getString(trn1Cur.getColumnIndexOrThrow(DbHelper.ACCTISSAV));
+            trn1FromDebtSav = trn1Cur.getString(trn1Cur.getColumnIndexOrThrow(DbHelper.ACCTDEBTSAV));
         }
 
         @Override
@@ -161,8 +160,7 @@ public class LayoutTransfers extends MainNavigation {
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
             trn1ToSpinName = trn1Cur2.getString(trn1Cur2.getColumnIndexOrThrow(DbHelper.ACCTNAME));
             trn1ToSpinId = trn1Cur2.getLong(trn1Cur2.getColumnIndexOrThrow(DbHelper.ID));
-            trn1ToIsDebt = trn1Cur2.getString(trn1Cur2.getColumnIndexOrThrow(DbHelper.ACCTISDEBT));
-            trn1ToIsSav = trn1Cur2.getString(trn1Cur2.getColumnIndexOrThrow(DbHelper.ACCTISSAV));
+            trn1ToDebtSav = trn1Cur2.getString(trn1Cur2.getColumnIndexOrThrow(DbHelper.ACCTDEBTSAV));
         }
 
         @Override
@@ -324,12 +322,10 @@ public class LayoutTransfers extends MainNavigation {
                 trn1MoneyOutB,
                 trn1ToSpinId,
                 trn1ToSpinName,
-                trn1ToIsDebt,
-                trn1ToIsSav,
+                trn1ToDebtSav,
                 trn1FromSpinId,
                 trn1FromSpinName,
-                trn1FromIsDebt,
-                trn1FromIsSav,
+                trn1FromDebtSav,
                 "N/A",
                 "N/A",
                 "N/A",
@@ -439,7 +435,7 @@ public class LayoutTransfers extends MainNavigation {
                 trn1MoneyOutOwing = 0.0;
                 trn1MoneyOutB = 0.0;
 
-                if (trn1FromIsDebt.equals("Y")) { //FROM DEBT ACCT
+                if (trn1FromDebtSav.equals("D")) { //FROM DEBT ACCT
                     trn1FromWarnLayout.setVisibility(View.GONE);
                     trn1FromCustomLayout.setVisibility(View.GONE);
                     for (AccountsDb d : trn1DbMgr.getDebts()) {
@@ -471,11 +467,11 @@ public class LayoutTransfers extends MainNavigation {
                                     trn1MoneyInOwing = 0.0;
                                     trn1MoneyInB = 0.0;
 
-                                    if (trn1ToIsDebt.equals("Y")) { //INTO DEBT ACCT
+                                    if (trn1ToDebtSav.equals("D")) { //INTO DEBT ACCT
                                         trn1FromCustomLayout.setVisibility(View.GONE);
                                         trn1DebtMinus();
                                         addTransAndFinish();
-                                    } else if (trn1ToIsSav.equals("Y")) { //INTO SAVINGS ACCT
+                                    } else if (trn1ToDebtSav.equals("S")) { //INTO SAVINGS ACCT
                                         trn1FromCustomLayout.setVisibility(View.GONE);
                                         trn1SavPlus();
                                         addTransAndFinish();
@@ -537,11 +533,11 @@ public class LayoutTransfers extends MainNavigation {
                             trn1MoneyInOwing = 0.0;
                             trn1MoneyInB = 0.0;
 
-                            if (trn1ToIsDebt.equals("Y")) { //INTO DEBT ACCT
+                            if (trn1ToDebtSav.equals("D")) { //INTO DEBT ACCT
                                 trn1FromCustomLayout.setVisibility(View.GONE);
                                 trn1DebtMinus();
                                 addTransAndFinish();
-                            } else if (trn1ToIsSav.equals("Y")) { //INTO SAVINGS ACCT
+                            } else if (trn1ToDebtSav.equals("S")) { //INTO SAVINGS ACCT
                                 trn1FromCustomLayout.setVisibility(View.GONE);
                                 trn1SavPlus();
                                 addTransAndFinish();
@@ -593,7 +589,7 @@ public class LayoutTransfers extends MainNavigation {
                             });
                         }
                     }
-                } else if (trn1FromIsSav.equals("Y")) { //FROM SAVINGS ACCT
+                } else if (trn1FromDebtSav.equals("S")) { //FROM SAVINGS ACCT
                     trn1FromWarnLayout.setVisibility(View.GONE);
                     trn1FromCustomLayout.setVisibility(View.GONE);
                     for (AccountsDb s : trn1DbMgr.getSavings()) {
@@ -622,11 +618,11 @@ public class LayoutTransfers extends MainNavigation {
                                     trn1MoneyInOwing = 0.0;
                                     trn1MoneyInB = 0.0;
 
-                                    if (trn1ToIsDebt.equals("Y")) { //INTO DEBT ACCT
+                                    if (trn1ToDebtSav.equals("D")) { //INTO DEBT ACCT
                                         trn1FromCustomLayout.setVisibility(View.GONE);
                                         trn1DebtMinus();
                                         addTransAndFinish();
-                                    } else if (trn1ToIsSav.equals("Y")) { //INTO SAVINGS ACCT
+                                    } else if (trn1ToDebtSav.equals("S")) { //INTO SAVINGS ACCT
                                         trn1FromCustomLayout.setVisibility(View.GONE);
                                         trn1SavPlus();
                                         addTransAndFinish();
@@ -687,11 +683,11 @@ public class LayoutTransfers extends MainNavigation {
                             trn1MoneyInOwing = 0.0;
                             trn1MoneyInB = 0.0;
 
-                            if (trn1ToIsDebt.equals("Y")) { //INTO DEBT ACCT
+                            if (trn1ToDebtSav.equals("D")) { //INTO DEBT ACCT
                                 trn1FromCustomLayout.setVisibility(View.GONE);
                                 trn1DebtMinus();
                                 addTransAndFinish();
-                            } else if (trn1ToIsSav.equals("Y")) { //INTO SAVINGS ACCT
+                            } else if (trn1ToDebtSav.equals("S")) { //INTO SAVINGS ACCT
                                 trn1FromCustomLayout.setVisibility(View.GONE);
                                 trn1SavPlus();
                                 addTransAndFinish();
@@ -859,11 +855,11 @@ public class LayoutTransfers extends MainNavigation {
 
                                     trn1MainMinus();
 
-                                    if (trn1ToIsDebt.equals("Y")) { //TO DEBT ACCT
+                                    if (trn1ToDebtSav.equals("D")) { //TO DEBT ACCT
                                         trn1FromCustomLayout.setVisibility(View.GONE);
                                         trn1DebtMinus();
                                         addTransAndFinish();
-                                    } else if (trn1ToIsSav.equals("Y")) { //TO SAV ACCT
+                                    } else if (trn1ToDebtSav.equals("S")) { //TO SAV ACCT
                                         trn1FromCustomLayout.setVisibility(View.GONE);
                                         trn1SavPlus();
                                         addTransAndFinish();
@@ -1032,11 +1028,11 @@ public class LayoutTransfers extends MainNavigation {
 
                             trn1MainMinus();
 
-                            if (trn1ToIsDebt.equals("Y")) { //TO DEBT ACCT
+                            if (trn1ToDebtSav.equals("D")) { //TO DEBT ACCT
                                 trn1FromCustomLayout.setVisibility(View.GONE);
                                 trn1DebtMinus();
                                 addTransAndFinish();
-                            } else if (trn1ToIsSav.equals("Y")) { //TO SAV ACCT
+                            } else if (trn1ToDebtSav.equals("S")) { //TO SAV ACCT
                                 trn1FromCustomLayout.setVisibility(View.GONE);
                                 trn1SavPlus();
                                 addTransAndFinish();

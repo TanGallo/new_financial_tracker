@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".LayoutBudgetReport"
+    tools:context=".LayoutReports"
     tools:openDrawer="end">
 
     <LinearLayout
@@ -24,82 +24,138 @@
             android:theme="@style/ThemeOverlay.AppCompat.Dark" />
 
         <FrameLayout
-            android:id="@+id/budgetReportLayoutBody"
+            android:id="@+id/repLayoutBody"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
             <LinearLayout
-                android:id="@+id/budgetReportHeaderLayout"
+                android:id="@+id/repHeaderLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:orientation="vertical"
                 tools:ignore="UselessParent">
 
+                <TextView
+                    android:id="@+id/repHeaderLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_margin="10dp"
+                    android:text="@string/inc_exp_report"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="22sp" />
+
+
                 <LinearLayout
-                    android:id="@+id/budgetReportLayout"
+                    android:id="@+id/repSpinLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
+                    android:orientation="vertical"
+                    android:layout_margin="5dp"
                     android:background="@drawable/entry_box"
-                    android:orientation="vertical">
+                    >
 
-                    <Spinner
-                        android:id="@+id/year2Spinner"
+                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_margin="5dp"></Spinner>
+                        android:textSize="14sp"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:text="@string/limit_report"
+                        >
+
+                    </TextView>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_gravity="end"
+                        android:weightSum="2"
+                        >
+
+                        <Spinner
+                            android:id="@+id/repFromMthSpin"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            >
+
+                        </Spinner>
+
+                        <Spinner
+                            android:id="@+id/repFromYrSpin"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            >
+
+                        </Spinner>
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/repAndTV"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="14sp"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:text="@string/and"
+                        android:layout_gravity="center_horizontal"
+                        >
+                    </TextView>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_gravity="end"
+                        android:weightSum="2"
+                        >
+
+                        <Spinner
+                            android:id="@+id/repToMthSpin"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            >
+
+                        </Spinner>
+
+                        <Spinner
+                            android:id="@+id/repToYrSpin"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            >
+
+                        </Spinner>
+
+                    </LinearLayout>
 
                     <Button
-                        android:id="@+id/budgetReportButton"
+                        android:id="@+id/repSpinOkBtn"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="end"
+                        android:text="@string/ok"
+                        android:layout_margin="5dp"
+                        android:background="@drawable/circle_box"
+                        >
+
+                    </Button>
+
+                    <Button
+                        android:id="@+id/repSpinResetBtn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="end"
+                        android:text="@string/reset"
                         android:layout_margin="5dp"
                         android:background="@drawable/entry_box"
-                        android:contentDescription="@string/show_report"
-                        android:text="@string/show_report"
-                        android:textSize="12sp"
-                        android:textColor="@color/colorPrimaryDark"/>
+                        >
 
-                </LinearLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:alpha=".5"
-                    android:background="@color/colorPrimary"></View>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/budgetEmptySpinnersText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_margin="10dp"
-                        android:gravity="center_horizontal"
-                        android:text="@string/no_entries_yet"
-                        android:textColor="@color/colorGreen"
-                        android:textSize="18sp" />
-
-                    <TextView
-                        android:id="@+id/budgetEmptySpinnersText2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_margin="10dp"
-                        android:gravity="center_horizontal"
-                        android:text="@string/go_to_daily_money_3"
-                        android:textColor="@color/colorGreen"
-                        android:textSize="18sp" />
+                    </Button>
 
                 </LinearLayout>
 
@@ -109,7 +165,7 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/budgetReportCatLabel"
+                        android:id="@+id/repCatLabel"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"
@@ -119,7 +175,7 @@
                         tools:ignore="RelativeOverlap" />
 
                     <TextView
-                        android:id="@+id/budgetReportBudgetedAmountLabel"
+                        android:id="@+id/repAmtLabel"
                         android:layout_width="80dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
@@ -127,12 +183,12 @@
                         android:layout_alignParentEnd="true"
                         android:lines="2"
                         android:gravity="center_horizontal"
-                        android:text="@string/total_budget"
+                        android:text="@string/total2"
                         android:textColor="@color/colorPrimaryDark"
                         android:textSize="16sp" />
 
                     <TextView
-                        android:id="@+id/budgetReportPercentSpentLabel"
+                        android:id="@+id/repPercentLabel"
                         android:layout_width="80dp"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
@@ -140,14 +196,14 @@
                         android:gravity="center_horizontal"
                         android:layout_marginTop="10dp"
                         android:layout_marginEnd="10dp"
-                        android:text="@string/percent_spent"
+                        android:text="@string/percent"
                         android:textColor="@color/colorPrimaryDark"
                         android:textSize="16sp" />
 
                 </RelativeLayout>
 
                 <ListView
-                    android:id="@+id/budgetReportListView"
+                    android:id="@+id/repListView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 

@@ -86,6 +86,13 @@ public class SetUpAnalysis extends MainNavigation {
             ana1AdjLayout.setVisibility(View.GONE);
         }
 
+        ana1Gen.buildLimitsPieChart(
+                ana1Gen.convertDblToFloat(ana1Reserved),
+                ana1Gen.convertDblToFloat(ana1ToSpend),
+                ana1PieChart,
+                ana1Colour,
+                Color.parseColor("#83878b")); //gray
+
         ana1DBMgr.spendResPara(
                 ana1AnaResTV,
                 ana1ResLabel,
@@ -95,12 +102,11 @@ public class SetUpAnalysis extends MainNavigation {
                 ana1Reserved,
                 ana1Colour);
 
-        ana1Gen.buildLimitsPieChart(
-                ana1Gen.convertDblToFloat(ana1Reserved),
-                ana1Gen.convertDblToFloat(ana1ToSpend),
-                ana1PieChart,
-                ana1Colour,
-                Color.parseColor("#83878b")); //gray
+        if (ana1Reserved > 1) {
+            ana1PieChart.setVisibility(View.GONE);
+        } else {
+            ana1PieChart.setVisibility(View.VISIBLE);
+        }
     }
 
     View.OnClickListener onClickAna1AdjIncBtn = new View.OnClickListener() {

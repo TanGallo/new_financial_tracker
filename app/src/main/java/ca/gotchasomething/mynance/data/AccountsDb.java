@@ -4,8 +4,7 @@ package ca.gotchasomething.mynance.data;
 public class AccountsDb {
     private String acctName;
     private Double acctBal;
-    private String acctIsDebt;
-    private String acctIsSav;
+    private String acctDebtSav;
     private Double acctMax; //limit for debts, goal for sav
     private Double acctIntRate;
     private Double acctPaytsTo;
@@ -17,8 +16,7 @@ public class AccountsDb {
     public AccountsDb(
             String acctName,
             Double acctBal,
-            String acctIsDebt,
-            String acctIsSav,
+            String acctDebtSav,
             Double acctMax,
             Double acctIntRate,
             Double acctPaytsTo,
@@ -28,8 +26,7 @@ public class AccountsDb {
             long id) {
         this.acctName = acctName;
         this.acctBal = acctBal;
-        this.acctIsDebt = acctIsDebt;
-        this.acctIsSav = acctIsSav;
+        this.acctDebtSav = acctDebtSav;
         this.acctMax = acctMax;
         this.acctIntRate = acctIntRate;
         this.acctPaytsTo = acctPaytsTo;
@@ -45,11 +42,8 @@ public class AccountsDb {
     public Double getAcctBal() { return acctBal; }
     public void setAcctBal(Double acctBal) { this.acctBal = acctBal; }
 
-    public String getAcctIsDebt() { return acctIsDebt; }
-    public void setAcctIsDebt(String acctIsDebt) { this.acctIsDebt = acctIsDebt; }
-
-    public String getAcctIsSav() { return acctIsSav; }
-    public void setAcctIsSav(String acctIsSav) { this.acctIsSav = acctIsSav; }
+    public String getAcctDebtSav() { return acctDebtSav; }
+    public void setAcctDebtSav(String acctDebtSav) { this.acctDebtSav = acctDebtSav; }
 
     public Double getAcctMax() { return acctMax; }
     public void setAcctMax(Double acctMax) { this.acctMax = acctMax; }

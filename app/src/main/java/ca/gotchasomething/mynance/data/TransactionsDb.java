@@ -15,12 +15,10 @@ public class TransactionsDb {
     private Double transAmtOutB;
     private long transToAcctId;
     private String transToAcctName;
-    private String transToIsDebt;
-    private String transToIsSav;
+    private String transToDebtSav; //"D" or "S"
     private long transFromAcctId;
     private String transFromAcctName;
-    private String transFromIsDebt;
-    private String transFromIsSav;
+    private String transFromDebtSav; //"D" or "S"
     private String transBdgtPriority; //out only
     private String transBdgtWeekly; //out only
     private String transCCToPay;
@@ -42,12 +40,10 @@ public class TransactionsDb {
             Double transAmtOutB,
             long transToAcctId,
             String transToAcctName,
-            String transToIsDebt,
-            String transToIsSav,
+            String transToDebtSav,
             long transFromAcctId,
             String transFromAcctName,
-            String transFromIsDebt,
-            String transFromIsSav,
+            String transFromDebtSav,
             String transBdgtPriority,
             String transBdgtWeekly,
             String transCCToPay,
@@ -67,12 +63,10 @@ public class TransactionsDb {
         this.transAmtOutB = transAmtOutB;
         this.transToAcctId = transToAcctId;
         this.transToAcctName = transToAcctName;
-        this.transToIsDebt = transToIsDebt;
-        this.transToIsSav = transToIsSav;
+        this.transToDebtSav = transToDebtSav;
         this.transFromAcctId = transFromAcctId;
         this.transFromAcctName = transFromAcctName;
-        this.transFromIsDebt = transFromIsDebt;
-        this.transFromIsSav = transFromIsSav;
+        this.transFromDebtSav = transFromDebtSav;
         this.transBdgtPriority = transBdgtPriority;
         this.transBdgtWeekly = transBdgtWeekly;
         this.transCCToPay = transCCToPay;
@@ -166,18 +160,11 @@ public class TransactionsDb {
     }
     public void setTransToAcctName(String transToAcctName) { this.transToAcctName = transToAcctName; }
 
-    public String getTransToIsDebt() {
-        return transToIsDebt;
+    public String getTransToDebtSav() {
+        return transToDebtSav;
     }
-    public void setTransToIsDebt(String transToIsDebt) {
-        this.transToIsDebt = transToIsDebt;
-    }
-
-    public String getTransToIsSav() {
-        return transToIsSav;
-    }
-    public void setTransToIsSav(String transToIsSav) {
-        this.transToIsSav = transToIsSav;
+    public void setTransToDebtSav(String transToDebtSav) {
+        this.transToDebtSav = transToDebtSav;
     }
 
     public long getTransFromAcctId() {
@@ -192,17 +179,10 @@ public class TransactionsDb {
     }
     public void setTransFromAcctName(String transFromAcctName) { this.transFromAcctName = transFromAcctName; }
 
-    public String getTransFromIsDebt() {
-        return transFromIsDebt;
+    public String getTransFromDebtSav() {
+        return transFromDebtSav;
     }
-    public void setTransFromIsDebt(String transFromIsDebt) { this.transFromIsDebt = transFromIsDebt; }
-
-    public String getTransFromIsSav() {
-        return transFromIsSav;
-    }
-    public void setTransFromIsSav(String transFromIsSav) {
-        this.transFromIsSav = transFromIsSav;
-    }
+    public void setTransFromDebtSav(String transFromDebtSav) { this.transFromDebtSav = transFromDebtSav; }
 
     public String getTransBdgtPriority() {
         return transBdgtPriority;

@@ -58,7 +58,7 @@ public class LayoutMoneyInList extends MainNavigation {
     NavigationView monInLstNavView;
     Spinner monInLstToMthSpin, monInLstToYrSpin, monInLstFromMthSpin, monInLstFromYrSpin;
     SQLiteDatabase monInLstDb;
-    String monInLstLastDay = null, monInLstSumTotalSelTrans = null, monInIsDebt = null, monInIsSav = null, monInLstToMonth = null, monInLstFromMonth = null, monInLstToYr = null, monInLstFromYr = null;
+    String monInLstLastDay = null, monInLstSumTotalSelTrans = null, monInIsDebtSav = null, monInLstToMonth = null, monInLstFromMonth = null, monInLstToYr = null, monInLstFromYr = null;
     String[] monInLstMonths, monInLstOnlyMonths, monInLstYears;
     TextView monInLstAndTV, monInLstTitle, monInLstTotalTV;
     TransactionsDb monInLstMonInDb;
@@ -388,8 +388,7 @@ public class LayoutMoneyInList extends MainNavigation {
             monInLstHldr.monInLstDelBtn.setTag(moneyIns.get(position));
 
             monInLstIncRefKeyMI = moneyIns.get(position).getTransBdgtId();
-            monInIsDebt = monInLstDbMgr.findMoneyInIsDebt(moneyIns.get(position).getTransToAcctId());
-            monInIsSav = monInLstDbMgr.findMoneyInIsSav(moneyIns.get(position).getTransToAcctId());
+            monInIsDebtSav = monInLstDbMgr.findMoneyInIsDebtSav(moneyIns.get(position).getTransToAcctId());
 
             //click on pencil icon
             monInLstHldr.monInLstEditBtn.setOnClickListener(new View.OnClickListener() {
@@ -416,7 +415,7 @@ public class LayoutMoneyInList extends MainNavigation {
                             monInLstAmtEntry = monInLstGen.dblFromET(monInLstHldr.monInLstAmtET);
                             monInLstMonInAmtDiff = monInLstAmtEntry - moneyIns.get(position).getTransAmt();
 
-                            if (monInIsDebt.equals("N") && monInIsSav.equals("N")) {
+                            if (!monInIsDebtSav.equals("D") && !monInIsDebtSav.equals("S")) {
                                 monInLstDbMgr.updateTotAcctBalPlus(monInLstMonInAmtDiff, monInLstDbMgr.retrieveCurrentAccountBalance());
                                 monInLstDbMgr.updateAandBBalMinus(
                                         moneyIns.get(position).getTransAmtInA(),
@@ -446,7 +445,7 @@ public class LayoutMoneyInList extends MainNavigation {
                                     moneyInOwing = monInLstMoneyInOwing;
                                     moneyInB = monInLstMoneyInB;
                                 }
-                            } else if (monInIsDebt.equals("Y")) {
+                            } else if (monInIsDebtSav.equals("D")) {
                                 monInLstDbMgr.updateRecMinusPt1(monInLstMonInAmtDiff, monInLstDbMgr.retrieveCurrentAcctAmt(monInToAcctId), monInToAcctId);
                                 for (AccountsDb a : monInLstDbMgr.getDebts()) {
                                     if (a.getId() == monInToAcctId) {
@@ -465,7 +464,7 @@ public class LayoutMoneyInList extends MainNavigation {
                                 moneyInA = 0.0;
                                 moneyInOwing = 0.0;
                                 moneyInB = 0.0;
-                            } else if (monInIsSav.equals("Y")) {
+                            } else if (monInIsDebtSav.equals("S")) {
                                 monInLstDbMgr.updateRecPlusPt1(monInLstMonInAmtDiff, monInLstDbMgr.retrieveCurrentAcctAmt(monInToAcctId), monInToAcctId);
                                 for (AccountsDb a : monInLstDbMgr.getSavings()) {
                                     if (a.getId() == monInToAcctId) {
@@ -517,7 +516,7 @@ public class LayoutMoneyInList extends MainNavigation {
                     monInLstMonInDb = (TransactionsDb) monInLstHldr.monInLstDelBtn.getTag();
                     monInLstIncRefKeyMI = moneyIns.get(position).getTransBdgtId();
 
-                    if (monInIsDebt.equals("N") && monInIsSav.equals("N")) {
+                    if (!monInIsDebtSav.equals("D") && !monInIsDebtSav.equals("S")) {
                         monInLstDbMgr.updateTotAcctBalMinus(moneyIns.get(position).getTransAmt(), monInLstDbMgr.retrieveCurrentAccountBalance());
 
                         monInLstDbMgr.updateAandBBalMinus(
@@ -530,7 +529,7 @@ public class LayoutMoneyInList extends MainNavigation {
                         if (monInLstDbMgr.retrieveCurrentOwingA() < 0) {
                             monInLstDbMgr.adjustCurrentAandB(monInLstDbMgr.retrieveCurrentOwingA(), monInLstDbMgr.retrieveCurrentA(), monInLstDbMgr.retrieveCurrentB());
                         }
-                    } else if (monInIsDebt.equals("Y")) {
+                    } else if (monInIsDebtSav.equals("D")) {
                         monInLstDbMgr.updateRecPlusPt1(moneyIns.get(position).getTransAmt(), monInLstDbMgr.retrieveCurrentAcctAmt(monInToAcctId), monInToAcctId);
                         for (AccountsDb a : monInLstDbMgr.getDebts()) {
                             if (a.getId() == monInToAcctId) {
@@ -546,7 +545,7 @@ public class LayoutMoneyInList extends MainNavigation {
                                 debtPaytFromDb,
                                 getString(R.string.debt_paid),
                                 getString(R.string.too_far)), monInToAcctId);
-                    } else if (monInIsSav.equals("Y")) {
+                    } else if (monInIsDebtSav.equals("S")) {
                         monInLstDbMgr.updateRecMinusPt1(moneyIns.get(position).getTransAmt(), monInLstDbMgr.retrieveCurrentAcctAmt(monInToAcctId), monInToAcctId);
                         for (AccountsDb a : monInLstDbMgr.getSavings()) {
                             if (a.getId() == monInToAcctId) {
@@ -676,8 +675,7 @@ public class LayoutMoneyInList extends MainNavigation {
             monInLst2Hldr.monInLstDelBtn.setTag(moneyIns.get(position));
 
             monInLstIncRefKeyMI = moneyIns.get(position).getTransBdgtId();
-            monInIsDebt = monInLstDbMgr.findMoneyInIsDebt(moneyIns.get(position).getTransToAcctId());
-            monInIsSav = monInLstDbMgr.findMoneyInIsSav(moneyIns.get(position).getTransToAcctId());
+            monInIsDebtSav = monInLstDbMgr.findMoneyInIsDebtSav(moneyIns.get(position).getTransToAcctId());
 
             //click on pencil icon
             monInLst2Hldr.monInLstEditBtn.setOnClickListener(new View.OnClickListener() {
@@ -704,7 +702,7 @@ public class LayoutMoneyInList extends MainNavigation {
                             monInLstAmtEntry = monInLstGen.dblFromET(monInLst2Hldr.monInLstAmtET);
                             monInLstMonInAmtDiff = monInLstAmtEntry - moneyIns.get(position).getTransAmt();
 
-                            if (monInIsDebt.equals("N") && monInIsSav.equals("N")) {
+                            if (!monInIsDebtSav.equals("D") && !monInIsDebtSav.equals("S")) {
                                 monInLstDbMgr.updateTotAcctBalPlus(monInLstMonInAmtDiff, monInLstDbMgr.retrieveCurrentAccountBalance());
                                 monInLstDbMgr.updateAandBBalMinus(
                                         moneyIns.get(position).getTransAmtInA(),
@@ -734,7 +732,7 @@ public class LayoutMoneyInList extends MainNavigation {
                                     moneyInOwing = monInLstMoneyInOwing;
                                     moneyInB = monInLstMoneyInB;
                                 }
-                            } else if (monInIsDebt.equals("Y")) {
+                            } else if (monInIsDebtSav.equals("D")) {
                                 monInLstDbMgr.updateRecMinusPt1(monInLstMonInAmtDiff, monInLstDbMgr.retrieveCurrentAcctAmt(monInToAcctId), monInToAcctId);
                                 for (AccountsDb a : monInLstDbMgr.getDebts()) {
                                     if (a.getId() == monInToAcctId) {
@@ -753,7 +751,7 @@ public class LayoutMoneyInList extends MainNavigation {
                                 moneyInA = 0.0;
                                 moneyInOwing = 0.0;
                                 moneyInB = 0.0;
-                            } else if (monInIsSav.equals("Y")) {
+                            } else if (monInIsDebtSav.equals("S")) {
                                 monInLstDbMgr.updateRecPlusPt1(monInLstMonInAmtDiff, monInLstDbMgr.retrieveCurrentAcctAmt(monInToAcctId), monInToAcctId);
                                 for (AccountsDb a : monInLstDbMgr.getSavings()) {
                                     if (a.getId() == monInToAcctId) {
@@ -805,7 +803,7 @@ public class LayoutMoneyInList extends MainNavigation {
                     monInLstMonInDb = (TransactionsDb) monInLst2Hldr.monInLstDelBtn.getTag();
                     monInLstIncRefKeyMI = moneyIns.get(position).getTransBdgtId();
 
-                    if (monInIsDebt.equals("N") && monInIsSav.equals("N")) {
+                    if (!monInIsDebtSav.equals("D") && !monInIsDebtSav.equals("S")) {
                         monInLstDbMgr.updateTotAcctBalMinus(moneyIns.get(position).getTransAmt(), monInLstDbMgr.retrieveCurrentAccountBalance());
 
                         monInLstDbMgr.updateAandBBalMinus(
@@ -818,7 +816,7 @@ public class LayoutMoneyInList extends MainNavigation {
                         if (monInLstDbMgr.retrieveCurrentOwingA() < 0) {
                             monInLstDbMgr.adjustCurrentAandB(monInLstDbMgr.retrieveCurrentOwingA(), monInLstDbMgr.retrieveCurrentA(), monInLstDbMgr.retrieveCurrentB());
                         }
-                    } else if (monInIsDebt.equals("Y")) {
+                    } else if (monInIsDebtSav.equals("D")) {
                         monInLstDbMgr.updateRecPlusPt1(moneyIns.get(position).getTransAmt(), monInLstDbMgr.retrieveCurrentAcctAmt(monInToAcctId), monInToAcctId);
                         for (AccountsDb a : monInLstDbMgr.getDebts()) {
                             if (a.getId() == monInToAcctId) {
@@ -834,7 +832,7 @@ public class LayoutMoneyInList extends MainNavigation {
                                 debtPaytFromDb,
                                 getString(R.string.debt_paid),
                                 getString(R.string.too_far)), monInToAcctId);
-                    } else if (monInIsSav.equals("Y")) {
+                    } else if (monInIsDebtSav.equals("S")) {
                         monInLstDbMgr.updateRecMinusPt1(moneyIns.get(position).getTransAmt(), monInLstDbMgr.retrieveCurrentAcctAmt(monInToAcctId), monInToAcctId);
                         for (AccountsDb a : monInLstDbMgr.getSavings()) {
                             if (a.getId() == monInToAcctId) {

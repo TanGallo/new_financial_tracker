@@ -42,7 +42,7 @@ public class AddSavingsList extends MainNavigation {
     EditText savLstSavAmtET, savLstSavGoalET, savLstSavPaytET, savLstSavPercentET, savLstSavNameET;
     SavLstListAdapter savLstLstAdapter;
     General savLstGen;
-    Intent savLstToLayoutSavings, savLstRefresh, savLstToSetUp, savLstToAddMore, savLstToAnalysis;
+    Intent savLstToLayoutBudget, savLstToLayoutSavings, savLstToLayoutSavingsList, savLstRefresh, savLstToSetUp, savLstToAddMore, savLstToAnalysis;
     LinearLayout savLstSpinLayout;
     ListView savLstListView;
     Long savIdFromTag;
@@ -118,14 +118,14 @@ public class AddSavingsList extends MainNavigation {
                 savLstToSetUp = new Intent(AddSavingsList.this, LayoutSetUp.class);
                 savLstToSetUp.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
                 startActivity(savLstToSetUp);
-            } else if (savLstDBMgr.retrieveLastPageId() == 6) {
+            } else if (savLstDBMgr.retrieveLastPageId() == 6 || savLstDBMgr.retrieveLastPageId() == 13) {
                 savLstToLayoutSavings = new Intent(AddSavingsList.this, LayoutSavings.class);
                 savLstToLayoutSavings.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
                 startActivity(savLstToLayoutSavings);
             } else if (savLstDBMgr.retrieveLastPageId() == 2) {
-                savLstToLayoutSavings = new Intent(AddSavingsList.this, LayoutBudget.class);
-                savLstToLayoutSavings.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-                startActivity(savLstToLayoutSavings);
+                savLstToLayoutBudget = new Intent(AddSavingsList.this, LayoutBudget.class);
+                savLstToLayoutBudget.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+                startActivity(savLstToLayoutBudget);
             }
         }
     };

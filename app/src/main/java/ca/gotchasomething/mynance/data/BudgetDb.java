@@ -4,8 +4,7 @@ package ca.gotchasomething.mynance.data;
 public class BudgetDb {
     private String bdgtCat;
     private Double bdgtPaytAmt;
-    private String bdgtIsExp;
-    private String bdgtIsInc;
+    private String bdgtExpInc; //"E" or "I"
     private Double bdgtPaytFrq;
     private Double bdgtAnnPayt;
     private String bdgtPriority; //exp only
@@ -15,8 +14,7 @@ public class BudgetDb {
     public BudgetDb(
             String bdgtCat,
             Double bdgtPaytAmt,
-            String bdgtIsExp,
-            String bdgtIsInc,
+            String bdgtExpInc,
             Double bdgtPaytFrq,
             Double bdgtAnnPayt,
             String bdgtPriority,
@@ -24,8 +22,7 @@ public class BudgetDb {
             long id) {
         this.bdgtCat = bdgtCat;
         this.bdgtPaytAmt = bdgtPaytAmt;
-        this.bdgtIsExp = bdgtIsExp;
-        this.bdgtIsInc = bdgtIsInc;
+        this.bdgtExpInc = bdgtExpInc;
         this.bdgtPaytFrq = bdgtPaytFrq;
         this.bdgtAnnPayt = bdgtAnnPayt;
         this.bdgtPriority = bdgtPriority;
@@ -39,11 +36,8 @@ public class BudgetDb {
     public Double getBdgtPaytAmt() { return bdgtPaytAmt; }
     public void setBdgtPaytAmt(Double bdgtPaytAmt) { this.bdgtPaytAmt = bdgtPaytAmt; }
 
-    public String getBdgtIsExp() { return bdgtIsExp; }
-    public void setBdgtIsExp(String bdgtIsExp) { this.bdgtIsExp = bdgtIsExp; }
-
-    public String getBdgtIsInc() { return bdgtIsInc; }
-    public void setBdgtIsInc(String bdgtIsInc) { this.bdgtIsInc = bdgtIsInc; }
+    public String getBdgtExpInc() { return bdgtExpInc; }
+    public void setBdgtExpInc(String bdgtExpInc) { this.bdgtExpInc = bdgtExpInc; }
 
     public Double getBdgtPaytFrq() { return bdgtPaytFrq; }
     public void setBdgtPaytFrq(Double bdgtPaytFrq) { this.bdgtPaytFrq = bdgtPaytFrq; }

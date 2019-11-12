@@ -156,8 +156,7 @@ public class SlidesOnboardingP extends AppCompatActivity implements View.OnClick
             acctDb = new AccountsDb(
                     getString(R.string.main_account),
                     0.0,
-                    "N",
-                    "N",
+                    "N/A",
                     0.0,
                     0.0,
                     0.0,
@@ -171,8 +170,7 @@ public class SlidesOnboardingP extends AppCompatActivity implements View.OnClick
             expDb = new BudgetDb(
                     getString(R.string.other),
                     0.0,
-                    "Y",
-                    "N",
+                    "E",
                     12.0,
                     0.0,
                     "B",

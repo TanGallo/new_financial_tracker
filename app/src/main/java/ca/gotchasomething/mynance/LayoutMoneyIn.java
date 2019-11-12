@@ -48,7 +48,7 @@ public class LayoutMoneyIn extends MainNavigation {
     MonInAdapter monInAdapter;
     Spinner monInSpin;
     SQLiteDatabase monInDb, monInDb2;
-    String monInAcctName = null, monInIsDebt = null, monInIncName = null, monInIsSav = null;
+    String monInAcctName = null, monInIsDebtSav = null, monInIncName = null;
     TextView monInAddMoreTV, monInAvailAcctTV, monInAvailAmtLabel, monInBudgWarnTV, monInDepToTV, monInIncSourceTV, monInTotAcctTV;
     TransactionsDb monInMoneyInDb;
     TransferSpinnerAdapter monInSpinAdapter;
@@ -101,7 +101,7 @@ public class LayoutMoneyIn extends MainNavigation {
 
         monInHelper2 = new DbHelper(this);
         monInDb2 = monInHelper2.getReadableDatabase();
-        monInCur = monInDb2.rawQuery("SELECT * FROM " + DbHelper.ACCOUNTS_TABLE_NAME + " ORDER BY " + DbHelper.ACCTNAME + " ASC", null);
+        monInCur = monInDb2.rawQuery("SELECT * FROM " + DbHelper.ACCOUNTS_TABLE_NAME + " ORDER BY " + DbHelper.ID + " ASC", null);
         monInSpinAdapter = new TransferSpinnerAdapter(getApplicationContext(), monInCur);
         monInSpin.setAdapter(monInSpinAdapter);
 
@@ -141,8 +141,7 @@ public class LayoutMoneyIn extends MainNavigation {
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
             monInAcctName = monInCur.getString(monInCur.getColumnIndexOrThrow(DbHelper.ACCTNAME));
-            monInIsDebt = monInCur.getString(monInCur.getColumnIndexOrThrow(DbHelper.ACCTISDEBT));
-            monInIsSav = monInCur.getString(monInCur.getColumnIndexOrThrow(DbHelper.ACCTISSAV));
+            monInIsDebtSav = monInCur.getString(monInCur.getColumnIndexOrThrow(DbHelper.ACCTDEBTSAV));
             monInToAcctId = monInCur.getLong(monInCur.getColumnIndexOrThrow(DbHelper.ID));
         }
 
@@ -153,7 +152,7 @@ public class LayoutMoneyIn extends MainNavigation {
     };
 
     public void monInContinueTransaction() {
-        if (monInIsDebt.equals("N") && monInIsSav.equals("N")) {
+        if (!monInIsDebtSav.equals("D") && !monInIsDebtSav.equals("S")) {
             monInPercentA = monInDbMgr.sumTotalAExpenses() / monInDbMgr.sumTotalIncome();
 
             monInMoneyInA = monInDbMgr.detAPortionInc(monInMonInAmt, (monInPercentA * monInMonInAmt), monInDbMgr.retrieveCurrentOwingA());
@@ -178,7 +177,7 @@ public class LayoutMoneyIn extends MainNavigation {
                 moneyInOwing = monInMoneyInOwing;
                 moneyInB = monInMoneyInB;
             }
-        } else if (monInIsDebt.equals("Y")) {
+        } else if (monInIsDebtSav.equals("D")) {
             monInDbMgr.updateRecMinusPt1(monInMonInAmt, monInDbMgr.retrieveCurrentAcctAmt(monInToAcctId), monInToAcctId);
             for (AccountsDb a : monInDbMgr.getDebts()) {
                 if (a.getId() == monInToAcctId) {
@@ -197,7 +196,7 @@ public class LayoutMoneyIn extends MainNavigation {
             moneyInA = 0.0;
             moneyInOwing = 0.0;
             moneyInB = 0.0;
-        } else if (monInIsSav.equals("Y")) {
+        } else if (monInIsDebtSav.equals("S")) {
             monInDbMgr.updateRecPlusPt1(monInMonInAmt, monInDbMgr.retrieveCurrentAcctAmt(monInToAcctId), monInToAcctId);
             for (AccountsDb a : monInDbMgr.getSavings()) {
                 if (a.getId() == monInToAcctId) {
@@ -233,10 +232,8 @@ public class LayoutMoneyIn extends MainNavigation {
                 0.0,
                 monInToAcctId,
                 monInAcctName,
-                monInIsDebt,
-                monInIsSav,
+                monInIsDebtSav,
                 0,
-                "N/A",
                 "N/A",
                 "N/A",
                 "N/A",

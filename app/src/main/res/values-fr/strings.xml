@@ -400,7 +400,7 @@
     <string name="reports">Rapports:</string>
     <string name="spending_summary">Sommaire des Dépenses</string>
     <string name="create_transactions">Créer transactions:</string>
-    <string name="view_reports">Voir les rapports:</string>
+    <string name="view_reports">Voir les rapports</string>
     <string name="inc_summary">Sommaire des revenus</string>
     <string name="main_menu">Menu principal</string>
     <string name="Home_page">Page d\'acceuil</string>
@@ -479,4 +479,8 @@
     <string name="date_confusion">Votre date de début doit être avant votre date de fin.</string>
     <string name="reset">réinitialiser</string>
     <string name="add_bill">Ajoutez une catégorie de facture</string>
+    <string name="limit_report">Limiter le rapport aux transactions entre</string>
+    <string name="choose_cat">Choississez une catégorie</string>
+    <string name="total2">Total</string>
+    <string name="inc_exp_report">Rapport de revenus et dépenses</string>
 </resources>
