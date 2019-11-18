@@ -31,7 +31,7 @@ public class SetUpFinalL extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.b8_slides_set_up_final_3_land);
+        setContentView(R.layout.b1_slides_set_up_final_3_land);
 
         fin2DbMgr = new DbManager(this);
         fin2Gen = new General();

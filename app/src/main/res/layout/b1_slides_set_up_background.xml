@@ -6,13 +6,121 @@
     android:layout_height="match_parent"
     android:background="@color/colorPrimaryDark"
     android:orientation="vertical"
-    tools:context=".SlidesLayoutSetUpIncome">
+    tools:context=".SlidesLayoutSetUp">
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
+        android:layout_height="0dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight=".8" />
+        android:layout_weight=".8"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/slideImage"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="50dp"
+            android:layout_marginBottom="-70dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_attach_money_white_24dp"
+            android:contentDescription="@string/slide_image"/>
+
+        <TextView
+            android:id="@+id/slideTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/text"
+            android:textColor="@color/colorWhite"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            android:gravity="center_horizontal"
+            android:layout_marginTop="100dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            />
+
+        <TextView
+            android:id="@+id/slideTV1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="100dp"
+            android:layout_marginEnd="10dp"
+            android:text="@string/text"
+            android:textColor="@color/colorWhite"
+            android:textSize="22sp" />
+
+        <TextView
+            android:id="@+id/slideTV2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="50dp"
+            android:text="@string/text"
+            android:textColor="@color/colorWhite"
+            android:textSize="22sp" />
+
+        <TextView
+            android:id="@+id/slideTV3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="50dp"
+            android:text="@string/text"
+            android:textColor="@color/colorWhite"
+            android:textSize="22sp" />
+
+        <TextView
+            android:id="@+id/slideTV4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="50dp"
+            android:text="@string/text"
+            android:textColor="@color/colorWhite"
+            android:textSize="22sp" />
+
+        <TextView
+            android:id="@+id/slideTV5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="10dp"
+            android:text="@string/text"
+            android:textColor="@color/colorWhite"
+            android:textSize="22sp" />
+
+        <TextView
+            android:id="@+id/slideTV6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="50dp"
+            android:text="@string/text"
+            android:textColor="@color/colorWhite"
+            android:textSize="22sp" />
+
+        <TextView
+            android:id="@+id/slideTV7"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="50dp"
+            android:text="@string/text"
+            android:textColor="@color/colorWhite"
+            android:textSize="22sp" />
+
+        <TextView
+            android:id="@+id/slideTV8"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="50dp"
+            android:text="@string/text"
+            android:textColor="@color/colorWhite"
+            android:textSize="22sp" />
+
+    </LinearLayout>
 
     <RelativeLayout
         android:layout_width="wrap_content"
@@ -21,13 +129,13 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="10dp"
-            android:layout_above="@id/dotsLayout"
+            android:layout_above="@id/slideDotsLayout"
             android:layout_marginBottom="15dp"
             android:alpha=".5"
             android:background="@color/colorWhite"></View>
 
         <LinearLayout
-            android:id="@+id/dotsLayout"
+            android:id="@+id/slideDotsLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
@@ -38,26 +146,26 @@
         </LinearLayout>
 
         <Button
-            android:id="@+id/previousButton"
+            android:id="@+id/slidePreviousBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_margin="10dp"
             android:background="@null"
-            android:text="@string/previous"
             android:contentDescription="@string/previous"
+            android:text="@string/previous"
             android:textColor="@color/colorWhite"
             android:textSize="16sp" />
 
         <Button
-            android:id="@+id/nextButton"
+            android:id="@+id/slideNextBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_margin="10dp"
             android:background="@null"
-            android:text="@string/next_button"
             android:contentDescription="@string/next_button"
+            android:text="@string/next_button"
             android:textColor="@color/colorWhite"
             android:textSize="16sp"
             tools:ignore="RelativeOverlap" />

@@ -4,13 +4,13 @@ package ca.gotchasomething.mynance.data;
 public class AccountsDb {
     private String acctName;
     private Double acctBal;
-    private String acctDebtSav;
+    private String acctDebtSav; //"D" or "S" or "N/A"
     private Double acctMax; //limit for debts, goal for sav
     private Double acctIntRate;
-    private Double acctPaytsTo;
-    private Double acctAnnPaytsTo;
-    private String acctEndDate;
-    private Double acctDebtToPay; //debts only
+    private Double acctPaytsTo; //amt regularly contributed to this acct
+    private Double acctAnnPaytsTo; //annual amt regularly contributed to this acct
+    private String acctEndDate; //date goal will be achieved
+    private Double acctDebtToPay; //debts only (used only in pay credit cards screen to total amt to pay towards this acct in that transaction)
     private long id;
 
     public AccountsDb(

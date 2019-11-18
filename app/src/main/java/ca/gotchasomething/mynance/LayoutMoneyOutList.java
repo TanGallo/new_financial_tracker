@@ -389,7 +389,8 @@ public class LayoutMoneyOutList extends MainNavigation {
             monOutLstHldr.monOutLstDelBtn.setTag(moneyOuts.get(position));
 
             monOutLstExpRefKeyMO = moneyOuts.get(position).getTransBdgtId();
-            monOutLstIsDebtSav = monOutLstDbMgr.findMoneyInIsDebtSav(moneyOuts.get(position).getTransFromAcctId());
+            monOutLstIsDebtSav = moneyOuts.get(position).getTransFromDebtSav();
+            //monOutLstIsDebtSav = monOutLstDbMgr.findMoneyInIsDebtSav(moneyOuts.get(position).getTransFromAcctId());
 
             //click on pencil icon
             monOutLstHldr.monOutLstEditBtn.setOnClickListener(new View.OnClickListener() {

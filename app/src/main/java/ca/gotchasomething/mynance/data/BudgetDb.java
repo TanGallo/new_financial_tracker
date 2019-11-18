@@ -3,12 +3,12 @@ package ca.gotchasomething.mynance.data;
 
 public class BudgetDb {
     private String bdgtCat;
-    private Double bdgtPaytAmt;
-    private String bdgtExpInc; //"E" or "I"
-    private Double bdgtPaytFrq;
-    private Double bdgtAnnPayt;
-    private String bdgtPriority; //exp only
-    private String bdgtWeekly; //exp only
+    private Double bdgtPaytAmt; //amt regularly pd towards this category
+    private String bdgtExpInc; //"E" or "I" or "N/A"
+    private Double bdgtPaytFrq; //frequency of payts towards this category
+    private Double bdgtAnnPayt; //annual amt pd towards this category
+    private String bdgtPriority; //exp only ("A" or "B" or "N/A"
+    private String bdgtWeekly; //exp only ("Y" or "N" or "N/A"
     private long id;
 
     public BudgetDb(

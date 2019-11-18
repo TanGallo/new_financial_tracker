@@ -11,15 +11,12 @@ import android.widget.EditText;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import ca.gotchasomething.mynance.data.CurrentDb;
 import ca.gotchasomething.mynance.data.TransactionsDb;
-//import ca.gotchasomething.mynance.data.MoneyInDb;
 
 public class SetUpFinalP extends AppCompatActivity {
 
     Button fin1EnterBtn;
     ContentValues fin1CV, fin1CV2, fin1CV3;
-    CurrentDb fin1CurrDb;
     DbHelper fin1Helper;
     DbManager fin1DbMgr;
     Double fin1StartBal = 0.0, fin1MoneyInA, fin1MoneyInB;
@@ -32,7 +29,7 @@ public class SetUpFinalP extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.b8_slides_set_up_final_3);
+        setContentView(R.layout.b1_slides_set_up_final_3);
 
         fin1DbMgr = new DbManager(this);
         fin1Gen = new General();

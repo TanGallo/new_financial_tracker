@@ -36,7 +36,7 @@ public class SetUpAnalysis extends MainNavigation {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.b6a_layout_analysis);
+        setContentView(R.layout.b1a_layout_analysis);
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

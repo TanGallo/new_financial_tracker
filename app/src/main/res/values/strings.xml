@@ -493,4 +493,7 @@
     <string name="choose_cat">Choose a category</string>
     <string name="total2">Total</string>
     <string name="inc_exp_report">Income and Expenses Report</string>
+    <string name="over_weekly">This purchase will put you over your weekly limit in this category.</string>
+    <string name="text">text</string>
+    <string name="slide_image">slide image</string>
 </resources>

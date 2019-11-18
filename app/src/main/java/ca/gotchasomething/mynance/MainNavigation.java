@@ -20,7 +20,6 @@ public class MainNavigation extends AppCompatActivity implements NavigationView.
     Boolean before = false;
     public DbManager dbMgr;
     protected DrawerLayout drawer;
-    General mainGen;
     Intent i, i2, i3, i4, i5;
     Menu menu;
     NavigationView navView;
@@ -34,7 +33,6 @@ public class MainNavigation extends AppCompatActivity implements NavigationView.
         setSupportActionBar(toolbar);
 
         dbMgr = new DbManager(this);
-        mainGen = new General();
 
         drawer = findViewById(R.id.drawer_layout);
         navView = findViewById(R.id.nav_view);

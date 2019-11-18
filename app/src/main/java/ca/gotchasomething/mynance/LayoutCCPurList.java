@@ -92,8 +92,8 @@ public class LayoutCCPurList extends MainNavigation {
 
         monCC2Adapter = new MonCC2Adapter(this, monCC2DbMgr.getCCTrans());
         monCC2List.setAdapter(monCC2Adapter);
-        
-        if(monCC2DbMgr.retrieveLastPageId() == 10) {
+
+        if (monCC2DbMgr.retrieveLastPageId() == 10) {
             monCC2SpinLayout.setVisibility(View.VISIBLE);
             monCC2SpinResetBtn.setVisibility(View.GONE);
             monCC2Months = new String[]{
@@ -388,8 +388,8 @@ public class LayoutCCPurList extends MainNavigation {
                 monCC2Hldr = (MoneyCC2ViewHolder) convertView.getTag();
             }
 
-            if(monCC2DbMgr.retrieveLastPageId() == 10) {
-                if(ccTrans.get(position).getTransCCPaid().equals("Y")) {
+            if (monCC2DbMgr.retrieveLastPageId() == 10) {
+                if (ccTrans.get(position).getTransCCPaid().equals("Y")) {
                     monCC2Hldr.monCC2EditBtn.setVisibility(View.GONE);
                     monCC2Hldr.monCC2DelBtn.setVisibility(View.GONE);
                 } else {
@@ -479,17 +479,9 @@ public class LayoutCCPurList extends MainNavigation {
                     monCC2ExpRefKeyMO = ccTrans.get(position).getTransBdgtId();
                     monCC2MonOutchargingDebtId = ccTrans.get(position).getTransFromAcctId();
 
+                    monCC2DbMgr.updateRecMinusPt1(ccTrans.get(position).getTransAmt(), monCC2DbMgr.retrieveCurrentAcctAmt(monCC2MonOutchargingDebtId), monCC2MonOutchargingDebtId);
                     for (AccountsDb a : monCC2DbMgr.getDebts()) {
-                        if (String.valueOf(a.getId()).equals(monCC2MonOutchargingDebtId)) {
-                            debtAmtFromDb = a.getAcctBal();
-                            debtLimitFromDb = a.getAcctMax();
-                            debtRateFromDb = a.getAcctIntRate();
-                            debtPaytFromDb = a.getAcctPaytsTo();
-                        }
-                    }
-                    monCC2DbMgr.updateRecMinusPt1(ccTrans.get(position).getTransAmt(), debtAmtFromDb, monCC2MonOutchargingDebtId);
-                    for (AccountsDb a : monCC2DbMgr.getDebts()) {
-                        if (String.valueOf(a.getId()).equals(monCC2MonOutchargingDebtId)) {
+                        if (a.getId() == monCC2MonOutchargingDebtId) {
                             debtAmtFromDb = a.getAcctBal();
                             debtLimitFromDb = a.getAcctMax();
                             debtRateFromDb = a.getAcctIntRate();

@@ -3,9 +3,9 @@ package ca.gotchasomething.mynance.data;
 
 public class TransactionsDb {
     private String transType; //"in" or "out" or "transfer" or "ccPayment"
-    private String transIsCC;
-    private String transBdgtCat;
-    private long transBdgtId;
+    private String transIsCC; //"Y" or "N" or "N/A" (whether or not charged on credit card)
+    private String transBdgtCat; //exp or inc category from budget DB or "N/A"
+    private long transBdgtId; //exp or inc category id from budget DB
     private Double transAmt;
     private Double transAmtInA;
     private Double transAmtInOwing;
@@ -13,16 +13,16 @@ public class TransactionsDb {
     private Double transAmtOutA;
     private Double transAmtOutOwing;
     private Double transAmtOutB;
-    private long transToAcctId;
+    private long transToAcctId; //id from acct DB that transaction will credit
     private String transToAcctName;
-    private String transToDebtSav; //"D" or "S"
-    private long transFromAcctId;
+    private String transToDebtSav; //"D" or "S" or "N/A"
+    private long transFromAcctId; //id from acct DB that transaction will debit
     private String transFromAcctName;
-    private String transFromDebtSav; //"D" or "S"
-    private String transBdgtPriority; //out only
-    private String transBdgtWeekly; //out only
-    private String transCCToPay;
-    private String transCCPaid;
+    private String transFromDebtSav; //"D" or "S" or "N/A"
+    private String transBdgtPriority; //out only ("A" or "B" or "N/A" from budget DB)
+    private String transBdgtWeekly; //out only ("Y" or "N" or "N/A" from budget DB)
+    private String transCCToPay; //used in pay credit card screen only ("Y" or "N" or "N/A", whether or not this transaction s/b pd to cc in this transaction)
+    private String transCCPaid; //"Y" or "N" or "N/A" (whether transaction pd to cc or not)
     private String transCreatedOn;
     private long id;
 

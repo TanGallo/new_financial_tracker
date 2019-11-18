@@ -37,7 +37,7 @@ public class DbManager extends AppCompatActivity {
             incAmtFromDb = 0.0, incAnnAmtFromDb = 0.0, incFrqFromDb = 0.0, moneyInA = 0.0, moneyInB = 0.0, moneyInOwing = 0.0, moneyOutA = 0.0,
             moneyOutB = 0.0, moneyOutOwing = 0.0, newABal = 0.0, newAcctBal = 0.0, newAvailBal2 = 0.0, newBBal = 0.0, newAmt = 0.0, newExpAnnAmt = 0.0,
             newIncAnnAmt = 0.0, newMoneyA = 0.0, newMoneyB = 0.0, newMoneyOwing = 0.0, newOwingBal = 0.0, incThisYear = 0.0, numberOfMissingEntries = 0.0,
-            numberOfMissingEntriesE = 0.0, selectedTransactionSum = 0.0, totalAExpenses = 0.0, totalBExpenses = 0.0, totalCCPaymentDue = 0.0, totalDebt = 0.0, totalExpenses = 0.0, totalIncome = 0.0,
+            numberOfMissingEntriesE = 0.0, selectedTransactionSum = 0.0, spentThisWeekInCat = 0.0, totalAExpenses = 0.0, totalBExpenses = 0.0, totalCCPaymentDue = 0.0, totalDebt = 0.0, totalExpenses = 0.0, totalIncome = 0.0,
             totalSavings = 0.0, totalSavGoal = 0.0, currentA = 0.0, currentOwingA = 0.0, totalAPortion = 0.0, totalOwingPortion = 0.0, totalBPortion = 0.0,
             transFromThisYear = 0.0, transToThisYear = 0.0;
     public General general = new General();
@@ -298,6 +298,30 @@ public class DbManager extends AppCompatActivity {
         cursor.close();
         return budgetList;
     }
+
+    /*public List<BudgetDb> getExpenses() {
+        db = dbHelper.getReadableDatabase();
+        cursor = db.rawQuery("SELECT * FROM " + DbHelper.BUDGET_TABLE_NAME + " WHERE " + DbHelper.BDGTEXPINC + " = 'E' " + " ORDER BY " + DbHelper.BDGTANNPAYT + " DESC", null);
+        List<BudgetDb> expenseList = new ArrayList<>();
+        if (cursor.moveToFirst()) {
+            while (!cursor.isAfterLast()) {
+                BudgetDb expenses = new BudgetDb(
+                        cursor.getString(cursor.getColumnIndex(DbHelper.BDGTCAT)),
+                        cursor.getDouble(cursor.getColumnIndex(DbHelper.BDGTPAYTAMT)),
+                        cursor.getString(cursor.getColumnIndex(DbHelper.BDGTEXPINC)),
+                        cursor.getDouble(cursor.getColumnIndex(DbHelper.BDGTPAYTFRQ)),
+                        cursor.getDouble(cursor.getColumnIndex(DbHelper.BDGTANNPAYT)),
+                        cursor.getString(cursor.getColumnIndex(DbHelper.BDGTPRIORITY)),
+                        cursor.getString(cursor.getColumnIndex(DbHelper.BDGTWEEKLY)),
+                        cursor.getLong(cursor.getColumnIndex(DbHelper.ID))
+                );
+                expenseList.add(expenses); //adds new items to bottom of list
+                cursor.moveToNext();
+            }
+        }
+        cursor.close();
+        return expenseList;
+    }*/
 
     public void addBudget(BudgetDb budget) {
         newBudget = new ContentValues();
@@ -662,6 +686,27 @@ public class DbManager extends AppCompatActivity {
     }
 
     // DATA RETRIEVAL FORMULAS
+
+    public Double checkOverWeekly(Long long1) {
+        //long1 = budgetId for Category
+        List<Double> spentThisWeekInCatList = new ArrayList<>();
+        for(TransactionsDb t : getMoneyOuts()) {
+                if (t.getTransBdgtId() == long1) {
+                    if (general.thisWeek().contains(t.getTransCreatedOn())) {
+                        spentThisWeekInCatList.add(t.getTransAmt());
+                    }
+                }
+            }
+        spentThisWeekInCat = 0.0;
+        if (spentThisWeekInCatList.size() == 0) {
+            spentThisWeekInCat = 0.0;
+        } else {
+            for (Double dbl : spentThisWeekInCatList) {
+                spentThisWeekInCat += dbl;
+            }
+        }
+        return spentThisWeekInCat;
+    }
 
     public Double sumSelectedTransactions(List<TransactionsDb> list1) {
         //list1 = getTransactionsInRange();

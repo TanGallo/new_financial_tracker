@@ -27,7 +27,6 @@ public class LayoutSetUp extends MainNavigation {
     General laySetGen;
     Intent laySetToSlides, laySetToMain;
     SQLiteDatabase laySetDb;
-    String latestDone = null;
     TextView laySetIncomeLabel, laySetBillsLabel, laySetWeeklyLabel, laySetDebtsLabel, laySetTourLabel, laySetTourLabel2, laySetSavingsLabel,
             laySetAnalysisLabel, laySetFinalLabel;
 
@@ -112,7 +111,6 @@ public class LayoutSetUp extends MainNavigation {
             laySetDbMgr.addCurrent(laySetCurDb);
         }
 
-        //latestDone = laySetDbMgr.retrieveLatestDone();
         switch (laySetDbMgr.retrieveLatestDone()) {
             case "income":
                 laySetAfterIncome();

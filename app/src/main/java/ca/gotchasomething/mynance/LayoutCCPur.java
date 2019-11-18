@@ -40,7 +40,7 @@ public class LayoutCCPur extends MainNavigation {
     DbHelper layCCPurHelper, layCCPurHelper2;
     DbManager layCCPurDbMgr;
     Double debtAmtFromDb = 0.0, debtLimitFromDb = 0.0, debtPaytFromDb = 0.0, debtRateFromDb = 0.0, layCCPurMonOutAmt = 0.0, layCCPurMonOutNewAmt = 0.0,
-            layCCPurMonOutOldAmt = 0.0;
+            layCCPurMonOutOldAmt = 0.0, layCCPurWeeklyLimit = 0.0;
     General layCCPurGen;
     Intent layCCPurToAddCC, layCCPurToAddMore, layCCPurToFixBudget, layCCPurToList, layCCPurRefresh;
     LayCCPurLstAdapter layCCPurListAdapter;
@@ -203,7 +203,7 @@ public class LayoutCCPur extends MainNavigation {
                 "out",
                 "Y",
                 layCCPurExpName,
-                layCCPurExpRefKeyMO,
+                layCCPurExpId,
                 layCCPurMonOutAmt,
                 0.0,
                 0.0,
@@ -319,6 +319,7 @@ public class LayoutCCPur extends MainNavigation {
 
                             layCCPurExpName = layCCPurExpDb.getBdgtCat();
                             layCCPurExpId = layCCPurExpDb.getId();
+                            layCCPurWeeklyLimit = layCCPurExpDb.getBdgtAnnPayt() / 52;
 
                             layCCPurMonOutOldAmt = expenses.get(position).getBdgtPaytAmt();
                             layCCPurMonOutNewAmt = layCCPurGen.dblFromET(layCCPurHldr.layCCPurPaytAmtET);
@@ -341,7 +342,313 @@ public class LayoutCCPur extends MainNavigation {
                                 }
                             }
 
-                            if (debtAmtFromDb + layCCPurMonOutAmt > debtLimitFromDb) { //CARD IS OVER LIMIT
+                            if(layCCPurExpWeekly.equals("Y") && (layCCPurDbMgr.checkOverWeekly(layCCPurExpId) + layCCPurMonOutAmt > layCCPurWeeklyLimit)) {
+                                layCCPurHldr.layCCPurPaytWarnLayout.setVisibility(View.VISIBLE);
+                                layCCPurHldr.layCCPurPaytWarnTV.setText(getString(R.string.over_weekly));
+
+                                layCCPurHldr.layCCPurPaytNoContBtn.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        layCCPurHldr.layCCPurPaytWarnLayout.setVisibility(View.GONE);
+                                        layCCPurRefresh();
+                                    }
+                                });
+
+                                layCCPurHldr.layCCPurPaytYesContBtn.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        layCCPurHldr.layCCPurPaytWarnLayout.setVisibility(View.GONE);
+
+                                        if (debtAmtFromDb + layCCPurMonOutAmt > debtLimitFromDb) { //CARD IS OVER LIMIT
+                                            //SHOW WARNING
+                                            layCCPurHldr.layCCPurPaytWarnLayout.setVisibility(View.VISIBLE);
+                                            layCCPurHldr.layCCPurPaytWarnTV.setText(getString(R.string.not_enough_credit_warning));
+                                            //NO CONTINUE
+                                            layCCPurHldr.layCCPurPaytNoContBtn.setOnClickListener(new View.OnClickListener() {
+                                                @Override
+                                                public void onClick(View v) {
+                                                    layCCPurHldr.layCCPurPaytWarnLayout.setVisibility(View.GONE);
+                                                    layCCPurRefresh();
+                                                }
+                                            });
+                                            //YES CONTINUE
+                                            layCCPurHldr.layCCPurPaytYesContBtn.setOnClickListener(new View.OnClickListener() {
+                                                @Override
+                                                public void onClick(View v) {
+                                                    layCCPurHldr.layCCPurPaytWarnLayout.setVisibility(View.GONE);
+                                                    if (layCCPurExpPriority.equals("A")) {  //PRIORITY IS A
+                                                        if (layCCPurDbMgr.retrieveCurrentAccountBalance() - layCCPurMonOutAmt < 0) { //A NOT POSSIBLE
+                                                            //SHOW WARNING
+                                                            layCCPurHldr.layCCPurPaytWarnLayout.setVisibility(View.VISIBLE);
+                                                            layCCPurHldr.layCCPurPaytWarnTV.setText(getString(R.string.payment_not_possible_A));
+                                                            //NO CONTINUE
+                                                            layCCPurHldr.layCCPurPaytNoContBtn.setOnClickListener(new View.OnClickListener() {
+                                                                @Override
+                                                                public void onClick(View v) {
+                                                                    layCCPurHldr.layCCPurPaytWarnLayout.setVisibility(View.GONE);
+                                                                    layCCPurRefresh();
+                                                                }
+                                                            });
+                                                            //YES CONTINUE
+                                                            layCCPurHldr.layCCPurPaytYesContBtn.setOnClickListener(new View.OnClickListener() {
+                                                                @Override
+                                                                public void onClick(View v) {
+                                                                    layCCPurHldr.layCCPurPaytWarnLayout.setVisibility(View.GONE);
+                                                                    if (layCCPurMonOutAmt == layCCPurMonOutNewAmt) { //MONEY IN = NEW AMT
+                                                                        //SHOW OPTION TO CHANGE DEFAULT
+                                                                        layCCPurHldr.layCCPurPaytDefLayout.setVisibility(View.VISIBLE);
+                                                                        //NO CHANGE DEFAULT
+                                                                        layCCPurHldr.layCCPurPaytNoDefBtn.setOnClickListener(new View.OnClickListener() {
+                                                                            @Override
+                                                                            public void onClick(View v) {
+                                                                                layCCPurHldr.layCCPurPaytDefLayout.setVisibility(View.GONE);
+                                                                                layCCPurContTransaction();
+                                                                            }
+                                                                        });
+                                                                        //YES CHANGE DEFAULT
+                                                                        layCCPurHldr.layCCPurPaytYesDefBtn.setOnClickListener(new View.OnClickListener() {
+                                                                            @Override
+                                                                            public void onClick(View v) {
+                                                                                layCCPurHldr.layCCPurPaytDefLayout.setVisibility(View.GONE);
+                                                                                layCCPurChangeDefault();
+                                                                            }
+                                                                        });
+                                                                    } else { //MONEY IN = DEFAULT AMT
+                                                                        layCCPurContTransaction();
+                                                                    }
+                                                                }
+                                                            });
+                                                        } else { //A POSSIBLE
+                                                            if (layCCPurMonOutAmt == layCCPurMonOutNewAmt) { //MONEY IN = NEW AMT
+                                                                //SHOW OPTION TO CHANGE DEFAULT
+                                                                layCCPurHldr.layCCPurPaytDefLayout.setVisibility(View.VISIBLE);
+                                                                //NO CHANGE DEFAULT
+                                                                layCCPurHldr.layCCPurPaytNoDefBtn.setOnClickListener(new View.OnClickListener() {
+                                                                    @Override
+                                                                    public void onClick(View v) {
+                                                                        layCCPurHldr.layCCPurPaytDefLayout.setVisibility(View.GONE);
+                                                                        layCCPurContTransaction();
+                                                                    }
+                                                                });
+                                                                //YES CHANGE DEFAULT
+                                                                layCCPurHldr.layCCPurPaytYesDefBtn.setOnClickListener(new View.OnClickListener() {
+                                                                    @Override
+                                                                    public void onClick(View v) {
+                                                                        layCCPurHldr.layCCPurPaytDefLayout.setVisibility(View.GONE);
+                                                                        layCCPurChangeDefault();
+                                                                    }
+                                                                });
+                                                            } else { //MONEY IN = DEFAULT AMT
+                                                                layCCPurContTransaction();
+                                                            }
+                                                        }
+                                                    } else if (layCCPurExpPriority.equals("B")) { //PRIORITY IS B
+                                                        if (layCCPurDbMgr.retrieveCurrentB() - layCCPurMonOutAmt < 0) { //B NOT POSSIBLE
+                                                            //SHOW WARNING
+                                                            layCCPurHldr.layCCPurPaytWarnLayout.setVisibility(View.VISIBLE);
+                                                            layCCPurHldr.layCCPurPaytWarnTV.setText(getString(R.string.payment_not_possible_B));
+                                                            //NO CONTINUE
+                                                            layCCPurHldr.layCCPurPaytNoContBtn.setOnClickListener(new View.OnClickListener() {
+                                                                @Override
+                                                                public void onClick(View v) {
+                                                                    layCCPurHldr.layCCPurPaytWarnLayout.setVisibility(View.GONE);
+                                                                    layCCPurRefresh();
+                                                                }
+                                                            });
+                                                            //YES CONTINUE
+                                                            layCCPurHldr.layCCPurPaytYesContBtn.setOnClickListener(new View.OnClickListener() {
+                                                                @Override
+                                                                public void onClick(View v) {
+                                                                    layCCPurHldr.layCCPurPaytWarnLayout.setVisibility(View.GONE);
+                                                                    if (layCCPurMonOutAmt == layCCPurMonOutNewAmt) { //MONEY IN = NEW AMT
+                                                                        //SHOW OPTION TO CHANGE DEFAULT
+                                                                        layCCPurHldr.layCCPurPaytDefLayout.setVisibility(View.VISIBLE);
+                                                                        //NO CHANGE DEFAULT
+                                                                        layCCPurHldr.layCCPurPaytNoDefBtn.setOnClickListener(new View.OnClickListener() {
+                                                                            @Override
+                                                                            public void onClick(View v) {
+                                                                                layCCPurHldr.layCCPurPaytDefLayout.setVisibility(View.GONE);
+                                                                                layCCPurContTransaction();
+                                                                            }
+                                                                        });
+                                                                        //YES CHANGE DEFAULT
+                                                                        layCCPurHldr.layCCPurPaytYesDefBtn.setOnClickListener(new View.OnClickListener() {
+                                                                            @Override
+                                                                            public void onClick(View v) {
+                                                                                layCCPurHldr.layCCPurPaytDefLayout.setVisibility(View.GONE);
+                                                                                layCCPurChangeDefault();
+                                                                            }
+                                                                        });
+                                                                    } else { //MONEY IN = DEFAULT AMT
+                                                                        layCCPurContTransaction();
+                                                                    }
+                                                                }
+                                                            });
+                                                        } else { //B POSSIBLE
+                                                            if (layCCPurMonOutAmt == layCCPurMonOutNewAmt) { //MONEY IN = NEW AMT
+                                                                //SHOW OPTION TO CHANGE DEFAULT
+                                                                layCCPurHldr.layCCPurPaytDefLayout.setVisibility(View.VISIBLE);
+                                                                //NO CHANGE DEFAULT
+                                                                layCCPurHldr.layCCPurPaytNoDefBtn.setOnClickListener(new View.OnClickListener() {
+                                                                    @Override
+                                                                    public void onClick(View v) {
+                                                                        layCCPurHldr.layCCPurPaytDefLayout.setVisibility(View.GONE);
+                                                                        layCCPurContTransaction();
+                                                                    }
+                                                                });
+                                                                //YES CHANGE DEFAULT
+                                                                layCCPurHldr.layCCPurPaytYesDefBtn.setOnClickListener(new View.OnClickListener() {
+                                                                    @Override
+                                                                    public void onClick(View v) {
+                                                                        layCCPurHldr.layCCPurPaytDefLayout.setVisibility(View.GONE);
+                                                                        layCCPurChangeDefault();
+                                                                    }
+                                                                });
+                                                            } else { //MONEY IN = DEFAULT AMT
+                                                                layCCPurContTransaction();
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            });
+                                        } else { //CARD NOT OVER LIMIT
+                                            if (layCCPurExpPriority.equals("A")) { //PRIORITY IS A
+                                                if (layCCPurDbMgr.retrieveCurrentAccountBalance() - layCCPurMonOutAmt < 0) { //A NOT POSSIBLE
+                                                    //SHOW WARNING
+                                                    layCCPurHldr.layCCPurPaytWarnLayout.setVisibility(View.VISIBLE);
+                                                    layCCPurHldr.layCCPurPaytWarnTV.setText(getString(R.string.payment_not_possible_A));
+                                                    //NO CONTINUE
+                                                    layCCPurHldr.layCCPurPaytNoContBtn.setOnClickListener(new View.OnClickListener() {
+                                                        @Override
+                                                        public void onClick(View v) {
+                                                            layCCPurHldr.layCCPurPaytWarnLayout.setVisibility(View.GONE);
+                                                            layCCPurRefresh();
+                                                        }
+                                                    });
+                                                    //YES CONTINUE
+                                                    layCCPurHldr.layCCPurPaytYesContBtn.setOnClickListener(new View.OnClickListener() {
+                                                        @Override
+                                                        public void onClick(View v) {
+                                                            layCCPurHldr.layCCPurPaytWarnLayout.setVisibility(View.GONE);
+                                                            if (layCCPurMonOutAmt == layCCPurMonOutNewAmt) { //MONEY IN = NEW AMT
+                                                                //SHOW OPTION TO CHANGE DEFAULT
+                                                                layCCPurHldr.layCCPurPaytDefLayout.setVisibility(View.VISIBLE);
+                                                                //NO CHANGE DEFAULT
+                                                                layCCPurHldr.layCCPurPaytNoDefBtn.setOnClickListener(new View.OnClickListener() {
+                                                                    @Override
+                                                                    public void onClick(View v) {
+                                                                        layCCPurHldr.layCCPurPaytDefLayout.setVisibility(View.GONE);
+                                                                        layCCPurContTransaction();
+                                                                    }
+                                                                });
+                                                                //YES CHANGE DEFAULT
+                                                                layCCPurHldr.layCCPurPaytYesDefBtn.setOnClickListener(new View.OnClickListener() {
+                                                                    @Override
+                                                                    public void onClick(View v) {
+                                                                        layCCPurHldr.layCCPurPaytDefLayout.setVisibility(View.GONE);
+                                                                        layCCPurChangeDefault();
+                                                                    }
+                                                                });
+                                                            } else { //MONEY IN = DEFAULT AMT
+                                                                layCCPurContTransaction();
+                                                            }
+                                                        }
+                                                    });
+                                                } else { //A POSSIBLE
+                                                    if (layCCPurMonOutAmt == layCCPurMonOutNewAmt) { //MONEY IN = NEW AMT
+                                                        //SHOW OPTION TO CHANGE DEFAULT
+                                                        layCCPurHldr.layCCPurPaytDefLayout.setVisibility(View.VISIBLE);
+                                                        //NO CHANGE DEFAULT
+                                                        layCCPurHldr.layCCPurPaytNoDefBtn.setOnClickListener(new View.OnClickListener() {
+                                                            @Override
+                                                            public void onClick(View v) {
+                                                                layCCPurHldr.layCCPurPaytDefLayout.setVisibility(View.GONE);
+                                                                layCCPurContTransaction();
+                                                            }
+                                                        });
+                                                        //YES CHANGE DEFAULT
+                                                        layCCPurHldr.layCCPurPaytYesDefBtn.setOnClickListener(new View.OnClickListener() {
+                                                            @Override
+                                                            public void onClick(View v) {
+                                                                layCCPurHldr.layCCPurPaytDefLayout.setVisibility(View.GONE);
+                                                                layCCPurChangeDefault();
+                                                            }
+                                                        });
+                                                    } else { //MONEY IN = DEFAULT AMT
+                                                        layCCPurContTransaction();
+                                                    }
+                                                }
+                                            } else if (layCCPurExpPriority.equals("B")) { //PRIORITY IS B
+                                                if (layCCPurDbMgr.retrieveCurrentB() - layCCPurMonOutAmt < 0) { //B NOT POSSIBLE
+                                                    //SHOW WARNING
+                                                    layCCPurHldr.layCCPurPaytWarnLayout.setVisibility(View.VISIBLE);
+                                                    layCCPurHldr.layCCPurPaytWarnTV.setText(getString(R.string.payment_not_possible_B));
+                                                    //NO CONTINUE
+                                                    layCCPurHldr.layCCPurPaytNoContBtn.setOnClickListener(new View.OnClickListener() {
+                                                        @Override
+                                                        public void onClick(View v) {
+                                                            layCCPurHldr.layCCPurPaytWarnLayout.setVisibility(View.GONE);
+                                                            layCCPurRefresh();
+                                                        }
+                                                    });
+                                                    //YES CONTINUE
+                                                    layCCPurHldr.layCCPurPaytYesContBtn.setOnClickListener(new View.OnClickListener() {
+                                                        @Override
+                                                        public void onClick(View v) {
+                                                            layCCPurHldr.layCCPurPaytWarnLayout.setVisibility(View.GONE);
+                                                            if (layCCPurMonOutAmt == layCCPurMonOutNewAmt) { //MONEY IN = NEW AMT
+                                                                //SHOW OPTION TO CHANGE DEFAULT
+                                                                layCCPurHldr.layCCPurPaytDefLayout.setVisibility(View.VISIBLE);
+                                                                //NO CHANGE DEFAULT
+                                                                layCCPurHldr.layCCPurPaytNoDefBtn.setOnClickListener(new View.OnClickListener() {
+                                                                    @Override
+                                                                    public void onClick(View v) {
+                                                                        layCCPurHldr.layCCPurPaytDefLayout.setVisibility(View.GONE);
+                                                                        layCCPurContTransaction();
+                                                                    }
+                                                                });
+                                                                //YES CHANGE DEFAULT
+                                                                layCCPurHldr.layCCPurPaytYesDefBtn.setOnClickListener(new View.OnClickListener() {
+                                                                    @Override
+                                                                    public void onClick(View v) {
+                                                                        layCCPurHldr.layCCPurPaytDefLayout.setVisibility(View.GONE);
+                                                                        layCCPurChangeDefault();
+                                                                    }
+                                                                });
+                                                            } else { //MONEY IN = DEFAULT AMT
+                                                                layCCPurContTransaction();
+                                                            }
+                                                        }
+                                                    });
+                                                } else { //B POSSIBLE
+                                                    if (layCCPurMonOutAmt == layCCPurMonOutNewAmt) { //MONEY IN = NEW AMT
+                                                        //SHOW OPTION TO CHANGE DEFAULT
+                                                        layCCPurHldr.layCCPurPaytDefLayout.setVisibility(View.VISIBLE);
+                                                        //NO CHANGE DEFAULT
+                                                        layCCPurHldr.layCCPurPaytNoDefBtn.setOnClickListener(new View.OnClickListener() {
+                                                            @Override
+                                                            public void onClick(View v) {
+                                                                layCCPurHldr.layCCPurPaytDefLayout.setVisibility(View.GONE);
+                                                                layCCPurContTransaction();
+                                                            }
+                                                        });
+                                                        //YES CHANGE DEFAULT
+                                                        layCCPurHldr.layCCPurPaytYesDefBtn.setOnClickListener(new View.OnClickListener() {
+                                                            @Override
+                                                            public void onClick(View v) {
+                                                                layCCPurHldr.layCCPurPaytDefLayout.setVisibility(View.GONE);
+                                                                layCCPurChangeDefault();
+                                                            }
+                                                        });
+                                                    } else { //MONEY IN = DEFAULT AMT
+                                                        layCCPurContTransaction();
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                });
+                            } else if (debtAmtFromDb + layCCPurMonOutAmt > debtLimitFromDb) { //CARD IS OVER LIMIT
                                 //SHOW WARNING
                                 layCCPurHldr.layCCPurPaytWarnLayout.setVisibility(View.VISIBLE);
                                 layCCPurHldr.layCCPurPaytWarnTV.setText(getString(R.string.not_enough_credit_warning));

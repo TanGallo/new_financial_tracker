@@ -483,4 +483,7 @@
     <string name="choose_cat">Choississez une catégorie</string>
     <string name="total2">Total</string>
     <string name="inc_exp_report">Rapport de revenus et dépenses</string>
+    <string name="over_weekly">Cet achat vous mettra au-dessus de votre limite hebdomadaire dans cette catégorie.</string>
+    <string name="text">text</string>
+    <string name="slide_image">image</string>
 </resources>

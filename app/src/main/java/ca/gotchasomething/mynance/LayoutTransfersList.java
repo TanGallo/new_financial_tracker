@@ -51,8 +51,8 @@ public class LayoutTransfersList extends MainNavigation {
     ListView trn2List;
     long trn2FromId, trn2ToId;
     Spinner trn2ToMthSpin, trn2FromMthSpin, trn2ToYrSpin, trn2FromYrSpin;
-    String trn2FromIsDebt = null, trn2FromIsSav = null, trn2FromMonth = null, trn2FromYr = null, trn2ToMonth = null, trn2ToYr = null,
-            trn2MoneyOutPriority = null, trn2ToIsDebt = null, trn2ToIsSav = null, trn2LastDay = null, trn2SumTotalSelTrans = null;
+    String trn2FromDebtSav = null, trn2FromMonth = null, trn2FromYr = null, trn2ToMonth = null, trn2ToYr = null,
+            trn2MoneyOutPriority = null, trn2ToDebtSav = null, trn2LastDay = null, trn2SumTotalSelTrans = null;
     String[] trn2Months, trn2OnlyMonths, trn2Years;
     TransactionsDb trn2TransDb;
     Trn2Adapter trn2Adapter;
@@ -379,8 +379,8 @@ public class LayoutTransfersList extends MainNavigation {
         trn2DbMgr.updateTransactions(trn2TransDb);
     }
 
-    public void trn2DebtPlus() {
-        trn2DbMgr.updateRecPlusPt1(trn2TrnAmtDiff, trn2DbMgr.retrieveCurrentAcctAmt(trn2FromId), trn2FromId);
+    public void trn2DebtPlus(Double dbl1) {
+        trn2DbMgr.updateRecPlusPt1(dbl1, trn2DbMgr.retrieveCurrentAcctAmt(trn2FromId), trn2FromId);
         for (AccountsDb d : trn2DbMgr.getDebts()) {
             if (d.getId() == trn2FromId) {
                 debtOwingFromDb = d.getAcctBal();
@@ -398,8 +398,8 @@ public class LayoutTransfersList extends MainNavigation {
 
     }
 
-    public void trn2SavPlus() {
-        trn2DbMgr.updateRecPlusPt1(trn2TrnAmtDiff, trn2DbMgr.retrieveCurrentAcctAmt(trn2ToId), trn2ToId);
+    public void trn2SavPlus(Double dbl4) {
+        trn2DbMgr.updateRecPlusPt1(dbl4, trn2DbMgr.retrieveCurrentAcctAmt(trn2ToId), trn2ToId);
         for (AccountsDb s : trn2DbMgr.getSavings()) {
             if (s.getId() == trn2ToId) {
                 savGoalFromDb = s.getAcctMax();
@@ -418,8 +418,8 @@ public class LayoutTransfersList extends MainNavigation {
                         getString(R.string.too_far)), trn2ToId);
     }
 
-    public void trn2DebtMinus() {
-        trn2DbMgr.updateRecMinusPt1(trn2TrnAmtDiff, trn2DbMgr.retrieveCurrentAcctAmt(trn2ToId), trn2ToId);
+    public void trn2DebtMinus(Double dbl3) {
+        trn2DbMgr.updateRecMinusPt1(dbl3, trn2DbMgr.retrieveCurrentAcctAmt(trn2ToId), trn2ToId);
         for (AccountsDb d : trn2DbMgr.getDebts()) {
             if (d.getId() == trn2ToId) {
                 debtOwingFromDb = d.getAcctBal();
@@ -436,8 +436,8 @@ public class LayoutTransfersList extends MainNavigation {
                         getString(R.string.too_far)), trn2ToId);
     }
 
-    public void trn2SavMinus() {
-        trn2DbMgr.updateRecMinusPt1(trn2TrnAmtDiff, trn2DbMgr.retrieveCurrentAcctAmt(trn2FromId), trn2FromId);
+    public void trn2SavMinus(Double dbl2) {
+        trn2DbMgr.updateRecMinusPt1(dbl2, trn2DbMgr.retrieveCurrentAcctAmt(trn2FromId), trn2FromId);
         for (AccountsDb s : trn2DbMgr.getSavings()) {
             if (s.getId() == trn2FromId) {
                 savGoalFromDb = s.getAcctMax();
@@ -539,6 +539,10 @@ public class LayoutTransfersList extends MainNavigation {
 
             trn2MoneyOutAPercent = transfers.get(position).getTransAmtOutA() / transfers.get(position).getTransAmt();
             trn2MoneyInAPercent = transfers.get(position).getTransAmtInA() / transfers.get(position).getTransAmt();
+            trn2FromId = transfers.get(position).getTransFromAcctId();
+            trn2ToId = transfers.get(position).getTransToAcctId();
+            trn2FromDebtSav = transfers.get(position).getTransFromDebtSav();
+            trn2ToDebtSav = transfers.get(position).getTransToDebtSav();
 
             trn2Hldr.trn2EditBtn.setTag(transfers.get(position));
             trn2Hldr.trn2DelBtn.setTag(transfers.get(position));
@@ -566,7 +570,7 @@ public class LayoutTransfersList extends MainNavigation {
                             trn2AmtEntry = trn2Gen.dblFromET(trn2Hldr.trn2AmtET);
                             trn2TrnAmtDiff = trn2AmtEntry - transfers.get(position).getTransAmt();
 
-                            if (trn2FromIsDebt.equals("N") && trn2FromIsSav.equals("N")) { //FROM MAIN ACCT
+                            if (!trn2FromDebtSav.equals("D") && !trn2FromDebtSav.equals("S")) { //FROM MAIN ACCT
                                 if (trn2DbMgr.retrieveCurrentAccountBalance() - trn2TrnAmtDiff < 0) { //ACCT WILL GO NEGATIVE
                                     trn2Hldr.trn2WarnLayout.setVisibility(View.VISIBLE);
                                     trn2Hldr.trn2WarnTV.setText(getString(R.string.payment_not_possible_A));
@@ -583,22 +587,22 @@ public class LayoutTransfersList extends MainNavigation {
                                         public void onClick(View v) {
                                             trn2Hldr.trn2WarnLayout.setVisibility(View.GONE);
                                             revAndAdjTransOut();
-                                            if(trn2ToIsDebt.equals("Y")) { //TO DEBT ACCT
-                                                trn2DebtMinus();
-                                            } else if(trn2ToIsSav.equals("Y")) { //TO SAVINGS ACCT
-                                                trn2SavPlus();
+                                            if(trn2ToDebtSav.equals("D")) { //TO DEBT ACCT
+                                                trn2DebtMinus(trn2TrnAmtDiff);
+                                            } else if(trn2ToDebtSav.equals("S")) { //TO SAVINGS ACCT
+                                                trn2SavPlus(trn2TrnAmtDiff);
                                             }
                                         }
                                     });
                                 } else { //ACCT WON'T GO NEGATIVE
                                     revAndAdjTransOut();
-                                    if (trn2ToIsDebt.equals("Y")) { //TO DEBT ACCT
-                                        trn2DebtMinus();
-                                    } else if (trn2ToIsSav.equals("Y")) { //TO SAVINGS ACCT
-                                        trn2SavPlus();
+                                    if (trn2ToDebtSav.equals("D")) { //TO DEBT ACCT
+                                        trn2DebtMinus(trn2TrnAmtDiff);
+                                    } else if (trn2ToDebtSav.equals("S")) { //TO SAVINGS ACCT
+                                        trn2SavPlus(trn2TrnAmtDiff);
                                     }
                                 }
-                            } else if (trn2FromIsDebt.equals("Y")) { //FROM DEBT ACCT
+                            } else if (trn2FromDebtSav.equals("D")) { //FROM DEBT ACCT
                                 for (AccountsDb d : trn2DbMgr.getDebts()) {
                                     if (d.getId() == trn2FromId) {
                                         debtLimitFromDb = d.getAcctMax();
@@ -620,27 +624,27 @@ public class LayoutTransfersList extends MainNavigation {
                                         @Override
                                         public void onClick(View v) {
                                             trn2Hldr.trn2WarnLayout.setVisibility(View.GONE);
-                                            trn2DebtPlus();
-                                            if (trn2ToIsSav.equals("Y")) { //TO SAVINGS ACCT
-                                                trn2SavPlus();
-                                            } else if (trn2ToIsDebt.equals("Y")) { //TO DEBT ACCT
-                                                trn2DebtMinus();
+                                            trn2DebtPlus(trn2TrnAmtDiff);
+                                            if (trn2ToDebtSav.equals("S")) { //TO SAVINGS ACCT
+                                                trn2SavPlus(trn2TrnAmtDiff);
+                                            } else if (trn2ToDebtSav.equals("D")) { //TO DEBT ACCT
+                                                trn2DebtMinus(trn2TrnAmtDiff);
                                             } else { //TO MAIN ACCT
                                                 revAndAdjTransIn();
                                             }
                                         }
                                     });
                                 } else { //DEBT WON'T GO OVER LIMIT
-                                    trn2DebtPlus();
-                                    if (trn2ToIsSav.equals("Y")) { //TO SAVINGS ACCT
-                                        trn2SavPlus();
-                                    } else if (trn2ToIsDebt.equals("Y")) { //TO DEBT ACCT
-                                        trn2DebtMinus();
+                                    trn2DebtPlus(trn2TrnAmtDiff);
+                                    if (trn2ToDebtSav.equals("S")) { //TO SAVINGS ACCT
+                                        trn2SavPlus(trn2TrnAmtDiff);
+                                    } else if (trn2ToDebtSav.equals("D")) { //TO DEBT ACCT
+                                        trn2DebtMinus(trn2TrnAmtDiff);
                                     } else { //TO MAIN ACCT
                                         revAndAdjTransIn();
                                     }
                                 }
-                            } else if (trn2FromIsSav.equals("Y")) { //FROM SAVINGS ACCT
+                            } else if (trn2FromDebtSav.equals("S")) { //FROM SAVINGS ACCT
                                 if(trn2DbMgr.retrieveCurrentAcctAmt(trn2FromId) - trn2TrnAmtDiff < 0) { //ACCT WILL GO NEGATIVE
                                     trn2Hldr.trn2WarnLayout.setVisibility(View.VISIBLE);
                                     trn2Hldr.trn2WarnTV.setText(getString(R.string.not_enough_savings_warning));
@@ -656,22 +660,22 @@ public class LayoutTransfersList extends MainNavigation {
                                         @Override
                                         public void onClick(View v) {
                                             trn2Hldr.trn2WarnLayout.setVisibility(View.GONE);
-                                            trn2SavMinus();
-                                            if (trn2ToIsSav.equals("Y")) { //TO SAVINGS ACCT
-                                                trn2SavPlus();
-                                            } else if (trn2ToIsDebt.equals("Y")) { //TO DEBT ACCT
-                                                trn2DebtMinus();
+                                            trn2SavMinus(trn2TrnAmtDiff);
+                                            if (trn2ToDebtSav.equals("S")) { //TO SAVINGS ACCT
+                                                trn2SavPlus(trn2TrnAmtDiff);
+                                            } else if (trn2ToDebtSav.equals("D")) { //TO DEBT ACCT
+                                                trn2DebtMinus(trn2TrnAmtDiff);
                                             } else { //TO MAIN ACCT
                                                 revAndAdjTransIn();
                                             }
                                         }
                                     });
                                 } else { //ACCT WON'T GO OVER NEGATIVE
-                                    trn2SavMinus();
-                                    if (trn2ToIsSav.equals("Y")) { //TO SAVINGS ACCT
-                                        trn2SavPlus();
-                                    } else if (trn2ToIsDebt.equals("Y")) { //TO DEBT ACCT
-                                        trn2DebtMinus();
+                                    trn2SavMinus(trn2TrnAmtDiff);
+                                    if (trn2ToDebtSav.equals("S")) { //TO SAVINGS ACCT
+                                        trn2SavPlus(trn2TrnAmtDiff);
+                                    } else if (trn2ToDebtSav.equals("D")) { //TO DEBT ACCT
+                                        trn2DebtMinus(trn2TrnAmtDiff);
                                     } else { //TO MAIN ACCT
                                         revAndAdjTransIn();
                                     }
@@ -690,7 +694,7 @@ public class LayoutTransfersList extends MainNavigation {
                         public void onClick(View v) {
                             trn2TransDb = (TransactionsDb) trn2Hldr.trn2DelBtn.getTag();
 
-                            if (trn2FromIsDebt.equals("N") && trn2FromIsSav.equals("N")) { //FROM MAIN ACCT
+                            if (!trn2FromDebtSav.equals("D") && !trn2FromDebtSav.equals("S")) { //FROM MAIN ACCT
                                 trn2DbMgr.updateTotAcctBalPlus(transfers.get(position).getTransAmt(), trn2DbMgr.retrieveCurrentAccountBalance());
                                 trn2DbMgr.updateAandBBalPlus(
                                         transfers.get(position).getTransAmtOutA(),
@@ -704,18 +708,18 @@ public class LayoutTransfersList extends MainNavigation {
                                     trn2DbMgr.adjustCurrentAandB(trn2DbMgr.retrieveCurrentOwingA(), trn2DbMgr.retrieveCurrentA(), trn2DbMgr.retrieveCurrentB());
                                 }
 
-                                if(trn2ToIsDebt.equals("Y")) { //TO DEBT ACCT
-                                    trn2DebtPlus();
-                                } else if(trn2ToIsSav.equals("Y")) { //TO SAVINGS ACCT
-                                    trn2SavMinus();
+                                if(trn2ToDebtSav.equals("D")) { //TO DEBT ACCT
+                                    trn2DebtPlus(transfers.get(position).getTransAmt());
+                                } else if(trn2ToDebtSav.equals("S")) { //TO SAVINGS ACCT
+                                    trn2SavMinus(transfers.get(position).getTransAmt());
                                 }
-                            } else if (trn2FromIsDebt.equals("Y")) { //FROM DEBT ACCT
-                                trn2DebtMinus();
+                            } else if (trn2FromDebtSav.equals("D")) { //FROM DEBT ACCT
+                                trn2DebtMinus(transfers.get(position).getTransAmt());
 
-                                if(trn2ToIsDebt.equals("Y")) { //TO DEBT ACCT
-                                    trn2DebtPlus();
-                                } else if(trn2ToIsSav.equals("Y")) { //TO SAVINGS ACCT
-                                    trn2SavMinus();
+                                if(trn2ToDebtSav.equals("D")) { //TO DEBT ACCT
+                                    trn2DebtPlus(transfers.get(position).getTransAmt());
+                                } else if(trn2ToDebtSav.equals("S")) { //TO SAVINGS ACCT
+                                    trn2SavMinus(transfers.get(position).getTransAmt());
                                 } else { //TO MAIN ACCT
                                     trn2DbMgr.updateTotAcctBalMinus(transfers.get(position).getTransAmt(), trn2DbMgr.retrieveCurrentAccountBalance());
                                     trn2DbMgr.updateAandBBalMinus(
@@ -730,13 +734,13 @@ public class LayoutTransfersList extends MainNavigation {
                                         trn2DbMgr.adjustCurrentAandB(trn2DbMgr.retrieveCurrentOwingA(), trn2DbMgr.retrieveCurrentA(), trn2DbMgr.retrieveCurrentB());
                                     }
                                 }
-                            } else if (trn2FromIsSav.equals("Y")) { //FROM SAVINGS ACCT
-                                trn2SavPlus();
+                            } else if (trn2FromDebtSav.equals("S")) { //FROM SAVINGS ACCT
+                                trn2SavPlus(transfers.get(position).getTransAmt());
 
-                                if(trn2ToIsDebt.equals("Y")) { //TO DEBT ACCT
-                                    trn2DebtPlus();
-                                } else if(trn2ToIsSav.equals("Y")) { //TO SAVINGS ACCT
-                                    trn2SavMinus();
+                                if(trn2ToDebtSav.equals("D")) { //TO DEBT ACCT
+                                    trn2DebtPlus(transfers.get(position).getTransAmt());
+                                } else if(trn2ToDebtSav.equals("S")) { //TO SAVINGS ACCT
+                                    trn2SavMinus(transfers.get(position).getTransAmt());
                                 } else { //TO MAIN ACCT
                                     trn2DbMgr.updateTotAcctBalMinus(transfers.get(position).getTransAmt(), trn2DbMgr.retrieveCurrentAccountBalance());
                                     trn2DbMgr.updateAandBBalMinus(

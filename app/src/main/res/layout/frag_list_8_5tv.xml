@@ -195,7 +195,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginEnd="10dp"
-            android:digits="01234567890-"
+            android:digits="01234567890.-"
             android:inputType="numberSigned|numberDecimal"
             android:hint="@string/amount"
             android:textColor="@color/colorPrimaryDark"

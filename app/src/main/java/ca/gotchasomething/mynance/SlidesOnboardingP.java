@@ -1,8 +1,6 @@
 package ca.gotchasomething.mynance;
 
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -11,6 +9,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,7 +18,6 @@ import androidx.viewpager.widget.ViewPager;
 
 import ca.gotchasomething.mynance.data.AccountsDb;
 import ca.gotchasomething.mynance.data.BudgetDb;
-//import ca.gotchasomething.mynance.data.ExpenseBudgetDb;
 import ca.gotchasomething.mynance.data.SetUpDb;
 
 public class SlidesOnboardingP extends AppCompatActivity implements View.OnClickListener {
@@ -28,34 +26,28 @@ public class SlidesOnboardingP extends AppCompatActivity implements View.OnClick
     private AdapterSlides adapter;
     BudgetDb expDb;
     private Button skipButton, nextButton;
-    Cursor setUpCursor;
-    DbHelper setUpHelper;
     DbManager dbManager;
     Double balanceAmount;
+    ImageView slide1Image;
     private ImageView[] dots;
-    int position, tourDoneYes;
     private int[] slides = {
-            R.layout.a_slides_onboarding_1,
-            R.layout.a_slides_onboarding_2,
-            R.layout.a_slides_onboarding_3,
-            R.layout.a_slides_onboarding_4,
-            R.layout.a_slides_onboarding_5,
-            R.layout.a_slides_onboarding_6
+            R.layout.a1_slides_onboarding_background,
+            R.layout.a1_slides_onboarding_background,
+            R.layout.a1_slides_onboarding_background,
+            R.layout.a1_slides_onboarding_background,
+            R.layout.a1_slides_onboarding_background,
+            R.layout.a1_slides_onboarding_background
     };
     private LinearLayout dotsLayout;
     SetUpDb setUpDb;
-    SQLiteDatabase setUpDbDb;
-    String latestDone = null;
+    TextView slide1Title, slide1Description;
     ViewPager viewPager;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //dbManager = new DbManager(this);
-
-        if (new PreferenceManager(this).checkPreferences()) {
-            loadHome();
+        if (new PreferenceManager(this).checkPreferences()) { loadHome();
         }
 
         if (Build.VERSION.SDK_INT >= 19) {
@@ -70,6 +62,9 @@ public class SlidesOnboardingP extends AppCompatActivity implements View.OnClick
         adapter = new AdapterSlides(slides, this);
         viewPager.setAdapter(adapter);
 
+        slide1Image = findViewById(R.id.slide1Image);
+        slide1Title = findViewById(R.id.slide1Title);
+        slide1Description = findViewById(R.id.slide1Description);
         dotsLayout = findViewById(R.id.dotsLayout);
         skipButton = findViewById(R.id.skipButton);
         nextButton = findViewById(R.id.nextButton);
@@ -85,6 +80,42 @@ public class SlidesOnboardingP extends AppCompatActivity implements View.OnClick
             @Override
             public void onPageSelected(int position) {
                 createDots(position);
+
+                switch(position) {
+                    case 0:
+                        slide1Image.setImageDrawable(getDrawable(R.mipmap.ic_launcher));
+                        slide1Title.setVisibility(View.VISIBLE);
+                        slide1Title.setText(R.string.welcome_to_mynance);
+                        slide1Description.setText(R.string.a_text1);
+                        break;
+                    case 1:
+                        slide1Image.setImageDrawable(getDrawable(R.drawable.ic_create_new_folder_white_24dp));
+                        slide1Title.setVisibility(View.VISIBLE);
+                        slide1Title.setText(R.string.step_1);
+                        slide1Description.setText(R.string.a_text2);
+                        break;
+                    case 2:
+                        slide1Image.setImageDrawable(getDrawable(R.drawable.ic_account_balance_white_24dp));
+                        slide1Title.setVisibility(View.VISIBLE);
+                        slide1Title.setText(R.string.step_2);
+                        slide1Description.setText(R.string.a_text3);
+                        break;
+                    case 3:
+                        slide1Image.setImageDrawable(getDrawable(R.drawable.ic_equalizer_white_24dp));
+                        slide1Title.setVisibility(View.INVISIBLE);
+                        slide1Description.setText(R.string.a_text4);
+                        break;
+                    case 4:
+                        slide1Image.setImageDrawable(getDrawable(R.drawable.ic_credit_card_white_24dp));
+                        slide1Title.setVisibility(View.INVISIBLE);
+                        slide1Description.setText(R.string.a_text5);
+                        break;
+                    case 5:
+                        slide1Image.setImageDrawable(getDrawable(R.drawable.ic_help_outline_white_24dp));
+                        slide1Title.setVisibility(View.INVISIBLE);
+                        slide1Description.setText(R.string.a_text6);
+                        break;
+                }
 
                 if (position == slides.length - 1) {
                     nextButton.setText(getResources().getString(R.string.start_button));
@@ -111,12 +142,10 @@ public class SlidesOnboardingP extends AppCompatActivity implements View.OnClick
             dots[i] = new ImageView(this);
             if (i == current_position) {
                 dots[i].setImageDrawable(
-                        AppCompatResources.getDrawable(
-                                this, R.drawable.active_dots));
+                        AppCompatResources.getDrawable(this, R.drawable.active_dots));
             } else {
                 dots[i].setImageDrawable(
-                        AppCompatResources.getDrawable(
-                                this, R.drawable.default_dots));
+                        AppCompatResources.getDrawable(this, R.drawable.default_dots));
             }
 
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(

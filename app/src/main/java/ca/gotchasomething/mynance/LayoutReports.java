@@ -29,14 +29,14 @@ import ca.gotchasomething.mynance.data.BudgetDb;
 import ca.gotchasomething.mynance.data.TransactionsDb;
 
 public class LayoutReports extends MainNavigation {
-    
+
     ArrayAdapter repFromMthSpinAdapter, repFromYrSpinAdapter, repToMthSpinAdapter, repToYrSpinAdapter;
     boolean repLeapYear;
     Button repSpinOkBtn, repSpinResetBtn;
     Calendar repCal;
     Date repEarliestDate, repLatestDate, repTransDateD, repTransDateD2, repTransDateD3;
     DbManager repDbMgr;
-    Double percentSpent = 0.0, totalAmtPerCat = 0.0, totalReceived = 0.0, totalReceivedPerCat = 0.0, totalSpent = 0.0, totalSpentPerCat = 0.0;
+    Double totalAmt = 0.0, totalAmtPerCat = 0.0, totalReceived = 0.0, totalReceivedPerCat = 0.0, totalSpent = 0.0, totalSpentPerCat = 0.0;
     General repGen;
     int repYear;
     Intent repRefresh;
@@ -82,8 +82,6 @@ public class LayoutReports extends MainNavigation {
         repCatLabel.setVisibility(View.GONE);
         repAmtLabel = findViewById(R.id.repAmtLabel);
         repAmtLabel.setVisibility(View.GONE);
-        repPercentLabel = findViewById(R.id.repPercentLabel);
-        repPercentLabel.setVisibility(View.GONE);
         repListView = findViewById(R.id.repListView);
         repListView.setVisibility(View.GONE);
 
@@ -238,10 +236,9 @@ public class LayoutReports extends MainNavigation {
             } else {
                 try {
                     repAdapter = new RepLstAdapter(getApplicationContext(), repDbMgr.getBudget());
-                        repListView.setAdapter(repAdapter);
+                    repListView.setAdapter(repAdapter);
                         repCatLabel.setVisibility(View.VISIBLE);
                         repAmtLabel.setVisibility(View.VISIBLE);
-                        repPercentLabel.setVisibility(View.VISIBLE);
                         repSpinOkBtn.setVisibility(View.GONE);
                         repSpinResetBtn.setVisibility(View.VISIBLE);
                 } catch (NullPointerException e) {
@@ -298,7 +295,6 @@ public class LayoutReports extends MainNavigation {
                 repHldr = new RepViewHolder();
                 repHldr.repCatTV = convertView.findViewById(R.id.repCatTV);
                 repHldr.repAmtTV = convertView.findViewById(R.id.repAmtTV);
-                repHldr.repPercentTV = convertView.findViewById(R.id.repPercentTV);
                 convertView.setTag(repHldr);
 
             } else {
@@ -310,71 +306,47 @@ public class LayoutReports extends MainNavigation {
 
             budgetId = budget.get(position).getId();
 
-            //retrieve total spent or received in each category
-            List<Double> totalAmtPerCatList = new ArrayList<>();
-            for(TransactionsDb t3 : repDbMgr.getTransactions()) {
-                repTransDate = t3.getTransCreatedOn();
-                repTransDateD = repGen.dateFromString(repTransDate);
-                if(t3.getTransBdgtId() == budgetId && !repTransDateD.before(repEarliestDate) && !repTransDateD.after(repLatestDate)) {
-                    totalAmtPerCatList.add(t3.getTransAmt());
+            List<Double> allAmts = new ArrayList<>();
+            for (TransactionsDb t4 : repDbMgr.getTransactions()) {
+                repTransDate = t4.getTransCreatedOn();
+                repTransDateD2 = repGen.dateFromString(repTransDate);
+                if (!repTransDateD2.before(repEarliestDate) && !repTransDateD2.after(repLatestDate)) {
+                    allAmts.add(t4.getTransAmt());
                 }
             }
-            totalAmtPerCat = 0.0;
-            if (totalAmtPerCatList.size() == 0) {
+            totalAmt = 0.0;
+            if (allAmts.size() == 0) {
+                totalAmt = 0.0;
+                repCatLabel.setVisibility(View.GONE);
+                repHldr.repCatTV.setVisibility(View.GONE);
+                repAmtLabel.setVisibility(View.GONE);
+                repHldr.repAmtTV.setVisibility(View.GONE);
+                repListView.setDividerHeight(0);
+                Toast.makeText(getBaseContext(), R.string.no_entries, Toast.LENGTH_LONG).show();
+            } else {
+
+                //retrieve total spent or received in each category
+                List<Double> totalAmtPerCatList = new ArrayList<>();
+                for (TransactionsDb t3 : repDbMgr.getTransactions()) {
+                    repTransDate = t3.getTransCreatedOn();
+                    repTransDateD = repGen.dateFromString(repTransDate);
+                    if (t3.getTransBdgtId() == budgetId && !repTransDateD.before(repEarliestDate) && !repTransDateD.after(repLatestDate)) {
+                        totalAmtPerCatList.add(t3.getTransAmt());
+                    }
+                }
                 totalAmtPerCat = 0.0;
-                //repHldr.repCatTV.setVisibility(View.GONE);
-                //repHldr.repAmtTV.setVisibility(View.GONE);
-                repHldr.repPercentTV.setVisibility(View.GONE);
-            } else {
-                for (Double dbl : totalAmtPerCatList) {
-                    totalAmtPerCat += dbl;
+                if (totalAmtPerCatList.size() == 0) {
+                    totalAmtPerCat = 0.0;
+                    repHldr.repCatTV.setVisibility(View.GONE);
+                    repHldr.repAmtTV.setVisibility(View.GONE);
+                    repListView.setDividerHeight(0);
+                } else {
+                    for (Double dbl : totalAmtPerCatList) {
+                        totalAmtPerCat += dbl;
+                    }
                 }
-            }
 
-            repGen.dblASCurrency(String.valueOf(totalAmtPerCat), repHldr.repAmtTV);
-
-            //retrieve total spent during the period
-            List<Double> totalSpentList = new ArrayList<>();
-            for(TransactionsDb t2 : repDbMgr.getTransactions()) {
-                repTransDate2 = t2.getTransCreatedOn();
-                repTransDateD2 = repGen.dateFromString(repTransDate2);
-                if(t2.getTransType().equals("out") && !repTransDateD2.before(repEarliestDate) && !repTransDateD2.after(repLatestDate)) {
-                    totalSpentList.add(t2.getTransAmt());
-                }
-            }
-            totalSpent = 0.0;
-            if (totalSpentList.size() == 0) {
-                totalSpent = 0.0;
-            } else {
-                for (Double dbl : totalSpentList) {
-                    totalSpent += dbl;
-                }
-            }
-
-            //retrieve total received during the period
-            List<Double> totalReceivedList = new ArrayList<>();
-            for(TransactionsDb t : repDbMgr.getTransactions()) {
-                repTransDate3 = t.getTransCreatedOn();
-                repTransDateD3 = repGen.dateFromString(repTransDate3);
-                if(t.getTransType().equals("in") && !repTransDateD3.before(repEarliestDate) && !repTransDateD3.after(repLatestDate)) {
-                    totalReceivedList.add(t.getTransAmt());
-                }
-            }
-            totalReceived = 0.0;
-            if (totalReceivedList.size() == 0) {
-                totalReceived = 0.0;
-            } else {
-                for (Double dbl : totalReceivedList) {
-                    totalReceived += dbl;
-                }
-            }
-
-            //retrieve percent of total in each category
-            percentFormat.setMinimumFractionDigits(2);
-            if(budget.get(position).getBdgtExpInc().equals("E")) {
-                repHldr.repPercentTV.setText(percentFormat.format(totalAmtPerCat / totalSpent));
-            } else if(budget.get(position).getBdgtExpInc().equals("I")) {
-                repHldr.repPercentTV.setText(percentFormat.format(totalAmtPerCat / totalReceived));
+                repGen.dblASCurrency(String.valueOf(totalAmtPerCat), repHldr.repAmtTV);
             }
 
             return convertView;
@@ -384,6 +356,5 @@ public class LayoutReports extends MainNavigation {
     private static class RepViewHolder {
         public TextView repCatTV;
         public TextView repAmtTV;
-        public TextView repPercentTV;
     }
 }
