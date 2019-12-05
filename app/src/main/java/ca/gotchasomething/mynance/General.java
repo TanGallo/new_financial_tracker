@@ -247,11 +247,11 @@ public class General extends AppCompatActivity {
 
         if (dbl1 <= 0) { //debtOwing = 0
             debtEnd = str1;
-        } else if (dbl3 == 0) { //debtPayts = 0
+        } else if (dbl3 == 0.0) { //debtPayts = 0
             debtEnd = str2;
         } else if (dbl3 < ((dbl1 * ((dbl2 / 100) / 365)) * 30)) { //payts are less than the interest
             debtEnd = str2;
-        } else if (dbl2 == 0) { //debtRate = 0
+        } else if (dbl2 == 0.0) { //debtRate = 0
             numberOfYearsToPayDebt = dbl1 / (dbl3 * 12.0); //years = amount owing / annual payments
             numberOfDaysToPayDebt = (int) Math.round(numberOfYearsToPayDebt * 365);
             if (numberOfDaysToPayDebt <= 0) {
@@ -296,32 +296,32 @@ public class General extends AppCompatActivity {
 
         alreadyDetermined = false;
 
-        if (dbl2 == 0) {
+        if (dbl2 == 0.0) {
             dbl2 = .01;
         }
-        if (dbl5 == 0) {
+        if (dbl5 == 0.0) {
             dbl5 = .01;
         }
 
-        if (dbl1 == 0 || dbl1 <= dbl2) { //if goal is 0 or <= amount then goal achieved
+        if (dbl1 == 0.0 || dbl1 <= dbl2) { //if goal is 0 or <= amount then goal achieved
             savingsDateB = str1;
             alreadyDetermined = true;
-        } else if (dbl2 == 0) { //if amount is 0
-            if (dbl5 == 0 || dbl5 == .01 || (dbl4 / 100) == 0) { //if payments are 0 or rate is 0 then too far
+        } else if (dbl2 == 0.0) { //if amount is 0
+            if (dbl5 == 0.0 || dbl5 == .01 || (dbl4 / 100) == 0.0) { //if payments are 0 or rate is 0 then too far
                 savingsDateB = str2;
                 alreadyDetermined = true;
             }
-        } else if ((dbl4 / 100) == 0) { //if rate is 0
+        } else if ((dbl4 / 100) == 0.0) { //if rate is 0
             years = ((dbl1 - dbl2) / (dbl5 * 12.0)); //years = amount left until goal / annual contribution
             numberOfDaysToSavingsGoal = (int) Math.round(years * 365);
             alreadyDetermined = false;
         } else {
             years2 = 0.0;
             alreadyDetermined = false;
-            if (dbl2 == 0) {
+            if (dbl2 == 0.0) {
                 dbl2 = .01;
             }
-            if (dbl5 == 0) {
+            if (dbl5 == 0.0) {
                 dbl5 = .01;
             }
             do {

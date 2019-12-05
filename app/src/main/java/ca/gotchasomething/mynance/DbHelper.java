@@ -34,9 +34,9 @@ public class DbHelper extends SQLiteOpenHelper {
     public static final String BDGTWEEKLY = "bdgtWeekly";
 
     public static final String CURRENT_TABLE_NAME = "current";
-    public static final String CURRENTB = "currentB";
     public static final String CURRENTA = "currentA";
     public static final String CURRENTOWINGA = "currentOwingA";
+    public static final String CURRENTB = "currentB";
     public static final String LASTPAGEID = "lastPageId";
     public static final String LASTDATE = "lastDate";
 
@@ -106,9 +106,9 @@ public class DbHelper extends SQLiteOpenHelper {
 
     private static final String createCurrentQuery = "CREATE TABLE " + CURRENT_TABLE_NAME +
             " (_id INTEGER PRIMARY KEY," +
-            " currentB REAL," +
             " currentA REAL," +
             " currentOwingA REAL," +
+            " currentB REAL," +
             " lastPageId INTEGER," +
             " lastDate TEXT)";
 

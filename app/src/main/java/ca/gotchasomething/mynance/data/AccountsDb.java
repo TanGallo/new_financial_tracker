@@ -10,7 +10,7 @@ public class AccountsDb {
     private Double acctPaytsTo; //amt regularly contributed to this acct
     private Double acctAnnPaytsTo; //annual amt regularly contributed to this acct
     private String acctEndDate; //date goal will be achieved
-    private Double acctDebtToPay; //debts only (used only in pay credit cards screen to total amt to pay towards this acct in that transaction)
+    private Double acctDebtToPay; //debts only (used only in pay credit cards screen to identify which amts to pay)
     private long id;
 
     public AccountsDb(

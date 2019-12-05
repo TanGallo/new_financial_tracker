@@ -14,7 +14,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -22,6 +21,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 
 import java.util.List;
 
@@ -33,6 +33,7 @@ import ca.gotchasomething.mynance.spinners.TransferSpinnerAdapter;
 public class LayoutMoneyOut extends MainNavigation {
 
     BudgetDb monOutExpDb;
+    Button transDialogSaveBtn, transDialogCancelBtn, transDialogNoDefBtn, transDialogYesDefBtn, transDialogNoContBtn, transDialogYesContBtn;
     ContentValues monOutCV;
     Cursor monOutCur, monOutCur2;
     DbHelper monOutHelper, monOutHelper2, monOutHelper3;
@@ -40,20 +41,23 @@ public class LayoutMoneyOut extends MainNavigation {
     Double moneyOutA = 0.0, moneyOutOwing = 0.0, moneyOutB = 0.0, monOutMoneyOutA = 0.0, monOutMoneyOutOwing = 0.0, monOutMoneyOutB = 0.0,
             monOutMonOutAmt = 0.0, monOutMonOutOldAmt = 0.0, monOutMonOutNewAmt = 0.0, monOutWeeklyLimit = 0.0, newMoneyA = 0.0, newMoneyOwing = 0.0, newMoneyB = 0.0,
             savAmtFromDb = 0.0, savGoalFromDb = 0.0, savPaytFromDb = 0.0, savRateFromDb = 0.0;
+    EditText transDialogAmtET;
     General monOutGen;
     int clicked2 = 0, clickedE2 = 0;
     Intent monOutToRatings, monOutToAddMore, monOutRefresh, monOutToList, monOutToFixBudget;
-    LinearLayout monOutHeaderLayout;
+    LinearLayout monOutHeaderLayout, transDialogDefLayout, transDialogWarnLayout;
     ListView monOutList;
     long monOutExpId, monOutMaxId, monOutExpRefKeyMO, monOutSavId, monOutFromAcctId;
     MonOutLstAdapter monOutLstAdapter;
     SharedPreferences sp, spE;
     Spinner monOutSpin;
     SQLiteDatabase monOutDb, monOutDb2, monOutDb3;
-    String clicked2S = null, clickedE2S = null, monOutAcctName = null, monOutExpName = null, monOutExpPriority = null, monOutExpWeekly = null, monOutFromDebtSav = null;
-    TextView monOutAddMoreTV, monOutBudgWarnTV, monOutAvailAcctTV, monOutAvailAmtLabel, monOutDepToTV, monOutIncSourceTV, monOutTotAcctTV;
+    String clicked2S = null, clickedE2S = null, monOutAcctName = null, monOutExpName = null, monOutExpPriority = null, monOutExpWeekly = null, monOutFromIsDebtSav = null;
+    TextView monOutAddMoreTV, monOutBudgWarnTV, monOutAvailAcctTV, monOutAvailAmtLabel, monOutDepToTV, monOutIncSourceTV, monOutTotAcctTV,
+            transDialogCatTV, transDialogPayLabel, transDialogAmtTV, transDialogWarnTV;
     TransactionsDb monOutMonOutDb;
     TransferSpinnerAdapter monOutSpinAdapter;
+    View dView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -194,7 +198,7 @@ public class LayoutMoneyOut extends MainNavigation {
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
             monOutAcctName = monOutCur2.getString(monOutCur2.getColumnIndexOrThrow(DbHelper.ACCTNAME));
-            monOutFromDebtSav = monOutCur2.getString(monOutCur2.getColumnIndexOrThrow(DbHelper.ACCTDEBTSAV));
+            monOutFromIsDebtSav = monOutCur2.getString(monOutCur2.getColumnIndexOrThrow(DbHelper.ACCTDEBTSAV));
             monOutFromAcctId = monOutCur2.getLong(monOutCur2.getColumnIndexOrThrow(DbHelper.ID));
         }
 
@@ -282,7 +286,7 @@ public class LayoutMoneyOut extends MainNavigation {
                 "N/A",
                 monOutFromAcctId,
                 monOutAcctName,
-                monOutFromDebtSav,
+                monOutFromIsDebtSav,
                 monOutExpPriority,
                 monOutExpWeekly,
                 "N/A",
@@ -339,23 +343,6 @@ public class LayoutMoneyOut extends MainNavigation {
 
                 monOutHldr = new MonOutViewHolder();
                 monOutHldr.monOutCatTV = convertView.findViewById(R.id.paytCatTV);
-                monOutHldr.monOutCatLayout = convertView.findViewById(R.id.paytCatLayout);
-                monOutHldr.monOutCatLayout.setVisibility(View.GONE);
-                monOutHldr.monOutDepLabel = convertView.findViewById(R.id.paytPayLabel);
-                monOutHldr.monOutDepLabel.setText(getString(R.string.spent));
-                monOutHldr.monOutAmtTV = convertView.findViewById(R.id.paytAmtTV);
-                monOutHldr.monOutNewAmtET = convertView.findViewById(R.id.paytAmtET);
-                monOutHldr.monOutSaveButton = convertView.findViewById(R.id.paytSaveBtn);
-                monOutHldr.monOutSaveButton.setVisibility(View.GONE);
-                monOutHldr.monOutWarnLayout = convertView.findViewById(R.id.paytWarnLayout);
-                monOutHldr.monOutWarnLayout.setVisibility(View.GONE);
-                monOutHldr.monOutWarnTV = convertView.findViewById(R.id.paytWarnTV);
-                monOutHldr.monOutYesContButton = convertView.findViewById(R.id.paytYesContBtn);
-                monOutHldr.monOutNoContButton = convertView.findViewById(R.id.paytNoContBtn);
-                monOutHldr.monOutDefLayout = convertView.findViewById(R.id.paytDefLayout);
-                monOutHldr.monOutDefLayout.setVisibility(View.GONE);
-                monOutHldr.monOutYesDefButton = convertView.findViewById(R.id.paytYesDefBtn);
-                monOutHldr.monOutNoDefButton = convertView.findViewById(R.id.paytNoDefBtn);
                 convertView.setTag(monOutHldr);
 
             } else {
@@ -363,30 +350,52 @@ public class LayoutMoneyOut extends MainNavigation {
             }
 
             monOutHldr.monOutCatTV.setText(expenses.get(position).getBdgtCat());
-            monOutGen.dblASCurrency(String.valueOf(expenses.get(position).getBdgtPaytAmt()), monOutHldr.monOutAmtTV);
-
-            monOutExpRefKeyMO = expenses.get(position).getId();
 
             monOutHldr.monOutCatTV.setTag(expenses.get(position));
-            monOutHldr.monOutSaveButton.setTag(expenses.get(position));
 
             monOutHldr.monOutCatTV.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    monOutHldr.monOutCatLayout.setVisibility(View.VISIBLE);
-                    monOutHldr.monOutSaveButton.setVisibility(View.VISIBLE);
+                    monOutExpDb = (BudgetDb) monOutHldr.monOutCatTV.getTag();
 
-                    monOutHldr.monOutSaveButton.setOnClickListener(new View.OnClickListener() {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(LayoutMoneyOut.this);
+                    dView = getLayoutInflater().inflate(R.layout.dialog_transaction, null);
+                    transDialogCatTV = dView.findViewById(R.id.transDialogCatTV);
+                    transDialogCatTV.setText(expenses.get(position).getBdgtCat());
+                    transDialogPayLabel = dView.findViewById(R.id.transDialogPayLabel);
+                    transDialogPayLabel.setText(R.string.spent);
+                    transDialogAmtTV = dView.findViewById(R.id.transDialogAmtTV);
+                    monOutGen.dblASCurrency(String.valueOf(expenses.get(position).getBdgtPaytAmt()), transDialogAmtTV);
+                    transDialogAmtET = dView.findViewById(R.id.transDialogAmtET);
+                    transDialogSaveBtn = dView.findViewById(R.id.transDialogSaveBtn);
+                    transDialogCancelBtn = dView.findViewById(R.id.transDialogCancelBtn);
+                    transDialogDefLayout = dView.findViewById(R.id.transDialogDefLayout);
+                    transDialogDefLayout.setVisibility(View.GONE);
+                    transDialogNoDefBtn = dView.findViewById(R.id.transDialogNoDefBtn);
+                    transDialogYesDefBtn = dView.findViewById(R.id.transDialogYesDefBtn);
+                    transDialogWarnLayout = dView.findViewById(R.id.transDialogWarnLayout);
+                    transDialogWarnLayout.setVisibility(View.GONE);
+                    transDialogWarnTV = dView.findViewById(R.id.transDialogWarnTV);
+                    transDialogNoContBtn = dView.findViewById(R.id.transDialogNoContBtn);
+                    transDialogYesContBtn = dView.findViewById(R.id.transDialogYesContBtn);
+
+                    transDialogCancelBtn.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            monOutExpDb = (BudgetDb) monOutHldr.monOutSaveButton.getTag();
+                            monOutRefresh();
+                        }
+                    });
+
+                    transDialogSaveBtn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
 
                             monOutExpName = monOutExpDb.getBdgtCat();
                             monOutExpId = monOutExpDb.getId();
                             monOutWeeklyLimit = monOutExpDb.getBdgtAnnPayt() / 52;
 
                             monOutMonOutOldAmt = monOutExpDb.getBdgtPaytAmt();
-                            monOutMonOutNewAmt = monOutGen.dblFromET(monOutHldr.monOutNewAmtET);
+                            monOutMonOutNewAmt = monOutGen.dblFromET(transDialogAmtET);
 
                             if (monOutMonOutNewAmt == 0) {
                                 monOutMonOutAmt = monOutMonOutOldAmt;
@@ -397,55 +406,55 @@ public class LayoutMoneyOut extends MainNavigation {
                             monOutExpPriority = monOutExpDb.getBdgtPriority();
                             monOutExpWeekly = monOutExpDb.getBdgtWeekly();
 
-                            if (monOutExpWeekly.equals("Y") && (monOutDbMgr.checkOverWeekly(monOutExpId) + monOutMonOutAmt > monOutWeeklyLimit)) {
-                                monOutHldr.monOutWarnLayout.setVisibility(View.VISIBLE);
-                                monOutHldr.monOutWarnTV.setText(getString(R.string.over_weekly));
+                            if (monOutExpWeekly.equals("Y") && (monOutDbMgr.checkOverWeekly(monOutExpId) + monOutMonOutAmt > monOutWeeklyLimit)) { //IF OVER WEEKLY LIMIT
+                                transDialogWarnLayout.setVisibility(View.VISIBLE);
+                                transDialogWarnTV.setText(getString(R.string.over_weekly));
 
-                                monOutHldr.monOutNoContButton.setOnClickListener(new View.OnClickListener() {
+                                transDialogNoContBtn.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
-                                        monOutHldr.monOutWarnLayout.setVisibility(View.GONE);
+                                        transDialogWarnLayout.setVisibility(View.GONE);
                                         monOutRefresh();
                                     }
                                 });
 
-                                monOutHldr.monOutYesContButton.setOnClickListener(new View.OnClickListener() {
+                                transDialogYesContBtn.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
-                                        monOutHldr.monOutWarnLayout.setVisibility(View.GONE);
+                                        transDialogWarnLayout.setVisibility(View.GONE);
 
-                                        if (monOutFromDebtSav.equals("S")) {
-                                            if (monOutDbMgr.retrieveCurrentAcctAmt(monOutFromAcctId) - monOutMonOutAmt < 0) {
-                                                monOutHldr.monOutWarnLayout.setVisibility(View.VISIBLE);
-                                                monOutHldr.monOutWarnTV.setText(getString(R.string.not_enough_savings_warning));
+                                        if (monOutFromIsDebtSav.equals("S")) { //FROM SAV ACCT
+                                            if (monOutDbMgr.retrieveCurrentAcctAmt(monOutFromAcctId) - monOutMonOutAmt < 0) { //WILL GO NEGATIVE
+                                                transDialogWarnLayout.setVisibility(View.VISIBLE);
+                                                transDialogWarnTV.setText(getString(R.string.not_enough_savings_warning));
 
-                                                monOutHldr.monOutNoContButton.setOnClickListener(new View.OnClickListener() {
+                                                transDialogNoContBtn.setOnClickListener(new View.OnClickListener() {
                                                     @Override
                                                     public void onClick(View v) {
-                                                        monOutHldr.monOutWarnLayout.setVisibility(View.GONE);
+                                                        transDialogWarnLayout.setVisibility(View.GONE);
                                                         monOutRefresh();
                                                     }
                                                 });
 
-                                                monOutHldr.monOutYesContButton.setOnClickListener(new View.OnClickListener() {
+                                                transDialogYesContBtn.setOnClickListener(new View.OnClickListener() {
                                                     @Override
                                                     public void onClick(View v) {
-                                                        monOutHldr.monOutWarnLayout.setVisibility(View.GONE);
-                                                        if (monOutMonOutAmt == monOutMonOutNewAmt) {
-                                                            monOutHldr.monOutDefLayout.setVisibility(View.VISIBLE);
+                                                        transDialogWarnLayout.setVisibility(View.GONE);
+                                                        if (monOutMonOutAmt == monOutMonOutNewAmt) { //IF ENTERED NEW AMT
+                                                            transDialogDefLayout.setVisibility(View.VISIBLE);
 
-                                                            monOutHldr.monOutNoDefButton.setOnClickListener(new View.OnClickListener() {
+                                                            transDialogNoDefBtn.setOnClickListener(new View.OnClickListener() {
                                                                 @Override
                                                                 public void onClick(View v) {
-                                                                    monOutHldr.monOutDefLayout.setVisibility(View.GONE);
+                                                                    transDialogDefLayout.setVisibility(View.GONE);
                                                                     monOutContSavAcctTrans();
                                                                 }
                                                             });
 
-                                                            monOutHldr.monOutYesDefButton.setOnClickListener(new View.OnClickListener() {
+                                                            transDialogYesDefBtn.setOnClickListener(new View.OnClickListener() {
                                                                 @Override
                                                                 public void onClick(View v) {
-                                                                    monOutHldr.monOutDefLayout.setVisibility(View.GONE);
+                                                                    transDialogDefLayout.setVisibility(View.GONE);
                                                                     monOutChangeDefault();
                                                                     monOutContSavAcctTrans();
                                                                 }
@@ -455,22 +464,22 @@ public class LayoutMoneyOut extends MainNavigation {
                                                         }
                                                     }
                                                 });
-                                            } else {
+                                            } else { //WON'T GO NEGATIVE
                                                 if (monOutMonOutAmt == monOutMonOutNewAmt) {
-                                                    monOutHldr.monOutDefLayout.setVisibility(View.VISIBLE);
+                                                    transDialogDefLayout.setVisibility(View.VISIBLE);
 
-                                                    monOutHldr.monOutNoDefButton.setOnClickListener(new View.OnClickListener() {
+                                                    transDialogNoDefBtn.setOnClickListener(new View.OnClickListener() {
                                                         @Override
                                                         public void onClick(View v) {
-                                                            monOutHldr.monOutDefLayout.setVisibility(View.GONE);
+                                                            transDialogDefLayout.setVisibility(View.GONE);
                                                             monOutContSavAcctTrans();
                                                         }
                                                     });
 
-                                                    monOutHldr.monOutYesDefButton.setOnClickListener(new View.OnClickListener() {
+                                                    transDialogYesDefBtn.setOnClickListener(new View.OnClickListener() {
                                                         @Override
                                                         public void onClick(View v) {
-                                                            monOutHldr.monOutDefLayout.setVisibility(View.GONE);
+                                                            transDialogDefLayout.setVisibility(View.GONE);
                                                             monOutChangeDefault();
                                                             monOutContSavAcctTrans();
                                                         }
@@ -479,361 +488,295 @@ public class LayoutMoneyOut extends MainNavigation {
                                                     monOutContSavAcctTrans();
                                                 }
                                             }
-                                        } else if (!monOutFromDebtSav.equals("D")) {
-                                            if (monOutExpPriority.equals("A")) {
-                                                if (monOutDbMgr.retrieveCurrentAccountBalance() - monOutMonOutAmt < 0) { //A NOT POSSIBLE
-                                                    monOutHldr.monOutWarnLayout.setVisibility(View.VISIBLE);
-                                                    monOutHldr.monOutWarnTV.setText(getString(R.string.payment_not_possible_A));
+                                        } else { //FROM MAIN ACCT
+                                            if (monOutExpPriority.equals("A") && (monOutDbMgr.retrieveCurrentAccountBalance() - monOutMonOutAmt < 0)) { //PRIORITY IS A AND WILL GO NEGATIVE
+                                                transDialogWarnLayout.setVisibility(View.VISIBLE);
+                                                transDialogWarnTV.setText(getString(R.string.payment_not_possible_A));
 
-                                                    monOutHldr.monOutNoContButton.setOnClickListener(new View.OnClickListener() {
-                                                        @Override
-                                                        public void onClick(View v) {
-                                                            monOutHldr.monOutWarnLayout.setVisibility(View.GONE);
-                                                            monOutRefresh();
-                                                        }
-                                                    });
-
-                                                    monOutHldr.monOutYesContButton.setOnClickListener(new View.OnClickListener() {
-                                                        @Override
-                                                        public void onClick(View v) {
-                                                            monOutHldr.monOutWarnLayout.setVisibility(View.GONE);
-                                                            if (monOutMonOutAmt == monOutMonOutNewAmt) {
-                                                                monOutHldr.monOutDefLayout.setVisibility(View.VISIBLE);
-
-                                                                monOutHldr.monOutNoDefButton.setOnClickListener(new View.OnClickListener() {
-                                                                    @Override
-                                                                    public void onClick(View v) {
-                                                                        monOutHldr.monOutDefLayout.setVisibility(View.GONE);
-                                                                        monOutContMainAcctTrans();
-                                                                    }
-                                                                });
-
-                                                                monOutHldr.monOutYesDefButton.setOnClickListener(new View.OnClickListener() {
-                                                                    @Override
-                                                                    public void onClick(View v) {
-                                                                        monOutHldr.monOutDefLayout.setVisibility(View.GONE);
-                                                                        monOutChangeDefault();
-                                                                        monOutContMainAcctTrans();
-                                                                    }
-                                                                });
-                                                            } else {
-                                                                monOutContMainAcctTrans();
-                                                            }
-                                                        }
-                                                    });
-                                                } else {
-                                                    if (monOutMonOutAmt == monOutMonOutNewAmt) {
-                                                        monOutHldr.monOutDefLayout.setVisibility(View.VISIBLE);
-
-                                                        monOutHldr.monOutNoDefButton.setOnClickListener(new View.OnClickListener() {
-                                                            @Override
-                                                            public void onClick(View v) {
-                                                                monOutHldr.monOutDefLayout.setVisibility(View.GONE);
-                                                                monOutContMainAcctTrans();
-                                                            }
-                                                        });
-
-                                                        monOutHldr.monOutYesDefButton.setOnClickListener(new View.OnClickListener() {
-                                                            @Override
-                                                            public void onClick(View v) {
-                                                                monOutHldr.monOutDefLayout.setVisibility(View.GONE);
-                                                                monOutChangeDefault();
-                                                                monOutContMainAcctTrans();
-                                                            }
-                                                        });
-                                                    } else {
-                                                        monOutContMainAcctTrans();
+                                                transDialogNoContBtn.setOnClickListener(new View.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(View v) {
+                                                        transDialogWarnLayout.setVisibility(View.GONE);
+                                                        monOutRefresh();
                                                     }
-                                                }
-                                            } else if (monOutExpPriority.equals("B")) {
-                                                if (monOutDbMgr.retrieveCurrentB() - monOutMonOutAmt < 0) { //B NOT POSSIBLE
-                                                    monOutHldr.monOutWarnLayout.setVisibility(View.VISIBLE);
-                                                    monOutHldr.monOutWarnTV.setText(getString(R.string.payment_not_possible_B));
+                                                });
 
-                                                    monOutHldr.monOutNoContButton.setOnClickListener(new View.OnClickListener() {
-                                                        @Override
-                                                        public void onClick(View v) {
-                                                            monOutHldr.monOutWarnLayout.setVisibility(View.GONE);
-                                                            monOutRefresh();
+                                                transDialogYesContBtn.setOnClickListener(new View.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(View v) {
+                                                        transDialogWarnLayout.setVisibility(View.GONE);
+                                                        if (monOutMonOutAmt == monOutMonOutNewAmt) { //ENTERED NEW AMT
+                                                            transDialogDefLayout.setVisibility(View.VISIBLE);
+
+                                                            transDialogNoDefBtn.setOnClickListener(new View.OnClickListener() {
+                                                                @Override
+                                                                public void onClick(View v) {
+                                                                    transDialogDefLayout.setVisibility(View.GONE);
+                                                                    monOutContMainAcctTrans();
+                                                                }
+                                                            });
+
+                                                            transDialogYesDefBtn.setOnClickListener(new View.OnClickListener() {
+                                                                @Override
+                                                                public void onClick(View v) {
+                                                                    transDialogDefLayout.setVisibility(View.GONE);
+                                                                    monOutChangeDefault();
+                                                                    monOutContMainAcctTrans();
+                                                                }
+                                                            });
+                                                        } else { //DID NOT ENTER NEW AMT
+                                                            monOutContMainAcctTrans();
                                                         }
-                                                    });
-
-                                                    monOutHldr.monOutYesContButton.setOnClickListener(new View.OnClickListener() {
-                                                        @Override
-                                                        public void onClick(View v) {
-                                                            monOutHldr.monOutWarnLayout.setVisibility(View.GONE);
-                                                            if (monOutMonOutAmt == monOutMonOutNewAmt) {
-                                                                monOutHldr.monOutDefLayout.setVisibility(View.VISIBLE);
-
-                                                                monOutHldr.monOutNoDefButton.setOnClickListener(new View.OnClickListener() {
-                                                                    @Override
-                                                                    public void onClick(View v) {
-                                                                        monOutHldr.monOutDefLayout.setVisibility(View.GONE);
-                                                                        monOutContMainAcctTrans();
-                                                                    }
-                                                                });
-
-                                                                monOutHldr.monOutYesDefButton.setOnClickListener(new View.OnClickListener() {
-                                                                    @Override
-                                                                    public void onClick(View v) {
-                                                                        monOutHldr.monOutDefLayout.setVisibility(View.GONE);
-                                                                        monOutChangeDefault();
-                                                                        monOutContMainAcctTrans();
-                                                                    }
-                                                                });
-                                                            } else {
-                                                                monOutContMainAcctTrans();
-                                                            }
-                                                        }
-                                                    });
-                                                } else {
-                                                    if (monOutMonOutAmt == monOutMonOutNewAmt) {
-                                                        monOutHldr.monOutDefLayout.setVisibility(View.VISIBLE);
-
-                                                        monOutHldr.monOutNoDefButton.setOnClickListener(new View.OnClickListener() {
-                                                            @Override
-                                                            public void onClick(View v) {
-                                                                monOutHldr.monOutDefLayout.setVisibility(View.GONE);
-                                                                monOutContMainAcctTrans();
-                                                            }
-                                                        });
-
-                                                        monOutHldr.monOutYesDefButton.setOnClickListener(new View.OnClickListener() {
-                                                            @Override
-                                                            public void onClick(View v) {
-                                                                monOutHldr.monOutDefLayout.setVisibility(View.GONE);
-                                                                monOutChangeDefault();
-                                                                monOutContMainAcctTrans();
-                                                            }
-                                                        });
-                                                    } else {
-                                                        monOutContMainAcctTrans();
                                                     }
+                                                });
+                                            } else if (monOutExpPriority.equals("B") && (monOutDbMgr.retrieveCurrentB() - monOutMonOutAmt < 0)) { //PRIORITY IS B AND WILL GO NEGATIVE
+                                                transDialogWarnLayout.setVisibility(View.VISIBLE);
+                                                transDialogWarnTV.setText(getString(R.string.payment_not_possible_B));
+
+                                                transDialogNoContBtn.setOnClickListener(new View.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(View v) {
+                                                        transDialogWarnLayout.setVisibility(View.GONE);
+                                                        monOutRefresh();
+                                                    }
+                                                });
+
+                                                transDialogYesContBtn.setOnClickListener(new View.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(View v) {
+                                                        transDialogWarnLayout.setVisibility(View.GONE);
+                                                        if (monOutMonOutAmt == monOutMonOutNewAmt) { //ENTERED NEW AMT
+                                                            transDialogDefLayout.setVisibility(View.VISIBLE);
+
+                                                            transDialogNoDefBtn.setOnClickListener(new View.OnClickListener() {
+                                                                @Override
+                                                                public void onClick(View v) {
+                                                                    transDialogDefLayout.setVisibility(View.GONE);
+                                                                    monOutContMainAcctTrans();
+                                                                }
+                                                            });
+
+                                                            transDialogYesDefBtn.setOnClickListener(new View.OnClickListener() {
+                                                                @Override
+                                                                public void onClick(View v) {
+                                                                    transDialogDefLayout.setVisibility(View.GONE);
+                                                                    monOutChangeDefault();
+                                                                    monOutContMainAcctTrans();
+                                                                }
+                                                            });
+                                                        } else { //DID NOT ENTER NEW AMT
+                                                            monOutContMainAcctTrans();
+                                                        }
+                                                    }
+                                                });
+                                            } else { //WON'T GO NEGATIVE
+                                                if (monOutMonOutAmt == monOutMonOutNewAmt) { //ENTERED NEW AMT
+                                                    transDialogDefLayout.setVisibility(View.VISIBLE);
+
+                                                    transDialogNoDefBtn.setOnClickListener(new View.OnClickListener() {
+                                                        @Override
+                                                        public void onClick(View v) {
+                                                            transDialogDefLayout.setVisibility(View.GONE);
+                                                            monOutContMainAcctTrans();
+                                                        }
+                                                    });
+
+                                                    transDialogYesDefBtn.setOnClickListener(new View.OnClickListener() {
+                                                        @Override
+                                                        public void onClick(View v) {
+                                                            transDialogDefLayout.setVisibility(View.GONE);
+                                                            monOutChangeDefault();
+                                                            monOutContMainAcctTrans();
+                                                        }
+                                                    });
+                                                } else { //DID NOT ENTER NEW AMT
+                                                    monOutContMainAcctTrans();
                                                 }
                                             }
                                         }
-
                                     }
                                 });
-                            } else if (monOutFromDebtSav.equals("S")) {
-                                    if (monOutDbMgr.retrieveCurrentAcctAmt(monOutFromAcctId) - monOutMonOutAmt < 0) {
-                                        monOutHldr.monOutWarnLayout.setVisibility(View.VISIBLE);
-                                        monOutHldr.monOutWarnTV.setText(getString(R.string.not_enough_savings_warning));
+                            } else if (monOutFromIsDebtSav.equals("S")) { //NOT OVER WEEKLY LIMIT && FROM SAV ACCT
+                                if (monOutDbMgr.retrieveCurrentAcctAmt(monOutFromAcctId) - monOutMonOutAmt < 0) { //WILL GO NEGATIVE
+                                    transDialogWarnLayout.setVisibility(View.VISIBLE);
+                                    transDialogWarnTV.setText(getString(R.string.not_enough_savings_warning));
 
-                                        monOutHldr.monOutNoContButton.setOnClickListener(new View.OnClickListener() {
+                                    transDialogNoContBtn.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            transDialogWarnLayout.setVisibility(View.GONE);
+                                            monOutRefresh();
+                                        }
+                                    });
+
+                                    transDialogYesContBtn.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            transDialogWarnLayout.setVisibility(View.GONE);
+                                            if (monOutMonOutAmt == monOutMonOutNewAmt) {
+                                                transDialogDefLayout.setVisibility(View.VISIBLE);
+
+                                                transDialogNoDefBtn.setOnClickListener(new View.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(View v) {
+                                                        transDialogDefLayout.setVisibility(View.GONE);
+                                                        monOutContSavAcctTrans();
+                                                    }
+                                                });
+
+                                                transDialogYesDefBtn.setOnClickListener(new View.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(View v) {
+                                                        transDialogDefLayout.setVisibility(View.GONE);
+                                                        monOutChangeDefault();
+                                                        monOutContSavAcctTrans();
+                                                    }
+                                                });
+                                            } else {
+                                                monOutContSavAcctTrans();
+                                            }
+                                        }
+                                    });
+                                } else {  //WON'T GO NEGATIVE
+                                    if (monOutMonOutAmt == monOutMonOutNewAmt) {
+                                        transDialogDefLayout.setVisibility(View.VISIBLE);
+
+                                        transDialogNoDefBtn.setOnClickListener(new View.OnClickListener() {
                                             @Override
                                             public void onClick(View v) {
-                                                monOutHldr.monOutWarnLayout.setVisibility(View.GONE);
-                                                monOutRefresh();
+                                                transDialogDefLayout.setVisibility(View.GONE);
+                                                monOutContSavAcctTrans();
                                             }
                                         });
 
-                                        monOutHldr.monOutYesContButton.setOnClickListener(new View.OnClickListener() {
+                                        transDialogYesDefBtn.setOnClickListener(new View.OnClickListener() {
                                             @Override
                                             public void onClick(View v) {
-                                                monOutHldr.monOutWarnLayout.setVisibility(View.GONE);
-                                                if (monOutMonOutAmt == monOutMonOutNewAmt) {
-                                                    monOutHldr.monOutDefLayout.setVisibility(View.VISIBLE);
-
-                                                    monOutHldr.monOutNoDefButton.setOnClickListener(new View.OnClickListener() {
-                                                        @Override
-                                                        public void onClick(View v) {
-                                                            monOutHldr.monOutDefLayout.setVisibility(View.GONE);
-                                                            monOutContSavAcctTrans();
-                                                        }
-                                                    });
-
-                                                    monOutHldr.monOutYesDefButton.setOnClickListener(new View.OnClickListener() {
-                                                        @Override
-                                                        public void onClick(View v) {
-                                                            monOutHldr.monOutDefLayout.setVisibility(View.GONE);
-                                                            monOutChangeDefault();
-                                                            monOutContSavAcctTrans();
-                                                        }
-                                                    });
-                                                } else {
-                                                    monOutContSavAcctTrans();
-                                                }
+                                                transDialogDefLayout.setVisibility(View.GONE);
+                                                monOutChangeDefault();
+                                                monOutContSavAcctTrans();
                                             }
                                         });
                                     } else {
-                                        if (monOutMonOutAmt == monOutMonOutNewAmt) {
-                                            monOutHldr.monOutDefLayout.setVisibility(View.VISIBLE);
-
-                                            monOutHldr.monOutNoDefButton.setOnClickListener(new View.OnClickListener() {
-                                                @Override
-                                                public void onClick(View v) {
-                                                    monOutHldr.monOutDefLayout.setVisibility(View.GONE);
-                                                    monOutContSavAcctTrans();
-                                                }
-                                            });
-
-                                            monOutHldr.monOutYesDefButton.setOnClickListener(new View.OnClickListener() {
-                                                @Override
-                                                public void onClick(View v) {
-                                                    monOutHldr.monOutDefLayout.setVisibility(View.GONE);
-                                                    monOutChangeDefault();
-                                                    monOutContSavAcctTrans();
-                                                }
-                                            });
-                                        } else {
-                                            monOutContSavAcctTrans();
-                                        }
-                                    }
-                                } else if (!monOutFromDebtSav.equals("D")) {
-                                    if (monOutExpPriority.equals("A")) {
-                                        if (monOutDbMgr.retrieveCurrentAccountBalance() - monOutMonOutAmt < 0) { //A NOT POSSIBLE
-                                            monOutHldr.monOutWarnLayout.setVisibility(View.VISIBLE);
-                                            monOutHldr.monOutWarnTV.setText(getString(R.string.payment_not_possible_A));
-
-                                            monOutHldr.monOutNoContButton.setOnClickListener(new View.OnClickListener() {
-                                                @Override
-                                                public void onClick(View v) {
-                                                    monOutHldr.monOutWarnLayout.setVisibility(View.GONE);
-                                                    monOutRefresh();
-                                                }
-                                            });
-
-                                            monOutHldr.monOutYesContButton.setOnClickListener(new View.OnClickListener() {
-                                                @Override
-                                                public void onClick(View v) {
-                                                    monOutHldr.monOutWarnLayout.setVisibility(View.GONE);
-                                                    if (monOutMonOutAmt == monOutMonOutNewAmt) {
-                                                        monOutHldr.monOutDefLayout.setVisibility(View.VISIBLE);
-
-                                                        monOutHldr.monOutNoDefButton.setOnClickListener(new View.OnClickListener() {
-                                                            @Override
-                                                            public void onClick(View v) {
-                                                                monOutHldr.monOutDefLayout.setVisibility(View.GONE);
-                                                                monOutContMainAcctTrans();
-                                                            }
-                                                        });
-
-                                                        monOutHldr.monOutYesDefButton.setOnClickListener(new View.OnClickListener() {
-                                                            @Override
-                                                            public void onClick(View v) {
-                                                                monOutHldr.monOutDefLayout.setVisibility(View.GONE);
-                                                                monOutChangeDefault();
-                                                                monOutContMainAcctTrans();
-                                                            }
-                                                        });
-                                                    } else {
-                                                        monOutContMainAcctTrans();
-                                                    }
-                                                }
-                                            });
-                                        } else {
-                                            if (monOutMonOutAmt == monOutMonOutNewAmt) {
-                                                monOutHldr.monOutDefLayout.setVisibility(View.VISIBLE);
-
-                                                monOutHldr.monOutNoDefButton.setOnClickListener(new View.OnClickListener() {
-                                                    @Override
-                                                    public void onClick(View v) {
-                                                        monOutHldr.monOutDefLayout.setVisibility(View.GONE);
-                                                        monOutContMainAcctTrans();
-                                                    }
-                                                });
-
-                                                monOutHldr.monOutYesDefButton.setOnClickListener(new View.OnClickListener() {
-                                                    @Override
-                                                    public void onClick(View v) {
-                                                        monOutHldr.monOutDefLayout.setVisibility(View.GONE);
-                                                        monOutChangeDefault();
-                                                        monOutContMainAcctTrans();
-                                                    }
-                                                });
-                                            } else {
-                                                monOutContMainAcctTrans();
-                                            }
-                                        }
-                                    } else if (monOutExpPriority.equals("B")) {
-                                        if (monOutDbMgr.retrieveCurrentB() - monOutMonOutAmt < 0) { //B NOT POSSIBLE
-                                            monOutHldr.monOutWarnLayout.setVisibility(View.VISIBLE);
-                                            monOutHldr.monOutWarnTV.setText(getString(R.string.payment_not_possible_B));
-
-                                            monOutHldr.monOutNoContButton.setOnClickListener(new View.OnClickListener() {
-                                                @Override
-                                                public void onClick(View v) {
-                                                    monOutHldr.monOutWarnLayout.setVisibility(View.GONE);
-                                                    monOutRefresh();
-                                                }
-                                            });
-
-                                            monOutHldr.monOutYesContButton.setOnClickListener(new View.OnClickListener() {
-                                                @Override
-                                                public void onClick(View v) {
-                                                    monOutHldr.monOutWarnLayout.setVisibility(View.GONE);
-                                                    if (monOutMonOutAmt == monOutMonOutNewAmt) {
-                                                        monOutHldr.monOutDefLayout.setVisibility(View.VISIBLE);
-
-                                                        monOutHldr.monOutNoDefButton.setOnClickListener(new View.OnClickListener() {
-                                                            @Override
-                                                            public void onClick(View v) {
-                                                                monOutHldr.monOutDefLayout.setVisibility(View.GONE);
-                                                                monOutContMainAcctTrans();
-                                                            }
-                                                        });
-
-                                                        monOutHldr.monOutYesDefButton.setOnClickListener(new View.OnClickListener() {
-                                                            @Override
-                                                            public void onClick(View v) {
-                                                                monOutHldr.monOutDefLayout.setVisibility(View.GONE);
-                                                                monOutChangeDefault();
-                                                                monOutContMainAcctTrans();
-                                                            }
-                                                        });
-                                                    } else {
-                                                        monOutContMainAcctTrans();
-                                                    }
-                                                }
-                                            });
-                                        } else {
-                                            if (monOutMonOutAmt == monOutMonOutNewAmt) {
-                                                monOutHldr.monOutDefLayout.setVisibility(View.VISIBLE);
-
-                                                monOutHldr.monOutNoDefButton.setOnClickListener(new View.OnClickListener() {
-                                                    @Override
-                                                    public void onClick(View v) {
-                                                        monOutHldr.monOutDefLayout.setVisibility(View.GONE);
-                                                        monOutContMainAcctTrans();
-                                                    }
-                                                });
-
-                                                monOutHldr.monOutYesDefButton.setOnClickListener(new View.OnClickListener() {
-                                                    @Override
-                                                    public void onClick(View v) {
-                                                        monOutHldr.monOutDefLayout.setVisibility(View.GONE);
-                                                        monOutChangeDefault();
-                                                        monOutContMainAcctTrans();
-                                                    }
-                                                });
-                                            } else {
-                                                monOutContMainAcctTrans();
-                                            }
-                                        }
+                                        monOutContSavAcctTrans();
                                     }
                                 }
-                            }
-                        });
-                    }
-                });
-            return convertView;
-            }
-        }
+                            } else if (monOutExpPriority.equals("A") && (monOutDbMgr.retrieveCurrentAccountBalance() - monOutMonOutAmt < 0)) { //PRIORITY IS A AND WILL GO NEGATIVE
+                                transDialogWarnLayout.setVisibility(View.VISIBLE);
+                                transDialogWarnTV.setText(getString(R.string.payment_not_possible_A));
 
-        private static class MonOutViewHolder {
-            public TextView monOutCatTV;
-            public TextView monOutDepLabel;
-            public LinearLayout monOutCatLayout;
-            public TextView monOutAmtTV;
-            public EditText monOutNewAmtET;
-            public ImageButton monOutSaveButton;
-            public LinearLayout monOutWarnLayout;
-            public TextView monOutWarnTV;
-            public Button monOutYesContButton;
-            public Button monOutNoContButton;
-            public LinearLayout monOutDefLayout;
-            public Button monOutYesDefButton;
-            public Button monOutNoDefButton;
+                                transDialogNoContBtn.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        transDialogWarnLayout.setVisibility(View.GONE);
+                                        monOutRefresh();
+                                    }
+                                });
+
+                                transDialogYesContBtn.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        transDialogWarnLayout.setVisibility(View.GONE);
+                                        if (monOutMonOutAmt == monOutMonOutNewAmt) {
+                                            transDialogDefLayout.setVisibility(View.VISIBLE);
+
+                                            transDialogNoDefBtn.setOnClickListener(new View.OnClickListener() {
+                                                @Override
+                                                public void onClick(View v) {
+                                                    transDialogDefLayout.setVisibility(View.GONE);
+                                                    monOutContMainAcctTrans();
+                                                }
+                                            });
+
+                                            transDialogYesDefBtn.setOnClickListener(new View.OnClickListener() {
+                                                @Override
+                                                public void onClick(View v) {
+                                                    transDialogDefLayout.setVisibility(View.GONE);
+                                                    monOutChangeDefault();
+                                                    monOutContMainAcctTrans();
+                                                }
+                                            });
+                                        } else {
+                                            monOutContMainAcctTrans();
+                                        }
+                                    }
+                                });
+                            } else if (monOutExpPriority.equals("B") && (monOutDbMgr.retrieveCurrentB() - monOutMonOutAmt < 0)) { //PRIORITY IS B AND WILL GO NEGATIVE
+                                transDialogWarnLayout.setVisibility(View.VISIBLE);
+                                transDialogWarnTV.setText(getString(R.string.payment_not_possible_B));
+
+                                transDialogNoContBtn.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        transDialogWarnLayout.setVisibility(View.GONE);
+                                        monOutRefresh();
+                                    }
+                                });
+
+                                transDialogYesContBtn.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        transDialogWarnLayout.setVisibility(View.GONE);
+                                        if (monOutMonOutAmt == monOutMonOutNewAmt) {
+                                            transDialogDefLayout.setVisibility(View.VISIBLE);
+
+                                            transDialogNoDefBtn.setOnClickListener(new View.OnClickListener() {
+                                                @Override
+                                                public void onClick(View v) {
+                                                    transDialogDefLayout.setVisibility(View.GONE);
+                                                    monOutContMainAcctTrans();
+                                                }
+                                            });
+
+                                            transDialogYesDefBtn.setOnClickListener(new View.OnClickListener() {
+                                                @Override
+                                                public void onClick(View v) {
+                                                    transDialogDefLayout.setVisibility(View.GONE);
+                                                    monOutChangeDefault();
+                                                    monOutContMainAcctTrans();
+                                                }
+                                            });
+                                        } else {
+                                            monOutContMainAcctTrans();
+                                        }
+                                    }
+                                });
+                            } else { //WON'T GO NEGATIVE
+                                if (monOutMonOutAmt == monOutMonOutNewAmt) {
+                                    transDialogDefLayout.setVisibility(View.VISIBLE);
+
+                                    transDialogNoDefBtn.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            transDialogDefLayout.setVisibility(View.GONE);
+                                            monOutContMainAcctTrans();
+                                        }
+                                    });
+
+                                    transDialogYesDefBtn.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            transDialogDefLayout.setVisibility(View.GONE);
+                                            monOutChangeDefault();
+                                            monOutContMainAcctTrans();
+                                        }
+                                    });
+                                } else {
+                                    monOutContMainAcctTrans();
+                                }
+                            }
+                        }
+                    });
+                    builder.setView(dView);
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                }
+            });
+            return convertView;
         }
     }
+
+    private static class MonOutViewHolder {
+        public TextView monOutCatTV;
+    }
+}

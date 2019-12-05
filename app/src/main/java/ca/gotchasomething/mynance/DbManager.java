@@ -366,9 +366,9 @@ public class DbManager extends AppCompatActivity {
         if (cursor.moveToFirst()) {
             while (!cursor.isAfterLast()) {
                 CurrentDb current = new CurrentDb(
-                        cursor.getDouble(cursor.getColumnIndex(DbHelper.CURRENTB)),
                         cursor.getDouble(cursor.getColumnIndex(DbHelper.CURRENTA)),
                         cursor.getDouble(cursor.getColumnIndex(DbHelper.CURRENTOWINGA)),
+                        cursor.getDouble(cursor.getColumnIndex(DbHelper.CURRENTB)),
                         cursor.getInt(cursor.getColumnIndex(DbHelper.LASTPAGEID)),
                         cursor.getString(cursor.getColumnIndex(DbHelper.LASTDATE)),
                         cursor.getLong(cursor.getColumnIndex(DbHelper.ID))
@@ -383,9 +383,9 @@ public class DbManager extends AppCompatActivity {
 
     public void addCurrent(CurrentDb current) {
         newCurrent = new ContentValues();
-        newCurrent.put(DbHelper.CURRENTB, current.getCurrentB());
         newCurrent.put(DbHelper.CURRENTA, current.getCurrentA());
         newCurrent.put(DbHelper.CURRENTOWINGA, current.getCurrentOwingA());
+        newCurrent.put(DbHelper.CURRENTB, current.getCurrentB());
         newCurrent.put(DbHelper.LASTPAGEID, current.getLastPageId());
         newCurrent.put(DbHelper.LASTDATE, current.getLastDate());
         db = dbHelper.getWritableDatabase();
@@ -395,9 +395,9 @@ public class DbManager extends AppCompatActivity {
 
     public void updateCurrent(CurrentDb current) {
         updateCurrent = new ContentValues();
-        updateCurrent.put(DbHelper.CURRENTB, current.getCurrentB());
         updateCurrent.put(DbHelper.CURRENTA, current.getCurrentA());
         updateCurrent.put(DbHelper.CURRENTOWINGA, current.getCurrentOwingA());
+        updateCurrent.put(DbHelper.CURRENTB, current.getCurrentB());
         updateCurrent.put(DbHelper.LASTPAGEID, current.getLastPageId());
         updateCurrent.put(DbHelper.LASTDATE, current.getLastDate());
         db = dbHelper.getWritableDatabase();
@@ -1122,7 +1122,7 @@ public class DbManager extends AppCompatActivity {
             } else if (dbl2 <= 0) { //if A has no money
                 if (dbl3 >= dbl1) { //if B can cover the purchase, it does
                     moneyOutA = 0.0;
-                } else if (dbl3 == 0) { //if B has no money, A goes negative by whole amount
+                } else if (dbl3 == 0.0) { //if B has no money, A goes negative by whole amount
                     moneyOutA = dbl1;
                 } else { //if B can cover part of the purchase, it pays what it can and A goes negative for rest
                     amtMissing = dbl1 - dbl3;
@@ -1132,7 +1132,7 @@ public class DbManager extends AppCompatActivity {
                 amtMissing = dbl1 - dbl2;
                 if (dbl3 >= amtMissing) { //if B can cover the rest, it does
                     moneyOutA = dbl2;
-                } else if (dbl3 == 0) { //if B has no money, A goes negative by the rest
+                } else if (dbl3 == 0.0) { //if B has no money, A goes negative by the rest
                     moneyOutA = dbl1;
                 } else { //if B can cover part of the rest, it pays what it can and A goes negative for rest
                     moneyOutA = dbl1 - dbl3;
@@ -1141,7 +1141,7 @@ public class DbManager extends AppCompatActivity {
         } else if (str1.equals("B")) {
             if (dbl3 >= dbl1) { //if B can cover the purchase, it does
                 moneyOutA = 0.0;
-            } else if (dbl3 == 0) { //if B has no money, A covers it but is owed for it
+            } else if (dbl3 == 0.0) { //if B has no money, A covers it but is owed for it
                 moneyOutA = dbl1;
             } else { //if B can cover part of the purchase then A covers the rest and is owed for it
                 amtMissing = dbl1 - dbl3;
@@ -1163,7 +1163,7 @@ public class DbManager extends AppCompatActivity {
             } else if (dbl2 <= 0) { //if A has no money
                 if (dbl3 >= dbl1) { //if B can cover the purchase, it does
                     moneyOutOwing = 0.0;
-                } else if (dbl3 == 0) { //if B has no money, A goes negative by whole amount
+                } else if (dbl3 == 0.0) { //if B has no money, A goes negative by whole amount
                     moneyOutOwing = 0.0;
                 } else { //if B can cover part of the purchase, it pays what it can and A goes negative for rest
                     amtMissing = dbl1 - dbl3;
@@ -1173,7 +1173,7 @@ public class DbManager extends AppCompatActivity {
                 amtMissing = dbl1 - dbl2;
                 if (dbl3 >= amtMissing) { //if B can cover the rest, it does
                     moneyOutOwing = 0.0;
-                } else if (dbl3 == 0) { //if B has no money, A goes negative by the rest
+                } else if (dbl3 == 0.0) { //if B has no money, A goes negative by the rest
                     moneyOutOwing = 0.0;
                 } else { //if B can cover part of the rest, it pays what it can and A goes negative for rest
                     moneyOutOwing = 0.0;
@@ -1182,7 +1182,7 @@ public class DbManager extends AppCompatActivity {
         } else if (str1.equals("B")) {
             if (dbl3 >= dbl1) { //if B can cover the purchase, it does
                 moneyOutOwing = 0.0;
-            } else if (dbl3 == 0) { //if B has no money, A covers it but is owed for it
+            } else if (dbl3 == 0.0) { //if B has no money, A covers it but is owed for it
                 moneyOutOwing = dbl1;
             } else { //if B can cover part of the purchase then A covers the rest and is owed for it
                 amtMissing = dbl1 - dbl3;
@@ -1204,7 +1204,7 @@ public class DbManager extends AppCompatActivity {
             } else if (dbl2 <= 0) { //if A has no money
                 if (dbl3 >= dbl1) { //if B can cover the purchase, it does
                     moneyOutB = dbl1;
-                } else if (dbl3 == 0) { //if B has no money, A goes negative by whole amount
+                } else if (dbl3 == 0.0) { //if B has no money, A goes negative by whole amount
                     moneyOutB = 0.0;
                 } else { //if B can cover part of the purchase, it pays what it can and A goes negative for rest
                     amtMissing = dbl1 - dbl3;
@@ -1214,7 +1214,7 @@ public class DbManager extends AppCompatActivity {
                 amtMissing = dbl1 - dbl2;
                 if (dbl3 >= amtMissing) { //if B can cover the rest, it does
                     moneyOutB = amtMissing;
-                } else if (dbl3 == 0) { //if B has no money, A goes negative by the rest
+                } else if (dbl3 == 0.0) { //if B has no money, A goes negative by the rest
                     moneyOutB = 0.0;
                 } else { //if B can cover part of the rest, it pays what it can and A goes negative for rest
                     moneyOutB = dbl3;
@@ -1223,7 +1223,7 @@ public class DbManager extends AppCompatActivity {
         } else if (str1.equals("B")) {
             if (dbl3 >= dbl1) { //if B can cover the purchase, it does
                 moneyOutB = dbl1;
-            } else if (dbl3 == 0) { //if B has no money, A covers it but is owed for it
+            } else if (dbl3 == 0.0) { //if B has no money, A covers it but is owed for it
                 moneyOutB = 0.0;
             } else { //if B can cover part of the purchase then A covers the rest and is owed for it
                 amtMissing = dbl1 - dbl3;

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -40,175 +39,77 @@
             android:layout_margin="5dp"
             android:layout_toEndOf="@id/list5DelBtn"
             android:text="@string/date"
-            android:textSize="14sp"
             android:textColor="@color/colorPrimaryDark"
-            />
+            android:textSize="14sp" />
 
-    <TextView
-        android:id="@+id/list5AmtTV"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:text="@string/amount"
-        android:layout_toEndOf="@id/list5DateTV"
-        android:textSize="14sp"
-        android:textColor="@color/colorPrimaryDark"/>
+        <TextView
+            android:id="@+id/list5AmtTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:layout_toEndOf="@id/list5DateTV"
+            android:text="@string/amount"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="14sp" />
 
-    <TextView
-        android:id="@+id/list5CatTV"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:text="@string/category"
-        android:textSize="14sp"
-        android:textColor="@color/colorPrimaryDark"
-        android:layout_toEndOf="@id/list5AmtTV"/>
+        <TextView
+            android:id="@+id/list5CatTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:layout_toEndOf="@id/list5AmtTV"
+            android:text="@string/category"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="14sp" />
 
         <TextView
             android:id="@+id/list5CCLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:text="@string/on"
             android:layout_below="@id/list5CatTV"
+            android:layout_marginBottom="5dp"
             android:layout_toStartOf="@id/list5CatTV"
-            android:textSize="12sp"
-            android:textColor="@color/colorPrimaryDark"/>
+            android:text="@string/on"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="12sp" />
 
         <TextView
             android:id="@+id/list5CCTV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:layout_marginStart="5dp"
-            android:text="@string/credit_card"
             android:layout_below="@id/list5CatTV"
+            android:layout_marginStart="5dp"
+            android:layout_marginBottom="5dp"
             android:layout_toEndOf="@id/list5CCLabel"
-            android:textSize="12sp"
+            android:text="@string/credit_card"
             android:textColor="@color/colorPrimaryDark"
-            />
-
-
-
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/list5UpdateLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/entry_box"
-        android:layout_margin="5dp"
-        tools:ignore="UselessParent">
-
-        <Button
-            android:id="@+id/list5UpdateBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="10dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="5dp"
-            android:layout_alignParentEnd="true"
-            android:text="@string/update"
-            android:textSize="12sp"
-            android:textColor="@color/colorPrimaryDark"
-            android:background="@drawable/entry_box"
-            android:contentDescription="@string/edit"
-             />
-
-        <Button
-            android:id="@+id/list5CancelBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:layout_marginEnd="10dp"
-            android:text="@string/cancel"
-            android:textColor="@color/colorPrimaryDark"
-            android:textSize="12sp"
-            android:background="@drawable/entry_box"
-            android:layout_toStartOf="@id/list5UpdateBtn"
-            android:contentDescription="@string/delete"
-            />
-
-        <EditText
-            android:id="@+id/list5AmtET"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="10dp"
-            android:hint="@string/amount"
-            android:layout_centerVertical="true"
-            android:inputType="numberSigned|numberDecimal"
-            android:digits="01234567890.-"
-            android:textSize="14sp"
-            android:textColor="@color/colorPrimaryDark"
-            />
-
-    </RelativeLayout>
-
-    <LinearLayout
-        android:id="@+id/list5WarnLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:background="@drawable/entry_box"
-        android:orientation="vertical">
-
-    <TextView
-        android:id="@+id/list5WarnTV"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:text="@string/warning"
-        android:textSize="14sp"
-        android:textColor="@color/brightRed"
-        />
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:ignore="UselessParent">
+            android:textSize="12sp" />
 
         <TextView
-            android:id="@+id/list5ContTV"
+            android:id="@+id/list5CCLabel2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:text="@string/continue_anyway"
-            android:textSize="14sp"
-            android:textColor="@color/brightRed"
-            />
-
-        <Button
-            android:id="@+id/list5NoBtn"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="5dp"
-            android:layout_alignParentEnd="true"
-            android:text="@string/no"
-            android:textSize="12sp"
+            android:layout_below="@id/list5CatTV"
+            android:layout_marginStart="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_toEndOf="@id/list5CCTV"
+            android:text="@string/on"
             android:textColor="@color/colorPrimaryDark"
-            android:background="@drawable/circle_box"
-            android:contentDescription="@string/edit"
-            />
+            android:textSize="12sp" />
 
-        <Button
-            android:id="@+id/list5YesBtn"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginEnd="10dp"
-            android:text="@string/yes"
+        <TextView
+            android:id="@+id/list5CCTV2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/list5CatTV"
+            android:layout_marginStart="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_toEndOf="@id/list5CCLabel2"
+            android:text="@string/credit_card"
             android:textColor="@color/colorPrimaryDark"
-            android:textSize="12sp"
-            android:background="@drawable/circle_box"
-            android:layout_toStartOf="@id/list5NoBtn"
-            android:contentDescription="@string/delete"
-            />
+            android:textSize="12sp" />
 
     </RelativeLayout>
-
-    </LinearLayout>
 
 </LinearLayout>
 

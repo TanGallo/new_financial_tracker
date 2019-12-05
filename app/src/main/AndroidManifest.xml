@@ -63,6 +63,8 @@
         <activity android:name="ca.gotchasomething.mynance.LayoutViewEdit"/>
         <activity android:name="ca.gotchasomething.mynance.LayoutCCPayList"/>
         <activity android:name="ca.gotchasomething.mynance.LayoutReports"/>
+        <activity android:name="ca.gotchasomething.mynance.AADataAcctCurr"/>
+        <activity android:name="ca.gotchasomething.mynance.AADataBdgtTrans"/>
 
     </application>
 

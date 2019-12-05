@@ -13,7 +13,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -22,6 +21,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 
 import java.util.List;
 
@@ -33,6 +33,7 @@ import ca.gotchasomething.mynance.spinners.TransferSpinnerAdapter;
 public class LayoutMoneyIn extends MainNavigation {
 
     BudgetDb monInIncDb;
+    Button transDialogCancelBtn, transDialogNoContBtn, transDialogNoDefBtn, transDialogSaveBtn, transDialogYesContBtn, transDialogYesDefBtn;
     ContentValues monInCV;
     Cursor monInCur;
     DbHelper monInHelper, monInHelper2;
@@ -41,17 +42,20 @@ public class LayoutMoneyIn extends MainNavigation {
             monInMoneyInA = 0.0, monInMoneyInB = 0.0, monInMoneyInOwing = 0.0, monInMonInAmt = 0.0, monInMonInOldAmt = 0.0, monInMonInNewAmt = 0.0,
             monInPercentA = 0.0, newMoneyA = 0.0, newMoneyOwing = 0.0, newMoneyB = 0.0, savAmtFromDb = 0.0, savGoalFromDb = 0.0, savPaytFromDb = 0.0,
             savRateFromDb = 0.0;
+    EditText transDialogAmtET;
     General monInGen;
-    Intent monInToAddInc, monInToList, monInToFixBudget;
+    Intent monInToAddInc, monInRefresh, monInToList, monInToFixBudget;
+    LinearLayout transDialogDefLayout, transDialogWarnLayout;
     ListView monInList;
-    long monInIncId, monInIncRefKeyMI, monInToAcctId;
+    long monInIncId, monInTransBdgtId, monInToAcctId;
     MonInAdapter monInAdapter;
     Spinner monInSpin;
     SQLiteDatabase monInDb, monInDb2;
-    String monInAcctName = null, monInIsDebtSav = null, monInIncName = null;
-    TextView monInAddMoreTV, monInAvailAcctTV, monInAvailAmtLabel, monInBudgWarnTV, monInDepToTV, monInIncSourceTV, monInTotAcctTV;
+    String monInAcctName = null, monInToIsDebtSav = null, monInIncName = null;
+    TextView transDialogAmtTV, transDialogCatTV, transDialogPayLabel, monInAddMoreTV, monInAvailAcctTV, monInAvailAmtLabel, monInBudgWarnTV, monInDepToTV, monInIncSourceTV, monInTotAcctTV;
     TransactionsDb monInMoneyInDb;
     TransferSpinnerAdapter monInSpinAdapter;
+    View dView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -119,6 +123,12 @@ public class LayoutMoneyIn extends MainNavigation {
         monInDb.close();
     }
 
+    public void monInRefresh() {
+        monInRefresh = new Intent(LayoutMoneyIn.this, LayoutMoneyIn.class);
+        monInRefresh.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+        startActivity(monInRefresh);
+    }
+
     View.OnClickListener onClickAddMoreTV = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -141,7 +151,7 @@ public class LayoutMoneyIn extends MainNavigation {
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
             monInAcctName = monInCur.getString(monInCur.getColumnIndexOrThrow(DbHelper.ACCTNAME));
-            monInIsDebtSav = monInCur.getString(monInCur.getColumnIndexOrThrow(DbHelper.ACCTDEBTSAV));
+            monInToIsDebtSav = monInCur.getString(monInCur.getColumnIndexOrThrow(DbHelper.ACCTDEBTSAV));
             monInToAcctId = monInCur.getLong(monInCur.getColumnIndexOrThrow(DbHelper.ID));
         }
 
@@ -152,7 +162,7 @@ public class LayoutMoneyIn extends MainNavigation {
     };
 
     public void monInContinueTransaction() {
-        if (!monInIsDebtSav.equals("D") && !monInIsDebtSav.equals("S")) {
+        if (!monInToIsDebtSav.equals("D") && !monInToIsDebtSav.equals("S")) {  //TO MAIN ACCT
             monInPercentA = monInDbMgr.sumTotalAExpenses() / monInDbMgr.sumTotalIncome();
 
             monInMoneyInA = monInDbMgr.detAPortionInc(monInMonInAmt, (monInPercentA * monInMonInAmt), monInDbMgr.retrieveCurrentOwingA());
@@ -177,7 +187,7 @@ public class LayoutMoneyIn extends MainNavigation {
                 moneyInOwing = monInMoneyInOwing;
                 moneyInB = monInMoneyInB;
             }
-        } else if (monInIsDebtSav.equals("D")) {
+        } else if (monInToIsDebtSav.equals("D")) { //TO DEBT ACFT
             monInDbMgr.updateRecMinusPt1(monInMonInAmt, monInDbMgr.retrieveCurrentAcctAmt(monInToAcctId), monInToAcctId);
             for (AccountsDb a : monInDbMgr.getDebts()) {
                 if (a.getId() == monInToAcctId) {
@@ -196,7 +206,7 @@ public class LayoutMoneyIn extends MainNavigation {
             moneyInA = 0.0;
             moneyInOwing = 0.0;
             moneyInB = 0.0;
-        } else if (monInIsDebtSav.equals("S")) {
+        } else if (monInToIsDebtSav.equals("S")) { //TO SAV ACCT
             monInDbMgr.updateRecPlusPt1(monInMonInAmt, monInDbMgr.retrieveCurrentAcctAmt(monInToAcctId), monInToAcctId);
             for (AccountsDb a : monInDbMgr.getSavings()) {
                 if (a.getId() == monInToAcctId) {
@@ -232,7 +242,7 @@ public class LayoutMoneyIn extends MainNavigation {
                 0.0,
                 monInToAcctId,
                 monInAcctName,
-                monInIsDebtSav,
+                monInToIsDebtSav,
                 0,
                 "N/A",
                 "N/A",
@@ -294,23 +304,6 @@ public class LayoutMoneyIn extends MainNavigation {
 
                 monInHldr = new MoneyInViewHolder();
                 monInHldr.monInCatTV = convertView.findViewById(R.id.paytCatTV);
-                monInHldr.monInCatLayout = convertView.findViewById(R.id.paytCatLayout);
-                monInHldr.monInCatLayout.setVisibility(View.GONE);
-                monInHldr.monInDepLabel = convertView.findViewById(R.id.paytPayLabel);
-                monInHldr.monInDepLabel.setText(getString(R.string.deposit));
-                monInHldr.monInAmtTV = convertView.findViewById(R.id.paytAmtTV);
-                monInHldr.monInNewAmtET = convertView.findViewById(R.id.paytAmtET);
-                monInHldr.monInSaveButton = convertView.findViewById(R.id.paytSaveBtn);
-                monInHldr.monInSaveButton.setVisibility(View.GONE);
-                monInHldr.monInWarnLayout = convertView.findViewById(R.id.paytWarnLayout);
-                monInHldr.monInWarnLayout.setVisibility(View.GONE);
-                monInHldr.monInWarnTV = convertView.findViewById(R.id.paytWarnTV);
-                monInHldr.monInYesContButton = convertView.findViewById(R.id.paytYesContBtn);
-                monInHldr.monInNoContButton = convertView.findViewById(R.id.paytNoContBtn);
-                monInHldr.monInDefLayout = convertView.findViewById(R.id.paytDefLayout);
-                monInHldr.monInDefLayout.setVisibility(View.GONE);
-                monInHldr.monInYesDefButton = convertView.findViewById(R.id.paytYesDefBtn);
-                monInHldr.monInNoDefButton = convertView.findViewById(R.id.paytNoDefBtn);
                 convertView.setTag(monInHldr);
 
             } else {
@@ -318,29 +311,48 @@ public class LayoutMoneyIn extends MainNavigation {
             }
 
             monInHldr.monInCatTV.setText(incomes.get(position).getBdgtCat());
-            monInGen.dblASCurrency(String.valueOf(incomes.get(position).getBdgtPaytAmt()), monInHldr.monInAmtTV);
-
-            monInIncRefKeyMI = incomes.get(position).getId();
 
             monInHldr.monInCatTV.setTag(incomes.get(position));
-            monInHldr.monInSaveButton.setTag(incomes.get(position));
 
             monInHldr.monInCatTV.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    monInHldr.monInCatLayout.setVisibility(View.VISIBLE);
-                    monInHldr.monInSaveButton.setVisibility(View.VISIBLE);
+                    monInIncDb = (BudgetDb) monInHldr.monInCatTV.getTag();
 
-                    monInHldr.monInSaveButton.setOnClickListener(new View.OnClickListener() {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(LayoutMoneyIn.this);
+                    dView = getLayoutInflater().inflate(R.layout.dialog_transaction, null);
+                    transDialogCatTV = dView.findViewById(R.id.transDialogCatTV);
+                    transDialogCatTV.setText(incomes.get(position).getBdgtCat());
+                    transDialogPayLabel = dView.findViewById(R.id.transDialogPayLabel);
+                    transDialogPayLabel.setText(R.string.deposit);
+                    transDialogAmtTV = dView.findViewById(R.id.transDialogAmtTV);
+                    monInGen.dblASCurrency(String.valueOf(incomes.get(position).getBdgtPaytAmt()), transDialogAmtTV);
+                    transDialogAmtET = dView.findViewById(R.id.transDialogAmtET);
+                    transDialogSaveBtn = dView.findViewById(R.id.transDialogSaveBtn);
+                    transDialogCancelBtn = dView.findViewById(R.id.transDialogCancelBtn);
+                    transDialogDefLayout = dView.findViewById(R.id.transDialogDefLayout);
+                    transDialogDefLayout.setVisibility(View.GONE);
+                    transDialogNoDefBtn = dView.findViewById(R.id.transDialogNoDefBtn);
+                    transDialogYesDefBtn = dView.findViewById(R.id.transDialogYesDefBtn);
+                    transDialogWarnLayout = dView.findViewById(R.id.transDialogWarnLayout);
+                    transDialogWarnLayout.setVisibility(View.GONE);
+
+                    transDialogCancelBtn.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            monInIncDb = (BudgetDb) monInHldr.monInSaveButton.getTag();
+                            monInRefresh();
+                        }
+                    });
+
+                    transDialogSaveBtn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
 
                             monInIncName = monInIncDb.getBdgtCat();
                             monInIncId = monInIncDb.getId();
 
                             monInMonInOldAmt = monInIncDb.getBdgtPaytAmt();
-                            monInMonInNewAmt = monInGen.dblFromET(monInHldr.monInNewAmtET);
+                            monInMonInNewAmt = monInGen.dblFromET(transDialogAmtET);
 
                             if (monInMonInNewAmt == 0) {
                                 monInMonInAmt = monInMonInOldAmt;
@@ -348,31 +360,34 @@ public class LayoutMoneyIn extends MainNavigation {
                                 monInMonInAmt = monInMonInNewAmt;
                             }
 
-                            if (monInMonInAmt == monInMonInNewAmt) {
-                                monInHldr.monInDefLayout.setVisibility(View.VISIBLE);
+                            if (monInMonInAmt == monInMonInNewAmt) { //IF ENTERED ANOTHER AMT
+                                transDialogDefLayout.setVisibility(View.VISIBLE);
 
-                                monInHldr.monInNoDefButton.setOnClickListener(new View.OnClickListener() {
+                                transDialogNoDefBtn.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
-                                        monInHldr.monInDefLayout.setVisibility(View.GONE);
+                                        transDialogDefLayout.setVisibility(View.GONE);
                                         monInContinueTransaction();
                                     }
                                 });
 
-                                monInHldr.monInYesDefButton.setOnClickListener(new View.OnClickListener() {
+                                transDialogYesDefBtn.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
-                                        monInHldr.monInDefLayout.setVisibility(View.GONE);
+                                        transDialogDefLayout.setVisibility(View.GONE);
                                         monInIncDb.setBdgtPaytAmt(monInMonInAmt);
                                         monInDbMgr.updateBudget(monInIncDb);
                                         monInContinueTransaction();
                                     }
                                 });
-                            } else {
+                            } else { //IF USING DEFAULT
                                 monInContinueTransaction();
                             }
                         }
                     });
+                    builder.setView(dView);
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
                 }
             });
             return convertView;
@@ -380,18 +395,6 @@ public class LayoutMoneyIn extends MainNavigation {
     }
 
     private static class MoneyInViewHolder {
-        public TextView monInDepLabel;
         public TextView monInCatTV;
-        public LinearLayout monInCatLayout;
-        public TextView monInAmtTV;
-        public EditText monInNewAmtET;
-        public ImageButton monInSaveButton;
-        public LinearLayout monInWarnLayout;
-        public TextView monInWarnTV;
-        public Button monInYesContButton;
-        public Button monInNoContButton;
-        public LinearLayout monInDefLayout;
-        public Button monInYesDefButton;
-        public Button monInNoDefButton;
     }
 }

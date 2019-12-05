@@ -1,7 +1,9 @@
 package ca.gotchasomething.mynance;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,7 +16,6 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,6 +23,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -34,24 +36,29 @@ public class LayoutCCPurList extends MainNavigation {
 
     ArrayAdapter monCC2FromMthSpinAdapter, monCC2ToMthSpinAdapter, monCC2FromYrSpinAdapter, monCC2ToYrSpinAdapter;
     boolean monCC2LeapYear;
-    Button monCC2AddMoreBtn, monCC2DoneBtn, monCC2SpinOkBtn, monCC2SpinResetBtn;
+    Button dialogCancelBtn, dialogNoContBtn, dialogUpdateBtn, dialogYesContBtn, monCC2AddMoreBtn, monCC2DoneBtn, monCC2SpinOkBtn, monCC2SpinResetBtn;
     Calendar monCC2Cal;
+    ContentValues monCC2CV;
     Date monCC2EarliestDate, monCC2LatestDate;
+    DbHelper monCC2Helper;
     DbManager monCC2DbMgr;
     Double debtAmtFromDb = 0.0, debtLimitFromDb = 0.0, debtPaytFromDb = 0.0, debtRateFromDb = 0.0, monCC2AmtEntry = 0.0, monCC2MonOutAmt = 0.0,
             monCC2MonOutAmtDiff = 0.0;
+    EditText dialogAmtET;
     General monCC2Gen;
     int monCC2Year;
     Intent monCC2ToMain, monCC2ToAddCCTrans, monCC2Refresh;
-    LinearLayout monCC2SpinLayout;
+    LinearLayout dialogWarnLayout, monCC2SpinLayout;
     ListView monCC2List;
-    long monCC2ExpRefKeyMO, monCC2MonOutchargingDebtId;
+    long monCC2TransBdgtId, monCC2FromAcctId;
     MonCC2Adapter monCC2Adapter;
-    TextView monCC2AndTV, monCC2Title, monCC2TotalTV;
+    TextView dialogWarnTV, monCC2AndTV, monCC2Title, monCC2TotalTV;
     TransactionsDb monCC2MonOutDb;
     Spinner monCC2ToMthSpin, monCC2FromMthSpin, monCC2ToYrSpin, monCC2FromYrSpin;
-    String monCC2FromMonth = null, monCC2FromYr = null, monCC2ToMonth = null, monCC2ToYr = null, monCC2LastDay = null, monCC2SumTotalSelTrans = null;
+    SQLiteDatabase monCC2Db;
+    String monCC2BdgtPriority = null, monCC2FromMonth = null, monCC2FromYr = null, monCC2ToMonth = null, monCC2ToYr = null, monCC2LastDay = null, monCC2SumTotalSelTrans = null;
     String[] monCC2Months, monCC2OnlyMonths, monCC2Years;
+    View dView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -299,9 +306,9 @@ public class LayoutCCPurList extends MainNavigation {
     };
 
     public void monCC2Finish() {
-        monCC2DbMgr.updateRecPlusPt1(monCC2MonOutAmtDiff, debtAmtFromDb, monCC2MonOutchargingDebtId);
+        monCC2DbMgr.updateRecPlusPt1(monCC2MonOutAmtDiff, debtAmtFromDb, monCC2FromAcctId);
         for (AccountsDb a : monCC2DbMgr.getDebts()) {
-            if (String.valueOf(a.getId()).equals(monCC2MonOutchargingDebtId)) {
+            if (a.getId() == monCC2FromAcctId) {
                 debtAmtFromDb = a.getAcctBal();
                 debtLimitFromDb = a.getAcctMax();
                 debtRateFromDb = a.getAcctIntRate();
@@ -313,7 +320,7 @@ public class LayoutCCPurList extends MainNavigation {
                 debtRateFromDb,
                 debtPaytFromDb,
                 getString(R.string.debt_paid),
-                getString(R.string.too_far)), monCC2MonOutchargingDebtId);
+                getString(R.string.too_far)), monCC2FromAcctId);
 
         monCC2MonOutDb.setTransAmt(monCC2AmtEntry);
         monCC2DbMgr.updateTransactions(monCC2MonOutDb);
@@ -321,7 +328,12 @@ public class LayoutCCPurList extends MainNavigation {
         monCC2Adapter.updateCCTrans(monCC2DbMgr.getCCTrans());
         monCC2Adapter.notifyDataSetChanged();
 
-        monCC2DbMgr.makeNewExpAnnAmt(monCC2ExpRefKeyMO, monCC2Gen.lastNumOfDays(365));
+        monCC2Helper = new DbHelper(getApplicationContext());
+        monCC2Db = monCC2Helper.getWritableDatabase();
+        monCC2CV = new ContentValues();
+        monCC2CV.put(DbHelper.BDGTANNPAYT, monCC2DbMgr.makeNewExpAnnAmt(monCC2TransBdgtId, monCC2Gen.lastNumOfDays(365)));
+        monCC2Db.update(DbHelper.BUDGET_TABLE_NAME, monCC2CV, DbHelper.ID + "=" + monCC2TransBdgtId, null);
+        monCC2Db.close();
 
         monCC2Refresh();
     }
@@ -364,23 +376,17 @@ public class LayoutCCPurList extends MainNavigation {
                         parent, false);
 
                 monCC2Hldr = new MoneyCC2ViewHolder();
-                monCC2Hldr.monCC2CatTV = convertView.findViewById(R.id.list5CatTV);
-                monCC2Hldr.monCC2AmtTV = convertView.findViewById(R.id.list5AmtTV);
-                monCC2Hldr.monCC2DateTV = convertView.findViewById(R.id.list5DateTV);
-                monCC2Hldr.monCC2CCTV = convertView.findViewById(R.id.list5CCTV);
                 monCC2Hldr.monCC2EditBtn = convertView.findViewById(R.id.list5EditBtn);
                 monCC2Hldr.monCC2DelBtn = convertView.findViewById(R.id.list5DelBtn);
-                monCC2Hldr.monCC2UpdateLayout = convertView.findViewById(R.id.list5UpdateLayout);
-                monCC2Hldr.monCC2UpdateLayout.setVisibility(View.GONE);
-                monCC2Hldr.monCC2AmtET = convertView.findViewById(R.id.list5AmtET);
-                monCC2Hldr.monCC2UpdateBtn = convertView.findViewById(R.id.list5UpdateBtn);
-                monCC2Hldr.monCC2CancelBtn = convertView.findViewById(R.id.list5CancelBtn);
-                monCC2Hldr.monCC2WarnLayout = convertView.findViewById(R.id.list5WarnLayout);
-                monCC2Hldr.monCC2WarnLayout.setVisibility(View.GONE);
-                monCC2Hldr.monCC2WarnTV = convertView.findViewById(R.id.list5WarnTV);
-                monCC2Hldr.monCC2ContTV = convertView.findViewById(R.id.list5ContTV);
-                monCC2Hldr.monCC2YesBtn = convertView.findViewById(R.id.list5YesBtn);
-                monCC2Hldr.monCC2NoBtn = convertView.findViewById(R.id.list5NoBtn);
+                monCC2Hldr.monCC2DateTV = convertView.findViewById(R.id.list5DateTV);
+                monCC2Hldr.monCC2AmtTV = convertView.findViewById(R.id.list5AmtTV);
+                monCC2Hldr.monCC2CatTV = convertView.findViewById(R.id.list5CatTV);
+                monCC2Hldr.monCC2AcctLabel = convertView.findViewById(R.id.list5CCLabel);
+                monCC2Hldr.monCC2AcctTV = convertView.findViewById(R.id.list5CCTV);
+                monCC2Hldr.monCC2AcctLabel2 = convertView.findViewById(R.id.list5CCLabel2);
+                monCC2Hldr.monCC2AcctLabel2.setVisibility(View.GONE);
+                monCC2Hldr.monCC2AcctTV2 = convertView.findViewById(R.id.list5CCTV2);
+                monCC2Hldr.monCC2AcctTV2.setVisibility(View.GONE);
 
                 convertView.setTag(monCC2Hldr);
 
@@ -388,28 +394,28 @@ public class LayoutCCPurList extends MainNavigation {
                 monCC2Hldr = (MoneyCC2ViewHolder) convertView.getTag();
             }
 
-            if (monCC2DbMgr.retrieveLastPageId() == 10) {
-                if (ccTrans.get(position).getTransCCPaid().equals("Y")) {
-                    monCC2Hldr.monCC2EditBtn.setVisibility(View.GONE);
-                    monCC2Hldr.monCC2DelBtn.setVisibility(View.GONE);
-                } else {
-                    monCC2Hldr.monCC2EditBtn.setVisibility(View.VISIBLE);
-                    monCC2Hldr.monCC2DelBtn.setVisibility(View.VISIBLE);
-                }
-            } else {
+            if (ccTrans.get(position).getTransCCPaid().equals("Y")) {
                 monCC2Hldr.monCC2EditBtn.setVisibility(View.GONE);
                 monCC2Hldr.monCC2DelBtn.setVisibility(View.GONE);
+            } else {
+                monCC2Hldr.monCC2EditBtn.setVisibility(View.VISIBLE);
+                monCC2Hldr.monCC2DelBtn.setVisibility(View.VISIBLE);
             }
 
-            monCC2Hldr.monCC2CatTV.setText(ccTrans.get(position).getTransBdgtCat());
+            monCC2Hldr.monCC2DateTV.setText(ccTrans.get(position).getTransCreatedOn());
+            
             monCC2MonOutAmt = ccTrans.get(position).getTransAmt();
             monCC2Gen.dblASCurrency(String.valueOf(monCC2MonOutAmt), monCC2Hldr.monCC2AmtTV);
-            monCC2Hldr.monCC2DateTV.setText(ccTrans.get(position).getTransCreatedOn());
-            monCC2Hldr.monCC2CCTV.setText(ccTrans.get(position).getTransFromAcctName());
+            
+            monCC2Hldr.monCC2CatTV.setText(ccTrans.get(position).getTransBdgtCat());
+            monCC2Hldr.monCC2AcctTV.setText(ccTrans.get(position).getTransFromAcctName());
+            
             monCC2Hldr.monCC2EditBtn.setTag(ccTrans.get(position));
             monCC2Hldr.monCC2DelBtn.setTag(ccTrans.get(position));
 
-            monCC2ExpRefKeyMO = ccTrans.get(position).getTransBdgtId();
+            monCC2TransBdgtId= ccTrans.get(position).getTransBdgtId();
+            monCC2FromAcctId = ccTrans.get(position).getTransFromAcctId();
+            monCC2BdgtPriority = ccTrans.get(position).getTransBdgtPriority();
 
             //click on pencil icon
             monCC2Hldr.monCC2EditBtn.setOnClickListener(new View.OnClickListener() {
@@ -419,54 +425,85 @@ public class LayoutCCPurList extends MainNavigation {
                     monCC2MonOutDb = (TransactionsDb) monCC2Hldr.monCC2EditBtn.getTag();
                     LayoutCCPurList.this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
                     monCC2DbMgr = new DbManager(getContext());
+                    
+                    AlertDialog.Builder builder = new AlertDialog.Builder(LayoutCCPurList.this);
+                    dView = getLayoutInflater().inflate(R.layout.dialog_update, null);
+                    dialogAmtET = dView.findViewById(R.id.dialogAmtET);
+                    dialogUpdateBtn = dView.findViewById(R.id.dialogUpdateBtn);
+                    dialogCancelBtn = dView.findViewById(R.id.dialogCancelBtn);
+                    dialogWarnLayout = dView.findViewById(R.id.dialogWarnLayout);
+                    dialogWarnLayout.setVisibility(View.GONE);
+                    dialogWarnTV = dView.findViewById(R.id.dialogWarnTV);
+                    dialogNoContBtn = dView.findViewById(R.id.dialogNoContBtn);
+                    dialogYesContBtn = dView.findViewById(R.id.dialogYesContBtn);
 
-                    monCC2Hldr.monCC2UpdateLayout.setVisibility(View.VISIBLE);
-
-                    monCC2Hldr.monCC2CancelBtn.setOnClickListener(new View.OnClickListener() {
+                    dialogCancelBtn.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             monCC2Refresh();
                         }
                     });
 
-                    monCC2Hldr.monCC2UpdateBtn.setOnClickListener(new View.OnClickListener() {
+                    dialogUpdateBtn.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
 
-                            monCC2AmtEntry = monCC2Gen.dblFromET(monCC2Hldr.monCC2AmtET);
+                            monCC2AmtEntry = monCC2Gen.dblFromET(dialogAmtET);
                             monCC2MonOutAmtDiff = monCC2AmtEntry - ccTrans.get(position).getTransAmt();
-                            monCC2MonOutchargingDebtId = ccTrans.get(position).getTransFromAcctId();
 
                             for (AccountsDb a : monCC2DbMgr.getDebts()) {
-                                if (String.valueOf(a.getId()).equals(monCC2MonOutchargingDebtId)) {
+                                if (String.valueOf(a.getId()).equals(monCC2FromAcctId)) {
                                     debtAmtFromDb = a.getAcctBal();
                                     debtLimitFromDb = a.getAcctMax();
                                     debtRateFromDb = a.getAcctIntRate();
                                     debtPaytFromDb = a.getAcctPaytsTo();
                                 }
                             }
-                            if (debtAmtFromDb + monCC2MonOutAmtDiff > debtLimitFromDb) {
-                                monCC2Hldr.monCC2WarnLayout.setVisibility(View.VISIBLE);
-                                monCC2Hldr.monCC2WarnTV.setText(getString(R.string.not_enough_credit_warning));
-                                monCC2Hldr.monCC2NoBtn.setOnClickListener(new View.OnClickListener() {
+                            if (debtAmtFromDb + monCC2MonOutAmtDiff > debtLimitFromDb) { //IF ACCT WILL GO OVER LIMIT
+                                dialogWarnLayout.setVisibility(View.VISIBLE);
+                                dialogWarnTV.setText(getString(R.string.not_enough_credit_warning));
+                                dialogNoContBtn.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
                                         monCC2Refresh();
                                     }
                                 });
 
-                                monCC2Hldr.monCC2YesBtn.setOnClickListener(new View.OnClickListener() {
+                                dialogYesContBtn.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
-                                        monCC2Hldr.monCC2WarnLayout.setVisibility(View.GONE);
-                                        monCC2Finish();
+                                        if((monCC2BdgtPriority.equals("A") && monCC2DbMgr.retrieveCurrentAccountBalance() < monCC2MonOutAmtDiff) || (monCC2BdgtPriority.equals("B") && monCC2DbMgr.retrieveCurrentB() < monCC2MonOutAmtDiff)) { //IF WILL GO NEGATIVE
+                                            dialogWarnLayout.setVisibility(View.VISIBLE);
+                                            dialogWarnTV.setText(getString(R.string.cc_payment_not_possible));
+                                            dialogNoContBtn.setOnClickListener(new View.OnClickListener() {
+                                                @Override
+                                                public void onClick(View v) {
+                                                    monCC2Refresh();
+                                                }
+                                            });
+
+                                            dialogYesContBtn.setOnClickListener(new View.OnClickListener() {
+                                                @Override
+                                                public void onClick(View v) {
+                                                    dialogWarnLayout.setVisibility(View.GONE);
+                                                    monCC2Finish();
+                                                }
+                                            });
+                                        } else { //WILL NOT GO NEGATIVE
+                                            dialogWarnLayout.setVisibility(View.GONE);
+                                            monCC2Finish();
+                                        }
                                     }
                                 });
-                            } else {
+                            } else { //ACCT WILL NOT GO OVER LIMIT
                                 monCC2Finish();
                             }
                         }
                     });
+
+                    builder.setView(dView);
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
                 }
             });
 
@@ -476,12 +513,12 @@ public class LayoutCCPurList extends MainNavigation {
                 public void onClick(View v) {
 
                     monCC2MonOutDb = (TransactionsDb) monCC2Hldr.monCC2DelBtn.getTag();
-                    monCC2ExpRefKeyMO = ccTrans.get(position).getTransBdgtId();
-                    monCC2MonOutchargingDebtId = ccTrans.get(position).getTransFromAcctId();
+                    monCC2TransBdgtId = ccTrans.get(position).getTransBdgtId();
+                    monCC2FromAcctId = ccTrans.get(position).getTransFromAcctId();
 
-                    monCC2DbMgr.updateRecMinusPt1(ccTrans.get(position).getTransAmt(), monCC2DbMgr.retrieveCurrentAcctAmt(monCC2MonOutchargingDebtId), monCC2MonOutchargingDebtId);
+                    monCC2DbMgr.updateRecMinusPt1(ccTrans.get(position).getTransAmt(), monCC2DbMgr.retrieveCurrentAcctAmt(monCC2FromAcctId), monCC2FromAcctId);
                     for (AccountsDb a : monCC2DbMgr.getDebts()) {
-                        if (a.getId() == monCC2MonOutchargingDebtId) {
+                        if (a.getId() == monCC2FromAcctId) {
                             debtAmtFromDb = a.getAcctBal();
                             debtLimitFromDb = a.getAcctMax();
                             debtRateFromDb = a.getAcctIntRate();
@@ -493,14 +530,18 @@ public class LayoutCCPurList extends MainNavigation {
                             debtRateFromDb,
                             debtPaytFromDb,
                             getString(R.string.debt_paid),
-                            getString(R.string.too_far)), monCC2MonOutchargingDebtId);
+                            getString(R.string.too_far)), monCC2FromAcctId);
 
                     monCC2DbMgr.deleteTransactions(monCC2MonOutDb);
                     monCC2Adapter.updateCCTrans(monCC2DbMgr.getCCTrans());
                     notifyDataSetChanged();
 
-                    monCC2DbMgr.makeNewExpAnnAmt(monCC2ExpRefKeyMO, monCC2Gen.lastNumOfDays(365));
-
+                    monCC2Helper = new DbHelper(getApplicationContext());
+                    monCC2Db = monCC2Helper.getWritableDatabase();
+                    monCC2CV = new ContentValues();
+                    monCC2CV.put(DbHelper.BDGTANNPAYT, monCC2DbMgr.makeNewExpAnnAmt(monCC2TransBdgtId, monCC2Gen.lastNumOfDays(365)));
+                    monCC2Db.update(DbHelper.BUDGET_TABLE_NAME, monCC2CV, DbHelper.ID + "=" + monCC2TransBdgtId, null);
+                    monCC2Db.close();
                     monCC2Refresh();
                 }
             });
@@ -515,14 +556,9 @@ public class LayoutCCPurList extends MainNavigation {
         public TextView monCC2CCTV;
         public ImageButton monCC2EditBtn;
         public ImageButton monCC2DelBtn;
-        public RelativeLayout monCC2UpdateLayout;
-        public EditText monCC2AmtET;
-        public Button monCC2UpdateBtn;
-        public Button monCC2CancelBtn;
-        public LinearLayout monCC2WarnLayout;
-        public TextView monCC2WarnTV;
-        public TextView monCC2ContTV;
-        public Button monCC2YesBtn;
-        public Button monCC2NoBtn;
+        public TextView monCC2AcctLabel;
+        public TextView monCC2AcctTV;
+        public TextView monCC2AcctLabel2;
+        public TextView monCC2AcctTV2;
     }
 }

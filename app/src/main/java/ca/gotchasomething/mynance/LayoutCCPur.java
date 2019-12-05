@@ -13,7 +13,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -22,6 +21,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 
 import com.google.android.material.tabs.TabLayout;
 
@@ -35,16 +35,18 @@ import ca.gotchasomething.mynance.spinners.MoneyOutCCSpinnerAdapter;
 public class LayoutCCPur extends MainNavigation {
 
     BudgetDb layCCPurExpDb;
+    Button transDialogCancelBtn, transDialogNoContBtn, transDialogNoDefBtn, transDialogSaveBtn, transDialogYesContBtn, transDialogYesDefBtn;
     ContentValues layCCPurCV;
     Cursor layCCPurCur;
     DbHelper layCCPurHelper, layCCPurHelper2;
     DbManager layCCPurDbMgr;
     Double debtAmtFromDb = 0.0, debtLimitFromDb = 0.0, debtPaytFromDb = 0.0, debtRateFromDb = 0.0, layCCPurMonOutAmt = 0.0, layCCPurMonOutNewAmt = 0.0,
             layCCPurMonOutOldAmt = 0.0, layCCPurWeeklyLimit = 0.0;
+    EditText transDialogAmtET;
     General layCCPurGen;
     Intent layCCPurToAddCC, layCCPurToAddMore, layCCPurToFixBudget, layCCPurToList, layCCPurRefresh;
     LayCCPurLstAdapter layCCPurListAdapter;
-    LinearLayout layCCPurHeaderLayout;
+    LinearLayout layCCPurHeaderLayout, transDialogDefLayout, transDialogWarnLayout;
     ListView layCCPurList;
     long layCCPurChargingDebtIdFromSpin, layCCPurExpId, layCCPurExpRefKeyMO;
     MoneyOutCCSpinnerAdapter layCCPurSpinAdapter;
@@ -52,8 +54,10 @@ public class LayoutCCPur extends MainNavigation {
     SQLiteDatabase layCCPurDb, layCCPurDb2;
     String layCCPurChargingDebtNameFromSpin = null, layCCPurExpName = null, layCCPurExpPriority = null, layCCPurExpWeekly = null;
     TabLayout layCCPurTabLay;
-    TextView layCCPurAddMoreTV, layCCPurAvailAcctTV, layCCPurAvailAmtLabel, layCCPurBudgWarnTV, layCCPurLabel2, layCCPurNewCCTV, layCCPurTotAcctTV;
+    TextView layCCPurAddMoreTV, layCCPurAvailAcctTV, layCCPurAvailAmtLabel, layCCPurBudgWarnTV, layCCPurLabel2, layCCPurNewCCTV, layCCPurTotAcctTV,
+            transDialogAmtTV, transDialogCatTV, transDialogPayLabel, transDialogWarnTV;
     TransactionsDb layCCPurMonOutDb;
+    View dView;
 
 
     @Override
@@ -225,7 +229,8 @@ public class LayoutCCPur extends MainNavigation {
                 0);
         layCCPurDbMgr.addTransactions(layCCPurMonOutDb);
 
-        layCCPurDbMgr.makeNewExpAnnAmt(layCCPurExpRefKeyMO, layCCPurGen.lastNumOfDays(365));
+        layCCPurExpDb.setBdgtAnnPayt(layCCPurDbMgr.makeNewExpAnnAmt(layCCPurExpRefKeyMO, layCCPurGen.lastNumOfDays(365)));
+        //layCCPurDbMgr.makeNewExpAnnAmt(layCCPurExpRefKeyMO, layCCPurGen.lastNumOfDays(365));
         layCCPurDbMgr.updateBudget(layCCPurExpDb);
 
         layCCPurListAdapter.updateExpenses(layCCPurDbMgr.getExpenses());
@@ -275,23 +280,6 @@ public class LayoutCCPur extends MainNavigation {
 
                 layCCPurHldr = new LayCCPurViewHolder();
                 layCCPurHldr.layCCPurPaytCatTV = convertView.findViewById(R.id.paytCatTV);
-                layCCPurHldr.layCCPurCatLayout = convertView.findViewById(R.id.paytCatLayout);
-                layCCPurHldr.layCCPurCatLayout.setVisibility(View.GONE);
-                layCCPurHldr.layCCPurPaytPayLabel = convertView.findViewById(R.id.paytPayLabel);
-                layCCPurHldr.layCCPurPaytPayLabel.setText(getString(R.string.spent));
-                layCCPurHldr.layCCPurPaytAmtTV = convertView.findViewById(R.id.paytAmtTV);
-                layCCPurHldr.layCCPurPaytAmtET = convertView.findViewById(R.id.paytAmtET);
-                layCCPurHldr.layCCPurPaytSaveBtn = convertView.findViewById(R.id.paytSaveBtn);
-                layCCPurHldr.layCCPurPaytSaveBtn.setVisibility(View.GONE);
-                layCCPurHldr.layCCPurPaytWarnLayout = convertView.findViewById(R.id.paytWarnLayout);
-                layCCPurHldr.layCCPurPaytWarnLayout.setVisibility(View.GONE);
-                layCCPurHldr.layCCPurPaytWarnTV = convertView.findViewById(R.id.paytWarnTV);
-                layCCPurHldr.layCCPurPaytYesContBtn = convertView.findViewById(R.id.paytYesContBtn);
-                layCCPurHldr.layCCPurPaytNoContBtn = convertView.findViewById(R.id.paytNoContBtn);
-                layCCPurHldr.layCCPurPaytDefLayout = convertView.findViewById(R.id.paytDefLayout);
-                layCCPurHldr.layCCPurPaytDefLayout.setVisibility(View.GONE);
-                layCCPurHldr.layCCPurPaytYesDefBtn = convertView.findViewById(R.id.paytYesDefBtn);
-                layCCPurHldr.layCCPurPaytNoDefBtn = convertView.findViewById(R.id.paytNoDefBtn);
                 convertView.setTag(layCCPurHldr);
 
             } else {
@@ -299,30 +287,52 @@ public class LayoutCCPur extends MainNavigation {
             }
 
             layCCPurHldr.layCCPurPaytCatTV.setText(expenses.get(position).getBdgtCat());
-            layCCPurGen.dblASCurrency(String.valueOf(expenses.get(position).getBdgtPaytAmt()), layCCPurHldr.layCCPurPaytAmtTV);
-
-            layCCPurExpRefKeyMO = expenses.get(position).getId();
 
             layCCPurHldr.layCCPurPaytCatTV.setTag(expenses.get(position));
-            layCCPurHldr.layCCPurPaytSaveBtn.setTag(expenses.get(position));
 
             layCCPurHldr.layCCPurPaytCatTV.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    layCCPurHldr.layCCPurCatLayout.setVisibility(View.VISIBLE);
-                    layCCPurHldr.layCCPurPaytSaveBtn.setVisibility(View.VISIBLE);
+                    layCCPurExpDb = (BudgetDb) layCCPurHldr.layCCPurPaytCatTV.getTag();
 
-                    layCCPurHldr.layCCPurPaytSaveBtn.setOnClickListener(new View.OnClickListener() {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(LayoutCCPur.this);
+                    dView = getLayoutInflater().inflate(R.layout.dialog_transaction, null);
+                    transDialogCatTV = dView.findViewById(R.id.transDialogCatTV);
+                    transDialogCatTV.setText(expenses.get(position).getBdgtCat());
+                    transDialogPayLabel = dView.findViewById(R.id.transDialogPayLabel);
+                    transDialogPayLabel.setText(R.string.spent);
+                    transDialogAmtTV = dView.findViewById(R.id.transDialogAmtTV);
+                    layCCPurGen.dblASCurrency(String.valueOf(expenses.get(position).getBdgtPaytAmt()), transDialogAmtTV);
+                    transDialogAmtET = dView.findViewById(R.id.transDialogAmtET);
+                    transDialogSaveBtn = dView.findViewById(R.id.transDialogSaveBtn);
+                    transDialogCancelBtn = dView.findViewById(R.id.transDialogCancelBtn);
+                    transDialogDefLayout = dView.findViewById(R.id.transDialogDefLayout);
+                    transDialogDefLayout.setVisibility(View.GONE);
+                    transDialogNoDefBtn = dView.findViewById(R.id.transDialogNoDefBtn);
+                    transDialogYesDefBtn = dView.findViewById(R.id.transDialogYesDefBtn);
+                    transDialogWarnLayout = dView.findViewById(R.id.transDialogWarnLayout);
+                    transDialogWarnLayout.setVisibility(View.GONE);
+                    transDialogWarnTV = dView.findViewById(R.id.transDialogWarnTV);
+                    transDialogNoContBtn = dView.findViewById(R.id.transDialogNoContBtn);
+                    transDialogYesContBtn = dView.findViewById(R.id.transDialogYesContBtn);
+
+                    transDialogCancelBtn.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            layCCPurExpDb = (BudgetDb) layCCPurHldr.layCCPurPaytSaveBtn.getTag();
+                            layCCPurRefresh();
+                        }
+                    });
+
+                    transDialogSaveBtn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
 
                             layCCPurExpName = layCCPurExpDb.getBdgtCat();
                             layCCPurExpId = layCCPurExpDb.getId();
                             layCCPurWeeklyLimit = layCCPurExpDb.getBdgtAnnPayt() / 52;
 
                             layCCPurMonOutOldAmt = expenses.get(position).getBdgtPaytAmt();
-                            layCCPurMonOutNewAmt = layCCPurGen.dblFromET(layCCPurHldr.layCCPurPaytAmtET);
+                            layCCPurMonOutNewAmt = layCCPurGen.dblFromET(transDialogAmtET);
 
                             if (layCCPurMonOutNewAmt == 0) {
                                 layCCPurMonOutAmt = layCCPurMonOutOldAmt;
@@ -342,363 +352,225 @@ public class LayoutCCPur extends MainNavigation {
                                 }
                             }
 
-                            if(layCCPurExpWeekly.equals("Y") && (layCCPurDbMgr.checkOverWeekly(layCCPurExpId) + layCCPurMonOutAmt > layCCPurWeeklyLimit)) {
-                                layCCPurHldr.layCCPurPaytWarnLayout.setVisibility(View.VISIBLE);
-                                layCCPurHldr.layCCPurPaytWarnTV.setText(getString(R.string.over_weekly));
+                            if (layCCPurExpWeekly.equals("Y") && (layCCPurDbMgr.checkOverWeekly(layCCPurExpId) + layCCPurMonOutAmt > layCCPurWeeklyLimit)) { //IF OVER WEEKLY LIMIT
+                                transDialogWarnLayout.setVisibility(View.VISIBLE);
+                                transDialogWarnTV.setText(getString(R.string.over_weekly));
 
-                                layCCPurHldr.layCCPurPaytNoContBtn.setOnClickListener(new View.OnClickListener() {
+                                transDialogNoContBtn.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
-                                        layCCPurHldr.layCCPurPaytWarnLayout.setVisibility(View.GONE);
+                                        transDialogWarnLayout.setVisibility(View.GONE);
                                         layCCPurRefresh();
                                     }
                                 });
 
-                                layCCPurHldr.layCCPurPaytYesContBtn.setOnClickListener(new View.OnClickListener() {
+                                transDialogYesContBtn.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
-                                        layCCPurHldr.layCCPurPaytWarnLayout.setVisibility(View.GONE);
-
+                                        transDialogWarnLayout.setVisibility(View.GONE);
                                         if (debtAmtFromDb + layCCPurMonOutAmt > debtLimitFromDb) { //CARD IS OVER LIMIT
                                             //SHOW WARNING
-                                            layCCPurHldr.layCCPurPaytWarnLayout.setVisibility(View.VISIBLE);
-                                            layCCPurHldr.layCCPurPaytWarnTV.setText(getString(R.string.not_enough_credit_warning));
+                                            transDialogWarnLayout.setVisibility(View.VISIBLE);
+                                            transDialogWarnTV.setText(getString(R.string.not_enough_credit_warning));
                                             //NO CONTINUE
-                                            layCCPurHldr.layCCPurPaytNoContBtn.setOnClickListener(new View.OnClickListener() {
+                                            transDialogNoContBtn.setOnClickListener(new View.OnClickListener() {
                                                 @Override
                                                 public void onClick(View v) {
-                                                    layCCPurHldr.layCCPurPaytWarnLayout.setVisibility(View.GONE);
+                                                    transDialogWarnLayout.setVisibility(View.GONE);
                                                     layCCPurRefresh();
                                                 }
                                             });
                                             //YES CONTINUE
-                                            layCCPurHldr.layCCPurPaytYesContBtn.setOnClickListener(new View.OnClickListener() {
+                                            transDialogYesContBtn.setOnClickListener(new View.OnClickListener() {
                                                 @Override
                                                 public void onClick(View v) {
-                                                    layCCPurHldr.layCCPurPaytWarnLayout.setVisibility(View.GONE);
-                                                    if (layCCPurExpPriority.equals("A")) {  //PRIORITY IS A
-                                                        if (layCCPurDbMgr.retrieveCurrentAccountBalance() - layCCPurMonOutAmt < 0) { //A NOT POSSIBLE
-                                                            //SHOW WARNING
-                                                            layCCPurHldr.layCCPurPaytWarnLayout.setVisibility(View.VISIBLE);
-                                                            layCCPurHldr.layCCPurPaytWarnTV.setText(getString(R.string.payment_not_possible_A));
-                                                            //NO CONTINUE
-                                                            layCCPurHldr.layCCPurPaytNoContBtn.setOnClickListener(new View.OnClickListener() {
-                                                                @Override
-                                                                public void onClick(View v) {
-                                                                    layCCPurHldr.layCCPurPaytWarnLayout.setVisibility(View.GONE);
-                                                                    layCCPurRefresh();
-                                                                }
-                                                            });
-                                                            //YES CONTINUE
-                                                            layCCPurHldr.layCCPurPaytYesContBtn.setOnClickListener(new View.OnClickListener() {
-                                                                @Override
-                                                                public void onClick(View v) {
-                                                                    layCCPurHldr.layCCPurPaytWarnLayout.setVisibility(View.GONE);
-                                                                    if (layCCPurMonOutAmt == layCCPurMonOutNewAmt) { //MONEY IN = NEW AMT
-                                                                        //SHOW OPTION TO CHANGE DEFAULT
-                                                                        layCCPurHldr.layCCPurPaytDefLayout.setVisibility(View.VISIBLE);
-                                                                        //NO CHANGE DEFAULT
-                                                                        layCCPurHldr.layCCPurPaytNoDefBtn.setOnClickListener(new View.OnClickListener() {
-                                                                            @Override
-                                                                            public void onClick(View v) {
-                                                                                layCCPurHldr.layCCPurPaytDefLayout.setVisibility(View.GONE);
-                                                                                layCCPurContTransaction();
-                                                                            }
-                                                                        });
-                                                                        //YES CHANGE DEFAULT
-                                                                        layCCPurHldr.layCCPurPaytYesDefBtn.setOnClickListener(new View.OnClickListener() {
-                                                                            @Override
-                                                                            public void onClick(View v) {
-                                                                                layCCPurHldr.layCCPurPaytDefLayout.setVisibility(View.GONE);
-                                                                                layCCPurChangeDefault();
-                                                                            }
-                                                                        });
-                                                                    } else { //MONEY IN = DEFAULT AMT
-                                                                        layCCPurContTransaction();
-                                                                    }
-                                                                }
-                                                            });
-                                                        } else { //A POSSIBLE
-                                                            if (layCCPurMonOutAmt == layCCPurMonOutNewAmt) { //MONEY IN = NEW AMT
-                                                                //SHOW OPTION TO CHANGE DEFAULT
-                                                                layCCPurHldr.layCCPurPaytDefLayout.setVisibility(View.VISIBLE);
-                                                                //NO CHANGE DEFAULT
-                                                                layCCPurHldr.layCCPurPaytNoDefBtn.setOnClickListener(new View.OnClickListener() {
-                                                                    @Override
-                                                                    public void onClick(View v) {
-                                                                        layCCPurHldr.layCCPurPaytDefLayout.setVisibility(View.GONE);
-                                                                        layCCPurContTransaction();
-                                                                    }
-                                                                });
-                                                                //YES CHANGE DEFAULT
-                                                                layCCPurHldr.layCCPurPaytYesDefBtn.setOnClickListener(new View.OnClickListener() {
-                                                                    @Override
-                                                                    public void onClick(View v) {
-                                                                        layCCPurHldr.layCCPurPaytDefLayout.setVisibility(View.GONE);
-                                                                        layCCPurChangeDefault();
-                                                                    }
-                                                                });
-                                                            } else { //MONEY IN = DEFAULT AMT
-                                                                layCCPurContTransaction();
+                                                    transDialogWarnLayout.setVisibility(View.GONE);
+                                                    if ((layCCPurExpPriority.equals("A") && (layCCPurDbMgr.retrieveCurrentAccountBalance() - layCCPurMonOutAmt < 0)) || (layCCPurExpPriority.equals("B") && (layCCPurDbMgr.retrieveCurrentB() - layCCPurMonOutAmt < 0))) {  //PRIORITY IS A OR B AND WILL GO NEGATIVE
+                                                        //SHOW WARNING
+                                                        transDialogWarnLayout.setVisibility(View.VISIBLE);
+                                                        transDialogWarnTV.setText(getString(R.string.cc_payment_not_possible));
+                                                        //NO CONTINUE
+                                                        transDialogNoContBtn.setOnClickListener(new View.OnClickListener() {
+                                                            @Override
+                                                            public void onClick(View v) {
+                                                                transDialogWarnLayout.setVisibility(View.GONE);
+                                                                layCCPurRefresh();
                                                             }
-                                                        }
-                                                    } else if (layCCPurExpPriority.equals("B")) { //PRIORITY IS B
-                                                        if (layCCPurDbMgr.retrieveCurrentB() - layCCPurMonOutAmt < 0) { //B NOT POSSIBLE
-                                                            //SHOW WARNING
-                                                            layCCPurHldr.layCCPurPaytWarnLayout.setVisibility(View.VISIBLE);
-                                                            layCCPurHldr.layCCPurPaytWarnTV.setText(getString(R.string.payment_not_possible_B));
-                                                            //NO CONTINUE
-                                                            layCCPurHldr.layCCPurPaytNoContBtn.setOnClickListener(new View.OnClickListener() {
-                                                                @Override
-                                                                public void onClick(View v) {
-                                                                    layCCPurHldr.layCCPurPaytWarnLayout.setVisibility(View.GONE);
-                                                                    layCCPurRefresh();
+                                                        });
+                                                        //YES CONTINUE
+                                                        transDialogYesContBtn.setOnClickListener(new View.OnClickListener() {
+                                                            @Override
+                                                            public void onClick(View v) {
+                                                                transDialogWarnLayout.setVisibility(View.GONE);
+                                                                if (layCCPurMonOutAmt == layCCPurMonOutNewAmt) { //MONEY IN = NEW AMT
+                                                                    //SHOW OPTION TO CHANGE DEFAULT
+                                                                    transDialogDefLayout.setVisibility(View.VISIBLE);
+                                                                    //NO CHANGE DEFAULT
+                                                                    transDialogNoDefBtn.setOnClickListener(new View.OnClickListener() {
+                                                                        @Override
+                                                                        public void onClick(View v) {
+                                                                            transDialogDefLayout.setVisibility(View.GONE);
+                                                                            layCCPurContTransaction();
+                                                                        }
+                                                                    });
+                                                                    //YES CHANGE DEFAULT
+                                                                    transDialogYesDefBtn.setOnClickListener(new View.OnClickListener() {
+                                                                        @Override
+                                                                        public void onClick(View v) {
+                                                                            transDialogDefLayout.setVisibility(View.GONE);
+                                                                            layCCPurChangeDefault();
+                                                                        }
+                                                                    });
+                                                                } else { //MONEY IN = DEFAULT AMT
+                                                                    layCCPurContTransaction();
                                                                 }
-                                                            });
-                                                            //YES CONTINUE
-                                                            layCCPurHldr.layCCPurPaytYesContBtn.setOnClickListener(new View.OnClickListener() {
-                                                                @Override
-                                                                public void onClick(View v) {
-                                                                    layCCPurHldr.layCCPurPaytWarnLayout.setVisibility(View.GONE);
-                                                                    if (layCCPurMonOutAmt == layCCPurMonOutNewAmt) { //MONEY IN = NEW AMT
-                                                                        //SHOW OPTION TO CHANGE DEFAULT
-                                                                        layCCPurHldr.layCCPurPaytDefLayout.setVisibility(View.VISIBLE);
-                                                                        //NO CHANGE DEFAULT
-                                                                        layCCPurHldr.layCCPurPaytNoDefBtn.setOnClickListener(new View.OnClickListener() {
-                                                                            @Override
-                                                                            public void onClick(View v) {
-                                                                                layCCPurHldr.layCCPurPaytDefLayout.setVisibility(View.GONE);
-                                                                                layCCPurContTransaction();
-                                                                            }
-                                                                        });
-                                                                        //YES CHANGE DEFAULT
-                                                                        layCCPurHldr.layCCPurPaytYesDefBtn.setOnClickListener(new View.OnClickListener() {
-                                                                            @Override
-                                                                            public void onClick(View v) {
-                                                                                layCCPurHldr.layCCPurPaytDefLayout.setVisibility(View.GONE);
-                                                                                layCCPurChangeDefault();
-                                                                            }
-                                                                        });
-                                                                    } else { //MONEY IN = DEFAULT AMT
-                                                                        layCCPurContTransaction();
-                                                                    }
-                                                                }
-                                                            });
-                                                        } else { //B POSSIBLE
-                                                            if (layCCPurMonOutAmt == layCCPurMonOutNewAmt) { //MONEY IN = NEW AMT
-                                                                //SHOW OPTION TO CHANGE DEFAULT
-                                                                layCCPurHldr.layCCPurPaytDefLayout.setVisibility(View.VISIBLE);
-                                                                //NO CHANGE DEFAULT
-                                                                layCCPurHldr.layCCPurPaytNoDefBtn.setOnClickListener(new View.OnClickListener() {
-                                                                    @Override
-                                                                    public void onClick(View v) {
-                                                                        layCCPurHldr.layCCPurPaytDefLayout.setVisibility(View.GONE);
-                                                                        layCCPurContTransaction();
-                                                                    }
-                                                                });
-                                                                //YES CHANGE DEFAULT
-                                                                layCCPurHldr.layCCPurPaytYesDefBtn.setOnClickListener(new View.OnClickListener() {
-                                                                    @Override
-                                                                    public void onClick(View v) {
-                                                                        layCCPurHldr.layCCPurPaytDefLayout.setVisibility(View.GONE);
-                                                                        layCCPurChangeDefault();
-                                                                    }
-                                                                });
-                                                            } else { //MONEY IN = DEFAULT AMT
-                                                                layCCPurContTransaction();
                                                             }
+                                                        });
+                                                    } else { //WILL NOT GO NEGATIVE
+                                                        if (layCCPurMonOutAmt == layCCPurMonOutNewAmt) { //MONEY IN = NEW AMT
+                                                            //SHOW OPTION TO CHANGE DEFAULT
+                                                            transDialogDefLayout.setVisibility(View.VISIBLE);
+                                                            //NO CHANGE DEFAULT
+                                                            transDialogNoDefBtn.setOnClickListener(new View.OnClickListener() {
+                                                                @Override
+                                                                public void onClick(View v) {
+                                                                    transDialogDefLayout.setVisibility(View.GONE);
+                                                                    layCCPurContTransaction();
+                                                                }
+                                                            });
+                                                            //YES CHANGE DEFAULT
+                                                            transDialogYesDefBtn.setOnClickListener(new View.OnClickListener() {
+                                                                @Override
+                                                                public void onClick(View v) {
+                                                                    transDialogDefLayout.setVisibility(View.GONE);
+                                                                    layCCPurChangeDefault();
+                                                                }
+                                                            });
+                                                        } else { //MONEY IN = DEFAULT AMT
+                                                            layCCPurContTransaction();
                                                         }
                                                     }
                                                 }
                                             });
                                         } else { //CARD NOT OVER LIMIT
-                                            if (layCCPurExpPriority.equals("A")) { //PRIORITY IS A
-                                                if (layCCPurDbMgr.retrieveCurrentAccountBalance() - layCCPurMonOutAmt < 0) { //A NOT POSSIBLE
-                                                    //SHOW WARNING
-                                                    layCCPurHldr.layCCPurPaytWarnLayout.setVisibility(View.VISIBLE);
-                                                    layCCPurHldr.layCCPurPaytWarnTV.setText(getString(R.string.payment_not_possible_A));
-                                                    //NO CONTINUE
-                                                    layCCPurHldr.layCCPurPaytNoContBtn.setOnClickListener(new View.OnClickListener() {
-                                                        @Override
-                                                        public void onClick(View v) {
-                                                            layCCPurHldr.layCCPurPaytWarnLayout.setVisibility(View.GONE);
-                                                            layCCPurRefresh();
-                                                        }
-                                                    });
-                                                    //YES CONTINUE
-                                                    layCCPurHldr.layCCPurPaytYesContBtn.setOnClickListener(new View.OnClickListener() {
-                                                        @Override
-                                                        public void onClick(View v) {
-                                                            layCCPurHldr.layCCPurPaytWarnLayout.setVisibility(View.GONE);
-                                                            if (layCCPurMonOutAmt == layCCPurMonOutNewAmt) { //MONEY IN = NEW AMT
-                                                                //SHOW OPTION TO CHANGE DEFAULT
-                                                                layCCPurHldr.layCCPurPaytDefLayout.setVisibility(View.VISIBLE);
-                                                                //NO CHANGE DEFAULT
-                                                                layCCPurHldr.layCCPurPaytNoDefBtn.setOnClickListener(new View.OnClickListener() {
-                                                                    @Override
-                                                                    public void onClick(View v) {
-                                                                        layCCPurHldr.layCCPurPaytDefLayout.setVisibility(View.GONE);
-                                                                        layCCPurContTransaction();
-                                                                    }
-                                                                });
-                                                                //YES CHANGE DEFAULT
-                                                                layCCPurHldr.layCCPurPaytYesDefBtn.setOnClickListener(new View.OnClickListener() {
-                                                                    @Override
-                                                                    public void onClick(View v) {
-                                                                        layCCPurHldr.layCCPurPaytDefLayout.setVisibility(View.GONE);
-                                                                        layCCPurChangeDefault();
-                                                                    }
-                                                                });
-                                                            } else { //MONEY IN = DEFAULT AMT
-                                                                layCCPurContTransaction();
-                                                            }
-                                                        }
-                                                    });
-                                                } else { //A POSSIBLE
-                                                    if (layCCPurMonOutAmt == layCCPurMonOutNewAmt) { //MONEY IN = NEW AMT
-                                                        //SHOW OPTION TO CHANGE DEFAULT
-                                                        layCCPurHldr.layCCPurPaytDefLayout.setVisibility(View.VISIBLE);
-                                                        //NO CHANGE DEFAULT
-                                                        layCCPurHldr.layCCPurPaytNoDefBtn.setOnClickListener(new View.OnClickListener() {
-                                                            @Override
-                                                            public void onClick(View v) {
-                                                                layCCPurHldr.layCCPurPaytDefLayout.setVisibility(View.GONE);
-                                                                layCCPurContTransaction();
-                                                            }
-                                                        });
-                                                        //YES CHANGE DEFAULT
-                                                        layCCPurHldr.layCCPurPaytYesDefBtn.setOnClickListener(new View.OnClickListener() {
-                                                            @Override
-                                                            public void onClick(View v) {
-                                                                layCCPurHldr.layCCPurPaytDefLayout.setVisibility(View.GONE);
-                                                                layCCPurChangeDefault();
-                                                            }
-                                                        });
-                                                    } else { //MONEY IN = DEFAULT AMT
-                                                        layCCPurContTransaction();
+                                            if ((layCCPurExpPriority.equals("A") && (layCCPurDbMgr.retrieveCurrentAccountBalance() - layCCPurMonOutAmt < 0)) || (layCCPurExpPriority.equals("B") && (layCCPurDbMgr.retrieveCurrentB() - layCCPurMonOutAmt < 0))) { //PRIORITY IS A OR B AND WILL GO NEAGITVE
+                                                //SHOW WARNING
+                                                transDialogWarnLayout.setVisibility(View.VISIBLE);
+                                                transDialogWarnTV.setText(getString(R.string.cc_payment_not_possible));
+                                                //NO CONTINUE
+                                                transDialogNoContBtn.setOnClickListener(new View.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(View v) {
+                                                        transDialogWarnLayout.setVisibility(View.GONE);
+                                                        layCCPurRefresh();
                                                     }
-                                                }
-                                            } else if (layCCPurExpPriority.equals("B")) { //PRIORITY IS B
-                                                if (layCCPurDbMgr.retrieveCurrentB() - layCCPurMonOutAmt < 0) { //B NOT POSSIBLE
-                                                    //SHOW WARNING
-                                                    layCCPurHldr.layCCPurPaytWarnLayout.setVisibility(View.VISIBLE);
-                                                    layCCPurHldr.layCCPurPaytWarnTV.setText(getString(R.string.payment_not_possible_B));
-                                                    //NO CONTINUE
-                                                    layCCPurHldr.layCCPurPaytNoContBtn.setOnClickListener(new View.OnClickListener() {
-                                                        @Override
-                                                        public void onClick(View v) {
-                                                            layCCPurHldr.layCCPurPaytWarnLayout.setVisibility(View.GONE);
-                                                            layCCPurRefresh();
+                                                });
+                                                //YES CONTINUE
+                                                transDialogYesContBtn.setOnClickListener(new View.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(View v) {
+                                                        transDialogWarnLayout.setVisibility(View.GONE);
+                                                        if (layCCPurMonOutAmt == layCCPurMonOutNewAmt) { //MONEY IN = NEW AMT
+                                                            //SHOW OPTION TO CHANGE DEFAULT
+                                                            transDialogDefLayout.setVisibility(View.VISIBLE);
+                                                            //NO CHANGE DEFAULT
+                                                            transDialogNoDefBtn.setOnClickListener(new View.OnClickListener() {
+                                                                @Override
+                                                                public void onClick(View v) {
+                                                                    transDialogDefLayout.setVisibility(View.GONE);
+                                                                    layCCPurContTransaction();
+                                                                }
+                                                            });
+                                                            //YES CHANGE DEFAULT
+                                                            transDialogYesDefBtn.setOnClickListener(new View.OnClickListener() {
+                                                                @Override
+                                                                public void onClick(View v) {
+                                                                    transDialogDefLayout.setVisibility(View.GONE);
+                                                                    layCCPurChangeDefault();
+                                                                }
+                                                            });
+                                                        } else { //MONEY IN = DEFAULT AMT
+                                                            layCCPurContTransaction();
                                                         }
-                                                    });
-                                                    //YES CONTINUE
-                                                    layCCPurHldr.layCCPurPaytYesContBtn.setOnClickListener(new View.OnClickListener() {
-                                                        @Override
-                                                        public void onClick(View v) {
-                                                            layCCPurHldr.layCCPurPaytWarnLayout.setVisibility(View.GONE);
-                                                            if (layCCPurMonOutAmt == layCCPurMonOutNewAmt) { //MONEY IN = NEW AMT
-                                                                //SHOW OPTION TO CHANGE DEFAULT
-                                                                layCCPurHldr.layCCPurPaytDefLayout.setVisibility(View.VISIBLE);
-                                                                //NO CHANGE DEFAULT
-                                                                layCCPurHldr.layCCPurPaytNoDefBtn.setOnClickListener(new View.OnClickListener() {
-                                                                    @Override
-                                                                    public void onClick(View v) {
-                                                                        layCCPurHldr.layCCPurPaytDefLayout.setVisibility(View.GONE);
-                                                                        layCCPurContTransaction();
-                                                                    }
-                                                                });
-                                                                //YES CHANGE DEFAULT
-                                                                layCCPurHldr.layCCPurPaytYesDefBtn.setOnClickListener(new View.OnClickListener() {
-                                                                    @Override
-                                                                    public void onClick(View v) {
-                                                                        layCCPurHldr.layCCPurPaytDefLayout.setVisibility(View.GONE);
-                                                                        layCCPurChangeDefault();
-                                                                    }
-                                                                });
-                                                            } else { //MONEY IN = DEFAULT AMT
-                                                                layCCPurContTransaction();
-                                                            }
-                                                        }
-                                                    });
-                                                } else { //B POSSIBLE
-                                                    if (layCCPurMonOutAmt == layCCPurMonOutNewAmt) { //MONEY IN = NEW AMT
-                                                        //SHOW OPTION TO CHANGE DEFAULT
-                                                        layCCPurHldr.layCCPurPaytDefLayout.setVisibility(View.VISIBLE);
-                                                        //NO CHANGE DEFAULT
-                                                        layCCPurHldr.layCCPurPaytNoDefBtn.setOnClickListener(new View.OnClickListener() {
-                                                            @Override
-                                                            public void onClick(View v) {
-                                                                layCCPurHldr.layCCPurPaytDefLayout.setVisibility(View.GONE);
-                                                                layCCPurContTransaction();
-                                                            }
-                                                        });
-                                                        //YES CHANGE DEFAULT
-                                                        layCCPurHldr.layCCPurPaytYesDefBtn.setOnClickListener(new View.OnClickListener() {
-                                                            @Override
-                                                            public void onClick(View v) {
-                                                                layCCPurHldr.layCCPurPaytDefLayout.setVisibility(View.GONE);
-                                                                layCCPurChangeDefault();
-                                                            }
-                                                        });
-                                                    } else { //MONEY IN = DEFAULT AMT
-                                                        layCCPurContTransaction();
                                                     }
+                                                });
+                                            } else { //WILL NOT GO NEGATIVE
+                                                if (layCCPurMonOutAmt == layCCPurMonOutNewAmt) { //MONEY IN = NEW AMT
+                                                    //SHOW OPTION TO CHANGE DEFAULT
+                                                    transDialogDefLayout.setVisibility(View.VISIBLE);
+                                                    //NO CHANGE DEFAULT
+                                                    transDialogNoDefBtn.setOnClickListener(new View.OnClickListener() {
+                                                        @Override
+                                                        public void onClick(View v) {
+                                                            transDialogDefLayout.setVisibility(View.GONE);
+                                                            layCCPurContTransaction();
+                                                        }
+                                                    });
+                                                    //YES CHANGE DEFAULT
+                                                    transDialogYesDefBtn.setOnClickListener(new View.OnClickListener() {
+                                                        @Override
+                                                        public void onClick(View v) {
+                                                            transDialogDefLayout.setVisibility(View.GONE);
+                                                            layCCPurChangeDefault();
+                                                        }
+                                                    });
+                                                } else { //MONEY IN = DEFAULT AMT
+                                                    layCCPurContTransaction();
                                                 }
                                             }
                                         }
                                     }
                                 });
-                            } else if (debtAmtFromDb + layCCPurMonOutAmt > debtLimitFromDb) { //CARD IS OVER LIMIT
+                            } else if (debtAmtFromDb + layCCPurMonOutAmt > debtLimitFromDb) { // IF NOT OVER MEEKLY LIMIT && CARD IS OVER LIMIT
                                 //SHOW WARNING
-                                layCCPurHldr.layCCPurPaytWarnLayout.setVisibility(View.VISIBLE);
-                                layCCPurHldr.layCCPurPaytWarnTV.setText(getString(R.string.not_enough_credit_warning));
+                                transDialogWarnLayout.setVisibility(View.VISIBLE);
+                                transDialogWarnTV.setText(getString(R.string.not_enough_credit_warning));
                                 //NO CONTINUE
-                                layCCPurHldr.layCCPurPaytNoContBtn.setOnClickListener(new View.OnClickListener() {
+                                transDialogNoContBtn.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
-                                        layCCPurHldr.layCCPurPaytWarnLayout.setVisibility(View.GONE);
+                                        transDialogWarnLayout.setVisibility(View.GONE);
                                         layCCPurRefresh();
                                     }
                                 });
                                 //YES CONTINUE
-                                layCCPurHldr.layCCPurPaytYesContBtn.setOnClickListener(new View.OnClickListener() {
+                                transDialogYesContBtn.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
-                                        layCCPurHldr.layCCPurPaytWarnLayout.setVisibility(View.GONE);
-                                        if (layCCPurExpPriority.equals("A")) {  //PRIORITY IS A
-                                            if (layCCPurDbMgr.retrieveCurrentAccountBalance() - layCCPurMonOutAmt < 0) { //A NOT POSSIBLE
+                                        transDialogWarnLayout.setVisibility(View.GONE);
+                                        if ((layCCPurExpPriority.equals("A") && (layCCPurDbMgr.retrieveCurrentAccountBalance() - layCCPurMonOutAmt < 0)) || (layCCPurExpPriority.equals("B") && (layCCPurDbMgr.retrieveCurrentB() - layCCPurMonOutAmt < 0))) {  //PRIORITY IS A OR B AND WILL GO NEGATIVE
                                                 //SHOW WARNING
-                                                layCCPurHldr.layCCPurPaytWarnLayout.setVisibility(View.VISIBLE);
-                                                layCCPurHldr.layCCPurPaytWarnTV.setText(getString(R.string.payment_not_possible_A));
+                                                transDialogWarnLayout.setVisibility(View.VISIBLE);
+                                                transDialogWarnTV.setText(getString(R.string.payment_not_possible_A));
                                                 //NO CONTINUE
-                                                layCCPurHldr.layCCPurPaytNoContBtn.setOnClickListener(new View.OnClickListener() {
+                                                transDialogNoContBtn.setOnClickListener(new View.OnClickListener() {
                                                     @Override
                                                     public void onClick(View v) {
-                                                        layCCPurHldr.layCCPurPaytWarnLayout.setVisibility(View.GONE);
+                                                        transDialogWarnLayout.setVisibility(View.GONE);
                                                         layCCPurRefresh();
                                                     }
                                                 });
                                                 //YES CONTINUE
-                                                layCCPurHldr.layCCPurPaytYesContBtn.setOnClickListener(new View.OnClickListener() {
+                                                transDialogYesContBtn.setOnClickListener(new View.OnClickListener() {
                                                     @Override
                                                     public void onClick(View v) {
-                                                        layCCPurHldr.layCCPurPaytWarnLayout.setVisibility(View.GONE);
+                                                        transDialogWarnLayout.setVisibility(View.GONE);
                                                         if (layCCPurMonOutAmt == layCCPurMonOutNewAmt) { //MONEY IN = NEW AMT
                                                             //SHOW OPTION TO CHANGE DEFAULT
-                                                            layCCPurHldr.layCCPurPaytDefLayout.setVisibility(View.VISIBLE);
+                                                            transDialogDefLayout.setVisibility(View.VISIBLE);
                                                             //NO CHANGE DEFAULT
-                                                            layCCPurHldr.layCCPurPaytNoDefBtn.setOnClickListener(new View.OnClickListener() {
+                                                            transDialogNoDefBtn.setOnClickListener(new View.OnClickListener() {
                                                                 @Override
                                                                 public void onClick(View v) {
-                                                                    layCCPurHldr.layCCPurPaytDefLayout.setVisibility(View.GONE);
+                                                                    transDialogDefLayout.setVisibility(View.GONE);
                                                                     layCCPurContTransaction();
                                                                 }
                                                             });
                                                             //YES CHANGE DEFAULT
-                                                            layCCPurHldr.layCCPurPaytYesDefBtn.setOnClickListener(new View.OnClickListener() {
+                                                            transDialogYesDefBtn.setOnClickListener(new View.OnClickListener() {
                                                                 @Override
                                                                 public void onClick(View v) {
-                                                                    layCCPurHldr.layCCPurPaytDefLayout.setVisibility(View.GONE);
+                                                                    transDialogDefLayout.setVisibility(View.GONE);
                                                                     layCCPurChangeDefault();
                                                                 }
                                                             });
@@ -707,89 +579,23 @@ public class LayoutCCPur extends MainNavigation {
                                                         }
                                                     }
                                                 });
-                                            } else { //A POSSIBLE
+                                            } else { //WILL NOT GO NEGATIVE
                                                 if (layCCPurMonOutAmt == layCCPurMonOutNewAmt) { //MONEY IN = NEW AMT
                                                     //SHOW OPTION TO CHANGE DEFAULT
-                                                    layCCPurHldr.layCCPurPaytDefLayout.setVisibility(View.VISIBLE);
+                                                    transDialogDefLayout.setVisibility(View.VISIBLE);
                                                     //NO CHANGE DEFAULT
-                                                    layCCPurHldr.layCCPurPaytNoDefBtn.setOnClickListener(new View.OnClickListener() {
+                                                    transDialogNoDefBtn.setOnClickListener(new View.OnClickListener() {
                                                         @Override
                                                         public void onClick(View v) {
-                                                            layCCPurHldr.layCCPurPaytDefLayout.setVisibility(View.GONE);
+                                                            transDialogDefLayout.setVisibility(View.GONE);
                                                             layCCPurContTransaction();
                                                         }
                                                     });
                                                     //YES CHANGE DEFAULT
-                                                    layCCPurHldr.layCCPurPaytYesDefBtn.setOnClickListener(new View.OnClickListener() {
+                                                    transDialogYesDefBtn.setOnClickListener(new View.OnClickListener() {
                                                         @Override
                                                         public void onClick(View v) {
-                                                            layCCPurHldr.layCCPurPaytDefLayout.setVisibility(View.GONE);
-                                                            layCCPurChangeDefault();
-                                                        }
-                                                    });
-                                                } else { //MONEY IN = DEFAULT AMT
-                                                    layCCPurContTransaction();
-                                                }
-                                            }
-                                        } else if (layCCPurExpPriority.equals("B")) { //PRIORITY IS B
-                                            if (layCCPurDbMgr.retrieveCurrentB() - layCCPurMonOutAmt < 0) { //B NOT POSSIBLE
-                                                //SHOW WARNING
-                                                layCCPurHldr.layCCPurPaytWarnLayout.setVisibility(View.VISIBLE);
-                                                layCCPurHldr.layCCPurPaytWarnTV.setText(getString(R.string.payment_not_possible_B));
-                                                //NO CONTINUE
-                                                layCCPurHldr.layCCPurPaytNoContBtn.setOnClickListener(new View.OnClickListener() {
-                                                    @Override
-                                                    public void onClick(View v) {
-                                                        layCCPurHldr.layCCPurPaytWarnLayout.setVisibility(View.GONE);
-                                                        layCCPurRefresh();
-                                                    }
-                                                });
-                                                //YES CONTINUE
-                                                layCCPurHldr.layCCPurPaytYesContBtn.setOnClickListener(new View.OnClickListener() {
-                                                    @Override
-                                                    public void onClick(View v) {
-                                                        layCCPurHldr.layCCPurPaytWarnLayout.setVisibility(View.GONE);
-                                                        if (layCCPurMonOutAmt == layCCPurMonOutNewAmt) { //MONEY IN = NEW AMT
-                                                            //SHOW OPTION TO CHANGE DEFAULT
-                                                            layCCPurHldr.layCCPurPaytDefLayout.setVisibility(View.VISIBLE);
-                                                            //NO CHANGE DEFAULT
-                                                            layCCPurHldr.layCCPurPaytNoDefBtn.setOnClickListener(new View.OnClickListener() {
-                                                                @Override
-                                                                public void onClick(View v) {
-                                                                    layCCPurHldr.layCCPurPaytDefLayout.setVisibility(View.GONE);
-                                                                    layCCPurContTransaction();
-                                                                }
-                                                            });
-                                                            //YES CHANGE DEFAULT
-                                                            layCCPurHldr.layCCPurPaytYesDefBtn.setOnClickListener(new View.OnClickListener() {
-                                                                @Override
-                                                                public void onClick(View v) {
-                                                                    layCCPurHldr.layCCPurPaytDefLayout.setVisibility(View.GONE);
-                                                                    layCCPurChangeDefault();
-                                                                }
-                                                            });
-                                                        } else { //MONEY IN = DEFAULT AMT
-                                                            layCCPurContTransaction();
-                                                        }
-                                                    }
-                                                });
-                                            } else { //B POSSIBLE
-                                                if (layCCPurMonOutAmt == layCCPurMonOutNewAmt) { //MONEY IN = NEW AMT
-                                                    //SHOW OPTION TO CHANGE DEFAULT
-                                                    layCCPurHldr.layCCPurPaytDefLayout.setVisibility(View.VISIBLE);
-                                                    //NO CHANGE DEFAULT
-                                                    layCCPurHldr.layCCPurPaytNoDefBtn.setOnClickListener(new View.OnClickListener() {
-                                                        @Override
-                                                        public void onClick(View v) {
-                                                            layCCPurHldr.layCCPurPaytDefLayout.setVisibility(View.GONE);
-                                                            layCCPurContTransaction();
-                                                        }
-                                                    });
-                                                    //YES CHANGE DEFAULT
-                                                    layCCPurHldr.layCCPurPaytYesDefBtn.setOnClickListener(new View.OnClickListener() {
-                                                        @Override
-                                                        public void onClick(View v) {
-                                                            layCCPurHldr.layCCPurPaytDefLayout.setVisibility(View.GONE);
+                                                            transDialogDefLayout.setVisibility(View.GONE);
                                                             layCCPurChangeDefault();
                                                         }
                                                     });
@@ -798,43 +604,41 @@ public class LayoutCCPur extends MainNavigation {
                                                 }
                                             }
                                         }
-                                    }
                                 });
                             } else { //CARD NOT OVER LIMIT
-                                if (layCCPurExpPriority.equals("A")) { //PRIORITY IS A
-                                    if (layCCPurDbMgr.retrieveCurrentAccountBalance() - layCCPurMonOutAmt < 0) { //A NOT POSSIBLE
+                                if ((layCCPurExpPriority.equals("A") && (layCCPurDbMgr.retrieveCurrentAccountBalance() - layCCPurMonOutAmt < 0)) ||  (layCCPurExpPriority.equals("B") && (layCCPurDbMgr.retrieveCurrentB() - layCCPurMonOutAmt < 0))){ //PRIORITY IS A OR B AND WILL GO NEGATIVE
                                         //SHOW WARNING
-                                        layCCPurHldr.layCCPurPaytWarnLayout.setVisibility(View.VISIBLE);
-                                        layCCPurHldr.layCCPurPaytWarnTV.setText(getString(R.string.payment_not_possible_A));
+                                        transDialogWarnLayout.setVisibility(View.VISIBLE);
+                                        transDialogWarnTV.setText(getString(R.string.payment_not_possible_A));
                                         //NO CONTINUE
-                                        layCCPurHldr.layCCPurPaytNoContBtn.setOnClickListener(new View.OnClickListener() {
+                                        transDialogNoContBtn.setOnClickListener(new View.OnClickListener() {
                                             @Override
                                             public void onClick(View v) {
-                                                layCCPurHldr.layCCPurPaytWarnLayout.setVisibility(View.GONE);
+                                                transDialogWarnLayout.setVisibility(View.GONE);
                                                 layCCPurRefresh();
                                             }
                                         });
                                         //YES CONTINUE
-                                        layCCPurHldr.layCCPurPaytYesContBtn.setOnClickListener(new View.OnClickListener() {
+                                        transDialogYesContBtn.setOnClickListener(new View.OnClickListener() {
                                             @Override
                                             public void onClick(View v) {
-                                                layCCPurHldr.layCCPurPaytWarnLayout.setVisibility(View.GONE);
+                                                transDialogWarnLayout.setVisibility(View.GONE);
                                                 if (layCCPurMonOutAmt == layCCPurMonOutNewAmt) { //MONEY IN = NEW AMT
                                                     //SHOW OPTION TO CHANGE DEFAULT
-                                                    layCCPurHldr.layCCPurPaytDefLayout.setVisibility(View.VISIBLE);
+                                                    transDialogDefLayout.setVisibility(View.VISIBLE);
                                                     //NO CHANGE DEFAULT
-                                                    layCCPurHldr.layCCPurPaytNoDefBtn.setOnClickListener(new View.OnClickListener() {
+                                                    transDialogNoDefBtn.setOnClickListener(new View.OnClickListener() {
                                                         @Override
                                                         public void onClick(View v) {
-                                                            layCCPurHldr.layCCPurPaytDefLayout.setVisibility(View.GONE);
+                                                            transDialogDefLayout.setVisibility(View.GONE);
                                                             layCCPurContTransaction();
                                                         }
                                                     });
                                                     //YES CHANGE DEFAULT
-                                                    layCCPurHldr.layCCPurPaytYesDefBtn.setOnClickListener(new View.OnClickListener() {
+                                                    transDialogYesDefBtn.setOnClickListener(new View.OnClickListener() {
                                                         @Override
                                                         public void onClick(View v) {
-                                                            layCCPurHldr.layCCPurPaytDefLayout.setVisibility(View.GONE);
+                                                            transDialogDefLayout.setVisibility(View.GONE);
                                                             layCCPurChangeDefault();
                                                         }
                                                     });
@@ -843,89 +647,23 @@ public class LayoutCCPur extends MainNavigation {
                                                 }
                                             }
                                         });
-                                    } else { //A POSSIBLE
+                                    } else { //WILL NOT GO NEGATIVE
                                         if (layCCPurMonOutAmt == layCCPurMonOutNewAmt) { //MONEY IN = NEW AMT
                                             //SHOW OPTION TO CHANGE DEFAULT
-                                            layCCPurHldr.layCCPurPaytDefLayout.setVisibility(View.VISIBLE);
+                                            transDialogDefLayout.setVisibility(View.VISIBLE);
                                             //NO CHANGE DEFAULT
-                                            layCCPurHldr.layCCPurPaytNoDefBtn.setOnClickListener(new View.OnClickListener() {
+                                            transDialogNoDefBtn.setOnClickListener(new View.OnClickListener() {
                                                 @Override
                                                 public void onClick(View v) {
-                                                    layCCPurHldr.layCCPurPaytDefLayout.setVisibility(View.GONE);
+                                                    transDialogDefLayout.setVisibility(View.GONE);
                                                     layCCPurContTransaction();
                                                 }
                                             });
                                             //YES CHANGE DEFAULT
-                                            layCCPurHldr.layCCPurPaytYesDefBtn.setOnClickListener(new View.OnClickListener() {
+                                            transDialogYesDefBtn.setOnClickListener(new View.OnClickListener() {
                                                 @Override
                                                 public void onClick(View v) {
-                                                    layCCPurHldr.layCCPurPaytDefLayout.setVisibility(View.GONE);
-                                                    layCCPurChangeDefault();
-                                                }
-                                            });
-                                        } else { //MONEY IN = DEFAULT AMT
-                                            layCCPurContTransaction();
-                                        }
-                                    }
-                                } else if (layCCPurExpPriority.equals("B")) { //PRIORITY IS B
-                                    if (layCCPurDbMgr.retrieveCurrentB() - layCCPurMonOutAmt < 0) { //B NOT POSSIBLE
-                                        //SHOW WARNING
-                                        layCCPurHldr.layCCPurPaytWarnLayout.setVisibility(View.VISIBLE);
-                                        layCCPurHldr.layCCPurPaytWarnTV.setText(getString(R.string.payment_not_possible_B));
-                                        //NO CONTINUE
-                                        layCCPurHldr.layCCPurPaytNoContBtn.setOnClickListener(new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View v) {
-                                                layCCPurHldr.layCCPurPaytWarnLayout.setVisibility(View.GONE);
-                                                layCCPurRefresh();
-                                            }
-                                        });
-                                        //YES CONTINUE
-                                        layCCPurHldr.layCCPurPaytYesContBtn.setOnClickListener(new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View v) {
-                                                layCCPurHldr.layCCPurPaytWarnLayout.setVisibility(View.GONE);
-                                                if (layCCPurMonOutAmt == layCCPurMonOutNewAmt) { //MONEY IN = NEW AMT
-                                                    //SHOW OPTION TO CHANGE DEFAULT
-                                                    layCCPurHldr.layCCPurPaytDefLayout.setVisibility(View.VISIBLE);
-                                                    //NO CHANGE DEFAULT
-                                                    layCCPurHldr.layCCPurPaytNoDefBtn.setOnClickListener(new View.OnClickListener() {
-                                                        @Override
-                                                        public void onClick(View v) {
-                                                            layCCPurHldr.layCCPurPaytDefLayout.setVisibility(View.GONE);
-                                                            layCCPurContTransaction();
-                                                        }
-                                                    });
-                                                    //YES CHANGE DEFAULT
-                                                    layCCPurHldr.layCCPurPaytYesDefBtn.setOnClickListener(new View.OnClickListener() {
-                                                        @Override
-                                                        public void onClick(View v) {
-                                                            layCCPurHldr.layCCPurPaytDefLayout.setVisibility(View.GONE);
-                                                            layCCPurChangeDefault();
-                                                        }
-                                                    });
-                                                } else { //MONEY IN = DEFAULT AMT
-                                                    layCCPurContTransaction();
-                                                }
-                                            }
-                                        });
-                                    } else { //B POSSIBLE
-                                        if (layCCPurMonOutAmt == layCCPurMonOutNewAmt) { //MONEY IN = NEW AMT
-                                            //SHOW OPTION TO CHANGE DEFAULT
-                                            layCCPurHldr.layCCPurPaytDefLayout.setVisibility(View.VISIBLE);
-                                            //NO CHANGE DEFAULT
-                                            layCCPurHldr.layCCPurPaytNoDefBtn.setOnClickListener(new View.OnClickListener() {
-                                                @Override
-                                                public void onClick(View v) {
-                                                    layCCPurHldr.layCCPurPaytDefLayout.setVisibility(View.GONE);
-                                                    layCCPurContTransaction();
-                                                }
-                                            });
-                                            //YES CHANGE DEFAULT
-                                            layCCPurHldr.layCCPurPaytYesDefBtn.setOnClickListener(new View.OnClickListener() {
-                                                @Override
-                                                public void onClick(View v) {
-                                                    layCCPurHldr.layCCPurPaytDefLayout.setVisibility(View.GONE);
+                                                    transDialogDefLayout.setVisibility(View.GONE);
                                                     layCCPurChangeDefault();
                                                 }
                                             });
@@ -935,8 +673,10 @@ public class LayoutCCPur extends MainNavigation {
                                     }
                                 }
                             }
-                        }
                     });
+                    builder.setView(dView);
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
                 }
             });
             return convertView;
@@ -945,17 +685,5 @@ public class LayoutCCPur extends MainNavigation {
 
     private static class LayCCPurViewHolder {
         public TextView layCCPurPaytCatTV;
-        public LinearLayout layCCPurCatLayout;
-        public TextView layCCPurPaytPayLabel;
-        public TextView layCCPurPaytAmtTV;
-        public EditText layCCPurPaytAmtET;
-        public ImageButton layCCPurPaytSaveBtn;
-        public LinearLayout layCCPurPaytWarnLayout;
-        public TextView layCCPurPaytWarnTV;
-        public Button layCCPurPaytYesContBtn;
-        public Button layCCPurPaytNoContBtn;
-        public LinearLayout layCCPurPaytDefLayout;
-        public Button layCCPurPaytYesDefBtn;
-        public Button layCCPurPaytNoDefBtn;
     }
 }

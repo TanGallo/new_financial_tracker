@@ -30,7 +30,7 @@ import ca.gotchasomething.mynance.data.TransactionsDb;
 
 public class LayoutCCPay extends MainNavigation {
 
-    Button layCCPayNoBtn, layCCPayYesBtn;
+    Button layCCPayNoBtn, layCCPayYesBtn, warnDialogNoContBtn, warnDialogYesContBtn;
     CheckBox layCCPayCheckbox;
     ContentValues layCCPayCV, layCCPayCV2;
     DbHelper layCCPayHelper, layCCPayHelper2;
@@ -41,14 +41,15 @@ public class LayoutCCPay extends MainNavigation {
     Intent layCCPayRefresh, layCCPayToMain;
     LayCCPayPaytLstAdapter layCCPayPaytLstAdapter;
     LayCCPayTransLstAdapter layCCPayTransLstAdapter;
-    LinearLayout layCCPayPaytListLayout, layCCPayWarnLayout;
+    LinearLayout layCCPayPaytListLayout, layCCPayWarnLayout, warnDialogWarnLayout;
     ListView layCCPayCCPaytListView, layCCPayTransListView;
     long idFromDb, layCCPayChargingDebtIdFromTag, layCCPayId;
     RelativeLayout layCCPayToPayHeaderLayout;
     SQLiteDatabase layCCPayDb, layCCPayDb2;
     String acctNameFromDb = null, layCCPayPriorityFromTag = null;
-    TextView layCCPaycheckBelowLabel, layCCPayNoCCTransTV, layCCPayWarnTV, layCCPayTotAcctTV, layCCPayAvailAcctTV, layCCPayAvailAmtLabel;
+    TextView layCCPaycheckBelowLabel, layCCPayNoCCTransTV, layCCPayWarnTV, layCCPayTotAcctTV, layCCPayAvailAcctTV, layCCPayAvailAmtLabel, warnDialogWarnTV;
     TransactionsDb layCCPayMonOutDb, layCCPayTransDb;
+    View dView;
 
 
     @Override
@@ -121,6 +122,12 @@ public class LayoutCCPay extends MainNavigation {
         layCCPayCheckbox.setOnCheckedChangeListener(onCheckLayCCPayCheckbox);
     }
 
+    public void layCCPayRefresh() {
+        layCCPayRefresh = new Intent(LayoutCCPay.this, LayoutCCPay.class);
+        layCCPayRefresh.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+        startActivity(layCCPayRefresh);
+    }
+
     public void layCCPayToMain() {
         layCCPayToMain = new Intent(LayoutCCPay.this, MainActivity.class);
         layCCPayToMain.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
@@ -132,15 +139,13 @@ public class LayoutCCPay extends MainNavigation {
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
             //pop up = are you sure?
             AlertDialog.Builder builder = new AlertDialog.Builder(LayoutCCPay.this);
-            View v = getLayoutInflater().inflate(R.layout.dialog, null);
+            View v = getLayoutInflater().inflate(R.layout.dialog_cc_warn, null);
             Button dialogYesBtn = v.findViewById(R.id.dialogYesBtn);
             Button dialogNoBtn = v.findViewById(R.id.dialogNoBtn);
             dialogNoBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    layCCPayRefresh = new Intent(LayoutCCPay.this, LayoutCCPay.class);
-                    layCCPayRefresh.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-                    startActivity(layCCPayRefresh);
+                    layCCPayRefresh();
                 }
             });
             dialogYesBtn.setOnClickListener(new View.OnClickListener() {

@@ -20,7 +20,7 @@ public class MainNavigation extends AppCompatActivity implements NavigationView.
     Boolean before = false;
     public DbManager dbMgr;
     protected DrawerLayout drawer;
-    Intent i, i2, i3, i4, i5;
+    Intent i, i2, i3, i4, i5, i6, i7;
     Menu menu;
     NavigationView navView;
     Toolbar toolbar;
@@ -58,6 +58,10 @@ public class MainNavigation extends AppCompatActivity implements NavigationView.
             menu.findItem(R.id.menu_view_reports).setEnabled(false);
             menu.findItem(R.id.menu_help).setVisible(false);
             menu.findItem(R.id.menu_help).setEnabled(false);
+            menu.findItem(R.id.menu_acct_curr).setVisible(false);
+            menu.findItem(R.id.menu_acct_curr).setEnabled(false);
+            menu.findItem(R.id.menu_bdgt_trans).setVisible(false);
+            menu.findItem(R.id.menu_bdgt_trans).setEnabled(false);
         } else {
             menu.findItem(R.id.menu_before).setVisible(false);
             menu.findItem(R.id.menu_home_page).setVisible(true);
@@ -70,6 +74,10 @@ public class MainNavigation extends AppCompatActivity implements NavigationView.
             menu.findItem(R.id.menu_view_reports).setEnabled(true);
             menu.findItem(R.id.menu_help).setVisible(true);
             menu.findItem(R.id.menu_help).setEnabled(true);
+            menu.findItem(R.id.menu_acct_curr).setVisible(true);
+            menu.findItem(R.id.menu_acct_curr).setEnabled(true);
+            menu.findItem(R.id.menu_bdgt_trans).setVisible(true);
+            menu.findItem(R.id.menu_bdgt_trans).setEnabled(true);
         }
         navView.setNavigationItemSelectedListener(this);
     }
@@ -115,6 +123,16 @@ public class MainNavigation extends AppCompatActivity implements NavigationView.
                 i5 = new Intent(MainNavigation.this, LayoutViewEdit.class);
                 i5.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
                 startActivity(i5);
+                break;
+            case R.id.menu_acct_curr:
+                i6 = new Intent(MainNavigation.this, AADataAcctCurr.class);
+                i6.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+                startActivity(i6);
+                break;
+            case R.id.menu_bdgt_trans:
+                i7 = new Intent(MainNavigation.this, AADataBdgtTrans.class);
+                i7.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+                startActivity(i7);
                 break;
         }
         drawer.closeDrawer(GravityCompat.START);

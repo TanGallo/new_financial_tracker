@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/transDialogLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@drawable/entry_box"
+            tools:ignore="UselessParent">
+
+            <TextView
+                android:id="@+id/transDialogCatTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="5dp"
+                android:text="@string/category"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="20sp" />
+
+            <LinearLayout
+                android:id="@+id/transDialogPdLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_below="@id/transDialogCatTV">
+
+                <TextView
+                    android:id="@+id/transDialogPayLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="5dp"
+                    android:text="@string/paid"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/transDialogAmtTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="5dp"
+                    android:text="@string/amount"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+
+            <EditText
+                android:id="@+id/transDialogAmtET"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:digits="01234567890.-"
+                android:hint="@string/enter_new_amt"
+                android:inputType="numberSigned|numberDecimal"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="14sp"
+                android:layout_below="@id/transDialogPdLayout"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_below="@+id/transDialogAmtET">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/transDialogSaveBtn"
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="5dp"
+                android:background="@drawable/entry_box"
+                android:contentDescription="@string/edit"
+                android:text="@string/save"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="12sp" />
+
+            <Button
+                android:id="@+id/transDialogCancelBtn"
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="10dp"
+                android:layout_toStartOf="@id/transDialogSaveBtn"
+                android:background="@drawable/entry_box"
+                android:contentDescription="@string/delete"
+                android:text="@string/cancel"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="12sp" />
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/transDialogDefLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:background="@drawable/entry_box"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/transDialogDefTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="@string/change_default"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="14sp" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:ignore="UselessParent">
+
+            <Button
+                android:id="@+id/transDialogNoDefBtn"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/circle_box"
+                android:contentDescription="@string/edit"
+                android:text="@string/no"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="12sp" />
+
+            <Button
+                android:id="@+id/transDialogYesDefBtn"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="10dp"
+                android:layout_toStartOf="@id/transDialogNoDefBtn"
+                android:background="@drawable/circle_box"
+                android:contentDescription="@string/delete"
+                android:text="@string/yes"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="12sp" />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/transDialogWarnLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:background="@drawable/entry_box"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/transDialogWarnTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="@string/warning"
+            android:textColor="@color/brightRed"
+            android:textSize="14sp" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:ignore="UselessParent">
+
+            <TextView
+                android:id="@+id/transDialogContTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:text="@string/continue_anyway"
+                android:textColor="@color/brightRed"
+                android:textSize="14sp" />
+
+            <Button
+                android:id="@+id/transDialogNoContBtn"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/circle_box"
+                android:contentDescription="@string/edit"
+                android:text="@string/no"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="12sp" />
+
+            <Button
+                android:id="@+id/transDialogYesContBtn"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="10dp"
+                android:layout_toStartOf="@id/transDialogNoContBtn"
+                android:background="@drawable/circle_box"
+                android:contentDescription="@string/delete"
+                android:text="@string/yes"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="12sp" />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</LinearLayout>
+

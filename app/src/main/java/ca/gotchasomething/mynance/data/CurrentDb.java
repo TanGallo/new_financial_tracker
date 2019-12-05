@@ -3,25 +3,25 @@ package ca.gotchasomething.mynance.data;
 
 public class CurrentDb {
     //private Double currentAccount;
-    private Double currentB;
     private Double currentA;
     private Double currentOwingA;
+    private Double currentB;
     private int lastPageId;
     private String lastDate;
     private long id;
 
     public CurrentDb(
             //Double currentAccount,
-            Double currentB,
             Double currentA,
             Double currentOwingA,
+            Double currentB,
             int lastPageId,
             String lastDate,
             long id) {
         //this.currentAccount = currentAccount;
-        this.currentB = currentB;
         this.currentA = currentA;
         this.currentOwingA = currentOwingA;
+        this.currentB = currentB;
         this.lastPageId = lastPageId;
         this.lastDate = lastDate;
         this.id = id;
@@ -30,14 +30,14 @@ public class CurrentDb {
     //public Double getCurrentAccount() { return currentAccount; }
     //public void setCurrentAccount(Double currentAccount) { this.currentAccount = currentAccount; }
 
-    public Double getCurrentB() { return currentB; }
-    public void setCurrentB(Double currentB) { this.currentB = currentB; }
-
     public Double getCurrentA() { return currentA; }
     public void setCurrentA(Double currentA) { this.currentA = currentA; }
 
     public Double getCurrentOwingA() { return currentOwingA; }
     public void setCurrentOwingA(Double currentOwingA) { this.currentOwingA = currentOwingA; }
+
+    public Double getCurrentB() { return currentB; }
+    public void setCurrentB(Double currentB) { this.currentB = currentB; }
 
     public int getLastPageId() { return lastPageId; }
     public void setLastPageId(int lastPageId) { this.lastPageId = lastPageId; }
