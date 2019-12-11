@@ -41,7 +41,7 @@ import ca.gotchasomething.mynance.data.AccountsDb;
 public class LayoutDebt extends MainNavigation {
 
     AccountsDb layDebtDebtDb;
-    Button layDebtDebtCancelBtn, layDebtDebtSaveBtn, layDebtDebtUpdateBtn;
+    Button layDebtDebtCancelBtn, layDebtDoneBtn, layDebtDebtSaveBtn, layDebtDebtUpdateBtn;
     ContentValues layDebtCV, layDebtCV2, layDebtCV3;
     Date latestDateD;
     DbHelper layDebtHelper, layDebtHelper3;
@@ -52,7 +52,7 @@ public class LayoutDebt extends MainNavigation {
     EditText layDebtDebtAmtET, layDebtDebtLimitET, layDebtDebtNameET, layDebtDebtPaytET, layDebtDebtRateET;
     FloatingActionButton layDebtAddDebtBtn;
     General layDebtGen;
-    Intent layDebtToAddMore, layDebtRefresh;
+    Intent layDebtToAddMore, layDebtRefresh, layDebtToAnalysis;
     ListView layDebtListView;
     long id, debtIdFromTag;
     NumberFormat layDebtPerFor = NumberFormat.getPercentInstance();
@@ -87,6 +87,13 @@ public class LayoutDebt extends MainNavigation {
         layDebtDateHeaderLabel.setText(getString(R.string.debt_free_by));
         layDebtDateHeaderTV = findViewById(R.id.c4HeaderTV2);
         layDebtAddDebtBtn = findViewById(R.id.c4AddMoreBtn);
+        layDebtDoneBtn = findViewById(R.id.c4DoneBtn);
+        if(layDebtDbMgr.retrieveLatestDone().equals("savings")) {
+            layDebtDoneBtn.setVisibility(View.VISIBLE);
+            layDebtDoneBtn.setOnClickListener(onClickLayDebtDoneBtn);
+        } else {
+            layDebtDoneBtn.setVisibility(View.GONE);
+        }
 
         layDebtAddDebtBtn.setOnClickListener(onClickLayDebtAddDebtBtn);
 
@@ -475,8 +482,8 @@ public class LayoutDebt extends MainNavigation {
         public TextView layDebtFreeDateTV;
         public TextView layDebtLabel2;
         public TextView layDebtOverLimitWarn;
-        ImageButton layDebtDelBtn;
-        ImageButton layDebtEditBtn;
+        public ImageButton layDebtDelBtn;
+        public ImageButton layDebtEditBtn;
     }
 
     View.OnClickListener onClickLayDebtAddDebtBtn = new View.OnClickListener() {
@@ -485,6 +492,15 @@ public class LayoutDebt extends MainNavigation {
             layDebtToAddMore = new Intent(LayoutDebt.this, AddDebts.class);
             layDebtToAddMore.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
             startActivity(layDebtToAddMore);
+        }
+    };
+
+    View.OnClickListener onClickLayDebtDoneBtn = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            layDebtToAnalysis = new Intent(LayoutDebt.this, SetUpAnalysis.class);
+            layDebtToAnalysis.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+            startActivity(layDebtToAnalysis);
         }
     };
 }

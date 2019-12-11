@@ -3,17 +3,12 @@ package ca.gotchasomething.mynance;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
-import android.database.CursorIndexOutOfBoundsException;
-import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,7 +16,6 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -105,11 +99,7 @@ public class AddDebtsList extends MainNavigation {
     View.OnClickListener onClickDebtLstDoneButton = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            if (debtLstDBMgr.retrieveLatestDone().equals("savings")) {
-                debtLstToAnalysis = new Intent(AddDebtsList.this, SetUpAnalysis.class);
-                debtLstToAnalysis.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-                startActivity(debtLstToAnalysis);
-            } else if (debtLstDBMgr.retrieveLatestDone().equals("bills")) {
+            if (debtLstDBMgr.retrieveLatestDone().equals("bills")) {
                 debtLstCV = new ContentValues();
                 debtLstCV.put(DbHelper.LATESTDONE, "debts");
                 debtLstHelper = new DbHelper(getApplicationContext());
@@ -120,23 +110,19 @@ public class AddDebtsList extends MainNavigation {
                 debtLstToSetUp = new Intent(AddDebtsList.this, LayoutSetUp.class);
                 debtLstToSetUp.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
                 startActivity(debtLstToSetUp);
+            } else if (debtLstDBMgr.retrieveLastPageId() == 11) {
+                debtLstToLayoutDebt = new Intent(AddDebtsList.this, LayoutDebt.class);
+                debtLstToLayoutDebt.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+                startActivity(debtLstToLayoutDebt);
             } else if (debtLstDBMgr.retrieveLastPageId() == 7) {
                 debtLstToDaiMonCCPur = new Intent(AddDebtsList.this, LayoutCCPur.class);
                 debtLstToDaiMonCCPur.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
                 startActivity(debtLstToDaiMonCCPur);
-            } else if (debtLstDBMgr.retrieveLastPageId() == 5 || debtLstDBMgr.retrieveLastPageId() == 11) {
-                debtLstToLayoutDebt = new Intent(AddDebtsList.this, LayoutDebt.class);
-                debtLstToLayoutDebt.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-                startActivity(debtLstToLayoutDebt);
-            } else if (debtLstDBMgr.retrieveLastPageId() == 2) {
-                debtLstToLayoutBudget = new Intent(AddDebtsList.this, LayoutBudget.class);
-                debtLstToLayoutBudget.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-                startActivity(debtLstToLayoutBudget);
             }
         }
     };
 
-    TextWatcher onChangeDebtLstAmtET = new TextWatcher() {
+    /*TextWatcher onChangeDebtLstAmtET = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
         }
@@ -188,9 +174,9 @@ public class AddDebtsList extends MainNavigation {
         @Override
         public void afterTextChanged(Editable s) {
         }
-    };
+    };*/
 
-    public void debtLstDebtEndRes() {
+    /*public void debtLstDebtEndRes() {
 
         debtLstDebtEnd = debtLstGen.calcDebtDate(
                 debtAmtFromEntry,
@@ -211,7 +197,7 @@ public class AddDebtsList extends MainNavigation {
         }
 
         debtLstDateRes.setText(debtLstDebtEnd);
-    }
+    }*/
 
     public class DebtLstListAdapter extends ArrayAdapter<AccountsDb> {
 
@@ -258,10 +244,10 @@ public class AddDebtsList extends MainNavigation {
                 debtLstHldr.debtLstFreeDateTV = convertView.findViewById(R.id.bigLstTV3);
                 debtLstHldr.debtLstDel = convertView.findViewById(R.id.bigLstDelBtn);
                 debtLstHldr.debtLstEdit = convertView.findViewById(R.id.bigLstEditBtn);
-                if(debtLstDBMgr.retrieveLastPageId() == 7 || debtLstDBMgr.retrieveLastPageId() == 11) {
+                //if(debtLstDBMgr.retrieveLastPageId() == 7 || debtLstDBMgr.retrieveLastPageId() == 11) {
                     debtLstHldr.debtLstDel.setVisibility(View.GONE);
                     debtLstHldr.debtLstEdit.setVisibility(View.GONE);
-                }
+                //}
                 debtLstHldr.debtLstLabel2 = convertView.findViewById(R.id.bigLstLabel2);
                 debtLstHldr.debtLstLabel2.setVisibility(View.GONE);
                 debtLstHldr.debtLstOverLimit = convertView.findViewById(R.id.bigLstTV4);
@@ -309,11 +295,11 @@ public class AddDebtsList extends MainNavigation {
                 debtLstHldr.debtLstOverLimit.setVisibility(View.GONE);
             }
 
-            debtLstHldr.debtLstDel.setTag(debts.get(position));
-            debtLstHldr.debtLstEdit.setTag(debts.get(position));
+            /*debtLstHldr.debtLstDel.setTag(debts.get(position));
+            debtLstHldr.debtLstEdit.setTag(debts.get(position));*/
 
             //click on pencil icon to edit a data record
-            debtLstHldr.debtLstEdit.setOnClickListener(new View.OnClickListener() {
+            /*debtLstHldr.debtLstEdit.setOnClickListener(new View.OnClickListener() {
 
                 @Override
                 public void onClick(View v) {
@@ -444,10 +430,10 @@ public class AddDebtsList extends MainNavigation {
                         }
                     });
                 }
-            });
+            });*/
 
             //click on trash can icon
-            debtLstHldr.debtLstDel.setOnClickListener(new View.OnClickListener() {
+            /*debtLstHldr.debtLstDel.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
@@ -461,7 +447,7 @@ public class AddDebtsList extends MainNavigation {
                     debtLstRefresh.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
                     startActivity(debtLstRefresh);
                 }
-            });
+            });*/
 
             return convertView;
         }

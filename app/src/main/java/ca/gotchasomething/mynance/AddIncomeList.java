@@ -89,6 +89,12 @@ public class AddIncomeList extends MainNavigation {
         incLstListView.setAdapter(incLstLstAdapter);
     }
 
+    public void incLstRefresh() {
+        incLstRefresh = new Intent(AddIncomeList.this, AddIncomeList.class);
+        incLstRefresh.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+        startActivity(incLstRefresh);
+    }
+
     View.OnClickListener onClickIncLstAddMoreBtn = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -116,16 +122,14 @@ public class AddIncomeList extends MainNavigation {
                 incLstToSetUp = new Intent(AddIncomeList.this, LayoutSetUp.class);
                 incLstToSetUp.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
                 startActivity(incLstToSetUp);
-            } else {
-                if (incLstDbMgr.retrieveLastPageId() == 1) {
-                    incLstToMonIn = new Intent(AddIncomeList.this, LayoutMoneyIn.class);
-                    incLstToMonIn.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-                    startActivity(incLstToMonIn);
-                } else if (incLstDbMgr.retrieveLastPageId() == 2) {
-                    incLstToBud = new Intent(AddIncomeList.this, LayoutBudget.class);
-                    incLstToBud.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-                    startActivity(incLstToBud);
-                }
+            } else if (incLstDbMgr.retrieveLastPageId() == 2) {
+                incLstToBud = new Intent(AddIncomeList.this, LayoutBudget.class);
+                incLstToBud.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+                startActivity(incLstToBud);
+            } else if (incLstDbMgr.retrieveLastPageId() == 1) {
+                incLstToMonIn = new Intent(AddIncomeList.this, LayoutMoneyIn.class);
+                incLstToMonIn.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+                startActivity(incLstToMonIn);
             }
         }
     };
@@ -173,6 +177,9 @@ public class AddIncomeList extends MainNavigation {
                 incLstHldr.incLstDel = convertView.findViewById(R.id.list2DelBtn);
                 incLstHldr.incLstEdit = convertView.findViewById(R.id.list2EditBtn);
                 if (incLstDbMgr.retrieveLastPageId() == 1) {
+                    //IF COMING FROM LAYOUTMONEYIN, NO EDIT/DELETE
+                    //IF DURING SET UP, YES EDIT/DELETE
+                    //IF COMING FROM LAYOUTBUDGET, YES EDIT/DELETE
                     incLstHldr.incLstDel.setVisibility(View.GONE);
                     incLstHldr.incLstEdit.setVisibility(View.GONE);
                 }
@@ -278,9 +285,7 @@ public class AddIncomeList extends MainNavigation {
                     incLstCancelBtn.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            incLstRefresh = new Intent(AddIncomeList.this, AddIncomeList.class);
-                            incLstRefresh.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-                            startActivity(incLstRefresh);
+                            incLstRefresh();
                         }
                     });
 
@@ -316,9 +321,7 @@ public class AddIncomeList extends MainNavigation {
                                 Toast.makeText(getBaseContext(), R.string.changes_saved,
                                         Toast.LENGTH_LONG).show();
 
-                                incLstRefresh = new Intent(AddIncomeList.this, AddIncomeList.class);
-                                incLstRefresh.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-                                startActivity(incLstRefresh);
+                                incLstRefresh();
 
                             } else {
                                 Toast.makeText(getBaseContext(), R.string.no_blanks_warning, Toast.LENGTH_LONG).show();
@@ -340,9 +343,7 @@ public class AddIncomeList extends MainNavigation {
                     incLstLstAdapter.updateIncomes(incLstDbMgr.getIncomes());
                     incLstLstAdapter.notifyDataSetChanged();
 
-                    incLstRefresh = new Intent(AddIncomeList.this, AddIncomeList.class);
-                    incLstRefresh.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-                    startActivity(incLstRefresh);
+                    incLstRefresh();
                 }
             });
 

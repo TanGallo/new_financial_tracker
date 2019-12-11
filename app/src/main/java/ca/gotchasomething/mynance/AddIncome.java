@@ -14,8 +14,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import ca.gotchasomething.mynance.data.BudgetDb;
 
-//import ca.gotchasomething.mynance.data.IncomeBudgetDb;
-
 public class AddIncome extends AppCompatActivity {
 
     BudgetDb addIncIncDb;

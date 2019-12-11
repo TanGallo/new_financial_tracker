@@ -158,13 +158,6 @@ public class LayoutViewEdit extends MainNavigation {
 
         layVwEdSpinOkBtn.setOnClickListener(onClickSpinOkBtn);
         layVwEdSpinResetBtn.setOnClickListener(onClickSpinResetBtn);
-
-        /*layVwEdCV = new ContentValues();
-        layVwEdCV.put(DbHelper.LASTPAGEID, 10);
-        layVwEdHelper = new DbHelper(getApplicationContext());
-        layVwEdDb = layVwEdHelper.getWritableDatabase();
-        layVwEdDb.update(DbHelper.CURRENT_TABLE_NAME, layVwEdCV, DbHelper.ID + "= '1'", null);
-        layVwEdDb.close();*/
     }
 
     public void layVwEdRefresh() {

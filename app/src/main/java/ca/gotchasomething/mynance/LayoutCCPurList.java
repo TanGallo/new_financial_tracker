@@ -8,8 +8,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,18 +16,15 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AlertDialog;
 
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import ca.gotchasomething.mynance.data.AccountsDb;
 import ca.gotchasomething.mynance.data.TransactionsDb;
 
 public class LayoutCCPurList extends MainNavigation {
@@ -81,26 +76,30 @@ public class LayoutCCPurList extends MainNavigation {
         monCC2Gen = new General();
 
         monCC2SpinLayout = findViewById(R.id.layout1SpinLayout);
-        monCC2ToMthSpin = findViewById(R.id.layout1ToMthSpin);
+        monCC2SpinLayout.setVisibility(View.GONE);
+        /*monCC2ToMthSpin = findViewById(R.id.layout1ToMthSpin);
         monCC2FromMthSpin = findViewById(R.id.layout1FromMthSpin);
         monCC2ToYrSpin = findViewById(R.id.layout1ToYrSpin);
         monCC2FromYrSpin = findViewById(R.id.layout1FromYrSpin);
         monCC2AndTV = findViewById(R.id.layout1AndTV);
         monCC2SpinOkBtn = findViewById(R.id.layout1SpinOkBtn);
-        monCC2SpinResetBtn = findViewById(R.id.layout1SpinResetBtn);
+        monCC2SpinResetBtn = findViewById(R.id.layout1SpinResetBtn);*/
         monCC2Title = findViewById(R.id.layout1HeaderLabelTV);
         monCC2Title.setText(getString(R.string.credit_card_purchases_2));
         monCC2AddMoreBtn = findViewById(R.id.layout1AddMoreBtn);
+        monCC2AddMoreBtn.setText(getString(R.string.record_credit_card));
         monCC2DoneBtn = findViewById(R.id.layout1DoneBtn);
         monCC2DoneBtn.setOnClickListener(onClickMonCC2DoneBtn);
         monCC2TotalTV = findViewById(R.id.layout1TotalTV);
         monCC2TotalTV.setVisibility(View.GONE);
         monCC2List = findViewById(R.id.layout1ListView);
 
+        monCC2AddMoreBtn.setOnClickListener(onClickMonCC2AddMoreBtn);
+
         monCC2Adapter = new MonCC2Adapter(this, monCC2DbMgr.getCCTrans());
         monCC2List.setAdapter(monCC2Adapter);
 
-        if (monCC2DbMgr.retrieveLastPageId() == 10) {
+        /*if (monCC2DbMgr.retrieveLastPageId() == 10) {
             monCC2SpinLayout.setVisibility(View.VISIBLE);
             monCC2SpinResetBtn.setVisibility(View.GONE);
             monCC2Months = new String[]{
@@ -159,7 +158,7 @@ public class LayoutCCPurList extends MainNavigation {
             monCC2AddMoreBtn.setText(getString(R.string.record_credit_card));
             monCC2AddMoreBtn.setOnClickListener(onClickMonCC2AddMoreBtn);
             monCC2DoneBtn.setVisibility(View.VISIBLE);
-        }
+        }*/
     }
 
     public void monCC2Refresh() {
@@ -186,7 +185,7 @@ public class LayoutCCPurList extends MainNavigation {
         }
     };
 
-    Spinner.OnItemSelectedListener monCC2OnFromMonthSelected = new AdapterView.OnItemSelectedListener() {
+    /*Spinner.OnItemSelectedListener monCC2OnFromMonthSelected = new AdapterView.OnItemSelectedListener() {
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
             if (position == 12) {
@@ -303,9 +302,9 @@ public class LayoutCCPurList extends MainNavigation {
         public void onClick(View v) {
             monCC2Refresh();
         }
-    };
+    };*/
 
-    public void monCC2Finish() {
+    /*public void monCC2Finish() {
         monCC2DbMgr.updateRecPlusPt1(monCC2MonOutAmtDiff, debtAmtFromDb, monCC2FromAcctId);
         for (AccountsDb a : monCC2DbMgr.getDebts()) {
             if (a.getId() == monCC2FromAcctId) {
@@ -336,7 +335,7 @@ public class LayoutCCPurList extends MainNavigation {
         monCC2Db.close();
 
         monCC2Refresh();
-    }
+    }*/
 
     public class MonCC2Adapter extends ArrayAdapter<TransactionsDb> {
 
@@ -394,13 +393,13 @@ public class LayoutCCPurList extends MainNavigation {
                 monCC2Hldr = (MoneyCC2ViewHolder) convertView.getTag();
             }
 
-            if (ccTrans.get(position).getTransCCPaid().equals("Y")) {
+            //if (ccTrans.get(position).getTransCCPaid().equals("Y")) {
                 monCC2Hldr.monCC2EditBtn.setVisibility(View.GONE);
                 monCC2Hldr.monCC2DelBtn.setVisibility(View.GONE);
-            } else {
+            /*} else {
                 monCC2Hldr.monCC2EditBtn.setVisibility(View.VISIBLE);
                 monCC2Hldr.monCC2DelBtn.setVisibility(View.VISIBLE);
-            }
+            }*/
 
             monCC2Hldr.monCC2DateTV.setText(ccTrans.get(position).getTransCreatedOn());
             
@@ -410,15 +409,15 @@ public class LayoutCCPurList extends MainNavigation {
             monCC2Hldr.monCC2CatTV.setText(ccTrans.get(position).getTransBdgtCat());
             monCC2Hldr.monCC2AcctTV.setText(ccTrans.get(position).getTransFromAcctName());
             
-            monCC2Hldr.monCC2EditBtn.setTag(ccTrans.get(position));
-            monCC2Hldr.monCC2DelBtn.setTag(ccTrans.get(position));
+            /*monCC2Hldr.monCC2EditBtn.setTag(ccTrans.get(position));
+            monCC2Hldr.monCC2DelBtn.setTag(ccTrans.get(position));*/
 
-            monCC2TransBdgtId= ccTrans.get(position).getTransBdgtId();
+            /*monCC2TransBdgtId= ccTrans.get(position).getTransBdgtId();
             monCC2FromAcctId = ccTrans.get(position).getTransFromAcctId();
-            monCC2BdgtPriority = ccTrans.get(position).getTransBdgtPriority();
+            monCC2BdgtPriority = ccTrans.get(position).getTransBdgtPriority();*/
 
             //click on pencil icon
-            monCC2Hldr.monCC2EditBtn.setOnClickListener(new View.OnClickListener() {
+            /*monCC2Hldr.monCC2EditBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
@@ -505,10 +504,10 @@ public class LayoutCCPurList extends MainNavigation {
                     AlertDialog dialog = builder.create();
                     dialog.show();
                 }
-            });
+            });*/
 
             //click on trash can icon
-            monCC2Hldr.monCC2DelBtn.setOnClickListener(new View.OnClickListener() {
+            /*monCC2Hldr.monCC2DelBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
@@ -544,7 +543,7 @@ public class LayoutCCPurList extends MainNavigation {
                     monCC2Db.close();
                     monCC2Refresh();
                 }
-            });
+            });*/
             return convertView;
         }
     }
@@ -553,7 +552,6 @@ public class LayoutCCPurList extends MainNavigation {
         public TextView monCC2CatTV;
         public TextView monCC2AmtTV;
         public TextView monCC2DateTV;
-        public TextView monCC2CCTV;
         public ImageButton monCC2EditBtn;
         public ImageButton monCC2DelBtn;
         public TextView monCC2AcctLabel;

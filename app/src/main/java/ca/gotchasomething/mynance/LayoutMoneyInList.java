@@ -8,8 +8,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,12 +16,10 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AlertDialog;
 
 import com.google.android.material.navigation.NavigationView;
 
@@ -31,7 +27,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import ca.gotchasomething.mynance.data.AccountsDb;
 import ca.gotchasomething.mynance.data.TransactionsDb;
 
 public class LayoutMoneyInList extends MainNavigation {
@@ -86,14 +81,16 @@ public class LayoutMoneyInList extends MainNavigation {
         monInLstGen = new General();
 
         monInLstSpinLayout = findViewById(R.id.layout1SpinLayout);
-        monInLstToMthSpin = findViewById(R.id.layout1ToMthSpin);
+        monInLstSpinLayout.setVisibility(View.GONE);
+        /*monInLstToMthSpin = findViewById(R.id.layout1ToMthSpin);
         monInLstFromMthSpin = findViewById(R.id.layout1FromMthSpin);
         monInLstToYrSpin = findViewById(R.id.layout1ToYrSpin);
         monInLstFromYrSpin = findViewById(R.id.layout1FromYrSpin);
         monInLstAndTV = findViewById(R.id.layout1AndTV);
         monInLstSpinOkBtn = findViewById(R.id.layout1SpinOkBtn);
-        monInLstSpinResetBtn = findViewById(R.id.layout1SpinResetBtn);
+        monInLstSpinResetBtn = findViewById(R.id.layout1SpinResetBtn);*/
         monInLstAddMoreBtn = findViewById(R.id.layout1AddMoreBtn);
+        monInLstAddMoreBtn.setText(getString(R.string.record_deposits));
         monInLstTitle = findViewById(R.id.layout1HeaderLabelTV);
         monInLstTitle.setText(getString(R.string.deposits));
         monInLstDoneBtn = findViewById(R.id.layout1DoneBtn);
@@ -102,10 +99,12 @@ public class LayoutMoneyInList extends MainNavigation {
         monInLstTotalTV.setVisibility(View.GONE);
         monInLstList = findViewById(R.id.layout1ListView);
 
+        monInLstAddMoreBtn.setOnClickListener(onClickMonInLstAddMoreBtn);
+
         monInLstAdapter = new MonInLstAdapter(this, monInLstDbMgr.getMoneyIns());
         monInLstList.setAdapter(monInLstAdapter);
 
-        if (monInLstDbMgr.retrieveLastPageId() == 10) {
+        /*if (monInLstDbMgr.retrieveLastPageId() == 10) {
             monInLstSpinLayout.setVisibility(View.VISIBLE);
             monInLstSpinResetBtn.setVisibility(View.GONE);
             monInLstMonths = new String[]{
@@ -164,7 +163,7 @@ public class LayoutMoneyInList extends MainNavigation {
             monInLstAddMoreBtn.setText(getString(R.string.record_deposits));
             monInLstAddMoreBtn.setOnClickListener(onClickMonInLstAddMoreBtn);
             monInLstDoneBtn.setVisibility(View.VISIBLE);
-        }
+        }*/
     }
 
     View.OnClickListener onClickMonInLstDoneBtn = new View.OnClickListener() {
@@ -191,7 +190,7 @@ public class LayoutMoneyInList extends MainNavigation {
         startActivity(monInLstRefresh);
     }
 
-    Spinner.OnItemSelectedListener monInLstOnFromMonthSelected = new AdapterView.OnItemSelectedListener() {
+    /*Spinner.OnItemSelectedListener monInLstOnFromMonthSelected = new AdapterView.OnItemSelectedListener() {
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
             if (position == 12) {
@@ -308,7 +307,7 @@ public class LayoutMoneyInList extends MainNavigation {
         public void onClick(View v) {
             monInLstRefresh();
         }
-    };
+    };*/
 
     public class MonInLstAdapter extends ArrayAdapter<TransactionsDb> {
 
@@ -377,17 +376,17 @@ public class LayoutMoneyInList extends MainNavigation {
             monInLstHldr.monInLstCatTV.setText(moneyIns.get(position).getTransBdgtCat());
             monInLstHldr.monInLstAcctTV.setText(moneyIns.get(position).getTransToAcctName());
 
-            monInLstHldr.monInLstEditBtn.setTag(moneyIns.get(position));
-            monInLstHldr.monInLstDelBtn.setTag(moneyIns.get(position));
+            /*monInLstHldr.monInLstEditBtn.setTag(moneyIns.get(position));
+            monInLstHldr.monInLstDelBtn.setTag(moneyIns.get(position));*/
 
-            monInLstTransBdgtId = moneyIns.get(position).getTransBdgtId();
+            /*monInLstTransBdgtId = moneyIns.get(position).getTransBdgtId();
             monInLstToIsDebtSav = monInLstDbMgr.findMoneyInIsDebtSav(moneyIns.get(position).getTransToAcctId());
             monInLstTransAmtInA = moneyIns.get(position).getTransAmtInA();
             monInLstTransAmtInOwing = moneyIns.get(position).getTransAmtInOwing();
-            monInLstTransAmtInB = moneyIns.get(position).getTransAmtInB();
+            monInLstTransAmtInB = moneyIns.get(position).getTransAmtInB();*/
 
             //click on pencil icon
-            monInLstHldr.monInLstEditBtn.setOnClickListener(new View.OnClickListener() {
+            /*monInLstHldr.monInLstEditBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
@@ -513,10 +512,10 @@ public class LayoutMoneyInList extends MainNavigation {
                     AlertDialog dialog = builder.create();
                     dialog.show();
                 }
-            });
+            });*/
 
             //click on trash can icon
-            monInLstHldr.monInLstDelBtn.setOnClickListener(new View.OnClickListener() {
+            /*monInLstHldr.monInLstDelBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
@@ -583,7 +582,7 @@ public class LayoutMoneyInList extends MainNavigation {
 
                     monInLstRefresh();
                 }
-            });
+            });*/
             return convertView;
         }
     }
@@ -598,6 +597,5 @@ public class LayoutMoneyInList extends MainNavigation {
         public TextView monInLstAcctTV2;
         public ImageButton monInLstEditBtn;
         public ImageButton monInLstDelBtn;
-        public EditText monInLstAmtET;
     }
 }

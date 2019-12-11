@@ -165,7 +165,7 @@ public class AADataBdgtTrans extends MainNavigation {
 
             if (convertView == null) {
                 convertView = LayoutInflater.from(context).inflate(
-                        R.layout.frag_acct_list,
+                        R.layout.frag_trans_list,
                         parent, false);
 
                 transHldr = new TransViewHolder();

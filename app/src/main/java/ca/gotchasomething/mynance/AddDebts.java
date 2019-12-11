@@ -30,7 +30,7 @@ public class AddDebts extends AppCompatActivity {
     Double debtAmtFromEntry = 0.0, debtPaytFromEntry = 0.0, debtRateFromEntry = 0.0;
     EditText addDebtDebtNameET, addDebtDebtLimitET, addDebtDebtAmtET, addDebtDebtRateET, addDebtDebtPaytET;
     General addDebtGen;
-    Intent addDebtToBudget, addDebtToList;
+    Intent addDebtToList;
     SQLiteDatabase addDebtDb;
     String addDebtDebtEnd2 = null;
     TextView addDebtDebtDateResLabel, addDebtDebtDateResTV;

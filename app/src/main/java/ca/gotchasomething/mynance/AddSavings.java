@@ -180,20 +180,6 @@ public class AddSavings extends AppCompatActivity {
 
             if (savNameFromEntry != "null") {
 
-                /*addSavSavDb = new SavingsDb(
-                        savNameFromEntry,
-                        savAmtFromEntry,
-                        savGoalFromEntry,
-                        savPaytFromEntry,
-                        savRateFromEntry,
-                        (savPaytFromEntry * 12.0),
-                        addSavSavDate2,
-                        0);
-
-                addSavDbMgr.addSavings(addSavSavDb);
-
-                addSavSavId = addSavDbMgr.findLatestSavId();*/
-
                 addSavAcctDb = new AccountsDb(
                         savNameFromEntry,
                         savAmtFromEntry,

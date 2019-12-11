@@ -8,8 +8,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,18 +16,15 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AlertDialog;
 
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import ca.gotchasomething.mynance.data.AccountsDb;
 import ca.gotchasomething.mynance.data.TransactionsDb;
 
 public class LayoutMoneyOutList extends MainNavigation {
@@ -82,26 +77,30 @@ public class LayoutMoneyOutList extends MainNavigation {
         monOutLstGen = new General();
 
         monOutLstSpinLayout = findViewById(R.id.layout1SpinLayout);
-        monOutLstToMthSpin = findViewById(R.id.layout1ToMthSpin);
+        monOutLstSpinLayout.setVisibility(View.GONE);
+        /*monOutLstToMthSpin = findViewById(R.id.layout1ToMthSpin);
         monOutLstFromMthSpin = findViewById(R.id.layout1FromMthSpin);
         monOutLstToYrSpin = findViewById(R.id.layout1ToYrSpin);
         monOutLstFromYrSpin = findViewById(R.id.layout1FromYrSpin);
         monOutLstAndTV = findViewById(R.id.layout1AndTV);
         monOutLstSpinOkBtn = findViewById(R.id.layout1SpinOkBtn);
-        monOutLstSpinResetBtn = findViewById(R.id.layout1SpinResetBtn);
+        monOutLstSpinResetBtn = findViewById(R.id.layout1SpinResetBtn);*/
         monOutLstTitle = findViewById(R.id.layout1HeaderLabelTV);
         monOutLstTitle.setText(getString(R.string.cash_debit_transactions));
         monOutLstAddMoreBtn = findViewById(R.id.layout1AddMoreBtn);
+        monOutLstAddMoreBtn.setText(getString(R.string.record_cash_debit));
         monOutLstDoneBtn = findViewById(R.id.layout1DoneBtn);
         monOutLstDoneBtn.setOnClickListener(onClickMonOutLstDoneBtn);
         monOutLstTotalTV = findViewById(R.id.layout1TotalTV);
         monOutLstTotalTV.setVisibility(View.GONE);
         monOutLstList = findViewById(R.id.layout1ListView);
 
+        monOutLstAddMoreBtn.setOnClickListener(onClickMonOutLstAddMoreBtn);
+
         monOutLstAdapter = new MonOutLstAdapter(this, monOutLstDbMgr.getCashTrans());
         monOutLstList.setAdapter(monOutLstAdapter);
 
-        if (monOutLstDbMgr.retrieveLastPageId() == 10) {
+        /*if (monOutLstDbMgr.retrieveLastPageId() == 10) {
             monOutLstSpinLayout.setVisibility(View.VISIBLE);
             monOutLstSpinResetBtn.setVisibility(View.GONE);
             monOutLstMonths = new String[]{
@@ -160,7 +159,7 @@ public class LayoutMoneyOutList extends MainNavigation {
             monOutLstAddMoreBtn.setText(getString(R.string.record_cash_debit));
             monOutLstAddMoreBtn.setOnClickListener(onClickMonOutLstAddMoreBtn);
             monOutLstDoneBtn.setVisibility(View.VISIBLE);
-        }
+        }*/
     }
 
     public void monOutLstRefresh() {
@@ -187,7 +186,7 @@ public class LayoutMoneyOutList extends MainNavigation {
         }
     };
 
-    Spinner.OnItemSelectedListener monOutLstOnFromMonthSelected = new AdapterView.OnItemSelectedListener() {
+    /*Spinner.OnItemSelectedListener monOutLstOnFromMonthSelected = new AdapterView.OnItemSelectedListener() {
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
             if (position == 12) {
@@ -304,9 +303,9 @@ public class LayoutMoneyOutList extends MainNavigation {
         public void onClick(View v) {
             monOutLstRefresh();
         }
-    };
+    };*/
 
-    public void monOutLstMainAcctMinus() {
+    /*public void monOutLstMainAcctMinus() {
         monOutLstDbMgr.updateTotAcctBalMinus(monOutLstMonOutAmtDiff, monOutLstDbMgr.retrieveCurrentAccountBalance());
 
         monOutLstDbMgr.updateAandBBalPlus(monOutLstTransAmtOutA, monOutLstTransAmtOutOwing, monOutLstTransAmtOutB, monOutLstDbMgr.retrieveCurrentA(), monOutLstDbMgr.retrieveCurrentOwingA(), monOutLstDbMgr.retrieveCurrentB());
@@ -373,7 +372,7 @@ public class LayoutMoneyOutList extends MainNavigation {
         moneyOutA = 0.0;
         moneyOutOwing = 0.0;
         moneyOutB = 0.0;
-    }
+    }*/
 
     public class MonOutLstAdapter extends ArrayAdapter<TransactionsDb> {
 
@@ -434,7 +433,7 @@ public class LayoutMoneyOutList extends MainNavigation {
                 monOutLstHldr = (MoneyOut2ViewHolder) convertView.getTag();
             }
 
-            if (moneyOuts.get(position).getTransIsCC().equals("Y")) {
+            /*if (moneyOuts.get(position).getTransIsCC().equals("Y")) {
                 monOutLstHldr.monOutLstCatTV.setVisibility(View.GONE);
                 monOutLstHldr.monOutLstAmtTV.setVisibility(View.GONE);
                 monOutLstHldr.monOutLstDateTV.setVisibility(View.GONE);
@@ -442,7 +441,7 @@ public class LayoutMoneyOutList extends MainNavigation {
                 monOutLstHldr.monOutLstAcctTV.setVisibility(View.GONE);
                 monOutLstHldr.monOutLstEditBtn.setVisibility(View.GONE);
                 monOutLstHldr.monOutLstDelBtn.setVisibility(View.GONE);
-            }
+            }*/
 
             monOutLstHldr.monOutLstDateTV.setText(moneyOuts.get(position).getTransCreatedOn());
 
@@ -452,18 +451,18 @@ public class LayoutMoneyOutList extends MainNavigation {
             monOutLstHldr.monOutLstCatTV.setText(moneyOuts.get(position).getTransBdgtCat());
             monOutLstHldr.monOutLstAcctTV.setText(moneyOuts.get(position).getTransFromAcctName());
 
-            monOutLstHldr.monOutLstEditBtn.setTag(moneyOuts.get(position));
-            monOutLstHldr.monOutLstDelBtn.setTag(moneyOuts.get(position));
+            /*monOutLstHldr.monOutLstEditBtn.setTag(moneyOuts.get(position));
+            monOutLstHldr.monOutLstDelBtn.setTag(moneyOuts.get(position));*/
 
-            monOutLstTransBdgtId = moneyOuts.get(position).getTransBdgtId();
+            /*monOutLstTransBdgtId = moneyOuts.get(position).getTransBdgtId();
             monOutLstFromIsDebtSav = moneyOuts.get(position).getTransFromDebtSav();
             monOutLstTransAmtOutA = moneyOuts.get(position).getTransAmtOutA();
             monOutLstTransAmtOutOwing = moneyOuts.get(position).getTransAmtOutOwing();
             monOutLstTransAmtOutB = moneyOuts.get(position).getTransAmtOutB();
-            monOutLstBdgtPriority = moneyOuts.get(position).getTransBdgtPriority();
+            monOutLstBdgtPriority = moneyOuts.get(position).getTransBdgtPriority();*/
 
             //click on pencil icon
-            monOutLstHldr.monOutLstEditBtn.setOnClickListener(new View.OnClickListener() {
+            /*monOutLstHldr.monOutLstEditBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
@@ -602,10 +601,10 @@ public class LayoutMoneyOutList extends MainNavigation {
                     AlertDialog dialog = builder.create();
                     dialog.show();
                 }
-            });
+            });*/
 
             //click on trash can icon
-            monOutLstHldr.monOutLstDelBtn.setOnClickListener(new View.OnClickListener() {
+            /*monOutLstHldr.monOutLstDelBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
@@ -669,7 +668,7 @@ public class LayoutMoneyOutList extends MainNavigation {
 
                     monOutLstRefresh();
                 }
-            });
+            });*/
             return convertView;
         }
     }
@@ -684,6 +683,5 @@ public class LayoutMoneyOutList extends MainNavigation {
         public TextView monOutLstAcctTV2;
         public ImageButton monOutLstEditBtn;
         public ImageButton monOutLstDelBtn;
-        public EditText monOutLstAmtET;
     }
 }

@@ -130,7 +130,7 @@ public class SetUpAnalysis extends MainNavigation {
     View.OnClickListener onClickAna1AdjDebtsBtn = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            ana1ToExp = new Intent(SetUpAnalysis.this, AddDebtsList.class);
+            ana1ToExp = new Intent(SetUpAnalysis.this, LayoutDebt.class);
             ana1ToExp.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
             startActivity(ana1ToExp);
         }
@@ -139,7 +139,7 @@ public class SetUpAnalysis extends MainNavigation {
     View.OnClickListener onClickAna1AdjSavBtn = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            ana1ToInc = new Intent(SetUpAnalysis.this, AddSavingsList.class);
+            ana1ToInc = new Intent(SetUpAnalysis.this, LayoutSavings.class);
             ana1ToInc.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
             startActivity(ana1ToInc);
         }

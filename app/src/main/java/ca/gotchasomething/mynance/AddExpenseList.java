@@ -101,6 +101,18 @@ public class AddExpenseList extends MainNavigation {
         expLstListView.setAdapter(expLstLstAdapter);
     }
 
+    public void expLstRefresh() {
+        expLstRefresh = new Intent(AddExpenseList.this, AddExpenseList.class);
+        expLstRefresh.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+        startActivity(expLstRefresh);
+    }
+
+    public void expLstToMonOut() {
+        expLstToMonOut = new Intent(AddExpenseList.this, LayoutMoneyOut.class);
+        expLstToMonOut.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+        startActivity(expLstToMonOut);
+    }
+
     View.OnClickListener onClickExpLstAddMoreButton = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -128,22 +140,24 @@ public class AddExpenseList extends MainNavigation {
                 expLstToSetUp = new Intent(AddExpenseList.this, LayoutSetUp.class);
                 expLstToSetUp.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
                 startActivity(expLstToSetUp);
-            } else if(expLstDbMgr.retrieveLatestDone().equals("analysis") || expLstDbMgr.retrieveLastPageId() == 4) {
+            } else if(expLstDbMgr.retrieveLatestDone().equals("analysis")) {
                 expLstToWklyList = new Intent(AddExpenseList.this, LayoutWeeklyLimitsList.class);
                 expLstToWklyList.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
                 startActivity(expLstToWklyList);
-            } else if (expLstDbMgr.retrieveLastPageId() == 3) {
-                expLstToMonOut = new Intent(AddExpenseList.this, LayoutMoneyOut.class);
-                expLstToMonOut.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-                startActivity(expLstToMonOut);
             } else if(expLstDbMgr.retrieveLastPageId() == 2) {
                 expLstToBud = new Intent(AddExpenseList.this, LayoutBudget.class);
                 expLstToBud.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
                 startActivity(expLstToBud);
+            } else if(expLstDbMgr.retrieveLastPageId() == 3) {
+                expLstToMonOut();
             } else if(expLstDbMgr.retrieveLastPageId() == 7) {
                 expLstToCCPur = new Intent(AddExpenseList.this, LayoutCCPur.class);
                 expLstToCCPur.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
                 startActivity(expLstToCCPur);
+            } else if(expLstDbMgr.retrieveLastPageId() == 4) {
+                expLstToWklyList = new Intent(AddExpenseList.this, LayoutWeeklyLimitsList.class);
+                expLstToWklyList.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+                startActivity(expLstToWklyList);
             }
         }
     };
@@ -190,7 +204,12 @@ public class AddExpenseList extends MainNavigation {
                 expLstHldr.expLstExpAmt = convertView.findViewById(R.id.list2TV2);
                 expLstHldr.expLstDel = convertView.findViewById(R.id.list2DelBtn);
                 expLstHldr.expLstEdit = convertView.findViewById(R.id.list2EditBtn);
-                if(expLstDbMgr.retrieveLastPageId() == 3 || expLstDbMgr.retrieveLastPageId() == 7) {
+                if(expLstDbMgr.retrieveLastPageId() == 3 || expLstDbMgr.retrieveLastPageId() == 7 || expLstDbMgr.retrieveLastPageId() ==4) {
+                    //IF COMING FROM LAYOUTMONEYOUT, NO EDIT/DELETE
+                    //IF COMING FROM LAYOUTCCPUR, NO EDIT/DELETE
+                    //IF COMING FROM LAYOUTWEEKLYLIMITSLIST, NO EDIT/DELETE
+                    //IF DURING SET UP, YES EDIT/DELETE
+                    //IF COMING FROM LAYOUTBUDGET, YES EDIT/DELETE
                     expLstHldr.expLstDel.setVisibility(View.GONE);
                     expLstHldr.expLstEdit.setVisibility(View.GONE);
                 }
@@ -380,9 +399,7 @@ public class AddExpenseList extends MainNavigation {
                     expLstExpCancelBtn.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            expLstRefresh = new Intent(AddExpenseList.this, AddExpenseList.class);
-                            expLstRefresh.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-                            startActivity(expLstRefresh);
+                            expLstRefresh();
                         }
                     });
 
@@ -427,9 +444,7 @@ public class AddExpenseList extends MainNavigation {
                                 Toast.makeText(getBaseContext(), R.string.changes_saved,
                                         Toast.LENGTH_LONG).show();
 
-                                expLstRefresh = new Intent(AddExpenseList.this, AddExpenseList.class);
-                                expLstRefresh.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-                                startActivity(expLstRefresh);
+                                expLstRefresh();
 
                             } else {
                                 Toast.makeText(getBaseContext(), R.string.no_blanks_warning, Toast.LENGTH_LONG).show();
@@ -451,9 +466,7 @@ public class AddExpenseList extends MainNavigation {
                     expLstLstAdapter.updateExpenses(expLstDbMgr.getExpenses());
                     expLstLstAdapter.notifyDataSetChanged();
 
-                    expLstRefresh = new Intent(AddExpenseList.this, AddExpenseList.class);
-                    expLstRefresh.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-                    startActivity(expLstRefresh);
+                    expLstRefresh();
                 }
             });
 

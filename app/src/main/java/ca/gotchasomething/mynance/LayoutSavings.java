@@ -36,7 +36,7 @@ import ca.gotchasomething.mynance.data.AccountsDb;
 public class LayoutSavings extends MainNavigation {
 
     AccountsDb laySavSavDb;
-    Button laySavCancelBtn, laySavSaveBtn, laySavUpdateBtn;
+    Button laySavCancelBtn, laySavDoneBtn, laySavSaveBtn, laySavUpdateBtn;
     ContentValues laySavCV, laySavCV2, laySavCV3;
     DbHelper laySavHelper, laySavHelper3;
     DbManager laySavDbMgr;
@@ -45,7 +45,7 @@ public class LayoutSavings extends MainNavigation {
     EditText laySavSavAmtET, laySavSavGoalET, laySavSavNameET, laySavSavPaytET, laySavSavPercentET;
     FloatingActionButton laySavAddMoreBtn;
     General laySavGen;
-    Intent laySavToAddMore, laySavRefresh;
+    Intent laySavToAnalysis, laySavToAddMore, laySavRefresh;
     ListView laySavListView;
     long id, savIdFromTag;
     NumberFormat laySavPerFor = NumberFormat.getPercentInstance();
@@ -81,6 +81,13 @@ public class LayoutSavings extends MainNavigation {
         laySavDateHeaderTV = findViewById(R.id.c4HeaderTV2);
         laySavDateHeaderTV.setVisibility(View.GONE);
         laySavAddMoreBtn = findViewById(R.id.c4AddMoreBtn);
+        laySavDoneBtn = findViewById(R.id.c4DoneBtn);
+        if(laySavDbMgr.retrieveLatestDone().equals("savings")) {
+            laySavDoneBtn.setVisibility(View.VISIBLE);
+            laySavDoneBtn.setOnClickListener(onClickLaySavDoneBtn);
+        } else {
+            laySavDoneBtn.setVisibility(View.GONE);
+        }
 
         laySavAddMoreBtn.setOnClickListener(onClickLaySavAddMoreBtn);
 
@@ -449,8 +456,8 @@ public class LayoutSavings extends MainNavigation {
         public TextView laySavDateLabel;
         public TextView laySavCurrBalLabel;
         public TextView laySavCurrBalTV;
-        ImageButton laySavDelBtn;
-        ImageButton laySavEditBtn;
+        public ImageButton laySavDelBtn;
+        public ImageButton laySavEditBtn;
     }
 
     View.OnClickListener onClickLaySavAddMoreBtn = new View.OnClickListener() {
@@ -459,6 +466,15 @@ public class LayoutSavings extends MainNavigation {
             laySavToAddMore = new Intent(LayoutSavings.this, AddSavings.class);
             laySavToAddMore.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
             startActivity(laySavToAddMore);
+        }
+    };
+
+    View.OnClickListener onClickLaySavDoneBtn = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            laySavToAnalysis = new Intent(LayoutSavings.this, SetUpAnalysis.class);
+            laySavToAnalysis.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+            startActivity(laySavToAnalysis);
         }
     };
 }

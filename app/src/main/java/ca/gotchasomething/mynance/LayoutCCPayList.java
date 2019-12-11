@@ -1,4 +1,4 @@
-package ca.gotchasomething.mynance;
+/*package ca.gotchasomething.mynance;
 
 import android.content.Context;
 import android.content.Intent;
@@ -327,4 +327,4 @@ public class LayoutCCPayList extends MainNavigation {
         public TextView ccPayLstAmtTV;
         public TextView ccPayLstCCTV;
     }
-}
+}*/

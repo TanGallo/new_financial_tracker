@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:background="@drawable/entry_box"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/transferDialogResTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:text="@string/choose_split"
+                android:textColor="@color/brightRed"
+                android:textSize="16sp" />
+
+            <ImageButton
+                android:id="@+id/transferDialogInfoBtn"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_below="@id/transferDialogResTV"
+                android:layout_alignParentEnd="true"
+                android:layout_gravity="end|center_vertical"
+                android:backgroundTint="@color/blue7"
+                android:src="@drawable/ic_info_outline_blue_24dp" />
+
+            <TextView
+                android:id="@+id/transferDialogInfoTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/transferDialogInfoBtn"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="5dp"
+                android:text="@string/reserved_includes"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="16sp" />
+
+            <Button
+                android:id="@+id/transferDialogInfoOkBtn"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentEnd="true"
+                android:layout_below="@id/transferDialogInfoTV"
+                android:background="@drawable/circle_box"
+                android:contentDescription="@string/ok"
+                android:text="@string/ok"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="12sp" />
+
+        </RelativeLayout>
+
+        <RadioGroup
+            android:id="@+id/transferDialogResRG"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RadioButton
+                android:id="@+id/transferDialogAllResRB"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/all"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="16sp">
+
+            </RadioButton>
+
+            <RadioButton
+                android:id="@+id/transferDialogNoneResRB"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/none"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="16sp">
+
+            </RadioButton>
+
+            <RadioButton
+                android:id="@+id/transferDialogAsUsualRB"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/split_as_usual"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="16sp">
+
+            </RadioButton>
+
+            <RadioButton
+                android:id="@+id/transferDialogCustomRB"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/custom_split"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="16sp">
+
+            </RadioButton>
+
+        </RadioGroup>
+
+        <LinearLayout
+            android:id="@+id/transferDialogCustomLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/transferDialogCustomResAmtLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/transferDialogCustomResAmtET"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:digits="01234567890.-"
+                    android:hint="@string/amount"
+                    android:inputType="numberSigned|numberDecimal"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:text="@string/from_res"
+                    android:textColor="@color/brightRed"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/transferDialogCustomAvailLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/transferDialogCustomAvailAmtTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:text="@string/from_avail"
+                    android:textColor="@color/brightRed"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/transferDialogEnterBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:background="@drawable/entry_box"
+                android:contentDescription="@string/enter"
+                android:text="@string/enter"
+                android:textColor="@color/colorPrimaryDark" />
+
+            <Button
+                android:id="@+id/transferDialogCancelBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:background="@drawable/entry_box"
+                android:contentDescription="@string/enter"
+                android:text="@string/cancel"
+                android:textColor="@color/colorPrimaryDark" />
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>
+

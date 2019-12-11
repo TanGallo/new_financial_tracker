@@ -6,12 +6,9 @@ import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,7 +16,6 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -118,19 +114,15 @@ public class AddSavingsList extends MainNavigation {
                 savLstToSetUp = new Intent(AddSavingsList.this, LayoutSetUp.class);
                 savLstToSetUp.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
                 startActivity(savLstToSetUp);
-            } else if (savLstDBMgr.retrieveLastPageId() == 6 || savLstDBMgr.retrieveLastPageId() == 13) {
+            } else if (savLstDBMgr.retrieveLastPageId() == 13) {
                 savLstToLayoutSavings = new Intent(AddSavingsList.this, LayoutSavings.class);
                 savLstToLayoutSavings.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
                 startActivity(savLstToLayoutSavings);
-            } else if (savLstDBMgr.retrieveLastPageId() == 2) {
-                savLstToLayoutBudget = new Intent(AddSavingsList.this, LayoutBudget.class);
-                savLstToLayoutBudget.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-                startActivity(savLstToLayoutBudget);
             }
         }
     };
 
-    TextWatcher onChangeSavLstSavAmtET = new TextWatcher() {
+    /*TextWatcher onChangeSavLstSavAmtET = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
         }
@@ -192,9 +184,9 @@ public class AddSavingsList extends MainNavigation {
         @Override
         public void afterTextChanged(Editable s) {
         }
-    };
+    };*/
 
-    public void savLstSavDateRes() {
+    /*public void savLstSavDateRes() {
         savNameFromEntry = savLstGen.stringFromET(savLstSavNameET);
         savAmtFromEntry = savLstGen.dblFromET(savLstSavAmtET);
         savGoalFromEntry = savLstGen.dblFromET(savLstSavGoalET);
@@ -219,7 +211,7 @@ public class AddSavingsList extends MainNavigation {
             savLstSavDateResTV.setTextColor(Color.parseColor("#303F9F"));
             savLstSavDateResLabel.setTextColor(Color.parseColor("#303F9F"));
         }
-    }
+    }*/
 
     public class SavLstListAdapter extends ArrayAdapter<AccountsDb> {
 
@@ -269,10 +261,10 @@ public class AddSavingsList extends MainNavigation {
                 savLstHldr.savLstCurrAmtTV = convertView.findViewById(R.id.bigLstTV4);
                 savLstHldr.savLstDel = convertView.findViewById(R.id.bigLstDelBtn);
                 savLstHldr.savLstEdit = convertView.findViewById(R.id.bigLstEditBtn);
-                if (savLstDBMgr.retrieveLastPageId() == 13) {
+                //if (savLstDBMgr.retrieveLastPageId() == 13) {
                     savLstHldr.savLstDel.setVisibility(View.GONE);
                     savLstHldr.savLstEdit.setVisibility(View.GONE);
-                }
+                //}
                 convertView.setTag(savLstHldr);
 
             } else {
@@ -307,11 +299,11 @@ public class AddSavingsList extends MainNavigation {
             savLstSavCurr = (savings.get(position).getAcctBal());
             savLstGen.dblASCurrency(String.valueOf(savLstSavCurr), savLstHldr.savLstCurrAmtTV);
 
-            savLstHldr.savLstDel.setTag(savings.get(position));
-            savLstHldr.savLstEdit.setTag(savings.get(position));
+            /*savLstHldr.savLstDel.setTag(savings.get(position));
+            savLstHldr.savLstEdit.setTag(savings.get(position));*/
 
             //click on pencil icon to edit a data record
-            savLstHldr.savLstEdit.setOnClickListener(new View.OnClickListener() {
+            /*savLstHldr.savLstEdit.setOnClickListener(new View.OnClickListener() {
 
                 @Override
                 public void onClick(View v) {
@@ -396,24 +388,6 @@ public class AddSavingsList extends MainNavigation {
                                     savLstDBMgr.updateAccounts(savLstSavDb);
                                 }
 
-                                /*savLstHelper2 = new DbHelper(getContext());
-                                savLstDB2 = savLstHelper2.getWritableDatabase();
-
-                                String[] args = new String[]{String.valueOf(savLstSavDb.getId())};
-
-                                savLstCV2 = new ContentValues();
-
-                                savLstCV2.put(DbHelper.ACCTNAME, savNameFromEntry);
-                                savLstCV2.put(DbHelper.ACCTBAL, savAmtFromEntry);
-
-                                try {
-                                    savLstDB2.update(DbHelper.ACCOUNTS_TABLE_NAME, savLstCV2, DbHelper.SAVID + "=?", args);
-                                } catch (CursorIndexOutOfBoundsException | SQLException e) {
-                                    e.printStackTrace();
-                                }
-
-                                savLstDB2.close();*/
-
                                 savLstLstAdapter.updateSavings(savLstDBMgr.getSavings());
                                 notifyDataSetChanged();
 
@@ -437,26 +411,14 @@ public class AddSavingsList extends MainNavigation {
                         }
                     });
                 }
-            });
+            });*/
 
             //click on trash can icon
-            savLstHldr.savLstDel.setOnClickListener(new View.OnClickListener() {
+            /*savLstHldr.savLstDel.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
                     savLstSavDb = (AccountsDb) savLstHldr.savLstDel.getTag();
-
-                    /*savLstHelper3 = new DbHelper(getContext());
-                    savLstDB3 = savLstHelper3.getWritableDatabase();
-
-                    try {
-                        String[] args2 = new String[]{String.valueOf(savLstSavDb.getId())};
-                        savLstDB3.delete(DbHelper.ACCOUNTS_TABLE_NAME, DbHelper.SAVID + "=?", args2);
-                    } catch (CursorIndexOutOfBoundsException e) {
-                        e.printStackTrace();
-                    }
-
-                    savLstDB3.close();*/
 
                     savLstDBMgr.deleteAccounts(savLstSavDb);
                     savLstLstAdapter.updateSavings(savLstDBMgr.getSavings());
@@ -466,7 +428,7 @@ public class AddSavingsList extends MainNavigation {
                     savLstRefresh.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
                     startActivity(savLstRefresh);
                 }
-            });
+            });*/
 
             return convertView;
         }
