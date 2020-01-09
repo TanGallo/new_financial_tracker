@@ -3,11 +3,13 @@ package ca.gotchasomething.mynance;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -15,6 +17,7 @@ import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -27,28 +30,32 @@ import java.util.List;
 
 import ca.gotchasomething.mynance.data.AccountsDb;
 import ca.gotchasomething.mynance.data.TransactionsDb;
+import ca.gotchasomething.mynance.spinners.TransferSpinnerAdapter;
 
 public class LayoutCCPay extends MainNavigation {
 
     Button layCCPayNoBtn, layCCPayYesBtn, warnDialogNoContBtn, warnDialogYesContBtn;
     CheckBox layCCPayCheckbox;
     ContentValues layCCPayCV, layCCPayCV2;
-    DbHelper layCCPayHelper, layCCPayHelper2;
+    Cursor layCCPayCur3;
+    DbHelper layCCPayHelper, layCCPayHelper2, layCCPayHelper3;
     DbManager layCCPayDbMgr;
-    Double debtToPayFromDb = 0.0, debtToPayFromTag = 0.0, layCCPayAmtDue = 0.0, layCCPayAmtFromTag = 0.0, layCCPayNewDebtToPay = 0.0, layCCPayToPayTotA = 0.0, layCCPayToPayTotB = 0.0,
-            moneyOutA = 0.0, moneyOutOwing = 0.0, moneyOutB = 0.0;
+    Double debtAmtFromDb = 0.0, debtLimitFromDb = 0.0, debtPaytFromDb = 0.0, debtRateFromDb = 0.0, layCCPayFromAcctBal = 0.0, layCCPayFromAcctMax = 0.0, debtToPayToChargingCCFromTag = 0.0, layCCPayAmtDue = 0.0, layCCPayPurAmtFromTag = 0.0, layCCPayAmtToPay = 0.0, layCCPayNewDebtToPay = 0.0, layCCPayToPayTotA = 0.0, layCCPayToPayTotB = 0.0,
+            moneyOutA = 0.0, moneyOutOwing = 0.0, moneyOutB = 0.0, savAmtFromDb = 0.0, savGoalFromDb = 0.0, savPaytFromDb = 0.0, savRateFromDb = 0.0;
     General layCCPayGen;
     Intent layCCPayRefresh, layCCPayToMain;
     LayCCPayPaytLstAdapter layCCPayPaytLstAdapter;
     LayCCPayTransLstAdapter layCCPayTransLstAdapter;
     LinearLayout layCCPayPaytListLayout, layCCPayWarnLayout, warnDialogWarnLayout;
     ListView layCCPayCCPaytListView, layCCPayTransListView;
-    long idFromDb, layCCPayChargingDebtIdFromTag, layCCPayId;
+    long layCCPayFromSpinId, layCCPayToAcctId, layCCPayChargingDebtIdFromTag, layCCPayId;
     RelativeLayout layCCPayToPayHeaderLayout;
-    SQLiteDatabase layCCPayDb, layCCPayDb2;
-    String acctNameFromDb = null, layCCPayPriorityFromTag = null;
-    TextView layCCPaycheckBelowLabel, layCCPayNoCCTransTV, layCCPayWarnTV, layCCPayTotAcctTV, layCCPayAvailAcctTV, layCCPayAvailAmtLabel, warnDialogWarnTV;
+    Spinner layCCPayPayFromSpin;
+    SQLiteDatabase layCCPayDb, layCCPayDb2, layCCPayDb3;
+    String layCCPayFromIsDebtSav = null, layCCPayFromSpinName = null, layCCPayPriorityFromTag = null, layCCPayToAcctName = null;
+    TextView layCCPaycheckBelowLabel, layCCPayNoCCTransTV, layCCPayWarnTV, layCCPayTotAcctTV, layCCPayAvailAcctTV, layCCPayPayFromLabel, warnDialogWarnTV;
     TransactionsDb layCCPayMonOutDb, layCCPayTransDb;
+    TransferSpinnerAdapter layCCPayFromSpinAdapter;
     View dView;
 
 
@@ -73,29 +80,21 @@ public class LayoutCCPay extends MainNavigation {
 
         layCCPayNoCCTransTV = findViewById(R.id.mainPayCCHeaderTV);
         layCCPayNoCCTransTV.setVisibility(View.GONE);
-        layCCPayTotAcctTV = findViewById(R.id.mainPayCCTotalAmtTV);
-        layCCPayAvailAcctTV = findViewById(R.id.mainPayCCAvailAmtTV);
-        layCCPayAvailAmtLabel = findViewById(R.id.mainPayCCAvailAmtLabel);
-        layCCPayWarnTV = findViewById(R.id.mainPayCCWarnTV);
-        layCCPayYesBtn = findViewById(R.id.mainPayCCYesBtn);
-        layCCPayNoBtn = findViewById(R.id.mainPayCCNoBtn);
-        layCCPayWarnLayout = findViewById(R.id.mainPayCCWarnLayout);
-        layCCPayWarnLayout.setVisibility(View.GONE);
+        layCCPayPayFromLabel = findViewById(R.id.mainPayPayFromLabel);
+        layCCPayPayFromSpin = findViewById(R.id.mainPayFromSpinner);
         layCCPaycheckBelowLabel = findViewById(R.id.mainPayCCCheckBelowLabel);
         layCCPayPaytListLayout = findViewById(R.id.mainPayCCPaytListLayout);
         layCCPayPaytListLayout.setVisibility(View.GONE);
         layCCPayToPayHeaderLayout = findViewById(R.id.mainPayCCToPayHeaderLayout);
         layCCPayCheckbox = findViewById(R.id.mainPayCCCheckbox);
 
-        layCCPayDbMgr.payCCHeaderText(
-                layCCPayTotAcctTV,
-                layCCPayAvailAcctTV,
-                layCCPayAvailAmtLabel,
-                layCCPayDbMgr.sumTotalExpenses(),
-                layCCPayDbMgr.sumTotalIncome(),
-                layCCPayDbMgr.retrieveCurrentAccountBalance(),
-                layCCPayDbMgr.retrieveCurrentB(),
-                layCCPayDbMgr.retrieveCurrentA());
+        layCCPayHelper3 = new DbHelper(this);
+        layCCPayDb3 = layCCPayHelper3.getReadableDatabase();
+        layCCPayCur3 = layCCPayDb3.rawQuery("SELECT * FROM " + DbHelper.ACCOUNTS_TABLE_NAME + " ORDER BY " + DbHelper.ID + " ASC", null);
+        layCCPayFromSpinAdapter = new TransferSpinnerAdapter(getApplicationContext(), layCCPayCur3);
+        layCCPayPayFromSpin.setAdapter(layCCPayFromSpinAdapter);
+
+        layCCPayPayFromSpin.setOnItemSelectedListener(layCCPayFromSpinSel);
 
         layCCPayTransListView = findViewById(R.id.mainPayCCTransListView);
         layCCPayTransLstAdapter = new LayCCPayTransLstAdapter(this, layCCPayDbMgr.getCCTransStillToPay());
@@ -110,7 +109,6 @@ public class LayoutCCPay extends MainNavigation {
 
         if (layCCPayTransLstAdapter.getCount() == 0) {
             layCCPayNoCCTransTV.setVisibility(View.VISIBLE);
-            layCCPayWarnLayout.setVisibility(View.GONE);
             layCCPaycheckBelowLabel.setVisibility(View.GONE);
             layCCPayPaytListLayout.setVisibility(View.GONE);
             layCCPayToPayHeaderLayout.setVisibility(View.GONE);
@@ -134,12 +132,31 @@ public class LayoutCCPay extends MainNavigation {
         startActivity(layCCPayToMain);
     }
 
+    AdapterView.OnItemSelectedListener layCCPayFromSpinSel = new AdapterView.OnItemSelectedListener() {
+        @Override
+        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            layCCPayFromSpinName = layCCPayCur3.getString(layCCPayCur3.getColumnIndexOrThrow(DbHelper.ACCTNAME));
+            layCCPayFromSpinId = layCCPayCur3.getLong(layCCPayCur3.getColumnIndexOrThrow(DbHelper.ID));
+            layCCPayFromIsDebtSav = layCCPayCur3.getString(layCCPayCur3.getColumnIndexOrThrow(DbHelper.ACCTDEBTSAV));
+            layCCPayFromAcctBal = layCCPayCur3.getDouble(layCCPayCur3.getColumnIndexOrThrow(DbHelper.ACCTBAL));
+            layCCPayFromAcctMax = layCCPayCur3.getDouble(layCCPayCur3.getColumnIndexOrThrow(DbHelper.ACCTMAX));
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> parent) {
+        }
+    };
+
     CompoundButton.OnCheckedChangeListener onCheckLayCCPayCheckbox = new CompoundButton.OnCheckedChangeListener() {
         @Override
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
             //pop up = are you sure?
-            AlertDialog.Builder builder = new AlertDialog.Builder(LayoutCCPay.this);
+            final AlertDialog.Builder builder = new AlertDialog.Builder(LayoutCCPay.this);
             View v = getLayoutInflater().inflate(R.layout.dialog_cc_warn, null);
+            builder.setView(v);
+            final AlertDialog dialog = builder.create();
+            dialog.show();
+
             Button dialogYesBtn = v.findViewById(R.id.dialogYesBtn);
             Button dialogNoBtn = v.findViewById(R.id.dialogNoBtn);
             dialogNoBtn.setOnClickListener(new View.OnClickListener() {
@@ -151,40 +168,75 @@ public class LayoutCCPay extends MainNavigation {
             dialogYesBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    layCCPayDbMgr.updateTotAcctBalMinus(layCCPayDbMgr.retrieveToPayTotal(), layCCPayDbMgr.retrieveCurrentAccountBalance());
-                    layCCPayDbMgr.updateAandBBalMinus(
-                            layCCPayDbMgr.retrieveAPortion(),
-                            layCCPayDbMgr.retrieveOwingPortion(),
-                            layCCPayDbMgr.retrieveBPortion(),
-                            layCCPayDbMgr.retrieveCurrentA(),
-                            layCCPayDbMgr.retrieveCurrentOwingA(),
-                            layCCPayDbMgr.retrieveCurrentB());
-                    if (layCCPayDbMgr.retrieveCurrentOwingA() < 0) {
-                        layCCPayDbMgr.adjustCurrentAandB(layCCPayDbMgr.retrieveOwingPortion(), layCCPayDbMgr.retrieveAPortion(), layCCPayDbMgr.retrieveBPortion());
-                    }
                     for (AccountsDb a : layCCPayDbMgr.getAccounts()) {
                         if (a.getAcctDebtToPay() > 0) {
-                            //debtToPayFromDb = a.getAcctDebtToPay();
-                            //idFromDb = a.getId();
-                            //acctNameFromDb = a.getAcctName();
+                            layCCPayAmtToPay = a.getAcctDebtToPay();
+                            layCCPayToAcctId = a.getId();
+                            layCCPayToAcctName = a.getAcctName();
+                            if (layCCPayFromIsDebtSav.equals("D")) {//IF PAID FROM A DEBT ACCT
+                                layCCPayDbMgr.updateRecPlusPt1(layCCPayAmtToPay, layCCPayFromAcctBal, layCCPayFromSpinId);
+                                for (AccountsDb d : layCCPayDbMgr.getDebts()) {
+                                    if (d.getId() == layCCPayFromSpinId) {
+                                        debtAmtFromDb = d.getAcctBal();
+                                        debtLimitFromDb = d.getAcctMax();
+                                        debtRateFromDb = d.getAcctIntRate();
+                                        debtPaytFromDb = d.getAcctPaytsTo();
+                                    }
+                                }
+                                layCCPayDbMgr.updateRecPt2(layCCPayGen.calcDebtDate(
+                                        debtAmtFromDb,
+                                        debtRateFromDb,
+                                        debtPaytFromDb,
+                                        getString(R.string.debt_paid),
+                                        getString(R.string.too_far)), layCCPayFromSpinId);
+                            } else if (layCCPayFromIsDebtSav.equals("S")) {//IF PAID FROM A SAVINGS ACCT
+                                layCCPayDbMgr.updateRecMinusPt1(layCCPayAmtToPay, layCCPayFromAcctBal, layCCPayFromSpinId);
+                                for (AccountsDb s : layCCPayDbMgr.getSavings()) {
+                                    if (s.getId() == layCCPayFromSpinId) {
+                                        savAmtFromDb = s.getAcctBal();
+                                        savGoalFromDb = s.getAcctMax();
+                                        savRateFromDb = s.getAcctIntRate();
+                                        savPaytFromDb = s.getAcctPaytsTo();
+                                    }
+                                }
+                                layCCPayDbMgr.updateRecPt2(layCCPayGen.calcSavingsDate(
+                                        savGoalFromDb,
+                                        savAmtFromDb,
+                                        savRateFromDb,
+                                        savPaytFromDb,
+                                        getString(R.string.goal_achieved),
+                                        getString(R.string.too_far)), layCCPayFromSpinId);
+                            } else { //IF PAID FROM MAIN ACCT
+                                layCCPayDbMgr.updateTotAcctBalMinus(layCCPayAmtToPay, layCCPayDbMgr.retrieveCurrentAccountBalance());
+                                layCCPayDbMgr.updateAandBBalMinus(
+                                        layCCPayDbMgr.retrieveAPortion(),
+                                        layCCPayDbMgr.retrieveOwingPortion(),
+                                        layCCPayDbMgr.retrieveBPortion(),
+                                        layCCPayDbMgr.retrieveCurrentA(),
+                                        layCCPayDbMgr.retrieveCurrentOwingA(),
+                                        layCCPayDbMgr.retrieveCurrentB());
+                                if (layCCPayDbMgr.retrieveCurrentOwingA() < 0) {
+                                    layCCPayDbMgr.adjustCurrentAandB(layCCPayDbMgr.retrieveOwingPortion(), layCCPayDbMgr.retrieveAPortion(), layCCPayDbMgr.retrieveBPortion());
+                                }
+                            }
                             layCCPayTransDb = new TransactionsDb(
                                     "ccPayment",
                                     "N/A",
                                     "N/A",
                                     0,
-                                    a.getAcctDebtToPay(),
+                                    layCCPayAmtToPay,
                                     0.0,
                                     0.0,
                                     0.0,
                                     0.0,
                                     0.0,
                                     0.0,
-                                    a.getId(),
-                                    a.getAcctName(),
-                                    "N/A",
-                                    0,
-                                    "N/A",
-                                    "N/A",
+                                    layCCPayToAcctId,
+                                    layCCPayToAcctName,
+                                    "D",
+                                    layCCPayFromSpinId,
+                                    layCCPayFromSpinName,
+                                    layCCPayFromIsDebtSav,
                                     "N/A",
                                     "N/A",
                                     "N/A",
@@ -202,19 +254,16 @@ public class LayoutCCPay extends MainNavigation {
                     layCCPayToMain();
                 }
             });
-            builder.setView(v);
-            AlertDialog dialog = builder.create();
-            dialog.show();
         }
     };
 
     public void layCCPayPlusDebtToPay() {
         for (AccountsDb a : layCCPayDbMgr.getDebts()) {
             if (a.getId() == layCCPayChargingDebtIdFromTag) {
-                debtToPayFromTag = a.getAcctDebtToPay();
+                debtToPayToChargingCCFromTag = a.getAcctDebtToPay();
             }
         }
-        layCCPayNewDebtToPay = debtToPayFromTag + layCCPayAmtFromTag;
+        layCCPayNewDebtToPay = debtToPayToChargingCCFromTag + layCCPayPurAmtFromTag;
 
         layCCPayHelper = new DbHelper(this);
         layCCPayDb = layCCPayHelper.getWritableDatabase();
@@ -227,10 +276,10 @@ public class LayoutCCPay extends MainNavigation {
     public void layCCPayMinusDebtToPay() {
         for (AccountsDb a2 : layCCPayDbMgr.getDebts()) {
             if (a2.getId() == layCCPayChargingDebtIdFromTag) {
-                debtToPayFromTag = a2.getAcctDebtToPay();
+                debtToPayToChargingCCFromTag = a2.getAcctDebtToPay();
             }
         }
-        layCCPayNewDebtToPay = debtToPayFromTag - layCCPayAmtFromTag;
+        layCCPayNewDebtToPay = debtToPayToChargingCCFromTag - layCCPayPurAmtFromTag;
 
         layCCPayHelper2 = new DbHelper(this);
         layCCPayDb2 = layCCPayHelper2.getWritableDatabase();
@@ -245,27 +294,28 @@ public class LayoutCCPay extends MainNavigation {
         if (layCCPayDbMgr.retrieveToPayTotal() == 0) {
             layCCPaycheckBelowLabel.setVisibility(View.VISIBLE);
             layCCPayToPayHeaderLayout.setVisibility(View.GONE);
-            layCCPayWarnLayout.setVisibility(View.GONE);
             layCCPayPaytListLayout.setVisibility(View.GONE);
         } else {
             layCCPaycheckBelowLabel.setVisibility(View.GONE);
             layCCPayToPayHeaderLayout.setVisibility(View.VISIBLE);
             layCCPayPaytListLayout.setVisibility(View.VISIBLE);
-            layCCPayWarnLayout.setVisibility(View.GONE);
         }
     }
 
-    public void layCCPayDetAandBPortionsExp() {
-        moneyOutA = layCCPayDbMgr.detAPortionExp(layCCPayAmtFromTag, layCCPayPriorityFromTag, layCCPayDbMgr.retrieveCurrentA(), layCCPayDbMgr.retrieveCurrentB());
-        moneyOutOwing = layCCPayDbMgr.detOwingPortionExp(layCCPayAmtFromTag, layCCPayPriorityFromTag, layCCPayDbMgr.retrieveCurrentA(), layCCPayDbMgr.retrieveCurrentB());
-        moneyOutB = layCCPayDbMgr.detBPortionExp(layCCPayAmtFromTag, layCCPayPriorityFromTag, layCCPayDbMgr.retrieveCurrentA(), layCCPayDbMgr.retrieveCurrentB());
-    }
+    /*public void layCCPayDetAandBPortionsExp() {
+        moneyOutA = layCCPayDbMgr.detAPortionExp(layCCPayPurAmtFromTag, layCCPayPriorityFromTag, layCCPayDbMgr.retrieveCurrentA(), layCCPayDbMgr.retrieveCurrentB());
+        moneyOutOwing = layCCPayDbMgr.detOwingPortionExp(layCCPayPurAmtFromTag, layCCPayPriorityFromTag, layCCPayDbMgr.retrieveCurrentA(), layCCPayDbMgr.retrieveCurrentB());
+        moneyOutB = layCCPayDbMgr.detBPortionExp(layCCPayPurAmtFromTag, layCCPayPriorityFromTag, layCCPayDbMgr.retrieveCurrentA(), layCCPayDbMgr.retrieveCurrentB());
+    }*/
 
     public void layCCPayAddToPayList() {
         layCCPayMonOutDb.setTransCCToPay("Y");
-        layCCPayMonOutDb.setTransAmtOutA(moneyOutA);
+        /*layCCPayMonOutDb.setTransAmtOutA(moneyOutA);
         layCCPayMonOutDb.setTransAmtOutOwing(moneyOutOwing);
-        layCCPayMonOutDb.setTransAmtOutB(moneyOutB);
+        layCCPayMonOutDb.setTransAmtOutB(moneyOutB);*/
+        layCCPayMonOutDb.setTransAmtOutA(layCCPayDbMgr.detAPortionExp(layCCPayPurAmtFromTag, layCCPayPriorityFromTag, layCCPayDbMgr.retrieveCurrentA(), layCCPayDbMgr.retrieveCurrentB()));
+        layCCPayMonOutDb.setTransAmtOutOwing(layCCPayDbMgr.detOwingPortionExp(layCCPayPurAmtFromTag, layCCPayPriorityFromTag, layCCPayDbMgr.retrieveCurrentA(), layCCPayDbMgr.retrieveCurrentB()));
+        layCCPayMonOutDb.setTransAmtOutB(layCCPayDbMgr.detBPortionExp(layCCPayPurAmtFromTag, layCCPayPriorityFromTag, layCCPayDbMgr.retrieveCurrentA(), layCCPayDbMgr.retrieveCurrentB()));
         layCCPayDbMgr.updateTransactions(layCCPayMonOutDb);
     }
 
@@ -280,28 +330,28 @@ public class LayoutCCPay extends MainNavigation {
     public class LayCCPayTransLstAdapter extends ArrayAdapter<TransactionsDb> {
 
         private Context context;
-        private List<TransactionsDb> ccTransToPay;
+        private List<TransactionsDb> ccTransStillToPay;
         boolean[] checkedState;
 
         private LayCCPayTransLstAdapter(
                 Context context,
-                List<TransactionsDb> ccTransToPay) {
+                List<TransactionsDb> ccTransStillToPay) {
 
-            super(context, -1, ccTransToPay);
+            super(context, -1, ccTransStillToPay);
 
             this.context = context;
-            this.ccTransToPay = ccTransToPay;
-            checkedState = new boolean[ccTransToPay.size()];
+            this.ccTransStillToPay = ccTransStillToPay;
+            checkedState = new boolean[ccTransStillToPay.size()];
         }
 
-        public void updateCCTransToPay(List<TransactionsDb> ccTransToPay) {
-            this.ccTransToPay = ccTransToPay;
+        public void updateCCTransToPay(List<TransactionsDb> ccTransStillToPay) {
+            this.ccTransStillToPay = ccTransStillToPay;
             notifyDataSetChanged();
         }
 
         @Override
         public int getCount() {
-            return ccTransToPay.size();
+            return ccTransStillToPay.size();
         }
 
         @NonNull
@@ -328,13 +378,12 @@ public class LayoutCCPay extends MainNavigation {
                 layCCPayTransHldr.layCCPayLstCheckbox.setTag(layCCPayTransHldr);
             }
 
-            layCCPayGen.dblASCurrency(String.valueOf(ccTransToPay.get(position).getTransAmt()), layCCPayTransHldr.layCCPayLstAmtTV);
+            layCCPayGen.dblASCurrency(String.valueOf(ccTransStillToPay.get(position).getTransAmt()), layCCPayTransHldr.layCCPayLstAmtTV);
 
-            layCCPayTransHldr.layCCPayLstCatTV.setText(ccTransToPay.get(position).getTransBdgtCat());
-            layCCPayTransHldr.layCCPayLstChargingDebtCatTV.setText(ccTransToPay.get(position).getTransFromAcctName());
+            layCCPayTransHldr.layCCPayLstCatTV.setText(ccTransStillToPay.get(position).getTransBdgtCat());
+            layCCPayTransHldr.layCCPayLstChargingDebtCatTV.setText(ccTransStillToPay.get(position).getTransFromAcctName());
 
-            layCCPayTransHldr.layCCPayLstCheckbox.setTag(ccTransToPay.get(position));
-            layCCPayTransHldr.layCCPayLstCheckbox.setTag(R.id.payCCLstCheckbox, position);
+            layCCPayTransHldr.layCCPayLstCheckbox.setTag(ccTransStillToPay.get(position));
 
             layCCPayTransHldr.layCCPayLstCheckbox.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -343,78 +392,76 @@ public class LayoutCCPay extends MainNavigation {
                     checkedState[position] = !checkedState[position];
 
                     layCCPayPriorityFromTag = layCCPayMonOutDb.getTransBdgtPriority();
-                    layCCPayAmtFromTag = layCCPayMonOutDb.getTransAmt();
+                    layCCPayPurAmtFromTag = layCCPayMonOutDb.getTransAmt();
                     layCCPayChargingDebtIdFromTag = layCCPayMonOutDb.getTransFromAcctId();
 
                     if (checkedState[position]) {
-                        layCCPayDetAandBPortionsExp();
+                        //layCCPayDetAandBPortionsExp();
                         layCCPayAddToPayList();
                         layCCPayPlusDebtToPay();
                         layCCPayToPayTotA = layCCPayDbMgr.retrieveAPortion();
                         layCCPayToPayTotB = layCCPayDbMgr.retrieveToPayTotal() - layCCPayToPayTotA;
 
-                        if (layCCPayPriorityFromTag.equals("A")) {
-                            if (layCCPayDbMgr.retrieveCurrentAccountBalance() < layCCPayToPayTotA) { //A NOT POSSIBLE
-                                layCCPaycheckBelowLabel.setVisibility(View.GONE);
-                                layCCPayWarnLayout.setVisibility(View.VISIBLE);
-                                layCCPayWarnTV.setText(getString(R.string.payment_not_possible_A));
-                                layCCPayNoBtn.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        layCCPayWarnLayout.setVisibility(View.GONE);
-                                        layCCPaycheckBelowLabel.setVisibility(View.VISIBLE);
-                                        layCCPayRemoveFromPayList();
-                                        layCCPayMinusDebtToPay();
-                                        layCCPayTransHldr.layCCPayLstCheckbox.setChecked(false);
-                                    }
-                                });
+                        if ((layCCPayFromIsDebtSav.equals("D") && (layCCPayFromAcctBal + layCCPayPurAmtFromTag > layCCPayFromAcctMax)) || //IF FROM DEBT & WILL GO OVER LIMIT
+                                (layCCPayFromIsDebtSav.equals("S") && (layCCPayFromAcctBal - layCCPayPurAmtFromTag < 0)) || //IF FROM SAV & WILL GO NEGATIVE
+                                (layCCPayFromSpinId == 1 && (layCCPayPriorityFromTag.equals("A") && (layCCPayDbMgr.retrieveCurrentAccountBalance() < layCCPayToPayTotA))) || //FROM MAIN ACCT & PRIORITY A & WILL GO NEGATIVE
+                                (layCCPayFromSpinId == 1 && (layCCPayPriorityFromTag.equals("B") && (layCCPayDbMgr.retrieveCurrentB() < layCCPayToPayTotB)))) { //FORM MAIN ACCT & PRIORITY B & DON'T HAVE THE MONEY TO SPEND
+                            layCCPaycheckBelowLabel.setVisibility(View.GONE);
 
-                                layCCPayYesBtn.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        layCCPayWarnLayout.setVisibility(View.GONE);
-                                        layCCPayCheckToPayTotal();
-                                        layCCPayPaytLstAdapter.notifyDataSetChanged();
-                                    }
-                                });
-                            } else {
-                                layCCPayCheckToPayTotal();
-                                layCCPayPaytLstAdapter.notifyDataSetChanged();
-                            }
-                        } else if (layCCPayPriorityFromTag.equals("B")) {
-                            if (layCCPayDbMgr.retrieveCurrentB() < layCCPayToPayTotB) { //B NOT POSSIBLE
-                                layCCPaycheckBelowLabel.setVisibility(View.GONE);
-                                layCCPayWarnLayout.setVisibility(View.VISIBLE);
-                                layCCPayWarnTV.setText(getString(R.string.payment_not_possible_B));
-                                layCCPayNoBtn.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        layCCPayWarnLayout.setVisibility(View.GONE);
-                                        layCCPaycheckBelowLabel.setVisibility(View.VISIBLE);
-                                        layCCPayRemoveFromPayList();
-                                        layCCPayMinusDebtToPay();
-                                        layCCPayTransHldr.layCCPayLstCheckbox.setChecked(false);
-                                    }
-                                });
+                            final AlertDialog.Builder builder = new AlertDialog.Builder(LayoutCCPay.this);
+                            dView = getLayoutInflater().inflate(R.layout.dialog_warn, null);
+                            builder.setView(dView);
+                            final AlertDialog dialog = builder.create();
+                            dialog.show();
 
-                                layCCPayYesBtn.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        layCCPayWarnLayout.setVisibility(View.GONE);
-                                        layCCPayCheckToPayTotal();
-                                        layCCPayPaytLstAdapter.notifyDataSetChanged();
-                                    }
-                                });
-                            } else {
-                                layCCPayCheckToPayTotal();
-                                layCCPayPaytLstAdapter.notifyDataSetChanged();
+                            warnDialogWarnLayout = dView.findViewById(R.id.warnDialogWarnLayout);
+                            warnDialogWarnTV = dView.findViewById(R.id.warnDialogWarnTV);
+                            warnDialogNoContBtn = dView.findViewById(R.id.warnDialogNoContBtn);
+                            warnDialogYesContBtn = dView.findViewById(R.id.warnDialogYesContBtn);
+
+                            if (layCCPayFromIsDebtSav.equals("D")) {
+                                warnDialogWarnTV.setText(R.string.not_enough_credit_warning);
+                            } else if (layCCPayFromIsDebtSav.equals("S")) {
+                                warnDialogWarnTV.setText(R.string.not_enough_savings_warning);
+                            } else if (layCCPayPriorityFromTag.equals("A")) {
+                                warnDialogWarnTV.setText(R.string.payment_not_possible_A);
+                            } else if (layCCPayPriorityFromTag.equals("B")) {
+                                warnDialogWarnTV.setText(R.string.payment_not_possible_B);
                             }
+
+                            warnDialogNoContBtn.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    if (layCCPayDbMgr.retrieveToPayTotal() == 0) {
+                                        layCCPaycheckBelowLabel.setVisibility(View.VISIBLE);
+                                    } else {
+                                        layCCPaycheckBelowLabel.setVisibility(View.GONE);
+                                    }
+                                    layCCPayRemoveFromPayList();
+                                    layCCPayMinusDebtToPay();
+                                    layCCPayTransHldr.layCCPayLstCheckbox.setChecked(false);
+                                    checkedState[position] = false;
+                                    dialog.dismiss();
+                                    layCCPayPaytLstAdapter.notifyDataSetChanged();
+                                }
+                            });
+
+                            warnDialogYesContBtn.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    layCCPayCheckToPayTotal();
+                                    layCCPayPaytLstAdapter.notifyDataSetChanged();
+                                    dialog.dismiss();
+                                }
+                            });
+                        } else {
+                            layCCPayCheckToPayTotal();
+                            layCCPayPaytLstAdapter.notifyDataSetChanged();
                         }
                     } else if (!checkedState[position]) {
                         layCCPayRemoveFromPayList();
                         layCCPayMinusDebtToPay();
                         layCCPayCheckToPayTotal();
-
                         layCCPayPaytLstAdapter.notifyDataSetChanged();
                     }
                 }

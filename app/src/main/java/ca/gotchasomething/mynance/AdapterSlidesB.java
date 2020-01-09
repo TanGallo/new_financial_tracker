@@ -8,26 +8,25 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
 
-public class AdapterSlides extends PagerAdapter {
+public class AdapterSlidesB extends PagerAdapter {
 
     private int[] slides;
-    private int slideImage[];
-    private String[] slideTitle, slideDescription;
+    //int slideImage[];
+    //String[] slideTitle, slideDescription;
     private LayoutInflater inflater;
     private Context context;
 
-    public AdapterSlides(int[] slides, Context context) {
+    public AdapterSlidesB(int[] slides, Context context) {
         this.slides = slides;
         this.context = context;
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
-    /*public AdapterSlides(int[] slides, int[] slideImage, String[] slideTitle, String[] slideDescription, Context context) {
+    /*public AdapterSlidesB(int[] slides, int[] slideImg, String[] slideTit, String[] slideDesc) {
         this.slides = slides;
-        this.slideImage = slideImage;
-        this.slideTitle = slideTitle;
-        this.slideDescription = slideDescription;
-        this.context = context;
+        slideImage = slideImg;
+        slideTitle = slideTit;
+        slideDescription = slideDesc;
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }*/
 

@@ -120,7 +120,7 @@ public class MainNavigation extends AppCompatActivity implements NavigationView.
                 startActivity(i4);
                 break;
             case R.id.menu_help:
-                i5 = new Intent(MainNavigation.this, LayoutViewEdit.class);
+                i5 = new Intent(MainNavigation.this, LayoutHelp.class);
                 i5.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
                 startActivity(i5);
                 break;

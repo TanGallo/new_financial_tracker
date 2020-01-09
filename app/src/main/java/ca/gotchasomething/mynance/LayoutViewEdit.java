@@ -1,10 +1,7 @@
 package ca.gotchasomething.mynance;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,6 +28,7 @@ import java.util.Date;
 import java.util.List;
 
 import ca.gotchasomething.mynance.data.AccountsDb;
+import ca.gotchasomething.mynance.data.BudgetDb;
 import ca.gotchasomething.mynance.data.TransactionsDb;
 
 public class LayoutViewEdit extends MainNavigation {
@@ -39,31 +37,27 @@ public class LayoutViewEdit extends MainNavigation {
     boolean layVwEdLeapYear;
     Button dialogCancelBtn, dialogUpdateBtn, dialogNoContBtn, dialogYesContBtn, layVwEdAddMoreBtn, layVwEdDoneBtn, layVwEdSpinOkBtn, layVwEdSpinResetBtn;
     Calendar layVwEdCal;
-    ContentValues layVwEdCV;
-    Cursor layVwEdCursor, layVwEdCursor2, layVwEdCursor3, layVwEdCursor4;
     Date layVwEdEarliestDate, layVwEdLatestDate;
-    DbHelper layVwEdHelper;
     DbManager layVwEdDbMgr;
-    Double debtAmtFromDb = 0.0, debtLimitFromDb = 0.0, debtOwingFromDb = 0.0, debtPaytFromDb = 0.0, debtRateFromDb = 0.0, layVwEdTransAmt = 0.0, layVwEdAmtEntry = 0.0, layVwEdAmtDiff = 0.0, layVwEdPercentA = 0.0, layVwEdMoneyInA = 0.0, layVwEdMoneyInOwing = 0.0,
-            layVwEdMoneyInB = 0.0, layVwEdMoneyOutA = 0.0, layVwEdMoneyOutOwing = 0.0, layVwEdMoneyOutB = 0.0, layVwEdTransAmtOutA = 0.0, layVwEdTransAmtOutOwing = 0.0, layVwEdTransAmtOutB = 0.0, moneyInA = 0.0, moneyInOwing = 0.0, moneyInB = 0.0, moneyOutA = 0.0,
-            layVwEdTransAmtInA = 0.0, layVwEdTransAmtInOwing = 0.0, layVwEdTransAmtInB = 0.0, moneyOutOwing = 0.0, moneyOutB = 0.0,
-            newMoneyOutA = 0.0, newMoneyOutOwing = 0.0, newMoneyOutB = 0.0, newMoneyInA = 0.0, newMoneyInOwing = 0.0, newMoneyInB = 0.0,
-            savAmtFromDb = 0.0, savGoalFromDb = 0.0, savPaytFromDb = 0.0, savRateFromDb = 0.0;
+    Double debtLimitFromDb = 0.0, debtOwingFromDb = 0.0, debtPaytFromDb = 0.0, debtRateFromDb = 0.0, layVwEdTransAmt = 0.0, layVwEdAmtEntry = 0.0, layVwEdAmtDiff = 0.0,
+            layVwEdPercentA = 0.0, layVwEdMoneyInA = 0.0, layVwEdMoneyInOwing = 0.0, layVwEdMoneyInB = 0.0, layVwEdMoneyOutA = 0.0, layVwEdMoneyOutOwing = 0.0,
+            layVwEdMoneyOutB = 0.0, layVwEdTransAmtOutA = 0.0, layVwEdTransAmtOutOwing = 0.0, layVwEdTransAmtOutB = 0.0, moneyInA = 0.0, moneyInOwing = 0.0, moneyInB = 0.0, moneyOutA = 0.0,
+            layVwEdTransAmtInA = 0.0, layVwEdTransAmtInOwing = 0.0, layVwEdTransAmtInB = 0.0, moneyOutOwing = 0.0, moneyOutB = 0.0, newAnnAmt = 0.0, newMoneyOutA = 0.0,
+            newMoneyOutOwing = 0.0, newMoneyOutB = 0.0, newMoneyInA = 0.0, newMoneyInOwing = 0.0, newMoneyInB = 0.0, savAmtFromDb = 0.0, savGoalFromDb = 0.0, savPaytFromDb = 0.0,
+            savRateFromDb = 0.0;
     EditText dialogAmtET;
     General layVwEdGen;
-    ImageButton layVwEdCCPayBtn, layVwEdCCPurBtn, layVwEdMonInBtn, layVwEdMonOutBtn, layVwEdTransferBtn, layVwEdWklyLimitsBtn;
     int layVwEdYear;
-    Intent layVwEdRefresh, layVwEdToCCPay, layVwEdToCCPur, layVwEdToFixBudget, layVwEdToMonIn, layVwEdToMonOut, layVwEdToTransfers, layVwEdToWklyLimits;
+    Intent layVwEdRefresh;
     LayVwEdAdapter layVwEdAdapter;
-    LinearLayout dialogWarnLayout, layVwEdSpinLayout, layVwEdTransactionsLayout, layVwEdControlLayout;
+    LinearLayout dialogWarnLayout, layVwEdSpinLayout;
     ListView layVwEdList;
-    long layVwEdTransBdgtId, layVwEdToAcctId, layVwEdFromAcctId;
+    long delBdgtId, editBdgtId, layVwEdTransBdgtId, layVwEdToAcctId, layVwEdFromAcctId;
     Spinner layVwEdToMthSpin, layVwEdFromMthSpin, layVwEdToYrSpin, layVwEdFromYrSpin;
-    SQLiteDatabase layVwEdDb;
     String layVwEdPriority = null, layVwEdSumTotalSelTrans = null, layVwEdTransType = null, layVwEdLastDay = null, layVwEdFromMonth = null, layVwEdToMonth = null, layVwEdFromYr = null, layVwEdToYr = null,
             layVwEdToIsDebtSav = null, layVwEdFromIsDebtSav = null;
     String[] layVwEdMonths, layVwEdOnlyMonths, layVwEdYears;
-    TextView dialogWarnTV, layVwEdAndTV, layVwEdTitle, layVwEdTotalTV, layVwEdAvailAcctTV, layVwEdAvailAmtLabel, layVwEdBudgWarnTV, layVwEdTotAcctTV;
+    TextView dialogWarnTV, layVwEdAndTV, layVwEdTitle, layVwEdTotalTV;
     TransactionsDb layVwEdTransDb;
     View dView;
 
@@ -96,6 +90,7 @@ public class LayoutViewEdit extends MainNavigation {
         layVwEdAndTV = findViewById(R.id.layout1AndTV);
         layVwEdSpinOkBtn = findViewById(R.id.layout1SpinOkBtn);
         layVwEdSpinResetBtn = findViewById(R.id.layout1SpinResetBtn);
+        layVwEdSpinResetBtn.setVisibility(View.GONE);
         layVwEdAddMoreBtn = findViewById(R.id.layout1AddMoreBtn);
         layVwEdAddMoreBtn.setVisibility(View.GONE);
         layVwEdTitle = findViewById(R.id.layout1HeaderLabelTV);
@@ -225,6 +220,7 @@ public class LayoutViewEdit extends MainNavigation {
     View.OnClickListener onClickSpinOkBtn = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            layVwEdSpinLayout.setVisibility(View.GONE);
             if (layVwEdFromMonth.equals(getString(R.string.year_to_date))) {
                 layVwEdCal = Calendar.getInstance();
                 layVwEdYear = layVwEdCal.get(Calendar.YEAR);
@@ -280,10 +276,12 @@ public class LayoutViewEdit extends MainNavigation {
         }
     };
 
-    public void layVwEdDebtPlus(Double dbl1) {
-        layVwEdDbMgr.updateRecPlusPt1(dbl1, layVwEdDbMgr.retrieveCurrentAcctAmt(layVwEdFromAcctId), layVwEdFromAcctId);
+    public void layVwEdDebtPlus(Double dbl1, long longId) {
         for (AccountsDb d : layVwEdDbMgr.getDebts()) {
-            if (d.getId() == layVwEdFromAcctId) {
+            if (d.getId() == longId) {
+                d.setAcctBal(d.getAcctBal() + dbl1);
+                layVwEdDbMgr.updateAccounts(d);
+
                 debtOwingFromDb = d.getAcctBal();
                 debtRateFromDb = d.getAcctIntRate();
                 debtPaytFromDb = d.getAcctPaytsTo();
@@ -295,13 +293,15 @@ public class LayoutViewEdit extends MainNavigation {
                         debtRateFromDb,
                         debtPaytFromDb,
                         getString(R.string.debt_paid),
-                        getString(R.string.too_far)), layVwEdFromAcctId);
+                        getString(R.string.too_far)), longId);
     }
 
-    public void layVwEdSavPlus(Double dbl4) {
-        layVwEdDbMgr.updateRecPlusPt1(dbl4, layVwEdDbMgr.retrieveCurrentAcctAmt(layVwEdToAcctId), layVwEdToAcctId);
+    public void layVwEdSavPlus(Double dbl4, long longId) {
         for (AccountsDb s : layVwEdDbMgr.getSavings()) {
-            if (s.getId() == layVwEdToAcctId) {
+            if (s.getId() == longId) {
+                s.setAcctBal(s.getAcctBal() + dbl4);
+                layVwEdDbMgr.updateAccounts(s);
+
                 savGoalFromDb = s.getAcctMax();
                 savAmtFromDb = s.getAcctBal();
                 savRateFromDb = s.getAcctIntRate();
@@ -315,13 +315,15 @@ public class LayoutViewEdit extends MainNavigation {
                         savRateFromDb,
                         savPaytFromDb,
                         getString(R.string.goal_achieved),
-                        getString(R.string.too_far)), layVwEdToAcctId);
+                        getString(R.string.too_far)), longId);
     }
 
-    public void layVwEdDebtMinus(Double dbl3) {
-        layVwEdDbMgr.updateRecMinusPt1(dbl3, layVwEdDbMgr.retrieveCurrentAcctAmt(layVwEdToAcctId), layVwEdToAcctId);
+    public void layVwEdDebtMinus(Double dbl3, long longId) {
         for (AccountsDb d : layVwEdDbMgr.getDebts()) {
-            if (d.getId() == layVwEdToAcctId) {
+            if (d.getId() == longId) {
+                d.setAcctBal(d.getAcctBal() - dbl3);
+                layVwEdDbMgr.updateAccounts(d);
+
                 debtOwingFromDb = d.getAcctBal();
                 debtRateFromDb = d.getAcctIntRate();
                 debtPaytFromDb = d.getAcctPaytsTo();
@@ -333,13 +335,15 @@ public class LayoutViewEdit extends MainNavigation {
                         debtRateFromDb,
                         debtPaytFromDb,
                         getString(R.string.debt_paid),
-                        getString(R.string.too_far)), layVwEdToAcctId);
+                        getString(R.string.too_far)), longId);
     }
 
-    public void layVwEdSavMinus(Double dbl2) {
-        layVwEdDbMgr.updateRecMinusPt1(dbl2, layVwEdDbMgr.retrieveCurrentAcctAmt(layVwEdFromAcctId), layVwEdFromAcctId);
+    public void layVwEdSavMinus(Double dbl2, long longId) {
         for (AccountsDb s : layVwEdDbMgr.getSavings()) {
-            if (s.getId() == layVwEdFromAcctId) {
+            if (s.getId() == longId) {
+                s.setAcctBal(s.getAcctBal() - dbl2);
+                layVwEdDbMgr.updateAccounts(s);
+
                 savGoalFromDb = s.getAcctMax();
                 savAmtFromDb = s.getAcctBal();
                 savRateFromDb = s.getAcctIntRate();
@@ -353,7 +357,7 @@ public class LayoutViewEdit extends MainNavigation {
                         savRateFromDb,
                         savPaytFromDb,
                         getString(R.string.goal_achieved),
-                        getString(R.string.too_far)), layVwEdFromAcctId);
+                        getString(R.string.too_far)), longId);
     }
 
     public void layVwEdMainAcctPlus(Double dbl1, Double dbl2, Double dbl3) {
@@ -395,9 +399,7 @@ public class LayoutViewEdit extends MainNavigation {
         //dbl2 = transAmtOutOwing
         //dbl3 = transAmtOutB
         //str1 = priority
-
         layVwEdDbMgr.updateTotAcctBalMinus(layVwEdAmtDiff, layVwEdDbMgr.retrieveCurrentAccountBalance());
-
         layVwEdDbMgr.updateAandBBalPlus(dbl1, dbl2, dbl3, layVwEdDbMgr.retrieveCurrentA(), layVwEdDbMgr.retrieveCurrentOwingA(), layVwEdDbMgr.retrieveCurrentB());
 
         if (!str1.equals("A") && !str1.equals("B")) {
@@ -438,22 +440,10 @@ public class LayoutViewEdit extends MainNavigation {
 
         layVwEdAdapter.updateTransactions(layVwEdDbMgr.getTransactions());
         layVwEdAdapter.notifyDataSetChanged();
-
-        layVwEdHelper = new DbHelper(getApplicationContext());
-        layVwEdDb = layVwEdHelper.getWritableDatabase();
-        layVwEdCV = new ContentValues();
-        layVwEdCV.put(DbHelper.BDGTANNPAYT, layVwEdDbMgr.makeNewExpAnnAmt(layVwEdTransBdgtId, layVwEdGen.lastNumOfDays(365)));
-        layVwEdDb.update(DbHelper.BUDGET_TABLE_NAME, layVwEdCV, DbHelper.ID + "=" + layVwEdTransBdgtId, null);
-        layVwEdDb.close();
-
-        layVwEdRefresh();
     }
 
-    public void layVwEdFinishTransfer() {
+    public void layVwEdFinishIn() {
         layVwEdTransDb.setTransAmt(layVwEdAmtEntry);
-        layVwEdTransDb.setTransAmtOutA(moneyOutA);
-        layVwEdTransDb.setTransAmtOutOwing(moneyOutOwing);
-        layVwEdTransDb.setTransAmtOutB(moneyOutB);
         layVwEdTransDb.setTransAmtInA(moneyInA);
         layVwEdTransDb.setTransAmtInOwing(moneyInOwing);
         layVwEdTransDb.setTransAmtInB(moneyInB);
@@ -461,8 +451,6 @@ public class LayoutViewEdit extends MainNavigation {
 
         layVwEdAdapter.updateTransactions(layVwEdDbMgr.getTransactions());
         layVwEdAdapter.notifyDataSetChanged();
-
-        layVwEdRefresh();
     }
 
     public class LayVwEdAdapter extends ArrayAdapter<TransactionsDb> {
@@ -538,7 +526,7 @@ public class LayoutViewEdit extends MainNavigation {
                 layVwEdHldr.layVwEdDelBtn.setVisibility(View.VISIBLE);
                 layVwEdHldr.layVwEdCatTV.setText(transactionsList.get(position).getTransBdgtCat());
                 if (transactionsList.get(position).getTransIsCC().equals("Y")) { //IF PURCHASE IS ON A CC
-                    if (transactionsList.get(position).getTransAmt() < 0) { //IF IS A CREDIT INSTREAD OF A PURCHASE
+                    if (transactionsList.get(position).getTransAmt() < 0) { //IF IS A CREDIT INSTEAD OF A PURCHASE
                         layVwEdHldr.layVwEdAcctLabelTV.setText(R.string.credited_to);
                         layVwEdHldr.layVwEdAcctTV.setText(transactionsList.get(position).getTransFromAcctName());
                         layVwEdHldr.layVwEdAcctLabelTV2.setVisibility(View.GONE);
@@ -582,8 +570,8 @@ public class LayoutViewEdit extends MainNavigation {
             layVwEdHldr.layVwEdDelBtn.setTag(transactionsList.get(position));
 
             layVwEdTransBdgtId = transactionsList.get(position).getTransBdgtId();
-            layVwEdToIsDebtSav = layVwEdDbMgr.findMoneyInIsDebtSav(transactionsList.get(position).getTransToAcctId());//"D" or "S" or "N/A"
-            layVwEdFromIsDebtSav = layVwEdDbMgr.findMoneyInIsDebtSav(transactionsList.get(position).getTransFromAcctId());//"D" or "S" or "N/A"
+            layVwEdToIsDebtSav = transactionsList.get(position).getTransToDebtSav();//"D" or "S" or "N/A"
+            layVwEdFromIsDebtSav = transactionsList.get(position).getTransFromDebtSav();//"D" or "S" or "N/A"
             layVwEdToAcctId = transactionsList.get(position).getTransToAcctId();
             layVwEdFromAcctId = transactionsList.get(position).getTransFromAcctId();
             layVwEdTransType = transactionsList.get(position).getTransType();
@@ -603,9 +591,19 @@ public class LayoutViewEdit extends MainNavigation {
                     layVwEdTransDb = (TransactionsDb) layVwEdHldr.layVwEdEditBtn.getTag();
                     LayoutViewEdit.this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
                     layVwEdDbMgr = new DbManager(getContext());
+                    layVwEdPriority = transactionsList.get(position).getTransBdgtPriority();
+                    layVwEdToIsDebtSav = transactionsList.get(position).getTransToDebtSav();
+                    layVwEdFromIsDebtSav = transactionsList.get(position).getTransFromDebtSav();
+                    layVwEdToAcctId = transactionsList.get(position).getTransToAcctId();
+                    layVwEdFromAcctId = transactionsList.get(position).getTransFromAcctId();
+                    editBdgtId = transactionsList.get(position).getTransBdgtId();
 
-                    AlertDialog.Builder builder = new AlertDialog.Builder(LayoutViewEdit.this);
+                    final AlertDialog.Builder builder = new AlertDialog.Builder(LayoutViewEdit.this);
                     dView = getLayoutInflater().inflate(R.layout.dialog_update, null);
+                    builder.setView(dView);
+                    final AlertDialog dialog = builder.create();
+                    dialog.show();
+
                     dialogAmtET = dView.findViewById(R.id.dialogAmtET);
                     dialogUpdateBtn = dView.findViewById(R.id.dialogUpdateBtn);
                     dialogCancelBtn = dView.findViewById(R.id.dialogCancelBtn);
@@ -627,301 +625,170 @@ public class LayoutViewEdit extends MainNavigation {
                             layVwEdAmtEntry = layVwEdGen.dblFromET(dialogAmtET);
                             layVwEdAmtDiff = layVwEdAmtEntry - transactionsList.get(position).getTransAmt();
                             layVwEdPercentA = layVwEdDbMgr.sumTotalAExpenses() / layVwEdDbMgr.sumTotalIncome();
+                            layVwEdPriority = transactionsList.get(position).getTransBdgtPriority();
+                            layVwEdToIsDebtSav = transactionsList.get(position).getTransToDebtSav();
+                            layVwEdFromIsDebtSav = transactionsList.get(position).getTransFromDebtSav();
+                            layVwEdToAcctId = transactionsList.get(position).getTransToAcctId();
+                            layVwEdFromAcctId = transactionsList.get(position).getTransFromAcctId();
+                            editBdgtId = transactionsList.get(position).getTransBdgtId();
 
-                            if (layVwEdTransType.equals("in")) { //IF TRANSACTION IS A DEPOSIT
-                                if (!layVwEdToIsDebtSav.equals("D") && !layVwEdToIsDebtSav.equals("S")) { //IF INTO MAIN ACCT
-                                    layVwEdMainAcctPlus(layVwEdTransAmtInA, layVwEdTransAmtInOwing, layVwEdTransAmtInB);
-                                } else if (layVwEdToIsDebtSav.equals("D")) { //IF INTO DEBT ACCT
-                                    layVwEdDebtMinus(layVwEdAmtDiff);
-                                    moneyInA = 0.0;
-                                    moneyInOwing = 0.0;
-                                    moneyInB = 0.0;
-                                } else if (layVwEdToIsDebtSav.equals("S")) { //IF INTO SAV ACCT
-                                    layVwEdSavPlus(layVwEdAmtDiff);
-                                    moneyInA = 0.0;
-                                    moneyInOwing = 0.0;
-                                    moneyInB = 0.0;
-                                }
-
-                                layVwEdTransDb.setTransAmt(layVwEdAmtEntry);
-                                layVwEdTransDb.setTransAmtInA(moneyInA);
-                                layVwEdTransDb.setTransAmtInOwing(moneyInOwing);
-                                layVwEdTransDb.setTransAmtInB(moneyInB);
-                                layVwEdDbMgr.updateTransactions(layVwEdTransDb);
-
-                                layVwEdAdapter.updateTransactions(layVwEdDbMgr.getTransactions());
-                                notifyDataSetChanged();
-
-                                layVwEdHelper = new DbHelper(getContext());
-                                layVwEdDb = layVwEdHelper.getWritableDatabase();
-                                layVwEdCV = new ContentValues();
-                                layVwEdCV.put(DbHelper.BDGTANNPAYT, layVwEdDbMgr.makeNewIncAnnAmt(layVwEdTransBdgtId, layVwEdGen.lastNumOfDays(365)));
-                                layVwEdDb.update(DbHelper.BUDGET_TABLE_NAME, layVwEdCV, DbHelper.ID + "=" + layVwEdTransBdgtId, null);
-                                layVwEdDb.close();
-
-                                layVwEdRefresh();
-
-                            } else if (layVwEdTransType.equals("out")) { //IF TRANSACTION IS A PURCHASE OF SOME KIND
-                                if (layVwEdFromIsDebtSav.equals("D")) { //IF COMES FROM A DEBT ACCT
-                                    moneyOutA = 0.0;
-                                    moneyOutOwing = 0.0;
-                                    moneyOutB = 0.0;
-                                    for (AccountsDb a : layVwEdDbMgr.getDebts()) {
-                                        if (a.getId() == layVwEdFromAcctId) {
-                                            debtLimitFromDb = a.getAcctMax();
-                                        }
-                                    }
-                                    if (layVwEdDbMgr.retrieveCurrentAcctAmt(layVwEdFromAcctId) + layVwEdAmtDiff > debtLimitFromDb) { //IF ACCT WILL BE OVER LIMIT
-                                        dialogWarnLayout.setVisibility(View.VISIBLE);
-                                        dialogWarnTV.setText(getString(R.string.not_enough_credit_warning));
-
-                                        dialogNoContBtn.setOnClickListener(new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View v) {
-                                                layVwEdRefresh();
-                                            }
-                                        });
-
-                                        dialogYesContBtn.setOnClickListener(new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View v) {
-                                                dialogWarnLayout.setVisibility(View.GONE);
-                                                layVwEdDebtPlus(layVwEdAmtDiff);
-                                                layVwEdFinishOut();
-                                            }
-                                        });
-                                    } else { //ACCT WILL NOT BE OVER LIMIT
-                                        layVwEdDebtPlus(layVwEdAmtDiff);
-                                        layVwEdFinishOut();
-                                    }
-                                } else if (!layVwEdFromIsDebtSav.equals("S") && !layVwEdFromIsDebtSav.equals("D")) { //OUT OF MAIN ACCT
-                                    if (layVwEdPriority.equals("A") && layVwEdDbMgr.retrieveCurrentAccountBalance() - layVwEdAmtDiff < 0) { //IF A AND WILL GO NEGATIVE
-                                        dialogWarnLayout.setVisibility(View.VISIBLE);
-                                        dialogWarnTV.setText(getString(R.string.payment_not_possible_A));
-
-                                        dialogNoContBtn.setOnClickListener(new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View v) {
-                                                layVwEdRefresh();
-                                            }
-                                        });
-
-                                        dialogYesContBtn.setOnClickListener(new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View v) {
-                                                dialogWarnLayout.setVisibility(View.GONE);
-                                                layVwEdMainAcctMinus(layVwEdTransAmtOutA, layVwEdTransAmtOutOwing, layVwEdTransAmtOutB, layVwEdPriority);
-                                                layVwEdFinishOut();
-                                            }
-                                        });
-                                    } else if (layVwEdPriority.equals("B") && layVwEdDbMgr.retrieveCurrentB() - layVwEdAmtDiff < 0) { //IF B AND WILL GO NEGATIVE
-                                        dialogWarnLayout.setVisibility(View.VISIBLE);
-                                        dialogWarnTV.setText(getString(R.string.payment_not_possible_B));
-
-                                        dialogNoContBtn.setOnClickListener(new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View v) {
-                                                layVwEdRefresh();
-                                            }
-                                        });
-
-                                        dialogYesContBtn.setOnClickListener(new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View v) {
-                                                dialogWarnLayout.setVisibility(View.GONE);
-                                                layVwEdMainAcctMinus(layVwEdTransAmtOutA, layVwEdTransAmtOutOwing, layVwEdTransAmtOutB, layVwEdPriority);
-                                                layVwEdFinishOut();
-                                            }
-                                        });
-                                    } else { //WILL NOT GO NEGATIVE
-                                        layVwEdMainAcctMinus(layVwEdTransAmtOutA, layVwEdTransAmtOutOwing, layVwEdTransAmtOutB, layVwEdPriority);
-                                        layVwEdFinishOut();
-                                    }
-                                } else if (layVwEdFromIsDebtSav.equals("S")) { //OUT OF SAV ACCT
-                                    moneyOutA = 0.0;
-                                    moneyOutOwing = 0.0;
-                                    moneyOutB = 0.0;
-                                    if (layVwEdDbMgr.retrieveCurrentAcctAmt(layVwEdFromAcctId) - layVwEdAmtDiff < 0) { //IF SAV WILL GO NEGATIVE
-                                        dialogWarnLayout.setVisibility(View.VISIBLE);
-                                        dialogWarnTV.setText(getString(R.string.not_enough_savings_warning));
-
-                                        dialogNoContBtn.setOnClickListener(new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View v) {
-                                                layVwEdRefresh();
-                                            }
-                                        });
-
-                                        dialogYesContBtn.setOnClickListener(new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View v) {
-                                                dialogWarnLayout.setVisibility(View.GONE);
-                                                layVwEdSavMinus(layVwEdAmtDiff);
-                                                layVwEdFinishOut();
-                                            }
-                                        });
-                                    } else { //IF SAV WILL NOT GO NEGATIVE
-                                        layVwEdSavMinus(layVwEdAmtDiff);
-                                        layVwEdFinishOut();
-                                    }
-                                }
-                            } else if (layVwEdTransType.equals("transfer")) { //IF TRANSACTION IS A TRANSFER OF FUNDS
-                                if (!layVwEdFromIsDebtSav.equals("D") && !layVwEdFromIsDebtSav.equals("S")) { //FROM MAIN ACCT
-                                    moneyInA = 0.0;
-                                    moneyInOwing = 0.0;
-                                    moneyInB = 0.0;
-                                    if (layVwEdDbMgr.retrieveCurrentAccountBalance() - layVwEdAmtDiff < 0) { //ACCT WILL GO NEGATIVE
-                                        dialogWarnLayout.setVisibility(View.VISIBLE);
-                                        dialogWarnTV.setText(getString(R.string.payment_not_possible_A));
-
-                                        dialogNoContBtn.setOnClickListener(new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View v) {
-                                                layVwEdRefresh();
-                                            }
-                                        });
-
-                                        dialogYesContBtn.setOnClickListener(new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View v) {
-                                                dialogWarnLayout.setVisibility(View.GONE);
-                                                layVwEdMainAcctMinus(layVwEdTransAmtOutA, layVwEdTransAmtOutOwing, layVwEdTransAmtOutB, layVwEdPriority);
-                                                if (layVwEdToIsDebtSav.equals("D")) { //TO DEBT ACCT
-                                                    layVwEdDebtMinus(layVwEdAmtDiff);
-                                                } else if (layVwEdToIsDebtSav.equals("S")) { //TO SAVINGS ACCT
-                                                    layVwEdSavPlus(layVwEdAmtDiff);
-                                                }
-                                                layVwEdFinishTransfer();
-                                            }
-                                        });
-                                    } else { //ACCT WON'T GO NEGATIVE
-                                        layVwEdMainAcctMinus(layVwEdTransAmtOutA, layVwEdTransAmtOutOwing, layVwEdTransAmtOutB, layVwEdPriority);
-                                        if (layVwEdToIsDebtSav.equals("D")) { //TO DEBT ACCT
-                                            layVwEdDebtMinus(layVwEdAmtDiff);
-                                        } else if (layVwEdToIsDebtSav.equals("S")) { //TO SAVINGS ACCT
-                                            layVwEdSavPlus(layVwEdAmtDiff);
-                                        }
-                                        layVwEdFinishTransfer();
-                                    }
-                                } else if (layVwEdFromIsDebtSav.equals("D")) { //FROM DEBT ACCT
-                                    moneyOutA = 0.0;
-                                    moneyOutOwing = 0.0;
-                                    moneyOutB = 0.0;
-                                    for (AccountsDb d : layVwEdDbMgr.getDebts()) {
-                                        if (d.getId() == layVwEdFromAcctId) {
-                                            debtLimitFromDb = d.getAcctMax();
-                                            debtAmtFromDb = d.getAcctBal();
-                                        }
-                                    }
-                                    if (debtAmtFromDb + layVwEdAmtDiff > debtLimitFromDb) { //DEBT WILL GO OVER LIMIT
-                                        dialogWarnLayout.setVisibility(View.VISIBLE);
-                                        dialogWarnTV.setText(getString(R.string.not_enough_credit_warning));
-
-                                        dialogNoContBtn.setOnClickListener(new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View v) {
-                                                layVwEdRefresh();
-                                            }
-                                        });
-
-                                        dialogYesContBtn.setOnClickListener(new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View v) {
-                                                dialogWarnLayout.setVisibility(View.GONE);
-                                                layVwEdDebtPlus(layVwEdAmtDiff);
-                                                if (layVwEdToIsDebtSav.equals("S")) { //TO SAVINGS ACCT
-                                                    moneyInA = 0.0;
-                                                    moneyInOwing = 0.0;
-                                                    moneyInB = 0.0;
-                                                    layVwEdSavPlus(layVwEdAmtDiff);
-                                                } else if (layVwEdToIsDebtSav.equals("D")) { //TO DEBT ACCT
-                                                    moneyInA = 0.0;
-                                                    moneyInOwing = 0.0;
-                                                    moneyInB = 0.0;
-                                                    layVwEdDebtMinus(layVwEdAmtDiff);
-                                                } else { //TO MAIN ACCT
-                                                    layVwEdMainAcctPlus(layVwEdTransAmtInA, layVwEdTransAmtInOwing, layVwEdTransAmtInB);
-                                                }
-                                                layVwEdFinishTransfer();
-                                            }
-                                        });
-                                    } else { //DEBT WON'T GO OVER LIMIT
-                                        layVwEdDebtPlus(layVwEdAmtDiff);
-                                        if (layVwEdToIsDebtSav.equals("S")) { //TO SAVINGS ACCT
+                            if (layVwEdToAcctId != 0) { //THERE IS A "TO" ACCT
+                                for (AccountsDb a : layVwEdDbMgr.getAccounts()) {
+                                    if (layVwEdToAcctId == a.getId()) {
+                                        if (layVwEdToIsDebtSav.equals("S")) { //TO SAV ACCT
                                             moneyInA = 0.0;
                                             moneyInOwing = 0.0;
                                             moneyInB = 0.0;
-                                            layVwEdSavPlus(layVwEdAmtDiff);
+
+                                            layVwEdSavPlus(layVwEdAmtDiff, layVwEdToAcctId);
                                         } else if (layVwEdToIsDebtSav.equals("D")) { //TO DEBT ACCT
                                             moneyInA = 0.0;
                                             moneyInOwing = 0.0;
                                             moneyInB = 0.0;
-                                            layVwEdDebtMinus(layVwEdAmtDiff);
+
+                                            layVwEdDebtMinus(layVwEdAmtDiff, layVwEdToAcctId);
                                         } else { //TO MAIN ACCT
                                             layVwEdMainAcctPlus(layVwEdTransAmtInA, layVwEdTransAmtInOwing, layVwEdTransAmtInB);
                                         }
-                                        layVwEdFinishTransfer();
                                     }
-                                } else if (layVwEdFromIsDebtSav.equals("S")) { //FROM SAVINGS ACCT
-                                    moneyOutA = 0.0;
-                                    moneyOutOwing = 0.0;
-                                    moneyOutB = 0.0;
-                                    if (layVwEdDbMgr.retrieveCurrentAcctAmt(layVwEdFromAcctId) - layVwEdAmtDiff < 0) { //ACCT WILL GO NEGATIVE
-                                        dialogWarnLayout.setVisibility(View.VISIBLE);
-                                        dialogWarnTV.setText(getString(R.string.not_enough_savings_warning));
+                                }
 
-                                        dialogNoContBtn.setOnClickListener(new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View v) {
-                                                layVwEdRefresh();
-                                            }
-                                        });
+                                layVwEdFinishIn();
+                            }
 
-                                        dialogYesContBtn.setOnClickListener(new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View v) {
-                                                dialogWarnLayout.setVisibility(View.GONE);
-                                                layVwEdSavMinus(layVwEdAmtDiff);
-                                                if (layVwEdToIsDebtSav.equals("S")) { //TO SAVINGS ACCT
-                                                    moneyInA = 0.0;
-                                                    moneyInOwing = 0.0;
-                                                    moneyInB = 0.0;
-                                                    layVwEdSavPlus(layVwEdAmtDiff);
-                                                } else if (layVwEdToIsDebtSav.equals("D")) { //TO DEBT ACCT
-                                                    moneyInA = 0.0;
-                                                    moneyInOwing = 0.0;
-                                                    moneyInB = 0.0;
-                                                    layVwEdDebtMinus(layVwEdAmtDiff);
-                                                } else { //TO MAIN ACCT
-                                                    layVwEdMainAcctPlus(layVwEdTransAmtInA, layVwEdTransAmtInOwing, layVwEdTransAmtInB);
-                                                }
-                                                layVwEdFinishTransfer();
+                            if (layVwEdFromAcctId != 0) { //THERE IS A "FROM" ACCT
+                                for (AccountsDb a2 : layVwEdDbMgr.getAccounts()) {
+                                    if (layVwEdFromAcctId == a2.getId()) {
+                                        debtLimitFromDb = a2.getAcctMax();
+
+                                        if (layVwEdFromIsDebtSav.equals("S")) { //FROM SAV ACCT
+                                            moneyOutA = 0.0;
+                                            moneyOutOwing = 0.0;
+                                            moneyOutB = 0.0;
+
+                                            if (a2.getAcctBal() - layVwEdAmtDiff < 0) { //IF SAV WILL GO NEGATIVE
+                                                dialogWarnLayout.setVisibility(View.VISIBLE);
+                                                dialogWarnTV.setText(getString(R.string.not_enough_savings_warning));
+
+                                                dialogNoContBtn.setOnClickListener(new View.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(View v) {
+                                                        layVwEdRefresh();
+                                                    }
+                                                });
+
+                                                dialogYesContBtn.setOnClickListener(new View.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(View v) {
+                                                        dialogWarnLayout.setVisibility(View.GONE);
+                                                        layVwEdSavMinus(layVwEdAmtDiff, layVwEdFromAcctId);
+                                                        layVwEdFinishOut();
+                                                    }
+                                                });
+                                            } else { //IF SAV WILL NOT GO NEGATIVE
+                                                layVwEdSavMinus(layVwEdAmtDiff, layVwEdFromAcctId);
+                                                layVwEdFinishOut();
                                             }
-                                        });
-                                    } else { //ACCT WON'T GO OVER NEGATIVE
-                                        layVwEdSavMinus(layVwEdAmtDiff);
-                                        if (layVwEdToIsDebtSav.equals("S")) { //TO SAVINGS ACCT
-                                            moneyInA = 0.0;
-                                            moneyInOwing = 0.0;
-                                            moneyInB = 0.0;
-                                            layVwEdSavPlus(layVwEdAmtDiff);
-                                        } else if (layVwEdToIsDebtSav.equals("D")) { //TO DEBT ACCT
-                                            moneyInA = 0.0;
-                                            moneyInOwing = 0.0;
-                                            moneyInB = 0.0;
-                                            layVwEdDebtMinus(layVwEdAmtDiff);
-                                        } else { //TO MAIN ACCT
-                                            layVwEdMainAcctPlus(layVwEdTransAmtInA, layVwEdTransAmtInOwing, layVwEdTransAmtInB);
+                                        } else if (layVwEdFromIsDebtSav.equals("D")) { //FROM DEBT ACCT
+                                            moneyOutA = 0.0;
+                                            moneyOutOwing = 0.0;
+                                            moneyOutB = 0.0;
+
+                                            if (a2.getAcctBal() + layVwEdAmtDiff > debtLimitFromDb) { //IF ACCT WILL BE OVER LIMIT
+                                                dialogWarnLayout.setVisibility(View.VISIBLE);
+                                                dialogWarnTV.setText(getString(R.string.not_enough_credit_warning));
+
+                                                dialogNoContBtn.setOnClickListener(new View.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(View v) {
+                                                        layVwEdRefresh();
+                                                    }
+                                                });
+
+                                                dialogYesContBtn.setOnClickListener(new View.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(View v) {
+                                                        dialogWarnLayout.setVisibility(View.GONE);
+                                                        layVwEdDebtPlus(layVwEdAmtDiff, layVwEdFromAcctId);
+                                                        layVwEdFinishOut();
+                                                    }
+                                                });
+                                            } else { //ACCT WILL NOT BE OVER LIMIT
+                                                layVwEdDebtPlus(layVwEdAmtDiff, layVwEdFromAcctId);
+                                                layVwEdFinishOut();
+                                            }
+                                        } else { //FROM MAIN ACCT
+                                            if (layVwEdPriority.equals("A") && (a2.getAcctBal() - layVwEdAmtDiff < 0)) { //IF A AND WILL GO NEGATIVE
+                                                dialogWarnLayout.setVisibility(View.VISIBLE);
+                                                dialogWarnTV.setText(getString(R.string.payment_not_possible_A));
+
+                                                dialogNoContBtn.setOnClickListener(new View.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(View v) {
+                                                        layVwEdRefresh();
+                                                    }
+                                                });
+
+                                                dialogYesContBtn.setOnClickListener(new View.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(View v) {
+                                                        dialogWarnLayout.setVisibility(View.GONE);
+                                                        layVwEdMainAcctMinus(layVwEdTransAmtOutA, layVwEdTransAmtOutOwing, layVwEdTransAmtOutB, layVwEdPriority);
+                                                        layVwEdFinishOut();
+                                                    }
+                                                });
+                                            } else if (layVwEdPriority.equals("B") && (layVwEdDbMgr.retrieveCurrentB() - layVwEdAmtDiff < 0)) { //IF B AND WILL GO NEGATIVE
+                                                dialogWarnLayout.setVisibility(View.VISIBLE);
+                                                dialogWarnTV.setText(getString(R.string.payment_not_possible_B));
+
+                                                dialogNoContBtn.setOnClickListener(new View.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(View v) {
+                                                        layVwEdRefresh();
+                                                    }
+                                                });
+
+                                                dialogYesContBtn.setOnClickListener(new View.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(View v) {
+                                                        dialogWarnLayout.setVisibility(View.GONE);
+                                                        layVwEdMainAcctMinus(layVwEdTransAmtOutA, layVwEdTransAmtOutOwing, layVwEdTransAmtOutB, layVwEdPriority);
+                                                        layVwEdFinishOut();
+                                                    }
+                                                });
+                                            } else { //WILL NOT GO NEGATIVE
+                                                layVwEdMainAcctMinus(layVwEdTransAmtOutA, layVwEdTransAmtOutOwing, layVwEdTransAmtOutB, layVwEdPriority);
+                                                layVwEdFinishOut();
+                                            }
                                         }
-                                        layVwEdFinishTransfer();
                                     }
                                 }
                             }
+
+                            for (BudgetDb b : layVwEdDbMgr.getBudget()) {
+                                if (editBdgtId == b.getId()) {
+                                    if (b.getBdgtExpInc().equals("I")) {
+                                        if (layVwEdDbMgr.getMoneyIns().size() != 0) {
+                                            newAnnAmt = layVwEdDbMgr.makeNewIncAnnAmt(editBdgtId, layVwEdGen.lastNumOfDays(365));
+                                            b.setBdgtAnnPayt(newAnnAmt);
+                                        } else {
+                                            b.setBdgtAnnPayt(b.getBdgtPaytAmt() * b.getBdgtPaytFrq());
+                                        }
+                                    } else if (b.getBdgtExpInc().equals("E")) {
+                                        if (layVwEdDbMgr.getMoneyOuts().size() != 0) {
+                                            newAnnAmt = layVwEdDbMgr.makeNewExpAnnAmt(editBdgtId, layVwEdGen.lastNumOfDays(365));
+                                            b.setBdgtAnnPayt(newAnnAmt);
+                                        } else {
+                                            b.setBdgtAnnPayt(b.getBdgtPaytAmt() * b.getBdgtPaytFrq());
+                                        }
+                                    }
+                                    layVwEdDbMgr.updateBudget(b);
+                                }
+                            }
+                            layVwEdRefresh();
                         }
                     });
-                    builder.setView(dView);
-                    AlertDialog dialog = builder.create();
-                    dialog.show();
+
                 }
             });
 
@@ -931,189 +798,97 @@ public class LayoutViewEdit extends MainNavigation {
                 public void onClick(View v) {
 
                     layVwEdTransDb = (TransactionsDb) layVwEdHldr.layVwEdDelBtn.getTag();
+                    layVwEdTransAmt = transactionsList.get(position).getTransAmt();
+                    layVwEdTransAmtInA = transactionsList.get(position).getTransAmtInA();
+                    layVwEdTransAmtInOwing = transactionsList.get(position).getTransAmtInOwing();
+                    layVwEdTransAmtInB = transactionsList.get(position).getTransAmtInB();
+                    layVwEdTransAmtOutA = transactionsList.get(position).getTransAmtOutA();
+                    layVwEdTransAmtOutOwing = transactionsList.get(position).getTransAmtOutOwing();
+                    layVwEdTransAmtOutB = transactionsList.get(position).getTransAmtOutB();
+                    layVwEdToIsDebtSav = transactionsList.get(position).getTransToDebtSav();
+                    layVwEdFromIsDebtSav = transactionsList.get(position).getTransFromDebtSav();
+                    layVwEdToAcctId = transactionsList.get(position).getTransToAcctId();
+                    layVwEdFromAcctId = transactionsList.get(position).getTransFromAcctId();
+                    delBdgtId = transactionsList.get(position).getTransBdgtId();
 
-                    if (layVwEdTransType.equals("in")) { //TRANSACTION IS A DEPOSIT
-                        if (!layVwEdToIsDebtSav.equals("D") && !layVwEdToIsDebtSav.equals("S")) { //TO MAIN ACCT
-                            layVwEdDbMgr.updateTotAcctBalMinus(layVwEdTransAmt, layVwEdDbMgr.retrieveCurrentAccountBalance());
-                            layVwEdDbMgr.updateAandBBalMinus(
-                                    layVwEdTransAmtInA,
-                                    layVwEdTransAmtInOwing,
-                                    layVwEdTransAmtInB,
-                                    layVwEdDbMgr.retrieveCurrentA(),
-                                    layVwEdDbMgr.retrieveCurrentOwingA(),
-                                    layVwEdDbMgr.retrieveCurrentB());
-                            if (layVwEdDbMgr.retrieveCurrentOwingA() < 0) {
-                                layVwEdDbMgr.adjustCurrentAandB(layVwEdDbMgr.retrieveCurrentOwingA(), layVwEdDbMgr.retrieveCurrentA(), layVwEdDbMgr.retrieveCurrentB());
-                            }
-                        } else if (layVwEdToIsDebtSav.equals("D")) { //TO DEBT ACCT
-                            layVwEdDbMgr.updateRecPlusPt1(layVwEdTransAmt, layVwEdDbMgr.retrieveCurrentAcctAmt(layVwEdToAcctId), layVwEdToAcctId);
-                            for (AccountsDb a : layVwEdDbMgr.getDebts()) {
-                                if (a.getId() == layVwEdToAcctId) {
-                                    debtAmtFromDb = a.getAcctBal();
-                                    debtLimitFromDb = a.getAcctMax();
-                                    debtRateFromDb = a.getAcctIntRate();
-                                    debtPaytFromDb = a.getAcctPaytsTo();
-                                }
-                            }
-                            layVwEdDbMgr.updateRecPt2(layVwEdGen.calcDebtDate(
-                                    debtAmtFromDb,
-                                    debtRateFromDb,
-                                    debtPaytFromDb,
-                                    getString(R.string.debt_paid),
-                                    getString(R.string.too_far)), layVwEdToAcctId);
-                        } else if (layVwEdToIsDebtSav.equals("S")) { //TO SAV ACCT
-                            layVwEdDbMgr.updateRecMinusPt1(layVwEdTransAmt, layVwEdDbMgr.retrieveCurrentAcctAmt(layVwEdToAcctId), layVwEdToAcctId);
-                            for (AccountsDb a : layVwEdDbMgr.getSavings()) {
-                                if (a.getId() == layVwEdToAcctId) {
-                                    savGoalFromDb = a.getAcctMax();
-                                    savAmtFromDb = a.getAcctBal();
-                                    savRateFromDb = a.getAcctIntRate();
-                                    savPaytFromDb = a.getAcctPaytsTo();
-                                }
-                            }
-                            layVwEdDbMgr.updateRecPt2(layVwEdGen.calcSavingsDate(
-                                    savGoalFromDb,
-                                    savAmtFromDb,
-                                    savRateFromDb,
-                                    savPaytFromDb,
-                                    getString(R.string.goal_achieved),
-                                    getString(R.string.too_far)), layVwEdToAcctId);
-                        }
+                    if (layVwEdToAcctId != 0) { //THERE IS A "TO" ACCT
+                        for (AccountsDb a : layVwEdDbMgr.getAccounts()) {
+                            if (layVwEdToAcctId == a.getId()) {
+                                if (layVwEdToIsDebtSav.equals("S")) {
+                                    layVwEdSavMinus(layVwEdTransAmt, layVwEdToAcctId);
+                                } else if (layVwEdToIsDebtSav.equals("D")) {
+                                    layVwEdDebtPlus(layVwEdTransAmt, layVwEdToAcctId);
+                                } else { //TO MAIN ACCT
+                                    a.setAcctBal(a.getAcctBal() - layVwEdTransAmt);
+                                    layVwEdDbMgr.updateAccounts(a);
 
-                        layVwEdDbMgr.deleteTransactions(layVwEdTransDb);
-                        layVwEdAdapter.updateTransactions(layVwEdDbMgr.getTransactions());
-                        notifyDataSetChanged();
-
-                        layVwEdDbMgr.makeNewIncAnnAmt(layVwEdTransBdgtId, layVwEdGen.lastNumOfDays(365));
-
-                        layVwEdRefresh();
-
-                    } else if (layVwEdTransType.equals("out")) { //TRANSACTION IS A PURCHASE OF SOME SORT
-                        if (!layVwEdFromIsDebtSav.equals("D") && !layVwEdFromIsDebtSav.equals("S")) { //FROM MAIN ACCT
-                            layVwEdDbMgr.updateTotAcctBalPlus(layVwEdTransAmt, layVwEdDbMgr.retrieveCurrentAccountBalance());
-                            layVwEdDbMgr.updateAandBBalPlus(
-                                    layVwEdTransAmtOutA,
-                                    layVwEdTransAmtOutOwing,
-                                    layVwEdTransAmtOutB,
-                                    layVwEdDbMgr.retrieveCurrentA(),
-                                    layVwEdDbMgr.retrieveCurrentOwingA(),
-                                    layVwEdDbMgr.retrieveCurrentB());
-                            if (layVwEdDbMgr.retrieveCurrentOwingA() < 0) {
-                                layVwEdDbMgr.adjustCurrentAandB(layVwEdDbMgr.retrieveCurrentOwingA(), layVwEdDbMgr.retrieveCurrentA(), layVwEdDbMgr.retrieveCurrentB());
-                            }
-                        } else if (layVwEdFromIsDebtSav.equals("S")) { //FROM SAV ACCT
-                            layVwEdDbMgr.updateRecPlusPt1(layVwEdTransAmt, layVwEdDbMgr.retrieveCurrentAcctAmt(layVwEdFromAcctId), layVwEdFromAcctId);
-                            for (AccountsDb a : layVwEdDbMgr.getSavings()) {
-                                if (a.getId() == layVwEdFromAcctId) {
-                                    savGoalFromDb = a.getAcctMax();
-                                    savAmtFromDb = a.getAcctBal();
-                                    savRateFromDb = a.getAcctIntRate();
-                                    savPaytFromDb = a.getAcctPaytsTo();
-                                }
-                            }
-                            layVwEdDbMgr.updateRecPt2(layVwEdGen.calcSavingsDate(
-                                    savGoalFromDb,
-                                    savAmtFromDb,
-                                    savRateFromDb,
-                                    savPaytFromDb,
-                                    getString(R.string.goal_achieved),
-                                    getString(R.string.too_far)), layVwEdFromAcctId);
-
-                        } else if (layVwEdFromIsDebtSav.equals("D")) { //FROM DEBTS ACCT
-                            layVwEdDbMgr.updateRecMinusPt1(layVwEdTransAmt, layVwEdDbMgr.retrieveCurrentAcctAmt(layVwEdFromAcctId), layVwEdFromAcctId);
-                            for (AccountsDb a : layVwEdDbMgr.getDebts()) {
-                                if (a.getId() == layVwEdFromAcctId) {
-                                    debtAmtFromDb = a.getAcctBal();
-                                    debtLimitFromDb = a.getAcctMax();
-                                    debtRateFromDb = a.getAcctIntRate();
-                                    debtPaytFromDb = a.getAcctPaytsTo();
-                                }
-                            }
-                            layVwEdDbMgr.updateRecPt2(layVwEdGen.calcDebtDate(
-                                    debtAmtFromDb,
-                                    debtRateFromDb,
-                                    debtPaytFromDb,
-                                    getString(R.string.debt_paid),
-                                    getString(R.string.too_far)), layVwEdFromAcctId);
-                        }
-
-                        layVwEdDbMgr.deleteTransactions(layVwEdTransDb);
-                        layVwEdAdapter.updateTransactions(layVwEdDbMgr.getTransactions());
-                        notifyDataSetChanged();
-
-                        layVwEdDbMgr.makeNewExpAnnAmt(layVwEdTransBdgtId, layVwEdGen.lastNumOfDays(365));
-
-                        layVwEdRefresh();
-                    } else if (layVwEdTransType.equals("transfer")) { //TRANSACTION IS A TRANSFER
-                        if (!layVwEdFromIsDebtSav.equals("D") && !layVwEdFromIsDebtSav.equals("S")) { //FROM MAIN ACCT
-                            layVwEdDbMgr.updateTotAcctBalPlus(layVwEdTransAmt, layVwEdDbMgr.retrieveCurrentAccountBalance());
-                            layVwEdDbMgr.updateAandBBalPlus(
-                                    layVwEdTransAmtOutA,
-                                    layVwEdTransAmtOutOwing,
-                                    layVwEdTransAmtOutB,
-                                    layVwEdDbMgr.retrieveCurrentA(),
-                                    layVwEdDbMgr.retrieveCurrentOwingA(),
-                                    layVwEdDbMgr.retrieveCurrentB());
-
-                            if (layVwEdDbMgr.retrieveCurrentOwingA() < 0) {
-                                layVwEdDbMgr.adjustCurrentAandB(layVwEdDbMgr.retrieveCurrentOwingA(), layVwEdDbMgr.retrieveCurrentA(), layVwEdDbMgr.retrieveCurrentB());
-                            }
-
-                            if (layVwEdToIsDebtSav.equals("D")) { //TO DEBT ACCT
-                                layVwEdDebtPlus(layVwEdTransAmt);
-                            } else if (layVwEdToIsDebtSav.equals("S")) { //TO SAVINGS ACCT
-                                layVwEdSavMinus(layVwEdTransAmt);
-                            }
-                        } else if (layVwEdFromIsDebtSav.equals("D")) { //FROM DEBT ACCT
-                            layVwEdDebtMinus(layVwEdTransAmt);
-
-                            if (layVwEdToIsDebtSav.equals("D")) { //TO DEBT ACCT
-                                layVwEdDebtPlus(layVwEdTransAmt);
-                            } else if (layVwEdToIsDebtSav.equals("S")) { //TO SAVINGS ACCT
-                                layVwEdSavMinus(layVwEdTransAmt);
-                            } else { //TO MAIN ACCT
-                                layVwEdDbMgr.updateTotAcctBalMinus(layVwEdTransAmt, layVwEdDbMgr.retrieveCurrentAccountBalance());
-                                layVwEdDbMgr.updateAandBBalMinus(
-                                        layVwEdTransAmtOutA,
-                                        layVwEdTransAmtOutOwing,
-                                        layVwEdTransAmtOutB,
-                                        layVwEdDbMgr.retrieveCurrentA(),
-                                        layVwEdDbMgr.retrieveCurrentOwingA(),
-                                        layVwEdDbMgr.retrieveCurrentB());
-
-                                if (layVwEdDbMgr.retrieveCurrentOwingA() < 0) {
-                                    layVwEdDbMgr.adjustCurrentAandB(layVwEdDbMgr.retrieveCurrentOwingA(), layVwEdDbMgr.retrieveCurrentA(), layVwEdDbMgr.retrieveCurrentB());
-                                }
-                            }
-                        } else if (layVwEdFromIsDebtSav.equals("S")) { //FROM SAVINGS ACCT
-                            layVwEdSavPlus(layVwEdTransAmt);
-
-                            if (layVwEdToIsDebtSav.equals("D")) { //TO DEBT ACCT
-                                layVwEdDebtPlus(layVwEdTransAmt);
-                            } else if (layVwEdToIsDebtSav.equals("S")) { //TO SAVINGS ACCT
-                                layVwEdSavMinus(layVwEdTransAmt);
-                            } else { //TO MAIN ACCT
-                                layVwEdDbMgr.updateTotAcctBalMinus(layVwEdTransAmt, layVwEdDbMgr.retrieveCurrentAccountBalance());
-                                layVwEdDbMgr.updateAandBBalMinus(
-                                        layVwEdTransAmtOutA,
-                                        layVwEdTransAmtOutOwing,
-                                        layVwEdTransAmtOutB,
-                                        layVwEdDbMgr.retrieveCurrentA(),
-                                        layVwEdDbMgr.retrieveCurrentOwingA(),
-                                        layVwEdDbMgr.retrieveCurrentB());
-
-                                if (layVwEdDbMgr.retrieveCurrentOwingA() < 0) {
-                                    layVwEdDbMgr.adjustCurrentAandB(layVwEdDbMgr.retrieveCurrentOwingA(), layVwEdDbMgr.retrieveCurrentA(), layVwEdDbMgr.retrieveCurrentB());
+                                    layVwEdDbMgr.updateAandBBalMinus(
+                                            layVwEdTransAmtInA,
+                                            layVwEdTransAmtInOwing,
+                                            layVwEdTransAmtInB,
+                                            layVwEdDbMgr.retrieveCurrentA(),
+                                            layVwEdDbMgr.retrieveCurrentOwingA(),
+                                            layVwEdDbMgr.retrieveCurrentB());
+                                    if (layVwEdDbMgr.retrieveCurrentOwingA() < 0) {
+                                        layVwEdDbMgr.adjustCurrentAandB(layVwEdDbMgr.retrieveCurrentOwingA(), layVwEdDbMgr.retrieveCurrentA(), layVwEdDbMgr.retrieveCurrentB());
+                                    }
                                 }
                             }
                         }
-
-                        layVwEdDbMgr.deleteTransactions(layVwEdTransDb);
-                        layVwEdAdapter.updateTransactions(layVwEdDbMgr.getTransactions());
-                        notifyDataSetChanged();
-
-                        layVwEdRefresh();
                     }
+
+                    if (layVwEdFromAcctId != 0) { //THERE IS A "FROM" ACCT
+                        for (AccountsDb a2 : layVwEdDbMgr.getAccounts()) {
+                            if (layVwEdFromAcctId == a2.getId()) {
+                                if (layVwEdFromIsDebtSav.equals("S")) { //FROM SAV ACCT
+                                    layVwEdSavPlus(layVwEdTransAmt, layVwEdFromAcctId);
+                                } else if (layVwEdFromIsDebtSav.equals("D")) { //FROM DEBT ACCT
+                                    layVwEdDebtMinus(layVwEdTransAmt, layVwEdFromAcctId);
+                                } else if (a2.getId() == 1) { //FROM MAIN ACCT
+                                    a2.setAcctBal(a2.getAcctBal() + layVwEdTransAmt);
+                                    layVwEdDbMgr.updateAccounts(a2);
+
+                                    layVwEdDbMgr.updateAandBBalPlus(
+                                            layVwEdTransAmtOutA,
+                                            layVwEdTransAmtOutOwing,
+                                            layVwEdTransAmtOutB,
+                                            layVwEdDbMgr.retrieveCurrentA(),
+                                            layVwEdDbMgr.retrieveCurrentOwingA(),
+                                            layVwEdDbMgr.retrieveCurrentB());
+                                    if (layVwEdDbMgr.retrieveCurrentOwingA() < 0) {
+                                        layVwEdDbMgr.adjustCurrentAandB(layVwEdDbMgr.retrieveCurrentOwingA(), layVwEdDbMgr.retrieveCurrentA(), layVwEdDbMgr.retrieveCurrentB());
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    layVwEdDbMgr.deleteTransactions(layVwEdTransDb);
+                    layVwEdAdapter.updateTransactions(layVwEdDbMgr.getTransactions());
+                    notifyDataSetChanged();
+
+                    for (BudgetDb b : layVwEdDbMgr.getBudget()) {
+                        if (delBdgtId == b.getId()) {
+                            if (b.getBdgtExpInc().equals("I")) {
+                                if (layVwEdDbMgr.getMoneyIns().size() != 0) {
+                                    newAnnAmt = layVwEdDbMgr.makeNewIncAnnAmt(delBdgtId, layVwEdGen.lastNumOfDays(365));
+                                    b.setBdgtAnnPayt(newAnnAmt);
+                                } else {
+                                    b.setBdgtAnnPayt(b.getBdgtPaytAmt() * b.getBdgtPaytFrq());
+                                }
+                            } else if (b.getBdgtExpInc().equals("E")) {
+                                if (layVwEdDbMgr.getMoneyOuts().size() != 0) {
+                                    newAnnAmt = layVwEdDbMgr.makeNewExpAnnAmt(delBdgtId, layVwEdGen.lastNumOfDays(365));
+                                    b.setBdgtAnnPayt(newAnnAmt);
+                                } else {
+                                    b.setBdgtAnnPayt(b.getBdgtPaytAmt() * b.getBdgtPaytFrq());
+                                }
+                            }
+                            layVwEdDbMgr.updateBudget(b);
+                        }
+                    }
+
+                    layVwEdRefresh();
                 }
             });
             return convertView;

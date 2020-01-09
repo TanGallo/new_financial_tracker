@@ -43,45 +43,25 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="center_horizontal"
                         android:orientation="vertical">
 
                         <TextView
-                            android:id="@+id/mainPayCCAvailAmtLabel"
+                            android:id="@+id/mainPayPayFromLabel"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/available_to_spend"
+                            android:text="@string/payment_from"
                             android:textColor="@color/colorPrimaryDark"
                             android:textSize="14sp" />
 
-                        <TextView
-                            android:id="@+id/mainPayCCAvailAmtTV"
+                        <Spinner
+                            android:id="@+id/mainPayFromSpinner"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textColor="@color/colorPrimaryDark"
-                            android:textSize="22sp" />
+                            android:layout_gravity="fill_horizontal"
 
-                    </LinearLayout>
+                            >
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_horizontal"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/avail_for_bills"
-                            android:textColor="@color/colorPrimaryDark"
-                            android:textSize="14sp" />
-
-                        <TextView
-                            android:id="@+id/mainPayCCTotalAmtTV"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/colorPrimaryDark"
-                            android:textSize="22sp" />
+                        </Spinner>
 
                     </LinearLayout>
 
@@ -108,141 +88,75 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/mainPayCCCheckBelowLabel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:background="@drawable/entry_box"
-                    android:text="@string/check_boxes_below"
-                    android:textAlignment="center"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:textSize="16sp" />
+                        <TextView
+                            android:id="@+id/mainPayCCCheckBelowLabel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="5dp"
+                            android:background="@drawable/entry_box"
+                            android:text="@string/check_boxes_below"
+                            android:textAlignment="center"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textSize="16sp" />
 
                         <LinearLayout
-                            android:id="@+id/mainPayCCWarnLayout"
+                            android:id="@+id/mainPayCCPaytListLayout"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="5dp"
                             android:background="@drawable/entry_box"
                             android:orientation="vertical">
 
-                            <LinearLayout
-                                android:layout_width="match_parent"
+                            <TextView
+                                android:id="@+id/mainPayCCPaytListLabel"
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:orientation="vertical">
+                                android:layout_margin="10dp"
+                                android:text="@string/pay_this_amount"
+                                android:textColor="@color/colorPrimaryDark"
+                                android:textSize="16sp" />
 
-                                <TextView
-                                    android:id="@+id/mainPayCCWarnTV"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_margin="5dp"
-                                    android:text="@string/warning"
-                                    android:textColor="@color/brightRed"
-                                    android:textSize="16sp" />
+                            <ScrollView
+                                android:layout_width="match_parent"
+                                android:layout_height="100dp"
+                                android:fillViewport="true">
 
-                            </LinearLayout>
+                                <ListView
+                                    android:id="@+id/mainPayCCPaytListView"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content">
+
+                                </ListView>
+                            </ScrollView>
 
                             <RelativeLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content">
 
                                 <TextView
-                                    android:id="@+id/mainPayCCContLabel"
+                                    android:id="@+id/mainPayCCCheckboxLabel"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:layout_centerVertical="true"
                                     android:layout_margin="5dp"
-                                    android:text="@string/continue_anyway"
-                                    android:textColor="@color/brightRed"
-                                    android:textSize="16sp" />
-
-                                <Button
-                                    android:id="@+id/mainPayCCYesBtn"
-                                    android:layout_width="50dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_toStartOf="@id/mainPayCCNoBtn"
-                                    android:layout_marginEnd="30dp"
-                                    android:background="@drawable/circle_box"
-                                    android:contentDescription="@string/yes"
-                                    android:text="@string/yes"
+                                    android:layout_toStartOf="@id/mainPayCCCheckbox"
+                                    android:labelFor="@id/payCCCheckbox"
+                                    android:text="@string/check_box_prompt"
                                     android:textColor="@color/colorPrimaryDark"
-                                    android:textSize="12sp" />
+                                    android:textSize="14sp" />
 
-                                <Button
-                                    android:id="@+id/mainPayCCNoBtn"
-                                    android:layout_width="50dp"
+                                <CheckBox
+                                    android:id="@+id/mainPayCCCheckbox"
+                                    android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_alignParentEnd="true"
-                                    android:layout_marginEnd="10dp"
-                                    android:background="@drawable/circle_box"
-                                    android:contentDescription="@string/no"
-                                    android:text="@string/no"
-                                    android:textColor="@color/colorPrimaryDark"
-                                    android:textSize="12sp"
-                                    tools:ignore="RelativeOverlap" />
+                                    android:layout_marginStart="5dp"
+                                    android:layout_marginTop="5dp"
+                                    android:layout_marginEnd="10dp" />
 
                             </RelativeLayout>
 
                         </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/mainPayCCPaytListLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:background="@drawable/entry_box"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/mainPayCCPaytListLabel"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
-                        android:text="@string/pay_this_amount"
-                        android:textColor="@color/colorPrimaryDark"
-                        android:textSize="16sp" />
-
-                    <ScrollView
-                        android:layout_width="match_parent"
-                        android:layout_height="100dp"
-                        android:fillViewport="true">
-
-                        <ListView
-                            android:id="@+id/mainPayCCPaytListView"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
-
-                        </ListView>
-                    </ScrollView>
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <TextView
-                            android:id="@+id/mainPayCCCheckboxLabel"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_margin="5dp"
-                            android:layout_toStartOf="@id/mainPayCCCheckbox"
-                            android:labelFor="@id/payCCCheckbox"
-                            android:text="@string/check_box_prompt"
-                            android:textColor="@color/colorPrimaryDark"
-                            android:textSize="14sp" />
-
-                        <CheckBox
-                            android:id="@+id/mainPayCCCheckbox"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentEnd="true"
-                            android:layout_marginStart="5dp"
-                            android:layout_marginTop="5dp"
-                            android:layout_marginEnd="10dp" />
-
-                    </RelativeLayout>
-
-                </LinearLayout>
 
                     </LinearLayout>
 

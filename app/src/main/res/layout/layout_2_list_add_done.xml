@@ -150,19 +150,20 @@
 
                                 </Button>
 
-                            <Button
-                                android:id="@+id/layout1SpinResetBtn"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="end"
-                                android:text="@string/reset"
-                                android:layout_margin="5dp"
-                                android:background="@drawable/entry_box"
-                                >
-
-                            </Button>
 
                         </LinearLayout>
+
+                        <Button
+                            android:id="@+id/layout1SpinResetBtn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="end"
+                            android:text="@string/reset"
+                            android:layout_margin="5dp"
+                            android:background="@drawable/entry_box"
+                            >
+
+                        </Button>
 
                         <TextView
                             android:id="@+id/layout1TotalTV"

@@ -47,7 +47,7 @@ public class LayoutMoneyOut extends MainNavigation {
     Intent monOutToRatings, monOutToAddMore, monOutRefresh, monOutToList, monOutToFixBudget;
     LinearLayout monOutHeaderLayout, transDialogDefLayout, transDialogWarnLayout;
     ListView monOutList;
-    long monOutExpId, monOutMaxId, monOutExpRefKeyMO, monOutSavId, monOutFromAcctId;
+    long monOutExpId, monOutMaxId, monOutFromAcctId;
     MonOutLstAdapter monOutLstAdapter;
     SharedPreferences sp, spE;
     Spinner monOutSpin;
@@ -358,8 +358,12 @@ public class LayoutMoneyOut extends MainNavigation {
                 public void onClick(View v) {
                     monOutExpDb = (BudgetDb) monOutHldr.monOutCatTV.getTag();
 
-                    AlertDialog.Builder builder = new AlertDialog.Builder(LayoutMoneyOut.this);
+                    final AlertDialog.Builder builder = new AlertDialog.Builder(LayoutMoneyOut.this);
                     dView = getLayoutInflater().inflate(R.layout.dialog_transaction, null);
+                    builder.setView(dView);
+                    final AlertDialog dialog = builder.create();
+                    dialog.show();
+
                     transDialogCatTV = dView.findViewById(R.id.transDialogCatTV);
                     transDialogCatTV.setText(expenses.get(position).getBdgtCat());
                     transDialogPayLabel = dView.findViewById(R.id.transDialogPayLabel);
@@ -767,9 +771,6 @@ public class LayoutMoneyOut extends MainNavigation {
                             }
                         }
                     });
-                    builder.setView(dView);
-                    AlertDialog dialog = builder.create();
-                    dialog.show();
                 }
             });
             return convertView;

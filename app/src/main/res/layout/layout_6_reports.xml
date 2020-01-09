@@ -48,13 +48,19 @@
 
 
                 <LinearLayout
-                    android:id="@+id/repSpinLayout"
+                    android:id="@+id/repSpinLayout2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:layout_margin="5dp"
                     android:background="@drawable/entry_box"
                     >
+
+                    <LinearLayout
+                        android:id="@+id/repSpinLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -133,6 +139,8 @@
 
                     </LinearLayout>
 
+                    </LinearLayout>
+
                     <Button
                         android:id="@+id/repSpinOkBtn"
                         android:layout_width="40dp"
@@ -145,19 +153,19 @@
 
                     </Button>
 
-                    <Button
-                        android:id="@+id/repSpinResetBtn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="end"
-                        android:text="@string/reset"
-                        android:layout_margin="5dp"
-                        android:background="@drawable/entry_box"
-                        >
-
-                    </Button>
-
                 </LinearLayout>
+
+                <Button
+                    android:id="@+id/repSpinResetBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:text="@string/reset"
+                    android:layout_margin="5dp"
+                    android:background="@drawable/entry_box"
+                    >
+
+                </Button>
 
                 <RelativeLayout
                     android:layout_width="match_parent"

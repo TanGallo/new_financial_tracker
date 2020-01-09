@@ -33,21 +33,21 @@ import ca.gotchasomething.mynance.spinners.TransferSpinnerAdapter;
 public class LayoutMoneyIn extends MainNavigation {
 
     BudgetDb monInIncDb;
-    Button transDialogCancelBtn, transDialogNoContBtn, transDialogNoDefBtn, transDialogSaveBtn, transDialogYesContBtn, transDialogYesDefBtn;
+    Button transDialogCancelBtn, transDialogNoDefBtn, transDialogSaveBtn, transDialogYesDefBtn;
     ContentValues monInCV;
     Cursor monInCur;
     DbHelper monInHelper, monInHelper2;
     DbManager monInDbMgr;
     Double debtAmtFromDb = 0.0, debtLimitFromDb = 0.0, debtRateFromDb = 0.0, debtPaytFromDb = 0.0, moneyInA = 0.0, moneyInOwing = 0.0, moneyInB = 0.0,
             monInMoneyInA = 0.0, monInMoneyInB = 0.0, monInMoneyInOwing = 0.0, monInMonInAmt = 0.0, monInMonInOldAmt = 0.0, monInMonInNewAmt = 0.0,
-            monInPercentA = 0.0, newMoneyA = 0.0, newMoneyOwing = 0.0, newMoneyB = 0.0, savAmtFromDb = 0.0, savGoalFromDb = 0.0, savPaytFromDb = 0.0,
+            monInPaytFrq = 0.0, monInPercentA = 0.0, newMoneyA = 0.0, newMoneyOwing = 0.0, newMoneyB = 0.0, savAmtFromDb = 0.0, savGoalFromDb = 0.0, savPaytFromDb = 0.0,
             savRateFromDb = 0.0;
     EditText transDialogAmtET;
     General monInGen;
     Intent monInToAddInc, monInRefresh, monInToList, monInToFixBudget;
     LinearLayout transDialogDefLayout, transDialogWarnLayout;
     ListView monInList;
-    long monInIncId, monInTransBdgtId, monInToAcctId;
+    long monInIncId, monInToAcctId;
     MonInAdapter monInAdapter;
     Spinner monInSpin;
     SQLiteDatabase monInDb, monInDb2;
@@ -187,7 +187,7 @@ public class LayoutMoneyIn extends MainNavigation {
                 moneyInOwing = monInMoneyInOwing;
                 moneyInB = monInMoneyInB;
             }
-        } else if (monInToIsDebtSav.equals("D")) { //TO DEBT ACFT
+        } else if (monInToIsDebtSav.equals("D")) { //TO DEBT ACCT
             monInDbMgr.updateRecMinusPt1(monInMonInAmt, monInDbMgr.retrieveCurrentAcctAmt(monInToAcctId), monInToAcctId);
             for (AccountsDb a : monInDbMgr.getDebts()) {
                 if (a.getId() == monInToAcctId) {
@@ -319,8 +319,12 @@ public class LayoutMoneyIn extends MainNavigation {
                 public void onClick(View v) {
                     monInIncDb = (BudgetDb) monInHldr.monInCatTV.getTag();
 
-                    AlertDialog.Builder builder = new AlertDialog.Builder(LayoutMoneyIn.this);
+                    final AlertDialog.Builder builder = new AlertDialog.Builder(LayoutMoneyIn.this);
                     dView = getLayoutInflater().inflate(R.layout.dialog_transaction, null);
+                    builder.setView(dView);
+                    final AlertDialog dialog = builder.create();
+                    dialog.show();
+
                     transDialogCatTV = dView.findViewById(R.id.transDialogCatTV);
                     transDialogCatTV.setText(incomes.get(position).getBdgtCat());
                     transDialogPayLabel = dView.findViewById(R.id.transDialogPayLabel);
@@ -349,6 +353,7 @@ public class LayoutMoneyIn extends MainNavigation {
                         public void onClick(View v) {
 
                             monInIncName = monInIncDb.getBdgtCat();
+                            monInPaytFrq = monInIncDb.getBdgtPaytFrq();
                             monInIncId = monInIncDb.getId();
 
                             monInMonInOldAmt = monInIncDb.getBdgtPaytAmt();
@@ -356,11 +361,9 @@ public class LayoutMoneyIn extends MainNavigation {
 
                             if (monInMonInNewAmt == 0) {
                                 monInMonInAmt = monInMonInOldAmt;
+                                monInContinueTransaction();
                             } else {
                                 monInMonInAmt = monInMonInNewAmt;
-                            }
-
-                            if (monInMonInAmt == monInMonInNewAmt) { //IF ENTERED ANOTHER AMT
                                 transDialogDefLayout.setVisibility(View.VISIBLE);
 
                                 transDialogNoDefBtn.setOnClickListener(new View.OnClickListener() {
@@ -380,14 +383,9 @@ public class LayoutMoneyIn extends MainNavigation {
                                         monInContinueTransaction();
                                     }
                                 });
-                            } else { //IF USING DEFAULT
-                                monInContinueTransaction();
                             }
                         }
                     });
-                    builder.setView(dView);
-                    AlertDialog dialog = builder.create();
-                    dialog.show();
                 }
             });
             return convertView;

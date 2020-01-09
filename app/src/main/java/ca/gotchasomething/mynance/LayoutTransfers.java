@@ -42,7 +42,7 @@ public class LayoutTransfers extends MainNavigation {
     General trn1Gen;
     ImageButton transferDialogInfoBtn;
     Intent trn1Refresh, trn1ToList, trn1ToMain;
-    LinearLayout transferDialogCustomLayout, transferDialogCustomAvailLayout, transferDialogCustomResAmtLayout, warnDialogWarnLayout;
+    LinearLayout transferDialogCustomLayout, warnDialogWarnLayout;
     long trn1DebtId, trn1SavId, trn1FromSpinId, trn1ToSpinId;
     RadioButton transferDialogAllResRB, transferDialogNoneResRB, transferDialogCustomRB, transferDialogAsUsualRB;
     RadioGroup transferDialogResRG;
@@ -80,19 +80,6 @@ public class LayoutTransfers extends MainNavigation {
         trn1TrnAmtET = findViewById(R.id.transferAmtET);
         trn1Btn = findViewById(R.id.transferBtn);
         trn1DoneBtn = findViewById(R.id.transfersDoneBtn);
-        /*trn1ResTV = findViewById(R.id.transferResTV);
-        trn1InfoBtn = findViewById(R.id.transferInfoBtn);
-        trn1InfoTV = findViewById(R.id.transferInfoTV);
-        trn1ResRG = findViewById(R.id.transferResRG);
-        trn1AllResRB = findViewById(R.id.transferAllResRB);
-        trn1NoneResRB = findViewById(R.id.transferNoneResRB);
-        trn1AsUsualRB = findViewById(R.id.transferAsUsualRB);
-        trn1CustomRB = findViewById(R.id.transferCustomRB);
-        trn1CustomLayout = findViewById(R.id.transferCustomLayout);
-        trn1CustomResAmtET = findViewById(R.id.transferCustomResAmtET);
-        trn1CustomAvailAmtTV = findViewById(R.id.transferCustomAvailAmtTV);
-        trn1EnterBtn = findViewById(R.id.transferEnterBtn);
-        trn1CancelBtn = findViewById(R.id.transferCancelBtn);*/
 
         trn1Btn.setOnClickListener(onClickTransferBtn);
         trn1DoneBtn.setOnClickListener(onClickTrn1DoneBtn);
@@ -155,7 +142,7 @@ public class LayoutTransfers extends MainNavigation {
             trn1ToSpinName = trn1Cur2.getString(trn1Cur2.getColumnIndexOrThrow(DbHelper.ACCTNAME));
             trn1ToSpinId = trn1Cur2.getLong(trn1Cur2.getColumnIndexOrThrow(DbHelper.ID));
             trn1ToIsDebtSav = trn1Cur2.getString(trn1Cur2.getColumnIndexOrThrow(DbHelper.ACCTDEBTSAV));
-            trn1ToAcctBal = trn1Cur.getDouble(trn1Cur.getColumnIndexOrThrow(DbHelper.ACCTBAL));
+            trn1ToAcctBal = trn1Cur2.getDouble(trn1Cur2.getColumnIndexOrThrow(DbHelper.ACCTBAL));
         }
 
         @Override
@@ -329,7 +316,6 @@ public class LayoutTransfers extends MainNavigation {
                 0);
         trn1DbMgr.addTransactions(trn1TransDb);
 
-        //UPDATE ALL SAVINGS & DEBTS BUDGETS RE TRANSFERS ************************************IS THIS NECESSARY?
         try {
             for (AccountsDb a : trn1DbMgr.getDebts()) {
                 trn1DebtId = a.getId();
@@ -410,8 +396,12 @@ public class LayoutTransfers extends MainNavigation {
             if (trn1FromSpinId == trn1ToSpinId) { //FROM & TO ACCT THE SAME
                 Toast.makeText(LayoutTransfers.this, R.string.same_acct, Toast.LENGTH_LONG).show();
             } else if (trn1FromSpinId == 1 || trn1ToSpinId == 1) { //IF FROM MAIN ACCT OR TO MAIN ACCT
-                AlertDialog.Builder builder2 = new AlertDialog.Builder(LayoutTransfers.this);
+                final AlertDialog.Builder builder2 = new AlertDialog.Builder(LayoutTransfers.this);
                 dView2 = getLayoutInflater().inflate(R.layout.dialog_transfer, null);
+                builder2.setView(dView2);
+                final AlertDialog dialog2 = builder2.create();
+                dialog2.show();
+
                 transferDialogResTV = dView2.findViewById(R.id.transferDialogResTV);
                 transferDialogInfoBtn = dView2.findViewById(R.id.transferDialogInfoBtn);
                 transferDialogInfoTV = dView2.findViewById(R.id.transferDialogInfoTV);
@@ -424,6 +414,7 @@ public class LayoutTransfers extends MainNavigation {
                 transferDialogAsUsualRB = dView2.findViewById(R.id.transferDialogAsUsualRB);
                 transferDialogCustomRB = dView2.findViewById(R.id.transferDialogCustomRB);
                 transferDialogCustomLayout = dView2.findViewById(R.id.transferDialogCustomLayout);
+                transferDialogCustomLayout.setVisibility(View.GONE);
                 transferDialogCustomResAmtET = dView2.findViewById(R.id.transferDialogCustomResAmtET);
                 transferDialogCustomAvailAmtTV = dView2.findViewById(R.id.transferDialogCustomAvailAmtTV);
                 transferDialogEnterBtn = dView2.findViewById(R.id.transferDialogEnterBtn);
@@ -489,9 +480,13 @@ public class LayoutTransfers extends MainNavigation {
                 transferDialogEnterBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if ((!trn1FromIsDebtSav.equals("D") && trn1DbMgr.retrieveCurrentAcctAmt(trn1FromSpinId) < trn1TrnAmt) || (trn1FromIsDebtSav.equals("D") && (trn1DbMgr.retrieveCurrentAcctAmt(trn1FromSpinId) + trn1TrnAmt > trn1FromAcctMax))) { //FROM ACCT WILL GO NEGATIVE
-                            AlertDialog.Builder builder = new AlertDialog.Builder(LayoutTransfers.this);
+                        if ((!trn1FromIsDebtSav.equals("D") && trn1DbMgr.retrieveCurrentAcctAmt(trn1FromSpinId) < trn1TrnAmt) || (trn1FromIsDebtSav.equals("D") && (trn1DbMgr.retrieveCurrentAcctAmt(trn1FromSpinId) + trn1TrnAmt > trn1FromAcctMax))) { //FROM ACCT WILL GO NEGATIVE OR OVER LIMIT
+                            final AlertDialog.Builder builder = new AlertDialog.Builder(LayoutTransfers.this);
                             dView = getLayoutInflater().inflate(R.layout.dialog_warn, null);
+                            builder.setView(dView);
+                            final AlertDialog dialog = builder.create();
+                            dialog.show();
+
                             warnDialogWarnLayout = dView.findViewById(R.id.warnDialogWarnLayout);
                             warnDialogWarnTV = dView.findViewById(R.id.warnDialogWarnTV);
                             warnDialogNoContBtn = dView.findViewById(R.id.warnDialogNoContBtn);
@@ -640,10 +635,7 @@ public class LayoutTransfers extends MainNavigation {
                                     addTransAndFinish();
                                 }
                             });
-                            builder.setView(dView);
-                            AlertDialog dialog = builder.create();
-                            dialog.show();
-                        } else { //FROM ACCT WILL NOT GO NEGATIVE
+                        } else { //FROM ACCT WILL NOT GO NEGATIVE OR OVER LIMIT
                             if (transferDialogAllResRB.isChecked()) {
                                 if (trn1FromSpinId == 1) { //FROM MAIN ACCT
                                     trn1MoneyInA = 0.0;
@@ -777,13 +769,14 @@ public class LayoutTransfers extends MainNavigation {
                         trn1Refresh();
                     }
                 });
-                builder2.setView(dView2);
-                AlertDialog dialog2 = builder2.create();
-                dialog2.show();
             } else {//NOT FROM MAIN ACCT AND NOT TO MAIN ACCT
                 if ((trn1FromIsDebtSav.equals("D") && (trn1DbMgr.retrieveCurrentAcctAmt(trn1FromSpinId) + trn1TrnAmt > trn1FromAcctMax)) || (trn1FromIsDebtSav.equals("S") && (trn1DbMgr.retrieveCurrentAcctAmt(trn1FromSpinId) < trn1TrnAmt))) { //WILL GO OVER LIMIT OR NEGATIVE
-                    AlertDialog.Builder builder = new AlertDialog.Builder(LayoutTransfers.this);
+                    final AlertDialog.Builder builder = new AlertDialog.Builder(LayoutTransfers.this);
                     dView = getLayoutInflater().inflate(R.layout.dialog_warn, null);
+                    builder.setView(dView);
+                    final AlertDialog dialog = builder.create();
+                    dialog.show();
+
                     warnDialogWarnLayout = dView.findViewById(R.id.warnDialogWarnLayout);
                     warnDialogWarnTV = dView.findViewById(R.id.warnDialogWarnTV);
                     warnDialogNoContBtn = dView.findViewById(R.id.warnDialogNoContBtn);
@@ -826,11 +819,10 @@ public class LayoutTransfers extends MainNavigation {
                                     trn1SavPlus();
                                 }
                             }
+
+                            addTransAndFinish();
                         }
                     });
-                    builder.setView(dView);
-                    AlertDialog dialog = builder.create();
-                    dialog.show();
                 } else { //WILL NOT GO OVER LIMIT OR NEGATIVE
                     trn1MoneyInA = 0.0;
                     trn1MoneyInOwing = 0.0;
@@ -853,6 +845,7 @@ public class LayoutTransfers extends MainNavigation {
                             trn1SavPlus();
                         }
                     }
+                    addTransAndFinish();
                 }
             }
         }

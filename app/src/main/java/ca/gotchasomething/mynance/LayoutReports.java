@@ -40,7 +40,7 @@ public class LayoutReports extends MainNavigation {
     General repGen;
     int repYear;
     Intent repRefresh;
-    LinearLayout repSpinLayout;
+    LinearLayout repSpinLayout, repSpinLayout2;
     ListView repListView;
     long budgetId;
     NumberFormat percentFormat = NumberFormat.getPercentInstance();
@@ -69,6 +69,7 @@ public class LayoutReports extends MainNavigation {
         repGen = new General();
         repDbMgr = new DbManager(getApplicationContext());
 
+        repSpinLayout2 = findViewById(R.id.repSpinLayout2);
         repSpinLayout = findViewById(R.id.repSpinLayout);
         repToMthSpin = findViewById(R.id.repToMthSpin);
         repFromMthSpin = findViewById(R.id.repFromMthSpin);
@@ -200,6 +201,8 @@ public class LayoutReports extends MainNavigation {
         @Override
         public void onClick(View v) {
             repListView.setVisibility(View.VISIBLE);
+            repSpinLayout2.setVisibility(View.GONE);
+            repSpinLayout.setVisibility(View.GONE);
             if (repFromMonth.equals(getString(R.string.year_to_date))) {
                 repCal = Calendar.getInstance();
                 repYear = repCal.get(Calendar.YEAR);
@@ -237,10 +240,10 @@ public class LayoutReports extends MainNavigation {
                 try {
                     repAdapter = new RepLstAdapter(getApplicationContext(), repDbMgr.getBudget());
                     repListView.setAdapter(repAdapter);
-                        repCatLabel.setVisibility(View.VISIBLE);
-                        repAmtLabel.setVisibility(View.VISIBLE);
-                        repSpinOkBtn.setVisibility(View.GONE);
-                        repSpinResetBtn.setVisibility(View.VISIBLE);
+                    repCatLabel.setVisibility(View.VISIBLE);
+                    repAmtLabel.setVisibility(View.VISIBLE);
+                    repSpinOkBtn.setVisibility(View.GONE);
+                    repSpinResetBtn.setVisibility(View.VISIBLE);
                 } catch (NullPointerException e) {
                     e.printStackTrace();
                 }

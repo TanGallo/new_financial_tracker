@@ -31,7 +31,7 @@ import ca.gotchasomething.mynance.data.BudgetDb;
 public class AddIncomeList extends MainNavigation {
 
     BudgetDb incLstIncDB;
-    Button incLstAddMoreBtn, incLstUpdateBtn, incLstCancelBtn, incLstDoneBtn, incLstSaveBtn;
+    Button incLstAddMoreBtn, incLstUpdateBtn, incLstCancelBtn, incLstDoneBtn, incLstResetBtn, incLstSaveBtn;
     ContentValues incLstCV;
     DbHelper incLstHelper;
     DbManager incLstDbMgr;
@@ -71,6 +71,8 @@ public class AddIncomeList extends MainNavigation {
 
         incLstSpinLayout = findViewById(R.id.layout1SpinLayout);
         incLstSpinLayout.setVisibility(View.GONE);
+        incLstResetBtn = findViewById(R.id.layout1SpinResetBtn);
+        incLstResetBtn.setVisibility(View.GONE);
         incLstTotalTV = findViewById(R.id.layout1TotalTV);
         incLstTotalTV.setVisibility(View.GONE);
 

@@ -9,6 +9,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -25,21 +26,45 @@ public class SlidesOnboardingL extends AppCompatActivity implements View.OnClick
     AccountsDb acctDb;
     private AdapterSlides adapter;
     BudgetDb expDb;
-    private Button skipButton, nextButton;
+    private Button previousButton, skipButton, nextButton;
     DbManager dbManager;
     Double balanceAmount;
     ImageView slide1Image;
     private ImageView[] dots;
+    //private int[] slides = new int[6];
     private int[] slides = {
-            R.layout.a1_slides_onboarding_background_land,
-            R.layout.a1_slides_onboarding_background_land,
-            R.layout.a1_slides_onboarding_background_land,
-            R.layout.a1_slides_onboarding_background_land,
-            R.layout.a1_slides_onboarding_background_land,
-            R.layout.a1_slides_onboarding_background_land
+            R.layout.a1_slides_onboarding_background,
+            R.layout.a1_slides_onboarding_background,
+            R.layout.a1_slides_onboarding_background,
+            R.layout.a1_slides_onboarding_background,
+            R.layout.a1_slides_onboarding_background,
+            R.layout.a1_slides_onboarding_background
     };
+    private int slideImage[] = {
+            R.mipmap.ic_launcher,
+            R.drawable.ic_create_new_folder_white_24dp,
+            R.drawable.ic_account_balance_white_24dp,
+            R.drawable.ic_equalizer_white_24dp,
+            R.drawable.ic_credit_card_white_24dp,
+            R.drawable.ic_help_outline_white_24dp};
+    /*private String[] slideTitle = new String[] {
+            getResources().getString(R.string.welcome_to_mynance),
+            getResources().getString(R.string.step_1),
+            getResources().getString(R.string.step_2),
+            null,
+            null,
+            null};
+    private String[] slideDescription = new String[] {
+            getResources().getString(R.string.a_text1),
+            getResources().getString(R.string.a_text2),
+            getResources().getString(R.string.a_text3),
+            getResources().getString(R.string.a_text4),
+            getResources().getString(R.string.a_text5),
+            getResources().getString(R.string.a_text6)};*/
     private LinearLayout dotsLayout;
+    RelativeLayout slide1Layout;
     SetUpDb setUpDb;
+    String[] slideTitle, slideDescription;
     TextView slide1Title, slide1Description;
     ViewPager viewPager;
 
@@ -47,8 +72,7 @@ public class SlidesOnboardingL extends AppCompatActivity implements View.OnClick
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (new PreferenceManager(this).checkPreferences()) {
-            loadHome();
+        if (new PreferenceManager(this).checkPreferences()) { loadHome();
         }
 
         if (Build.VERSION.SDK_INT >= 19) {
@@ -59,16 +83,35 @@ public class SlidesOnboardingL extends AppCompatActivity implements View.OnClick
 
         setContentView(R.layout.a1_slides_onboarding_background_land);
 
+        slideTitle = new String[] {
+                getResources().getString(R.string.welcome_to_mynance),
+                getResources().getString(R.string.step_1),
+                getResources().getString(R.string.step_2),
+                null,
+                null,
+                null};
+        slideDescription = new String[] {
+                getResources().getString(R.string.a_text1),
+                getResources().getString(R.string.a_text2),
+                getResources().getString(R.string.a_text3),
+                getResources().getString(R.string.a_text4),
+                getResources().getString(R.string.a_text5),
+                getResources().getString(R.string.a_text6)};
+
         viewPager = findViewById(R.id.viewPager);
         adapter = new AdapterSlides(slides, this);
+        //adapter = new AdapterSlides(slides, slideImage, slideTitle, slideDescription, this);
         viewPager.setAdapter(adapter);
 
+        slide1Layout = findViewById(R.id.slide1Layout);
         slide1Image = findViewById(R.id.slide1Image);
         slide1Title = findViewById(R.id.slide1Title);
         slide1Description = findViewById(R.id.slide1Description);
         dotsLayout = findViewById(R.id.dotsLayout);
+        previousButton = findViewById(R.id.previousButton);
         skipButton = findViewById(R.id.skipButton);
         nextButton = findViewById(R.id.nextButton);
+        previousButton.setOnClickListener(this);
         skipButton.setOnClickListener(this);
         nextButton.setOnClickListener(this);
         createDots(0);
@@ -81,41 +124,58 @@ public class SlidesOnboardingL extends AppCompatActivity implements View.OnClick
             @Override
             public void onPageSelected(int position) {
                 createDots(position);
+                slide1Image.setImageDrawable(getDrawable(slideImage[position]));
+                slide1Title.setText(slideTitle[position]);
+                slide1Description.setText(slideDescription[position]);
+                //createSlideImages(position);
+                //createSlideText(position);
 
-                switch(position) {
+                /*switch(position) {
                     case 0:
                         slide1Image.setImageDrawable(getDrawable(R.mipmap.ic_launcher));
                         slide1Title.setVisibility(View.VISIBLE);
                         slide1Title.setText(R.string.welcome_to_mynance);
                         slide1Description.setText(R.string.a_text1);
+                        break;
                     case 1:
                         slide1Image.setImageDrawable(getDrawable(R.drawable.ic_create_new_folder_white_24dp));
                         slide1Title.setVisibility(View.VISIBLE);
                         slide1Title.setText(R.string.step_1);
                         slide1Description.setText(R.string.a_text2);
+                        break;
                     case 2:
                         slide1Image.setImageDrawable(getDrawable(R.drawable.ic_account_balance_white_24dp));
                         slide1Title.setVisibility(View.VISIBLE);
                         slide1Title.setText(R.string.step_2);
                         slide1Description.setText(R.string.a_text3);
+                        break;
                     case 3:
                         slide1Image.setImageDrawable(getDrawable(R.drawable.ic_equalizer_white_24dp));
-                        slide1Title.setVisibility(View.GONE);
+                        slide1Title.setVisibility(View.INVISIBLE);
                         slide1Description.setText(R.string.a_text4);
+                        break;
                     case 4:
                         slide1Image.setImageDrawable(getDrawable(R.drawable.ic_credit_card_white_24dp));
-                        slide1Title.setVisibility(View.GONE);
+                        slide1Title.setVisibility(View.INVISIBLE);
                         slide1Description.setText(R.string.a_text5);
+                        break;
                     case 5:
                         slide1Image.setImageDrawable(getDrawable(R.drawable.ic_help_outline_white_24dp));
-                        slide1Title.setVisibility(View.GONE);
+                        slide1Title.setVisibility(View.INVISIBLE);
                         slide1Description.setText(R.string.a_text6);
-                }
+                        break;
+                }*/
 
                 if (position == slides.length - 1) {
+                    previousButton.setVisibility(View.VISIBLE);
                     nextButton.setText(getResources().getString(R.string.start_button));
-                    skipButton.setVisibility(View.INVISIBLE);
+                    skipButton.setVisibility(View.GONE);
+                } else if(position == 0) {
+                    previousButton.setVisibility(View.GONE);
+                    nextButton.setText(getResources().getString(R.string.next_button));
+                    skipButton.setVisibility(View.VISIBLE);
                 } else {
+                    previousButton.setVisibility(View.VISIBLE);
                     nextButton.setText(getResources().getString(R.string.next_button));
                     skipButton.setVisibility(View.VISIBLE);
                 }
@@ -136,9 +196,11 @@ public class SlidesOnboardingL extends AppCompatActivity implements View.OnClick
         for (int i = 0; i < slides.length; i++) {
             dots[i] = new ImageView(this);
             if (i == current_position) {
-                dots[i].setImageDrawable(AppCompatResources.getDrawable(this, R.drawable.active_dots));
+                dots[i].setImageDrawable(
+                        AppCompatResources.getDrawable(this, R.drawable.active_dots));
             } else {
-                dots[i].setImageDrawable(AppCompatResources.getDrawable(this, R.drawable.default_dots));
+                dots[i].setImageDrawable(
+                        AppCompatResources.getDrawable(this, R.drawable.default_dots));
             }
 
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
@@ -149,6 +211,58 @@ public class SlidesOnboardingL extends AppCompatActivity implements View.OnClick
             dotsLayout.addView(dots[i], params);
         }
     }
+
+    /*private void createSlideImages(int current_position) {
+        if (slide1Layout != null)
+            slide1Layout.removeAllViews();
+
+        slideImage = new ImageView[slides.length];
+        for (int i = 0; i < slides.length; i++) {
+            slideImage[i] = new ImageView(this);
+
+            switch(current_position) {
+                case 0:
+                    slideImage[0].setImageDrawable(AppCompatResources.getDrawable(this, R.mipmap.ic_launcher));
+                    break;
+                case 1:
+                    slideImage[1].setImageDrawable(AppCompatResources.getDrawable(this, R.drawable.ic_create_new_folder_white_24dp));
+                    break;
+                case 2:
+                    slideImage[2].setImageDrawable(AppCompatResources.getDrawable(this, R.drawable.ic_account_balance_white_24dp));
+                    break;
+                case 3:
+                    slideImage[3].setImageDrawable(AppCompatResources.getDrawable(this, R.drawable.ic_equalizer_white_24dp));
+                    break;
+                case 4:
+                    slideImage[4].setImageDrawable(AppCompatResources.getDrawable(this, R.drawable.ic_credit_card_white_24dp));
+                    break;
+                case 5:
+                    slideImage[5].setImageDrawable(AppCompatResources.getDrawable(this, R.drawable.ic_help_outline_white_24dp));
+                    break;
+            }
+            slide1Layout.addView(slideImage[i]);
+        }
+    }*/
+
+    /*private void createSlideText(int current_position) {
+        slideTitle = new String[] {
+                getString(R.string.welcome_to_mynance),
+                getString(R.string.step_1),
+                getString(R.string.step_2),
+                null,
+                null,
+                null};
+        slideDescription = new String[] {
+                getString(R.string.a_text1),
+                getString(R.string.a_text2),
+                getString(R.string.a_text3),
+                getString(R.string.a_text4),
+                getString(R.string.a_text5),
+                getString(R.string.a_text6)};
+
+            slide1Title.setText(slideTitle[current_position]);
+            slide1Description.setText(slideDescription[current_position]);
+    }*/
 
     @Override
     public void onClick(View v) {
@@ -161,6 +275,10 @@ public class SlidesOnboardingL extends AppCompatActivity implements View.OnClick
             case R.id.skipButton:
                 loadHome();
                 new PreferenceManager(this).writePreferences();
+                break;
+
+            case R.id.previousButton:
+                loadPreviousSlide();
                 break;
         }
     }
@@ -176,7 +294,7 @@ public class SlidesOnboardingL extends AppCompatActivity implements View.OnClick
         }
         if(dbManager.getAccounts().size() == 0) {
             acctDb = new AccountsDb(
-                    getString(R.string.main_acct),
+                    getString(R.string.main_account),
                     0.0,
                     "N/A",
                     0.0,
@@ -202,6 +320,7 @@ public class SlidesOnboardingL extends AppCompatActivity implements View.OnClick
         }
         startActivity(new Intent(this, LayoutSetUp.class));
         finish();
+
     }
 
     private void loadNextSlide() {
@@ -212,6 +331,14 @@ public class SlidesOnboardingL extends AppCompatActivity implements View.OnClick
         } else {
             loadHome();
             new PreferenceManager(this).writePreferences();
+        }
+    }
+
+    private void loadPreviousSlide() {
+        int previous = viewPager.getCurrentItem() - 1;
+
+        if (previous > -1) {
+            viewPager.setCurrentItem(previous);
         }
     }
 }

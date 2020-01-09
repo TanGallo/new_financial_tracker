@@ -33,7 +33,7 @@ public class DbManager extends AppCompatActivity {
     public Date earliestDateInRange, latestDateInRange, newDate;
     public DbHelper dbHelper;
     public Double acctDebtToPayFromDb = 0.0, amtOfMissingEntries = 0.0, amtOfMissingEntriesE = 0.0, amtMissing = 0.0, amtToZero = 0.0, currentAccountBalance = 0.0, currentB = 0.0,
-            currentAcctAmt = 0.0, currentDebtAmtOwing = 0.0, currentSavAmt = 0.0, annPaytFromDb = 0.0, expAmtFromDb = 0.0, expFrqFromDb = 0.0, expThisYear = 0.0,
+            currentAcctAmt = 0.0, currentDebtAmtOwing = 0.0, currentSavAmt = 0.0, annPaytFromDb = 0.0, expAmtFromDb = 0.0, expAnnAmtFromDb = 0.0, expFrqFromDb = 0.0, expThisYear = 0.0,
             incAmtFromDb = 0.0, incAnnAmtFromDb = 0.0, incFrqFromDb = 0.0, moneyInA = 0.0, moneyInB = 0.0, moneyInOwing = 0.0, moneyOutA = 0.0,
             moneyOutB = 0.0, moneyOutOwing = 0.0, newABal = 0.0, newAcctBal = 0.0, newAvailBal2 = 0.0, newBBal = 0.0, newAmt = 0.0, newExpAnnAmt = 0.0,
             newIncAnnAmt = 0.0, newMoneyA = 0.0, newMoneyB = 0.0, newMoneyOwing = 0.0, newOwingBal = 0.0, incThisYear = 0.0, numberOfMissingEntries = 0.0,
@@ -415,6 +415,16 @@ public class DbManager extends AppCompatActivity {
 
 
     //LIST RETRIEVAL FORMULAS
+
+    public List<AccountsDb> getAcctsNotDS() {
+        List<AccountsDb> acctsNotDS = new ArrayList<>();
+        for (AccountsDb a : getAccounts()) {
+            if (!a.getAcctDebtSav().equals("D") && !a.getAcctDebtSav().equals("S")) {
+                acctsNotDS.add(a);
+            }
+        }
+        return acctsNotDS;
+    }
 
     public List<BudgetDb> getExpenses() {
         List<BudgetDb> expenses = new ArrayList<>();
@@ -1273,7 +1283,7 @@ public class DbManager extends AppCompatActivity {
         numberOfEntries = 0;
         if (incEntriesThisYear.size() == 0) {
             incThisYear = 0.0;
-            numberOfEntries = 0;
+            //numberOfEntries = 0;
         } else {
             for (Double dbl : incEntriesThisYear) {
                 incThisYear += dbl;
@@ -1290,8 +1300,8 @@ public class DbManager extends AppCompatActivity {
                 incAnnAmtFromDb = i.getBdgtAnnPayt();
                 numberOfMissingEntries = incFrqFromDb - numberOfEntries;
                 if (incFrqFromDb == 1 && numberOfMissingEntries <= 0) {
-                    if (incAmtFromDb >= incThisYear) {
-                        newIncAnnAmt = incAmtFromDb;
+                    if (incAnnAmtFromDb >= incThisYear) {
+                        newIncAnnAmt = incAnnAmtFromDb;
                     } else {
                         newIncAnnAmt = incThisYear;
                     }
@@ -1319,7 +1329,7 @@ public class DbManager extends AppCompatActivity {
         numberOfEntriesE = 0;
         if (expEntriesThisYear.size() == 0) {
             expThisYear = 0.0;
-            numberOfEntriesE = 0;
+            //numberOfEntriesE = 0;
         } else {
             for (Double dbl : expEntriesThisYear) {
                 expThisYear += dbl;
@@ -1334,10 +1344,11 @@ public class DbManager extends AppCompatActivity {
                 expAmtFromDb = e.getBdgtPaytAmt();
                 expPriorityFromDb = e.getBdgtPriority();
                 expFrqFromDb = e.getBdgtPaytFrq();
+                expAnnAmtFromDb = e.getBdgtAnnPayt();
                 numberOfMissingEntriesE = expFrqFromDb - numberOfEntriesE;
                 if (expFrqFromDb == 1 && numberOfMissingEntriesE <= 0) {
-                    if (expAmtFromDb >= expThisYear) {
-                        newExpAnnAmt = expAmtFromDb;
+                    if (expAnnAmtFromDb >= expThisYear) {
+                        newExpAnnAmt = expAnnAmtFromDb;
                     } else {
                         newExpAnnAmt = expThisYear;
                     }
@@ -1412,14 +1423,14 @@ public class DbManager extends AppCompatActivity {
         //dbl2 = transfersFromAcctThisYear(long1)
         db = dbHelper.getWritableDatabase();
         for (AccountsDb a : getAccounts()) {
-            if (a.getId() == long1) {
-                annPaytFromDb = a.getAcctAnnPaytsTo();
-                if (dbl1 - dbl2 > annPaytFromDb) {
-                    cursor = db.rawQuery("SELECT " + DbHelper.ACCTANNPAYTSTO + " FROM " + DbHelper.ACCOUNTS_TABLE_NAME + " WHERE " + DbHelper.ID + " = " + long1, null);
-                    db.execSQL("UPDATE " + DbHelper.ACCOUNTS_TABLE_NAME + " SET " + DbHelper.ACCTANNPAYTSTO + " = " + dbl1 + " - " + dbl2 + " WHERE " + DbHelper.ID + " = " + long1);
+                if (a.getId() == long1) {
+                    annPaytFromDb = a.getAcctAnnPaytsTo();
+                    if (dbl1 - dbl2 > annPaytFromDb) {
+                        cursor = db.rawQuery("SELECT " + DbHelper.ACCTANNPAYTSTO + " FROM " + DbHelper.ACCOUNTS_TABLE_NAME + " WHERE " + DbHelper.ID + " = " + long1, null);
+                        db.execSQL("UPDATE " + DbHelper.ACCOUNTS_TABLE_NAME + " SET " + DbHelper.ACCTANNPAYTSTO + " = " + dbl1 + " - " + dbl2 + " WHERE " + DbHelper.ID + " = " + long1);
+                    }
                 }
             }
-        }
         db.close();
     }
 

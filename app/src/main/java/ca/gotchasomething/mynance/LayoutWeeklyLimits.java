@@ -29,7 +29,7 @@ import ca.gotchasomething.mynance.data.TransactionsDb;
 
 public class LayoutWeeklyLimits extends MainNavigation {
 
-    Button wee2AddMoreBtn, wee2DoneBtn;
+    Button wee2AddMoreBtn, wee2DoneBtn, wee2ResetBtn;
     ContentValues  wee2CV;
     DbHelper  wee2Helper;
     DbManager wee2DbMgr;
@@ -67,6 +67,8 @@ public class LayoutWeeklyLimits extends MainNavigation {
 
         wee2SpinLayout = findViewById(R.id.layout1SpinLayout);
         wee2SpinLayout.setVisibility(View.GONE);
+        wee2ResetBtn = findViewById(R.id.layout1SpinResetBtn);
+        wee2ResetBtn.setVisibility(View.GONE);
         wee2HeaderLabel = findViewById(R.id.layout1HeaderLabelTV);
         wee2HeaderLabel.setText(getString(R.string.weekly_limits));
         wee2AddMoreBtn = findViewById(R.id.layout1AddMoreBtn);
@@ -190,7 +192,7 @@ public class LayoutWeeklyLimits extends MainNavigation {
             wee2Gen.dblASCurrency(String.valueOf(wee2SpentThisWeek), wee2Hldr.wee2SpentAmtTV);
 
             //retrieve amountLeft
-            wee2StartBal = weeklyLimits.get(position).getBdgtPaytAmt();
+            wee2StartBal = (weeklyLimits.get(position).getBdgtAnnPayt() / 52);
             wee2AmtLeft = wee2StartBal - wee2SpentThisWeek;
             wee2Gen.dblASCurrency(String.valueOf(wee2AmtLeft), wee2Hldr.wee2AmtLeftTV);
 

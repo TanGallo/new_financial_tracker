@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -21,31 +20,25 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 
-import java.text.NumberFormat;
 import java.util.List;
 
 import ca.gotchasomething.mynance.data.AccountsDb;
 
 public class AddSavingsList extends MainNavigation {
 
-    AccountsDb savLstSavDb;
-    Button savLstAddMoreBtn, savLstUpdateBtn, savLstCancelBtn, savLstDoneBtn, savLstSaveBtn;
+    Button savLstAddMoreBtn, savLstDoneBtn, savLstResetBtn;
     ContentValues savLstCV;
     DbHelper savLstHelper;
     DbManager savLstDBMgr;
-    Double savAmtFromEntry = 0.0, savAmtFromTag = 0.0, savRateFromEntry = 0.0, savRateFromTag = 0.0, savPaytFromEntry = 0.0, savPaytFromTag = 0.0,
-            savGoalFromEntry = 0.0, savGoalFromTag = 0.0, savLstSavRate2 = 0.0, savLstGoalAmt2 = 0.0, savLstSavCurr = 0.0;
-    EditText savLstSavAmtET, savLstSavGoalET, savLstSavPaytET, savLstSavPercentET, savLstSavNameET;
+    Double savLstGoalAmt2 = 0.0, savLstSavCurr = 0.0;
     SavLstListAdapter savLstLstAdapter;
     General savLstGen;
-    Intent savLstToLayoutBudget, savLstToLayoutSavings, savLstToLayoutSavingsList, savLstRefresh, savLstToSetUp, savLstToAddMore, savLstToAnalysis;
+    Intent savLstToLayoutSavings, savLstToSetUp, savLstToAddMore, savLstToAnalysis;
     LinearLayout savLstSpinLayout;
     ListView savLstListView;
-    Long savIdFromTag;
-    NumberFormat savLstPercentFor = NumberFormat.getPercentInstance();
     SQLiteDatabase savLstDB;
-    String savDateFromTag = null, savNameFromEntry = null, savNameFromTag = null, savLstSavDate = null, savLstSavDate2 = null, savLstSavRate3 = null;
-    TextView savLstSavDateResLabel, savLstHeaderLabelTV, savLstSavDateResTV, savLstTotalTV;
+    String savLstSavDate = null;
+    TextView savLstHeaderLabelTV, savLstTotalTV;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -69,6 +62,8 @@ public class AddSavingsList extends MainNavigation {
 
         savLstSpinLayout = findViewById(R.id.layout1SpinLayout);
         savLstSpinLayout.setVisibility(View.GONE);
+        savLstResetBtn = findViewById(R.id.layout1SpinResetBtn);
+        savLstResetBtn.setVisibility(View.GONE);
 
         savLstHeaderLabelTV = findViewById(R.id.layout1HeaderLabelTV);
         savLstHeaderLabelTV.setText(getString(R.string.savings));
@@ -122,97 +117,6 @@ public class AddSavingsList extends MainNavigation {
         }
     };
 
-    /*TextWatcher onChangeSavLstSavAmtET = new TextWatcher() {
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-        }
-
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-            savLstSavDateRes();
-            savLstSavDateResTV.setText(savLstSavDate2);
-        }
-
-        @Override
-        public void afterTextChanged(Editable s) {
-        }
-    };
-
-    TextWatcher onChangeSavLstSavGoalET = new TextWatcher() {
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-        }
-
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-            savLstSavDateRes();
-            savLstSavDateResTV.setText(savLstSavDate2);
-        }
-
-        @Override
-        public void afterTextChanged(Editable s) {
-        }
-    };
-
-    TextWatcher onChangeSavLstSavPaytET = new TextWatcher() {
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-        }
-
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-            savLstSavDateRes();
-            savLstSavDateResTV.setText(savLstSavDate2);
-        }
-
-        @Override
-        public void afterTextChanged(Editable s) {
-        }
-    };
-
-    TextWatcher onChangeSavLstSavPercentET = new TextWatcher() {
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-        }
-
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-            savLstSavDateRes();
-            savLstSavDateResTV.setText(savLstSavDate2);
-        }
-
-        @Override
-        public void afterTextChanged(Editable s) {
-        }
-    };*/
-
-    /*public void savLstSavDateRes() {
-        savNameFromEntry = savLstGen.stringFromET(savLstSavNameET);
-        savAmtFromEntry = savLstGen.dblFromET(savLstSavAmtET);
-        savGoalFromEntry = savLstGen.dblFromET(savLstSavGoalET);
-        savRateFromEntry = savLstGen.percentFromET(savLstSavPercentET);
-        savPaytFromEntry = savLstGen.dblFromET(savLstSavPaytET);
-
-        savLstSavDate2 = savLstGen.calcSavingsDate(
-                savGoalFromEntry,
-                savAmtFromEntry,
-                savRateFromEntry,
-                savPaytFromEntry,
-                getString(R.string.goal_achieved),
-                getString(R.string.too_far));
-        if (savLstSavDate2.equals(getString(R.string.goal_achieved))) {
-            savLstSavDateResLabel.setVisibility(View.GONE);
-            savLstSavDateResTV.setTextColor(Color.parseColor("#03ac13"));
-        } else if (savLstSavDate2.equals(getString(R.string.too_far))) {
-            savLstSavDateResLabel.setVisibility(View.GONE);
-            savLstSavDateResTV.setTextColor(Color.parseColor("#ffff4444"));
-        } else {
-            savLstSavDateResLabel.setVisibility(View.VISIBLE);
-            savLstSavDateResTV.setTextColor(Color.parseColor("#303F9F"));
-            savLstSavDateResLabel.setTextColor(Color.parseColor("#303F9F"));
-        }
-    }*/
-
     public class SavLstListAdapter extends ArrayAdapter<AccountsDb> {
 
         public Context context;
@@ -261,10 +165,8 @@ public class AddSavingsList extends MainNavigation {
                 savLstHldr.savLstCurrAmtTV = convertView.findViewById(R.id.bigLstTV4);
                 savLstHldr.savLstDel = convertView.findViewById(R.id.bigLstDelBtn);
                 savLstHldr.savLstEdit = convertView.findViewById(R.id.bigLstEditBtn);
-                //if (savLstDBMgr.retrieveLastPageId() == 13) {
-                    savLstHldr.savLstDel.setVisibility(View.GONE);
-                    savLstHldr.savLstEdit.setVisibility(View.GONE);
-                //}
+                savLstHldr.savLstDel.setVisibility(View.GONE);
+                savLstHldr.savLstEdit.setVisibility(View.GONE);
                 convertView.setTag(savLstHldr);
 
             } else {
@@ -298,137 +200,6 @@ public class AddSavingsList extends MainNavigation {
             //retrieve savingsAmount & format as currency
             savLstSavCurr = (savings.get(position).getAcctBal());
             savLstGen.dblASCurrency(String.valueOf(savLstSavCurr), savLstHldr.savLstCurrAmtTV);
-
-            /*savLstHldr.savLstDel.setTag(savings.get(position));
-            savLstHldr.savLstEdit.setTag(savings.get(position));*/
-
-            //click on pencil icon to edit a data record
-            /*savLstHldr.savLstEdit.setOnClickListener(new View.OnClickListener() {
-
-                @Override
-                public void onClick(View v) {
-
-                    setContentView(R.layout.form_4_add_savings);
-                    AddSavingsList.this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-
-                    savLstDBMgr = new DbManager(getApplicationContext());
-
-                    savLstSavNameET = findViewById(R.id.addSavNameET);
-                    savLstSavAmtET = findViewById(R.id.addSavAmtET);
-                    savLstSavGoalET = findViewById(R.id.addSavGoalET);
-                    savLstSavPaytET = findViewById(R.id.addSavPaytET);
-                    savLstSavPercentET = findViewById(R.id.addSavPercentET);
-                    savLstSavDateResTV = findViewById(R.id.addSavDateResTV);
-                    savLstSavDateResLabel = findViewById(R.id.addSavDateResLabel);
-
-                    savLstSaveBtn = findViewById(R.id.addSavSaveBtn);
-                    savLstSaveBtn.setVisibility(View.GONE);
-                    savLstUpdateBtn = findViewById(R.id.addSavUpdateBtn);
-                    savLstCancelBtn = findViewById(R.id.addSavCancelBtn);
-
-                    savLstSavDb = (AccountsDb) savLstHldr.savLstEdit.getTag();
-
-                    savNameFromTag = savLstSavDb.getAcctName();
-                    savAmtFromTag = savLstSavDb.getAcctBal();
-                    savGoalFromTag = savLstSavDb.getAcctMax();
-                    savPaytFromTag = savLstSavDb.getAcctPaytsTo();
-                    savRateFromTag = savLstSavDb.getAcctIntRate();
-                    savDateFromTag = savLstSavDb.getAcctEndDate();
-                    savIdFromTag = savLstSavDb.getId();
-
-                    savLstSavNameET.setText(savNameFromTag);
-                    savLstGen.dblASCurrency(String.valueOf(savAmtFromTag), savLstSavAmtET);
-                    savLstSavAmtET.addTextChangedListener(onChangeSavLstSavAmtET);
-                    savLstGen.dblASCurrency(String.valueOf(savGoalFromTag), savLstSavGoalET);
-                    savLstSavGoalET.addTextChangedListener(onChangeSavLstSavGoalET);
-                    savLstGen.dblASCurrency(String.valueOf(savPaytFromTag), savLstSavPaytET);
-                    savLstSavPaytET.addTextChangedListener(onChangeSavLstSavPaytET);
-                    savLstSavRate2 = savRateFromTag / 100;
-                    savLstPercentFor.setMinimumFractionDigits(2);
-                    savLstSavRate3 = savLstPercentFor.format(savLstSavRate2);
-                    savLstSavPercentET.setText(savLstSavRate3);
-                    savLstSavPercentET.addTextChangedListener(onChangeSavLstSavPercentET);
-
-                    savLstSavDateResTV.setText(savDateFromTag);
-                    if (savDateFromTag.equals(getString(R.string.goal_achieved))) {
-                        savLstSavDateResLabel.setVisibility(View.GONE);
-                        savLstSavDateResTV.setTextColor(Color.parseColor("#03ac13"));
-                    } else if (savDateFromTag.equals(getString(R.string.too_far))) {
-                        savLstSavDateResLabel.setVisibility(View.GONE);
-                        savLstSavDateResTV.setTextColor(Color.parseColor("#ffff4444"));
-                    } else {
-                        savLstSavDateResLabel.setVisibility(View.VISIBLE);
-                        savLstSavDateResTV.setTextColor(Color.parseColor("#303F9F"));
-                        savLstSavDateResLabel.setTextColor(Color.parseColor("#303F9F"));
-                    }
-
-                    savLstUpdateBtn.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-
-                            savLstSavDateRes();
-
-                            if (!savNameFromEntry.equals("null")) {
-
-                                savLstSavDb.setAcctName(savNameFromEntry);
-                                savLstSavDb.setAcctBal(savAmtFromEntry);
-                                savLstSavDb.setAcctMax(savGoalFromEntry);
-                                savLstSavDb.setAcctPaytsTo(savPaytFromEntry);
-                                savLstSavDb.setAcctIntRate(savRateFromEntry);
-                                savLstSavDb.setAcctEndDate(savLstSavDate2);
-
-                                savLstDBMgr.updateAccounts(savLstSavDb);
-
-                                if (savLstDBMgr.getTransfers().size() != 0) {
-                                    //savLstTransToSavThisYr = savLstDBMgr.transfersToSavThisYear(savIdFromTag);
-                                    //savLstTransFromSavThisYr = savLstDBMgr.transfersFromSavThisYear(savIdFromTag);
-                                    savLstDBMgr.updateRecReTransfer(savIdFromTag, savLstDBMgr.transfersToAcctThisYear(savIdFromTag, savLstGen.lastNumOfDays(365)), savLstDBMgr.transfersFromAcctThisYear(savIdFromTag, savLstGen.lastNumOfDays(365)));
-                                } else {
-                                    savLstSavDb.setAcctAnnPaytsTo(savPaytFromEntry * 12.0);
-                                    savLstDBMgr.updateAccounts(savLstSavDb);
-                                }
-
-                                savLstLstAdapter.updateSavings(savLstDBMgr.getSavings());
-                                notifyDataSetChanged();
-
-                                Toast.makeText(getBaseContext(), getString(R.string.changes_saved), Toast.LENGTH_LONG).show();
-
-                                savLstRefresh = new Intent(AddSavingsList.this, AddSavingsList.class);
-                                savLstRefresh.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-                                startActivity(savLstRefresh);
-                            } else {
-                                Toast.makeText(getBaseContext(), R.string.no_blanks_warning, Toast.LENGTH_LONG).show();
-                            }
-                        }
-                    });
-
-                    savLstCancelBtn.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            savLstRefresh = new Intent(AddSavingsList.this, AddSavingsList.class);
-                            savLstRefresh.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-                            startActivity(savLstRefresh);
-                        }
-                    });
-                }
-            });*/
-
-            //click on trash can icon
-            /*savLstHldr.savLstDel.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                    savLstSavDb = (AccountsDb) savLstHldr.savLstDel.getTag();
-
-                    savLstDBMgr.deleteAccounts(savLstSavDb);
-                    savLstLstAdapter.updateSavings(savLstDBMgr.getSavings());
-                    notifyDataSetChanged();
-
-                    savLstRefresh = new Intent(AddSavingsList.this, AddSavingsList.class);
-                    savLstRefresh.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-                    startActivity(savLstRefresh);
-                }
-            });*/
 
             return convertView;
         }

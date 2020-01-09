@@ -12,19 +12,20 @@
         android:icon="@drawable/ic_account_balance_white_24dp"
         android:title="@string/Home_page"
         android:textColor="@color/colorPrimaryDark"/>
+
     <item
         android:id="@+id/menu_financial_summary"
-        android:icon="@drawable/ic_equalizer_black_24dp"
+        android:icon="@drawable/ic_attach_money_black_24dp"
         android:title="@string/edit_financial_summary" />
 
     <item
         android:id="@+id/menu_view_edit_transactions"
-        android:icon="@drawable/ic_equalizer_black_24dp"
+        android:icon="@drawable/ic_edit_black_24dp"
         android:title="@string/view_transactions" />
 
     <item
         android:id="@+id/menu_view_reports"
-        android:icon="@drawable/ic_equalizer_black_24dp"
+        android:icon="@drawable/ic_view_headline_black_24dp"
         android:title="@string/inc_exp_report" />
 
     <item

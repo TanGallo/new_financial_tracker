@@ -1,0 +1,593 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context=".LayoutHelp"
+    tools:openDrawer="end">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/colorPrimary"
+            android:elevation="4dp"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark" />
+
+        <FrameLayout
+            android:id="@+id/help_body"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <androidx.core.widget.NestedScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/helpInstructions"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:text="@string/help_instructions"
+                            android:textColor="@color/colorGreen"
+                            android:textSize="16sp" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginEnd="10dp"
+                            android:layout_marginBottom="10dp"
+                            android:alpha=".5"
+                            android:background="@color/colorPrimaryDark"></View>
+
+                        <TextView
+                        android:id="@+id/budgetQ2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:text="@string/budget_q2"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="18sp" />
+
+                        <TextView
+                            android:id="@+id/budgetA2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:text="@string/budget_3"
+                            android:textColor="@color/colorGreen"
+                            android:textSize="18sp" />
+
+                        <TextView
+                            android:id="@+id/budgetQ1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:text="@string/budget_q1"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textSize="18sp" />
+
+                        <TextView
+                            android:id="@+id/budgetA1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:text="@string/budget_1"
+                            android:textColor="@color/colorGreen"
+                            android:textSize="18sp" />
+
+                        <TextView
+                            android:id="@+id/dailyMoneyQ3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:text="@string/daily_money_q3"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textSize="18sp" />
+
+                        <TextView
+                            android:id="@+id/dailyMoneyA3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:text="@string/daily_money_3"
+                            android:textColor="@color/colorGreen"
+                            android:textSize="18sp" />
+
+                        <TextView
+                            android:id="@+id/dailyMoneyQ4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:text="@string/daily_money_q4"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textSize="18sp" />
+
+                        <TextView
+                            android:id="@+id/dailyMoneyA4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:text="@string/daily_money_4"
+                            android:textColor="@color/colorGreen"
+                            android:textSize="18sp" />
+
+                        <TextView
+                            android:id="@+id/dailyMoneyQ5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:text="@string/daily_money_q5"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textSize="18sp" />
+
+                        <TextView
+                            android:id="@+id/dailyMoneyA5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:text="@string/daily_money_5"
+                            android:textColor="@color/colorGreen"
+                            android:textSize="18sp" />
+
+                        <TextView
+                            android:id="@+id/dailyMoneyQ6"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:text="@string/daily_money_q6"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textSize="18sp" />
+
+                        <TextView
+                            android:id="@+id/dailyMoneyA6"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:text="@string/daily_money_6"
+                            android:textColor="@color/colorGreen"
+                            android:textSize="18sp" />
+
+                        <TextView
+                            android:id="@+id/dailyMoneyA6A"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:text="@string/daily_money_6A"
+                            android:textColor="@color/colorGreen"
+                            android:textSize="18sp" />
+
+                        <TextView
+                            android:id="@+id/dailyMoneyA6B"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:text="@string/daily_money_6B"
+                            android:textColor="@color/colorGreen"
+                            android:textSize="18sp" />
+
+                        <TextView
+                            android:id="@+id/dailyMoneyQ8"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:text="@string/daily_money_q8"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textSize="18sp" />
+
+                        <TextView
+                            android:id="@+id/dailyMoneyA8"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:text="@string/daily_money_8"
+                            android:textColor="@color/colorGreen"
+                            android:textSize="18sp" />
+
+                        <TextView
+                            android:id="@+id/debtsQ1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:text="@string/debts_q1"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textSize="18sp" />
+
+                        <TextView
+                            android:id="@+id/debtsA1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:text="@string/debts_1"
+                            android:textColor="@color/colorGreen"
+                            android:textSize="18sp" />
+
+                        <TextView
+                            android:id="@+id/debtsQ2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:text="@string/debts_q2"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textSize="18sp" />
+
+                        <TextView
+                            android:id="@+id/debtsA2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:text="@string/debts_2"
+                            android:textColor="@color/colorGreen"
+                            android:textSize="18sp"
+                            tools:ignore="TooManyViews" />
+
+                        <TextView
+                            android:id="@+id/debtsQ3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:text="@string/debts_q3"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textSize="18sp" />
+
+                        <TextView
+                            android:id="@+id/debtsA3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:text="@string/debts_3"
+                            android:textColor="@color/colorGreen"
+                            android:textSize="18sp" />
+
+                        <TextView
+                            android:id="@+id/debtsQ4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:text="@string/debts_q4"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textSize="18sp" />
+
+                        <TextView
+                            android:id="@+id/debtsA4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:text="@string/debts_4"
+                            android:textColor="@color/colorGreen"
+                            android:textSize="18sp" />
+
+                        <TextView
+                            android:id="@+id/debtsQ5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:text="@string/debts_q5"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textSize="18sp" />
+
+                        <TextView
+                            android:id="@+id/debtsA5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:text="@string/debts_5"
+                            android:textColor="@color/colorGreen"
+                            android:textSize="18sp" />
+
+                        <TextView
+                            android:id="@+id/savingsQ1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:text="@string/savings_q1"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textSize="18sp" />
+
+                        <TextView
+                            android:id="@+id/savingsA1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:text="@string/savings_1"
+                            android:textColor="@color/colorGreen"
+                            android:textSize="18sp" />
+
+                        <TextView
+                            android:id="@+id/savingsQ2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:text="@string/debts_q2"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textSize="18sp" />
+
+                        <TextView
+                            android:id="@+id/savingsA2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:text="@string/savings_2"
+                            android:textColor="@color/colorGreen"
+                            android:textSize="18sp" />
+
+                        <TextView
+                            android:id="@+id/savingsQ3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:text="@string/savings_q3"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textSize="18sp" />
+
+                        <TextView
+                            android:id="@+id/savingsA3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:text="@string/savings_3"
+                            android:textColor="@color/colorGreen"
+                            android:textSize="18sp" />
+
+                        <TextView
+                            android:id="@+id/savingsQ4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:text="@string/savings_q4"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textSize="18sp" />
+
+                        <TextView
+                            android:id="@+id/savingsA4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:text="@string/savings_4"
+                            android:textColor="@color/colorGreen"
+                            android:textSize="18sp" />
+
+                        <TextView
+                            android:id="@+id/savingsQ5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:text="@string/savings_q5"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textSize="18sp" />
+
+                        <TextView
+                            android:id="@+id/savingsA5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:text="@string/savings_5"
+                            android:textColor="@color/colorGreen"
+                            android:textSize="18sp" />
+
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginEnd="10dp"
+                            android:layout_marginBottom="10dp"
+                            android:alpha=".5"
+                            android:background="@color/colorPrimary"></View>
+
+                        <LinearLayout
+                            android:id="@+id/contactUsText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="10dp"
+                                android:gravity="center_horizontal"
+                                android:text="@string/contact_us_1"
+                                android:textColor="@color/colorGreen"
+                                android:textSize="20sp" />
+
+                            <TextView
+                                android:id="@+id/emailTextLabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="10dp"
+                                android:text="@string/contact_us_2"
+                                android:textColor="@color/colorPrimaryDark"
+                                android:textSize="20sp" />
+
+                            <TextView
+                                android:id="@+id/emailText"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="10dp"
+                                android:text="@string/email_address"
+                                android:textColor="@color/blue4"
+                                android:textSize="18sp" />
+
+                            <TextView
+                                android:id="@+id/urlTextLabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="10dp"
+                                android:text="@string/contact_us_3"
+                                android:textColor="@color/colorPrimaryDark"
+                                android:textSize="20sp" />
+
+                            <TextView
+                                android:id="@+id/urlText"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="10dp"
+                                android:text="@string/website"
+                                android:textColor="@color/blue4"
+                                android:textSize="18sp" />
+
+                        </LinearLayout>
+
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginEnd="10dp"
+                            android:layout_marginBottom="10dp"
+                            android:alpha=".5"
+                            android:background="@color/colorPrimary"></View>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/helpRate"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginEnd="10dp"
+                                android:text="@string/rate_this_app"
+                                android:textColor="@color/colorPrimaryDark"
+                                android:textSize="20sp" />
+
+                            <LinearLayout
+                                android:id="@+id/ratingsLayout"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal"
+                                android:orientation="horizontal">
+
+                                <ImageButton
+                                    android:id="@+id/starButton1"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_margin="-10dp"
+                                    android:backgroundTint="@android:color/transparent"
+                                    android:contentDescription="@string/rate_this_app"
+                                    android:scaleType="fitCenter"
+                                    android:src="@drawable/ic_star_border_blue_24dp" />
+
+                                <ImageButton
+                                    android:id="@+id/starButton2"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_margin="-10dp"
+                                    android:backgroundTint="@android:color/transparent"
+                                    android:contentDescription="@string/rate_this_app"
+                                    android:scaleType="fitCenter"
+                                    android:src="@drawable/ic_star_border_blue_24dp" />
+
+                                <ImageButton
+                                    android:id="@+id/starButton3"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_margin="-10dp"
+                                    android:backgroundTint="@android:color/transparent"
+                                    android:contentDescription="@string/rate_this_app"
+                                    android:scaleType="fitCenter"
+                                    android:src="@drawable/ic_star_border_blue_24dp" />
+
+                                <ImageButton
+                                    android:id="@+id/starButton4"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_margin="-10dp"
+                                    android:backgroundTint="@android:color/transparent"
+                                    android:contentDescription="@string/rate_this_app"
+                                    android:scaleType="fitCenter"
+                                    android:src="@drawable/ic_star_border_blue_24dp" />
+
+                                <ImageButton
+                                    android:id="@+id/starButton5"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_margin="-10dp"
+                                    android:backgroundTint="@android:color/transparent"
+                                    android:contentDescription="@string/rate_this_app"
+                                    android:scaleType="fitCenter"
+                                    android:src="@drawable/ic_star_border_blue_24dp" />
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </androidx.core.widget.NestedScrollView>
+
+            </LinearLayout>
+
+        </FrameLayout>
+
+    </LinearLayout>
+
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/nav_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        app:headerLayout="@layout/c1_nav_header_main"
+        app:menu="@menu/activity_main_drawer" />
+
+</androidx.drawerlayout.widget.DrawerLayout>

@@ -31,7 +31,7 @@ import ca.gotchasomething.mynance.data.BudgetDb;
 public class AddExpenseList extends MainNavigation {
 
     BudgetDb expLstExpDB;
-    Button expLstAddMoreButton, expLstDoneButton, expLstExpCancelBtn, expLstExpSaveBtn, expLstExpUpdateBtn;
+    Button expLstAddMoreButton, expLstDoneButton, expLstExpCancelBtn, expLstResetBtn, expLstExpSaveBtn, expLstExpUpdateBtn;
     ContentValues expLstCV;
     DbHelper expLstHelper;
     DbManager expLstDbMgr;
@@ -74,6 +74,8 @@ public class AddExpenseList extends MainNavigation {
 
         expLstSpinLayout = findViewById(R.id.layout1SpinLayout);
         expLstSpinLayout.setVisibility(View.GONE);
+        expLstResetBtn = findViewById(R.id.layout1SpinResetBtn);
+        expLstResetBtn.setVisibility(View.GONE);
         expLstTotalTV = findViewById(R.id.layout1TotalTV);
         expLstTotalTV.setVisibility(View.GONE);
 

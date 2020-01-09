@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -21,31 +20,24 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 
-import java.text.NumberFormat;
 import java.util.List;
 
 import ca.gotchasomething.mynance.data.AccountsDb;
 
 public class AddDebtsList extends MainNavigation {
 
-    AccountsDb debtLstDebtDb;
-    Button debtLstAddMoreBtn, debtLstUpdateBtn, debtLstCancelBtn, debtLstDoneBtn, debtLstSaveBtn;
-    ContentValues debtLstCV, debtLstCV2, debtLstCV3;
-    DbHelper debtLstHelper, debtLstHelper2;
+    Button debtLstAddMoreBtn, debtLstDoneBtn, debtLstResetBtn;
+    ContentValues debtLstCV;
+    DbHelper debtLstHelper;
     DbManager debtLstDBMgr;
-    Double debtAmtFromEntry = 0.0, debtAmtFromTag = 0.0, debtRateFromEntry = 0.0, debtRateFromTag = 0.0, debtPaytFromEntry = 0.0, debtPaytFromTag = 0.0,
-            debtLimitFromEntry = 0.0, debtLimitFromTag = 0.0, debtLstDebtRate2 = 0.0;
-    EditText debtLstLimitET, debtLstAmtET, debtLstPercentET, debtLstPaytsET, debtLstDebtNameET;
     DebtLstListAdapter debtLstLstAdapter;
     General debtLstGen;
-    Intent debtLstRefresh, debtLstToLayoutBudget, debtLstToLayoutDebt, debtLstToDaiMonCCPur, debtLstToSetUp, debtLstToAddMore, debtLstToAnalysis;
+    Intent debtLstToLayoutDebt, debtLstToDaiMonCCPur, debtLstToSetUp, debtLstToAddMore;
     LinearLayout debtLstSpinLayout;
     ListView debtLstListView;
-    Long debtIdFromTag;
-    NumberFormat debtLstPercentFor = NumberFormat.getPercentInstance();
-    SQLiteDatabase debtLstDB, debtLstDB2;
-    String debtEndFromTag = null, debtNameFromTag = null, debtLstDebtAmt2 = null, debtLstDebtEnd = null, debtLstDebtRate3 = null;
-    TextView debtLstDateRes, debtLstDateResLabel, debtLstHeaderLabelTV, debtLstTotalTV;
+    SQLiteDatabase debtLstDB;
+    String debtLstDebtAmt2 = null, debtLstDebtEnd = null;
+    TextView debtLstHeaderLabelTV, debtLstTotalTV;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -69,6 +61,8 @@ public class AddDebtsList extends MainNavigation {
 
         debtLstSpinLayout = findViewById(R.id.layout1SpinLayout);
         debtLstSpinLayout.setVisibility(View.GONE);
+        debtLstResetBtn = findViewById(R.id.layout1SpinResetBtn);
+        debtLstResetBtn.setVisibility(View.GONE);
 
         debtLstHeaderLabelTV = findViewById(R.id.layout1HeaderLabelTV);
         debtLstHeaderLabelTV.setText(getString(R.string.credit));
@@ -122,83 +116,6 @@ public class AddDebtsList extends MainNavigation {
         }
     };
 
-    /*TextWatcher onChangeDebtLstAmtET = new TextWatcher() {
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-        }
-
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-            debtAmtFromEntry = debtLstGen.dblFromET(debtLstAmtET);
-            debtRateFromEntry = debtLstGen.percentFromET(debtLstPercentET);
-            debtPaytFromEntry = debtLstGen.dblFromET(debtLstPaytsET);
-            debtLstDebtEndRes();
-        }
-
-        @Override
-        public void afterTextChanged(Editable s) {
-        }
-    };
-
-    TextWatcher onChangeDebtLstPercentET = new TextWatcher() {
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-        }
-
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-            debtAmtFromEntry = debtLstGen.dblFromET(debtLstAmtET);
-            debtRateFromEntry = debtLstGen.percentFromET(debtLstPercentET);
-            debtPaytFromEntry = debtLstGen.dblFromET(debtLstPaytsET);
-            debtLstDebtEndRes();
-        }
-
-        @Override
-        public void afterTextChanged(Editable s) {
-        }
-    };
-
-    TextWatcher onChangeDebtLstPaytsET = new TextWatcher() {
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-        }
-
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-            debtAmtFromEntry = debtLstGen.dblFromET(debtLstAmtET);
-            debtRateFromEntry = debtLstGen.percentFromET(debtLstPercentET);
-            debtPaytFromEntry = debtLstGen.dblFromET(debtLstPaytsET);
-            debtLstDebtEndRes();
-        }
-
-        @Override
-        public void afterTextChanged(Editable s) {
-        }
-    };*/
-
-    /*public void debtLstDebtEndRes() {
-
-        debtLstDebtEnd = debtLstGen.calcDebtDate(
-                debtAmtFromEntry,
-                debtRateFromEntry,
-                debtPaytFromEntry,
-                getString(R.string.debt_paid),
-                getString(R.string.too_far));
-        if (debtLstDebtEnd.equals(getString(R.string.debt_paid))) {
-            debtLstDateResLabel.setVisibility(View.GONE);
-            debtLstDateRes.setTextColor(Color.parseColor("#5dbb63")); //light green
-        } else if (debtLstDebtEnd.equals(getString(R.string.too_far))) {
-            debtLstDateResLabel.setVisibility(View.GONE);
-            debtLstDateRes.setTextColor(Color.parseColor("#ffff4444")); //red
-        } else {
-            debtLstDateResLabel.setVisibility(View.VISIBLE);
-            debtLstDateRes.setTextColor(Color.parseColor("#303F9F")); //primary dark
-            debtLstDateResLabel.setTextColor(Color.parseColor("#303F9F"));
-        }
-
-        debtLstDateRes.setText(debtLstDebtEnd);
-    }*/
-
     public class DebtLstListAdapter extends ArrayAdapter<AccountsDb> {
 
         public Context context;
@@ -244,10 +161,8 @@ public class AddDebtsList extends MainNavigation {
                 debtLstHldr.debtLstFreeDateTV = convertView.findViewById(R.id.bigLstTV3);
                 debtLstHldr.debtLstDel = convertView.findViewById(R.id.bigLstDelBtn);
                 debtLstHldr.debtLstEdit = convertView.findViewById(R.id.bigLstEditBtn);
-                //if(debtLstDBMgr.retrieveLastPageId() == 7 || debtLstDBMgr.retrieveLastPageId() == 11) {
-                    debtLstHldr.debtLstDel.setVisibility(View.GONE);
-                    debtLstHldr.debtLstEdit.setVisibility(View.GONE);
-                //}
+                debtLstHldr.debtLstDel.setVisibility(View.GONE);
+                debtLstHldr.debtLstEdit.setVisibility(View.GONE);
                 debtLstHldr.debtLstLabel2 = convertView.findViewById(R.id.bigLstLabel2);
                 debtLstHldr.debtLstLabel2.setVisibility(View.GONE);
                 debtLstHldr.debtLstOverLimit = convertView.findViewById(R.id.bigLstTV4);
@@ -294,160 +209,6 @@ public class AddDebtsList extends MainNavigation {
             } else {
                 debtLstHldr.debtLstOverLimit.setVisibility(View.GONE);
             }
-
-            /*debtLstHldr.debtLstDel.setTag(debts.get(position));
-            debtLstHldr.debtLstEdit.setTag(debts.get(position));*/
-
-            //click on pencil icon to edit a data record
-            /*debtLstHldr.debtLstEdit.setOnClickListener(new View.OnClickListener() {
-
-                @Override
-                public void onClick(View v) {
-
-                    setContentView(R.layout.form_3_add_debt);
-                    AddDebtsList.this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-
-                    debtLstDBMgr = new DbManager(getApplicationContext());
-
-                    debtLstDebtNameET = findViewById(R.id.addDebtNameET);
-                    debtLstLimitET = findViewById(R.id.addDebtLimitET);
-                    debtLstAmtET = findViewById(R.id.addDebtAmtET);
-                    debtLstPercentET = findViewById(R.id.addDebtRateET);
-                    debtLstPaytsET = findViewById(R.id.addDebtPaytET);
-                    debtLstDateRes = findViewById(R.id.addDebtDateResTV);
-                    debtLstDateResLabel = findViewById(R.id.addDebtDateResLabel);
-
-                    debtLstSaveBtn = findViewById(R.id.addDebtSaveBtn);
-                    debtLstSaveBtn.setVisibility(View.GONE);
-                    debtLstUpdateBtn = findViewById(R.id.addDebtUpdateBtn);
-                    debtLstCancelBtn = findViewById(R.id.addDebtCancelBtn);
-
-                    debtLstDebtDb = (AccountsDb) debtLstHldr.debtLstEdit.getTag();
-
-                    debtNameFromTag = debtLstDebtDb.getAcctName();
-                    debtAmtFromTag = debtLstDebtDb.getAcctBal();
-                    debtLimitFromTag = debtLstDebtDb.getAcctMax();
-                    debtRateFromTag = debtLstDebtDb.getAcctIntRate();
-                    debtPaytFromTag = debtLstDebtDb.getAcctPaytsTo();
-                    debtEndFromTag = debtLstDebtDb.getAcctEndDate();
-                    debtIdFromTag = debtLstDebtDb.getId();
-
-                    debtLstDebtNameET.setText(debtNameFromTag);
-                    if (debtEndFromTag.equals(getString(R.string.debt_paid))) {
-                        debtLstDateResLabel.setVisibility(View.GONE);
-                        debtLstDateRes.setTextColor(Color.parseColor("#5dbb63")); //light green
-                    } else if (debtEndFromTag.equals(getString(R.string.too_far))) {
-                        debtLstDateResLabel.setVisibility(View.GONE);
-                        debtLstDateRes.setTextColor(Color.parseColor("#ffff4444")); //red
-                    } else {
-                        debtLstDateResLabel.setVisibility(View.VISIBLE);
-                        debtLstDateRes.setTextColor(Color.parseColor("#303F9F")); //pri,ary dark
-                        debtLstDateResLabel.setTextColor(Color.parseColor("#303F9F"));
-                    }
-
-                    debtLstGen.dblASCurrency(String.valueOf(debtLimitFromTag), debtLstLimitET);
-                    
-                    debtLstGen.dblASCurrency(String.valueOf(debtAmtFromTag), debtLstAmtET);
-                    debtLstAmtET.addTextChangedListener(onChangeDebtLstAmtET);
-
-                    debtLstDebtRate2 = debtRateFromTag / 100;
-                    debtLstPercentFor.setMinimumFractionDigits(2);
-                    debtLstDebtRate3 = debtLstPercentFor.format(debtLstDebtRate2);
-                    debtLstPercentET.setText(debtLstDebtRate3);
-                    debtLstPercentET.addTextChangedListener(onChangeDebtLstPercentET);
-
-                    debtLstGen.dblASCurrency(String.valueOf(debtPaytFromTag), debtLstPaytsET);
-                    debtLstPaytsET.addTextChangedListener(onChangeDebtLstPaytsET);
-
-                    debtLstUpdateBtn.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-
-                            if (!debtLstGen.stringFromET(debtLstDebtNameET).equals("null")) {
-
-                                debtLimitFromEntry = debtLstGen.dblFromET(debtLstLimitET);
-                                debtAmtFromEntry = debtLstGen.dblFromET(debtLstAmtET);
-                                debtRateFromEntry = debtLstGen.percentFromET(debtLstPercentET);
-                                debtPaytFromEntry = debtLstGen.dblFromET(debtLstPaytsET);
-                                
-                                debtLstDebtDb.setAcctName(debtLstGen.stringFromET(debtLstDebtNameET));
-                                debtLstDebtDb.setAcctMax(debtLimitFromEntry);
-                                debtLstDebtDb.setAcctBal(debtAmtFromEntry);
-                                debtLstDebtDb.setAcctIntRate(debtRateFromEntry);
-                                debtLstDebtDb.setAcctPaytsTo(debtPaytFromEntry);
-                                debtLstDebtEndRes();
-                                debtLstDebtDb.setAcctEndDate(debtLstDebtEnd);
-
-                                debtLstDBMgr.updateAccounts(debtLstDebtDb);
-
-                                if(debtLstDBMgr.getTransfers().size() != 0) {
-                                    debtLstDBMgr.updateRecReTransfer(debtIdFromTag, debtLstDBMgr.transfersToAcctThisYear(debtIdFromTag, debtLstGen.lastNumOfDays(365)), debtLstDBMgr.transfersFromAcctThisYear(debtIdFromTag, debtLstGen.lastNumOfDays(365)));
-                                } else {
-                                    debtLstDebtDb.setAcctAnnPaytsTo(debtPaytFromEntry * 12.0);
-                                    debtLstDBMgr.updateAccounts(debtLstDebtDb);
-                                }
-
-                                debtLstHelper2 = new DbHelper(getContext());
-                                debtLstDB2 = debtLstHelper2.getWritableDatabase();
-
-                                String[] args2 = new String[]{String.valueOf(debtLstDebtDb.getId())};
-
-                                debtLstCV2 = new ContentValues();
-                                debtLstCV3 = new ContentValues();
-
-                                debtLstCV2.put(DbHelper.TRANSFROMACCTNAME, debtLstGen.stringFromET(debtLstDebtNameET));
-                                debtLstCV3.put(DbHelper.TRANSTOACCTNAME, debtLstGen.stringFromET(debtLstDebtNameET));
-
-                                try {
-                                    debtLstDB2.update(DbHelper.TRANSACTIONS_TABLE_NAME, debtLstCV2, DbHelper.TRANSFROMACCTID + "=?", args2);
-                                    debtLstDB2.update(DbHelper.TRANSACTIONS_TABLE_NAME, debtLstCV3, DbHelper.TRANSTOACCTID + "=?", args2);
-                                } catch (CursorIndexOutOfBoundsException | SQLException e) {
-                                    e.printStackTrace();
-                                }
-
-                                debtLstDB2.close();
-
-                                debtLstLstAdapter.updateDebts(debtLstDBMgr.getDebts());
-                                notifyDataSetChanged();
-
-                                Toast.makeText(getBaseContext(), getString(R.string.changes_saved), Toast.LENGTH_LONG).show();
-
-                                debtLstRefresh = new Intent(AddDebtsList.this, AddDebtsList.class);
-                                debtLstRefresh.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-                                startActivity(debtLstRefresh);
-                            } else {
-                                Toast.makeText(getBaseContext(), R.string.no_blanks_warning, Toast.LENGTH_LONG).show();
-                            }
-                        }
-                    });
-
-                    debtLstCancelBtn.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            debtLstRefresh = new Intent(AddDebtsList.this, AddDebtsList.class);
-                            debtLstRefresh.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-                            startActivity(debtLstRefresh);
-                        }
-                    });
-                }
-            });*/
-
-            //click on trash can icon
-            /*debtLstHldr.debtLstDel.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                    debtLstDebtDb = (AccountsDb) debtLstHldr.debtLstDel.getTag();
-
-                    debtLstDBMgr.deleteAccounts(debtLstDebtDb);
-                    debtLstLstAdapter.updateDebts(debtLstDBMgr.getDebts());
-                    notifyDataSetChanged();
-
-                    debtLstRefresh = new Intent(AddDebtsList.this, AddDebtsList.class);
-                    debtLstRefresh.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-                    startActivity(debtLstRefresh);
-                }
-            });*/
 
             return convertView;
         }

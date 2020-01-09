@@ -18,14 +18,14 @@ import androidx.viewpager.widget.ViewPager;
 
 public class SlidesSetUpL extends AppCompatActivity implements View.OnClickListener {
 
-    private AdapterSlides adapter;
+    private AdapterSlidesB adapter;
     private Button previousBtn, nextBtn;
     DbManager dbManager;
     ImageView slideImage;
     private ImageView[] dots;
     private int[] slides,
             incomeSlides = {R.layout.b1_slides_set_up_background_land, R.layout.b1_slides_set_up_background_land, R.layout.b1_slides_set_up_background_land, R.layout.b1_slides_set_up_background_land},
-            billsSlides = {R.layout.b1_slides_set_up_background_land, R.layout.b1_slides_set_up_background_land, R.layout.b1_slides_set_up_background_land, R.layout.b1_slides_set_up_background_land,
+            billsSlides = {R.layout.b1_slides_set_up_background_land, R.layout.b1_slides_set_up_background_land, R.layout.b1_slides_set_up_background_land,
                     R.layout.b1_slides_set_up_background_land, R.layout.b1_slides_set_up_background_land},
             debtsSlides = {R.layout.b1_slides_set_up_background_land, R.layout.b1_slides_set_up_background_land},
             savingsSlides = {R.layout.b1_slides_set_up_background_land, R.layout.b1_slides_set_up_background_land},
@@ -74,7 +74,7 @@ public class SlidesSetUpL extends AppCompatActivity implements View.OnClickListe
                 slides = finalSlides;
                 break;
         }
-        adapter = new AdapterSlides(slides, this);
+        adapter = new AdapterSlidesB(slides, this);
         viewPager.setAdapter(adapter);
 
         slideImage = findViewById(R.id.slideImage);
@@ -132,7 +132,7 @@ public class SlidesSetUpL extends AppCompatActivity implements View.OnClickListe
                     case "income":
                         slideImage.setImageDrawable(getDrawable(R.drawable.ic_receipt_white_24dp));
                         slideTitle.setVisibility(View.GONE);
-                        if (position == 5) {
+                        if (position == 4) {
                             slideTV2.setVisibility(View.VISIBLE);
                             slideTV3.setVisibility(View.VISIBLE);
                             slideTV4.setVisibility(View.VISIBLE);
@@ -165,8 +165,6 @@ public class SlidesSetUpL extends AppCompatActivity implements View.OnClickListe
                                 slideTV1.setText(R.string.b3_text4);
                             } else if (position == 3) {
                                 slideTV1.setText(R.string.b3_text5);
-                            } else if (position == 4) {
-                                slideTV1.setText(R.string.b3_text6);
                             }
                         }
                         break;

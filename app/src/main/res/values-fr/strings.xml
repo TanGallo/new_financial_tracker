@@ -116,9 +116,9 @@
     <string name="enter">créer</string>
     <string name="year_to_date">année entière à ce jour</string>
     <string name="which_debt">Contre quelle DETTE?</string>
-    <string name="budget_1">Lorsque vous créez des comptes de DETTES ou D\'ÉPARGNES, MYnance crée automatiquement des catégories de revenus et de dépenses liées dans votre BUDGET. Afin de conserver correctement les données liées, vous pouvez uniquement supprimer ces éléments en supprimant les comptes parents dans DETTES ou COMPTES D\'ÉPARGNES.</string>
+    <string name="budget_1">Vous pouvez créer autant de catégories de dépenses que vous le souhaitez et les identifier comme \"besoins\" ou \"facultatifs\". MYnance \"réservera\" de l\'argent pour tous les \"besoins\".</string>
     <string name="budget_2">Utilisez simplement les boutons PLUS pour ajouter des catégories de revenus (toutes vos sources d’argent entrant) et des catégories de dépenses (toutes les dépenses pour lesquelles vous dépensez votre argent).</string>
-    <string name="budget_3">Vous faites un budget pour 2 raisons:</string>
+    <string name="budget_3">MYnance le fait pour vous! Au fur et à mesure que vous utilisez l\'application, elle mettra constamment à jour les numéros et réservera le bon montant pour payer vos factures. Elle vous vous avertira si vous dépensez plus que vous ne gagnez.</string>
     <string name="budget_4">1. Pour vous assurer de ne pas dépenser plus que ce que vous gagnez.</string>
     <string name="budget_5">2. Pour vous donner des directives de dépenses pour les items optionnels tels que des cadeaux, des divertissements, des vêtements, etc.</string>
     <string name="budget_6">MYnance vous alertera si votre budget n’est pas équilibré (c’est-à-dire si vous dépensez plus que ce que vous gagnez).</string>
@@ -228,7 +228,7 @@
     <string name="delete_debt_warning">Attention: lorsque vous supprimez cet élément, les catégories de revenus et de dépenses correspondantes seront également supprimées de votre BUDGET.</string>
     <string name="set_up_q1">Comment modifier le solde de départ entré lors du processus de configuration?</string>
     <string name="set_up_a1">Allez à l\'onglet QUOTIDIEN - ERVENUS et cliquez sur l\'icône en forme de crayon à côté du solde de départ.</string>
-    <string name="help_instructions">Choisissez un sujet, puis cliquez sur une question pour voir sa réponse.</string>
+    <string name="help_instructions">Cliquez sur une question pour voir sa réponse.</string>
     <string name="no_time">Cliquez ici si vous n\'avez pas le temps de terminer ceci maintenant.</string>
     <string name="no_time2">C\'est bien, fermez simplement l\'application et elle vous ramènera ici la prochaine fois que vous l\'ouvrirez, ou cliquez sur \"Dettes Terminées\" et vous pourrez terminer cette étape plus tard en accédant à DETTES.</string>
     <string name="need_help">Cliquez ici si vous avez besoin d\'aide pour cette étape.</string>
@@ -242,12 +242,12 @@
     <string name="daily_money_q2">Que signifie \"Pour Dépenser\"?</string>
     <string name="daily_money_q3">J\'ai mis de l\'argent sur mon compte, mais le montant \"Pour Dépenser\" est toujours égal à zéro.</string>
     <string name="daily_money_q4">Il semble que le mauvais montant entre dans le montant \"Pour Dépenser\".</string>
-    <string name="daily_money_4">L\'application réservera le pourcentage de l\'argent que vous avez mis dans votre compte bancaire et que vous avez identifié dans votre BUDGET comme étant nécessaire pour payer les besoins. Seul le solde de votre revenu sera \"Pour Dépenser\".</string>
-    <string name="daily_money_q5">L\'onglet QUOTIDIEN - REVENUS me permet uniquement de placer de l\'argent dans mon compte bancaire. Où puis-je placer de l\'argent dans mes autres comptes?</string>
-    <string name="daily_money_5">Vous pouvez transférer de l\'argent entre tout compte DETTES et / ou ÉPARGNE dans l\'écran TRANSFERT DE FONDS</string>
+    <string name="daily_money_4">L\'application réservera le pourcentage de l\'argent que vous avez mis dans votre compte bancaire primaire que vous avez identifié comme étant nécessaire pour payer les factures. Seul le solde de votre revenu sera \"Pour Dépenser\".</string>
+    <string name="daily_money_q5">Le montant affiché comme le solde de mon compte bancaire primaire ne correspond pas aux montants «disponibles à dépenser» et «réservés aux factures».</string>
+    <string name="daily_money_5">Si autrefois vous avez trop dépenser, vous vous n\'avez peut-être pas rattrapé si vous avez utilisé de l\'argent réservé pour des factures. L\'application suit cela pour vous.</string>
     <string name="daily_money_q6">Lorsque je retrait de l\'argent de mon compte bancaire, comment puis-je enregistrer les transactions sur lesquelles j\'ai dépenser?</string>
     <string name="daily_money_6">Comment vous gérez les retraits d\'argent est un choix personnel.</string>
-    <string name="daily_money_6A">Vous pouvez créer une catégorie de dépenses de \"Retrait\" dans votre BUDGET et enregistrer la transaction une fois contre celle-ci, ou vous pouvez choisir d\'indiquer où chaque dollar du retrait a été dépensé pour plusieurs catégories de dépenses.</string>
+    <string name="daily_money_6A">Vous pouvez créer une catégorie de dépenses de \"retraits\" dans le \"Résumé Financier\" ou vous pouvez choisir d\'indiquer où chaque dollar du retrait a été dépensé pour plusieurs catégories de dépenses.</string>
     <string name="daily_money_6B">MYnance pense que la deuxième méthode deviendra fastidieuse et constitue un moyen irréaliste de gérer votre argent. Il devrait suffire d\'enregistrer le retrait une fois. Vous pouvez utiliser le RAPPORT DE DÉPENSES pour déterminer si les retraits fréquents d’argent sont une mauvaise habitude pour vous.</string>
     <string name="daily_money_q7">Quelle est la différence entre l’onglet QUOTIDIEN - PAYER LES CARTES et l’onglet QUOTIDIEN - DÉPENSES pour enregistrer un paiement sur ma carte de crédit?</string>
     <string name="daily_money_7">MYnance croit fermement à l’évitement de l’endettement des consommateurs sur les cartes de crédit. L’onglet QUOTIDIEN - PAYER LES CARTES est spécialement conçu à cet effet.</string>
@@ -259,8 +259,8 @@
     <string name="daily_money_9">Lorsque vous identifiez une catégorie de dépense dans votre BUDGET comme étant facultative, l\'application vous demande si vous souhaitez suivre vos dépenses sur une base hebdomadaire. Si oui, vous pouvez utiliser l\'onglet QUOTIDIEN - LIMITES DE DÉPENSES pour voir combien a été dépensé entre le lundi et le dimanche de cette semaine dans cette catégorie.</string>
     <string name="daily_money_q10">Pourquoi ne puis-je pas supprimer certains éléments de l\'onglet QUOTIDIEN - CARTES DE CRÉDIT?</string>
     <string name="daily_money_10">Une fois que vous avez effectué un paiement sur une carte de crédit pour un achat particulier, cet achat ne peut plus être supprimé.</string>
-    <string name="budget_q1">Pourquoi ne puis-je pas supprimer certaines catégories de revenus ou de dépenses?</string>
-    <string name="budget_q2">J\'ai besoin de conseils pour établir un budget.</string>
+    <string name="budget_q1">Je veux suivre mes dépenses plus que juste mes factures.</string>
+    <string name="budget_q2">Ou est-ce que je devrais aller pour établir un budget?</string>
     <string name="budget_q3">À quelle fréquence dois-je modifier mon budget?</string>
     <string name="debts_q1">J\'ai besoin de conseils pour saisir des comptes de dettes.</string>
     <string name="debts_q2">Pourquoi la date apparaît-elle \"Trop loin dans le futur\"?</string>
@@ -271,7 +271,7 @@
     <string name="savings_q3">Que se passe-t-il si le taux d’intérêt change dans mon COMPTE D\'ÉPARGNE?</string>
     <string name="savings_q4">Je prends fréquemment des retraits d\'un COMPTE D\'ÉPARGNE, comment que l\'application peut gérer cela?</string>
     <string name="savings_q5">Je ne cherche pas à atteindre un objectif financier particulier, je veux savoir combien je vais accumuler à une certaine date.</string>
-    <string name="daily_money_3">Cette application est intelligente! Lorsque vous dépensez trop, vous ne gagnerez pas d\'argent \"Pour Dépenser\" jusqu\'à ce que vous ayez suffisamment d\'argent réservé pour répondre aux \"besoins\" que vous avez identifiés dans votre BUDGET.</string>
+    <string name="daily_money_3">Cette application est intelligente! Lorsque vous dépensez trop, vous ne gagnerez pas d\'argent \"Pour Dépenser\" jusqu\'à ce que vous ayez suffisamment d\'argent réservé pour payer vos factures.</string>
     <string name="over_limit">SUR LA LIMITE</string>
     <string name="daily_money_q11">Pourquoi toutes mes transactions par carte de crédit n\'apparaissent-elles pas dans l\'onglet PAYER LES CARTE?</string>
     <string name="daily_money_11">Seuls les achats par carte de crédit apparaîtront dans l\'onglet PAY CC. Toutes transactions qui sont des transferts de fonds vers un autre compte DETTES ou ÉPARGNE peut être remboursée à l\'aide de l\'onglet QUOTIDIEN - DÉPENSES ou de l\'écran TRANSFERT DE FONDS.</string>
@@ -534,4 +534,6 @@
     <string name="cc_paid">ccPd</string>
     <string name="acct_curr">Acct/Curr</string>
     <string name="bdgt_trans">Bdgt/Trans</string>
+    <string name="payment_from">Payer la carte de crédit de:</string>
+    <string name="accounts">Comptes</string>
 </resources>
