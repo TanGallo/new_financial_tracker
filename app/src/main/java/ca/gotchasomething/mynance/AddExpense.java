@@ -18,17 +18,41 @@ import ca.gotchasomething.mynance.data.BudgetDb;
 public class AddExpense extends AppCompatActivity {
 
     BudgetDb addExpExpDb;
-    Button addExpSaveBtn, addExpCancelBtn, addExpUpdateBtn;
+    Button addExpSaveBtn,
+            addExpCancelBtn,
+            addExpUpdateBtn;
     DbManager addExpDbMgr;
-    Double expAmtFromEntry = 0.0, expAnnAmtFromEntry = 0.0, expAAnnAmtFromEntry = 0.0, expBAnnAmtFromEntry = 0.0, expFrqFromEntry = 0.0;
-    EditText addExpCatET, addExpAmtET;
+    Double expAmtFromEntry = 0.0,
+            expAnnAmtFromEntry = 0.0,
+            expFrqFromEntry = 0.0;
+    EditText addExpCatET,
+            addExpAmtET;
     General addExpGen;
-    Intent addExpToList, addExpToWeeklyList;
-    RadioButton addExpARB, addExpAnnlyRB, addExpBRB, addExpBiAnnlyRB, addExpBiMthlyRB, addExpBiWklyRB, addExpMthlyRB, addExpNoWklyRB, addExpWklyRB, addExpYesWklyRB;
-    RadioGroup addExpFrqRG, addExpABRG, addExpWklyRG;
-    String addExpABRB = null, addExpFrqRB = null, expPriorityFromEntry = null, expWeeklyFromEntry = null, addExpWklyLimRB = null, expNameFromEntry = null;
-    TextView addExpCatLabel, addExpWklyLabel;
-    View addExpLine1, addExpLine2;
+    Intent addExpToList,
+            addExpToWeeklyList;
+    RadioButton addExpARB,
+            addExpAnnlyRB,
+            addExpBRB,
+            addExpBiAnnlyRB,
+            addExpBiMthlyRB,
+            addExpBiWklyRB,
+            addExpMthlyRB,
+            addExpNoWklyRB,
+            addExpWklyRB,
+            addExpYesWklyRB;
+    RadioGroup addExpFrqRG,
+            addExpABRG,
+            addExpWklyRG;
+    String addExpABRB = null,
+            addExpFrqRB = null,
+            expPriorityFromEntry = null,
+            expWeeklyFromEntry = null,
+            addExpWklyLimRB = null,
+            expNameFromEntry = null;
+    TextView addExpCatLabel,
+            addExpWklyLabel;
+    View addExpLine1,
+            addExpLine2;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

@@ -27,14 +27,20 @@ public class LayoutWeeklyLimitsList extends AppCompatActivity {
 
     BudgetDb wee1ExpDb;
     Button wee1DoneBtn;
-    ContentValues wee1CV, wee1CV2;
-    DbHelper wee1Helper, wee1Helper2;
+    ContentValues wee1CV,
+            wee1CV2;
+    DbHelper wee1Helper,
+            wee1Helper2;
     DbManager wee1DbMgr;
     Double wee1WeeklyAmt;
     General wee1Gen;
-    Intent wee1ToSetUp, wee1ToMain, wee1ToAddMoreExp, wee1ToWeekly;
+    Intent wee1ToSetUp,
+            wee1ToMain,
+            wee1ToAddMoreExp,
+            wee1ToWeekly;
     ListView wee1ListView;
-    SQLiteDatabase wee1DB, wee1DB2;
+    SQLiteDatabase wee1DB,
+            wee1DB2;
     TextView wee1LayoutHeaderLabel;
     Wee1LstAdapter wee1LstAdapter;
 

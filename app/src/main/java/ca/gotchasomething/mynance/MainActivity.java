@@ -8,7 +8,6 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 public class MainActivity extends MainNavigation {
 
     Intent intent;
-    //PreferenceManager pfMgr;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,22 +26,11 @@ public class MainActivity extends MainNavigation {
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        //pfMgr = new PreferenceManager(this);
-
-        //if (new PreferenceManager(this).checkPreferences()) { //loadHome();
-        //}
-
         if (savedInstanceState == null) {
-            //if (pfMgr.checkPreferences()) {
-
-                //}
-
-                //if (savedInstanceState == null) {
                 intent = new Intent(MainActivity.this, LayoutDailyMoney.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
                 startActivity(intent);
                 navView.setCheckedItem(R.id.menu_home_page);
             }
-        //}
     }
 }

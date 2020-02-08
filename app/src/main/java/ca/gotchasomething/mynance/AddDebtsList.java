@@ -26,18 +26,25 @@ import ca.gotchasomething.mynance.data.AccountsDb;
 
 public class AddDebtsList extends MainNavigation {
 
-    Button debtLstAddMoreBtn, debtLstDoneBtn, debtLstResetBtn;
+    Button debtLstAddMoreBtn,
+            debtLstDoneBtn,
+            debtLstResetBtn;
     ContentValues debtLstCV;
     DbHelper debtLstHelper;
     DbManager debtLstDBMgr;
     DebtLstListAdapter debtLstLstAdapter;
     General debtLstGen;
-    Intent debtLstToLayoutDebt, debtLstToDaiMonCCPur, debtLstToSetUp, debtLstToAddMore;
+    Intent debtLstToLayoutDebt,
+            debtLstToDaiMonCCPur,
+            debtLstToSetUp,
+            debtLstToAddMore;
     LinearLayout debtLstSpinLayout;
     ListView debtLstListView;
     SQLiteDatabase debtLstDB;
-    String debtLstDebtAmt2 = null, debtLstDebtEnd = null;
-    TextView debtLstHeaderLabelTV, debtLstTotalTV;
+    String debtLstDebtAmt2 = null,
+            debtLstDebtEnd = null;
+    TextView debtLstHeaderLabelTV,
+            debtLstTotalTV;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

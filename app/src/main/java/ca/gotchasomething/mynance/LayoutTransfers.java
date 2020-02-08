@@ -29,30 +29,78 @@ import ca.gotchasomething.mynance.spinners.TransferSpinnerAdapter;
 
 public class LayoutTransfers extends MainNavigation {
 
-    Button transferDialogCancelBtn, transferDialogEnterBtn, transferDialogInfoOkBtn, warnDialogNoContBtn, warnDialogYesContBtn, trn1Btn, trn1DoneBtn;
+    Button transferDialogCancelBtn,
+            transferDialogEnterBtn,
+            transferDialogInfoOkBtn,
+            warnDialogNoContBtn,
+            warnDialogYesContBtn,
+            trn1Btn,
+            trn1DoneBtn;
     ContentValues trn1CV;
-    Cursor trn1Cur, trn1Cur2;
-    DbHelper trn1Helper, trn1Helper2, trn1Helper3;
+    Cursor trn1Cur,
+            trn1Cur2;
+    DbHelper trn1Helper,
+            trn1Helper2,
+            trn1Helper3;
     DbManager trn1DbMgr;
-    Double debtAmtFromDb = 0.0, debtLimitFromDb = 0.0, debtPaytFromDb = 0.0, debtRateFromDb = 0.0, savAmtFromDb = 0.0,
-            savGoalFromDb = 0.0, savPaytFromDb = 0.0, savRateFromDb = 0.0, trn1TrnAmt = 0.0, trn1AmtForA = 0.0, trn1AmtForB = 0.0,
-            trn1AmtMissing = 0.0, trn1FromAcctBal = 0.0, trn1FromAcctMax = 0.0, trn1MoneyInA = 0.0, trn1MoneyInOwing = 0.0, trn1MoneyInB = 0.0, trn1MoneyOutA = 0.0,
-            trn1MoneyOutAEntry = 0.0, trn1MoneyOutOwing = 0.0, trn1MoneyOutB = 0.0, trn1ToAcctBal = 0.0;
-    EditText transferDialogCustomResAmtET, trn1TrnAmtET;
+    Double debtAmtFromDb = 0.0,
+            debtLimitFromDb = 0.0,
+            debtPaytFromDb = 0.0,
+            debtRateFromDb = 0.0,
+            savAmtFromDb = 0.0,
+            savGoalFromDb = 0.0,
+            savPaytFromDb = 0.0,
+            savRateFromDb = 0.0,
+            trn1TrnAmt = 0.0,
+            trn1AmtForA = 0.0,
+            trn1AmtForB = 0.0,
+            trn1AmtMissing = 0.0,
+            trn1FromAcctBal = 0.0,
+            trn1FromAcctMax = 0.0,
+            trn1MoneyInA = 0.0,
+            trn1MoneyInOwing = 0.0,
+            trn1MoneyInB = 0.0,
+            trn1MoneyOutA = 0.0,
+            trn1MoneyOutAEntry = 0.0,
+            trn1MoneyOutOwing = 0.0,
+            trn1MoneyOutB = 0.0,
+            trn1ToAcctBal = 0.0;
+    EditText transferDialogCustomResAmtET,
+            trn1TrnAmtET;
     General trn1Gen;
     ImageButton transferDialogInfoBtn;
-    Intent trn1Refresh, trn1ToList, trn1ToMain;
-    LinearLayout transferDialogCustomLayout, warnDialogWarnLayout;
-    long trn1DebtId, trn1SavId, trn1FromSpinId, trn1ToSpinId;
-    RadioButton transferDialogAllResRB, transferDialogNoneResRB, transferDialogCustomRB, transferDialogAsUsualRB;
+    Intent trn1Refresh,
+            trn1ToList,
+            trn1ToMain;
+    LinearLayout transferDialogCustomLayout,
+            warnDialogWarnLayout;
+    long trn1DebtId,
+            trn1SavId,
+            trn1FromSpinId,
+            trn1ToSpinId;
+    RadioButton transferDialogAllResRB,
+            transferDialogNoneResRB,
+            transferDialogCustomRB,
+            transferDialogAsUsualRB;
     RadioGroup transferDialogResRG;
-    Spinner trn1FromSpin, trn1ToSpin;
-    SQLiteDatabase trn1Db, trn1Db2, trn1Db3;
-    String trn1FromIsDebtSav = null, trn1FromSpinName = null, trn1ToIsDebtSav = null, trn1ToSpinName = null;
-    TextView transferDialogCustomAvailAmtTV, transferDialogInfoTV, transferDialogResTV, warnDialogWarnTV, trn1InfoLabel;
+    Spinner trn1FromSpin,
+            trn1ToSpin;
+    SQLiteDatabase trn1Db,
+            trn1Db2,
+            trn1Db3;
+    String trn1FromIsDebtSav = null,
+            trn1FromSpinName = null,
+            trn1ToIsDebtSav = null,
+            trn1ToSpinName = null;
+    TextView transferDialogCustomAvailAmtTV,
+            transferDialogInfoTV,
+            transferDialogResTV,
+            warnDialogWarnTV;
     TransactionsDb trn1TransDb;
-    TransferSpinnerAdapter trn1FromSpinAdapter, trn1ToSpinAdapter;
-    View dView, dView2;
+    TransferSpinnerAdapter trn1FromSpinAdapter,
+            trn1ToSpinAdapter;
+    View dView,
+            dView2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -31,26 +31,64 @@ import ca.gotchasomething.mynance.data.BudgetDb;
 public class AddExpenseList extends MainNavigation {
 
     BudgetDb expLstExpDB;
-    Button expLstAddMoreButton, expLstDoneButton, expLstExpCancelBtn, expLstResetBtn, expLstExpSaveBtn, expLstExpUpdateBtn;
+    Button expLstAddMoreButton,
+            expLstDoneButton,
+            expLstExpCancelBtn,
+            expLstResetBtn,
+            expLstExpSaveBtn,
+            expLstExpUpdateBtn;
     ContentValues expLstCV;
     DbHelper expLstHelper;
     DbManager expLstDbMgr;
-    Double expAmtFromEntry = 0.0, expAmtFromTag = 0.0, expFrqFromTag = 0.0, expFrqFromEntry = 0.0, expLstNewExpAnnAmt = 0.0;
-    EditText expLstExpAmtET, expLstExpCatET;
+    Double expAmtFromEntry = 0.0,
+            expAmtFromTag = 0.0,
+            expFrqFromTag = 0.0,
+            expFrqFromEntry = 0.0,
+            expLstNewExpAnnAmt = 0.0;
+    EditText expLstExpAmtET,
+            expLstExpCatET;
     General expLstGen;
     ExpLstLstAdapter expLstLstAdapter;
-    Intent expLstToBud, expLstToCCPur, expLstToMonOut, expLstToWklyList, expLstRefresh, expLstToSetUp, expLstToAddMore, expLstToAnalysis;
+    Intent expLstToBud,
+            expLstToCCPur,
+            expLstToMonOut,
+            expLstToWklyList,
+            expLstRefresh,
+            expLstToSetUp,
+            expLstToAddMore,
+            expLstToAnalysis;
     LinearLayout expLstSpinLayout;
     ListView expLstListView;
     long expIdFromTag;
-    RadioButton expLstExpARB, expLstExpBRB, expLstExpAnnlyRB, expLstExpBiAnnlyRB, expLstExpBiMthlyRB, expLstExpBiWklyRB, expLstExpMthlyRB, expLstExpWklyRB,
-            expLstExpNoWklyRB, expLstExpYesWklyRB;
-    RadioGroup expLstExpABRG, expLstExpFrqRG, expLstExpWklyRG;
+    RadioButton expLstExpARB,
+            expLstExpBRB,
+            expLstExpAnnlyRB,
+            expLstExpBiAnnlyRB,
+            expLstExpBiMthlyRB,
+            expLstExpBiWklyRB,
+            expLstExpMthlyRB,
+            expLstExpWklyRB,
+            expLstExpNoWklyRB,
+            expLstExpYesWklyRB;
+    RadioGroup expLstExpABRG,
+            expLstExpFrqRG,
+            expLstExpWklyRG;
     SQLiteDatabase expLstDB;
-    String expNameFromEntry = null, expLstExpPriorityRB = null, expPriorityFromEntry = null, expPriorityFromTag = null, expWeeklyFromEntry = null,
-            expWeeklyFromTag = null, expLstAnnAmt2 = null, expLstExpFrqRB = null, expLstExpWeeklyRB = null, expNameFromTag = null;
-    TextView expLstHeaderLabelTV, expLstExpWklyLabel, expLstTotalTV;
-    View expLstExpLine1, expLstExpLine2;
+    String expNameFromEntry = null,
+            expLstExpPriorityRB = null,
+            expPriorityFromEntry = null,
+            expPriorityFromTag = null,
+            expWeeklyFromEntry = null,
+            expWeeklyFromTag = null,
+            expLstAnnAmt2 = null,
+            expLstExpFrqRB = null,
+            expLstExpWeeklyRB = null,
+            expNameFromTag = null;
+    TextView expLstHeaderLabelTV,
+            expLstExpWklyLabel,
+            expLstTotalTV;
+    View expLstExpLine1,
+            expLstExpLine2;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

@@ -1,4 +1,4 @@
-package ca.gotchasomething.mynance;
+/*package ca.gotchasomething.mynance;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -255,4 +255,4 @@ public class AADataBdgtTrans extends MainNavigation {
         private TextView transDate;
         private TextView transId;
     }
-}
+}*/

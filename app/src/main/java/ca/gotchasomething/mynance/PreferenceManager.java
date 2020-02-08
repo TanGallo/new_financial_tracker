@@ -38,6 +38,25 @@ public class PreferenceManager {
         return status;
     }
 
+    public void writePreferences2() {
+        SharedPreferences.Editor editor2 = sharedPreferences.edit();
+        editor2.putString(context.getString(R.string.my_preference_key2), "INIT_OK");
+        editor2.apply();
+    }
+
+    public boolean checkPreferences2() {
+
+        if(sharedPreferences.getString(
+                context.getString(
+                        R.string.my_preference_key2), "null").equals("null")) {
+            status = false;
+        } else {
+            status = true;
+        }
+        return status;
+    }
+
+
     public void clearPreferences() {
         sharedPreferences.edit().clear().apply();
     }

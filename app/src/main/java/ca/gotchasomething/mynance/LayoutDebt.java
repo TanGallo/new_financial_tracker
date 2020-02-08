@@ -41,25 +41,56 @@ import ca.gotchasomething.mynance.data.AccountsDb;
 public class LayoutDebt extends MainNavigation {
 
     AccountsDb layDebtDebtDb;
-    Button layDebtDebtCancelBtn, layDebtDoneBtn, layDebtDebtSaveBtn, layDebtDebtUpdateBtn;
-    ContentValues layDebtCV, layDebtCV2, layDebtCV3;
+    Button layDebtDebtCancelBtn,
+            layDebtDoneBtn,
+            layDebtDebtSaveBtn,
+            layDebtDebtUpdateBtn;
+    ContentValues layDebtCV,
+            layDebtCV2,
+            layDebtCV3;
     Date latestDateD;
-    DbHelper layDebtHelper, layDebtHelper3;
+    DbHelper layDebtHelper,
+            layDebtHelper3;
     DbManager layDebtDbMgr;
     LayDebtListAdapter layDebtListAdapter;
-    Double layDebtDebtRate = 0.0, layDebtTotDebt = 0.0, debtAmtFromEntry = 0.0, debtAmtFromTag = 0.0, debtLimitFromEntry = 0.0, debtLimitFromTag = 0.0,
-            debtPaytFromEntry = 0.0, debtPaytFromTag = 0.0, debtRateFromEntry = 0.0, debtRateFromTag = 0.0;
-    EditText layDebtDebtAmtET, layDebtDebtLimitET, layDebtDebtNameET, layDebtDebtPaytET, layDebtDebtRateET;
+    Double layDebtDebtRate = 0.0,
+            layDebtTotDebt = 0.0,
+            debtAmtFromEntry = 0.0,
+            debtAmtFromTag = 0.0,
+            debtLimitFromEntry = 0.0,
+            debtLimitFromTag = 0.0,
+            debtPaytFromEntry = 0.0,
+            debtPaytFromTag = 0.0,
+            debtRateFromEntry = 0.0,
+            debtRateFromTag = 0.0;
+    EditText layDebtDebtAmtET,
+            layDebtDebtLimitET,
+            layDebtDebtNameET,
+            layDebtDebtPaytET,
+            layDebtDebtRateET;
     FloatingActionButton layDebtAddDebtBtn;
     General layDebtGen;
-    Intent layDebtToAddMore, layDebtRefresh, layDebtToAnalysis;
+    Intent layDebtToAddMore,
+            layDebtRefresh,
+            layDebtToAnalysis;
     ListView layDebtListView;
     long id, debtIdFromTag;
     NumberFormat layDebtPerFor = NumberFormat.getPercentInstance();
-    SQLiteDatabase layDebtDb, layDebtDb3;
+    SQLiteDatabase layDebtDb,
+            layDebtDb3;
     SimpleDateFormat latestDateS;
-    String layDebtDebtEnd = null, layDebtDebtEnd2 = null, layDebtDebtRateS = null, debtEndFromTag = null, debtNameFromTag = null, latestDate = null;
-    TextView layDebtDateHeaderLabel, layDebtDateHeaderTV, layDebtDebtDateResLabel, layDebtDebtDateResTV, layDebtTotAmtHeaderLabel, layDebtTotAmtHeaderTV;
+    String layDebtDebtEnd = null,
+            layDebtDebtEnd2 = null,
+            layDebtDebtRateS = null,
+            debtEndFromTag = null,
+            debtNameFromTag = null,
+            latestDate = null;
+    TextView layDebtDateHeaderLabel,
+            layDebtDateHeaderTV,
+            layDebtDebtDateResLabel,
+            layDebtDebtDateResTV,
+            layDebtTotAmtHeaderLabel,
+            layDebtTotAmtHeaderTV;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -145,7 +176,6 @@ public class LayoutDebt extends MainNavigation {
             latestDate = latestDateS.format(latestDateD);
         } catch (Exception e2) {
             layDebtDateHeaderTV.setVisibility(View.GONE);
-            //layDebtDateHeaderLabel.setVisibility(View.GONE);
         }
         return latestDate;
     }

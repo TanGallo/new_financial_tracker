@@ -21,19 +21,28 @@ import ca.gotchasomething.mynance.data.AccountsDb;
 public class AddSavings extends AppCompatActivity {
 
     AccountsDb addSavAcctDb;
-    Button addSavSavCancelBtn, addSavSavSaveBtn, addSavSavUpdateBtn;
+    Button addSavSavCancelBtn,
+            addSavSavSaveBtn,
+            addSavSavUpdateBtn;
     ContentValues addSavCV;
     DbHelper addSavHelper;
     DbManager addSavDbMgr;
-    Double currentSavingsRate = 0.0, savAmtFromEntry = 0.0, savGoalFromEntry = 0.0, savPaytFromEntry = 0.0, savRateFromEntry = 0.0;
-    EditText addSavSavAmtET, addSavSavGoalET, addSavSavNameET, addSavSavPaytET, addSavSavPercentET;
+    Double savAmtFromEntry = 0.0,
+            savGoalFromEntry = 0.0,
+            savPaytFromEntry = 0.0,
+            savRateFromEntry = 0.0;
+    EditText addSavSavAmtET,
+            addSavSavGoalET,
+            addSavSavNameET,
+            addSavSavPaytET,
+            addSavSavPercentET;
     General addSavGen;
     Intent addSavToList;
-    long addSavSavId;
-    //SavingsDb addSavSavDb;
     SQLiteDatabase addSavDb;
-    String addSavSavDate2 = null, savNameFromEntry = null;
-    TextView addSavSavDateResTV, addSavSavDateResLabel;
+    String addSavSavDate2 = null,
+            savNameFromEntry = null;
+    TextView addSavSavDateResTV,
+            addSavSavDateResLabel;
     Toast toast;
 
     @Override

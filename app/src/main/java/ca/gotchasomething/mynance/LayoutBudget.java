@@ -33,21 +33,53 @@ public class LayoutBudget extends MainNavigation {
     Date latestDateD;
     DbHelper layBudHelper;
     DbManager layBudDbMgr;
-    Double layBudAmtToSavGoal = 0.0, layBudSavGoalPercent = 0.0, layBudStillAvail = 0.0, layBudTotDebt = 0.0, layBudTotSav = 0.0, layBudTotSavGoal = 0.0,
-            layBudTotInc = 0.0, layBudTotRes = 0.0, spendPercent2 = 0.0;
-    float layBudAmtReservedF = 0, layBudAmtNotResF = 0, layBudAmtSavedF = 0, layBudAmtToSavGoalF = 0;
+    Double layBudAmtToSavGoal = 0.0,
+            layBudSavGoalPercent = 0.0,
+            layBudStillAvail = 0.0,
+            layBudTotDebt = 0.0,
+            layBudTotSav = 0.0,
+            layBudTotSavGoal = 0.0,
+            layBudTotInc = 0.0,
+            layBudTotRes = 0.0,
+            spendPercent2 = 0.0;
+    float layBudAmtReservedF = 0,
+            layBudAmtNotResF = 0,
+            layBudAmtSavedF = 0,
+            layBudAmtToSavGoalF = 0;
     General layBudGen;
-    ImageButton layBudAdjDebtsBtn, layBudAdjExpBtn, layBudAdjIncBtn, layBudAdjSavBtn, layBudResInfoBtn;
+    ImageButton layBudAdjDebtsBtn,
+            layBudAdjExpBtn,
+            layBudAdjIncBtn,
+            layBudAdjSavBtn,
+            layBudResInfoBtn;
     int layBudInt1 = 0;
-    Intent layBudToAdjInc, layBudToAdjExp, layBudToAdjDebt, layBudToAdjSav;
-    LinearLayout layBudDebtFreeLayout, layBudResInfoLayout;
-    PieChart layBudPieChart, layBudPieChart2;
+    Intent layBudToAdjInc,
+            layBudToAdjExp,
+            layBudToAdjDebt,
+            layBudToAdjSav;
+    LinearLayout layBudDebtFreeLayout,
+            layBudResInfoLayout;
+    PieChart layBudPieChart,
+            layBudPieChart2;
     public NumberFormat percentFormat = NumberFormat.getPercentInstance();
     SimpleDateFormat latestDateS;
     SQLiteDatabase layBudDb;
-    String layBudRecommendation = null, latestDate = null, spendPercent = null;
-    TextView layBudDebtFreeLabel, layBudDebtFreeTV, layBudOverWarnLabel, layBudOverWarnTV, layBudSavingsLabel, layBudSavingsLabel2, layBudSavingsLabel3,
-            layBudSavingsTV, layBudSavingsTV2, layBudStatusTV, layBudStatusTV2, layBudTotIncTV, layBudTotResTV;
+    String layBudRecommendation = null,
+            latestDate = null,
+            spendPercent = null;
+    TextView layBudDebtFreeLabel,
+            layBudDebtFreeTV,
+            layBudOverWarnLabel,
+            layBudOverWarnTV,
+            layBudSavingsLabel,
+            layBudSavingsLabel2,
+            layBudSavingsLabel3,
+            layBudSavingsTV,
+            layBudSavingsTV2,
+            layBudStatusTV,
+            layBudStatusTV2,
+            layBudTotIncTV,
+            layBudTotResTV;
     Toast toast;
 
     @Override

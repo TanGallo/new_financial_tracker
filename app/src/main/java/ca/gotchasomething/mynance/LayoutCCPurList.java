@@ -23,15 +23,19 @@ import ca.gotchasomething.mynance.data.TransactionsDb;
 
 public class LayoutCCPurList extends MainNavigation {
 
-    Button monCC2AddMoreBtn, monCC2DoneBtn, monCC2ResetBtn;
+    Button monCC2AddMoreBtn,
+            monCC2DoneBtn,
+            monCC2ResetBtn;
     DbManager monCC2DbMgr;
     Double monCC2MonOutAmt = 0.0;
     General monCC2Gen;
-    Intent monCC2ToMain, monCC2ToAddCCTrans, monCC2Refresh;
+    Intent monCC2ToMain,
+            monCC2ToAddCCTrans;
     LinearLayout monCC2SpinLayout;
     ListView monCC2List;
     MonCC2Adapter monCC2Adapter;
-    TextView monCC2Title, monCC2TotalTV;
+    TextView monCC2Title,
+            monCC2TotalTV;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

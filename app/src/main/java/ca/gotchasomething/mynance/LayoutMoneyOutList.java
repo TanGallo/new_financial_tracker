@@ -23,15 +23,19 @@ import ca.gotchasomething.mynance.data.TransactionsDb;
 
 public class LayoutMoneyOutList extends MainNavigation {
 
-    Button monOutLstAddMoreBtn, monOutLstDoneBtn, monOutLstResetBtn;
+    Button monOutLstAddMoreBtn,
+            monOutLstDoneBtn,
+            monOutLstResetBtn;
     DbManager monOutLstDbMgr;
     Double monOutLstMonOutAmt = 0.0;
     General monOutLstGen;
-    Intent monOutLstToMain, monOutLstToAddMonOut;
+    Intent monOutLstToMain,
+            monOutLstToAddMonOut;
     LinearLayout monOutLstSpinLayout;
     ListView monOutLstList;
     MonOutLstAdapter monOutLstAdapter;
-    TextView monOutLstTitle, monOutLstTotalTV;
+    TextView monOutLstTitle,
+            monOutLstTotalTV;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

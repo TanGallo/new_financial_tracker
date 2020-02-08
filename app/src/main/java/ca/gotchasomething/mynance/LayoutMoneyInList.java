@@ -23,15 +23,19 @@ import ca.gotchasomething.mynance.data.TransactionsDb;
 
 public class LayoutMoneyInList extends MainNavigation {
 
-    Button monInLstAddMoreBtn, monInLstDoneBtn, monInLstResetBtn;
+    Button monInLstAddMoreBtn,
+            monInLstDoneBtn,
+            monInLstResetBtn;
     DbManager monInLstDbMgr;
     Double monInLstMonInAmt = 0.0;
     General monInLstGen;
-    Intent monInLstToMain, monInLstToAddMonIn;
+    Intent monInLstToMain,
+            monInLstToAddMonIn;
     LinearLayout monInLstSpinLayout;
     ListView monInLstList;
     MonInLstAdapter monInLstAdapter;
-    TextView monInLstTitle, monInLstTotalTV;
+    TextView monInLstTitle,
+            monInLstTotalTV;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

@@ -2,7 +2,6 @@ package ca.gotchasomething.mynance;
 
 import android.content.Context;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -24,26 +23,49 @@ import java.util.List;
 
 public class General extends AppCompatActivity {
 
-    public boolean alreadyDetermined, leapYear;
-    public Calendar cal, debtCal, savingsCal;
+    public boolean alreadyDetermined,
+            leapYear;
+    public Calendar debtCal,
+            savingsCal;
     public Context context;
-    public Date date, dateObj, debtEndD, earliestDate, latestDate, savingsDateD;
-    public DbManager dbManager;
-    public Double dbl = 0.0, dbl2 = 0.0, debtAmtFromDb = 0.0, debtPaytFromDb = 0.0, debtRateFromDb = 0.0, dObj = 0.0, dollars = 0.0, expenseAnnualAmount = 0.0,
-            moneyInA = 0.0, moneyInOwing = 0.0, moneyInB = 0.0, moneyOutA = 0.0, moneyOutOwing = 0.0, moneyOutB = 0.0, newMoneyA = 0.0,
-            newMoneyOwing = 0.0, newMoneyB = 0.0, numberOfYearsToPayDebt = 0.0, percent = 0.0, years = 0.0, years2 = 0.0;
-    public float availFloat, f1, resFloat;
-    public float[] fList;
-    public int calInt = 0, position = 0, startIndex = 0, endIndex = 0, numberOfDaysToPayDebt = 0, numberOfDaysToSavingsGoal = 0;
+    public Date date,
+            dateObj,
+            debtEndD,
+            savingsDateD;
+    public Double dbl = 0.0,
+            dbl2 = 0.0,
+            dObj = 0.0,
+            dollars = 0.0,
+            numberOfYearsToPayDebt = 0.0,
+            percent = 0.0,
+            years = 0.0,
+            years2 = 0.0;
+    public float f1;
+    public int position = 0,
+            startIndex = 0,
+            endIndex = 0,
+            numberOfDaysToPayDebt = 0,
+            numberOfDaysToSavingsGoal = 0;
     public Intent in;
-    public List<String> allDatesInRange, lastNumOfDays, thisWeek, yearsList;
+    public List<String> lastNumOfDays,
+            thisWeek,
+            yearsList;
     public NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
-    public PieChart pieChart;
-    public SimpleDateFormat sdf, debtEndS, savingsDateS;
-    public SQLiteDatabase db;
-    public String createdOn = null, earliestDateInRange = null, expenseName = null, expensePriority = null, startingString = null, startingString2 = null, string1 = null,
-            str2 = null, subStringResult = null, subStringResult2 = null, percentS = null, debtEnd = null, savingsDate = null, savingsDateB = null;
-    String[] monthsList, monthsOnlyList, yearsList2;
+    public SimpleDateFormat sdf,
+            debtEndS,
+            savingsDateS;
+    public String createdOn = null,
+            startingString = null,
+            startingString2 = null,
+            string1 = null,
+            str2 = null,
+            subStringResult = null,
+            subStringResult2 = null,
+            percentS = null,
+            debtEnd = null,
+            savingsDate = null,
+            savingsDateB = null;
+    String[] yearsList2;
     public Timestamp timestamp;
 
     public Double dollarsFromTV(TextView tv) {
@@ -280,8 +302,6 @@ public class General extends AppCompatActivity {
                 debtEnd = debtEndS.format(debtEndD);
             }
         }
-
-        //return String.valueOf(dbl2);
         return debtEnd;
     }
 
@@ -360,12 +380,6 @@ public class General extends AppCompatActivity {
         return createdOn;
     }
 
-    public String earliestDateInRange() {
-
-
-        return earliestDateInRange;
-    }
-
     public List<String> lastNumOfDays(int int1) {
         //int1 = number of days in desired range
         lastNumOfDays = new ArrayList<>();
@@ -379,37 +393,6 @@ public class General extends AppCompatActivity {
         }
 
         return lastNumOfDays;
-    }
-
-    public List<String> allDatesInRange(Date date1, Date date2) {
-        //date1 = earliestDate
-        //date2 = latestDate
-        allDatesInRange = new ArrayList<>();
-        //String s = String.valueOf(date1);
-        //String e = String.valueOf(date2);
-        SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy");
-        try {
-            date = sdf.parse(String.valueOf(date1));
-        } catch(ParseException e) {
-            e.printStackTrace();
-        }
-        allDatesInRange.add(String.valueOf(date1));
-
-        while(!date.after(date1) && !date.before(date2)) {
-            allDatesInRange.add(String.valueOf(date));
-        }
-        //SimpleDateFormat sdf2 = new SimpleDateFormat("dd-MMM-yyyy");
-        //earliestDate = sdf2.parse(String.valueOf(date1));
-        int int1 = allDatesInRange.size();
-        Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.DATE, -int1);
-        for (int i = 0; i < int1; i++) {
-            cal.add(Calendar.DATE, 1);
-            lastNumOfDays.add(sdf.format(cal.getTime()));
-        }
-        allDatesInRange.add(String.valueOf(date2));
-
-        return allDatesInRange;
     }
 
     public float convertDblToFloat(Double dbl1) {
@@ -450,42 +433,6 @@ public class General extends AppCompatActivity {
         pc.setData(pieData);
         pc.invalidate();
     }
-
-    /*public String[] monthsList() {
-        monthsList = new String[]{
-                getResources().getString(R.string.jan),
-                getResources().getString(R.string.feb),
-                getResources().getString(R.string.mar),
-                getResources().getString(R.string.apr),
-                getResources().getString(R.string.may),
-                getResources().getString(R.string.jun),
-                getResources().getString(R.string.jul),
-                getResources().getString(R.string.aug),
-                getResources().getString(R.string.sep),
-                getResources().getString(R.string.oct),
-                getResources().getString(R.string.nov),
-                getResources().getString(R.string.dec),
-                getResources().getString(R.string.year_to_date)};
-        return monthsList;
-    }*/
-
-    /*public String[] monthsOnlyList() {
-        monthsOnlyList = new String[]{
-                getResources().getString(R.string.jan),
-                getResources().getString(R.string.feb),
-                getResources().getString(R.string.mar),
-                getResources().getString(R.string.apr),
-                getResources().getString(R.string.may),
-                getResources().getString(R.string.jun),
-                getResources().getString(R.string.jul),
-                getResources().getString(R.string.aug),
-                getResources().getString(R.string.sep),
-                getResources().getString(R.string.oct),
-                getResources().getString(R.string.nov),
-                getResources().getString(R.string.dec),
-                };
-        return monthsOnlyList;
-    }*/
 
     public String[] yearsList(int int1, int int2) {
         //int1 = dbMgr.getEarliestEntry(dbMgr.getYearsList())

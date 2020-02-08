@@ -26,19 +26,26 @@ import ca.gotchasomething.mynance.data.AccountsDb;
 
 public class AddSavingsList extends MainNavigation {
 
-    Button savLstAddMoreBtn, savLstDoneBtn, savLstResetBtn;
+    Button savLstAddMoreBtn,
+            savLstDoneBtn,
+            savLstResetBtn;
     ContentValues savLstCV;
     DbHelper savLstHelper;
     DbManager savLstDBMgr;
-    Double savLstGoalAmt2 = 0.0, savLstSavCurr = 0.0;
+    Double savLstGoalAmt2 = 0.0,
+            savLstSavCurr = 0.0;
     SavLstListAdapter savLstLstAdapter;
     General savLstGen;
-    Intent savLstToLayoutSavings, savLstToSetUp, savLstToAddMore, savLstToAnalysis;
+    Intent savLstToLayoutSavings,
+            savLstToSetUp,
+            savLstToAddMore,
+            savLstToAnalysis;
     LinearLayout savLstSpinLayout;
     ListView savLstListView;
     SQLiteDatabase savLstDB;
     String savLstSavDate = null;
-    TextView savLstHeaderLabelTV, savLstTotalTV;
+    TextView savLstHeaderLabelTV,
+            savLstTotalTV;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

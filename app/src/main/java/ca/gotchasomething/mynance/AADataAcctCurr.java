@@ -1,4 +1,4 @@
-package ca.gotchasomething.mynance;
+/*package ca.gotchasomething.mynance;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -206,4 +206,4 @@ public class AADataAcctCurr extends MainNavigation {
         private TextView currLastDate;
         private TextView currId;
     }
-}
+}*/

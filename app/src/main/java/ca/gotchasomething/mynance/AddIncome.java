@@ -17,15 +17,26 @@ import ca.gotchasomething.mynance.data.BudgetDb;
 public class AddIncome extends AppCompatActivity {
 
     BudgetDb addIncIncDb;
-    Button addIncSaveBtn, addIncCancelBtn, addIncUpdateBtn;
+    Button addIncSaveBtn,
+            addIncCancelBtn,
+            addIncUpdateBtn;
     DbManager addIncDbMgr;
-    Double incAmtFromEntry = 0.0, incAnnAmtFromEntry = 0.0, incFrqFromEntry = 0.0;
-    EditText addIncAmtET, addIncCatET;
+    Double incAmtFromEntry = 0.0,
+            incAnnAmtFromEntry = 0.0,
+            incFrqFromEntry = 0.0;
+    EditText addIncAmtET,
+            addIncCatET;
     General addIncGen;
     Intent addIncToList;
-    RadioButton addIncAnnlyRB, addIncBiAnnlyRB, addIncBiMthlyRB, addIncBiWklyRB, addIncMthlyRB, addIncWklyRB;
+    RadioButton addIncAnnlyRB,
+            addIncBiAnnlyRB,
+            addIncBiMthlyRB,
+            addIncBiWklyRB,
+            addIncMthlyRB,
+            addIncWklyRB;
     RadioGroup addIncFrqRG;
-    String addIncFrqRB = null, incNameFromEntry = null;
+    String addIncFrqRB = null,
+            incNameFromEntry = null;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

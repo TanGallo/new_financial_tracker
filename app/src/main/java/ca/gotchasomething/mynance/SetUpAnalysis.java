@@ -22,16 +22,23 @@ public class SetUpAnalysis extends MainNavigation {
     ContentValues ana1CV;
     DbHelper ana1Helper;
     DbManager ana1DBMgr;
-    Double ana1Reserved = 0.0, ana1ToSpend = 0.0;
+    Double ana1Reserved = 0.0,
+            ana1ToSpend = 0.0;
     General ana1Gen;
-    ImageButton ana1AdjExpBtn, ana1AdjIncBtn, ana1AdjDebtsBtn, ana1AdjSavBtn;
+    ImageButton ana1AdjExpBtn,
+            ana1AdjIncBtn,
+            ana1AdjDebtsBtn,
+            ana1AdjSavBtn;
     int ana1Colour;
-    Intent ana1ToExp, ana1ToInc, ana1ToSetUp;
+    Intent ana1ToExp,
+            ana1ToInc,
+            ana1ToSetUp;
     LinearLayout ana1AdjLayout;
     PieChart ana1PieChart;
     String ana1Recommendation = null;
     SQLiteDatabase ana1DB;
-    TextView ana1AnaResTV, ana1ResLabel;
+    TextView ana1AnaResTV,
+            ana1ResLabel;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

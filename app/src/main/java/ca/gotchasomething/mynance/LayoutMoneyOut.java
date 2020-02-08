@@ -33,28 +33,77 @@ import ca.gotchasomething.mynance.spinners.TransferSpinnerAdapter;
 public class LayoutMoneyOut extends MainNavigation {
 
     BudgetDb monOutExpDb;
-    Button transDialogSaveBtn, transDialogCancelBtn, transDialogNoDefBtn, transDialogYesDefBtn, transDialogNoContBtn, transDialogYesContBtn;
+    Button transDialogSaveBtn,
+            transDialogCancelBtn,
+            transDialogNoDefBtn,
+            transDialogYesDefBtn,
+            transDialogNoContBtn,
+            transDialogYesContBtn;
     ContentValues monOutCV;
-    Cursor monOutCur, monOutCur2;
-    DbHelper monOutHelper, monOutHelper2, monOutHelper3;
+    Cursor monOutCur,
+            monOutCur2;
+    DbHelper monOutHelper,
+            monOutHelper2,
+            monOutHelper3;
     DbManager monOutDbMgr;
-    Double moneyOutA = 0.0, moneyOutOwing = 0.0, moneyOutB = 0.0, monOutMoneyOutA = 0.0, monOutMoneyOutOwing = 0.0, monOutMoneyOutB = 0.0,
-            monOutMonOutAmt = 0.0, monOutMonOutOldAmt = 0.0, monOutMonOutNewAmt = 0.0, monOutWeeklyLimit = 0.0, newMoneyA = 0.0, newMoneyOwing = 0.0, newMoneyB = 0.0,
-            savAmtFromDb = 0.0, savGoalFromDb = 0.0, savPaytFromDb = 0.0, savRateFromDb = 0.0;
+    Double moneyOutA = 0.0,
+            moneyOutOwing = 0.0,
+            moneyOutB = 0.0,
+            monOutMoneyOutA = 0.0,
+            monOutMoneyOutOwing = 0.0,
+            monOutMoneyOutB = 0.0,
+            monOutMonOutAmt = 0.0,
+            monOutMonOutOldAmt = 0.0,
+            monOutMonOutNewAmt = 0.0,
+            monOutWeeklyLimit = 0.0,
+            newMoneyA = 0.0,
+            newMoneyOwing = 0.0,
+            newMoneyB = 0.0,
+            savAmtFromDb = 0.0,
+            savGoalFromDb = 0.0,
+            savPaytFromDb = 0.0,
+            savRateFromDb = 0.0;
     EditText transDialogAmtET;
     General monOutGen;
-    int clicked2 = 0, clickedE2 = 0;
-    Intent monOutToRatings, monOutToAddMore, monOutRefresh, monOutToList, monOutToFixBudget;
-    LinearLayout monOutHeaderLayout, transDialogDefLayout, transDialogWarnLayout;
+    int clicked2 = 0,
+            clickedE2 = 0;
+    Intent monOutToRatings,
+            monOutToAddMore,
+            monOutRefresh,
+            monOutToList,
+            monOutToFixBudget;
+    LinearLayout monOutHeaderLayout,
+            transDialogDefLayout,
+            transDialogWarnLayout;
     ListView monOutList;
-    long monOutExpId, monOutMaxId, monOutFromAcctId;
+    long monOutExpId,
+            monOutMaxId,
+            monOutFromAcctId;
     MonOutLstAdapter monOutLstAdapter;
-    SharedPreferences sp, spE;
+    SharedPreferences sp,
+            spE;
     Spinner monOutSpin;
-    SQLiteDatabase monOutDb, monOutDb2, monOutDb3;
-    String clicked2S = null, clickedE2S = null, monOutAcctName = null, monOutExpName = null, monOutExpPriority = null, monOutExpWeekly = null, monOutFromIsDebtSav = null;
-    TextView monOutAddMoreTV, monOutBudgWarnTV, monOutAvailAcctTV, monOutAvailAmtLabel, monOutDepToTV, monOutIncSourceTV, monOutTotAcctTV,
-            transDialogCatTV, transDialogPayLabel, transDialogAmtTV, transDialogWarnTV;
+    SQLiteDatabase monOutDb,
+            monOutDb2,
+            monOutDb3;
+    String clicked2S = null,
+            clickedE2S = null,
+            monOutAcctName = null,
+            monOutExpName = null,
+            monOutExpPriority = null,
+            monOutExpWeekly = null,
+            monOutFromIsDebtSav = null;
+    TextView monOutAddMoreTV,
+            monOutBudgWarnTV,
+            monOutAvailAcctTV,
+            monOutAvailAmtLabel,
+            monOutDepToTV,
+            monOutIncSourceTV,
+            monOutTotAcctTV,
+            transDialogCatTV,
+            transDialogPayLabel,
+            transDialogAmtTV,
+            transDialogWarnTV;
     TransactionsDb monOutMonOutDb;
     TransferSpinnerAdapter monOutSpinAdapter;
     View dView;

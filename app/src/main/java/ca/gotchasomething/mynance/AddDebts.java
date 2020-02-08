@@ -23,17 +23,26 @@ public class AddDebts extends AppCompatActivity {
 
     AccountsDb addDebtAcctdb;
     BudgetDb addDebtExpDb;
-    Button addDebtSaveBtn, addDebtCancelBtn, addDebtUpdateBtn;
+    Button addDebtSaveBtn,
+            addDebtCancelBtn,
+            addDebtUpdateBtn;
     ContentValues addDebtCV;
     DbHelper addDebtHelper;
     DbManager addDebtDbMgr;
-    Double debtAmtFromEntry = 0.0, debtPaytFromEntry = 0.0, debtRateFromEntry = 0.0;
-    EditText addDebtDebtNameET, addDebtDebtLimitET, addDebtDebtAmtET, addDebtDebtRateET, addDebtDebtPaytET;
+    Double debtAmtFromEntry = 0.0,
+            debtPaytFromEntry = 0.0,
+            debtRateFromEntry = 0.0;
+    EditText addDebtDebtNameET,
+            addDebtDebtLimitET,
+            addDebtDebtAmtET,
+            addDebtDebtRateET,
+            addDebtDebtPaytET;
     General addDebtGen;
     Intent addDebtToList;
     SQLiteDatabase addDebtDb;
     String addDebtDebtEnd2 = null;
-    TextView addDebtDebtDateResLabel, addDebtDebtDateResTV;
+    TextView addDebtDebtDateResLabel,
+            addDebtDebtDateResTV;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

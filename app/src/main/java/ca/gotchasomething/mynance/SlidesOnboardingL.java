@@ -26,12 +26,13 @@ public class SlidesOnboardingL extends AppCompatActivity implements View.OnClick
     AccountsDb acctDb;
     private AdapterSlides adapter;
     BudgetDb expDb;
-    private Button previousButton, skipButton, nextButton;
+    private Button previousButton,
+            skipButton,
+            nextButton;
     DbManager dbManager;
     Double balanceAmount;
     ImageView slide1Image;
     private ImageView[] dots;
-    //private int[] slides = new int[6];
     private int[] slides = {
             R.layout.a1_slides_onboarding_background,
             R.layout.a1_slides_onboarding_background,
@@ -47,25 +48,13 @@ public class SlidesOnboardingL extends AppCompatActivity implements View.OnClick
             R.drawable.ic_equalizer_white_24dp,
             R.drawable.ic_credit_card_white_24dp,
             R.drawable.ic_help_outline_white_24dp};
-    /*private String[] slideTitle = new String[] {
-            getResources().getString(R.string.welcome_to_mynance),
-            getResources().getString(R.string.step_1),
-            getResources().getString(R.string.step_2),
-            null,
-            null,
-            null};
-    private String[] slideDescription = new String[] {
-            getResources().getString(R.string.a_text1),
-            getResources().getString(R.string.a_text2),
-            getResources().getString(R.string.a_text3),
-            getResources().getString(R.string.a_text4),
-            getResources().getString(R.string.a_text5),
-            getResources().getString(R.string.a_text6)};*/
     private LinearLayout dotsLayout;
     RelativeLayout slide1Layout;
     SetUpDb setUpDb;
-    String[] slideTitle, slideDescription;
-    TextView slide1Title, slide1Description;
+    String[] slideTitle,
+            slideDescription;
+    TextView slide1Title,
+            slide1Description;
     ViewPager viewPager;
 
     @Override
@@ -100,7 +89,6 @@ public class SlidesOnboardingL extends AppCompatActivity implements View.OnClick
 
         viewPager = findViewById(R.id.viewPager);
         adapter = new AdapterSlides(slides, this);
-        //adapter = new AdapterSlides(slides, slideImage, slideTitle, slideDescription, this);
         viewPager.setAdapter(adapter);
 
         slide1Layout = findViewById(R.id.slide1Layout);
@@ -127,44 +115,6 @@ public class SlidesOnboardingL extends AppCompatActivity implements View.OnClick
                 slide1Image.setImageDrawable(getDrawable(slideImage[position]));
                 slide1Title.setText(slideTitle[position]);
                 slide1Description.setText(slideDescription[position]);
-                //createSlideImages(position);
-                //createSlideText(position);
-
-                /*switch(position) {
-                    case 0:
-                        slide1Image.setImageDrawable(getDrawable(R.mipmap.ic_launcher));
-                        slide1Title.setVisibility(View.VISIBLE);
-                        slide1Title.setText(R.string.welcome_to_mynance);
-                        slide1Description.setText(R.string.a_text1);
-                        break;
-                    case 1:
-                        slide1Image.setImageDrawable(getDrawable(R.drawable.ic_create_new_folder_white_24dp));
-                        slide1Title.setVisibility(View.VISIBLE);
-                        slide1Title.setText(R.string.step_1);
-                        slide1Description.setText(R.string.a_text2);
-                        break;
-                    case 2:
-                        slide1Image.setImageDrawable(getDrawable(R.drawable.ic_account_balance_white_24dp));
-                        slide1Title.setVisibility(View.VISIBLE);
-                        slide1Title.setText(R.string.step_2);
-                        slide1Description.setText(R.string.a_text3);
-                        break;
-                    case 3:
-                        slide1Image.setImageDrawable(getDrawable(R.drawable.ic_equalizer_white_24dp));
-                        slide1Title.setVisibility(View.INVISIBLE);
-                        slide1Description.setText(R.string.a_text4);
-                        break;
-                    case 4:
-                        slide1Image.setImageDrawable(getDrawable(R.drawable.ic_credit_card_white_24dp));
-                        slide1Title.setVisibility(View.INVISIBLE);
-                        slide1Description.setText(R.string.a_text5);
-                        break;
-                    case 5:
-                        slide1Image.setImageDrawable(getDrawable(R.drawable.ic_help_outline_white_24dp));
-                        slide1Title.setVisibility(View.INVISIBLE);
-                        slide1Description.setText(R.string.a_text6);
-                        break;
-                }*/
 
                 if (position == slides.length - 1) {
                     previousButton.setVisibility(View.VISIBLE);
@@ -211,58 +161,6 @@ public class SlidesOnboardingL extends AppCompatActivity implements View.OnClick
             dotsLayout.addView(dots[i], params);
         }
     }
-
-    /*private void createSlideImages(int current_position) {
-        if (slide1Layout != null)
-            slide1Layout.removeAllViews();
-
-        slideImage = new ImageView[slides.length];
-        for (int i = 0; i < slides.length; i++) {
-            slideImage[i] = new ImageView(this);
-
-            switch(current_position) {
-                case 0:
-                    slideImage[0].setImageDrawable(AppCompatResources.getDrawable(this, R.mipmap.ic_launcher));
-                    break;
-                case 1:
-                    slideImage[1].setImageDrawable(AppCompatResources.getDrawable(this, R.drawable.ic_create_new_folder_white_24dp));
-                    break;
-                case 2:
-                    slideImage[2].setImageDrawable(AppCompatResources.getDrawable(this, R.drawable.ic_account_balance_white_24dp));
-                    break;
-                case 3:
-                    slideImage[3].setImageDrawable(AppCompatResources.getDrawable(this, R.drawable.ic_equalizer_white_24dp));
-                    break;
-                case 4:
-                    slideImage[4].setImageDrawable(AppCompatResources.getDrawable(this, R.drawable.ic_credit_card_white_24dp));
-                    break;
-                case 5:
-                    slideImage[5].setImageDrawable(AppCompatResources.getDrawable(this, R.drawable.ic_help_outline_white_24dp));
-                    break;
-            }
-            slide1Layout.addView(slideImage[i]);
-        }
-    }*/
-
-    /*private void createSlideText(int current_position) {
-        slideTitle = new String[] {
-                getString(R.string.welcome_to_mynance),
-                getString(R.string.step_1),
-                getString(R.string.step_2),
-                null,
-                null,
-                null};
-        slideDescription = new String[] {
-                getString(R.string.a_text1),
-                getString(R.string.a_text2),
-                getString(R.string.a_text3),
-                getString(R.string.a_text4),
-                getString(R.string.a_text5),
-                getString(R.string.a_text6)};
-
-            slide1Title.setText(slideTitle[current_position]);
-            slide1Description.setText(slideDescription[current_position]);
-    }*/
 
     @Override
     public void onClick(View v) {

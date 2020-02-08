@@ -14,12 +14,30 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 
 public class LayoutHelp extends MainNavigation {
 
-    Intent email, goToRatings, web;
-    LinearLayout contactUsText, ratingsLayout;
-    TextView budgetQ1, budgetQ2, budgetA1, budgetA2, dailyMoneyQ3, dailyMoneyA3, dailyMoneyQ4, dailyMoneyA4,
-            dailyMoneyQ5, dailyMoneyA5, dailyMoneyQ6, dailyMoneyA6, dailyMoneyA6A, dailyMoneyA6B, dailyMoneyQ8, dailyMoneyA8,
-            debtsQ1, debtsA1, debtsQ2, debtsA2, debtsQ3, debtsA3, debtsQ4, debtsA4, debtsQ5, debtsA5, helpInstructions, savingsQ1, savingsA1, savingsQ2,
-            savingsA2, savingsQ3, savingsA3, savingsQ4, savingsA4, savingsQ5, savingsA5, emailText, urlText;
+    Intent email,
+            goToRatings,
+            web;
+    LinearLayout contactUsText,
+            ratingsLayout;
+    TextView budgetQ1,
+            budgetQ2,
+            budgetA1,
+            budgetA2,
+            dailyMoneyQ3,
+            dailyMoneyA3,
+            dailyMoneyQ4,
+            dailyMoneyA4,
+            dailyMoneyQ5,
+            dailyMoneyA5,
+            dailyMoneyA6A,
+            dailyMoneyA6B,
+            dailyMoneyQ8,
+            dailyMoneyA8,
+            debtsQ2,
+            debtsA2,
+            helpInstructions,
+            emailText,
+            urlText;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -48,9 +66,6 @@ public class LayoutHelp extends MainNavigation {
         dailyMoneyQ5 = findViewById(R.id.dailyMoneyQ5);
         dailyMoneyA5 = findViewById(R.id.dailyMoneyA5);
         dailyMoneyA5.setVisibility(View.GONE);
-        dailyMoneyQ6 = findViewById(R.id.dailyMoneyQ6);
-        dailyMoneyA6 = findViewById(R.id.dailyMoneyA6);
-        dailyMoneyA6.setVisibility(View.GONE);
         dailyMoneyA6A = findViewById(R.id.dailyMoneyA6A);
         dailyMoneyA6A.setVisibility(View.GONE);
         dailyMoneyA6B = findViewById(R.id.dailyMoneyA6B);
@@ -66,37 +81,9 @@ public class LayoutHelp extends MainNavigation {
         budgetA2 = findViewById(R.id.budgetA2);
         budgetA2.setVisibility(View.GONE);
 
-        debtsQ1 = findViewById(R.id.debtsQ1);
-        debtsA1 = findViewById(R.id.debtsA1);
-        debtsA1.setVisibility(View.GONE);
         debtsQ2 = findViewById(R.id.debtsQ2);
         debtsA2 = findViewById(R.id.debtsA2);
         debtsA2.setVisibility(View.GONE);
-        debtsQ3 = findViewById(R.id.debtsQ3);
-        debtsA3 = findViewById(R.id.debtsA3);
-        debtsA3.setVisibility(View.GONE);
-        debtsQ4 = findViewById(R.id.debtsQ4);
-        debtsA4 = findViewById(R.id.debtsA4);
-        debtsA4.setVisibility(View.GONE);
-        debtsQ5 = findViewById(R.id.debtsQ5);
-        debtsA5 = findViewById(R.id.debtsA5);
-        debtsA5.setVisibility(View.GONE);
-
-        savingsQ1 = findViewById(R.id.savingsQ1);
-        savingsA1 = findViewById(R.id.savingsA1);
-        savingsA1.setVisibility(View.GONE);
-        savingsQ2 = findViewById(R.id.savingsQ2);
-        savingsA2 = findViewById(R.id.savingsA2);
-        savingsA2.setVisibility(View.GONE);
-        savingsQ3 = findViewById(R.id.savingsQ3);
-        savingsA3 = findViewById(R.id.savingsA3);
-        savingsA3.setVisibility(View.GONE);
-        savingsQ4 = findViewById(R.id.savingsQ4);
-        savingsA4 = findViewById(R.id.savingsA4);
-        savingsA4.setVisibility(View.GONE);
-        savingsQ5 = findViewById(R.id.savingsQ5);
-        savingsA5 = findViewById(R.id.savingsA5);
-        savingsA5.setVisibility(View.GONE);
 
         contactUsText = findViewById(R.id.contactUsText);
         emailText = findViewById(R.id.emailText);
@@ -110,20 +97,10 @@ public class LayoutHelp extends MainNavigation {
         dailyMoneyQ3.setOnClickListener(onClickQ3);
         dailyMoneyQ4.setOnClickListener(onClickQ4);
         dailyMoneyQ5.setOnClickListener(onClickQ5);
-        dailyMoneyQ6.setOnClickListener(onClickQ6);
         dailyMoneyQ8.setOnClickListener(onClickQ8);
         budgetQ2.setOnClickListener(onClickBdgtQ2);
         budgetQ1.setOnClickListener(onClickBdgtQ1);
-        debtsQ1.setOnClickListener(onClickDebtQ1);
         debtsQ2.setOnClickListener(onClickDebtQ2);
-        debtsQ3.setOnClickListener(onClickDebtQ3);
-        debtsQ4.setOnClickListener(onClickDebtQ4);
-        debtsQ5.setOnClickListener(onClickDebtQ5);
-        savingsQ1.setOnClickListener(onClickSavQ1);
-        savingsQ2.setOnClickListener(onClickSavQ2);
-        savingsQ3.setOnClickListener(onClickSavQ3);
-        savingsQ4.setOnClickListener(onClickSavQ4);
-        savingsQ5.setOnClickListener(onClickSavQ5);
     }
 
     View.OnClickListener onClickQ3 = new View.OnClickListener() {
@@ -144,15 +121,6 @@ public class LayoutHelp extends MainNavigation {
         @Override
         public void onClick(View v) {
             dailyMoneyA5.setVisibility(View.VISIBLE);
-        }
-    };
-
-    View.OnClickListener onClickQ6 = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            dailyMoneyA6.setVisibility(View.VISIBLE);
-            dailyMoneyA6A.setVisibility(View.VISIBLE);
-            dailyMoneyA6B.setVisibility(View.VISIBLE);
         }
     };
 
@@ -179,73 +147,10 @@ public class LayoutHelp extends MainNavigation {
         }
     };
 
-    View.OnClickListener onClickDebtQ1 = new View.OnClickListener() {
-        @Override
-        public void onClick(View onClickDebtQ1) {
-            debtsA1.setVisibility(View.VISIBLE);
-        }
-    };
-
     View.OnClickListener onClickDebtQ2 = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             debtsA2.setVisibility(View.VISIBLE);
-        }
-    };
-
-    View.OnClickListener onClickDebtQ3 = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            debtsA3.setVisibility(View.VISIBLE);
-        }
-    };
-
-    View.OnClickListener onClickDebtQ4 = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            debtsA4.setVisibility(View.VISIBLE);
-        }
-    };
-
-    View.OnClickListener onClickDebtQ5 = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            debtsA5.setVisibility(View.VISIBLE);
-        }
-    };
-
-    View.OnClickListener onClickSavQ1 = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            savingsA1.setVisibility(View.VISIBLE);
-        }
-    };
-
-    View.OnClickListener onClickSavQ2 = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            savingsA2.setVisibility(View.VISIBLE);
-        }
-    };
-
-    View.OnClickListener onClickSavQ3 = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            savingsA3.setVisibility(View.VISIBLE);
-        }
-    };
-
-    View.OnClickListener onClickSavQ4 = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            savingsA4.setVisibility(View.VISIBLE);
-        }
-    };
-
-    View.OnClickListener onClickSavQ5 = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            savingsA5.setVisibility(View.VISIBLE);
         }
     };
 

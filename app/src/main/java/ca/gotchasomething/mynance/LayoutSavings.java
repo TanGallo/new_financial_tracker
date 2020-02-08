@@ -36,23 +36,53 @@ import ca.gotchasomething.mynance.data.AccountsDb;
 public class LayoutSavings extends MainNavigation {
 
     AccountsDb laySavSavDb;
-    Button laySavCancelBtn, laySavDoneBtn, laySavSaveBtn, laySavUpdateBtn;
-    ContentValues laySavCV, laySavCV2, laySavCV3;
-    DbHelper laySavHelper, laySavHelper3;
+    Button laySavCancelBtn,
+            laySavDoneBtn,
+            laySavSaveBtn,
+            laySavUpdateBtn;
+    ContentValues laySavCV,
+            laySavCV2,
+            laySavCV3;
+    DbHelper laySavHelper,
+            laySavHelper3;
     DbManager laySavDbMgr;
-    Double laySavSavRate = 0.0, laySavTotSav = 0.0, savAmtFromEntry = 0.0, savAmtFromTag = 0.0, savGoalFromEntry = 0.0, savGoalFromTag = 0.0,
-            savPaytFromEntry = 0.0, savPaytFromTag = 0.0, savRateFromEntry = 0.0, savRateFromTag = 0.0;
-    EditText laySavSavAmtET, laySavSavGoalET, laySavSavNameET, laySavSavPaytET, laySavSavPercentET;
+    Double laySavSavRate = 0.0,
+            laySavTotSav = 0.0,
+            savAmtFromEntry = 0.0,
+            savAmtFromTag = 0.0,
+            savGoalFromEntry = 0.0,
+            savGoalFromTag = 0.0,
+            savPaytFromEntry = 0.0,
+            savPaytFromTag = 0.0,
+            savRateFromEntry = 0.0,
+            savRateFromTag = 0.0;
+    EditText laySavSavAmtET,
+            laySavSavGoalET,
+            laySavSavNameET,
+            laySavSavPaytET,
+            laySavSavPercentET;
     FloatingActionButton laySavAddMoreBtn;
     General laySavGen;
-    Intent laySavToAnalysis, laySavToAddMore, laySavRefresh;
+    Intent laySavToAnalysis,
+            laySavToAddMore,
+            laySavRefresh;
     ListView laySavListView;
     long id, savIdFromTag;
     NumberFormat laySavPerFor = NumberFormat.getPercentInstance();
     LaySavListAdapter laySavListAdapter;
-    SQLiteDatabase laySavDb, laySavDb3;
-    String laySavSavDate = null, laySavSavDate2 = null, laySavSavRateS = null, savDateFromTag = null, savNameFromEntry = null, savNameFromTag = null;
-    TextView laySavDateHeaderLabel, laySavDateHeaderTV, laySavSavDateResLabel, laySavSavDateResTV, laySavTotAmtHeaderLabel, laySavTotAmtHeaderTV;
+    SQLiteDatabase laySavDb,
+            laySavDb3;
+    String laySavSavDate = null,
+            laySavSavDate2 = null,
+            laySavSavRateS = null,
+            savDateFromTag = null,
+            savNameFromTag = null;
+    TextView laySavDateHeaderLabel,
+            laySavDateHeaderTV,
+            laySavSavDateResLabel,
+            laySavSavDateResTV,
+            laySavTotAmtHeaderLabel,
+            laySavTotAmtHeaderTV;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

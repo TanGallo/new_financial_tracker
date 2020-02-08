@@ -48,7 +48,7 @@
                             android:layout_height="wrap_content"
                             android:layout_margin="10dp"
                             android:text="@string/help_instructions"
-                            android:textColor="@color/colorGreen"
+                            android:textColor="@color/colorAccent"
                             android:textSize="16sp" />
 
                         <View
@@ -162,26 +162,6 @@
                             android:textSize="18sp" />
 
                         <TextView
-                            android:id="@+id/dailyMoneyQ6"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="10dp"
-                            android:clickable="true"
-                            android:focusable="true"
-                            android:text="@string/daily_money_q6"
-                            android:textColor="@color/colorPrimaryDark"
-                            android:textSize="18sp" />
-
-                        <TextView
-                            android:id="@+id/dailyMoneyA6"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="10dp"
-                            android:text="@string/daily_money_6"
-                            android:textColor="@color/colorGreen"
-                            android:textSize="18sp" />
-
-                        <TextView
                             android:id="@+id/dailyMoneyA6A"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -220,26 +200,6 @@
                             android:textSize="18sp" />
 
                         <TextView
-                            android:id="@+id/debtsQ1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="10dp"
-                            android:clickable="true"
-                            android:focusable="true"
-                            android:text="@string/debts_q1"
-                            android:textColor="@color/colorPrimaryDark"
-                            android:textSize="18sp" />
-
-                        <TextView
-                            android:id="@+id/debtsA1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="10dp"
-                            android:text="@string/debts_1"
-                            android:textColor="@color/colorGreen"
-                            android:textSize="18sp" />
-
-                        <TextView
                             android:id="@+id/debtsQ2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -259,167 +219,6 @@
                             android:textColor="@color/colorGreen"
                             android:textSize="18sp"
                             tools:ignore="TooManyViews" />
-
-                        <TextView
-                            android:id="@+id/debtsQ3"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="10dp"
-                            android:clickable="true"
-                            android:focusable="true"
-                            android:text="@string/debts_q3"
-                            android:textColor="@color/colorPrimaryDark"
-                            android:textSize="18sp" />
-
-                        <TextView
-                            android:id="@+id/debtsA3"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="10dp"
-                            android:text="@string/debts_3"
-                            android:textColor="@color/colorGreen"
-                            android:textSize="18sp" />
-
-                        <TextView
-                            android:id="@+id/debtsQ4"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="10dp"
-                            android:clickable="true"
-                            android:focusable="true"
-                            android:text="@string/debts_q4"
-                            android:textColor="@color/colorPrimaryDark"
-                            android:textSize="18sp" />
-
-                        <TextView
-                            android:id="@+id/debtsA4"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="10dp"
-                            android:text="@string/debts_4"
-                            android:textColor="@color/colorGreen"
-                            android:textSize="18sp" />
-
-                        <TextView
-                            android:id="@+id/debtsQ5"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="10dp"
-                            android:clickable="true"
-                            android:focusable="true"
-                            android:text="@string/debts_q5"
-                            android:textColor="@color/colorPrimaryDark"
-                            android:textSize="18sp" />
-
-                        <TextView
-                            android:id="@+id/debtsA5"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="10dp"
-                            android:text="@string/debts_5"
-                            android:textColor="@color/colorGreen"
-                            android:textSize="18sp" />
-
-                        <TextView
-                            android:id="@+id/savingsQ1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="10dp"
-                            android:clickable="true"
-                            android:focusable="true"
-                            android:text="@string/savings_q1"
-                            android:textColor="@color/colorPrimaryDark"
-                            android:textSize="18sp" />
-
-                        <TextView
-                            android:id="@+id/savingsA1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="10dp"
-                            android:text="@string/savings_1"
-                            android:textColor="@color/colorGreen"
-                            android:textSize="18sp" />
-
-                        <TextView
-                            android:id="@+id/savingsQ2"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="10dp"
-                            android:clickable="true"
-                            android:focusable="true"
-                            android:text="@string/debts_q2"
-                            android:textColor="@color/colorPrimaryDark"
-                            android:textSize="18sp" />
-
-                        <TextView
-                            android:id="@+id/savingsA2"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="10dp"
-                            android:text="@string/savings_2"
-                            android:textColor="@color/colorGreen"
-                            android:textSize="18sp" />
-
-                        <TextView
-                            android:id="@+id/savingsQ3"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="10dp"
-                            android:clickable="true"
-                            android:focusable="true"
-                            android:text="@string/savings_q3"
-                            android:textColor="@color/colorPrimaryDark"
-                            android:textSize="18sp" />
-
-                        <TextView
-                            android:id="@+id/savingsA3"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="10dp"
-                            android:text="@string/savings_3"
-                            android:textColor="@color/colorGreen"
-                            android:textSize="18sp" />
-
-                        <TextView
-                            android:id="@+id/savingsQ4"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="10dp"
-                            android:clickable="true"
-                            android:focusable="true"
-                            android:text="@string/savings_q4"
-                            android:textColor="@color/colorPrimaryDark"
-                            android:textSize="18sp" />
-
-                        <TextView
-                            android:id="@+id/savingsA4"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="10dp"
-                            android:text="@string/savings_4"
-                            android:textColor="@color/colorGreen"
-                            android:textSize="18sp" />
-
-                        <TextView
-                            android:id="@+id/savingsQ5"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="10dp"
-                            android:clickable="true"
-                            android:focusable="true"
-                            android:text="@string/savings_q5"
-                            android:textColor="@color/colorPrimaryDark"
-                            android:textSize="18sp" />
-
-                        <TextView
-                            android:id="@+id/savingsA5"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="10dp"
-                            android:text="@string/savings_5"
-                            android:textColor="@color/colorGreen"
-                            android:textSize="18sp" />
-
 
                         <View
                             android:layout_width="match_parent"
@@ -443,7 +242,7 @@
                                 android:layout_margin="10dp"
                                 android:gravity="center_horizontal"
                                 android:text="@string/contact_us_1"
-                                android:textColor="@color/colorGreen"
+                                android:textColor="@color/colorAccent"
                                 android:textSize="20sp" />
 
                             <TextView
@@ -461,7 +260,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
                                 android:text="@string/email_address"
-                                android:textColor="@color/blue4"
+                                android:textColor="@color/colorPrimaryDark"
                                 android:textSize="18sp" />
 
                             <TextView
@@ -479,7 +278,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
                                 android:text="@string/website"
-                                android:textColor="@color/blue4"
+                                android:textColor="@color/colorPrimaryDark"
                                 android:textSize="18sp" />
 
                         </LinearLayout>
@@ -508,7 +307,7 @@
                                 android:layout_marginStart="10dp"
                                 android:layout_marginEnd="10dp"
                                 android:text="@string/rate_this_app"
-                                android:textColor="@color/colorPrimaryDark"
+                                android:textColor="@color/colorAccent"
                                 android:textSize="20sp" />
 
                             <LinearLayout

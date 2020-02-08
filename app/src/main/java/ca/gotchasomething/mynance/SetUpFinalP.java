@@ -16,10 +16,14 @@ import ca.gotchasomething.mynance.data.TransactionsDb;
 public class SetUpFinalP extends AppCompatActivity {
 
     Button fin1EnterBtn;
-    ContentValues fin1CV, fin1CV2, fin1CV3;
+    ContentValues fin1CV,
+            fin1CV2,
+            fin1CV3;
     DbHelper fin1Helper;
     DbManager fin1DbMgr;
-    Double fin1StartBal = 0.0, fin1MoneyInA, fin1MoneyInB;
+    Double fin1StartBal = 0.0,
+            fin1MoneyInA = 0.0,
+            fin1MoneyInB = 0.0;
     EditText fin1ET;
     General fin1Gen;
     Intent fin1ToSetUp;

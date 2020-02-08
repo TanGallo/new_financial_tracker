@@ -19,7 +19,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -30,25 +29,45 @@ import ca.gotchasomething.mynance.data.TransactionsDb;
 
 public class LayoutReports extends MainNavigation {
 
-    ArrayAdapter repFromMthSpinAdapter, repFromYrSpinAdapter, repToMthSpinAdapter, repToYrSpinAdapter;
+    ArrayAdapter repFromMthSpinAdapter,
+            repFromYrSpinAdapter,
+            repToMthSpinAdapter,
+            repToYrSpinAdapter;
     boolean repLeapYear;
-    Button repSpinOkBtn, repSpinResetBtn;
+    Button repSpinOkBtn,
+            repSpinResetBtn;
     Calendar repCal;
-    Date repEarliestDate, repLatestDate, repTransDateD, repTransDateD2, repTransDateD3;
+    Date repEarliestDate,
+            repLatestDate,
+            repTransDateD,
+            repTransDateD2;
     DbManager repDbMgr;
-    Double totalAmt = 0.0, totalAmtPerCat = 0.0, totalReceived = 0.0, totalReceivedPerCat = 0.0, totalSpent = 0.0, totalSpentPerCat = 0.0;
+    Double totalAmt = 0.0,
+            totalAmtPerCat = 0.0;
     General repGen;
     int repYear;
     Intent repRefresh;
-    LinearLayout repSpinLayout, repSpinLayout2;
+    LinearLayout repSpinLayout,
+            repSpinLayout2;
     ListView repListView;
     long budgetId;
-    NumberFormat percentFormat = NumberFormat.getPercentInstance();
     RepLstAdapter repAdapter;
-    Spinner repToMthSpin, repFromMthSpin, repToYrSpin, repFromYrSpin;
-    String repFromMonth = null, repToMonth = null, repFromYr = null, repToYr = null, repLastDay = null, repTransDate = null, repTransDate2 = null, repTransDate3 = null;
-    String[] repMthList, repOnlyMthList, repYrList;
-    TextView repAmtLabel, repAndTV, repCatLabel, repPercentLabel;
+    Spinner repToMthSpin,
+            repFromMthSpin,
+            repToYrSpin,
+            repFromYrSpin;
+    String repFromMonth = null,
+            repToMonth = null,
+            repFromYr = null,
+            repToYr = null,
+            repLastDay = null,
+            repTransDate = null;
+    String[] repMthList,
+            repOnlyMthList,
+            repYrList;
+    TextView repAmtLabel,
+            repAndTV,
+            repCatLabel;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

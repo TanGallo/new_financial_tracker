@@ -18,22 +18,42 @@ import androidx.viewpager.widget.ViewPager;
 
 public class SlidesSetUpL extends AppCompatActivity implements View.OnClickListener {
 
-    private AdapterSlidesB adapter;
-    private Button previousBtn, nextBtn;
+    private AdapterSlides adapter;
+    private Button previousBtn,
+            nextBtn;
     DbManager dbManager;
     ImageView slideImage;
     private ImageView[] dots;
     private int[] slides,
-            incomeSlides = {R.layout.b1_slides_set_up_background_land, R.layout.b1_slides_set_up_background_land, R.layout.b1_slides_set_up_background_land, R.layout.b1_slides_set_up_background_land},
-            billsSlides = {R.layout.b1_slides_set_up_background_land, R.layout.b1_slides_set_up_background_land, R.layout.b1_slides_set_up_background_land,
-                    R.layout.b1_slides_set_up_background_land, R.layout.b1_slides_set_up_background_land},
-            debtsSlides = {R.layout.b1_slides_set_up_background_land, R.layout.b1_slides_set_up_background_land},
-            savingsSlides = {R.layout.b1_slides_set_up_background_land, R.layout.b1_slides_set_up_background_land},
+            incomeSlides = {R.layout.b1_slides_set_up_background_land,
+                    R.layout.b1_slides_set_up_background_land,
+                    R.layout.b1_slides_set_up_background_land,
+                    R.layout.b1_slides_set_up_background_land},
+            billsSlides = {R.layout.b1_slides_set_up_background_land,
+                    R.layout.b1_slides_set_up_background_land,
+                    R.layout.b1_slides_set_up_background_land,
+                    R.layout.b1_slides_set_up_background_land,
+                    R.layout.b1_slides_set_up_background_land},
+            debtsSlides = {R.layout.b1_slides_set_up_background_land,
+                    R.layout.b1_slides_set_up_background_land},
+            savingsSlides = {R.layout.b1_slides_set_up_background_land,
+                    R.layout.b1_slides_set_up_background_land},
             analysisSlides = {R.layout.b1_slides_set_up_background_land},
-            weeklySlides = {R.layout.b1_slides_set_up_background_land, R.layout.b1_slides_set_up_background_land, R.layout.b1_slides_set_up_background_land},
-            finalSlides = {R.layout.b1_slides_set_up_background_land, R.layout.b1_slides_set_up_background_land};
+            weeklySlides = {R.layout.b1_slides_set_up_background_land,
+                    R.layout.b1_slides_set_up_background_land,
+                    R.layout.b1_slides_set_up_background_land},
+            finalSlides = {R.layout.b1_slides_set_up_background_land,
+                    R.layout.b1_slides_set_up_background_land};
     private LinearLayout dotsLayout;
-    TextView slideTitle, slideTV1, slideTV2, slideTV3, slideTV4, slideTV5, slideTV6, slideTV7, slideTV8;
+    TextView slideTitle,
+            slideTV1,
+            slideTV2,
+            slideTV3,
+            slideTV4,
+            slideTV5,
+            slideTV6,
+            slideTV7,
+            slideTV8;
     ViewPager viewPager;
 
     @Override
@@ -74,7 +94,7 @@ public class SlidesSetUpL extends AppCompatActivity implements View.OnClickListe
                 slides = finalSlides;
                 break;
         }
-        adapter = new AdapterSlidesB(slides, this);
+        adapter = new AdapterSlides(slides, this);
         viewPager.setAdapter(adapter);
 
         slideImage = findViewById(R.id.slideImage);

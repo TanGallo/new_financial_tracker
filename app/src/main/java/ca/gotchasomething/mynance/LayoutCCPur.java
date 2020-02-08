@@ -23,8 +23,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 
-import com.google.android.material.tabs.TabLayout;
-
 import java.util.List;
 
 import ca.gotchasomething.mynance.data.AccountsDb;
@@ -35,27 +33,58 @@ import ca.gotchasomething.mynance.spinners.TransferSpinnerAdapter;
 public class LayoutCCPur extends MainNavigation {
 
     BudgetDb layCCPurExpDb;
-    Button transDialogCancelBtn, transDialogNoContBtn, transDialogNoDefBtn, transDialogSaveBtn, transDialogYesContBtn, transDialogYesDefBtn;
+    Button transDialogCancelBtn,
+            transDialogNoContBtn,
+            transDialogNoDefBtn,
+            transDialogSaveBtn,
+            transDialogYesContBtn,
+            transDialogYesDefBtn;
     ContentValues layCCPurCV;
     Cursor layCCPurCur;
-    DbHelper layCCPurHelper, layCCPurHelper2;
+    DbHelper layCCPurHelper,
+            layCCPurHelper2;
     DbManager layCCPurDbMgr;
-    Double debtAmtFromDb = 0.0, debtLimitFromDb = 0.0, debtPaytFromDb = 0.0, debtRateFromDb = 0.0, layCCPurMonOutAmt = 0.0, layCCPurMonOutNewAmt = 0.0,
-            layCCPurMonOutOldAmt = 0.0, layCCPurWeeklyLimit = 0.0;
+    Double debtAmtFromDb = 0.0,
+            debtLimitFromDb = 0.0,
+            debtPaytFromDb = 0.0,
+            debtRateFromDb = 0.0,
+            layCCPurMonOutAmt = 0.0,
+            layCCPurMonOutNewAmt = 0.0,
+            layCCPurMonOutOldAmt = 0.0,
+            layCCPurWeeklyLimit = 0.0;
     EditText transDialogAmtET;
     General layCCPurGen;
-    Intent layCCPurToAddCC, layCCPurToAddMore, layCCPurToFixBudget, layCCPurToList, layCCPurRefresh;
+    Intent layCCPurToAddCC,
+            layCCPurToAddMore,
+            layCCPurToFixBudget,
+            layCCPurToList,
+            layCCPurRefresh;
     LayCCPurLstAdapter layCCPurListAdapter;
-    LinearLayout layCCPurHeaderLayout, transDialogDefLayout, transDialogWarnLayout;
+    LinearLayout layCCPurHeaderLayout,
+            transDialogDefLayout,
+            transDialogWarnLayout;
     ListView layCCPurList;
-    long layCCPurChargingDebtIdFromSpin, layCCPurExpId;
+    long layCCPurChargingDebtIdFromSpin,
+            layCCPurExpId;
     TransferSpinnerAdapter layCCPurSpinAdapter;
     Spinner layCCPurSpin;
-    SQLiteDatabase layCCPurDb, layCCPurDb2;
-    String layCCPurChargingDebtNameFromSpin = null, layCCPurExpName = null, layCCPurExpPriority = null, layCCPurExpWeekly = null;
-    TabLayout layCCPurTabLay;
-    TextView layCCPurAddMoreTV, layCCPurAvailAcctTV, layCCPurAvailAmtLabel, layCCPurBudgWarnTV, layCCPurLabel2, layCCPurNewCCTV, layCCPurTotAcctTV,
-            transDialogAmtTV, transDialogCatTV, transDialogPayLabel, transDialogWarnTV;
+    SQLiteDatabase layCCPurDb,
+            layCCPurDb2;
+    String layCCPurChargingDebtNameFromSpin = null,
+            layCCPurExpName = null,
+            layCCPurExpPriority = null,
+            layCCPurExpWeekly = null;
+    TextView layCCPurAddMoreTV,
+            layCCPurAvailAcctTV,
+            layCCPurAvailAmtLabel,
+            layCCPurBudgWarnTV,
+            layCCPurLabel2,
+            layCCPurNewCCTV,
+            layCCPurTotAcctTV,
+            transDialogAmtTV,
+            transDialogCatTV,
+            transDialogPayLabel,
+            transDialogWarnTV;
     TransactionsDb layCCPurMonOutDb;
     View dView;
 
@@ -107,8 +136,6 @@ public class LayoutCCPur extends MainNavigation {
                 layCCPurDbMgr.retrieveCurrentB(),
                 layCCPurDbMgr.retrieveCurrentA());
         layCCPurBudgWarnTV.setOnClickListener(onClickLayCCPurBudgWarnTV);
-
-        layCCPurTabLay = findViewById(R.id.mainCCTabLayout);
 
         layCCPurSpin = findViewById(R.id.mainSpin);
 

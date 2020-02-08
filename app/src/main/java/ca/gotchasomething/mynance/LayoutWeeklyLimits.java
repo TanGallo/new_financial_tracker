@@ -29,19 +29,26 @@ import ca.gotchasomething.mynance.data.TransactionsDb;
 
 public class LayoutWeeklyLimits extends MainNavigation {
 
-    Button wee2AddMoreBtn, wee2DoneBtn, wee2ResetBtn;
+    Button wee2AddMoreBtn,
+            wee2DoneBtn,
+            wee2ResetBtn;
     ContentValues  wee2CV;
     DbHelper  wee2Helper;
     DbManager wee2DbMgr;
-    Double wee2AmtLeft = 0.0, wee2SpentThisWeek = 0.0, wee2StartBal = 0.0;
-    float wee2AmtSpentF, wee2AmtLeftF;
+    Double wee2AmtLeft = 0.0,
+            wee2SpentThisWeek = 0.0,
+            wee2StartBal = 0.0;
+    float wee2AmtSpentF,
+            wee2AmtLeftF;
     General wee2Gen;
-    Intent wee2ToMain, wee2ToAddMore;
+    Intent wee2ToMain,
+            wee2ToAddMore;
     LinearLayout wee2SpinLayout;
     ListView wee2ListView;
     long wee2ExpId;
     SQLiteDatabase  wee2Db;
-    TextView wee2HeaderLabel, wee2TotalTV;
+    TextView wee2HeaderLabel,
+            wee2TotalTV;
     Wee2LstAdapter wee2LstAdapter;
 
     @Override

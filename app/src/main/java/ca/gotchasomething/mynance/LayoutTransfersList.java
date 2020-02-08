@@ -22,15 +22,19 @@ import ca.gotchasomething.mynance.data.TransactionsDb;
 
 public class LayoutTransfersList extends MainNavigation {
 
-    Button trn2AddMoreBtn, trn2DoneBtn, trn2ResetBtn;
+    Button trn2AddMoreBtn,
+            trn2DoneBtn,
+            trn2ResetBtn;
     DbManager trn2DbMgr;
     Double trn2Amt = 0.0;
     General trn2Gen;
-    Intent trn2ToMain, trn2ToAddMonIn;
+    Intent trn2ToMain,
+            trn2ToAddMonIn;
     LinearLayout trn2SpinLayout;
     ListView trn2List;
     Trn2Adapter trn2Adapter;
-    TextView trn2Title, trn2TotalTV;
+    TextView trn2Title,
+            trn2TotalTV;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

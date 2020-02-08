@@ -6,20 +6,13 @@
 
     <color name="colorWhite">#ffffff</color>
     <color name="colorGreen">#03ac13</color>
-    <color name="lightGreen">#5dbb63</color>
 
     <color name="activeDots">#fffafa</color>
     <color name="inactiveDots">#83878b</color>
 
-    <color name="blue2">#1034a6</color>
-    <color name="blue3">#0f52ba</color>
-    <color name="blue4">#003152</color>
-    <color name="blue5">#987d84</color>
-    <color name="blue6">#6593f5</color>
     <color name="blue7">#cae1ff</color>
 
     <color name="brightRed">#ffff4444</color>
-    <color name="yellow">#ffc30b</color>
 
     <color name="grey">#b1b1b1</color>
 

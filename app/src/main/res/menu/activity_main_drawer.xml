@@ -33,15 +33,7 @@
         android:icon="@drawable/ic_help_outline_black_24dp"
         android:title="@string/help" />
 
-    <item
-        android:id="@+id/menu_acct_curr"
-        android:icon="@drawable/ic_help_outline_black_24dp"
-        android:title="@string/acct_curr" />
 
-    <item
-        android:id="@+id/menu_bdgt_trans"
-        android:icon="@drawable/ic_help_outline_black_24dp"
-        android:title="@string/bdgt_trans" />
 
 
 </menu>

@@ -18,12 +18,27 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 
 public class LayoutRatings extends LayoutMoneyOut {
 
-    Button emailNoButton, emailYesButton, enjoyNoButton, enjoyNotSureButton, enjoyYesButton, rateNoButton, rateYesButton;
+    Button emailNoButton,
+            emailYesButton,
+            enjoyNoButton,
+            enjoyNotSureButton,
+            enjoyYesButton,
+            rateNoButton,
+            rateYesButton;
     General rateGen;
-    Intent email, goToRatings, rateToMonOut;
-    LinearLayout ratEnjoyLayout, ratEmailLayout, ratRateLayout;
-    String clicksS = null, clicksES = null;
-    TextView ratingsLabel, ratingsYesLabel, ratingsNoLabel, ratTemp, ratTempE;
+    Intent email,
+            goToRatings,
+            rateToMonOut;
+    LinearLayout ratEnjoyLayout,
+            ratEmailLayout,
+            ratRateLayout;
+    String clicksS = null,
+            clicksES = null;
+    TextView ratingsLabel,
+            ratingsYesLabel,
+            ratingsNoLabel,
+            ratTemp,
+            ratTempE;
     public static int clicked = 0;
     public static int clickedE = 0;
     public static final String SRPE = "shared ratings pref";

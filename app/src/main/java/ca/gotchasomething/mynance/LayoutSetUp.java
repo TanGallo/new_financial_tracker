@@ -17,18 +17,38 @@ import ca.gotchasomething.mynance.data.CurrentDb;
 
 public class LayoutSetUp extends MainNavigation {
 
-    Button laySetIncBtn, laySetBillsBtn, laySetWeeklyBtn, laySetDebtsBtn, laySetSavingsBtn, laySetAnalysisBtn, laySetFinalBtn;
-    CheckBox laySetIncomeCheckbox, laySetBillsCheckbox, laySetWeeklyCheckbox, laySetDebtsCheckbox, laySetSavingsCheckbox, laySetAnalysisCheckbox,
-            laySetTourCheckbox, laySetFinalCheckbox;
+    Button laySetIncBtn,
+            laySetBillsBtn,
+            laySetWeeklyBtn,
+            laySetDebtsBtn,
+            laySetSavingsBtn,
+            laySetAnalysisBtn,
+            laySetFinalBtn;
+    CheckBox laySetIncomeCheckbox,
+            laySetBillsCheckbox,
+            laySetWeeklyCheckbox,
+            laySetDebtsCheckbox,
+            laySetSavingsCheckbox,
+            laySetAnalysisCheckbox,
+            laySetTourCheckbox,
+            laySetFinalCheckbox;
     ContentValues laySetCV;
     CurrentDb laySetCurDb;
     DbHelper laySetHelper;
     DbManager laySetDbMgr;
     General laySetGen;
-    Intent laySetToSlides, laySetToMain;
+    Intent laySetToSlides,
+            laySetToMain;
     SQLiteDatabase laySetDb;
-    TextView laySetIncomeLabel, laySetBillsLabel, laySetWeeklyLabel, laySetDebtsLabel, laySetTourLabel, laySetTourLabel2, laySetSavingsLabel,
-            laySetAnalysisLabel, laySetFinalLabel;
+    TextView laySetIncomeLabel,
+            laySetBillsLabel,
+            laySetWeeklyLabel,
+            laySetDebtsLabel,
+            laySetTourLabel,
+            laySetTourLabel2,
+            laySetSavingsLabel,
+            laySetAnalysisLabel,
+            laySetFinalLabel;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -48,6 +68,11 @@ public class LayoutSetUp extends MainNavigation {
 
         laySetDbMgr = new DbManager(this);
         laySetGen = new General();
+
+        if (new PreferenceManager(this).checkPreferences2()) {
+            startActivity(new Intent(this, MainActivity.class));
+            finish();
+        }
 
         laySetIncBtn = findViewById(R.id.setUpIncomeButton);
         laySetIncomeLabel = findViewById(R.id.setUpIncomeLabel);
@@ -231,6 +256,8 @@ public class LayoutSetUp extends MainNavigation {
             laySetToMain = new Intent(LayoutSetUp.this, MainActivity.class);
             laySetToMain.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
             startActivity(laySetToMain);
+
+            new PreferenceManager(getApplicationContext()).writePreferences2();
         }
     };
 

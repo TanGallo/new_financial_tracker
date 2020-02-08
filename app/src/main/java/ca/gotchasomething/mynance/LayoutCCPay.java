@@ -34,27 +34,61 @@ import ca.gotchasomething.mynance.spinners.TransferSpinnerAdapter;
 
 public class LayoutCCPay extends MainNavigation {
 
-    Button layCCPayNoBtn, layCCPayYesBtn, warnDialogNoContBtn, warnDialogYesContBtn;
+    Button warnDialogNoContBtn,
+            warnDialogYesContBtn;
     CheckBox layCCPayCheckbox;
-    ContentValues layCCPayCV, layCCPayCV2;
+    ContentValues layCCPayCV,
+            layCCPayCV2;
     Cursor layCCPayCur3;
-    DbHelper layCCPayHelper, layCCPayHelper2, layCCPayHelper3;
+    DbHelper layCCPayHelper,
+            layCCPayHelper2,
+            layCCPayHelper3;
     DbManager layCCPayDbMgr;
-    Double debtAmtFromDb = 0.0, debtLimitFromDb = 0.0, debtPaytFromDb = 0.0, debtRateFromDb = 0.0, layCCPayFromAcctBal = 0.0, layCCPayFromAcctMax = 0.0, debtToPayToChargingCCFromTag = 0.0, layCCPayAmtDue = 0.0, layCCPayPurAmtFromTag = 0.0, layCCPayAmtToPay = 0.0, layCCPayNewDebtToPay = 0.0, layCCPayToPayTotA = 0.0, layCCPayToPayTotB = 0.0,
-            moneyOutA = 0.0, moneyOutOwing = 0.0, moneyOutB = 0.0, savAmtFromDb = 0.0, savGoalFromDb = 0.0, savPaytFromDb = 0.0, savRateFromDb = 0.0;
+    Double debtAmtFromDb = 0.0,
+            debtLimitFromDb = 0.0,
+            debtPaytFromDb = 0.0,
+            debtRateFromDb = 0.0,
+            layCCPayFromAcctBal = 0.0,
+            layCCPayFromAcctMax = 0.0,
+            debtToPayToChargingCCFromTag = 0.0,
+            layCCPayAmtDue = 0.0,
+            layCCPayPurAmtFromTag = 0.0,
+            layCCPayAmtToPay = 0.0,
+            layCCPayNewDebtToPay = 0.0,
+            layCCPayToPayTotA = 0.0,
+            layCCPayToPayTotB = 0.0,
+            savAmtFromDb = 0.0,
+            savGoalFromDb = 0.0,
+            savPaytFromDb = 0.0,
+            savRateFromDb = 0.0;
     General layCCPayGen;
-    Intent layCCPayRefresh, layCCPayToMain;
+    Intent layCCPayRefresh,
+            layCCPayToMain;
     LayCCPayPaytLstAdapter layCCPayPaytLstAdapter;
     LayCCPayTransLstAdapter layCCPayTransLstAdapter;
-    LinearLayout layCCPayPaytListLayout, layCCPayWarnLayout, warnDialogWarnLayout;
-    ListView layCCPayCCPaytListView, layCCPayTransListView;
-    long layCCPayFromSpinId, layCCPayToAcctId, layCCPayChargingDebtIdFromTag, layCCPayId;
+    LinearLayout layCCPayPaytListLayout,
+            warnDialogWarnLayout;
+    ListView layCCPayCCPaytListView,
+            layCCPayTransListView;
+    long layCCPayFromSpinId,
+            layCCPayToAcctId,
+            layCCPayChargingDebtIdFromTag,
+            layCCPayId;
     RelativeLayout layCCPayToPayHeaderLayout;
     Spinner layCCPayPayFromSpin;
-    SQLiteDatabase layCCPayDb, layCCPayDb2, layCCPayDb3;
-    String layCCPayFromIsDebtSav = null, layCCPayFromSpinName = null, layCCPayPriorityFromTag = null, layCCPayToAcctName = null;
-    TextView layCCPaycheckBelowLabel, layCCPayNoCCTransTV, layCCPayWarnTV, layCCPayTotAcctTV, layCCPayAvailAcctTV, layCCPayPayFromLabel, warnDialogWarnTV;
-    TransactionsDb layCCPayMonOutDb, layCCPayTransDb;
+    SQLiteDatabase layCCPayDb,
+            layCCPayDb2,
+            layCCPayDb3;
+    String layCCPayFromIsDebtSav = null,
+            layCCPayFromSpinName = null,
+            layCCPayPriorityFromTag = null,
+            layCCPayToAcctName = null;
+    TextView layCCPaycheckBelowLabel,
+            layCCPayNoCCTransTV,
+            layCCPayPayFromLabel,
+            warnDialogWarnTV;
+    TransactionsDb layCCPayMonOutDb,
+            layCCPayTransDb;
     TransferSpinnerAdapter layCCPayFromSpinAdapter;
     View dView;
 
@@ -302,17 +336,8 @@ public class LayoutCCPay extends MainNavigation {
         }
     }
 
-    /*public void layCCPayDetAandBPortionsExp() {
-        moneyOutA = layCCPayDbMgr.detAPortionExp(layCCPayPurAmtFromTag, layCCPayPriorityFromTag, layCCPayDbMgr.retrieveCurrentA(), layCCPayDbMgr.retrieveCurrentB());
-        moneyOutOwing = layCCPayDbMgr.detOwingPortionExp(layCCPayPurAmtFromTag, layCCPayPriorityFromTag, layCCPayDbMgr.retrieveCurrentA(), layCCPayDbMgr.retrieveCurrentB());
-        moneyOutB = layCCPayDbMgr.detBPortionExp(layCCPayPurAmtFromTag, layCCPayPriorityFromTag, layCCPayDbMgr.retrieveCurrentA(), layCCPayDbMgr.retrieveCurrentB());
-    }*/
-
     public void layCCPayAddToPayList() {
         layCCPayMonOutDb.setTransCCToPay("Y");
-        /*layCCPayMonOutDb.setTransAmtOutA(moneyOutA);
-        layCCPayMonOutDb.setTransAmtOutOwing(moneyOutOwing);
-        layCCPayMonOutDb.setTransAmtOutB(moneyOutB);*/
         layCCPayMonOutDb.setTransAmtOutA(layCCPayDbMgr.detAPortionExp(layCCPayPurAmtFromTag, layCCPayPriorityFromTag, layCCPayDbMgr.retrieveCurrentA(), layCCPayDbMgr.retrieveCurrentB()));
         layCCPayMonOutDb.setTransAmtOutOwing(layCCPayDbMgr.detOwingPortionExp(layCCPayPurAmtFromTag, layCCPayPriorityFromTag, layCCPayDbMgr.retrieveCurrentA(), layCCPayDbMgr.retrieveCurrentB()));
         layCCPayMonOutDb.setTransAmtOutB(layCCPayDbMgr.detBPortionExp(layCCPayPurAmtFromTag, layCCPayPriorityFromTag, layCCPayDbMgr.retrieveCurrentA(), layCCPayDbMgr.retrieveCurrentB()));
@@ -396,7 +421,6 @@ public class LayoutCCPay extends MainNavigation {
                     layCCPayChargingDebtIdFromTag = layCCPayMonOutDb.getTransFromAcctId();
 
                     if (checkedState[position]) {
-                        //layCCPayDetAandBPortionsExp();
                         layCCPayAddToPayList();
                         layCCPayPlusDebtToPay();
                         layCCPayToPayTotA = layCCPayDbMgr.retrieveAPortion();

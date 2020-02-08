@@ -140,7 +140,7 @@
                                     android:layout_centerVertical="true"
                                     android:layout_margin="5dp"
                                     android:layout_toStartOf="@id/mainPayCCCheckbox"
-                                    android:labelFor="@id/payCCCheckbox"
+                                    android:labelFor="@id/mainPayCCCheckbox"
                                     android:text="@string/check_box_prompt"
                                     android:textColor="@color/colorPrimaryDark"
                                     android:textSize="14sp" />

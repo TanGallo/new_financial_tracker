@@ -9,7 +9,6 @@ public class DbHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "Mynance.db";
     private static final int DATABASE_VERSION = 1;
-    public String databasePath = "";
 
     public static final String ID = "_id";
 

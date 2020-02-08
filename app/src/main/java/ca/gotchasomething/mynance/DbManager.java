@@ -14,7 +14,6 @@ import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -28,28 +27,106 @@ import ca.gotchasomething.mynance.data.TransactionsDb;
 public class DbManager extends AppCompatActivity {
 
     public Cursor cursor;
-    public ContentValues CV, cvDebtToPay, cvToPay, newAccounts, newCurrent, newBudget, newIncome, newMoneyIn, newMoneyOut, newSetUp, newTransactions,
-            updateAccounts, updateCurrent, updateBudget, updateIncome, updateMoneyIn, updateMoneyOut, updateMoneyOutPaid, updateSetUp, updateTransactions;
-    public Date earliestDateInRange, latestDateInRange, newDate;
+    public ContentValues CV,
+            cvDebtToPay,
+            cvToPay,
+            newAccounts,
+            newCurrent,
+            newBudget,
+            newSetUp,
+            newTransactions,
+            updateAccounts,
+            updateCurrent,
+            updateBudget,
+            updateMoneyOutPaid,
+            updateSetUp,
+            updateTransactions;
+    public Date newDate;
     public DbHelper dbHelper;
-    public Double acctDebtToPayFromDb = 0.0, amtOfMissingEntries = 0.0, amtOfMissingEntriesE = 0.0, amtMissing = 0.0, amtToZero = 0.0, currentAccountBalance = 0.0, currentB = 0.0,
-            currentAcctAmt = 0.0, currentDebtAmtOwing = 0.0, currentSavAmt = 0.0, annPaytFromDb = 0.0, expAmtFromDb = 0.0, expAnnAmtFromDb = 0.0, expFrqFromDb = 0.0, expThisYear = 0.0,
-            incAmtFromDb = 0.0, incAnnAmtFromDb = 0.0, incFrqFromDb = 0.0, moneyInA = 0.0, moneyInB = 0.0, moneyInOwing = 0.0, moneyOutA = 0.0,
-            moneyOutB = 0.0, moneyOutOwing = 0.0, newABal = 0.0, newAcctBal = 0.0, newAvailBal2 = 0.0, newBBal = 0.0, newAmt = 0.0, newExpAnnAmt = 0.0,
-            newIncAnnAmt = 0.0, newMoneyA = 0.0, newMoneyB = 0.0, newMoneyOwing = 0.0, newOwingBal = 0.0, incThisYear = 0.0, numberOfMissingEntries = 0.0,
-            numberOfMissingEntriesE = 0.0, selectedTransactionSum = 0.0, spentThisWeekInCat = 0.0, totalAExpenses = 0.0, totalBExpenses = 0.0, totalCCPaymentDue = 0.0, totalDebt = 0.0, totalExpenses = 0.0, totalIncome = 0.0,
-            totalSavings = 0.0, totalSavGoal = 0.0, currentA = 0.0, currentOwingA = 0.0, totalAPortion = 0.0, totalOwingPortion = 0.0, totalBPortion = 0.0,
-            transFromThisYear = 0.0, transToThisYear = 0.0;
+    public Double acctDebtToPayFromDb = 0.0,
+            amtOfMissingEntries = 0.0,
+            amtOfMissingEntriesE = 0.0,
+            amtMissing = 0.0,
+            amtToZero = 0.0,
+            amtToZeroA = 0.0,
+            aPercent = 0.0,
+            aPortion = 0.0,
+            aPortion1 = 0.0,
+            bPortion = 0.0,
+            bPortion1 = 0.0,
+            bPortion2 = 0.0,
+            currentAccountBalance = 0.0,
+            currentB = 0.0,
+            currentAcctAmt = 0.0,
+            annPaytFromDb = 0.0,
+            expAmtFromDb = 0.0,
+            expAnnAmtFromDb = 0.0,
+            expFrqFromDb = 0.0,
+            expThisYear = 0.0,
+            incAmtFromDb = 0.0,
+            incAnnAmtFromDb = 0.0,
+            incFrqFromDb = 0.0,
+            moneyInA = 0.0,
+            moneyInB = 0.0,
+            moneyInOwing = 0.0,
+            moneyOutA = 0.0,
+            moneyOutB = 0.0,
+            moneyOutOwing = 0.0,
+            newABal = 0.0,
+            newAcctBal = 0.0,
+            newAvailBal2 = 0.0,
+            newBBal = 0.0,
+            newAmt = 0.0,
+            newAPortion = 0.0,
+            newBPortion = 0.0,
+            newExpAnnAmt = 0.0,
+            newIncAnnAmt = 0.0,
+            newMoneyA = 0.0,
+            newMoneyB = 0.0,
+            newMoneyOwing = 0.0,
+            newOwingBal = 0.0,
+            incThisYear = 0.0,
+            numberOfMissingEntries = 0.0,
+            numberOfMissingEntriesE = 0.0,
+            owingPortion1 = 0.0,
+            selectedTransactionSum = 0.0,
+            spentThisWeekInCat = 0.0,
+            totalAExpenses = 0.0,
+            totalCCPaymentDue = 0.0,
+            totalDebt = 0.0,
+            totalExpenses = 0.0,
+            totalIncome = 0.0,
+            totalSavings = 0.0,
+            totalSavGoal = 0.0,
+            currentA = 0.0,
+            currentOwingA = 0.0,
+            totalAPortion = 0.0,
+            totalOwingPortion = 0.0,
+            totalBPortion = 0.0,
+            transFromThisYear = 0.0,
+            transToThisYear = 0.0;
     public General general = new General();
-    public int lastPageId = 0, earliestYear = 0, endIndex = 0, latestYear = 0, numberOfEntries = 0, numberOfEntriesE = 0, startIndex = 0, thisYear = 0;
-    public List<Date> allDates;
+    public int lastPageId = 0,
+            earliestYear = 0,
+            endIndex = 0,
+            latestYear = 0,
+            numberOfEntries = 0,
+            numberOfEntriesE = 0,
+            startIndex = 0;
     public Long expenseId;
     public NumberFormat percentFormat = NumberFormat.getPercentInstance();
     public SimpleDateFormat sdf;
     public SQLiteDatabase db;
-    public String category = null, date = null, expPriorityFromDb = null, lastDate = null, moneyInDebtSav = null, moneyInIsSav = null, newMonth = null,
-            newMonth2 = null,
-            spendResStmt = null, spendPercent = null, startingString = null, subStringResult = null, latestDone = null, text = null, transDate = null;
+    public String category = null,
+            date = null,
+            expPriorityFromDb = null,
+            lastDate = null,
+            spendResStmt = null,
+            spendPercent = null,
+            startingString = null,
+            subStringResult = null,
+            latestDone = null,
+            text = null;
 
     public DbManager(Context context) {
         dbHelper = DbHelper.getInstance(context);
@@ -299,30 +376,6 @@ public class DbManager extends AppCompatActivity {
         return budgetList;
     }
 
-    /*public List<BudgetDb> getExpenses() {
-        db = dbHelper.getReadableDatabase();
-        cursor = db.rawQuery("SELECT * FROM " + DbHelper.BUDGET_TABLE_NAME + " WHERE " + DbHelper.BDGTEXPINC + " = 'E' " + " ORDER BY " + DbHelper.BDGTANNPAYT + " DESC", null);
-        List<BudgetDb> expenseList = new ArrayList<>();
-        if (cursor.moveToFirst()) {
-            while (!cursor.isAfterLast()) {
-                BudgetDb expenses = new BudgetDb(
-                        cursor.getString(cursor.getColumnIndex(DbHelper.BDGTCAT)),
-                        cursor.getDouble(cursor.getColumnIndex(DbHelper.BDGTPAYTAMT)),
-                        cursor.getString(cursor.getColumnIndex(DbHelper.BDGTEXPINC)),
-                        cursor.getDouble(cursor.getColumnIndex(DbHelper.BDGTPAYTFRQ)),
-                        cursor.getDouble(cursor.getColumnIndex(DbHelper.BDGTANNPAYT)),
-                        cursor.getString(cursor.getColumnIndex(DbHelper.BDGTPRIORITY)),
-                        cursor.getString(cursor.getColumnIndex(DbHelper.BDGTWEEKLY)),
-                        cursor.getLong(cursor.getColumnIndex(DbHelper.ID))
-                );
-                expenseList.add(expenses); //adds new items to bottom of list
-                cursor.moveToNext();
-            }
-        }
-        cursor.close();
-        return expenseList;
-    }*/
-
     public void addBudget(BudgetDb budget) {
         newBudget = new ContentValues();
         newBudget.put(DbHelper.BDGTCAT, budget.getBdgtCat());
@@ -416,16 +469,6 @@ public class DbManager extends AppCompatActivity {
 
     //LIST RETRIEVAL FORMULAS
 
-    public List<AccountsDb> getAcctsNotDS() {
-        List<AccountsDb> acctsNotDS = new ArrayList<>();
-        for (AccountsDb a : getAccounts()) {
-            if (!a.getAcctDebtSav().equals("D") && !a.getAcctDebtSav().equals("S")) {
-                acctsNotDS.add(a);
-            }
-        }
-        return acctsNotDS;
-    }
-
     public List<BudgetDb> getExpenses() {
         List<BudgetDb> expenses = new ArrayList<>();
         for (BudgetDb b : getBudget()) {
@@ -464,38 +507,6 @@ public class DbManager extends AppCompatActivity {
             }
         }
         return moneyIns;
-    }
-
-    public List<TransactionsDb> getSelectedTransactions(String str1, String str2, String str3, String str4) {
-        //str1 = type of transaction ("in", "out", "transfer", "ccPayment")
-        //str2 = fromMonth, fromYear, toMonth, or toYear
-        //str3 = getString(R.string.year_to_date)
-        //str4 = selectedFromYear or selectedToYear
-        List<TransactionsDb> selectedTrans = new ArrayList<>();
-        for (TransactionsDb t : getTransactions()) {
-            if (t.getTransType().equals(str1)) {
-                transDate = t.getTransCreatedOn();
-                thisYear = Calendar.getInstance().get(Calendar.YEAR);
-                if (str2.equals(str3)) { //IF TO MONTH SPIN SELECTION IS "YEAR TO DATE"
-                    if (transDate.contains(String.valueOf(thisYear))) {
-                        selectedTrans.add(t);
-                    }
-                } else {
-                    startIndex = transDate.indexOf("-") + 1;
-                    endIndex = transDate.length() - 5;
-                    newMonth = transDate.substring(startIndex, endIndex);
-                    try {
-                        newMonth2 = newMonth.replace(".", "");
-                    } catch (Exception e) {
-                        newMonth2 = newMonth;
-                    }
-                    if (str2.contains(newMonth2) && transDate.contains(str4)) {
-                        selectedTrans.add(t);
-                    }
-                }
-            }
-        }
-        return selectedTrans;
     }
 
     public List<TransactionsDb> getTransfers() {
@@ -549,16 +560,6 @@ public class DbManager extends AppCompatActivity {
         return ccTrans;
     }
 
-    public List<TransactionsDb> getCCPayts() {
-        List<TransactionsDb> ccPayts = new ArrayList<>();
-        for (TransactionsDb m4 : getTransactions()) {
-            if (m4.getTransType().equals("ccPayment")) {
-                ccPayts.add(m4);
-            }
-        }
-        return ccPayts;
-    }
-
     public List<TransactionsDb> getCCTransStillToPay() {
         List<TransactionsDb> ccTransStillToPay = new ArrayList<>();
         for (TransactionsDb m4 : getMoneyOuts()) {
@@ -606,44 +607,6 @@ public class DbManager extends AppCompatActivity {
         return yearsList;
     }
 
-    public List<Date> getAllSelectedDatesList(String str1) {
-        //str1 = type of Transaction ("in", "out", "transfer", or "ccPayment"
-        List<String> allDatesList = new ArrayList<>();
-
-        try {
-            List<String> allTransactions = new ArrayList<>();
-            for (TransactionsDb t : getTransactions()) {
-                if (t.getTransType().equals(str1)) {
-                    allTransactions.add(t.getTransCreatedOn());
-                }
-            }
-            List<Date> allDates = new ArrayList<>();
-            general.extractingDates(allTransactions, allDates);
-            Collections.sort(allDates);
-        } catch (NullPointerException e) {
-            e.printStackTrace();
-        }
-
-        return allDates;
-    }
-
-    public Date getEarliestDateInRange(List<Date> list1) {
-        //list1 = dbMgr.getAllSelectedDatesList();
-        for (Date d : list1) {
-            earliestDateInRange = list1.get(0);
-        }
-        return earliestDateInRange;
-    }
-
-    public Date getLatestDateInRange(List<Date> list1) {
-        //list1 = dbMgr.getAllSelectedDatesList();
-        for (Date d : list1) {
-            latestDateInRange = list1.get(list1.size() -1);
-        }
-        return latestDateInRange;
-    }
-
-
     public Integer getEarliestEntry(List<String> list1) {
         //list1 = dbMgr.getYearsList();
         List<Integer> years = new ArrayList<>(list1.size());
@@ -679,7 +642,7 @@ public class DbManager extends AppCompatActivity {
         //date1 = getEarliestDateInRange
         //date2 = getLatestDateInRange
         List<TransactionsDb> selectedTransactions = new ArrayList<>();
-        for(TransactionsDb t3 : db1) {
+        for (TransactionsDb t3 : db1) {
             date = t3.getTransCreatedOn();
             try {
                 sdf = new SimpleDateFormat("dd-MMM-yyyy");
@@ -687,7 +650,7 @@ public class DbManager extends AppCompatActivity {
                 if (!newDate.before(date1) && !newDate.after(date2)) {
                     selectedTransactions.add(t3);
                 }
-            }catch(ParseException e) {
+            } catch (ParseException e) {
                 e.printStackTrace();
             }
 
@@ -700,13 +663,13 @@ public class DbManager extends AppCompatActivity {
     public Double checkOverWeekly(Long long1) {
         //long1 = budgetId for Category
         List<Double> spentThisWeekInCatList = new ArrayList<>();
-        for(TransactionsDb t : getMoneyOuts()) {
-                if (t.getTransBdgtId() == long1) {
-                    if (general.thisWeek().contains(t.getTransCreatedOn())) {
-                        spentThisWeekInCatList.add(t.getTransAmt());
-                    }
+        for (TransactionsDb t : getMoneyOuts()) {
+            if (t.getTransBdgtId() == long1) {
+                if (general.thisWeek().contains(t.getTransCreatedOn())) {
+                    spentThisWeekInCatList.add(t.getTransAmt());
                 }
             }
+        }
         spentThisWeekInCat = 0.0;
         if (spentThisWeekInCatList.size() == 0) {
             spentThisWeekInCat = 0.0;
@@ -728,21 +691,11 @@ public class DbManager extends AppCompatActivity {
         if (selectedTransactionsList.size() == 0) {
             selectedTransactionSum = 0.0;
         } else {
-                for (Double dbl : selectedTransactionsList) {
-                    selectedTransactionSum += dbl;
-                }
-        }
-        return selectedTransactionSum;
-    }
-
-    public String findMoneyInIsDebtSav(long long1) {
-        //long1 = moneyInToAcctId
-        for (AccountsDb a : getAccounts()) {
-            if (a.getId() == long1) {
-                moneyInDebtSav = a.getAcctDebtSav();
+            for (Double dbl : selectedTransactionsList) {
+                selectedTransactionSum += dbl;
             }
         }
-        return moneyInDebtSav;
+        return selectedTransactionSum;
     }
 
     public Double retrieveCurrentAcctAmt(long long1) {
@@ -970,24 +923,6 @@ public class DbManager extends AppCompatActivity {
         return totalAExpenses;
     }
 
-    public Double sumTotalBExpenses() {
-        List<Double> expensesAmountListB = new ArrayList<>();
-        for (BudgetDb e : getExpenses()) {
-            if (e.getBdgtPriority().equals("B")) {
-                expensesAmountListB.add(e.getBdgtAnnPayt());
-            }
-        }
-        totalBExpenses = 0.0;
-        if (expensesAmountListB.size() == 0) {
-            totalBExpenses = 0.0;
-        } else {
-            for (Double dbl : expensesAmountListB) {
-                totalBExpenses += dbl;
-            }
-        }
-        return totalBExpenses;
-    }
-
     public Double sumTotalExpenses() {
         List<Double> expensesAmountList = new ArrayList<>(getExpenses().size());
         for (BudgetDb e : getExpenses()) {
@@ -1069,7 +1004,7 @@ public class DbManager extends AppCompatActivity {
         return transFromThisYear;
     }
 
-    public Double detAPortionInc(Double dbl1, Double dbl2, Double dbl3) {
+    /*public Double detAPortionInc(Double dbl1, Double dbl2, Double dbl3) {
         //dbl1 = either the moneyInAmt from the selection or the new one from an entry
         //dbl2 = amtForA (moneyInAmt * retrieveAPercentage)
         //dbl3 = retrieveCurrentOwingA()
@@ -1084,9 +1019,9 @@ public class DbManager extends AppCompatActivity {
             }
         }
         return moneyInA;
-    }
+    }*/
 
-    public Double detOwingPortionInc(Double dbl1, Double dbl2, Double dbl3) {
+    /*public Double detOwingPortionInc(Double dbl1, Double dbl2, Double dbl3) {
         //dbl1 = either the moneyInAmt from the selection or the new one from an entry
         //dbl2 = amtForA (moneyInAmt * retrieveAPercentage)
         //dbl3 = retrieveCurrentOwingA()
@@ -1101,9 +1036,9 @@ public class DbManager extends AppCompatActivity {
             }
         }
         return moneyInOwing;
-    }
+    }*/
 
-    public Double detBPortionInc(Double dbl1, Double dbl2, Double dbl3) {
+    /*public Double detBPortionInc(Double dbl1, Double dbl2, Double dbl3) {
         //dbl1 = either the moneyInAmt from the selection or the new one from an entry
         //dbl2 = amtForA (moneyInAmt * retrieveAPercentage)
         //dbl3 = retrieveCurrentOwingA()
@@ -1118,7 +1053,7 @@ public class DbManager extends AppCompatActivity {
             }
         }
         return moneyInB;
-    }
+    }*/
 
     public Double detAPortionExp(Double dbl1, String str1, Double dbl2, Double dbl3) {
         //dbl1 = moneyOutAmt from source or entry or tag
@@ -1417,20 +1352,124 @@ public class DbManager extends AppCompatActivity {
         db.close();
     }
 
+    public void updateCurrentAPlus(Double dbl1, Double dbl2) {
+        //dbl1 = moneyIn or OutAmt from entry or selection or tag
+        //dbl2 = retrieveCurrentA()
+        db = dbHelper.getWritableDatabase();
+
+        newABal = dbl2 + dbl1;
+
+        CV = new ContentValues();
+        CV.put(DbHelper.CURRENTA, newABal);
+        db.update(DbHelper.CURRENT_TABLE_NAME, CV, DbHelper.ID + "= '1'", null);
+        db.close();
+    }
+
+    public void updateCurrentOwingMinus(Double dbl1, Double dbl2) {
+        //dbl1 = moneyIn or OutAmt from entry or selection or tag
+        //dbl2 = retrieveCurrentOwingA()
+        db = dbHelper.getWritableDatabase();
+
+        newOwingBal = dbl2 - dbl1;
+
+        CV = new ContentValues();
+        CV.put(DbHelper.CURRENTOWINGA, newOwingBal);
+        db.update(DbHelper.CURRENT_TABLE_NAME, CV, DbHelper.ID + "= '1'", null);
+        db.close();
+    }
+
+    public void updateCurrentBPlus(Double dbl1, Double dbl2) {
+        //dbl1 = moneyIn or OutAmt from entry or selection or tag
+        //dbl2 = retrieveCurrentB()
+        db = dbHelper.getWritableDatabase();
+
+        if(dbl2 + dbl1 < 0) {
+            newBBal = 0.0;
+        } else {
+            newBBal = dbl2 + dbl1;
+        }
+
+        CV = new ContentValues();
+        CV.put(DbHelper.CURRENTB, newBBal);
+        db.update(DbHelper.CURRENT_TABLE_NAME, CV, DbHelper.ID + "= '1'", null);
+        db.close();
+    }
+
+    public void updateCurrentAMinus(Double dbl1, Double dbl2) {
+        //dbl1 = moneyIn or OutAmt from entry or selection or tag
+        //dbl2 = retrieveCurrentAccountBalance()
+        db = dbHelper.getWritableDatabase();
+
+        newABal = dbl2 - dbl1;
+
+        CV = new ContentValues();
+        CV.put(DbHelper.CURRENTA, newABal);
+        db.update(DbHelper.CURRENT_TABLE_NAME, CV, DbHelper.ID + "= '1'", null);
+        db.close();
+    }
+
+    public Double depToMainAcctDetAPortion1(Double dbl1, Double dbl2) {
+        //dbl1 = retrieveCurrentA()
+        //dbl2 = bPortion
+            amtToZeroA = -(dbl1);
+            if (dbl2 >= amtToZeroA) { //IF B PORTION WILL COVER ENTIRE AMOUNTTOZERO
+                //newAPortion = aPortion + amtToZeroA;
+                aPortion1 = amtToZeroA;
+            } else { //IF B CAN ONLY COVER SOME OR NONE OF AMOUNTTOZERO
+                //newAPortion = aPortion + dbl2;
+                aPortion1 = dbl2;
+            }
+        return aPortion1;
+    }
+
+    public Double depToMainAcctDetBPortion1(Double dbl3, Double dbl4) {
+        //dbl3 = retrieveCurrentA()
+        //dbl4 = bPortion
+        amtToZeroA = -(dbl3);
+        if (dbl4 >= amtToZeroA) { //IF B PORTION WILL COVER ENTIRE AMOUNTTOZERO
+            bPortion1 = dbl4 - amtToZeroA;
+        } else { //IF B CAN ONLY COVER SOME OR NONE OF AMOUNTTOZERO
+            bPortion1 = 0.0;
+        }
+        return bPortion1;
+    }
+
+    public Double depToMainAcctDetBPortion2(Double dbl5, Double dbl6) {
+        //dbl5 = newBPortion (bPortion1)
+        //dbl6 = retrieveCurrentOwingA()
+        if(dbl5 >= dbl6) { //IF NEW B PORTION WILL COVER ENTIRE AMOUNTOWING
+            bPortion2 = dbl5 - dbl6;
+        } else { //IF NEW B CAN ONLY COVER SOME OR NONE OF AMOUNTTOZERO
+            bPortion2 = 0.0;
+        }
+        return bPortion2;
+    }
+
+    public Double depToMainAcctDetOwingPortion1(Double dbl7, Double dbl8) {
+        //dbl7 = newBPortion (bPortion1)
+        //dbl8 = retrieveCurrentOwingA()
+        if(dbl7 >= dbl8) { //IF NEW B PORTION WILL COVER ENTIRE AMOUNTOWING
+            owingPortion1 = dbl8;
+        } else { //IF NEW B CAN ONLY COVER SOME OR NONE OF AMOUNTTOZERO
+            owingPortion1 = dbl7;
+        }
+        return owingPortion1;
+    }
+
     public void updateRecReTransfer(Long long1, Double dbl1, Double dbl2) {
         //long1 = debtId or SavId
         //dbl1 = transfersToAcctThisYear(long1)
         //dbl2 = transfersFromAcctThisYear(long1)
         db = dbHelper.getWritableDatabase();
         for (AccountsDb a : getAccounts()) {
-                if (a.getId() == long1) {
-                    annPaytFromDb = a.getAcctAnnPaytsTo();
-                    if (dbl1 - dbl2 > annPaytFromDb) {
-                        cursor = db.rawQuery("SELECT " + DbHelper.ACCTANNPAYTSTO + " FROM " + DbHelper.ACCOUNTS_TABLE_NAME + " WHERE " + DbHelper.ID + " = " + long1, null);
-                        db.execSQL("UPDATE " + DbHelper.ACCOUNTS_TABLE_NAME + " SET " + DbHelper.ACCTANNPAYTSTO + " = " + dbl1 + " - " + dbl2 + " WHERE " + DbHelper.ID + " = " + long1);
-                    }
+            if (a.getId() == long1) {
+                annPaytFromDb = a.getAcctAnnPaytsTo();
+                if (dbl1 - dbl2 > annPaytFromDb) {
+                    cursor = db.rawQuery("SELECT " + DbHelper.ACCTANNPAYTSTO + " FROM " + DbHelper.ACCOUNTS_TABLE_NAME + " WHERE " + DbHelper.ID + " = " + long1, null);
+                    db.execSQL("UPDATE " + DbHelper.ACCOUNTS_TABLE_NAME + " SET " + DbHelper.ACCTANNPAYTSTO + " = " + dbl1 + " - " + dbl2 + " WHERE " + DbHelper.ID + " = " + long1);
                 }
             }
+        }
         db.close();
     }
 
@@ -1479,7 +1518,11 @@ public class DbManager extends AppCompatActivity {
         //if amount owing to A is negative, then A actually owes B
         amtToZero = -(dbl1);
         newABal = dbl2 - amtToZero;
-        newBBal = dbl3 + amtToZero;
+        if(dbl3 + amtToZero < 0) {
+            newBBal = 0.0;
+        } else {
+            newBBal = dbl3 + amtToZero;
+        }
 
         db = dbHelper.getWritableDatabase();
 
@@ -1502,7 +1545,11 @@ public class DbManager extends AppCompatActivity {
 
         newABal = dbl4 + dbl1;
         newOwingBal = dbl5 - dbl2;
-        newBBal = dbl6 + dbl3;
+        if(dbl6 + dbl3 < 0) {
+            newBBal = 0.0;
+        } else {
+            newBBal = dbl6 + dbl3;
+        }
 
         CV = new ContentValues();
 
@@ -1524,7 +1571,11 @@ public class DbManager extends AppCompatActivity {
 
         newABal = dbl4 - dbl1;
         newOwingBal = dbl5 + dbl2;
-        newBBal = dbl6 - dbl3;
+        if(dbl6 - dbl3 < 0) {
+            newBBal = 0.0;
+        } else {
+            newBBal = dbl6 - dbl3;
+        }
 
         CV = new ContentValues();
 
@@ -1566,34 +1617,6 @@ public class DbManager extends AppCompatActivity {
         } else {
             tv3.setTextColor(Color.parseColor("#83878b")); //gray
             tv4.setTextColor(Color.parseColor("#83878b")); //gray
-        }
-    }
-
-    public void payCCHeaderText(TextView tv1, TextView tv2, TextView tv3, Double dbl1, Double dbl2, Double dbl3, Double dbl4, Double dbl5) {
-        //tv1 = totalAcctBalTV
-        //tv2 = availBalTV
-        //tv3 = availBalLabel
-        //dbl1 = sumTotalExpenses()
-        //dbl2 = sumTotalIncome()
-        //dbl3 = retrieveCurrentAccountBalance()
-        //dbl4 = retrieveCurrentB()
-        //dbl5 = retrieveCurrentA()
-
-        if (dbl3 < 0 || dbl4 < 0 || dbl3 < dbl4) {
-            newAvailBal2 = 0.0;
-        } else {
-            newAvailBal2 = dbl4;
-        }
-
-        general.dblASCurrency(String.valueOf(dbl5), tv1);
-        general.dblASCurrency(String.valueOf(newAvailBal2), tv2);
-
-        if (dbl4 > 0) {
-            tv2.setTextColor(Color.parseColor("#5dbb63")); //light green
-            tv3.setTextColor(Color.parseColor("#5dbb63")); //light green
-        } else {
-            tv2.setTextColor(Color.parseColor("#83878b")); //gray
-            tv3.setTextColor(Color.parseColor("#83878b")); //gray
         }
     }
 

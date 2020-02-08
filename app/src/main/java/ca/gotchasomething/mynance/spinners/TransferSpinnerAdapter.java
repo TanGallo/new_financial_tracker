@@ -40,7 +40,6 @@ public class TransferSpinnerAdapter extends CursorAdapter {
         spinnerText.setText(spinName);
         spinAmt = cursor.getDouble(cursor.getColumnIndexOrThrow(DbHelper.ACCTBAL));
         transfersGen.dblASCurrency(String.valueOf(spinAmt), spinnerAmtTV);
-        //spinnerAmtTV.setText(String.valueOf(spinAmt));
     }
 
 

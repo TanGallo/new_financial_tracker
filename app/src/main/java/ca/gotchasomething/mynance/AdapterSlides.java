@@ -11,8 +11,6 @@ import androidx.viewpager.widget.PagerAdapter;
 public class AdapterSlides extends PagerAdapter {
 
     private int[] slides;
-    private int slideImage[];
-    private String[] slideTitle, slideDescription;
     private LayoutInflater inflater;
     private Context context;
 
@@ -21,15 +19,6 @@ public class AdapterSlides extends PagerAdapter {
         this.context = context;
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
-
-    /*public AdapterSlides(int[] slides, int[] slideImage, String[] slideTitle, String[] slideDescription, Context context) {
-        this.slides = slides;
-        this.slideImage = slideImage;
-        this.slideTitle = slideTitle;
-        this.slideDescription = slideDescription;
-        this.context = context;
-        inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-    }*/
 
     @Override
     public int getCount() {

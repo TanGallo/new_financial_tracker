@@ -11,17 +11,19 @@ import android.widget.EditText;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import ca.gotchasomething.mynance.data.CurrentDb;
 import ca.gotchasomething.mynance.data.TransactionsDb;
 
 public class SetUpFinalL extends AppCompatActivity {
 
     Button fin2EnterBtn;
-    ContentValues fin2CV, fin2CV2, fin2CV3;
-    CurrentDb fin2CurrDb;
+    ContentValues fin2CV,
+            fin2CV2,
+            fin2CV3;
     DbHelper fin2Helper;
     DbManager fin2DbMgr;
-    Double fin2StartBal = 0.0, fin2MoneyInA, fin2MoneyInB;
+    Double fin2StartBal = 0.0,
+            fin2MoneyInA = 0.0,
+            fin2MoneyInB = 0.0;
     EditText fin2ET;
     General fin2Gen;
     Intent fin2ToSetUp;

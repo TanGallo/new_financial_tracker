@@ -18,22 +18,43 @@ import androidx.viewpager.widget.ViewPager;
 
 public class SlidesSetUpP extends AppCompatActivity implements View.OnClickListener {
 
-    private AdapterSlidesB adapter;
-    private Button previousBtn, nextBtn;
+    private AdapterSlides
+            adapter;
+    private Button previousBtn,
+            nextBtn;
     DbManager dbManager;
     ImageView slideImage;
     private ImageView[] dots;
     public int[] slides,
-            incomeSlides = {R.layout.b1_slides_set_up_background, R.layout.b1_slides_set_up_background, R.layout.b1_slides_set_up_background, R.layout.b1_slides_set_up_background},
-            billsSlides = {R.layout.b1_slides_set_up_background, R.layout.b1_slides_set_up_background, R.layout.b1_slides_set_up_background, R.layout.b1_slides_set_up_background,
+            incomeSlides = {R.layout.b1_slides_set_up_background,
+                    R.layout.b1_slides_set_up_background,
+                    R.layout.b1_slides_set_up_background,
                     R.layout.b1_slides_set_up_background},
-            debtsSlides = {R.layout.b1_slides_set_up_background, R.layout.b1_slides_set_up_background},
-            savingsSlides = {R.layout.b1_slides_set_up_background, R.layout.b1_slides_set_up_background},
+            billsSlides = {R.layout.b1_slides_set_up_background,
+                    R.layout.b1_slides_set_up_background,
+                    R.layout.b1_slides_set_up_background,
+                    R.layout.b1_slides_set_up_background,
+                    R.layout.b1_slides_set_up_background},
+            debtsSlides = {R.layout.b1_slides_set_up_background,
+                    R.layout.b1_slides_set_up_background},
+            savingsSlides = {R.layout.b1_slides_set_up_background,
+                    R.layout.b1_slides_set_up_background},
             analysisSlides = {R.layout.b1_slides_set_up_background},
-            weeklySlides = {R.layout.b1_slides_set_up_background, R.layout.b1_slides_set_up_background, R.layout.b1_slides_set_up_background},
-            finalSlides = {R.layout.b1_slides_set_up_background, R.layout.b1_slides_set_up_background};
+            weeklySlides = {R.layout.b1_slides_set_up_background,
+                    R.layout.b1_slides_set_up_background,
+                    R.layout.b1_slides_set_up_background},
+            finalSlides = {R.layout.b1_slides_set_up_background,
+                    R.layout.b1_slides_set_up_background};
     private LinearLayout dotsLayout;
-    TextView slideTitle, slideTV1, slideTV2, slideTV3, slideTV4, slideTV5, slideTV6, slideTV7, slideTV8;
+    TextView slideTitle,
+            slideTV1,
+            slideTV2,
+            slideTV3,
+            slideTV4,
+            slideTV5,
+            slideTV6,
+            slideTV7,
+            slideTV8;
     ViewPager viewPager;
 
     @Override
@@ -74,7 +95,7 @@ public class SlidesSetUpP extends AppCompatActivity implements View.OnClickListe
                 slides = finalSlides;
                 break;
         }
-        adapter = new AdapterSlidesB(slides, this);
+        adapter = new AdapterSlides(slides, this);
         viewPager.setAdapter(adapter);
 
         slideImage = findViewById(R.id.slideImage);

@@ -33,26 +33,68 @@ import ca.gotchasomething.mynance.spinners.TransferSpinnerAdapter;
 public class LayoutMoneyIn extends MainNavigation {
 
     BudgetDb monInIncDb;
-    Button transDialogCancelBtn, transDialogNoDefBtn, transDialogSaveBtn, transDialogYesDefBtn;
+    Button transDialogCancelBtn,
+            transDialogNoDefBtn,
+            transDialogSaveBtn,
+            transDialogYesDefBtn;
     ContentValues monInCV;
     Cursor monInCur;
-    DbHelper monInHelper, monInHelper2;
+    DbHelper monInHelper,
+            monInHelper2;
     DbManager monInDbMgr;
-    Double debtAmtFromDb = 0.0, debtLimitFromDb = 0.0, debtRateFromDb = 0.0, debtPaytFromDb = 0.0, moneyInA = 0.0, moneyInOwing = 0.0, moneyInB = 0.0,
-            monInMoneyInA = 0.0, monInMoneyInB = 0.0, monInMoneyInOwing = 0.0, monInMonInAmt = 0.0, monInMonInOldAmt = 0.0, monInMonInNewAmt = 0.0,
-            monInPaytFrq = 0.0, monInPercentA = 0.0, newMoneyA = 0.0, newMoneyOwing = 0.0, newMoneyB = 0.0, savAmtFromDb = 0.0, savGoalFromDb = 0.0, savPaytFromDb = 0.0,
+    Double debtAmtFromDb = 0.0,
+            debtLimitFromDb = 0.0,
+            debtRateFromDb = 0.0,
+            debtPaytFromDb = 0.0,
+            monInFinMoneyInA = 0.0,
+            monInFinMoneyInOwing = 0.0,
+            monInFinMoneyInB = 0.0,
+            monInMoneyInA = 0.0,
+            monInMoneyInB = 0.0,
+            monInMoneyInOwing = 0.0,
+            monInMonInAmt = 0.0,
+            monInMonInOldAmt = 0.0,
+            monInMonInNewAmt = 0.0,
+            monInPaytFrq = 0.0,
+            monInPercentA = 0.0,
+            newMoneyA = 0.0,
+            newMoneyOwing = 0.0,
+            newMoneyB = 0.0,
+            newMonInMoneyInA = 0.0,
+            newMonInMoneyInB = 0.0,
+            newNewMonInMoneyInB = 0.0,
+            savAmtFromDb = 0.0,
+            savGoalFromDb = 0.0,
+            savPaytFromDb = 0.0,
             savRateFromDb = 0.0;
     EditText transDialogAmtET;
     General monInGen;
-    Intent monInToAddInc, monInRefresh, monInToList, monInToFixBudget;
-    LinearLayout transDialogDefLayout, transDialogWarnLayout;
+    Intent monInToAddInc,
+            monInRefresh,
+            monInToList,
+            monInToFixBudget;
+    LinearLayout transDialogDefLayout,
+            transDialogWarnLayout;
     ListView monInList;
-    long monInIncId, monInToAcctId;
+    long monInIncId,
+            monInToAcctId;
     MonInAdapter monInAdapter;
     Spinner monInSpin;
-    SQLiteDatabase monInDb, monInDb2;
-    String monInAcctName = null, monInToIsDebtSav = null, monInIncName = null;
-    TextView transDialogAmtTV, transDialogCatTV, transDialogPayLabel, monInAddMoreTV, monInAvailAcctTV, monInAvailAmtLabel, monInBudgWarnTV, monInDepToTV, monInIncSourceTV, monInTotAcctTV;
+    SQLiteDatabase monInDb,
+            monInDb2;
+    String monInAcctName = null,
+            monInToIsDebtSav = null,
+            monInIncName = null;
+    TextView transDialogAmtTV,
+            transDialogCatTV,
+            transDialogPayLabel,
+            monInAddMoreTV,
+            monInAvailAcctTV,
+            monInAvailAmtLabel,
+            monInBudgWarnTV,
+            monInDepToTV,
+            monInIncSourceTV,
+            monInTotAcctTV;
     TransactionsDb monInMoneyInDb;
     TransferSpinnerAdapter monInSpinAdapter;
     View dView;
@@ -163,29 +205,54 @@ public class LayoutMoneyIn extends MainNavigation {
 
     public void monInContinueTransaction() {
         if (!monInToIsDebtSav.equals("D") && !monInToIsDebtSav.equals("S")) {  //TO MAIN ACCT
-            monInPercentA = monInDbMgr.sumTotalAExpenses() / monInDbMgr.sumTotalIncome();
-
-            monInMoneyInA = monInDbMgr.detAPortionInc(monInMonInAmt, (monInPercentA * monInMonInAmt), monInDbMgr.retrieveCurrentOwingA());
-            monInMoneyInOwing = monInDbMgr.detOwingPortionInc(monInMonInAmt, (monInPercentA * monInMonInAmt), monInDbMgr.retrieveCurrentOwingA());
-            monInMoneyInB = monInDbMgr.detBPortionInc(monInMonInAmt, (monInPercentA * monInMonInAmt), monInDbMgr.retrieveCurrentOwingA());
-
+            //PUT ALL MONEY INTO MAIN ACCT
             monInDbMgr.updateTotAcctBalPlus(monInMonInAmt, monInDbMgr.retrieveCurrentAccountBalance());
-            monInDbMgr.updateAandBBalPlus(monInMoneyInA, monInMoneyInOwing, monInMoneyInB, monInDbMgr.retrieveCurrentA(), monInDbMgr.retrieveCurrentOwingA(), monInDbMgr.retrieveCurrentB());
-
+            //DETERMINE A AND B PORTIONS OF DEPOSIT
+            monInPercentA = monInDbMgr.sumTotalAExpenses() / monInDbMgr.sumTotalIncome();
+            monInMoneyInA = monInPercentA * monInMonInAmt;
+            monInMoneyInB = monInMonInAmt - monInMoneyInA;
+            //A PORTION GOES INTO CURRENT A
+            monInDbMgr.updateCurrentAPlus(monInMoneyInA, monInDbMgr.retrieveCurrentA());
+            //IF CURRENT A NOW NEGATIVE, DETERMINE NEW A AND B PORTIONS AND ADJUST CURRENT A AS APPROPRIATE
+            if(monInDbMgr.retrieveCurrentA() < 0) {
+                monInDbMgr.updateCurrentAPlus(monInDbMgr.depToMainAcctDetAPortion1(monInDbMgr.retrieveCurrentA(), monInMoneyInB), monInDbMgr.retrieveCurrentA());
+                newMonInMoneyInA  = monInMoneyInA + monInDbMgr.depToMainAcctDetAPortion1(monInDbMgr.retrieveCurrentA(), monInMoneyInB);
+                newMonInMoneyInB = monInDbMgr.depToMainAcctDetBPortion1(monInDbMgr.retrieveCurrentA(), monInMoneyInB);
+            } else {
+                newMonInMoneyInA  = monInMoneyInA;
+                newMonInMoneyInB = monInMoneyInB;
+            }
+            //IF B STILL HAS MONEY AND IF AMT OWING TO A, DETERMINE NEW OWING AND B PORTIONS
+            if(newMonInMoneyInB != 0 && monInDbMgr.retrieveCurrentOwingA() > 0) {
+                monInMoneyInOwing = monInDbMgr.depToMainAcctDetOwingPortion1(newMonInMoneyInB, monInDbMgr.retrieveCurrentOwingA());
+                newNewMonInMoneyInB = monInDbMgr.depToMainAcctDetBPortion2(newMonInMoneyInB, monInDbMgr.retrieveCurrentOwingA());
+            } else {
+                monInMoneyInOwing = 0.0;
+                newNewMonInMoneyInB = newMonInMoneyInB;
+            }
+            //ADJUST CURRENT A, OWING, AND B FOR FINAL TIME
+            if(monInMoneyInOwing != 0) {
+                monInDbMgr.updateCurrentAPlus(monInMoneyInOwing, monInDbMgr.retrieveCurrentA());
+                monInDbMgr.updateCurrentOwingMinus(monInMoneyInOwing, monInDbMgr.retrieveCurrentOwingA());
+            }
+            if(newNewMonInMoneyInB != 0) {
+                monInDbMgr.updateCurrentBPlus(newNewMonInMoneyInB, monInDbMgr.retrieveCurrentB());
+            }
+            //IF OWING A IS NEGATIVE, THEN A ACTUALLY OWES TO B
             if (monInDbMgr.retrieveCurrentOwingA() < 0) {
                 monInDbMgr.adjustCurrentAandB(monInDbMgr.retrieveCurrentOwingA(), monInDbMgr.retrieveCurrentA(), monInDbMgr.retrieveCurrentB());
 
-                newMoneyA = monInDbMgr.detNewAPortion(monInMoneyInA, monInDbMgr.retrieveCurrentOwingA());
+                newMoneyA = monInDbMgr.detNewAPortion(newMonInMoneyInA, monInDbMgr.retrieveCurrentOwingA());
                 newMoneyOwing = monInDbMgr.detNewOwingPortion(monInMoneyInOwing, monInDbMgr.retrieveCurrentOwingA());
-                newMoneyB = monInDbMgr.detNewBPortion(monInMoneyInB, monInDbMgr.retrieveCurrentOwingA());
+                newMoneyB = monInDbMgr.detNewBPortion(newNewMonInMoneyInB, monInDbMgr.retrieveCurrentOwingA());
 
-                moneyInA = newMoneyA;
-                moneyInOwing = newMoneyOwing;
-                moneyInB = newMoneyB;
+                monInFinMoneyInA = newMoneyA;
+                monInFinMoneyInOwing = newMoneyOwing;
+                monInFinMoneyInB = newMoneyB;
             } else {
-                moneyInA = monInMoneyInA;
-                moneyInOwing = monInMoneyInOwing;
-                moneyInB = monInMoneyInB;
+                monInFinMoneyInA = newMonInMoneyInA;
+                monInFinMoneyInOwing = monInMoneyInOwing;
+                monInFinMoneyInB = newNewMonInMoneyInB;
             }
         } else if (monInToIsDebtSav.equals("D")) { //TO DEBT ACCT
             monInDbMgr.updateRecMinusPt1(monInMonInAmt, monInDbMgr.retrieveCurrentAcctAmt(monInToAcctId), monInToAcctId);
@@ -203,9 +270,9 @@ public class LayoutMoneyIn extends MainNavigation {
                     debtPaytFromDb,
                     getString(R.string.debt_paid),
                     getString(R.string.too_far)), monInToAcctId);
-            moneyInA = 0.0;
-            moneyInOwing = 0.0;
-            moneyInB = 0.0;
+            monInFinMoneyInA = 0.0;
+            monInFinMoneyInOwing = 0.0;
+            monInFinMoneyInB = 0.0;
         } else if (monInToIsDebtSav.equals("S")) { //TO SAV ACCT
             monInDbMgr.updateRecPlusPt1(monInMonInAmt, monInDbMgr.retrieveCurrentAcctAmt(monInToAcctId), monInToAcctId);
             for (AccountsDb a : monInDbMgr.getSavings()) {
@@ -223,9 +290,9 @@ public class LayoutMoneyIn extends MainNavigation {
                     savPaytFromDb,
                     getString(R.string.goal_achieved),
                     getString(R.string.too_far)), monInToAcctId);
-            moneyInA = 0.0;
-            moneyInOwing = 0.0;
-            moneyInB = 0.0;
+            monInFinMoneyInA = 0.0;
+            monInFinMoneyInOwing = 0.0;
+            monInFinMoneyInB = 0.0;
         }
 
         monInMoneyInDb = new TransactionsDb(
@@ -234,9 +301,9 @@ public class LayoutMoneyIn extends MainNavigation {
                 monInIncName,
                 monInIncId,
                 monInMonInAmt,
-                moneyInA,
-                moneyInOwing,
-                moneyInB,
+                monInFinMoneyInA,
+                monInFinMoneyInOwing,
+                monInFinMoneyInB,
                 0.0,
                 0.0,
                 0.0,

@@ -31,23 +31,48 @@ import ca.gotchasomething.mynance.data.BudgetDb;
 public class AddIncomeList extends MainNavigation {
 
     BudgetDb incLstIncDB;
-    Button incLstAddMoreBtn, incLstUpdateBtn, incLstCancelBtn, incLstDoneBtn, incLstResetBtn, incLstSaveBtn;
+    Button incLstAddMoreBtn,
+            incLstUpdateBtn,
+            incLstCancelBtn,
+            incLstDoneBtn,
+            incLstResetBtn,
+            incLstSaveBtn;
     ContentValues incLstCV;
     DbHelper incLstHelper;
     DbManager incLstDbMgr;
-    Double incAnnAmtFromTag = 0.0, incAmtFromEntry = 0.0, incAmtFromTag = 0.0, incAnnAmtFromEntry = 0.0, incFrqFromEntry = 0.0, incFrqFromTag = 0.0;
-    EditText incLstIncAmtET, incLstIncCatET;
+    Double incAnnAmtFromTag = 0.0,
+            incAmtFromEntry = 0.0,
+            incAmtFromTag = 0.0,
+            incAnnAmtFromEntry = 0.0,
+            incFrqFromEntry = 0.0,
+            incFrqFromTag = 0.0;
+    EditText incLstIncAmtET,
+            incLstIncCatET;
     General incLstGen;
     IncLstLstAdapter incLstLstAdapter;
-    Intent incLstRefresh, incLstToBud, incLstToMonIn, incLstToAnalysis, incLstToAddMore, incLstToSetUp;
+    Intent incLstRefresh,
+            incLstToBud,
+            incLstToMonIn,
+            incLstToAnalysis,
+            incLstToAddMore,
+            incLstToSetUp;
     LinearLayout incLstSpinLayout;
     ListView incLstListView;
     long incIdFromTag;
-    RadioButton incLstAnnlyRB, incLstBiAnnlyRB, incLstBiMthlyRB, incLstBiWklyRB, incLstMthlyRB, incLstWklyRB;
+    RadioButton incLstAnnlyRB,
+            incLstBiAnnlyRB,
+            incLstBiMthlyRB,
+            incLstBiWklyRB,
+            incLstMthlyRB,
+            incLstWklyRB;
     RadioGroup incLstFrqRG;
     SQLiteDatabase incLstDB;
-    String incLstAnnAmt2 = null, incLstIncFrqRB = null, incNameFromEntry = null, incNameFromTag = null;
-    TextView incLstHeaderLabelTV, incLstTotalTV;
+    String incLstAnnAmt2 = null,
+            incLstIncFrqRB = null,
+            incNameFromEntry = null,
+            incNameFromTag = null;
+    TextView incLstHeaderLabelTV,
+            incLstTotalTV;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
