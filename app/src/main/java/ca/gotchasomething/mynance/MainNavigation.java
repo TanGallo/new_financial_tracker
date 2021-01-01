@@ -24,9 +24,9 @@ public class MainNavigation extends AppCompatActivity implements NavigationView.
             i2,
             i3,
             i4,
-            i5,
-            i6,
-            i7;
+            i5;
+            //i6,
+            //i7;
     Menu menu;
     NavigationView navView;
     Toolbar toolbar;

@@ -10,7 +10,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -31,30 +30,30 @@ public class SlidesOnboardingL extends AppCompatActivity implements View.OnClick
             nextButton;
     DbManager dbManager;
     Double balanceAmount;
-    ImageView slide1Image;
+    //ImageView slide1Image;
     private ImageView[] dots;
-    private int[] slides = {
-            R.layout.a1_slides_onboarding_background,
-            R.layout.a1_slides_onboarding_background,
-            R.layout.a1_slides_onboarding_background,
-            R.layout.a1_slides_onboarding_background,
-            R.layout.a1_slides_onboarding_background,
-            R.layout.a1_slides_onboarding_background
+    private int[] slides2 = {
+            R.layout.a1_slides_onboarding_background_land_1,
+            R.layout.a1_slides_onboarding_background_land_2,
+            R.layout.a1_slides_onboarding_background_land_3,
+            R.layout.a1_slides_onboarding_background_land_4,
+            R.layout.a1_slides_onboarding_background_land_5,
+            R.layout.a1_slides_onboarding_background_land_6
     };
-    private int slideImage[] = {
+    /*private int slideImage[] = {
             R.mipmap.ic_launcher,
             R.drawable.ic_create_new_folder_white_24dp,
             R.drawable.ic_account_balance_white_24dp,
             R.drawable.ic_equalizer_white_24dp,
             R.drawable.ic_credit_card_white_24dp,
-            R.drawable.ic_help_outline_white_24dp};
+            R.drawable.ic_help_outline_white_24dp};*/
     private LinearLayout dotsLayout;
     RelativeLayout slide1Layout;
     SetUpDb setUpDb;
-    String[] slideTitle,
+    /*String[] slideTitle,
             slideDescription;
     TextView slide1Title,
-            slide1Description;
+            slide1Description;*/
     ViewPager viewPager;
 
     @Override
@@ -72,7 +71,7 @@ public class SlidesOnboardingL extends AppCompatActivity implements View.OnClick
 
         setContentView(R.layout.a1_slides_onboarding_background_land);
 
-        slideTitle = new String[] {
+        /*slideTitle = new String[] {
                 getResources().getString(R.string.welcome_to_mynance),
                 getResources().getString(R.string.step_1),
                 getResources().getString(R.string.step_2),
@@ -85,16 +84,16 @@ public class SlidesOnboardingL extends AppCompatActivity implements View.OnClick
                 getResources().getString(R.string.a_text3),
                 getResources().getString(R.string.a_text4),
                 getResources().getString(R.string.a_text5),
-                getResources().getString(R.string.a_text6)};
+                getResources().getString(R.string.a_text6)};*/
 
         viewPager = findViewById(R.id.viewPager);
-        adapter = new AdapterSlides(slides, this);
+        adapter = new AdapterSlides(slides2, this);
         viewPager.setAdapter(adapter);
 
         slide1Layout = findViewById(R.id.slide1Layout);
-        slide1Image = findViewById(R.id.slide1Image);
+        /*slide1Image = findViewById(R.id.slide1Image);
         slide1Title = findViewById(R.id.slide1Title);
-        slide1Description = findViewById(R.id.slide1Description);
+        slide1Description = findViewById(R.id.slide1Description);*/
         dotsLayout = findViewById(R.id.dotsLayout);
         previousButton = findViewById(R.id.previousButton);
         skipButton = findViewById(R.id.skipButton);
@@ -112,11 +111,11 @@ public class SlidesOnboardingL extends AppCompatActivity implements View.OnClick
             @Override
             public void onPageSelected(int position) {
                 createDots(position);
-                slide1Image.setImageDrawable(getDrawable(slideImage[position]));
+                /*slide1Image.setImageDrawable(getDrawable(slideImage[position]));
                 slide1Title.setText(slideTitle[position]);
-                slide1Description.setText(slideDescription[position]);
+                slide1Description.setText(slideDescription[position]);*/
 
-                if (position == slides.length - 1) {
+                if (position == slides2.length - 1) {
                     previousButton.setVisibility(View.VISIBLE);
                     nextButton.setText(getResources().getString(R.string.start_button));
                     skipButton.setVisibility(View.GONE);
@@ -141,9 +140,9 @@ public class SlidesOnboardingL extends AppCompatActivity implements View.OnClick
         if (dotsLayout != null)
             dotsLayout.removeAllViews();
 
-        dots = new ImageView[slides.length];
+        dots = new ImageView[slides2.length];
 
-        for (int i = 0; i < slides.length; i++) {
+        for (int i = 0; i < slides2.length; i++) {
             dots[i] = new ImageView(this);
             if (i == current_position) {
                 dots[i].setImageDrawable(
@@ -224,7 +223,7 @@ public class SlidesOnboardingL extends AppCompatActivity implements View.OnClick
     private void loadNextSlide() {
         int next = viewPager.getCurrentItem() + 1;
 
-        if (next < slides.length) {
+        if (next < slides2.length) {
             viewPager.setCurrentItem(next);
         } else {
             loadHome();

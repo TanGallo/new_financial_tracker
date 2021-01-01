@@ -359,9 +359,6 @@ public class LayoutReports extends MainNavigation {
                 totalAmtPerCat = 0.0;
                 if (totalAmtPerCatList.size() == 0) {
                     totalAmtPerCat = 0.0;
-                    repHldr.repCatTV.setVisibility(View.GONE);
-                    repHldr.repAmtTV.setVisibility(View.GONE);
-                    repListView.setDividerHeight(0);
                 } else {
                     for (Double dbl : totalAmtPerCatList) {
                         totalAmtPerCat += dbl;

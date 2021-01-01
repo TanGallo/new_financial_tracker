@@ -144,6 +144,7 @@
                                     android:layout_height="40dp"
                                     android:layout_gravity="end"
                                     android:text="@string/ok"
+                                    android:textSize="10sp"
                                     android:layout_margin="5dp"
                                     android:background="@drawable/circle_box"
                                     >

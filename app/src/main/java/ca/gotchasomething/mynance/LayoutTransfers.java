@@ -29,6 +29,8 @@ import ca.gotchasomething.mynance.spinners.TransferSpinnerAdapter;
 
 public class LayoutTransfers extends MainNavigation {
 
+    //boolean fromDone = false,
+    //toDone = false;
     Button transferDialogCancelBtn,
             transferDialogEnterBtn,
             transferDialogInfoOkBtn,
@@ -435,11 +437,28 @@ public class LayoutTransfers extends MainNavigation {
         trn1MoneyInB = trn1TrnAmt - trn1MoneyInA;
     }
 
+    View.OnClickListener onClickNoContBtn = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            trn1Refresh();
+        }
+    };
+
     View.OnClickListener onClickTransferBtn = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
 
             trn1TrnAmt = trn1Gen.dblFromET(trn1TrnAmtET);
+
+            final AlertDialog.Builder builder = new AlertDialog.Builder(LayoutTransfers.this);
+            dView = getLayoutInflater().inflate(R.layout.dialog_warn, null);
+            builder.setView(dView);
+            warnDialogWarnLayout = dView.findViewById(R.id.warnDialogWarnLayout);
+            warnDialogWarnTV = dView.findViewById(R.id.warnDialogWarnTV);
+            warnDialogNoContBtn = dView.findViewById(R.id.warnDialogNoContBtn);
+            warnDialogYesContBtn = dView.findViewById(R.id.warnDialogYesContBtn);
+            final AlertDialog dialog = builder.create();
+            dialog.hide();
 
             if (trn1FromSpinId == trn1ToSpinId) { //FROM & TO ACCT THE SAME
                 Toast.makeText(LayoutTransfers.this, R.string.same_acct, Toast.LENGTH_LONG).show();
@@ -447,9 +466,6 @@ public class LayoutTransfers extends MainNavigation {
                 final AlertDialog.Builder builder2 = new AlertDialog.Builder(LayoutTransfers.this);
                 dView2 = getLayoutInflater().inflate(R.layout.dialog_transfer, null);
                 builder2.setView(dView2);
-                final AlertDialog dialog2 = builder2.create();
-                dialog2.show();
-
                 transferDialogResTV = dView2.findViewById(R.id.transferDialogResTV);
                 transferDialogInfoBtn = dView2.findViewById(R.id.transferDialogInfoBtn);
                 transferDialogInfoTV = dView2.findViewById(R.id.transferDialogInfoTV);
@@ -467,6 +483,8 @@ public class LayoutTransfers extends MainNavigation {
                 transferDialogCustomAvailAmtTV = dView2.findViewById(R.id.transferDialogCustomAvailAmtTV);
                 transferDialogEnterBtn = dView2.findViewById(R.id.transferDialogEnterBtn);
                 transferDialogCancelBtn = dView2.findViewById(R.id.transferDialogCancelBtn);
+                final AlertDialog dialog2 = builder2.create();
+                dialog2.show();
 
                 if (trn1FromSpinId == 1) { //FROM MAIN ACCT
                     transferDialogResTV.setText(R.string.choose_split);
@@ -528,41 +546,19 @@ public class LayoutTransfers extends MainNavigation {
                 transferDialogEnterBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if ((!trn1FromIsDebtSav.equals("D") && trn1DbMgr.retrieveCurrentAcctAmt(trn1FromSpinId) < trn1TrnAmt) || (trn1FromIsDebtSav.equals("D") && (trn1DbMgr.retrieveCurrentAcctAmt(trn1FromSpinId) + trn1TrnAmt > trn1FromAcctMax))) { //FROM ACCT WILL GO NEGATIVE OR OVER LIMIT
-                            final AlertDialog.Builder builder = new AlertDialog.Builder(LayoutTransfers.this);
-                            dView = getLayoutInflater().inflate(R.layout.dialog_warn, null);
-                            builder.setView(dView);
-                            final AlertDialog dialog = builder.create();
-                            dialog.show();
+                        if (trn1FromSpinId == 1) { //FROM MAIN ACCT
+                            trn1MoneyInA = 0.0;
+                            trn1MoneyInOwing = 0.0;
+                            trn1MoneyInB = 0.0;
 
-                            warnDialogWarnLayout = dView.findViewById(R.id.warnDialogWarnLayout);
-                            warnDialogWarnTV = dView.findViewById(R.id.warnDialogWarnTV);
-                            warnDialogNoContBtn = dView.findViewById(R.id.warnDialogNoContBtn);
-                            warnDialogYesContBtn = dView.findViewById(R.id.warnDialogYesContBtn);
-
-                            if (trn1FromIsDebtSav.equals("D")) { //FROM DEBT ACCT
-                                warnDialogWarnTV.setText(R.string.not_enough_credit_warning);
-                            } else if (trn1FromIsDebtSav.equals("S")) { //FROM SAVINGS ACCT
-                                warnDialogWarnTV.setText(R.string.not_enough_savings_warning);
-                            } else if (trn1FromSpinId == 1) { //FROM MAIN ACCT
-                                warnDialogWarnTV.setText(R.string.transfer_not_possible_A);
-                            }
-
-                            warnDialogNoContBtn.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    trn1Refresh();
-                                }
-                            });
-
-                            warnDialogYesContBtn.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    if (transferDialogAllResRB.isChecked()) {
-                                        if (trn1FromSpinId == 1) { //FROM MAIN ACCT
-                                            trn1MoneyInA = 0.0;
-                                            trn1MoneyInOwing = 0.0;
-                                            trn1MoneyInB = 0.0;
+                            if (transferDialogAllResRB.isChecked()) {
+                                if (trn1DbMgr.retrieveCurrentAccountBalance() < trn1TrnAmt) { //IF WILL GO NEGATIVE
+                                    dialog.show();
+                                    warnDialogWarnTV.setText(getString(R.string.transfer_not_possible_A));
+                                    warnDialogNoContBtn.setOnClickListener(onClickNoContBtn);
+                                    warnDialogYesContBtn.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
                                             if (trn1DbMgr.retrieveCurrentA() < trn1TrnAmt) { //A CAN'T COVER WHOLE AMT
                                                 trn1AmtMissing = trn1TrnAmt - trn1DbMgr.retrieveCurrentA();
                                                 trn1MoneyOutOwing = 0.0;
@@ -578,321 +574,326 @@ public class LayoutTransfers extends MainNavigation {
                                                     trn1MoneyOutA = trn1TrnAmt;
                                                     trn1MoneyOutB = 0.0;
                                                 }
+                                                trn1MainMinus();
                                             } else { //A CAN COVER WHOLE AMT
                                                 allFromRes();
+                                                trn1MainMinus();
                                             }
-                                            trn1MainMinus();
-                                        } else if (trn1ToSpinId == 1) { //TO MAIN ACCT
-                                            trn1MoneyOutA = 0.0;
-                                            trn1MoneyOutOwing = 0.0;
-                                            trn1MoneyOutB = 0.0;
-                                            allToRes();
-                                            trn1MainPlus();
                                         }
-                                    } else if (transferDialogNoneResRB.isChecked()) {
-                                        if (trn1FromSpinId == 1) { //FROM MAIN ACCT
-                                            trn1MoneyInA = 0.0;
-                                            trn1MoneyInOwing = 0.0;
-                                            trn1MoneyInB = 0.0;
-                                            if (trn1DbMgr.retrieveCurrentB() < trn1TrnAmt) { //B IS LESS THAN AMT: A COVERS MISSING AMT, BUT IS OWED FOR IT
-                                                trn1AmtMissing = trn1TrnAmt - trn1DbMgr.retrieveCurrentB();
-                                                trn1MoneyOutA = trn1AmtMissing;
-                                                trn1MoneyOutOwing = trn1AmtMissing;
-                                                trn1MoneyOutB = trn1DbMgr.retrieveCurrentB();
-                                            } else {
-                                                allFromAvail();
-                                            }
-                                            trn1MainMinus();
-                                        } else if (trn1ToSpinId == 1) { //TO MAIN ACCT
-                                            trn1MoneyOutA = 0.0;
-                                            trn1MoneyOutOwing = 0.0;
-                                            trn1MoneyOutB = 0.0;
-                                            allToAvail();
-                                            trn1MainPlus();
+                                    });
+                                } else if (trn1DbMgr.retrieveCurrentA() < trn1TrnAmt) { //A CAN'T COVER WHOLE AMT
+                                    trn1AmtMissing = trn1TrnAmt - trn1DbMgr.retrieveCurrentA();
+                                    trn1MoneyOutOwing = 0.0;
+                                    if (trn1DbMgr.retrieveCurrentB() > 0) { //B HAS MONEY
+                                        if (trn1DbMgr.retrieveCurrentB() >= trn1AmtMissing) { //B CAN COVER THE MISSING AMT
+                                            trn1MoneyOutA = trn1TrnAmt - trn1AmtMissing;
+                                            trn1MoneyOutB = trn1AmtMissing;
+                                        } else { //B CAN'T COVER MISSING AMT: B GIVES WHAT IT CAN AND A GOES NEGATIVE BY THE REST
+                                            trn1MoneyOutA = trn1TrnAmt - trn1DbMgr.retrieveCurrentB();
+                                            trn1MoneyOutB = trn1DbMgr.retrieveCurrentB();
                                         }
-                                    } else if (transferDialogAsUsualRB.isChecked()) {
-                                        if (trn1FromSpinId == 1) { //FROM MAIN ACCT
-                                            trn1MoneyInA = 0.0;
-                                            trn1MoneyInOwing = 0.0;
-                                            trn1MoneyInB = 0.0;
-                                            trn1AmtForA = trn1TrnAmt * (trn1DbMgr.sumTotalAExpenses() / trn1DbMgr.sumTotalIncome());
-                                            trn1AmtForB = trn1TrnAmt - trn1AmtForA;
-                                            if (trn1DbMgr.retrieveCurrentB() < trn1AmtForB) { //B CAN'T COVER ITS PORTION
-                                                if (trn1DbMgr.retrieveCurrentB() > 0) { //B HAS MONEY, GIVES WHAT IT CAN AND A GOES NEGATIVE AND IS OWED
-                                                    trn1MoneyOutA = trn1TrnAmt - trn1DbMgr.retrieveCurrentB();
-                                                    trn1MoneyOutOwing = trn1AmtForB - trn1DbMgr.retrieveCurrentB();
-                                                    trn1MoneyOutB = trn1DbMgr.retrieveCurrentB();
-                                                } else { //B HAS NO MONEY, A PAYS, BUT IS OWED FOR B'S PORTION
-                                                    trn1MoneyOutA = trn1TrnAmt;
-                                                    trn1MoneyOutOwing = trn1AmtForB;
-                                                    trn1MoneyOutB = 0.0;
-                                                }
-                                            } else { //B CAN COVER ITS OWN PORTION
-                                                fromUsual();
-                                            }
-                                            trn1MainMinus();
-                                        } else if (trn1ToSpinId == 1) { //TO MAIN ACCT
-                                            trn1MoneyOutA = 0.0;
-                                            trn1MoneyOutOwing = 0.0;
-                                            trn1MoneyOutB = 0.0;
-                                            toUsual();
-                                            trn1MainPlus();
-                                        }
-                                    } else if (transferDialogCustomRB.isChecked()) {
-                                        if (trn1FromSpinId == 1) { //FROM MAIN ACCT
-                                            trn1MoneyInA = 0.0;
-                                            trn1MoneyInOwing = 0.0;
-                                            trn1MoneyInB = 0.0;
-                                            trn1AmtForA = trn1MoneyOutAEntry;
-                                            trn1AmtForB = trn1TrnAmt - trn1AmtForA;
-                                            if (trn1DbMgr.retrieveCurrentB() < trn1AmtForB) { //B CAN'T COVER ITS PORTION
-                                                if (trn1DbMgr.retrieveCurrentB() > 0) { //B HAS MONEY, GIVES WHAT IT CAN AND A GOES NEGATIVE AND IS OWED
-                                                    trn1MoneyOutA = trn1TrnAmt - trn1DbMgr.retrieveCurrentB();
-                                                    trn1MoneyOutOwing = trn1AmtForB - trn1DbMgr.retrieveCurrentB();
-                                                    trn1MoneyOutB = trn1DbMgr.retrieveCurrentB();
-                                                } else { //B HAS NO MONEY, A PAYS, BUT IS OWED FOR B'S PORTION
-                                                    trn1MoneyOutA = trn1TrnAmt;
-                                                    trn1MoneyOutOwing = trn1AmtForB;
-                                                    trn1MoneyOutB = 0.0;
-                                                }
-                                            } else { //B CAN COVER ITS OWN PORTION
-                                                fromCustom();
-                                            }
-                                            trn1MainMinus();
-                                        } else if (trn1ToSpinId == 1) { //TO MAIN ACCT
-                                            trn1MoneyOutA = 0.0;
-                                            trn1MoneyOutOwing = 0.0;
-                                            trn1MoneyOutB = 0.0;
-                                            toCustom();
-                                            trn1MainPlus();
-                                        }
-                                    }
-
-                                    if (trn1FromIsDebtSav.equals("D")) {
-                                        trn1DebtPlus();
-                                    } else if (trn1FromIsDebtSav.equals("S")) {
-                                        trn1SavMinus();
-                                    }
-
-                                    if (trn1ToIsDebtSav.equals("D")) {
-                                        trn1DebtMinus();
-                                    } else if (trn1ToIsDebtSav.equals("S")) {
-                                        trn1SavPlus();
-                                    }
-
-                                    addTransAndFinish();
-                                }
-                            });
-                        } else { //FROM ACCT WILL NOT GO NEGATIVE OR OVER LIMIT
-                            if (transferDialogAllResRB.isChecked()) {
-                                if (trn1FromSpinId == 1) { //FROM MAIN ACCT
-                                    trn1MoneyInA = 0.0;
-                                    trn1MoneyInOwing = 0.0;
-                                    trn1MoneyInB = 0.0;
-                                    if (trn1DbMgr.retrieveCurrentA() < trn1TrnAmt) { //A CAN'T COVER WHOLE AMT
-                                        trn1AmtMissing = trn1TrnAmt - trn1DbMgr.retrieveCurrentA();
-                                        trn1MoneyOutOwing = 0.0;
-                                        if (trn1DbMgr.retrieveCurrentB() > 0) { //B HAS MONEY
-                                            if (trn1DbMgr.retrieveCurrentB() >= trn1AmtMissing) { //B CAN COVER THE MISSING AMT
-                                                trn1MoneyOutA = trn1TrnAmt - trn1AmtMissing;
-                                                trn1MoneyOutB = trn1AmtMissing;
-                                            } else { //B CAN'T COVER MISSING AMT: B GIVES WHAT IT CAN AND A GOES NEGATIVE BY THE REST
-                                                trn1MoneyOutA = trn1TrnAmt - trn1DbMgr.retrieveCurrentB();
-                                                trn1MoneyOutB = trn1DbMgr.retrieveCurrentB();
-                                            }
-                                        } else { //B HAS NO MONEY: A GOES NEGATIVE BY WHOLE AMT
-                                            trn1MoneyOutA = trn1TrnAmt;
-                                            trn1MoneyOutB = 0.0;
-                                        }
-                                    } else { //A CAN COVER WHOLE AMT
-                                        allFromRes();
+                                    } else { //B HAS NO MONEY: A GOES NEGATIVE BY WHOLE AMT
+                                        trn1MoneyOutA = trn1TrnAmt;
+                                        trn1MoneyOutB = 0.0;
                                     }
                                     trn1MainMinus();
-                                } else if (trn1ToSpinId == 1) { //TO MAIN ACCT
-                                    trn1MoneyOutA = 0.0;
-                                    trn1MoneyOutOwing = 0.0;
-                                    trn1MoneyOutB = 0.0;
-                                    allToRes();
-                                    trn1MainPlus();
+                                } else { //A CAN COVER WHOLE AMT
+                                    allFromRes();
+                                    trn1MainMinus();
                                 }
                             } else if (transferDialogNoneResRB.isChecked()) {
-                                if (trn1FromSpinId == 1) { //FROM MAIN ACCT
-                                    trn1MoneyInA = 0.0;
-                                    trn1MoneyInOwing = 0.0;
-                                    trn1MoneyInB = 0.0;
-                                    if (trn1DbMgr.retrieveCurrentB() < trn1TrnAmt) { //B IS LESS THAN AMT: A COVERS MISSING AMT, BUT IS OWED FOR IT
-                                        trn1AmtMissing = trn1TrnAmt - trn1DbMgr.retrieveCurrentB();
-                                        trn1MoneyOutA = trn1AmtMissing;
-                                        trn1MoneyOutOwing = trn1AmtMissing;
-                                        trn1MoneyOutB = trn1DbMgr.retrieveCurrentB();
-                                    } else {
-                                        allFromAvail();
-                                    }
+                                if (trn1DbMgr.retrieveCurrentB() < trn1TrnAmt) { //B IS LESS THAN AMT: A COVERS MISSING AMT, BUT IS OWED FOR IT
+                                    dialog.show();
+                                    warnDialogWarnTV.setText(getString(R.string.payment_not_possible_B));
+                                    warnDialogNoContBtn.setOnClickListener(onClickNoContBtn);
+
+                                    warnDialogYesContBtn.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            trn1AmtMissing = trn1TrnAmt - trn1DbMgr.retrieveCurrentB();
+                                            trn1MoneyOutA = trn1AmtMissing;
+                                            trn1MoneyOutOwing = trn1AmtMissing;
+                                            trn1MoneyOutB = trn1DbMgr.retrieveCurrentB();
+                                            trn1MainMinus();
+                                        }
+                                    });
+                                } else {
+                                    allFromAvail();
                                     trn1MainMinus();
-                                } else if (trn1ToSpinId == 1) { //TO MAIN ACCT
-                                    trn1MoneyOutA = 0.0;
-                                    trn1MoneyOutOwing = 0.0;
-                                    trn1MoneyOutB = 0.0;
-                                    allToAvail();
-                                    trn1MainPlus();
                                 }
                             } else if (transferDialogAsUsualRB.isChecked()) {
-                                if (trn1FromSpinId == 1) { //FROM MAIN ACCT
-                                    trn1MoneyInA = 0.0;
-                                    trn1MoneyInOwing = 0.0;
-                                    trn1MoneyInB = 0.0;
-                                    trn1AmtForA = trn1TrnAmt * (trn1DbMgr.sumTotalAExpenses() / trn1DbMgr.sumTotalIncome());
-                                    trn1AmtForB = trn1TrnAmt - trn1AmtForA;
-                                    if (trn1DbMgr.retrieveCurrentB() < trn1AmtForB) { //B CAN'T COVER ITS PORTION
-                                        if (trn1DbMgr.retrieveCurrentB() > 0) { //B HAS MONEY, GIVES WHAT IT CAN AND A GOES NEGATIVE AND IS OWED
-                                            trn1MoneyOutA = trn1TrnAmt - trn1DbMgr.retrieveCurrentB();
-                                            trn1MoneyOutOwing = trn1AmtForB - trn1DbMgr.retrieveCurrentB();
-                                            trn1MoneyOutB = trn1DbMgr.retrieveCurrentB();
-                                        } else { //B HAS NO MONEY, A PAYS, BUT IS OWED FOR B'S PORTION
-                                            trn1MoneyOutA = trn1TrnAmt;
-                                            trn1MoneyOutOwing = trn1AmtForB;
-                                            trn1MoneyOutB = 0.0;
+                                trn1AmtForA = trn1TrnAmt * (trn1DbMgr.sumTotalAExpenses() / trn1DbMgr.sumTotalIncome());
+                                trn1AmtForB = trn1TrnAmt - trn1AmtForA;
+                                if (trn1DbMgr.retrieveCurrentAccountBalance() < trn1AmtForA) {
+                                    dialog.show();
+                                    warnDialogWarnTV.setText(getString(R.string.transfer_not_possible_A));
+                                    warnDialogNoContBtn.setOnClickListener(onClickNoContBtn);
+                                    warnDialogYesContBtn.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            if (trn1DbMgr.retrieveCurrentB() < trn1AmtForB) { //B CAN'T COVER ITS PORTION
+                                                if (trn1DbMgr.retrieveCurrentB() > 0) { //B HAS MONEY, GIVES WHAT IT CAN AND A GOES NEGATIVE AND IS OWED
+                                                    trn1MoneyOutA = trn1TrnAmt - trn1DbMgr.retrieveCurrentB();
+                                                    trn1MoneyOutOwing = trn1AmtForB - trn1DbMgr.retrieveCurrentB();
+                                                    trn1MoneyOutB = trn1DbMgr.retrieveCurrentB();
+                                                } else { //B HAS NO MONEY, A PAYS, BUT IS OWED FOR B'S PORTION
+                                                    trn1MoneyOutA = trn1TrnAmt;
+                                                    trn1MoneyOutOwing = trn1AmtForB;
+                                                    trn1MoneyOutB = 0.0;
+                                                }
+                                                trn1MainMinus();
+                                            } else { //B CAN COVER ITS OWN PORTION
+                                                fromUsual();
+                                                trn1MainMinus();
+                                            }
                                         }
-                                    } else { //B CAN COVER ITS OWN PORTION
-                                        fromUsual();
+                                    });
+                                } else if (trn1DbMgr.retrieveCurrentB() < trn1AmtForB) { //B CAN'T COVER ITS PORTION
+                                    if (trn1DbMgr.retrieveCurrentB() > 0) { //B HAS MONEY, GIVES WHAT IT CAN AND A GOES NEGATIVE AND IS OWED
+                                        trn1MoneyOutA = trn1TrnAmt - trn1DbMgr.retrieveCurrentB();
+                                        trn1MoneyOutOwing = trn1AmtForB - trn1DbMgr.retrieveCurrentB();
+                                        trn1MoneyOutB = trn1DbMgr.retrieveCurrentB();
+                                    } else { //B HAS NO MONEY, A PAYS, BUT IS OWED FOR B'S PORTION
+                                        trn1MoneyOutA = trn1TrnAmt;
+                                        trn1MoneyOutOwing = trn1AmtForB;
+                                        trn1MoneyOutB = 0.0;
                                     }
                                     trn1MainMinus();
-                                } else if (trn1ToSpinId == 1) { //TO MAIN ACCT
-                                    trn1MoneyOutA = 0.0;
-                                    trn1MoneyOutOwing = 0.0;
-                                    trn1MoneyOutB = 0.0;
-                                    toUsual();
-                                    trn1MainPlus();
+                                } else { //B CAN COVER ITS OWN PORTION
+                                    fromUsual();
+                                    trn1MainMinus();
                                 }
                             } else if (transferDialogCustomRB.isChecked()) {
-                                if (trn1FromSpinId == 1) { //FROM MAIN ACCT
-                                    trn1MoneyInA = 0.0;
-                                    trn1MoneyInOwing = 0.0;
-                                    trn1MoneyInB = 0.0;
-                                    trn1AmtForA = trn1MoneyOutAEntry;
-                                    trn1AmtForB = trn1TrnAmt - trn1AmtForA;
-                                    if (trn1DbMgr.retrieveCurrentB() < trn1AmtForB) { //B CAN'T COVER ITS PORTION
-                                        if (trn1DbMgr.retrieveCurrentB() > 0) { //B HAS MONEY, GIVES WHAT IT CAN AND A GOES NEGATIVE AND IS OWED
-                                            trn1MoneyOutA = trn1TrnAmt - trn1DbMgr.retrieveCurrentB();
-                                            trn1MoneyOutOwing = trn1AmtForB - trn1DbMgr.retrieveCurrentB();
-                                            trn1MoneyOutB = trn1DbMgr.retrieveCurrentB();
-                                        } else { //B HAS NO MONEY, A PAYS, BUT IS OWED FOR B'S PORTION
-                                            trn1MoneyOutA = trn1TrnAmt;
-                                            trn1MoneyOutOwing = trn1AmtForB;
-                                            trn1MoneyOutB = 0.0;
+                                trn1AmtForA = trn1MoneyOutAEntry;
+                                trn1AmtForB = trn1TrnAmt - trn1AmtForA;
+                                if (trn1DbMgr.retrieveCurrentAccountBalance() < trn1AmtForA) {
+                                    dialog.show();
+                                    warnDialogWarnTV.setText(getString(R.string.transfer_not_possible_A));
+                                    warnDialogNoContBtn.setOnClickListener(onClickNoContBtn);
+                                    warnDialogYesContBtn.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            if (trn1DbMgr.retrieveCurrentB() < trn1AmtForB) { //B CAN'T COVER ITS PORTION
+                                                if (trn1DbMgr.retrieveCurrentB() > 0) { //B HAS MONEY, GIVES WHAT IT CAN AND A GOES NEGATIVE AND IS OWED
+                                                    trn1MoneyOutA = trn1TrnAmt - trn1DbMgr.retrieveCurrentB();
+                                                    trn1MoneyOutOwing = trn1AmtForB - trn1DbMgr.retrieveCurrentB();
+                                                    trn1MoneyOutB = trn1DbMgr.retrieveCurrentB();
+                                                } else { //B HAS NO MONEY, A PAYS, BUT IS OWED FOR B'S PORTION
+                                                    trn1MoneyOutA = trn1TrnAmt;
+                                                    trn1MoneyOutOwing = trn1AmtForB;
+                                                    trn1MoneyOutB = 0.0;
+                                                }
+                                                trn1MainMinus();
+                                            } else { //B CAN COVER ITS OWN PORTION
+                                                fromCustom();
+                                                trn1MainMinus();
+                                            }
                                         }
-                                    } else { //B CAN COVER ITS OWN PORTION
-                                        fromCustom();
+                                    });
+                                } else if (trn1DbMgr.retrieveCurrentB() < trn1AmtForB) { //B CAN'T COVER ITS PORTION
+                                    if (trn1DbMgr.retrieveCurrentB() > 0) { //B HAS MONEY, GIVES WHAT IT CAN AND A GOES NEGATIVE AND IS OWED
+                                        trn1MoneyOutA = trn1TrnAmt - trn1DbMgr.retrieveCurrentB();
+                                        trn1MoneyOutOwing = trn1AmtForB - trn1DbMgr.retrieveCurrentB();
+                                        trn1MoneyOutB = trn1DbMgr.retrieveCurrentB();
+                                    } else { //B HAS NO MONEY, A PAYS, BUT IS OWED FOR B'S PORTION
+                                        trn1MoneyOutA = trn1TrnAmt;
+                                        trn1MoneyOutOwing = trn1AmtForB;
+                                        trn1MoneyOutB = 0.0;
                                     }
                                     trn1MainMinus();
-                                } else if (trn1ToSpinId == 1) { //TO MAIN ACCT
-                                    trn1MoneyOutA = 0.0;
-                                    trn1MoneyOutOwing = 0.0;
-                                    trn1MoneyOutB = 0.0;
-                                    toCustom();
-                                    trn1MainPlus();
+                                } else { //B CAN COVER ITS OWN PORTION
+                                    fromCustom();
+                                    trn1MainMinus();
                                 }
                             }
-
-                            if (trn1FromIsDebtSav.equals("D")) {
-                                trn1DebtPlus();
-                            } else if (trn1FromIsDebtSav.equals("S")) {
-                                trn1SavMinus();
-                            }
-
-                            if (trn1ToIsDebtSav.equals("D")) {
+                            if (trn1ToIsDebtSav.equals("D")) { //TO DEBT
                                 trn1DebtMinus();
-                            } else if (trn1ToIsDebtSav.equals("S")) {
+                                addTransAndFinish();
+                            } else if (trn1ToIsDebtSav.equals("S")) { //TO SAV
                                 trn1SavPlus();
+                                addTransAndFinish();
                             }
-
-                            addTransAndFinish();
-                        }
-                    }
-                });
-
-                transferDialogCancelBtn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        trn1Refresh();
-                    }
-                });
-            } else {//NOT FROM MAIN ACCT AND NOT TO MAIN ACCT
-                if ((trn1FromIsDebtSav.equals("D") && (trn1DbMgr.retrieveCurrentAcctAmt(trn1FromSpinId) + trn1TrnAmt > trn1FromAcctMax)) || (trn1FromIsDebtSav.equals("S") && (trn1DbMgr.retrieveCurrentAcctAmt(trn1FromSpinId) < trn1TrnAmt))) { //WILL GO OVER LIMIT OR NEGATIVE
-                    final AlertDialog.Builder builder = new AlertDialog.Builder(LayoutTransfers.this);
-                    dView = getLayoutInflater().inflate(R.layout.dialog_warn, null);
-                    builder.setView(dView);
-                    final AlertDialog dialog = builder.create();
-                    dialog.show();
-
-                    warnDialogWarnLayout = dView.findViewById(R.id.warnDialogWarnLayout);
-                    warnDialogWarnTV = dView.findViewById(R.id.warnDialogWarnTV);
-                    warnDialogNoContBtn = dView.findViewById(R.id.warnDialogNoContBtn);
-                    warnDialogYesContBtn = dView.findViewById(R.id.warnDialogYesContBtn);
-
-                    if (trn1FromIsDebtSav.equals("D")) { //FROM DEBT ACCT
-                        warnDialogWarnTV.setText(R.string.not_enough_credit_warning);
-                    } else if (trn1FromIsDebtSav.equals("S")) { //FROM SAVINGS ACCT
-                        warnDialogWarnTV.setText(R.string.not_enough_savings_warning);
-                    }
-
-                    warnDialogNoContBtn.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            trn1Refresh();
-                        }
-                    });
-
-                    warnDialogYesContBtn.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            trn1MoneyInA = 0.0;
-                            trn1MoneyInOwing = 0.0;
-                            trn1MoneyInB = 0.0;
+                        } else if (trn1ToSpinId == 1) { //TO MAIN ACCT
                             trn1MoneyOutA = 0.0;
                             trn1MoneyOutOwing = 0.0;
                             trn1MoneyOutB = 0.0;
-                            if (trn1FromIsDebtSav.equals("D")) { //FROM DEBT ACCT
-                                trn1DebtPlus();
-                                if (trn1ToIsDebtSav.equals("D")) {
-                                    trn1DebtMinus();
-                                } else if (trn1ToIsDebtSav.equals("S")) {
-                                    trn1SavPlus();
-                                }
-                            } else if (trn1FromIsDebtSav.equals("S")) { //FROM SAVINGS ACCT
-                                trn1SavMinus();
-                                if (trn1ToIsDebtSav.equals("D")) {
-                                    trn1DebtMinus();
-                                } else if (trn1ToIsDebtSav.equals("S")) {
-                                    trn1SavPlus();
-                                }
-                            }
 
+                            if (trn1FromIsDebtSav.equals("S") && (trn1DbMgr.retrieveCurrentAcctAmt(trn1FromSpinId) - trn1TrnAmt < 0)) { //IF FROM SAV AND WILL GO NEGATIVE
+                                dialog.show();
+                                warnDialogWarnTV.setText(getString(R.string.not_enough_savings_warning));
+                                warnDialogNoContBtn.setOnClickListener(onClickNoContBtn);
+                                warnDialogYesContBtn.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        trn1SavMinus();
+                                        if (transferDialogAllResRB.isChecked()) {
+                                            allToRes();
+                                            trn1MainPlus();
+                                        } else if (transferDialogNoneResRB.isChecked()) {
+                                            allToAvail();
+                                            trn1MainPlus();
+                                        } else if (transferDialogAsUsualRB.isChecked()) {
+                                            toUsual();
+                                            trn1MainPlus();
+                                        } else if (transferDialogCustomRB.isChecked()) {
+                                            toCustom();
+                                            trn1MainPlus();
+                                        }
+                                        addTransAndFinish();
+                                    }
+                                });
+                            } else if (trn1FromIsDebtSav.equals("S")) { //IF FROM SAV AND WILL NOT GO NEGATIVE
+                                dialog.hide();
+                                trn1SavMinus();
+                                if (transferDialogAllResRB.isChecked()) {
+                                    allToRes();
+                                    trn1MainPlus();
+                                } else if (transferDialogNoneResRB.isChecked()) {
+                                    allToAvail();
+                                    trn1MainPlus();
+                                } else if (transferDialogAsUsualRB.isChecked()) {
+                                    toUsual();
+                                    trn1MainPlus();
+                                } else if (transferDialogCustomRB.isChecked()) {
+                                    toCustom();
+                                    trn1MainPlus();
+                                }
+                                addTransAndFinish();
+                            } else if (trn1FromIsDebtSav.equals("D") && (trn1DbMgr.retrieveCurrentAcctAmt(trn1FromSpinId) + trn1TrnAmt > trn1FromAcctMax)) { //IF FROM DEBT AND WILL GO OVER LIMIT
+                                dialog.show();
+                                warnDialogWarnTV.setText(getString(R.string.not_enough_credit_warning));
+                                warnDialogNoContBtn.setOnClickListener(onClickNoContBtn);
+                                warnDialogYesContBtn.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        trn1DebtPlus();
+                                        if (transferDialogAllResRB.isChecked()) {
+                                            allToRes();
+                                            trn1MainPlus();
+                                        } else if (transferDialogNoneResRB.isChecked()) {
+                                            allToAvail();
+                                            trn1MainPlus();
+                                        } else if (transferDialogAsUsualRB.isChecked()) {
+                                            toUsual();
+                                            trn1MainPlus();
+                                        } else if (transferDialogCustomRB.isChecked()) {
+                                            toCustom();
+                                            trn1MainPlus();
+                                        }
+                                        addTransAndFinish();
+                                    }
+                                });
+                            } else if (trn1FromIsDebtSav.equals("D")) {//FROM DEBT AND WILL NOT GO NEGATIVE
+                                dialog.hide();
+                                trn1DebtPlus();
+                                if (transferDialogAllResRB.isChecked()) {
+                                    allToRes();
+                                    trn1MainPlus();
+                                } else if (transferDialogNoneResRB.isChecked()) {
+                                    allToAvail();
+                                    trn1MainPlus();
+                                } else if (transferDialogAsUsualRB.isChecked()) {
+                                    toUsual();
+                                    trn1MainPlus();
+                                } else if (transferDialogCustomRB.isChecked()) {
+                                    toCustom();
+                                    trn1MainPlus();
+                                }
+                                addTransAndFinish();
+                            }
+                        }
+                    }
+                });
+            } else if (trn1FromIsDebtSav.equals("S") && (trn1DbMgr.retrieveCurrentAcctAmt(trn1FromSpinId) - trn1TrnAmt < 0)) { //IF FROM SAV AND WILL GO NEGATIVE
+                trn1MoneyOutA = 0.0;
+                trn1MoneyOutOwing = 0.0;
+                trn1MoneyOutB = 0.0;
+                dialog.show();
+                warnDialogWarnTV.setText(getString(R.string.not_enough_savings_warning));
+                warnDialogNoContBtn.setOnClickListener(onClickNoContBtn);
+                warnDialogYesContBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        trn1SavMinus();
+
+                        if (trn1ToIsDebtSav.equals("D")) { //TO DEBT
+                            trn1MoneyInA = 0.0;
+                            trn1MoneyInOwing = 0.0;
+                            trn1MoneyInB = 0.0;
+                            trn1DebtMinus();
+                            addTransAndFinish();
+                        } else if (trn1ToIsDebtSav.equals("S")) { //TO SAV
+                            trn1MoneyInA = 0.0;
+                            trn1MoneyInOwing = 0.0;
+                            trn1MoneyInB = 0.0;
+                            trn1SavPlus();
                             addTransAndFinish();
                         }
-                    });
-                } else { //WILL NOT GO OVER LIMIT OR NEGATIVE
+                    }
+                });
+            } else if (trn1FromIsDebtSav.equals("S")) { //IF FROM SAV AND WILL NOT GO NEGATIVE
+                trn1MoneyOutA = 0.0;
+                trn1MoneyOutOwing = 0.0;
+                trn1MoneyOutB = 0.0;
+                dialog.hide();
+                trn1SavMinus();
+
+                if (trn1ToIsDebtSav.equals("D")) { //TO DEBT
                     trn1MoneyInA = 0.0;
                     trn1MoneyInOwing = 0.0;
                     trn1MoneyInB = 0.0;
-                    trn1MoneyOutA = 0.0;
-                    trn1MoneyOutOwing = 0.0;
-                    trn1MoneyOutB = 0.0;
-                    if (trn1FromIsDebtSav.equals("D")) { //FROM DEBT ACCT
+                    trn1DebtMinus();
+                    addTransAndFinish();
+                } else if (trn1ToIsDebtSav.equals("S")) { //TO SAV
+                    trn1MoneyInA = 0.0;
+                    trn1MoneyInOwing = 0.0;
+                    trn1MoneyInB = 0.0;
+                    trn1SavPlus();
+                    addTransAndFinish();
+                }
+            } else if (trn1FromIsDebtSav.equals("D") && (trn1DbMgr.retrieveCurrentAcctAmt(trn1FromSpinId) + trn1TrnAmt > trn1FromAcctMax)) { //IF FROM DEBT AND WILL GO OVER LIMIT
+                trn1MoneyOutA = 0.0;
+                trn1MoneyOutOwing = 0.0;
+                trn1MoneyOutB = 0.0;
+                dialog.show();
+                warnDialogWarnTV.setText(getString(R.string.not_enough_credit_warning));
+                warnDialogNoContBtn.setOnClickListener(onClickNoContBtn);
+                warnDialogYesContBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
                         trn1DebtPlus();
-                        if (trn1ToIsDebtSav.equals("D")) {
+                        if (trn1ToIsDebtSav.equals("D")) { //TO DEBT
+                            trn1MoneyInA = 0.0;
+                            trn1MoneyInOwing = 0.0;
+                            trn1MoneyInB = 0.0;
                             trn1DebtMinus();
-                        } else if (trn1ToIsDebtSav.equals("S")) {
+                            addTransAndFinish();
+                        } else if (trn1ToIsDebtSav.equals("S")) { //TO SAV
+                            trn1MoneyInA = 0.0;
+                            trn1MoneyInOwing = 0.0;
+                            trn1MoneyInB = 0.0;
                             trn1SavPlus();
-                        }
-                    } else if (trn1FromIsDebtSav.equals("S")) { //FROM SAVINGS ACCT
-                        trn1SavMinus();
-                        if (trn1ToIsDebtSav.equals("D")) {
-                            trn1DebtMinus();
-                        } else if (trn1ToIsDebtSav.equals("S")) {
-                            trn1SavPlus();
+                            addTransAndFinish();
                         }
                     }
+                });
+            } else if (trn1FromIsDebtSav.equals("D")) {//FROM DEBT AND WILL NOT GO NEGATIVE
+                trn1MoneyOutA = 0.0;
+                trn1MoneyOutOwing = 0.0;
+                trn1MoneyOutB = 0.0;
+                dialog.hide();
+                trn1DebtPlus();
+                if (trn1ToIsDebtSav.equals("D")) {
+                    trn1MoneyInA = 0.0;
+                    trn1MoneyInOwing = 0.0;
+                    trn1MoneyInB = 0.0;
+                    trn1DebtMinus();
+                    addTransAndFinish();
+                } else if (trn1ToIsDebtSav.equals("S")) {
+                    trn1MoneyInA = 0.0;
+                    trn1MoneyInOwing = 0.0;
+                    trn1MoneyInB = 0.0;
+                    trn1SavPlus();
                     addTransAndFinish();
                 }
             }

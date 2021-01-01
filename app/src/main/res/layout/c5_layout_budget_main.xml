@@ -57,7 +57,7 @@
                             android:gravity="center_horizontal"
                             android:text="@string/you_have"
                             android:textColor="@color/design_default_color_primary_dark"
-                            android:textSize="20sp">
+                            android:textSize="16sp">
 
                         </TextView>
 
@@ -69,7 +69,7 @@
                             android:layout_marginStart="5dp"
                             android:text="@string/amount"
                             android:textColor="@color/design_default_color_primary_dark"
-                            android:textSize="20sp">
+                            android:textSize="16sp">
 
                         </TextView>
 
@@ -81,7 +81,7 @@
                             android:layout_marginStart="5dp"
                             android:text="@string/in_savings"
                             android:textColor="@color/design_default_color_primary_dark"
-                            android:textSize="20sp">
+                            android:textSize="16sp">
 
                         </TextView>
 
@@ -101,7 +101,7 @@
                             android:layout_marginStart="5dp"
                             android:text="@string/amount"
                             android:textColor="@color/design_default_color_primary_dark"
-                            android:textSize="20sp">
+                            android:textSize="16sp">
 
                         </TextView>
 
@@ -113,7 +113,7 @@
                             android:layout_marginStart="5dp"
                             android:text="@string/towards_goal"
                             android:textColor="@color/design_default_color_primary_dark"
-                            android:textSize="20sp">
+                            android:textSize="16sp">
 
                         </TextView>
 
@@ -148,7 +148,7 @@
                             android:layout_height="wrap_content"
                             android:text="@string/debt_free_by"
                             android:textColor="@color/design_default_color_primary_dark"
-                            android:textSize="20sp">
+                            android:textSize="16sp">
 
                         </TextView>
 
@@ -160,7 +160,7 @@
                             android:layout_marginStart="5dp"
                             android:text="@string/date"
                             android:textColor="@color/design_default_color_primary_dark"
-                            android:textSize="20sp">
+                            android:textSize="16sp">
 
                         </TextView>
 
@@ -190,7 +190,7 @@
                             android:layout_marginBottom="5dp"
                             android:text="@string/total_income"
                             android:textColor="@color/colorPrimaryDark"
-                            android:textSize="20sp" />
+                            android:textSize="16sp" />
 
                         <TextView
                             android:id="@+id/budMnTotIncTV"
@@ -202,7 +202,7 @@
                             android:layout_marginBottom="5dp"
                             android:text="@string/amount"
                             android:textColor="@color/colorPrimaryDark"
-                            android:textSize="20sp" />
+                            android:textSize="16sp" />
 
                     </LinearLayout>
 
@@ -221,7 +221,7 @@
                             android:layout_marginBottom="10dp"
                             android:text="@string/reserved"
                             android:textColor="@color/colorPrimaryDark"
-                            android:textSize="20sp" />
+                            android:textSize="16sp" />
 
                         <TextView
                             android:id="@+id/budMnTotExpTV"
@@ -233,7 +233,7 @@
                             android:layout_marginBottom="10dp"
                             android:text="@string/amount"
                             android:textColor="@color/colorPrimaryDark"
-                            android:textSize="20sp" />
+                            android:textSize="16sp" />
 
                         <ImageButton
                             android:id="@+id/budMnResInfoBtn"
@@ -378,7 +378,7 @@
                                 android:gravity="center_horizontal"
                                 android:text="@string/income"
                                 android:textColor="@color/colorPrimaryDark"
-                                android:textSize="14sp" />
+                                android:textSize="12sp" />
 
                         </RelativeLayout>
 
@@ -411,7 +411,7 @@
                                 android:gravity="center_horizontal"
                                 android:text="@string/expenses"
                                 android:textColor="@color/colorPrimaryDark"
-                                android:textSize="14sp" />
+                                android:textSize="12sp" />
 
                         </RelativeLayout>
 
@@ -444,7 +444,7 @@
                                 android:gravity="center_horizontal"
                                 android:text="@string/debt_repay"
                                 android:textColor="@color/colorPrimaryDark"
-                                android:textSize="14sp" />
+                                android:textSize="12sp" />
 
                         </RelativeLayout>
 
@@ -478,7 +478,7 @@
                                 android:gravity="center_horizontal"
                                 android:text="@string/savings_plan"
                                 android:textColor="@color/colorPrimaryDark"
-                                android:textSize="14sp" />
+                                android:textSize="12sp" />
 
                         </RelativeLayout>
 

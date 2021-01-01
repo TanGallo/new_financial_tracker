@@ -194,7 +194,6 @@
                 android:text="@string/cancel"
                 android:textColor="@color/colorPrimaryDark" />
 
-
         </LinearLayout>
 
     </LinearLayout>
